@@ -1,0 +1,801 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0100)http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/ -->
+<HTML lang=en dir=ltr xmlns="http://www.w3.org/1999/xhtml"><HEAD 
+profile=http://gmpg.org/xfn/11><TITLE>A base class which implements INotifyPropertyChanged « Josh Smith on WPF</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><LINK media=screen 
+href="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/style.css" 
+type=text/css rel=stylesheet><LINK title="RSS 2.0" 
+href="http://joshsmithonwpf.wordpress.com/feed/" type=application/rss+xml 
+rel=alternate><LINK href="http://joshsmithonwpf.wordpress.com/xmlrpc.php" 
+rel=pingback><LINK 
+href="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/global.css" 
+type=text/css rel=stylesheet><LINK title=RSD 
+href="http://joshsmithonwpf.wordpress.com/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT type=text/javascript>
+
+function addLoadEvent(func) {
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      oldonload();
+      func();
+    }
+  }
+}
+</SCRIPT>
+
+<SCRIPT 
+src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/urchin.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+_uacct = "UA-52447-2";
+
+_udn = "wordpress.com";
+urchinTracker();
+</SCRIPT>
+<LINK title="Atom API" href="http://joshsmithonwpf.wordpress.com/wp-app.php" 
+type=application/atomserv+xml rel=introspection><LINK 
+href="http://joshsmithonwpf.wordpress.com/?openidserver=1" rel=openid.server>
+<STYLE type=text/css>#headerimg {
+	BACKGROUND: url(http://joshsmithonwpf.files.wordpress.com/2007/01/joshsmithonwpf_banner1.JPG) no-repeat
+}
+#header H1 {
+	DISPLAY: none
+}
+#header .description {
+	DISPLAY: none
+}
+</STYLE>
+<LINK 
+href="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/SyntaxHighlighter.css" 
+type=text/css rel=stylesheet></LINK></HEAD>
+<BODY 
+style="BACKGROUND-POSITION: center top; BACKGROUND-ATTACHMENT: fixed; BACKGROUND-IMAGE: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/bg.jpg); BACKGROUND-REPEAT: repeat-y">
+<DIV id=page>
+<DIV id=header>
+<DIV id=headerimg style="CURSOR: pointer" 
+onclick="location.href='http://joshsmithonwpf.wordpress.com';">
+<H1><A href="http://joshsmithonwpf.wordpress.com/">Josh Smith on WPF</A></H1>
+<DIV class=description>Thoughts about the Windows Presentation 
+Foundation</DIV></DIV></DIV>
+<UL id=pagebar 
+style="BACKGROUND: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/pagebar.jpg)">
+  <LI class="page_item "><A href="http://joshsmithonwpf.wordpress.com/">Home</A> 
+
+  <LI class="page_item page-item-73"><A title="A Guided Tour of&nbsp;WPF" 
+  href="http://joshsmithonwpf.wordpress.com/a-guided-tour-of-wpf/">A Guided Tour 
+  of&nbsp;WPF</A> 
+  <LI class="page_item page-item-2"><A title=About 
+  href="http://joshsmithonwpf.wordpress.com/about/">About</A> 
+  <LI class="page_item page-item-255"><A title=Presentation&nbsp;App 
+  href="http://joshsmithonwpf.wordpress.com/presentation-app/">Presentation&nbsp;App</A> 
+
+  <LI class="page_item page-item-19"><A title="WPF Challenge&nbsp;Submissions" 
+  href="http://joshsmithonwpf.wordpress.com/xbap-submissions/">WPF 
+  Challenge&nbsp;Submissions</A> </LI></UL>
+<DIV id=grad 
+style="BACKGROUND: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/topgrad.jpg); WIDTH: 100%; HEIGHT: 65px"></DIV>
+<DIV class=widecolumn id=content>
+<DIV class=post id=post-241>
+<H2><A 
+title="Permanent Link: A base class which implements&nbsp;INotifyPropertyChanged" 
+href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/" 
+rel=bookmark>A base class which implements&nbsp;INotifyPropertyChanged</A></H2>
+<DIV class=entry>
+<DIV class=snap_preview>
+<P>The longer I’ve worked with WPF, the more implementations I have seen of the 
+INotifyPropertyChanged interface.&nbsp; It’s everywhere.&nbsp; I have seen 
+dozens upon dozens of classes all implement the interface separately, even 
+though most of those classes descend directly from Object.&nbsp; This blog post 
+examines the virtues of creating a base class which implements that interface, 
+and deriving as many classes as possible from it.</P>
+<P>Consolidating your implementation of INotifyPropertyChanged into a base class 
+has several benefits.</P>
+<OL>
+  <LI>You do not have to implement the same interface many times, which reduces 
+  the possibility of boredom (and programming errors…). 
+  <LI>You can easily use cached instances of PropertyChangedEventArgs, to avoid 
+  fragmenting the managed heap with semantically identical instances. 
+  <LI>You can easily use some reflection magic to verify that the property which 
+  allegedly changed actually exists (this is useful for debugging purposes, and 
+  is automatically turned off in Release builds). 
+  <LI>You can override a method to execute logic which must run after a property 
+  is set.&nbsp; </LI></OL>
+<P>I created an abstract class called BindableObject which implements 
+INotifyPropertyChanged and provides all the goodies promised above.&nbsp; At the 
+bottom of this post you can download the source code.&nbsp; Until then, let’s 
+take a look at how it’s implemented.</P>
+<P>Here’s the class from a high-level view:</P>
+<P><IMG alt=BindableObject&nbsp;(class) 
+src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/bindableobject_class.png"></P>
+<P>As you can see above, classes which descend from BindableObject can call the 
+RaisePropertyChanged method when one of their public properties is set to a new 
+value.&nbsp; That will cause the INotifyPropertyChanged.PropertyChanged event to 
+be raised so that the data binding system is alerted of the new value.&nbsp; If 
+a child class wants to perform some processing after a property is set, it can 
+override the AfterPropertyChanged method.</P>
+<P>I made the class serializable in case you need it to be.&nbsp; The demo 
+project does not make use of that aspect of the class.&nbsp; Now let’s take a 
+look at the class’s protected members:</P>
+<P><IMG alt=BindableObject&nbsp;(protected) 
+src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/bindableobject_protected.png"></P>
+<P>Now we’ll inspect the public members of BindableObject:</P>
+<P>&nbsp;<IMG alt=BindableObject&nbsp;(public) 
+src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/bindableobject_public.png"></P>
+<P>The main point of interest here is the GetPropertyChangedEventArgs 
+method.&nbsp; It maintains a cache of PropertyChangedEventArgs instances, so 
+that only one instance will exist for each property name passed through this 
+class.&nbsp; This caching can dramatically reduce the managed heap fragmentation 
+caused by a property being set many times in a short period of time.&nbsp; The 
+reason I made GetPropertyChangedEventArgs public is so that any class can take 
+advantage of its caching mechanism, even if the class does not descend from 
+BindableObject.</P>
+<P>In case you’re curious, here is how the property name is verified:</P>
+<P><IMG alt=BindableObject&nbsp;(private) 
+src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/bindableobject_private.png"></P>
+<P>If a class which descends from BindableObject passes an invalid property name 
+into the RaisePropertyChanged method, when the property is set this helpful 
+assertion dialog will open:</P>
+<P><IMG alt=BindableObject&nbsp;(assertion) 
+src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/bindableobject_assertion.png"></P>
+<P>Download the demo project here:&nbsp;<A 
+title="BindableObject (demo&nbsp;project)" 
+href="http://joshsmithonwpf.files.wordpress.com/2007/08/bindableobjectdemozip.doc">BindableObject 
+(demo&nbsp;project)</A>&nbsp;&nbsp;Be sure to change the file extension from 
+.DOC to .ZIP and then decompress it.</P></DIV>
+<P class="postmetadata alt"><SMALL>This entry was posted on Wednesday, August 
+29th, 2007 at 10:25 pm and is filed under <A title="View all posts in Debugging" 
+href="http://wordpress.com/tag/debugging/" rel="category tag">Debugging</A>, <A 
+title="View all posts in General Info" 
+href="http://wordpress.com/tag/general-info/" rel="category tag">General 
+Info</A>, <A title="View all posts in Praxis" 
+href="http://wordpress.com/tag/praxis/" rel="category tag">Praxis</A>. You can 
+follow any responses to this entry through the <A 
+href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/feed/">RSS 
+2.0</A> feed. You can <A 
+href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#respond">leave 
+a response</A>, or <A 
+href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/trackback/" 
+rel=trackback>trackback</A> from your own site. </SMALL></P></DIV></DIV><!-- You can start editing here. -->
+<H3 id=comments>29 Responses to “A base class which 
+implements&nbsp;INotifyPropertyChanged”</H3>
+<OL class=commentlist>
+  <LI class=alt id=comment-4629><CITE>Steve</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4629">August 
+  30th, 2007 at 2:10 am</A> </SMALL>
+  <P>I just implemented this same class yesterday (but named it NotifyObject 
+  instead).<BR>One extra feature I have is a BeginUpdate/EndUpdate so that I can 
+  do lots of updated and then trigger the events. I just put them all on a Queue 
+  if its updating, and trigger them all at EndUpdate.</P>
+  <LI id=comment-4631><CITE><A href="http://www.geekswithblogs.com/kobush" 
+  rel="external nofollow">Szymon</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4631">August 
+  30th, 2007 at 3:45 am</A> </SMALL>
+  <P>Very helpful class. Thanks Josh!</P>
+  <LI class=alt id=comment-4632><CITE>Rogan Josh</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4632">August 
+  30th, 2007 at 4:10 am</A> </SMALL>
+  <P>Probably a bit of a noob question, but in what scenarios would it be better 
+  to derive from DependencyObject instead of a hand-rolled base class (which is 
+  cool - thanks!) such as this?</P>
+  <LI id=comment-4636><CITE>Allan</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4636">August 
+  30th, 2007 at 5:59 am</A> </SMALL>
+  <P>Hi, excellent article on a common issue. I was wondering what the 
+  [field:NonSerialized] does? I’m assuming it prevents the event owner from 
+  serializing when the class is, is the correct? Do you know if there is a 
+  similar attribute for VB.Net? Sorry a little of topic, but when I don’t know 
+  something I NEED to ask.</P>
+  <LI class=alt id=comment-4639><IMG class="avatar avatar-joshsmith avatar-32" 
+  height=32 alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4639">August 
+  30th, 2007 at 7:46 am</A> </SMALL>
+  <P>Steve,<BR>I like that idea! Sounds very useful.</P>
+  <P>Szymon,<BR>Thanks.</P>
+  <P>Rogan,<BR>There has been a lot of debate over whether business objects 
+  should descend from DependencyObject or not. I think its usually not necessary 
+  to do so because properties of BOs do not need the extra features provided by 
+  dependency properties. Working with DPs is more difficult than normal 
+  properties. Also, descending from DO ties your domain model classes to WPF, 
+  where using INotifyPropertyChanged does not.</P>
+  <P>Allan,<BR>That attribute prevents the delegate field which the compiler 
+  emits to implement the PropertyChanged event from being serialized. Since a 
+  delegate internally stores hard references to its listeners, you need to 
+  prevent that delegate from being serialized. If the delegate were serialized 
+  then it would attempt to serialize the objects to which it points. The 
+  NonSerialized attribute, like all attributes, is not particular to C#. It can 
+  be used in VB as well.</P>
+  <P>-Josh</P>
+  <LI id=comment-4641><CITE>Steve</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4641">August 
+  30th, 2007 at 8:21 am</A> </SMALL>
+  <P>And you can optimize the GetPropertyChangedEventArgs:</P>
+  <P>if (!eventArgCache.TryGetValue(propertyName, out args)) // ContainsKey and 
+  indexer together<BR>{<BR>eventArgCache.Add(propertyName, args = new 
+  PropertyChangedEventArgs(propertyName)); // No need to get newly created args 
+  from dictionary<BR>}<BR>return args;</P>
+  <LI class=alt id=comment-4642><IMG class="avatar avatar-joshsmith avatar-32" 
+  height=32 alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4642">August 
+  30th, 2007 at 8:32 am</A> </SMALL>
+  <P>Steve,</P>
+  <P>That’s a good optimization. Thanks for posting it.</P>
+  <P>Josh</P>
+  <LI id=comment-4649><CITE>Patrick</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4649">August 
+  30th, 2007 at 10:14 am</A> </SMALL>
+  <P>Josh,</P>
+  <P>Do you have any managed heap fragmentation metrics or performance 
+  measurements to show that caching of PropertyChangedEventArgs is an important 
+  optimization?</P>
+  <P>I’m writing a financial services application which binds a dozen or so 
+  properties on a few hundred objects which get updated more than a thousand 
+  times a second during busy market times… So this seems like it could be a big 
+  deal for me.</P>
+  <P>I’m just curious if you had real measurements that show the scale of the 
+  benefit.</P>
+  <P>I’d also like to see your take on an implementation of Steve’s 
+  {Begin,End}Update pattern.</P>
+  <P>Thanks for sharing this code.</P>
+  <P>-Patrick</P>
+  <LI class=alt id=comment-4650><IMG class="avatar avatar-joshsmith avatar-32" 
+  height=32 alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4650">August 
+  30th, 2007 at 10:19 am</A> </SMALL>
+  <P>Patrick,</P>
+  <P>No I don’t have any tool which I use to measure the actual runtime benefits 
+  of caching event args. But, regardless of lacking empirical evidence, it just 
+  makes sense to do it. Creating a new PropertyChangedEventArgs instance every 
+  time a property changes is equivalent to feverishly shooting the managed heap 
+  with a shotgun.</P>
+  <P>Josh</P>
+  <LI id=comment-4654><CITE>Patrick</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4654">August 
+  30th, 2007 at 12:07 pm</A> </SMALL>
+  <P>I agree with your gut instinct on keeping heap fragmentation down, but 
+  being the performance geek that I am, I wrote a quick benchmark of the two 
+  methods. Retrieving the cached PropertyChangedEventArgs from the Dictionary is 
+  approximately 18X slower than creating a new one.</P>
+  <P>So I guess the question is how much is it worth to keep those tiny short 
+  lived objects out of the heap?</P>
+  <P>My benchmark created a billion of them in 6.9 seconds, but took 126 seconds 
+  to fetch the same one from the cache a billion times.</P>
+  <P>So that’s around 7ns to create one and 126ns to fetch one… but even at a 
+  kilohertz notification rate, it’s only the difference between 7us and 126us, 
+  which is in the noise so to speak. You’d have to be up around 80KHz 
+  notification rate to approach even 1% overhead.</P>
+  <P>Long story short, it can never hurt to frag the heap less and this method 
+  does not introduce a significant performance problem.</P>
+  <LI class=alt id=comment-4655><IMG class="avatar avatar-ligao101 avatar-32" 
+  height=32 alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/unknown-32.jpg" 
+  width=32> <CITE>ligao101</CITE> Says: <BR><SMALL class=commentmetadata><A 
+  title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4655">August 
+  30th, 2007 at 12:34 pm</A> </SMALL>
+  <P>Josh, this is an excellent post. Thanks for sharing it.</P>
+  <P>However, I have to agree with Patrick that using reflection here as the 
+  Base Class can significantly slow down your app if you have a lot of bindable 
+  fields to update. I’ve been to places where you need to update 200,000+ 
+  records per second on a regular basis and the speed of reflection just can’t 
+  keep up with it. Using the tedious and fast “boredom” implementation of 
+  INotifyPropertyChanged seems work ok in those data centric scenarios.</P>
+  <LI id=comment-4658><IMG class="avatar avatar-joshsmith avatar-32" height=32 
+  alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4658">August 
+  30th, 2007 at 2:28 pm</A> </SMALL>
+  <P>Patrick,<BR>Thanks for the perf test. Did you use my code, or the optimized 
+  version which Steve left in a comment? I think creating a billion 
+  PropertyChangedEventArgs is rather intense, but I’m no expert in optimization 
+  techniques so I could be wrong.</P>
+  <P>Ligao101,<BR>The code which uses reflection to verify that the property 
+  exists is removed by the compiler in a Release build. The 
+  [Conditional(”DEBUG”)] attribute prevents that code from existing or being 
+  called when in a Release build, so it’s not really a perf concern.</P>
+  <P>-Josh</P>
+  <LI class=alt id=comment-4660><CITE>Patrick</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4660">August 
+  30th, 2007 at 2:56 pm</A> </SMALL>
+  <P>I used Steve’s version.</P>
+  <P>I only did a billion to get it to run for more than a second to call it a 
+  fair test! Here’s the method i used. The numbers I reported were from the 
+  Release build.</P>
+  <P>public static PropertyChangedEventArgs GetPropertyChangedEventArgs(string 
+  propertyName)<BR>{<BR>if (String.IsNullOrEmpty(propertyName))<BR>throw new 
+  ArgumentException(”propertyName cannot be null or 
+  empty.”);<BR>PropertyChangedEventArgs args;<BR>lock (typeof(Test))<BR>{<BR>if 
+  (!eventArgCache.TryGetValue(propertyName, out 
+  args))<BR>{<BR>eventArgCache.Add(propertyName, args = new 
+  PropertyChangedEventArgs(propertyName));<BR>}<BR>}<BR>return args;<BR>}</P>
+  <LI id=comment-4661><IMG class="avatar avatar-joshsmith avatar-32" height=32 
+  alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4661">August 
+  30th, 2007 at 3:00 pm</A> </SMALL>
+  <P>Patrick,</P>
+  <P>Fair enough. <IMG class=wp-smiley alt=:) 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/icon_smile.gif"> 
+  </P>
+  <P>Thanks for the detailed feedback and analysis.</P>
+  <P>Josh</P>
+  <LI class=alt id=comment-4678><IMG class="avatar avatar-ligao101 avatar-32" 
+  height=32 alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/unknown-32.jpg" 
+  width=32> <CITE>ligao101</CITE> Says: <BR><SMALL class=commentmetadata><A 
+  title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4678">August 
+  30th, 2007 at 11:45 pm</A> </SMALL>
+  <P>Josh, </P>
+  <P>This is nice. Thanks for sharing this. I will try it out and see if can 
+  improve my current implementation without much performance impact <IMG 
+  class=wp-smiley alt=:) 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/icon_smile.gif"></P>
+  <LI id=comment-4690><CITE>Steve</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4690">August 
+  31st, 2007 at 6:48 am</A> </SMALL>
+  <P>I’m guessing the lock will cause the most overhead, can you test it without 
+  using lock just to see the difference?</P>
+  <LI class=alt id=comment-4693><IMG class="avatar avatar-joshsmith avatar-32" 
+  height=32 alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4693">August 
+  31st, 2007 at 7:57 am</A> </SMALL>
+  <P>I just ran my own set of tests, creating a billion PropertyChangedEventArgs 
+  in a loop each time. Here are my results:</P>
+  <P>Without caching 00:00:35.1295902</P>
+  <P>With caching and no lock 00:02:04.3900344</P>
+  <P>With caching and lock 00:03:22.3161058</P>
+  <P>That lock certainly does affect performance, as Steve pointed out. Despite 
+  its negative impact on speed, I am hesitant to remove it seeing as how the 
+  eventargs caching method can be invoked from any thread at any time.</P>
+  <P>Thoughts?</P>
+  <P>Thanks,<BR>Josh</P>
+  <LI id=comment-4700><CITE><A href="http://www.paragonsimulation.com/" 
+  rel="external nofollow">Sam Jack</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4700">August 
+  31st, 2007 at 11:08 am</A> </SMALL>
+  <P>I’ve implemented a class very similar to this, and I had the same debate 
+  with myself about whether to inherit DependencyObject. A further consideration 
+  to add to those already mentioned is Threading. DependencyObjects, inheriting 
+  as they do from DispatcherObjects, are tied to the thread that created them. 
+  Only in the case of Freezables can they be moved to a different Thread.</P>
+  <P>My class, and Josh’s has no such limitations.</P>
+  <LI class=alt id=comment-4701><IMG class="avatar avatar-joshsmith avatar-32" 
+  height=32 alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4701">August 
+  31st, 2007 at 11:13 am</A> </SMALL>
+  <P>Good point, Sam.</P>
+  <LI id=comment-4713><CITE><A href="http://johnmelville.spaces.live.com/" 
+  rel="external nofollow">John Melville</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4713">August 
+  31st, 2007 at 3:45 pm</A> </SMALL>
+  <P>I also have an INotifyPropertyChanged base class. One of the features I 
+  implemented was only notifying when the value had actually changed. (My app is 
+  essentially a huge graph of nodes that update in response to other nodes 
+  updating, so limiting notifications is valuable.) I implemented it like 
+  this.</P>
+  <P>protected bool AssignAndNotify(ref T target, T value, params string[] 
+  properties) {<BR>if (!IsObjectEqual(target, value)) {<BR>target = 
+  value;<BR>System.Diagnostics.Debug.Assert(properties.Length &gt; 
+  0);<BR>foreach (string name in 
+  properties)<BR>SendPropertyChange(name);<BR>return true;<BR>}<BR>return 
+  false;<BR>}<BR>private static bool IsObjectEqual(T target, T value) {<BR>if 
+  (target == null)<BR>return value == null;<BR>// else<BR>return 
+  target.Equals(value);<BR>}<BR>private static bool IsObjectEqual(T target, T 
+  value) {<BR>if (target == null)<BR>return value == null;<BR>// else<BR>return 
+  target.Equals(value);<BR>}</P>
+  <P>in my property setters I implement it like this<BR>private int 
+  prop;<BR>public int Prop{ set { AssignAndNotify(ref prop, value, “Prop”)}}</P>
+  <P>I implement the name property as a params array so I can update multiple 
+  calculated properties with a single call.</P>
+  <LI class=alt id=comment-4715><IMG class="avatar avatar-joshsmith avatar-32" 
+  height=32 alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4715">August 
+  31st, 2007 at 4:11 pm</A> </SMALL>
+  <P>John,</P>
+  <P>That seems like a very useful way to encourage sending proper change 
+  notifications. How well does it perform?</P>
+  <P>Thanks,<BR>Josh</P>
+  <LI id=comment-4785><CITE><A href="http://serialseb.blogspot.com/" 
+  rel="external nofollow">Sebastien Lambla</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4785">September 
+  3rd, 2007 at 6:33 am</A> </SMALL>
+  <P>Josh,</P>
+  <P>Isn’t it risky to lock on the type? If anyone tries to lock on that type 
+  outside of your code, you just caused yourself a deadlock. While documenting 
+  it *could* be enough, I’m not a big fan of relying on developers reading the 
+  documentation… I’d have suggested a private static object syncRoot = new 
+  object() for your synchronization needs?</P>
+  <P>Otherwise very good post, everybody has had to write these base classes 
+  over and over again in WPF projects.</P>
+  <LI class=alt id=comment-4788><IMG class="avatar avatar-joshsmith avatar-32" 
+  height=32 alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-4788">September 
+  3rd, 2007 at 10:10 am</A> </SMALL>
+  <P>Sebastien,</P>
+  <P>That’s a good point about the lock. I had not thought of that, but agree 
+  that locking on the type is a bad idea.</P>
+  <P>Thanks,<BR>Josh</P>
+  <LI id=comment-5034><IMG class="avatar avatar-xiugraag avatar-32" height=32 
+  alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/unknown-32.jpg" 
+  width=32> <CITE>xiugraag</CITE> Says: <BR><SMALL class=commentmetadata><A 
+  title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-5034">September 
+  13th, 2007 at 1:32 am</A> </SMALL>
+  <P>One last suggestion, there is a “feature” for PropertyChanged so that you 
+  can send string.Empty for when the object is completly changed, but with the 
+  current code it will break when trying to verify the property.</P>
+  <LI class=alt id=comment-5040><CITE>Bryan Roth</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-5040">September 
+  13th, 2007 at 7:39 am</A> </SMALL>
+  <P>With respect to the performance metrics quoted. The one billion searchs for 
+  the same argument searched through how many items? I guess more to the point 
+  what is the search algo overhead? Is it linear? Is there a tipping point where 
+  the search algo is just too expensive regardless of the shotgun effect?</P>
+  <P>In general I think its going to be more of an individual decision based 
+  upon the developers application. But then again, isn’t everything. =)</P>
+  <LI id=comment-5041><IMG class="avatar avatar-joshsmith avatar-32" height=32 
+  alt="" 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-5041">September 
+  13th, 2007 at 7:42 am</A> </SMALL>
+  <P>Bryan,</P>
+  <P>Yeah, that’s what I was thinking about a few days after posting those 
+  results. The number of property names in the collection would definitely 
+  impact the performance. Unfortunately I’m not an expert at algorithm 
+  performance analysis, so my crude tests should be taken with a grain of salt. 
+  I’d love to read some “definitive” thoughts on the perf considerations for 
+  using this caching technique.</P>
+  <P>Thanks,<BR>Josh</P>
+  <LI class=alt id=comment-5206><CITE>Bryan Roth</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-5206">September 
+  19th, 2007 at 10:31 am</A> </SMALL>
+  <P>Ya know, now that I started adding this abstract class to my project I have 
+  noted that this only solves the problem for BOs. While that might have been 
+  ovbious to some of you it didn’t hit home until I tried to glue it to a few 
+  forms where I wanted the forms name to follow a BO’s name and as such properly 
+  update say a dropdown menu of active windows. Since ya can’t do that multiple 
+  inheritance thing I had to kill the abstract idea and use composition, so that 
+  I could encapsulate the event handler.</P>
+  <LI id=comment-5404><CITE><A href="http://www.orpius.com/" 
+  rel="external nofollow">Daniel Vaughan</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-5404">September 
+  27th, 2007 at 4:17 pm</A> </SMALL>
+  <P>I implemented the same thing about 3 years ago, I even called it 
+  INotifyPropertyChange. I, however, retained a little more information 
+  regarding the property change such as the previous value, the value being set, 
+  and a means to cancel the modification.</P>
+  <P>Daniel</P>
+  <LI class=alt id=comment-5737><CITE><A 
+  href="http://joshsmithonwpf.wordpress.com/2007/10/07/binding-to-the-file-system/" 
+  rel="external nofollow">Binding to the file system « Josh Smith on 
+  WPF</A></CITE> Says: <BR><SMALL class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/08/29/a-base-class-which-implements-inotifypropertychanged/#comment-5737">October 
+  7th, 2007 at 12:15 pm</A> </SMALL>
+  <P>[…] a class called ObservableFileInfo.&nbsp; That class is a FileInfo 
+  wrapper which descends from my BindableObject base class.&nbsp; It exposes a 
+  FileInfo property so that the UI can bind to the data about the file.&nbsp; 
+  When the […]</P></LI></OL>
+<H3 id=respond>Leave a Reply</H3>
+<FORM id=commentform 
+action=http://joshsmithonwpf.wordpress.com/wp-comments-post.php method=post>
+<P><INPUT id=author tabIndex=1 size=22 name=author> <LABEL 
+for=author><SMALL>Name (required)</SMALL></LABEL></P>
+<P><INPUT id=email tabIndex=2 size=22 name=email> <LABEL for=email><SMALL>Mail 
+(will not be published) (required)</SMALL></LABEL></P>
+<P><INPUT id=url tabIndex=3 size=22 name=url> <LABEL 
+for=url><SMALL>Website</SMALL></LABEL></P><!--<p><small><strong>XHTML:</strong> You can use these tags: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p>-->
+<P><TEXTAREA id=comment tabIndex=4 name=comment rows=10 cols=100></TEXTAREA></P>
+<P><INPUT id=submit tabIndex=5 type=submit value="Submit Comment" name=submit> 
+<INPUT type=hidden value=241 name=comment_post_ID> </P></FORM></DIV>
+<DIV id=sidebar>
+<UL>
+  <LI>
+  <LI class="widget widget_text" id=text-1>
+  <H2 class=widgettitle>RSS Feed</H2>
+  <DIV class=textwidget><A href="http://joshsmithonwpf.wordpress.com/feed"><IMG 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/u14.png"></A> 
+  Feed the hungry with WPF</DIV>
+  <LI class="widget widget_text" id=text-5>
+  <H2 class=widgettitle>MY MVP PROFILE</H2>
+  <DIV class=textwidget>
+  <P align=center><A href="http://mvp.support.microsoft.com/default.aspx"><IMG 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/mvp_fullcolor_forscreen_small.thumbnail.png"></A></P><BR>My 
+  Microsoft MVP profile can be viewed <A 
+  href="https://mvp.support.microsoft.com/profile=5F7EC527-FEBC-4A5D-A11F-EEF73467D3D5">here</A>.</DIV>
+  <LI class="widget widget_text" id=text-3>
+  <H2 class=widgettitle>Sponsor</H2>
+  <DIV class=textwidget>
+  <P><SPAN style="FONT-SIZE: 8pt">Infragistics <B>NetAdvantage for WPF</B> is 
+  the world's first business-grade developer components for WPF, including 
+  datagrids, carousels, and editors, with built-in visual themes including 
+  Windows Vista Aero and Office 2007.&nbsp; Take advantage of our pure WPF 
+  platform features; including exciting high resolution graphics, rich styling 
+  and animation capabilities, and integrated UI virtualization technology. 
+  </SPAN><B><SPAN style="FONT-SIZE: 8pt; COLOR: black">Everything is all 
+  NEW!!</SPAN></B><SPAN style="FONT-SIZE: 8pt; COLOR: black"> This release gives 
+  developers the first opportunity to experience the next generation in 
+  NetAdvantage controls, designed and developed specifically for the WPF 
+  platform. </SPAN><SPAN style="FONT-SIZE: 8pt"></SPAN></P>
+  <P><SPAN style="FONT-SIZE: 8pt; COLOR: #1f497d"><A 
+  href="http://www.infragistics.com/adcounter/webads.aspx?adid=JSWPFBLOG&amp;utm_source=WPFBlog&amp;utm_date=Apr07&amp;utm_type=WPF&amp;utm_size=textandlogo">TRY 
+  IT NOW!</A></SPAN></P></DIV>
+  <LI class="widget widget_search" id=search>
+  <FORM id=searchform action=http://joshsmithonwpf.wordpress.com method=get>
+  <DIV><INPUT id=s size=15 name=s><BR><INPUT type=submit value=Search> 
+  </DIV></FORM>
+  <LI class="widget widget_text" id=text-4>
+  <H2 class=widgettitle>The WPF Challenge Winners</H2>
+  <DIV class=textwidget><A 
+  href="http://joshsmithonwpf.wordpress.com/2007/03/22/the-wpf-challenge-winners/">Check 
+  out who won the grandest competition in human history...</A></DIV>
+  <LI class="widget widget_recent_entries" id=recent-posts>
+  <H2 class=widgettitle>Recent Harangues</H2>
+  <UL>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/16/the-danger-of-assigning-event-handlers-in-xaml/">The 
+    Danger of Assigning Event Handlers in&nbsp;XAML </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/13/an-article-about-the-wpf-thought-process/">An 
+    article about the WPF thought&nbsp;process </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/07/binding-to-the-file-system/">Binding 
+    to the file&nbsp;system </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/01/data-binding-the-splitbuttonâs-contextmenu/">Data 
+    binding the SplitButton’s&nbsp;ContextMenu </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/30/upcoming-wpf-presentations/">Upcoming 
+    WPF&nbsp;Presentations </A></LI></UL>
+  <LI class="widget widget_categories" id=categories-1>
+  <H2 class=widgettitle>Divide and Conquer</H2>
+  <UL>
+    <LI class="cat-item cat-item-217"><A 
+    title="View all posts filed under Announcements" 
+    href="http://joshsmithonwpf.wordpress.com/category/announcements/">Announcements</A> 
+    (36) 
+    <LI class="cat-item cat-item-1002883"><A 
+    title="View all posts filed under Data Grids" 
+    href="http://joshsmithonwpf.wordpress.com/category/data-grids/">Data 
+    Grids</A> (2) 
+    <LI class="cat-item cat-item-70886"><A 
+    title="View all posts filed under Debugging" 
+    href="http://joshsmithonwpf.wordpress.com/category/debugging/">Debugging</A> 
+    (5) 
+    <LI class="cat-item cat-item-5264"><A 
+    title="View all posts filed under General Info" 
+    href="http://joshsmithonwpf.wordpress.com/category/general-info/">General 
+    Info</A> (11) 
+    <LI class="cat-item cat-item-731906"><A 
+    title="View all posts filed under Gotchas" 
+    href="http://joshsmithonwpf.wordpress.com/category/gotchas/">Gotchas</A> (1) 
+
+    <LI class="cat-item cat-item-17966"><A 
+    title="View all posts filed under Intermezzo" 
+    href="http://joshsmithonwpf.wordpress.com/category/intermezzo/">Intermezzo</A> 
+    (7) 
+    <LI class="cat-item cat-item-116238"><A 
+    title="View all posts filed under Orcas" 
+    href="http://joshsmithonwpf.wordpress.com/category/orcas/">Orcas</A> (1) 
+    <LI class="cat-item cat-item-30585"><A 
+    title="View all posts filed under Praxis" 
+    href="http://joshsmithonwpf.wordpress.com/category/praxis/">Praxis</A> (40) 
+    <LI class="cat-item cat-item-1548"><A 
+    title="View all posts filed under Public Speaking" 
+    href="http://joshsmithonwpf.wordpress.com/category/public-speaking/">Public 
+    Speaking</A> (6) 
+    <LI class="cat-item cat-item-287"><A title="View all posts filed under Rant" 
+    href="http://joshsmithonwpf.wordpress.com/category/rant/">Rant</A> (2) 
+    <LI class="cat-item cat-item-66841"><A 
+    title="View all posts filed under Reading Material" 
+    href="http://joshsmithonwpf.wordpress.com/category/reading-material/">Reading 
+    Material</A> (24) 
+    <LI class="cat-item cat-item-984139"><A 
+    title="View all posts filed under Silverlight" 
+    href="http://joshsmithonwpf.wordpress.com/category/silverlight/">Silverlight</A> 
+    (1) 
+    <LI class="cat-item cat-item-96136"><A 
+    title="View all posts filed under Snooping" 
+    href="http://joshsmithonwpf.wordpress.com/category/snooping/">Snooping</A> 
+    (3) 
+    <LI class="cat-item cat-item-714521"><A 
+    title="View all posts filed under The WPF Challenge" 
+    href="http://joshsmithonwpf.wordpress.com/category/the-wpf-challenge/">The 
+    WPF Challenge</A> (13) 
+    <LI class="cat-item cat-item-893962"><A 
+    title="View all posts filed under Theoria" 
+    href="http://joshsmithonwpf.wordpress.com/category/theoria/">Theoria</A> 
+    (13) 
+    <LI class="cat-item cat-item-3882"><A 
+    title="View all posts filed under Unit Testing" 
+    href="http://joshsmithonwpf.wordpress.com/category/unit-testing/">Unit 
+    Testing</A> (2) 
+    <LI class="cat-item cat-item-772681"><A 
+    title="View all posts filed under WPF.JoshSmith" 
+    href="http://joshsmithonwpf.wordpress.com/category/wpfjoshsmith/">WPF.JoshSmith</A> 
+    (1) 
+    <LI class="cat-item cat-item-814915"><A 
+    title="View all posts filed under XAML Madness" 
+    href="http://joshsmithonwpf.wordpress.com/category/xaml-madness/">XAML 
+    Madness</A> (11) </LI></UL>
+  <LI class="widget widget_archives" id=archives>
+  <H2 class=widgettitle>Blog Log</H2>
+  <UL>
+    <LI><A title="October 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/">October 
+    2007</A>&nbsp;(4) 
+    <LI><A title="September 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/">September 
+    2007</A>&nbsp;(5) 
+    <LI><A title="August 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/08/">August 2007</A>&nbsp;(9) 
+
+    <LI><A title="July 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/07/">July 2007</A>&nbsp;(10) 
+    <LI><A title="June 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/06/">June 2007</A>&nbsp;(14) 
+    <LI><A title="May 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/05/">May 2007</A>&nbsp;(15) 
+    <LI><A title="April 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/04/">April 2007</A>&nbsp;(15) 
+
+    <LI><A title="March 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/03/">March 2007</A>&nbsp;(14) 
+
+    <LI><A title="February 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/">February 
+    2007</A>&nbsp;(19) </LI></UL>
+  <LI class="widget widget_text" id=text-2>
+  <H2 class=widgettitle>The WPF.JoshSmith Library</H2>
+  <DIV class=textwidget>
+  <P align=center><A 
+  href="http://www.codeproject.com/useritems/WPFJoshSmith.asp"><IMG 
+  src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/cpbob.png"></A> 
+  </P>
+  <P>Download my free WPF library from the CodeProject.</P></DIV>
+  <LI class="widget widget_links" id=links>
+  <H2 class=widgettitle>Blogroll</H2>
+  <UL>
+    <LI><A title="Great practical advice on databinding in WPF." 
+    href="http://www.beacosta.com/">Beatriz Costa</A> 
+    <LI><A 
+    title="A great series of blog posts about a design pattern tailored to WPF, by Dan Crevier." 
+    href="http://blogs.msdn.com/dancre/archive/2006/10/11/datamodel-view-viewmodel-pattern-series.aspx">DM-V-VM 
+    Pattern Series</A> 
+    <LI><A title="Insights from a member of the WPF team at Microsoft." 
+    href="http://blogs.msdn.com/mikehillberg/default.aspx">Mike Hillberg on 
+    WPF</A> 
+    <LI><A title="The rants and raves of The WPF Hickster." 
+    href="http://www.nickthuesen.com/">Nick Thuesen</A> 
+    <LI><A title="Interesting and useful information about WPF." 
+    href="http://pavanpodila.spaces.live.com/blog/">Pavan Podila</A> 
+    <LI><A title="Words from a WPF Program Manager at Microsoft." 
+    href="http://rrelyea.spaces.live.com/">Rob Relyea</A> 
+    <LI><A 
+    title="Lee Brimelow’s excellent blog about WPF, with a focus on graphical design." 
+    href="http://www.thewpfblog.com/">The WPF Blog</A> 
+    <LI><A title="Great content by the folks who write the WPF docs." 
+    href="http://blogs.msdn.com/wpfsdk/">The WPF SDK Blog</A> 
+    <LI><A title="A comprehensive list of WPF blogs." 
+    href="http://blogs.msdn.com/tims/articles/475132.aspx">Tim Sneath’s WPF Blog 
+    Roll</A> </LI></UL>
+  <LI class="widget widget_stats_topposts" id=top-posts>
+  <H2 class=widgettitle>The posts people really like</H2>
+  <UL>
+    <LI><A href="http://joshsmithonwpf.wordpress.com/a-guided-tour-of-wpf/">A 
+    Guided Tour of WPF</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/">Binding 
+    a TreeView to a DataSet</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/16/the-danger-of-assigning-event-handlers-in-xaml/">The 
+    Danger of Assigning Event Handlers in XAML</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/presentation-app/">Presentation 
+    App</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/24/stretching-content-in-an-expander-header/">Stretching 
+    Content in an Expander Header</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/05/wpf-vs-windows-forms/">WPF 
+    vs. Windows Forms</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/06/12/searching-for-items-in-a-listbox/">Searching 
+    for items in a ListBox</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/10/the-wpf-challenge/">The 
+    WPF Challenge</A>
+    <LI><A href="http://joshsmithonwpf.wordpress.com/about/">About</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/03/29/tips-on-how-to-debug-and-learn-about-wpf/">Tips 
+    on how to debug and learn about WPF</A></LI></UL></LI></UL></DIV>
+<DIV id=footer>
+<P>Theme: Contempt by <A href="http://www.vault9.net/" 
+rel=designer>Vault9</A>.<BR><A href="http://wordpress.com/" rel=generator>Blog 
+at WordPress.com</A>. </P></DIV></DIV>
+<SCRIPT 
+src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/quant.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>_qmeta="qc:adt=0;bti=Josh+Smith+on+WPF;lan=en;dat=20070830;pti=A+base+class+which+implements+INotifyPropertyChanged;own=joshsmith";_qacct="p-18-mFEk4J448M";quantserve();</SCRIPT>
+<NOSCRIPT>
+<P><IMG style="DISPLAY: none" height=1 alt="" 
+src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/p-18-mFEk4J448M.gif" 
+width=1></P></NOSCRIPT>
+<SCRIPT 
+src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/w.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+st_go({blog:'737883',v:'wpcom',post:'241',subd:'joshsmithonwpf'});
+ex_go({x_theme:'contempt',x_lang:'en',x_dc:'luv',x_adt:'0',x_public:'1',x_mapped:'0',x_loggedin:'0',x_noads:'seen,notsearch',x_ads:'no',x_pagetype:'permalink',x_postage:'30to365'});
+addLoadEvent(function(){linktracker_init(737883,241);});
+</SCRIPT>
+<!-- SyntaxHighlighter Stuff -->
+<SCRIPT 
+src="A base class which implements INotifyPropertyChanged « Josh Smith on WPF_files/shCore.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+	dp.SyntaxHighlighter.ClipboardSwf = 'http://s.wordpress.com/wp-content/plugins/highlight/clipboard.swf';
+	dp.SyntaxHighlighter.HighlightAll('code');
+</SCRIPT>
+</BODY></HTML>

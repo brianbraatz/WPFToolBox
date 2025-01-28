@@ -1,0 +1,462 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en"><head profile="http://gmpg.org/xfn/11">
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Routed Commands Trap Bubbling Events « Josh Smith on WPF</title>
+
+
+
+<meta name="generator" content="WordPress.com"><!-- leave this for stats --> 
+
+<link rel="stylesheet" href="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/style.css" type="text/css" media="screen">
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://joshsmithonwpf.wordpress.com/feed/">
+<link rel="pingback" href="http://joshsmithonwpf.wordpress.com/xmlrpc.php">
+
+<link rel="stylesheet" href="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/global.css" type="text/css">
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://joshsmithonwpf.wordpress.com/xmlrpc.php?rsd">
+ <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://joshsmithonwpf.wordpress.com/wp-includes/wlwmanifest.xml"> <meta name="generator" content="WordPress/MU">
+<script type="text/javascript">
+
+function addLoadEvent(func) {
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      oldonload();
+      func();
+    }
+  }
+}
+</script>
+	
+<script src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/urchin.js" type="text/javascript"></script>
+<script type="text/javascript">
+_uacct = "UA-52447-2";
+
+_udn = "wordpress.com";
+urchinTracker();
+</script>
+	<link rel="introspection" type="application/atomserv+xml" title="Atom API" href="http://joshsmithonwpf.wordpress.com/wp-app.php">
+<link rel="openid.server" href="http://joshsmithonwpf.wordpress.com/?openidserver=1"><style type="text/css">
+#headerimg{
+	background: url(http://joshsmithonwpf.files.wordpress.com/2007/01/joshsmithonwpf_banner1.JPG) no-repeat;
+}
+#header h1, #header .description {
+	display: none;
+}
+</style>
+	<link type="text/css" rel="stylesheet" href="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/SyntaxHighlighter.css"></head><body style="background-image: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/bg.jpg); background-attachment: fixed; background-repeat: repeat-y; background-position: center top;">
+
+
+<div id="page">
+
+<div id="header">
+	<div id="headerimg" onclick="location.href='http://joshsmithonwpf.wordpress.com';" style="cursor: pointer;">
+		<h1><a href="http://joshsmithonwpf.wordpress.com/">Josh Smith on WPF</a></h1>
+		<div class="description">Thoughts about the Windows Presentation Foundation</div>
+	</div>
+</div>
+
+<ul id="pagebar" style="background: transparent url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/pagebar.jpg) repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+		<li class="page_item"><a href="http://joshsmithonwpf.wordpress.com/">Home</a></li>
+	<li class="page_item page-item-73"><a href="http://joshsmithonwpf.wordpress.com/a-guided-tour-of-wpf/" title="A Guided Tour of&nbsp;WPF">A Guided Tour of&nbsp;WPF</a></li>
+<li class="page_item page-item-2"><a href="http://joshsmithonwpf.wordpress.com/about/" title="About">About</a></li>
+<li class="page_item page-item-255"><a href="http://joshsmithonwpf.wordpress.com/presentation-app/" title="Presentation&nbsp;App">Presentation&nbsp;App</a></li>
+<li class="page_item page-item-19"><a href="http://joshsmithonwpf.wordpress.com/xbap-submissions/" title="WPF Challenge&nbsp;Submissions">WPF Challenge&nbsp;Submissions</a></li>
+ 
+</ul>
+
+<div id="grad" style="background: transparent url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/topgrad.jpg) repeat scroll 0%; height: 65px; width: 100%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">&nbsp;</div>
+	<div id="content" class="widecolumn">
+				
+  	
+
+	
+		<div class="post" id="post-20">
+			<h2><a href="http://joshsmithonwpf.wordpress.com/2007/02/15/routed-commands-trap-bubbling-events/" rel="bookmark" title="Permanent Link: Routed Commands Trap Bubbling&nbsp;Events">Routed Commands Trap Bubbling&nbsp;Events</a></h2>
+	
+			<div class="entry">
+				<div class="snap_preview"><p>I recently started working at the New York Times on the extremely cool <a target="_blank" href="http://firstlook.nytimes.com/index.php?cat=4" title="The best way to read the New York Times">Times Reader</a>&nbsp;application.&nbsp;
+It’s a WPF application which allows you to read the New York Times
+using WPF’s high-fidelity flow document support, along with many other
+slick features.</p>
+<p>Luckily for me, I get to work with <a target="_blank" href="http://nickthuesen.com/" title="Nick's site">Nick Thuesen</a>.&nbsp;
+He worked with the WPF team at Microsoft while developing the Times
+Reader, so he knows a lot about WPF.&nbsp; He mentioned the other day
+that routed commands affect the bubbling of routed events, which I had
+never seen mentioned anywhere in the docs.&nbsp; Tonight I tested it
+out and, sure enough, Nick was right.&nbsp; Allow me to explain…</p>
+<p>Routed commands are really quite similar to routed events.&nbsp;
+They are conceptually just notifications that tunnel down and bubble up
+the element tree.&nbsp; In fact, they are so similar that if you
+process a routed command in response to a routed event, the event stops
+bubbling up the tree.&nbsp; I’ve put together a simple demo which
+proves the point.&nbsp; You can download it <a href="http://joshsmithonwpf.files.wordpress.com/2007/02/routedcommandsandeventszip.doc" title="The source code">here</a> (remove the .doc file extension and then decompress it).</p>
+<p>Let’s say my application should allow the user to capitalize text
+anywhere in the app by pressing the F12 key.&nbsp; I might create a
+command like this:<br>
+<code><br>
+public class CapitalizeCommand : RoutedCommand<br>
+{<br>
+&nbsp;static CapitalizeCommand instance;<br>
+&nbsp;public static CapitalizeCommand Instance<br>
+&nbsp;{<br>
+&nbsp;&nbsp;get<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;return<br>
+&nbsp;&nbsp;&nbsp;&nbsp;CapitalizeCommand.instance ??<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(CapitalizeCommand.instance = new CapitalizeCommand());<br>
+&nbsp;&nbsp;}<br>
+&nbsp;}<br>
+&nbsp;private CapitalizeCommand()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;base.InputGestures.Add( new KeyGesture( Key.F12 ) );<br>
+&nbsp;}<br>
+}<br>
+</code><br>
+Next I would create a Window (or Page) which contains an input
+field.&nbsp; That TextBox needs a CommandBinding which ties the
+CapitalizeCommand to itself, so that pressing F12 will do the
+capitalization magic.&nbsp; The following XAML is in a Window:<br>
+<code><br>
+&lt;StackPanel Name=”stk”&gt;<br>
+&nbsp; &lt;TextBox<br>
+&nbsp;&nbsp;&nbsp; Name=”txtBox”<br>
+&nbsp;&nbsp;&nbsp; Text=”Hello”<br>
+&nbsp;&nbsp;&nbsp; PreviewKeyDown=”txtBox_KeyDownOrPreviewKeyDown”<br>
+&nbsp;&nbsp;&nbsp; KeyDown=”txtBox_KeyDownOrPreviewKeyDown”<br>
+&nbsp;&nbsp;&nbsp; &gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;TextBox.CommandBindings&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;CommandBinding<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Command=”{x:Static local:CapitalizeCommand.Instance}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Executed=”OnCmdExecuted”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CanExecute=”CanCmdExecute”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/TextBox.CommandBindings&gt;<br>
+&nbsp; &lt;/TextBox&gt;<br>
+&nbsp; &lt;TextBlock&gt;Press F12 to capitalize the text…&lt;/TextBlock&gt;<br>
+&lt;/StackPanel&gt;<br>
+</code><br>
+Here are the event handlers in the Window’s code-behind:<br>
+<code><br>
+void txtBox_KeyDownOrPreviewKeyDown(<br>
+&nbsp; object sender,<br>
+&nbsp; KeyEventArgs e )<br>
+{<br>
+&nbsp;TextBlock msg = new TextBlock();<br>
+&nbsp;msg.Text = String.Format(<br>
+&nbsp;&nbsp;”[{0}]&nbsp; {1} received @ {2}”,<br>
+&nbsp;&nbsp;e.Key,<br>
+&nbsp;&nbsp;e.RoutedEvent.Name,<br>
+&nbsp;&nbsp;DateTime.Now.ToLongTimeString() );<br>
+this.stk.Children.Add( msg );<br>
+}<br>
+void CanCmdExecute(<br>
+&nbsp; object sender,<br>
+&nbsp; CanExecuteRoutedEventArgs e )<br>
+{<br>
+&nbsp;e.CanExecute =<br>
+&nbsp; !String.IsNullOrEmpty( this.txtBox.Text );<br>
+}<br>
+void OnCmdExecuted(<br>
+&nbsp; object sender,<br>
+&nbsp; ExecutedRoutedEventArgs e )<br>
+{<br>
+&nbsp;this.txtBox.Text = this.txtBox.Text.ToUpper();<br>
+}</code><br>
+Once you run the application, click on the TextBox, and press the F12
+key, the TextBox’s text will be capitalized but you’ll notice that the
+bubbling KeyDown event was never received (as is evident by the missing
+log message).&nbsp; Here’s what the application looks like when you run
+it and press the ‘S’ key and then F12:</p>
+<p><a href="http://joshsmithonwpf.files.wordpress.com/2007/02/routedcommandsandevents.png" title="Evidence of routed commands trapping routed&nbsp;events."><img src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/routedcommandsandevents.png" alt="Evidence of routed commands trapping routed&nbsp;events."></a></p>
+<p>Notice that the KeyDown event was not logged for the F12
+keystroke.&nbsp; This is because the mere act of executing the
+CapitalizeCommand effectively handled the KeyDown event, thus
+preventing it from bubbling any further.&nbsp; Of course, if you need
+to you can always subscribe to bubbling event and indicate that your
+handler should always be invoked, whether it was handled previously or
+not.&nbsp; You can run this line of code to achieve that:<br>
+<code><br>
+this.txtBox.AddHandler(<br>
+&nbsp; TextBox.KeyDownEvent,<br>
+&nbsp; new KeyEventHandler( txtBox_KeyDown ),<br>
+&nbsp; true );<br>
+</code></p>
+<p>Thanks for the inside scoop, Nick!</p>
+</div>	
+					
+				<p class="postmetadata alt">
+					<small>
+						This entry was posted on
+						Thursday, February 15th, 2007 at 9:51 pm						and is filed under <a href="http://wordpress.com/tag/praxis/" title="View all posts in Praxis" rel="category tag">Praxis</a>. 						You can follow any responses to this entry through the <a href="http://joshsmithonwpf.wordpress.com/2007/02/15/routed-commands-trap-bubbling-events/feed/">RSS 2.0</a> feed. 
+						
+												You can <a href="#respond">leave a response</a>, or <a href="http://joshsmithonwpf.wordpress.com/2007/02/15/routed-commands-trap-bubbling-events/trackback/" rel="trackback">trackback</a> from your own site.
+						
+												
+					</small>
+				</p>
+	
+			</div>
+		</div>
+		
+	
+<!-- You can start editing here. -->
+
+	<h3 id="comments">3 Responses to “Routed Commands Trap Bubbling&nbsp;Events”</h3>
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-47">
+						<cite><a href="http://rrelyea.spaces.live.com/" rel="external nofollow">Rob Relyea</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-47" title="">February 15th, 2007 at 11:42 pm</a> </small>
+
+			<p>Josh-<br>
+Congrats on your new gig!  I will be happy to give you the list of things I’d love to see the Times Reader start doing…<br>
+Love it already…but it can still get much better!<br>
+-Rob</p>
+
+		</li>
+
+	
+	
+		<li id="comment-49">
+			<img alt="" src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/joshsmith-32.jpg" class="avatar avatar-joshsmith avatar-32" height="32" width="32">			<cite><a href="http://joshsmithonwpf.wordpress.com/" rel="external nofollow">Josh Smith</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-49" title="">February 16th, 2007 at 12:17 am</a> </small>
+
+			<p>Rob,</p>
+<p>I’m excited to be working on the Times Reader. I’d love to read your
+list of feature requests for the app. You have my e-mail address, so
+please feel free to send your ideas my way whenever you want to.</p>
+<p>Thanks,<br>
+Josh</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-5358">
+						<cite>Kevz</cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-5358" title="">September 25th, 2007 at 7:48 pm</a> </small>
+
+			<p>Hi Josh,</p>
+<p>I tried to add a routed command to a button and also the Click event
+and i was able to get both of them executed … Is it that it works
+separately for separate controls ?</p>
+
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://joshsmithonwpf.wordpress.com/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input name="author" id="author" value="" size="22" tabindex="1" type="text">
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input name="email" id="email" value="" size="22" tabindex="2" type="text">
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input name="url" id="url" value="" size="22" tabindex="3" type="text">
+<label for="url"><small>Website</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100" rows="10" tabindex="4"></textarea></p>
+
+<p><input name="submit" id="submit" tabindex="5" value="Submit Comment" type="submit">
+<input name="comment_post_ID" value="20" type="hidden">
+</p>
+
+</form>
+
+
+	
+		
+	</div>
+	
+	
+
+	<div id="sidebar">
+		<ul>
+		
+
+
+
+
+			<li>
+						</li>
+		<li id="text-1" class="widget widget_text">			<h2 class="widgettitle">RSS Feed</h2>
+			<div class="textwidget"><a href="http://joshsmithonwpf.wordpress.com/feed"><img src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/u14.png"></a> Feed the hungry with WPF</div>
+		</li>
+		<li id="text-5" class="widget widget_text">			<h2 class="widgettitle">MY MVP PROFILE</h2>
+			<div class="textwidget"><p align="center"><a href="http://mvp.support.microsoft.com/default.aspx"><img src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/mvp_fullcolor_forscreen_small.png"></a></p>
+<br>
+My Microsoft MVP profile can be viewed <a href="https://mvp.support.microsoft.com/profile=5F7EC527-FEBC-4A5D-A11F-EEF73467D3D5">here</a>.</div>
+		</li>
+		<li id="text-3" class="widget widget_text">			<h2 class="widgettitle">Sponsor</h2>
+			<div class="textwidget"><p>
+    <span style="font-size: 8pt;">Infragistics <b>NetAdvantage for WPF</b> is the world's
+        first business-grade developer components for WPF, including datagrids, carousels,
+        and editors, with built-in visual themes including Windows Vista Aero and Office
+        2007.&nbsp; Take advantage of our pure WPF platform features; including exciting
+        high resolution graphics, rich styling and animation capabilities, and integrated
+        UI virtualization technology. </span><b><span style="font-size: 8pt; color: black;">Everything
+            is all NEW!!</span></b><span style="font-size: 8pt; color: black;"> This release gives
+                developers the first opportunity to experience the next generation in NetAdvantage
+                controls, designed and developed specifically for the WPF platform. </span>
+    <span style="font-size: 8pt;"></span>
+</p>
+<p>
+    <span style="font-size: 8pt; color: rgb(31, 73, 125);"><a href="http://www.infragistics.com/adcounter/webads.aspx?adid=JSWPFBLOG&amp;utm_source=WPFBlog&amp;utm_date=Apr07&amp;utm_type=WPF&amp;utm_size=textandlogo">
+        TRY IT NOW!</a></span></p></div>
+		</li>
+		<li id="search" class="widget widget_search">			<form id="searchform" method="get" action="http://joshsmithonwpf.wordpress.com">
+			<div>
+			<input name="s" id="s" size="15" type="text"><br>
+			<input value="Search" type="submit">
+			</div>
+			</form>
+		</li>
+		<li id="text-4" class="widget widget_text">			<h2 class="widgettitle">The WPF Challenge Winners</h2>
+			<div class="textwidget"><a href="http://joshsmithonwpf.wordpress.com/2007/03/22/the-wpf-challenge-winners/">Check out who won the grandest competition in human history...</a></div>
+		</li>
+		<li id="recent-posts" class="widget widget_recent_entries">			<h2 class="widgettitle">Recent Harangues</h2>
+			<ul>
+						<li><a href="http://joshsmithonwpf.wordpress.com/2007/10/29/walking-the-visual-tree-in-f/">Walking the visual tree in&nbsp;F# </a></li>
+						<li><a href="http://joshsmithonwpf.wordpress.com/2007/10/28/karl-shifflett-rocks/">Karl Shifflett&nbsp;Rocks </a></li>
+						<li><a href="http://joshsmithonwpf.wordpress.com/2007/10/26/the-infragistics-tangerine-exemplar/">The Infragistics Tangerine&nbsp;Exemplar </a></li>
+						<li><a href="http://joshsmithonwpf.wordpress.com/2007/10/25/logging-routed-commands-in-f/">Logging Routed Commands in&nbsp;F# </a></li>
+						<li><a href="http://joshsmithonwpf.wordpress.com/2007/10/25/logging-routed-commands/">Logging Routed&nbsp;Commands </a></li>
+						</ul>
+		</li><li id="categories-1" class="widget widget_categories"><h2 class="widgettitle">Divide and Conquer</h2>
+		<ul>
+			<li class="cat-item cat-item-217"><a href="http://joshsmithonwpf.wordpress.com/category/announcements/" title="View all posts filed under Announcements">Announcements</a> (37)
+</li>
+	<li class="cat-item cat-item-1002883"><a href="http://joshsmithonwpf.wordpress.com/category/data-grids/" title="View all posts filed under Data Grids">Data Grids</a> (2)
+</li>
+	<li class="cat-item cat-item-70886"><a href="http://joshsmithonwpf.wordpress.com/category/debugging/" title="View all posts filed under Debugging">Debugging</a> (5)
+</li>
+	<li class="cat-item cat-item-6012"><a href="http://joshsmithonwpf.wordpress.com/category/f/" title="View all posts filed under F#">F#</a> (3)
+</li>
+	<li class="cat-item cat-item-5264"><a href="http://joshsmithonwpf.wordpress.com/category/general-info/" title="View all posts filed under General Info">General Info</a> (15)
+</li>
+	<li class="cat-item cat-item-731906"><a href="http://joshsmithonwpf.wordpress.com/category/gotchas/" title="View all posts filed under Gotchas">Gotchas</a> (1)
+</li>
+	<li class="cat-item cat-item-17966"><a href="http://joshsmithonwpf.wordpress.com/category/intermezzo/" title="View all posts filed under Intermezzo">Intermezzo</a> (7)
+</li>
+	<li class="cat-item cat-item-116238"><a href="http://joshsmithonwpf.wordpress.com/category/orcas/" title="View all posts filed under Orcas">Orcas</a> (1)
+</li>
+	<li class="cat-item cat-item-30585"><a href="http://joshsmithonwpf.wordpress.com/category/praxis/" title="View all posts filed under Praxis">Praxis</a> (43)
+</li>
+	<li class="cat-item cat-item-1548"><a href="http://joshsmithonwpf.wordpress.com/category/public-speaking/" title="View all posts filed under Public Speaking">Public Speaking</a> (7)
+</li>
+	<li class="cat-item cat-item-287"><a href="http://joshsmithonwpf.wordpress.com/category/rant/" title="View all posts filed under Rant">Rant</a> (2)
+</li>
+	<li class="cat-item cat-item-66841"><a href="http://joshsmithonwpf.wordpress.com/category/reading-material/" title="View all posts filed under Reading Material">Reading Material</a> (26)
+</li>
+	<li class="cat-item cat-item-984139"><a href="http://joshsmithonwpf.wordpress.com/category/silverlight/" title="View all posts filed under Silverlight">Silverlight</a> (1)
+</li>
+	<li class="cat-item cat-item-96136"><a href="http://joshsmithonwpf.wordpress.com/category/snooping/" title="View all posts filed under Snooping">Snooping</a> (3)
+</li>
+	<li class="cat-item cat-item-714521"><a href="http://joshsmithonwpf.wordpress.com/category/the-wpf-challenge/" title="View all posts filed under The WPF Challenge">The WPF Challenge</a> (13)
+</li>
+	<li class="cat-item cat-item-893962"><a href="http://joshsmithonwpf.wordpress.com/category/theoria/" title="View all posts filed under Theoria">Theoria</a> (13)
+</li>
+	<li class="cat-item cat-item-3882"><a href="http://joshsmithonwpf.wordpress.com/category/unit-testing/" title="View all posts filed under Unit Testing">Unit Testing</a> (2)
+</li>
+	<li class="cat-item cat-item-772681"><a href="http://joshsmithonwpf.wordpress.com/category/wpfjoshsmith/" title="View all posts filed under WPF.JoshSmith">WPF.JoshSmith</a> (1)
+</li>
+	<li class="cat-item cat-item-814915"><a href="http://joshsmithonwpf.wordpress.com/category/xaml-madness/" title="View all posts filed under XAML Madness">XAML Madness</a> (11)
+</li>
+		</ul>
+</li>
+<li id="archives" class="widget widget_archives"><h2 class="widgettitle">Blog Log</h2>
+		<ul>
+			<li><a href="http://joshsmithonwpf.wordpress.com/2007/10/" title="October 2007">October 2007</a>&nbsp;(11)</li>
+	<li><a href="http://joshsmithonwpf.wordpress.com/2007/09/" title="September 2007">September 2007</a>&nbsp;(5)</li>
+	<li><a href="http://joshsmithonwpf.wordpress.com/2007/08/" title="August 2007">August 2007</a>&nbsp;(9)</li>
+	<li><a href="http://joshsmithonwpf.wordpress.com/2007/07/" title="July 2007">July 2007</a>&nbsp;(10)</li>
+	<li><a href="http://joshsmithonwpf.wordpress.com/2007/06/" title="June 2007">June 2007</a>&nbsp;(14)</li>
+	<li><a href="http://joshsmithonwpf.wordpress.com/2007/05/" title="May 2007">May 2007</a>&nbsp;(15)</li>
+	<li><a href="http://joshsmithonwpf.wordpress.com/2007/04/" title="April 2007">April 2007</a>&nbsp;(15)</li>
+	<li><a href="http://joshsmithonwpf.wordpress.com/2007/03/" title="March 2007">March 2007</a>&nbsp;(14)</li>
+	<li><a href="http://joshsmithonwpf.wordpress.com/2007/02/" title="February 2007">February 2007</a>&nbsp;(19)</li>
+		</ul>
+</li>
+		<li id="text-2" class="widget widget_text">			<h2 class="widgettitle">The WPF.JoshSmith Library</h2>
+			<div class="textwidget"><p align="center"><a href="http://www.codeproject.com/useritems/WPFJoshSmith.asp"><img src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/cpbob.PNG"></a> </p>
+<p>
+Download my free WPF library from the CodeProject.</p></div>
+		</li>
+<li id="links" class="widget widget_links"><h2 class="widgettitle">Blogroll</h2>
+
+	<ul>
+<li><a href="http://www.beacosta.com/" title="Great practical advice on databinding in WPF.">Beatriz Costa</a></li>
+<li><a href="http://blogs.msdn.com/dancre/archive/2006/10/11/datamodel-view-viewmodel-pattern-series.aspx" title="A great series of blog posts about a design pattern tailored to WPF, by Dan Crevier.">DM-V-VM Pattern Series</a></li>
+<li><a href="http://blogs.msdn.com/mikehillberg/default.aspx" title="Insights from a member of the WPF team at Microsoft.">Mike Hillberg on WPF</a></li>
+<li><a href="http://www.nickthuesen.com/" title="The rants and raves of The WPF Hickster.">Nick Thuesen</a></li>
+<li><a href="http://pavanpodila.spaces.live.com/blog/" title="Interesting and useful information about WPF.">Pavan Podila</a></li>
+<li><a href="http://rrelyea.spaces.live.com/" title="Words from a WPF Program Manager at Microsoft.">Rob Relyea</a></li>
+<li><a href="http://www.thewpfblog.com/" title="Lee Brimelow’s excellent blog about WPF, with a focus on graphical design.">The WPF Blog</a></li>
+<li><a href="http://blogs.msdn.com/wpfsdk/" title="Great content by the folks who write the WPF docs.">The WPF SDK Blog</a></li>
+<li><a href="http://blogs.msdn.com/tims/articles/475132.aspx" title="A comprehensive list of WPF blogs.">Tim Sneath’s WPF Blog Roll</a></li>
+
+	</ul>
+</li>
+
+		<li id="top-posts" class="widget widget_stats_topposts">			<h2 class="widgettitle">The posts people really like</h2>
+			<ul><li><a href="http://joshsmithonwpf.wordpress.com/a-guided-tour-of-wpf/">A Guided Tour of WPF</a></li><li><a href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/">Binding a TreeView to a DataSet</a></li><li><a href="http://joshsmithonwpf.wordpress.com/2007/10/28/karl-shifflett-rocks/">Karl Shifflett Rocks</a></li><li><a href="http://joshsmithonwpf.wordpress.com/2007/10/26/the-infragistics-tangerine-exemplar/">The Infragistics Tangerine Exemplar</a></li><li><a href="http://joshsmithonwpf.wordpress.com/presentation-app/">Presentation App</a></li><li><a href="http://joshsmithonwpf.wordpress.com/2007/10/29/walking-the-visual-tree-in-f/">Walking the visual tree in F#</a></li><li><a href="http://joshsmithonwpf.wordpress.com/2007/09/05/wpf-vs-windows-forms/">WPF vs. Windows Forms</a></li><li><a href="http://joshsmithonwpf.wordpress.com/xbap-submissions/">WPF Challenge Submissions</a></li><li><a href="http://joshsmithonwpf.wordpress.com/2007/03/29/tips-on-how-to-debug-and-learn-about-wpf/">Tips on how to debug and learn about WPF</a></li><li><a href="http://joshsmithonwpf.wordpress.com/2007/07/30/customizing-the-selected-item-in-a-listbox/">Customizing the selected item in a ListBox</a></li></ul>		</li>
+		</ul>
+	</div>
+	
+	
+
+
+<div id="footer">
+	<p>
+	Theme: Contempt by <a href="http://www.vault9.net/" rel="designer">Vault9</a>.<br>
+	<a href="http://wordpress.com/" rel="generator">Blog at WordPress.com</a>.		
+	</p>
+</div>
+
+</div>
+
+		<script type="text/javascript" src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/quant.js"></script>
+<script type="text/javascript">_qmeta="qc:adt=0;bti=Josh+Smith+on+WPF;lan=en;dat=20070216;pti=Routed+Commands+Trap+Bubbling+Events;own=joshsmith";_qacct="p-18-mFEk4J448M";quantserve();</script>
+<noscript><p><img src="http://pixel.quantserve.com/pixel/p-18-mFEk4J448M.gif" style="display: none" height="1" width="1" alt="" /></p></noscript>
+<div><img src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/trans.gif" alt="" height="1" width="1"></div>
+<script src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/w.js" type="text/javascript"></script>
+<script type="text/javascript">
+st_go({blog:'737883',v:'wpcom',post:'20',subd:'joshsmithonwpf'});
+ex_go({x_theme:'contempt',x_lang:'en',x_dc:'sat',x_adt:'0',x_public:'1',x_mapped:'0',x_loggedin:'0',x_noads:'firefox',x_ads:'no',x_pagetype:'permalink',x_postage:'30to365'});
+addLoadEvent(function(){linktracker_init(737883,20);});
+</script><img id="wpstats" src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/g_002.gif" alt=""><img id="wpstats2" src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/g.gif" alt="" style="display: none;">
+
+<!-- SyntaxHighlighter Stuff -->
+<script type="text/javascript" src="Routed%20Commands%20Trap%20Bubbling%20Events%20%AB%20Josh%20Smith%20on%20WPF_files/shCore.js"></script>
+<script type="text/javascript">
+	dp.SyntaxHighlighter.ClipboardSwf = 'http://s.wordpress.com/wp-content/plugins/highlight/clipboard.swf';
+	dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+
+</body></html>

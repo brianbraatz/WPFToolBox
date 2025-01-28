@@ -1,0 +1,609 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0034)http://www.beacosta.com/blog/?p=31 -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Beatriz Costa » How do I filter items from a collection?</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><!-- Editable Meta Tags -->
+<META content="" name=description>
+<META content="" name=keywords>
+<META content="Sreejith - GFXedit.com" name=author>
+<META content="Your Name" name=copyright>
+<META content="WordPress 2.2.2" name=generator>
+<META content=index,follow name=robots><!-- Meta Tags End--><!-- Style Sheet -->
+<STYLE type=text/css media=screen>@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</STYLE>
+<!-- Style Sheet End --><!-- Includes -->
+<SCRIPT src="" type=text/javascript></SCRIPT>
+
+<SCRIPT src="" type=text/javascript></SCRIPT>
+<!-- End Includes --><!-- Feed and Ping URLS--><LINK title="RSS 2.0" 
+href="http://www.beacosta.com/blog/?feed=rss2" type=application/rss+xml 
+rel=alternate><LINK title="RSS .92" 
+href="http://www.beacosta.com/blog/?feed=rss" type=text/xml rel=alternate><LINK 
+title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom" 
+type=application/atom+xml rel=alternate><LINK 
+href="http://www.beacosta.com/blog/xmlrpc.php" rel=pingback><!--?php wp_get_archives('type=monthly&format=link'); ?--><LINK 
+title=RSD href="http://www.beacosta.com/blog/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</SCRIPT>
+
+<STYLE type=text/css>.comment {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 8px; PADDING-BOTTOM: 4px; MARGIN: 6px 3px 3px; PADDING-TOP: 4px; POSITION: relative; BACKGROUND-COLOR: #fff
+}
+.odd {
+	BACKGROUND-COLOR: #f8f8f8
+}
+.comment DIV {
+	POSITION: relative
+}
+.comment .comment IMG {
+	MARGIN: 0px
+}
+.comment .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png); OVERFLOW: hidden; WIDTH: 13px; HEIGHT: 13px
+}
+.collapsed .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png)
+}
+.comment .reply {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 0px; FONT-SIZE: 80%; PADDING-BOTTOM: 6px; PADDING-TOP: 0px; TEXT-ALIGN: right
+}
+.comment {
+	BORDER-RIGHT: #ddd 1px solid; BORDER-TOP: #ddd 1px solid; MARGIN-TOP: 10px; BORDER-LEFT: #ddd 1px solid; BORDER-BOTTOM: #ddd 1px solid
+}
+INPUT#subscribe {
+	WIDTH: auto
+}
+.comment .body .content {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; OVERFLOW: auto; WIDTH: 100%; PADDING-TOP: 0px
+}
+.comment .title abbr {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.collapsed .body {
+	DISPLAY: none
+}
+.collapsed .comment {
+	DISPLAY: none
+}
+#commentform TEXTAREA {
+	WIDTH: 97%
+}
+</STYLE>
+<!-- End Feed and Ping URLS--></HEAD>
+<BODY>
+<DIV id=container>
+<DIV id=banner>
+<H1><A title="Beatriz Costa" accessKey=1 
+href="http://www.beacosta.com/blog">Beatriz Costa</A></H1>
+<H2 title="WPF Data Binding">WPF Data Binding</H2></DIV>
+<DIV id=center>
+<DIV class=content>
+<DIV class=post>
+<DIV class=date>August 6, 2006</DIV>
+<H2 id=post-31><A id=postTitle title="How do I filter items from a collection?" 
+href="http://www.beacosta.com/blog/?p=31" rel=bookmark>How do I filter items 
+from a collection?</A></H2>
+<P><SPAN id=text>Today I will show you two ways of using the filter feature of 
+data binding.</SPAN></P>
+<P><SPAN id=text>There are two ObservableCollections of items in this sample. 
+The first one contains a list of GreekGods, and the ListBox that displays it 
+shows their Roman names. The second one contains a list of GreekHeroes. I will 
+use these two collections to show two different ways of filtering items. 
+</SPAN></P>
+<P><SPAN id=text>I decided to filter out all items that start with “A” from the 
+first collection. I started out by adding a new instance of the GreekGods 
+collection to the resources and bound a ListBox’s ItemsSource to that 
+collection:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGods 
+x:Key=”src1″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&gt;Items 
+that start with “A” are filtered 
+out:&lt;/Label&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding 
+Source={StaticResource src1}}” 
+DisplayMemberPath=”RomanName”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P>
+<P><SPAN id=text>In the constructor for the Window, I added code after 
+initialization to get the default view for this collection. Remember that we 
+never bind directly to the collection; there is always a view on top of that 
+collection that we bind to. In this case I am not creating that view explicitly 
+with the help of a CollectionViewSource, so a default view is created behind the 
+scenes. I can get to that default view by using the GetDefaultView static method 
+of CollectionViewSource:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;public 
+Window1()<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitializeComponent();<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;object 
+src1 = 
+this.Resources[”src1″];<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ICollectionView 
+collectionView = 
+CollectionViewSource.GetDefaultView(src1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collectionView.Filter 
+= new 
+Predicate&lt;object&gt;(FilterOutA);<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Once I have a handle to the view, I am able to set its Filter 
+property to the Predicate&lt;object&gt; callback function below:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public bool FilterOutA(object 
+item)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GreekGod 
+gg = item as GreekGod;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+((gg == null) || 
+gg.RomanName.StartsWith(”A”))<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+false;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+true;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>This method is called once for each item. If the item is a 
+GreekGod whose Roman name begins with “A”, it will return false, and that item 
+will be filtered out. Otherwise, it will return true and the item will be 
+displayed.</SPAN></P>
+<P><SPAN id=text>Similarly, I decided to filter out all items that start with B 
+from the second collection. However, this time I am using CollectionViewSource 
+explicitly. I set the Source property of the CollectionViewSource to the 
+collection and bind the ListBox’s ItemsSource to the 
+CollectionViewSource:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekHeroes 
+x:Key=”src2″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource 
+Source=”{StaticResource src2}” x:Key=”cvs” 
+Filter=”FilterOutB”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&gt;Items 
+that start with “B” are filtered 
+out:&lt;/Label&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding 
+Source={StaticResource cvs}}” DisplayMemberPath=”HeroName”/&gt;</SPAN></P>
+<P><SPAN id=text>We came up with the CollectionViewSource class to serve two 
+purposes: 1) To allow us to do view related operations in XAML, such as 
+grouping, sorting, filtering or creating a custom view of a certain type and 2) 
+To serve as a container for all the view methods, such as GetDefaultView or 
+IsDefaultView. Before we came up with this class these methods were in the 
+Binding class, which cluttered it with unrelated methods and made it hard for 
+users to find them.</SPAN></P>
+<P><SPAN id=text>I’ve been asked several times about the difference between 
+CollectionView and CollectionViewSource. The difference is simple: 
+CollectionViewSource is not a view, but a class that contains handles to the 
+source and the corresponding view and is used for the purposes I described 
+above. CollectionView is an actual view on top of a collection, which contains 
+information about the current item, filtering, sorting and grouping.</SPAN></P>
+<P><SPAN id=text>Unfortunately you still need code to specify which items are 
+filtered in or out:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;private void FilterOutB(object sender, 
+FilterEventArgs 
+e)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GreekHero 
+gh = e.Item as GreekHero;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+((gh == null) || 
+gh.HeroName.StartsWith(”B”))<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.Accepted 
+= 
+false;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.Accepted 
+= 
+true;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Note that the Filter property in CollectionViewSource is not a 
+delegate like the one in CollectionView, but an event handler. We made this 
+decision so that you could specify the name of the filter method in XAML. At 
+this point, there is no support to add the name of the callback method of a 
+delegate in XAML, but this support exists for events. We realize that the two 
+ways of filtering are a little inconsistent, but this design brings us closer to 
+our goal of allowing the user to do as much as possible in XAML with 
+CollectionViewSource.</SPAN></P>
+<P><SPAN id=text>The filter event handler has a FilterEventArgs argument, which 
+has two interesting properties: the Item property that provides the item on 
+which we need to make the filter decision, and the Accepted property where we 
+set the result of that decision. If we set Accepted to false, the item will be 
+filtered out, and if we set it to true, the item will be displayed.</SPAN></P>
+<P><SPAN id=text>Here is a screenshot of the completed sample:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » How do I filter items from a collection_files/28FilterSample.png" 
+border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/28FilterSample.zip">Here</A> you can find the 
+VS project with this sample code. This works with July CTP WPF bits. </SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in Sorting, filtering, grouping" 
+href="http://www.beacosta.com/blog/?cat=13" rel=category>Sorting, filtering, 
+grouping</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+</P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=31"
+    dc:identifier="http://www.beacosta.com/blog/?p=31"
+    dc:title="How do I filter items from a collection?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=31" />
+</rdf:RDF>	--><!-- You can start editing here. -->
+<P><A href="http://www.beacosta.com/blog/?feed=rss2&amp;p=31"><ABBR 
+title="Really Simple Syndication">RSS</ABBR> feed</A> | <A 
+href="http://www.beacosta.com/blog/wp-trackback.php?p=31">Trackback <ACRONYM 
+title='\"Uniform' Identifier\? Resource>URI</ACRONYM></A> </P>
+<H2 id=comments>7 Comments <A title="Leave a comment" 
+href="http://www.beacosta.com/blog/?p=31#postcomment">»</A> </H2>
+<DIV class=commentlist>
+<DIV class=comment id=div-comment-114 style="BACKGROUND: #404040"><A 
+id=comment-114 name=comment-114></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-114")' 
+src="Beatriz Costa » How do I filter items from a collection_files/briansthreadedcomments.png"> 
+<CITE>Comment by paul shmakov<A 
+href="http://www.beacosta.com/blog/?p=31#comment-114"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-08-07 13:18:21 </DIV>
+<DIV class=content>
+<P>Hi Beatriz,</P>
+<P>Thanks a lot for your articles! Awesome work. I’m looking forward for new 
+posts.</P>
+<P>The only problem - looks like your RSS feed is broken - it says that the most 
+recent post is “How do I show the Status of a Binding?” Apr 4 2006.</P>
+<P>paul</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-114", 114, true); return false;' 
+href="http://www.beacosta.com/blog/?p=31#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class="comment odd" id=div-comment-115 style="BACKGROUND: #404040"><A 
+id=comment-115 name=comment-115></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-115")' 
+src="Beatriz Costa » How do I filter items from a collection_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=31#comment-115"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-08-08 10:15:35 </DIV>
+<DIV class=content>
+<P>Paul,</P>
+<P>Thanks a lot for letting me know, I really appreciate it. I will investigate 
+what is going on with my feed.</P>
+<P>Bea</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-115", 115, true); return false;' 
+href="http://www.beacosta.com/blog/?p=31#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class=comment id=div-comment-116 style="BACKGROUND: #404040"><A 
+id=comment-116 name=comment-116></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-116")' 
+src="Beatriz Costa » How do I filter items from a collection_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=31#comment-116"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-08-10 16:45:17 </DIV>
+<DIV class=content>
+<P>Hi Paul,</P>
+<P>I fixed the problem with the feed. Let me know if your RSS reader picked it 
+up.</P>
+<P>Thanks a lot for letting me know of this issue.</P>
+<P>Bea</P></DIV><SMALL>(Comments wont nest below this level)</SMALL> </DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-116", 116, false); return false;' 
+href="http://www.beacosta.com/blog/?p=31#">Reply here</A> </DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV>
+<DIV class=comment id=div-comment-117 style="BACKGROUND: #404040"><A 
+id=comment-117 name=comment-117></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-117")' 
+src="Beatriz Costa » How do I filter items from a collection_files/briansthreadedcomments.png"> 
+<CITE>Comment by miksu<A 
+href="http://www.beacosta.com/blog/?p=31#comment-117"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-08-11 14:22:57 </DIV>
+<DIV class=content>
+<P>Great examples. My knowledge is more in COM and XSL and now that it looks 
+like WPF doesn’t support pluggable protocols (COM objects through URLMon), that 
+leaves me only XSL. Is it possible to run some client side xslt to binded XML so 
+that binded elements are automatically updated?</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-117", 117, true); return false;' 
+href="http://www.beacosta.com/blog/?p=31#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class="comment odd" id=div-comment-118 style="BACKGROUND: #404040"><A 
+id=comment-118 name=comment-118></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-118")' 
+src="Beatriz Costa » How do I filter items from a collection_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=31#comment-118"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-08-12 13:32:36 </DIV>
+<DIV class=content>
+<P>Hi Miksu,</P>
+<P>We don’t have any special support for XSLT. However, any change you make to a 
+source XML document will be propagated to the target of the bindings. Did this 
+answer your question?</P>
+<P>Bea</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-118", 118, true); return false;' 
+href="http://www.beacosta.com/blog/?p=31#">Reply to this comment</A> 
+</DIV></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV>
+<DIV class=comment id=div-comment-119 style="BACKGROUND: #404040"><A 
+id=comment-119 name=comment-119></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-119")' 
+src="Beatriz Costa » How do I filter items from a collection_files/briansthreadedcomments.png"> 
+<CITE>Comment by eiro<A 
+href="http://www.beacosta.com/blog/?p=31#comment-119"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-08-13 17:18:07 </DIV>
+<DIV class=content>
+<P>Hi!</P>
+<P>i want to filter a collection depending on the Text of a Textbox, but the 
+only problem is:</P>
+<P>how can i force the CollectionView to refresh the filtering process ??</P>
+<P>eiro</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-119", 119, true); return false;' 
+href="http://www.beacosta.com/blog/?p=31#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class="comment odd" id=div-comment-120 style="BACKGROUND: #404040"><A 
+id=comment-120 name=comment-120></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-120")' 
+src="Beatriz Costa » How do I filter items from a collection_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=31#comment-120"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-08-14 23:38:55 </DIV>
+<DIV class=content>
+<P>Hi Eiro,</P>
+<P>There is a Refresh method on CollectionView that allows you to do what you’re 
+looking for.</P>
+<P>Thanks!<BR>Bea</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-120", 120, true); return false;' 
+href="http://www.beacosta.com/blog/?p=31#">Reply to this comment</A> 
+</DIV></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV>
+<DIV class=comment id=addcomment style="BACKGROUND: #404040"><A 
+id=addcommentanchor name=addcommentanchor></A>
+<FORM id=commentform action=http://www.beacosta.com/blog/wp-comments-post.php 
+method=post>
+<DIV class=add>
+<DIV id=reroot style="DISPLAY: none"><SMALL><A onclick="reRoot(); return false;" 
+href="http://www.beacosta.com/blog/?p=31#">Click here to cancel "reply". 
+</A></SMALL></DIV><SMALL>Name (required) </SMALL>
+<DIV><INPUT class=textarea id=author tabIndex=1 size=28 name=author> 
+</DIV><SMALL>E-mail (required - never shown publicly) </SMALL>
+<DIV><INPUT id=email tabIndex=2 size=28 name=email> </DIV><SMALL><ACRONYM 
+title="Uniform Resource Identifier">URI</ACRONYM> </SMALL>
+<DIV><INPUT id=url tabIndex=3 size=28 name=url> </DIV><SMALL>Your Comment (<A 
+onclick="changeCommentSize(-80); return false;" 
+href="http://www.beacosta.com/blog/?p=31#">smaller size</A> | <A 
+onclick="changeCommentSize(80); return false;" 
+href="http://www.beacosta.com/blog/?p=31#">larger size</A>) </SMALL>
+<DIV style="WIDTH: 100%"><TEXTAREA id=comment tabIndex=4 name=comment rows=14 cols=60></TEXTAREA> 
+</DIV><SMALL>You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt; 
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;code&gt; 
+&lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your comment. </SMALL>
+<DIV><INPUT type=hidden value=31 name=comment_post_ID> <INPUT type=hidden 
+value=/blog/?p=31 name=redirect_to> <INPUT id=addcommentbutton onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" tabIndex=5 type=button value="Add comment" name=addcommentbutton> 
+</DIV></DIV><INPUT id=comment_reply_ID type=hidden value=0 
+name=comment_reply_ID></FORM></DIV>
+<P>
+<DIV align=center></DIV>
+<P></P></DIV></DIV>
+<DIV id=right>
+<DIV class=sidebar><!-- Meta -->
+<H2>Meta:</H2>
+<UL class=noli>
+  <LI><A title="Syndicate this site using RSS" 
+  href="http://feeds.feedburner.com/BeatrizCosta"><ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> 
+  <LI><A title="The latest comments to all posts in RSS" 
+  href="http://feeds.feedburner.com/CommentsForBeatrizCosta">Comments <ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> </LI></UL><!-- Search -->
+<H2>Search</H2><BR>
+<FORM id=searchform action="" method=get><INPUT id=s size=15 name=s> <INPUT type=submit value=Search name=submit> </FORM><!-- Categories -->
+<H2>Categories</H2>
+<UL class=menu>
+  <LI><A title="View all posts filed under General" 
+  href="http://www.beacosta.com/blog/?cat=3">General</A> 
+  <LI><A title="View all posts filed under WPF Data Binding" 
+  href="http://www.beacosta.com/blog/?cat=2">WPF Data Binding</A> 
+  <UL class=children>
+    <LI><A title="View all posts filed under Binding to ADO.NET" 
+    href="http://www.beacosta.com/blog/?cat=12">Binding to ADO.NET</A> 
+    <LI><A title="View all posts filed under ListBox" 
+    href="http://www.beacosta.com/blog/?cat=14">ListBox</A> 
+    <LI><A title="View all posts filed under ListView" 
+    href="http://www.beacosta.com/blog/?cat=9">ListView</A> 
+    <LI><A title="View all posts filed under Master-detail" 
+    href="http://www.beacosta.com/blog/?cat=10">Master-detail</A> 
+    <LI><A title="View all posts filed under Sorting, filtering, grouping" 
+    href="http://www.beacosta.com/blog/?cat=13">Sorting, filtering, grouping</A> 
+
+    <LI><A title="View all posts filed under Styles and Templates" 
+    href="http://www.beacosta.com/blog/?cat=11">Styles and Templates</A> 
+    <LI><A title="View all posts filed under TreeView" 
+    href="http://www.beacosta.com/blog/?cat=7">TreeView</A> </LI></UL></LI></UL><!-- Archives -->
+<H2>Archives</H2>
+<UL>
+  <LI><A title="September 2007" 
+  href="http://www.beacosta.com/blog/?m=200709">September 2007</A> 
+  <LI><A title="August 2007" 
+  href="http://www.beacosta.com/blog/?m=200708">August 2007</A> 
+  <LI><A title="May 2007" href="http://www.beacosta.com/blog/?m=200705">May 
+  2007</A> 
+  <LI><A title="April 2007" href="http://www.beacosta.com/blog/?m=200704">April 
+  2007</A> 
+  <LI><A title="January 2007" 
+  href="http://www.beacosta.com/blog/?m=200701">January 2007</A> 
+  <LI><A title="November 2006" 
+  href="http://www.beacosta.com/blog/?m=200611">November 2006</A> 
+  <LI><A title="October 2006" 
+  href="http://www.beacosta.com/blog/?m=200610">October 2006</A> 
+  <LI><A title="September 2006" 
+  href="http://www.beacosta.com/blog/?m=200609">September 2006</A> 
+  <LI><A title="August 2006" 
+  href="http://www.beacosta.com/blog/?m=200608">August 2006</A> 
+  <LI><A title="July 2006" href="http://www.beacosta.com/blog/?m=200607">July 
+  2006</A> 
+  <LI><A title="June 2006" href="http://www.beacosta.com/blog/?m=200606">June 
+  2006</A> 
+  <LI><A title="May 2006" href="http://www.beacosta.com/blog/?m=200605">May 
+  2006</A> 
+  <LI><A title="April 2006" href="http://www.beacosta.com/blog/?m=200604">April 
+  2006</A> 
+  <LI><A title="March 2006" href="http://www.beacosta.com/blog/?m=200603">March 
+  2006</A> 
+  <LI><A title="February 2006" 
+  href="http://www.beacosta.com/blog/?m=200602">February 2006</A> 
+  <LI><A title="January 2006" 
+  href="http://www.beacosta.com/blog/?m=200601">January 2006</A> 
+  <LI><A title="December 2005" 
+  href="http://www.beacosta.com/blog/?m=200512">December 2005</A> 
+  <LI><A title="November 2005" 
+  href="http://www.beacosta.com/blog/?m=200511">November 2005</A> 
+  <LI><A title="October 2005" 
+  href="http://www.beacosta.com/blog/?m=200510">October 2005</A> 
+  <LI><A title="September 2005" 
+  href="http://www.beacosta.com/blog/?m=200509">September 2005</A> 
+  <LI><A title="August 2005" 
+  href="http://www.beacosta.com/blog/?m=200508">August 2005</A> </LI></UL></DIV>
+<DIV id=footer>
+<DIV class=copyright><SMALL><SPAN class=copy>Copyright © 2007 <STRONG><A 
+title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</A> 
+</STRONG></SPAN><BR><BR></SMALL></DIV></DIV></DIV></DIV></BODY></HTML>

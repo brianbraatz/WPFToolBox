@@ -1,0 +1,1384 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0059)http://blogs.msdn.com/dancre/archive/2006/08/25/724938.aspx -->
+<HTML><HEAD><TITLE>Dan Crevier's Blog : DM-V-VM part 6: Revisiting the data model</TITLE>
+<META content=DM-V-VM name=keywords>
+<META 
+content="Sorry it's taking me so long to get the posts out. The series turned out to be a little longer than I anticipated :-) I got a lot of good feedback on the Data Model stuff. First off, I want to mention layering. The DataModel typically is a layer on top" 
+name=description>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+href="http://blogs.msdn.com/dancre/pingback.aspx" rel=pingback><LINK media=print 
+href="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/print.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/Common.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/Blog.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/common_print.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/blog_print.css" 
+type=text/css rel=stylesheet><LINK href="/favicon.ico" type=image/ico 
+rel="shortcut icon"><LINK title="Dan Crevier's Blog (RSS 2.0)" 
+href="http://blogs.msdn.com/dancre/rss.xml" type=application/rss+xml 
+rel=alternate><LINK title="Dan Crevier's Blog (Atom 1.0)" 
+href="http://blogs.msdn.com/dancre/atom.xml" type=application/atom+xml 
+rel=alternate><LINK 
+title="DM-V-VM part 6: Revisiting the data model Comment RSS (RSS 2.0)" 
+href="http://blogs.msdn.com/dancre/commentrss.aspx?PostID=724938" 
+type=application/rss+xml rel=alternate>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<SCRIPT 
+src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/global.js" 
+type=text/javascript></SCRIPT>
+
+<STYLE type=text/css>BODY {
+	FONT-SIZE: 84%
+}
+</STYLE>
+
+<SCRIPT language=JavaScript>var doImage=doImage;var TType=TType;
+function mhHover(tbl,idx,cls){var t,d;if(document.getElementById)t=document.getElementById(tbl);else t=document.all(tbl);if(t==null)return;if(t.getElementsByTagName)d=t.getElementsByTagName("TD");else d=t.all.tags("TD");if(d==null)return;if(d.length<=idx)return;d[idx].className=cls;}
+
+</SCRIPT>
+
+<SCRIPT language=javascript 
+src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/minmax.js" 
+type=text/javascript></SCRIPT>
+</HEAD>
+<BODY>
+<FORM id=aspnetForm name=aspnetForm 
+action=/dancre/archive/2006/08/25/724938.aspx method=post>
+<DIV><INPUT id=__VIEWSTATE type=hidden 
+value=/wEPDwUKLTMyNjg0MDc1MWRk4kqgif0qb+BsXqBU64DM+rPSfXA= name=__VIEWSTATE> 
+</DIV>
+<SCRIPT language=javascript 
+src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/Telligent_Modal.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT language=javascript type=text/javascript>
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['CommonModal'],['CommonModalTitle'],['CommonModalClose'],['CommonModalContent'],['CommonModalFooter'],['CommonModalResize'],['CommonModalMask'],100);
+// ]]>
+</SCRIPT>
+
+<SCRIPT 
+src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/ratingcontrol.js" 
+type=text/javascript></SCRIPT>
+
+<DIV id=AllContent>
+<DIV id=CommonHeader>
+<DIV id=msviMasthead>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD width="100%">
+      <TABLE height=22 cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD id=msviRegionIdGraphic bgColor=#ffffff></TD>
+          <TD width="100%" bgColor=#3568cc><IMG title="" height=22 alt=* 
+            src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/topGradient.jpg" 
+            width=250></TD></TR></TBODY></TABLE></TD>
+    <TD id=msviGlobalToolbar noWrap align=left bgColor=#3568cc height=22>
+      <TABLE cellSpacing=0 cellPadding=0 border=0>
+        <TBODY>
+        <TR>
+          <TD class=gt0 onmouseover="mhHover('msviGlobalToolbar', 0, 'gt1')" 
+          onmouseout="mhHover('msviGlobalToolbar', 0, 'gt0')" noWrap><A 
+            style="FONT-SIZE: 95%" 
+            href="http://www.microsoft.com/">Microsoft.com Home</A></TD>
+          <TD class=gtsep>|</TD>
+          <TD class=gt0 onmouseover="mhHover('msviGlobalToolbar', 2, 'gt1')" 
+          onmouseout="mhHover('msviGlobalToolbar', 2, 'gt0')" noWrap><A 
+            style="FONT-SIZE: 95%" 
+            href="http://www.microsoft.com/library/toolbar/3.0/sitemap/en-us.mspx">Site 
+            Map</A></TD></TR></TBODY></TABLE></TD></TR>
+  <TR vAlign=top>
+    <TD width="100%">
+      <TABLE height=42 cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD id=msviBrandBanner bgColor=#ffffff><A 
+            href="http://msdn.microsoft.com/"><IMG title="" height=42 alt=MSDN 
+            src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/msdn_masthead_ltr.gif" 
+            width=225 border=0></A></TD>
+          <TD width="100%" bgColor=#6799ff><IMG title="" height=42 alt=* 
+            src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/topGradient2.jpg" 
+            width=250></TD></TR></TBODY></TABLE></TD>
+    <TD id=msviGlobalSearch bgColor=#6799ff>
+      <DIV id=msviNoSearch></DIV></TD></TR></TBODY></TABLE>
+<DIV id=msviLocalToolbar>
+<TABLE height=19 cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD id=msviHomePageLink noWrap width=177><A 
+      href="http://msdn.microsoft.com/">MSDN Home</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 2, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 2, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/developercenters/">Developer 
+Centers</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 4, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 4, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/flash">MSDN Flash</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 6, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 6, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/subscriptions/">Subscribers</A></TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 8, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 8, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 10, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 10, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 12, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 12, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 14, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 14, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 16, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 16, 'lt0')" noWrap>&nbsp;</TD>
+    <TD width="100%"></TD></TR></TBODY></TABLE></DIV></DIV></DIV>
+<TABLE dir=ltr cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD id=CommonLeftColumn 
+    style="BORDER-RIGHT: #999999 1px solid; OVERFLOW-X: hidden" width=181 
+    bgColor=#f1f1f1 height="100%">
+      <DIV class=mnpMenuTop id=mnpMenuTop>
+      <DIV class=mnpInherit>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent><A 
+      href="http://blogs.msdn.com/default.aspx">Blogs Home</A> </DIV></DIV>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent><A 
+      id=ctl00___ctl00___ctl00_ctl00_AggWelcome___Login 
+      href="http://blogs.msdn.com/login.aspx?ReturnUrl=%2fdancre%2farchive%2f2006%2f08%2f25%2f724938.aspx">Sign 
+      in</A> | <A id=ctl00___ctl00___ctl00_ctl00_AggWelcome___Register 
+      href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/dancre/archive/2006/08/25/724938.aspx">Join</A> 
+      </DIV></DIV>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A href="http://blogs.msdn.com/search/">Search</A> 
+        <LI><A href="http://blogs.msdn.com/MainFeed.aspx?Type=AllBlogs">RSS</A> 
+        <LI><A href="http://blogs.msdn.com/Opml.aspx">OPML</A> 
+      </LI></UL></DIV></DIV></DIV></DIV>
+      <DIV class=mnpAds 
+      style="BACKGROUND: #f1f1f1; PADDING-BOTTOM: 20px; WIDTH: 181px; HEIGHT: 100%"></DIV></TD>
+    <TD width="100%">
+      <TABLE style="TABLE-LAYOUT: fixed" cellSpacing=0 cellPadding=0 
+      width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD width="100%">
+            <DIV class=clsDocBody id=pageContainer>
+            <DIV class=CommonContentArea>
+            <H2 class=CommonTitle><A class=headermaintitle 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_bth___BlogTitle 
+            href="http://blogs.msdn.com/dancre/default.aspx">Dan Crevier's 
+            Blog</A></H2>
+            <DIV class=CommonContent>In search of a better name...</DIV>
+            <DIV class=CommonContent>
+            <STYLE>.DoNotDisplay {
+	DISPLAY: none
+}
+</STYLE>
+
+            <DIV class=BlogPostArea>
+            <H4 class=BlogPostHeader>DM-V-VM part 6: Revisiting the data model 
+            <SPAN id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___Ratings 
+            title="Rated Excellent [5 out of 5 / rated 1 time(s)]."></SPAN><INPUT 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___Ratings_Value 
+            type=hidden value=5></H4>
+            <DIV class=BlogPostContent>
+            <P>Sorry it's taking me so long to get the posts out. The series 
+            turned out to be a little longer than I anticipated :-) I got a lot 
+            of good feedback on the Data Model stuff.</P>
+            <P>First off, I want to mention layering. The DataModel typically is 
+            a layer on top of some other lower level data model that's not 
+            optimized to WPF. This might be something specific to the database 
+            technology you are using. Or, it could wrap some native object 
+            that's accessed via interop (I've run into a couple of examples of 
+            people doing this recently).</P>
+            <P>Also, I made some simplifications in the first post that made 
+            them much less interesting. The big simplification was that the 
+            models only fetched their data once and weren't live. Things get a 
+            lot more interesting when the models keep their data up to date.</P>
+            <P>Once you make them live, you run into a life time issue. If you 
+            have a large set of items, you only want to keep the visible items 
+            live. We'll do this by giving models Activate and Deactivate 
+            functions that control when it is live. Let's start with the 
+            DataModel changes. I'm not going to list the full class here, just 
+            the modifications. I'll post the entire sample soon when I finish up 
+            the series. If you have any question about how to apply these 
+            changes, let me know.</P>
+            <P>First, an IsActive property, which is implemented much like the 
+            State property. We could make it settable to activate and deactivate 
+            the model, but I like to think of those as methods rather than a 
+            property change:</P><PRE class=csharpcode>        <SPAN class=kwrd>public</SPAN> <SPAN class=kwrd>bool</SPAN> IsActive
+        {
+            get
+            {
+                VerifyCalledOnUIThread();
+                <SPAN class=kwrd>return</SPAN> _isActive;
+            }
+
+            <SPAN class=kwrd>private</SPAN> set
+            {
+                VerifyCalledOnUIThread();
+                <SPAN class=kwrd>if</SPAN> (<SPAN class=kwrd>value</SPAN> != _isActive)
+                {
+                    _isActive = <SPAN class=kwrd>value</SPAN>;
+                    SendPropertyChanged(<SPAN class=str>"IsActive"</SPAN>);
+                }
+            }
+        }</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+
+            <P>And, the Activate/Deactivate methods:</P><PRE class=csharpcode>        <SPAN class=kwrd>public</SPAN> <SPAN class=kwrd>void</SPAN> Activate()
+        {
+            VerifyCalledOnUIThread();
+
+            <SPAN class=kwrd>if</SPAN> (!_isActive)
+            {
+                <SPAN class=kwrd>this</SPAN>.IsActive = <SPAN class=kwrd>true</SPAN>;
+                OnActivated();
+            }
+        }
+</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+<PRE class=csharpcode>        <SPAN class=kwrd>public</SPAN> <SPAN class=kwrd>void</SPAN> Deactivate()
+        {
+            VerifyCalledOnUIThread();
+
+            <SPAN class=kwrd>if</SPAN> (_isActive)
+            {
+                <SPAN class=kwrd>this</SPAN>.IsActive = <SPAN class=kwrd>false</SPAN>;
+                OnDeactivated();
+            }
+        }
+</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+
+            <P>And, some simple overridable stubs:</P><PRE class=csharpcode>        <SPAN class=kwrd>protected</SPAN> <SPAN class=kwrd>virtual</SPAN> <SPAN class=kwrd>void</SPAN> OnActivated()
+        {
+        }
+</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+<PRE class=csharpcode>        <SPAN class=kwrd>protected</SPAN> <SPAN class=kwrd>virtual</SPAN> <SPAN class=kwrd>void</SPAN> OnDeactivated()
+        {
+        }
+</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+
+            <P>This is all pretty simple, we can just activate it and deactivate 
+            it. Subclasses can override the behavior when activated and 
+            deactivated.</P>
+            <P>Now, let's modify the StockModel to be live while activated. 
+            We'll use a DispatcherTimer to update on an interval. We'll start 
+            the timer and do the first update when activated:</P><PRE class=csharpcode>        <SPAN class=kwrd>protected</SPAN> <SPAN class=kwrd>override</SPAN> <SPAN class=kwrd>void</SPAN> OnActivated()
+        {
+            VerifyCalledOnUIThread();
+
+            <SPAN class=kwrd>base</SPAN>.OnActivated();
+
+            _timer = <SPAN class=kwrd>new</SPAN> DispatcherTimer(DispatcherPriority.Background);
+            _timer.Interval = TimeSpan.FromMinutes(5);
+            _timer.Tick += <SPAN class=kwrd>delegate</SPAN> { ScheduleUpdate(); };
+            _timer.Start();
+
+            ScheduleUpdate();
+        }
+</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+
+            <P>And, we'll stop the timer when deactivated:</P><PRE class=csharpcode>        <SPAN class=kwrd>protected</SPAN> <SPAN class=kwrd>override</SPAN> <SPAN class=kwrd>void</SPAN> OnDeactivated()
+        {
+            VerifyCalledOnUIThread();
+
+            <SPAN class=kwrd>base</SPAN>.OnDeactivated();
+
+            _timer.Stop();
+            _timer = <SPAN class=kwrd>null</SPAN>;
+        }
+</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+
+            <P>When we're ready to do an update, we'll use a background thread 
+            as before:</P><PRE class=csharpcode>        <SPAN class=kwrd>private</SPAN> <SPAN class=kwrd>void</SPAN> ScheduleUpdate()
+        {
+            VerifyCalledOnUIThread();
+
+            <SPAN class=rem>// Queue a work item to fetch the quote</SPAN>
+            <SPAN class=kwrd>if</SPAN> (ThreadPool.QueueUserWorkItem(<SPAN class=kwrd>new</SPAN> WaitCallback(FetchQuoteCallback)))
+            {
+                <SPAN class=kwrd>this</SPAN>.State = ModelState.Fetching;
+            }
+        }
+</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+
+            <P>Note: We could have used a System.Threading.Timer to do the 
+            updates where we'd be called on a background thread directly, but 
+            then we couldn't set the model state to fetching. We'd have to send 
+            that back to the UI thread.</P>
+            <P>Ok, now we've made it so you can activate it and deactivate it, 
+            but when do we do so? Let's say we've got thousands of our models in 
+            a ListBox. It's only going to only show a few of them on the screen 
+            at a time and we only want the ones on screen to be active. We'll 
+            use the <A 
+            href="http://blogs.msdn.com/dancre/archive/2006/03/04/543854.aspx">attached 
+            property trick</A> to do this without having to write custom code 
+            each time we want to activate and deactivate models. The basic idea 
+            is that we're going to display our model in a DataTemplate and we 
+            want to activate the model when FrameworkElements in the UI are 
+            loaded, and deactivate the model when&nbsp;they are unloaded. With 
+            the attached property trick, our DataTemplate Xaml just has to 
+            be:</P>
+            <DIV 
+            style="FONT-SIZE: 11pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: consolas">
+            <P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+            &lt;</SPAN><SPAN style="COLOR: maroon">DataTemplate</SPAN><SPAN 
+            style="COLOR: blue"> </SPAN><SPAN 
+            style="COLOR: red">DataType</SPAN><SPAN 
+            style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">{x:Type 
+            local:StockModel}</SPAN>"<SPAN style="COLOR: blue">&gt;</SPAN></P>
+            <P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+            &nbsp; &lt;</SPAN><SPAN style="COLOR: maroon">StackPanel</SPAN><SPAN 
+            style="COLOR: blue"> </SPAN><SPAN 
+            style="COLOR: red">Orientation</SPAN><SPAN 
+            style="COLOR: blue">=</SPAN>"<SPAN 
+            style="COLOR: blue">Horizontal</SPAN>"<SPAN style="COLOR: blue"> 
+            </SPAN><SPAN 
+            style="COLOR: red">local:ActivateModel.Model</SPAN><SPAN 
+            style="COLOR: blue">=</SPAN>"<SPAN 
+            style="COLOR: blue">{Binding}</SPAN>"<SPAN 
+            style="COLOR: blue">&gt;</SPAN></P>
+            <P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+            style="COLOR: maroon">TextBlock</SPAN><SPAN style="COLOR: blue"> 
+            </SPAN><SPAN style="COLOR: red">Text</SPAN><SPAN 
+            style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">{Binding 
+            Symbol}</SPAN>"<SPAN style="COLOR: blue"> </SPAN><SPAN 
+            style="COLOR: red">Width</SPAN><SPAN 
+            style="COLOR: blue">=</SPAN>"<SPAN 
+            style="COLOR: blue">100</SPAN>"<SPAN 
+            style="COLOR: blue">/&gt;</SPAN></P>
+            <P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+            style="COLOR: maroon">TextBlock</SPAN><SPAN style="COLOR: blue"> 
+            </SPAN><SPAN style="COLOR: red">Text</SPAN><SPAN 
+            style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">{Binding 
+            Quote}</SPAN>"<SPAN style="COLOR: blue"> /&gt;</SPAN></P>
+            <P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+            &nbsp; &lt;/</SPAN><SPAN 
+            style="COLOR: maroon">StackPanel</SPAN><SPAN 
+            style="COLOR: blue">&gt;</SPAN></P>
+            <P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+            &lt;/</SPAN><SPAN style="COLOR: maroon">DataTemplate</SPAN><SPAN 
+            style="COLOR: blue">&gt;</SPAN></P></DIV>
+            <P>Note the local:ActivateModel.Model={Binding}. Now, here's how we 
+            implement that magic property! First, we need define the 
+            DependencyProperty and the accessor functions:</P><PRE class=csharpcode>    <SPAN class=kwrd>public</SPAN> <SPAN class=kwrd>static</SPAN> <SPAN class=kwrd>class</SPAN> ActivateModel
+    {
+        <SPAN class=kwrd>public</SPAN> <SPAN class=kwrd>static</SPAN> <SPAN class=kwrd>readonly</SPAN> DependencyProperty ModelProperty
+           = DependencyProperty.RegisterAttached(<SPAN class=str>"Model"</SPAN>, <SPAN class=kwrd>typeof</SPAN>(DataModel), <SPAN class=kwrd>typeof</SPAN>(ActivateModel),
+                <SPAN class=kwrd>new</SPAN> PropertyMetadata(<SPAN class=kwrd>new</SPAN> PropertyChangedCallback(OnModelInvalidated)));
+
+        <SPAN class=kwrd>public</SPAN> <SPAN class=kwrd>static</SPAN> DataModel GetModel(DependencyObject sender)
+        {
+            <SPAN class=kwrd>return</SPAN> (DataModel)sender.GetValue(ModelProperty);
+        }
+
+        <SPAN class=kwrd>public</SPAN> <SPAN class=kwrd>static</SPAN> <SPAN class=kwrd>void</SPAN> SetModel(DependencyObject sender, DataModel model)
+        {
+            sender.SetValue(ModelProperty, model);
+        }
+</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+
+            <P>We've registered a PropertyChangedCallback on the property, so 
+            any time it is changed (including when it's initially set), 
+            OnModelInvalidated is going to be called. In OnModelInvalidated, 
+            we're going to register for Loaded and Unloaded events on 
+            the&nbsp;the&nbsp;FrameworkElement we are attached to.&nbsp;We also 
+            have to do a bit of bookkeeping to clean up if we were 
+            previously&nbsp;pointing to a different model.&nbsp;</P><PRE class=csharpcode>        <SPAN class=kwrd>private</SPAN> <SPAN class=kwrd>static</SPAN> <SPAN class=kwrd>void</SPAN> OnModelInvalidated(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            FrameworkElement element = (FrameworkElement)dependencyObject;
+
+            <SPAN class=rem>// Add handlers if necessary</SPAN>
+            <SPAN class=kwrd>if</SPAN> (e.OldValue == <SPAN class=kwrd>null</SPAN> &amp;&amp; e.NewValue != <SPAN class=kwrd>null</SPAN>)
+            {
+                element.Loaded += OnElementLoaded;
+                element.Unloaded += OnElementUnloaded;
+            }
+
+            <SPAN class=rem>// Or, remove if necessary</SPAN>
+            <SPAN class=kwrd>if</SPAN> (e.OldValue != <SPAN class=kwrd>null</SPAN> &amp;&amp; e.NewValue == <SPAN class=kwrd>null</SPAN>)
+            {
+                element.Loaded -= OnElementLoaded;
+                element.Unloaded -= OnElementUnloaded;
+            }
+
+            <SPAN class=rem>// If loaded, deactivate old model and activate new one</SPAN>
+            <SPAN class=kwrd>if</SPAN> (element.IsLoaded)
+            {
+                <SPAN class=kwrd>if</SPAN> (e.OldValue != <SPAN class=kwrd>null</SPAN>)
+                {
+                    ((DataModel)e.OldValue).Deactivate();
+                }
+
+                <SPAN class=kwrd>if</SPAN> (e.NewValue != <SPAN class=kwrd>null</SPAN>)
+                {
+                    ((DataModel)e.NewValue).Activate();
+                }
+            }
+        }
+</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+
+            <P>And, here are the Loaded/Unloaded handlers.</P><PRE class=csharpcode>        <SPAN class=kwrd>static</SPAN> <SPAN class=kwrd>void</SPAN> OnElementLoaded(<SPAN class=kwrd>object</SPAN> sender, RoutedEventArgs e)
+        {
+            FrameworkElement element = (FrameworkElement)sender;
+            DataModel model = GetModel(element);
+            model.Activate();
+        }
+
+        <SPAN class=kwrd>static</SPAN> <SPAN class=kwrd>void</SPAN> OnElementUnloaded(<SPAN class=kwrd>object</SPAN> sender, RoutedEventArgs e)
+        {
+            FrameworkElement element = (FrameworkElement)sender;
+            DataModel model = GetModel(element);
+            model.Deactivate();
+        }
+</PRE>
+            <STYLE type=text/css>.csharpcode {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: consolas, "Courier New", courier, monospace; BACKGROUND-COLOR: #ffffff
+}
+.csharpcode PRE {
+	MARGIN: 0em
+}
+.csharpcode .rem {
+	COLOR: #008000
+}
+.csharpcode .kwrd {
+	COLOR: #0000ff
+}
+.csharpcode .str {
+	COLOR: #006080
+}
+.csharpcode .op {
+	COLOR: #0000c0
+}
+.csharpcode .preproc {
+	COLOR: #cc6633
+}
+.csharpcode .asp {
+	BACKGROUND-COLOR: #ffff00
+}
+.csharpcode .html {
+	COLOR: #800000
+}
+.csharpcode .attr {
+	COLOR: #ff0000
+}
+.csharpcode .alt {
+	MARGIN: 0em; WIDTH: 100%; BACKGROUND-COLOR: #f4f4f4
+}
+.csharpcode .lnum {
+	COLOR: #606060
+}
+</STYLE>
+
+            <P>Pretty neat trick, isn't it? This means it's really easy for us 
+            to activate models when they are visible in the UI by simply adding 
+            the ActivateModel.Model property to the UI element. Since we know 
+            all FrameworkElements will get unloaded when they go away, we know 
+            we won't have to worry about leaking anything. It doesn't require 
+            any custom activate/deactivate code per view!</P>
+            <P>We get a form of data virtualization out of this trick. If the 
+            data is very expensive, the models can act as a relatively cheap 
+            shell. When you go to view a a large collection of items, you just 
+            need to provide a collection of the data models instead of the full 
+            items. The expensive data can then be accessed only when the UI for 
+            the data is visible on the screen and then thrown out when the data 
+            goes offscreen.</P>
+            <P>I'll confess, I've made another simplification from what we've 
+            done in Max. The lifetime management of a lot of our models is 
+            slightly more complex. And, as much as we hated to do so, we ended 
+            up adding a reference counting to our models. So we keep track of 
+            multiple levels of activation and a model is live as long as that 
+            count is greater than zero. To get something a bit like smart 
+            pointers, we have Activate return an IDisposable which we call an 
+            "activation cookie". Disposing of the activation cookie decrements 
+            the activation count. The cookie is the only way to decrement the 
+            count, there's no public method on the model. It's smart enough to 
+            not let you decrement multiple times. And, in debug builds, we have 
+            a finalizer on the cookie that asserts if Dispose wasn't called, to 
+            help catch leaks. We were quite happy to leaving reference counting 
+            when moving to managed code, so it hurt a bit to bring it back 
+            :-)</P>
+            <P>Ok, I think I'm just a couple of posts from wrapping this 
+            up!</P></DIV>
+            <DIV class=BlogPostFooter>Published Friday, August 25, 2006 8:58 PM 
+            by <A id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___AuthorLink 
+            href="http://blogs.msdn.com/user/Profile.aspx?UserID=3401">dancre</A> 
+
+            <DIV><SPAN 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel>Filed 
+            under: <A 
+            href="http://blogs.msdn.com/dancre/archive/tags/DM-V-VM/default.aspx" 
+            rel=tag>DM-V-VM</A></SPAN><INPUT 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel_State 
+            type=hidden value=nochange 
+            name=ctl00$_$ctl00$_$ctl00$ctl00$bcr$ctl00$_$Entry$_$InlineTagEditorPanel></DIV></DIV></DIV>
+            <DIV id=comments>
+            <H3>Comments </H3>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl01_NameLink 
+                  title=AleXFlint href="http://www.sap.com/">AleXFlint</A> 
+                  said:</H4>
+                  <DIV class=CommentText>Hi Dan! <BR><BR>very great series! I'm 
+                  really impressed, thats really tricky! <BR><BR>I'm going 
+                  &nbsp;to try implementing this pattren for 3DObjects(MV3D). I 
+                  know 3DObjects are not FrameWorkElements or UIElements, but I 
+                  think not all but some of concepts of this pattern could be 
+                  very usefull to implement binding between a 3DObject and a 
+                  DataModel (to get the position in 3D space for example could 
+                  be a possible Data from DataModel). Thanks a lot for great 
+                  work! Waiting for next/last couples of posts... <BR><BR>PS: 
+                  your session at deep dive was very cool! Thanks.</DIV>
+                  <DIV class=CommentFooter>August 29, 2006 7:35 PM </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl02_NameLink 
+                  title="Bryant Likes" 
+                  href="http://blogs.sqlxml.org/bryantlikes" rel=nofollow>Bryant 
+                  Likes</A> said:</H4>
+                  <DIV class=CommentText>How about posting those last couple of 
+                  posts to wrap this up? :)</DIV>
+                  <DIV class=CommentFooter>September 13, 2006 2:49 PM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl03_NameLink 
+                  title=AleXFlint>AleXFlint</A> said:</H4>
+                  <DIV class=CommentText>Oh, Yes, I'm waiting for that too. I 
+                  hope it comes soon :). Let's wrap it up.....</DIV>
+                  <DIV class=CommentFooter>September 14, 2006 12:31 PM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="CommentOwner CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="CommentOwner  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl04_NameLink 
+                  title=dancre 
+                  href="http://blogs.msdn.com/user/Profile.aspx?UserID=3401">dancre</A> 
+                  said:</H4>
+                  <DIV class=CommentText>Sorry, I'll get to it this weekend at 
+                  the latest!</DIV>
+                  <DIV class=CommentFooter>September 14, 2006 12:38 PM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl05_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.msdn.com/dancre/archive/2006/09/15/756095.aspx" 
+                  rel=nofollow>Dan Crevier's Blog</A> said:</H4>
+                  <DIV class=CommentText>In part 5, I talked about commands and 
+                  how they are used for behavior. Now, I want to talk about a 
+                  better...</DIV>
+                  <DIV class=CommentFooter>September 15, 2006 11:56 AM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl06_NameLink 
+                  title=Paul>Paul</A> said:</H4>
+                  <DIV class=CommentText>Hi Dan, <BR><BR>Thanks a lot! I'm 
+                  looking forward for other posts. <BR><BR>One question came to 
+                  my mind while reading DM-M-VM series: <BR>Why don't you use 
+                  async bindings for fetching data in background? 
+                  <BR><BR>Thanks, <BR>paul</DIV>
+                  <DIV class=CommentFooter>September 19, 2006 1:51 AM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="CommentOwner CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="CommentOwner  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl07_NameLink 
+                  title=dancre href="http://blogs.msdn.com/dancre">dancre</A> 
+                  said:</H4>
+                  <DIV class=CommentText>There are a few things that steer me 
+                  away from asynchronous data binding. The first is that the 
+                  property getters will now be callable by multiple threads, and 
+                  that makes the threading model for the object much more 
+                  complicated. Second, I think it would be surprising that some 
+                  properties could hang indefinitely, but others wouldn't. As a 
+                  consumer of the class, how would you know what's safe to call? 
+                  And, finally, you get more control if you do it yourself. With 
+                  asynchronous binding, WPF creates the thread for you, but with 
+                  this mechanism you have more control over scheduling updates 
+                  and such.</DIV>
+                  <DIV class=CommentFooter>September 19, 2006 7:34 PM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl08_NameLink 
+                  title="Scott Bussinger">Scott Bussinger</A> said:</H4>
+                  <DIV class=CommentText>Great series! Thanks for the efforts! 
+                  <BR><BR>In reviewing all of the parts of this series tonight, 
+                  the statement "we ended up adding a reference counting to our 
+                  models" got me curious. You obviously weren't happy about 
+                  having to do it, so what exactly motivated you to implement 
+                  reference counting in Max?</DIV>
+                  <DIV class=CommentFooter>September 20, 2006 3:00 AM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl09_NameLink 
+                  title=Paul>Paul</A> said:</H4>
+                  <DIV class=CommentText>Thanks for reply, Dan! <BR><BR>I see 
+                  your point. <BR>Actually, I guessed a reason behind your 
+                  solution, just, you know, it seemed curious: you hadn't 
+                  mentioned async bindings at all in your articles. <BR><BR>Now 
+                  it's clear, <BR>Thanks <BR><BR>paul <BR></DIV>
+                  <DIV class=CommentFooter>September 20, 2006 8:57 AM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="CommentOwner CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="CommentOwner  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl10_NameLink 
+                  title=dancre href="http://blogs.msdn.com/dancre">dancre</A> 
+                  said:</H4>
+                  <DIV class=CommentText>The activation model I presented here 
+                  works fine if there is only one "owner" that ever activates 
+                  the model. But, as soon as multiple things want to activate 
+                  the same model, you need the reference counting. As a simple 
+                  example, what if you wanted to show the same model in two 
+                  places in the UI?</DIV>
+                  <DIV class=CommentFooter>September 20, 2006 11:09 AM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl11_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.sqlxml.org/bryantlikes/archive/2006/09/27/WPF-Patterns.aspx" 
+                  rel=nofollow>Bryant Likes's Blog</A> said:</H4>
+                  <DIV class=CommentText>If you're doing WPF development, you 
+                  really need to check out Dan Crevier 's series on 
+                  DataModel-View-ViewModel.</DIV>
+                  <DIV class=CommentFooter>September 27, 2006 4:31 PM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl12_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.msdn.com/dancre/archive/2006/09/15/dm-v-vm-part-7-encapsulating-commands.aspx" 
+                  rel=nofollow>Dan Crevier's Blog</A> said:</H4>
+                  <DIV class=CommentText>
+                  <P>In part 5 , I talked about commands and how they are used 
+                  for behavior. Now, I want to talk about a better</P></DIV>
+                  <DIV class=CommentFooter>October 11, 2006 9:59 PM </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl13_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.msdn.com/dancre/archive/2006/10/11/datamodel-view-viewmodel-pattern-series.aspx" 
+                  rel=nofollow>Dan Crevier's Blog</A> said:</H4>
+                  <DIV class=CommentText>
+                  <P>I thought I should add a post with the full list of posts 
+                  in the D-V-VM pattern. They are: 
+                  DataModel-View-ViewModel</P></DIV>
+                  <DIV class=CommentFooter>October 11, 2006 10:00 PM 
+</DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl14_NameLink 
+                  title=corbin href="http://hoenes.blogspot.com/" 
+                  rel=nofollow>corbin</A> said:</H4>
+                  <DIV class=CommentText>
+                  <P>This is just a little thing but when you call Activate() 
+                  you immediately call your DataModel's 
+                  VerifyCalledOnUIThread(); then you set the property using 
+                  this.IsActive = true which then immediately calls 
+                  VerifyCalledOnUIThread(); is this an oversight or am I not 
+                  getting something...seems like these VerifyCalledOnUIThread 
+                  methods should only ever be called when you are changing 
+                  properties. &nbsp;Unless you method directly manipulates the 
+                  member data itself.</P></DIV>
+                  <DIV class=CommentFooter>October 26, 2006 2:56 PM </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="CommentOwner CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="CommentOwner  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl15_NameLink 
+                  title=dancre href="http://blogs.msdn.com/dancre">dancre</A> 
+                  said:</H4>
+                  <DIV class=CommentText>
+                  <P>I agree it's overkill since the IsActive's setter also 
+                  checks, but I think it's nice to have it explicitly 
+                  there.</P></DIV>
+                  <DIV class=CommentFooter>October 26, 2006 3:55 PM 
+              </DIV></TD></TR></TBODY></TABLE></DIV><EM>New Comments to this post 
+            are disabled</EM> </DIV></DIV></DIV></TD></TR></TBODY></TABLE></TD>
+    <TD id=CommonRightColumn style="FONT-SIZE: 100%">
+      <DIV class=CommonSidebar>
+      <DIV id=BlogLinksSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>This Blog</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___home 
+        href="http://blogs.msdn.com/dancre/default.aspx">Home</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___Contactlink1 
+        href="http://blogs.msdn.com/dancre/contact.aspx">Email</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___LinkListLink1 
+        href="http://blogs.msdn.com/dancre/linklist.aspx">Links</A> 
+      </LI></UL></DIV></DIV></DIV>
+      <DIV id=TasksSideBar></DIV>
+      <DIV id=SubscriptionsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Syndication</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___bs___rss 
+        href="http://blogs.msdn.com/dancre/rss.xml">RSS 2.0</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___bs___atom 
+        href="http://blogs.msdn.com/dancre/atom.xml">Atom 1.0</A> 
+      </LI></UL></DIV></DIV></DIV>
+      <DIV id=RecentPostsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Recent Posts</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl00_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/10/11/more-skydrive-goodness.aspx">More 
+        SkyDrive goodness</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl01_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/22/frustrating-error-using-remote-desktop.aspx">Frustrating 
+        error using Remote Desktop</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl02_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/21/tafiti.aspx">Tafiti</A> 
+
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl03_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/09/windows-live-skydrive-spaces-integration.aspx">Windows 
+        Live SkyDrive/Spaces integration</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl04_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/09/windows-live-folders-is-now-windows-live-skydrive.aspx">Windows 
+        Live Folders is now Windows Live SkyDrive!</A> 
+</LI></UL></DIV></DIV></DIV>
+      <DIV id=TagSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Tags</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarTagCloud>
+        <LI class=CommonTag3><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/ASP.NET/default.aspx" 
+        rel=tag>ASP.NET</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Debugging/default.aspx" 
+        rel=tag>Debugging</A> 
+        <LI class=CommonTag1><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/DM-V-VM/default.aspx" 
+        rel=tag>DM-V-VM</A> 
+        <LI class=CommonTag1><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Max/default.aspx" 
+        rel=tag>Max</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/PageModel/default.aspx" 
+        rel=tag>PageModel</A> 
+        <LI class=CommonTag4><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/PanelLayoutAnimator/default.aspx" 
+        rel=tag>PanelLayoutAnimator</A> 
+        <LI class=CommonTag2><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/pdc2005/default.aspx" 
+        rel=tag>pdc2005</A> 
+        <LI class=CommonTag4><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Tips+_2600_amp_3B00_+Tricks/default.aspx" 
+        rel=tag>Tips &amp; Tricks</A> 
+        <LI class=CommonTag2><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Utilities/default.aspx" 
+        rel=tag>Utilities</A> 
+        <LI class=CommonTag3><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/VirtualizingTilePanel/default.aspx" 
+        rel=tag>VirtualizingTilePanel</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Vista/default.aspx" 
+        rel=tag>Vista</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Web+Perf/default.aspx" 
+        rel=tag>Web Perf</A> </LI></UL></DIV></DIV></DIV>
+      <DIV id=NewsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>News</H4>
+      <DIV class=CommonSidebarContent>The posts on this weblog are provided "AS 
+      IS" with no warranties, and confer no rights. The opinions expressed 
+      herein are my own personal opinions and do not represent my employer's 
+      view in any way. </DIV></DIV></DIV>
+      <DIV id=ArchiveSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Archives</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/10.aspx">October 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/08.aspx">August 
+        2007 (4)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/07.aspx">July 
+        2007 (4)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/06.aspx">June 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/03.aspx">March 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/02.aspx">February 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/01.aspx">January 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/12.aspx">December 
+        2006 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/11.aspx">November 
+        2006 (2)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/10.aspx">October 
+        2006 (3)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/dancre/archive/2006/09.aspx">September 2006 
+        (8)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/08.aspx">August 
+        2006 (7)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/07.aspx">July 
+        2006 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/03.aspx">March 
+        2006 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/02.aspx">February 
+        2006 (11)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/01.aspx">January 
+        2006 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/12.aspx">December 
+        2005 (2)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/11.aspx">November 
+        2005 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/10.aspx">October 
+        2005 (3)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/dancre/archive/2005/09.aspx">September 2005 
+        (7)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/06.aspx">June 
+        2005 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/05.aspx">May 2005 
+        (11)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/04.aspx">April 
+        2005 (3)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/02.aspx">February 
+        2005 (3)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/01.aspx">January 
+        2005 (3)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/12.aspx">December 
+        2004 (15)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/11.aspx">November 
+        2004 (4)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/10.aspx">October 
+        2004 (10)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/dancre/archive/2004/09.aspx">September 2004 
+        (8)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/08.aspx">August 
+        2004 (8)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/07.aspx">July 
+        2004 (5)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/06.aspx">June 
+        2004 (5)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/05.aspx">May 2004 
+        (13)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/04.aspx">April 
+        2004 (15)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/03.aspx">March 
+        2004 (18)</A> </LI></UL></DIV></DIV></DIV></DIV></TD></TR></TBODY></TABLE><!--NOINDEX_START-->
+<DIV id=CommonFooter><BR style="OVERFLOW: hidden; LINE-HEIGHT: 1px" clear=all>
+<TABLE id=msviFooter cellSpacing=0 cellPadding=0 width="100%">
+  <TBODY>
+  <TR vAlign=bottom>
+    <TD id=msviFooter2>
+      <DIV id=msviLocalFooter><NOBR><A 
+      href="http://go.microsoft.com/?linkid=317027">Manage Your Profile</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/isapi/gomscom.asp?target=/legal/" 
+      target=_parent>Legal</A> |</NOBR><WBR><NOBR><A 
+      href="http://register.microsoft.com/contactus30/contactus.asp?domain=msdn" 
+      target=_parent>Contact Us</A> |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/flash/" target=_parent>MSDN Flash 
+      Newsletter</A></NOBR></DIV>
+      <DIV id=msviGlobalFooter><SPAN>©2005 Microsoft Corporation. All rights 
+      reserved.&nbsp;</SPAN><NOBR><A 
+      href="http://www.microsoft.com/info/cpyright.mspx">Terms of Use</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://www.microsoft.com/info/privacy.mspx">Privacy 
+      Statement</A></NOBR></DIV></TD>
+    <TD width=105 bgColor=#669aff><IMG title="" height=29 alt=Microsoft 
+      src="Dan Crevier's Blog  DM-V-VM part 6 Revisiting the data model_files/bottomMSFTLogo.jpg" 
+      width=105 border=0></TD></TR></TBODY></TABLE></DIV></DIV>
+<SCRIPT language=javascript>var ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___Ratings=new RateControl('ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___Ratings','ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___Ratings','ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___Ratings_Value', 5, '/Themes/default/images/common/', false, 'CommonRateControl','CommonRateControlActive','CommonRateControlReadOnly',['Terrible','Poor','Fair','Average','Good','Excellent'],true,true);</SCRIPT>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/dancre/archive/2006/08/25/dm-v-vm-part-6-revisiting-the-data-model.aspx"
+dc:identifier="http://blogs.msdn.com/dancre/archive/2006/08/25/dm-v-vm-part-6-revisiting-the-data-model.aspx"
+dc:title="DM-V-VM part 6: Revisiting the data model"
+trackback:ping="http://blogs.msdn.com/dancre/trackback.aspx?PostID=724938" />
+</rdf:RDF>
+--></FORM></BODY></HTML>

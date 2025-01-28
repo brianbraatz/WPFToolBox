@@ -1,0 +1,78 @@
+﻿<UserControl 
+  x:Class="WpfBootcampDemo.Views.XrayWindowView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:demo="clr-namespace:WpfBootcampDemo"
+  xmlns:model="clr-namespace:WpfBootcampDemo.Model"
+  xmlns:views="clr-namespace:WpfBootcampDemo.Views"
+  >
+  <UserControl.Resources>
+
+    <!-- 
+    This alters an Xray's display text 
+    after its image has been viewed. 
+    -->
+    <Style x:Key="XrayTextBlockStyle" TargetType="TextBlock">
+      <Style.Triggers>
+        <DataTrigger 
+          Binding="{Binding Path=HasBeenViewed}" 
+          Value="True"
+          >
+          <Setter Property="FontStyle" Value="Italic" />
+          <Setter Property="Foreground" Value="Gray" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+
+    <!--
+    Formats CreationDate as a string that
+    it only contains the date, not time.
+    -->
+    <views:CreationDateToDisplayTextConverter 
+      x:Key="CreationDateConverter" 
+      />
+
+    <!-- 
+    This is used to render an Xray object in the ListBox. 
+    -->
+    <DataTemplate DataType="{x:Type model:Xray}">
+      <Border>
+        <Border.Child>
+          <TextBlock Style="{StaticResource XrayTextBlockStyle}">
+            <Run>Side:</Run>
+            <TextBlock Text="{Binding Path=Side}" />
+          </TextBlock>
+        </Border.Child>
+        <Border.ToolTip>
+          <TextBlock>
+            <Run>Creation Date:</Run>
+            <TextBlock 
+              Text="{Binding 
+              Path=CreationDate, 
+              Converter={StaticResource CreationDateConverter}}" 
+              />
+          </TextBlock>
+        </Border.ToolTip>
+      </Border>
+    </DataTemplate>
+  </UserControl.Resources>
+
+  <!--
+  These are the controls seen in the main Window.
+  -->
+  <DockPanel Margin="2">
+    <Button 
+      Command="{x:Static demo:Commands.ShowSelectedXray}" 
+      Content="View X-Ray"
+      DockPanel.Dock="Bottom"
+      HorizontalAlignment="Center" 
+      Margin="0,4"
+      />
+
+    <ListBox 
+      IsSynchronizedWithCurrentItem="True" 
+      ItemsSource="{Binding Path=.}" 
+      />
+  </DockPanel>
+
+</UserControl>

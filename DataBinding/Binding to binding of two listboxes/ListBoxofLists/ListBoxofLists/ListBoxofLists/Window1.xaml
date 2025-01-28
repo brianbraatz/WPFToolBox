@@ -1,0 +1,22 @@
+﻿<Window x:Class="ListBoxofLists.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:ListBoxofLists" 
+    Title="ListBoxofLists" Height="600" Width="300"
+    >
+  <Window.Resources>
+    <l:Employees x:Key="employees"/>
+    <l:Projects x:Key="projects"/>
+    <l:WidthToSizeConverter x:Key="wts"/>
+    
+    <DataTemplate DataType="{x:Type l:Employees}" x:Key="emp">
+      <TextBlock FontSize="{Binding Path=Width, Converter={StaticResource wts}}" Text="{Binding Path=Name}"/>
+    </DataTemplate>
+    
+  </Window.Resources>
+    <StackPanel Name="myPanel">
+      <TextBlock>Use Ctrl key for multiple selection</TextBlock>
+      <ListBox Name="prjs" SelectionMode="Extended" ItemsSource="{StaticResource projects}" SelectionChanged="onSelection"/>
+      <ListBox Name="emps" ItemsSource="{Binding Source={StaticResource employees}}" ItemTemplate="{StaticResource emp}"/>
+    </StackPanel>
+</Window>

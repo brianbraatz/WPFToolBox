@@ -1,0 +1,576 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional-dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head id="ctl00_ctl00">
+ 
+
+<meta name="description" content="Technology blog about new Microsoft technologies. E.g. WPF, crossbow, .NET framework 3, Live etc. It includes code sources and samples">
+<meta name="keywords" content=".NET Framework, Example, Internals, Microsoft, Programming, Source Code, technology, tutorial, wpf.">
+<meta name="GENERATOR" content="CommunityServer 2007 SP2 (Build: 20611.960)">
+<link rel="pingback" href="http://blogs.microsoft.co.il/blogs/tamir/pingback.aspx">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.microsoft.co.il/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Just code - Tamir Khason (RSS 2.0)" href="http://feeds.feedburner.com/microsft">
+<link rel="alternate" type="application/rss+xml" title="Just code - Tamir Khason - All Comments (RSS 2.0)" href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx">
+<link rel="alternate" type="application/rss+xml" title="Fully binded validation by using Dependency and Attached properties - Comments for this post (RSS 2.0)" href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx?PostID=13945">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/style.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/print.htm" type="text/css" media="print">
+	<link rel="stylesheet" href="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/light_sidebar_left_wide.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/DynamicStyle.css" type="text/css" media="screen">
+<script src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-486526-1";
+urchinTracker();
+</script><title>Fully binded validation by using Dependency and Attached properties - Just code - Tamir Khason</title></head><body>
+    <form name="aspnetForm" method="post" action="/blogs/tamir/archive/2007/05/31/Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTIwMjk4NDE1MzdkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBS5jdGwwMCRNYWluJGN0bDA4JGN0bDAyJGN0bDAyJGN0bDAyJGNoa1JlbWVtYmVyNnOa7G3ox0C7N39AE+DRj1GRFAw=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/WebResource.js" type="text/javascript"></script>
+
+
+<script src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/WebResource_002.axd" type="text/javascript"></script>
+<script src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/WebResource_004.axd" type="text/javascript"></script>
+<script src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/WebResource_003.axd" type="text/javascript"></script>
+<script src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/WebResource.axd" type="text/javascript"></script>
+        
+<script type="text/javascript">
+<!--   
+    function ValidateCaptcha(val, args) {
+      
+        var value = args.Value;
+        var nameEQ = "CAPTCHA=";
+        var captchaNumbers;        	
+        var ca = document.cookie.split(';');
+        
+        for(var i=0;i < ca.length;i++) {
+    	    var c = ca[i];
+    	    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    	    if (c.indexOf(nameEQ) == 0) captchaNumbers =  c.substring(nameEQ.length,c.length);
+	    }
+
+        args.IsValid = captchaNumbers == value;
+
+    }
+-->
+</script>
+
+<script src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/WebResource_002.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+
+    			
+
+    <div id="masthead">
+        <div id="welcome" align="right">
+            
+        <a href="http://blogs.microsoft.co.il/login.aspx?ReturnUrl=%2fblogs%2ftamir%2farchive%2f2007%2f05%2f31%2fFully-binded-validation-by-using-Dependency-and-Attached-properties.aspx">Sign in </a>
+         | <a href="http://blogs.microsoft.co.il/user/CreateUser.aspx?ReturnUrl=">Join</a>
+        | <a href="http://communityserver.org/r.ashx?K">Help</a>
+     
+
+
+        </div>
+    </div>
+    <div id="wrapper">
+	        <div id="container">
+		        <div id="header">
+		            <div id="title">	                    
+                        <h1 class="headermaintitle"><a href="http://blogs.microsoft.co.il/blogs/tamir/">Just code - Tamir Khason</a></h1>      
+                        <p id="tagline">Take care of the sense, and the sounds will take care of themselves.</p>
+                    </div>
+                    <div id="SubscriptionsSideBar">
+                        <div id="subscriptions"> 
+                            <ul>
+                                <li><a href="http://feeds.feedburner.com/microsft">RSS</a></li>
+	                            <li><a href="http://feeds.feedburner.com/microsft">Atom</a></li>
+						        <li id="RssComments"><a href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx">Comments RSS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="nav">                    
+                        <ul>
+                            <li><a href="http://blogs.microsoft.co.il/blogs/tamir/">Home</a></li>
+                            <li><a href="http://blogs.microsoft.co.il/blogs/tamir/contact.aspx">Contact</a></li>
+                            
+                            
+                        </ul>
+                    </div>
+                </div>
+                
+                    <div id="contentwrapper">
+		                <div id="sidebar-a">              
+                            <div id="TasksSideBar">                                
+                                
+                                
+                            </div>
+                            
+                            <div id="SearchSideBar">    
+                                <div id="Search">
+	                                        <h3>Search</h3>
+                                            <ul>
+                                                <li>
+                                                    <input name="ctl00$SideBar$ctl01$ctl00$SearchBox" id="ctl00_SideBar_ctl01_ctl00_SearchBox" class="searchBox" button="SearchButton" onclick="if(this.defaultValue==this.value) this.value='';" onblur="if(this.value=='') this.value=this.defaultValue;" type="text">
+                                                    <a id="ctl00_SideBar_ctl01_ctl00_SearchButton" class="SearchButton" href="javascript:__doPostBack('ctl00$SideBar$ctl01$ctl00$SearchButton','')">Go</a>
+                                                </li>
+                                            </ul>
+                                    </div>
+                            </div>  
+                                
+                                <div id="TagSideBar">
+                                        <h3>Tags</h3>
+                                    <ul class="SidebarTagCloud">
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Accessibility/default.aspx" rel="tag">Accessibility</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/blogging+general/default.aspx" rel="tag">blogging general</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Blogging+rules/default.aspx" rel="tag">Blogging rules</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/blogging+tools/default.aspx" rel="tag">blogging tools</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/C_2300_/default.aspx" rel="tag">C#</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/demos/default.aspx" rel="tag">demos</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/download/default.aspx" rel="tag">download</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/events/default.aspx" rel="tag">events</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/fun/default.aspx" rel="tag">fun</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/help/default.aspx" rel="tag">help</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/jobs/default.aspx" rel="tag">jobs</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Mobile/default.aspx" rel="tag">Mobile</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Performance/default.aspx" rel="tag">Performance</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/promo/default.aspx" rel="tag">promo</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Silverlight/default.aspx" rel="tag">Silverlight</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/SkyDrive/default.aspx" rel="tag">SkyDrive</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/soft/default.aspx" rel="tag">soft</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/source/default.aspx" rel="tag">source</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/thoughts/default.aspx" rel="tag">thoughts</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Tips+and+Tricks/default.aspx" rel="tag">Tips and Tricks</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tools/default.aspx" rel="tag">tools</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tutorial/default.aspx" rel="tag">tutorial</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Vista/default.aspx" rel="tag">Vista</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Vista+Battery+Saver/default.aspx" rel="tag">Vista Battery Saver</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Visual+Studio/default.aspx" rel="tag">Visual Studio</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/VSTS/default.aspx" rel="tag">VSTS</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WCF/default.aspx" rel="tag">WCF</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Web/default.aspx" rel="tag">Web</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Gadgets/default.aspx" rel="tag">Windows Gadgets</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Live/default.aspx" rel="tag">Windows Live</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Live+Writer/default.aspx" rel="tag">Windows Live Writer</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF/default.aspx" rel="tag">WPF</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF+crossbow/default.aspx" rel="tag">WPF crossbow</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF_2F00_E/default.aspx" rel="tag">WPF/E</a></li>
+</ul>
+</div>
+                              
+                                
+                                <div id="NewsSidebar">
+                                        <h3>News</h3>
+                                        <ul>
+                                    <a href="http://www.linkedin.com/in/tamirk"><img src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/btn_profile_bluetxt_80x15.gif" alt="View Tamir Khason's profile on LinkedIn" border="0" height="15" width="80"></a>
+
+
+                                        </ul>
+                                    </div>                
+                                                
+                                
+                                <div id="NavSideBar"><h3>Navigation</h3>
+<ul>
+<li><a href="http://blogs.microsoft.co.il/">Home</a></li><li><a href="http://blogs.microsoft.co.il/blogs/">Blogs</a></li><li><a href="http://blogs.microsoft.co.il/blogs/MainFeed.aspx">RSS</a></li>
+</ul></div>
+                                
+                                
+                                
+                                
+                                <div id="ArchiveSideBar"><h3>Archives</h3>
+<ul>
+<li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/10.aspx">October 2007 (15)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/09.aspx">September 2007 (14)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/08.aspx">August 2007 (21)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/07.aspx">July 2007 (32)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/06.aspx">June 2007 (10)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/05.aspx">May 2007 (22)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/04.aspx">April 2007 (21)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/03.aspx">March 2007 (20)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/02.aspx">February 2007 (9)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/01.aspx">January 2007 (10)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12.aspx">December 2006 (11)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/11.aspx">November 2006 (4)</a></li>
+</ul></div> 
+                                
+                                
+                                
+	                    
+                    </div>
+                    <div id="content"><div id="content2">
+	                    
+    <div class="post">
+        <div class="posthead">
+            Thursday, May 31, 2007 3:50 PM
+            <a href="http://blogs.microsoft.co.il/members/tamir.aspx">Tamir Khason</a>
+            
+            <h2>
+                Fully binded validation by using Dependency and Attached properties
+                
+            </h2>
+        </div>        
+            <p>Yesterday,
+I got a request from one of my clients to create validation rule with
+range, binded to source or any other data. Well, that's easy - I
+though. However, there are a couple of&nbsp;tricks, you should
+know,&nbsp;to perform it.</p> <p>Let's start from the beginning. Custom
+validation rule have to inherit from ValidationRule class, this means,
+that it can not be dependency object. But how said, that it can not
+have dependency object member? It can. So, first of all we need a
+validation rule.</p> <p></p><pre>    <span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">class</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">MinMaxValidationRule</span><span style="color: rgb(0, 0, 0);">:</span><span style="color: rgb(163, 21, 21);">ValidationRule
+</span><span style="color: rgb(0, 0, 0);">    {
+        </span><span style="color: rgb(43, 145, 175);">private</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">Int32RangeChecker</span><span style="color: rgb(0, 0, 0);"> validRange;
+
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">Int32RangeChecker</span><span style="color: rgb(0, 0, 0);"> ValidRange
+        {
+            </span><span style="color: rgb(43, 145, 175);">get</span><span style="color: rgb(0, 0, 0);"> { </span><span style="color: rgb(43, 145, 175);">return</span><span style="color: rgb(0, 0, 0);"> validRange; }
+            </span><span style="color: rgb(43, 145, 175);">set</span><span style="color: rgb(0, 0, 0);"> { validRange = </span><span style="color: rgb(43, 145, 175);">value</span><span style="color: rgb(0, 0, 0);">; }
+        }
+
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">override</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">ValidationResult</span><span style="color: rgb(0, 0, 0);"> Validate(</span><span style="color: rgb(43, 145, 175);">object</span><span style="color: rgb(0, 0, 0);"> value, System.Globalization.</span><span style="color: rgb(163, 21, 21);">CultureInfo</span><span style="color: rgb(0, 0, 0);"> cultureInfo)
+        {
+            </span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);"> res = </span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">.MinValue;
+            </span><span style="color: rgb(43, 145, 175);">bool</span><span style="color: rgb(0, 0, 0);"> isNumber = </span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">.TryParse(value.ToString(), </span><span style="color: rgb(43, 145, 175);">out</span><span style="color: rgb(0, 0, 0);"> res);
+            </span><span style="color: rgb(43, 145, 175);">bool</span><span style="color: rgb(0, 0, 0);"> isValidRange = </span><span style="color: rgb(43, 145, 175);">true</span><span style="color: rgb(0, 0, 0);">;
+            </span><span style="color: rgb(43, 145, 175);">if</span><span style="color: rgb(0, 0, 0);"> (validRange == </span><span style="color: rgb(43, 145, 175);">null</span><span style="color: rgb(0, 0, 0);">)
+            {
+                isValidRange = </span><span style="color: rgb(43, 145, 175);">true</span><span style="color: rgb(0, 0, 0);">;
+            }
+            </span><span style="color: rgb(43, 145, 175);">else
+</span><span style="color: rgb(0, 0, 0);">            {
+                isValidRange = (res &gt; validRange.Minimum &amp; res &lt; validRange.Maximum);
+            }
+            </span><span style="color: rgb(43, 145, 175);">string</span><span style="color: rgb(0, 0, 0);"> errorString = !isNumber ? </span><span style="color: rgb(255, 0, 255);">"The string is in incorrect format"</span><span style="color: rgb(0, 0, 0);"> : !isValidRange ? </span><span style="color: rgb(255, 0, 255);">"The input integer is out of range"</span><span style="color: rgb(0, 0, 0);"> : </span><span style="color: rgb(43, 145, 175);">string</span><span style="color: rgb(0, 0, 0);">.Empty;
+            </span><span style="color: rgb(43, 145, 175);">return</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">new</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">ValidationResult</span><span style="color: rgb(0, 0, 0);">(isNumber &amp;&amp; isValidRange, errorString);
+
+        }
+    }<p>&nbsp;</p></span></pre>
+<p>Well, I have not explain what is doing, right? :) Next we'll create DependencyObject Int32RangeChecker. That's simple as well.</p>
+<p></p><pre>    <span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">class</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">Int32RangeChecker</span><span style="color: rgb(0, 0, 0);"> : </span><span style="color: rgb(163, 21, 21);">DependencyObject
+</span><span style="color: rgb(0, 0, 0);">    {
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);"> Minimum
+        {
+            </span><span style="color: rgb(43, 145, 175);">get</span><span style="color: rgb(0, 0, 0);"> { </span><span style="color: rgb(43, 145, 175);">return</span><span style="color: rgb(0, 0, 0);"> (</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">)GetValue(MinimumProperty); }
+            </span><span style="color: rgb(43, 145, 175);">set</span><span style="color: rgb(0, 0, 0);"> { SetValue(MinimumProperty, </span><span style="color: rgb(43, 145, 175);">value</span><span style="color: rgb(0, 0, 0);">); }
+        }
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">readonly</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);"> MinimumProperty =
+            </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);">.Register(</span><span style="color: rgb(255, 0, 255);">"Minimum"</span><span style="color: rgb(0, 0, 0);">, </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(163, 21, 21);">Int32RangeChecker</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">new</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">UIPropertyMetadata</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">.MinValue));
+        
+
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);"> Maximum
+        {
+            </span><span style="color: rgb(43, 145, 175);">get</span><span style="color: rgb(0, 0, 0);"> { </span><span style="color: rgb(43, 145, 175);">return</span><span style="color: rgb(0, 0, 0);"> (</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">)GetValue(MaximumProperty); }
+            </span><span style="color: rgb(43, 145, 175);">set</span><span style="color: rgb(0, 0, 0);"> { SetValue(MaximumProperty, </span><span style="color: rgb(43, 145, 175);">value</span><span style="color: rgb(0, 0, 0);">); }
+        }
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">readonly</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);"> MaximumProperty =
+            </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);">.Register(</span><span style="color: rgb(255, 0, 255);">"Maximum"</span><span style="color: rgb(0, 0, 0);">, </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(163, 21, 21);">Int32RangeChecker</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">new</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">UIPropertyMetadata</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">.MaxValue));
+        
+    }<p>&nbsp;</p></span></pre>
+<p>Now, let's XAML it. I'm using <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/04/15/Converter-and-Validator-in-one-place.aspx">converter-validator explained earlier</a>. You really do not have to do it.</p>
+<p></p><pre><span style="color: rgb(0, 0, 255);">    &lt;</span><span style="color: rgb(255, 0, 0);">TextBox</span><span style="color: rgb(0, 0, 255);">&gt;
+      &lt;</span><span style="color: rgb(255, 0, 0);">TextBox.Text</span><span style="color: rgb(0, 0, 255);">&gt;
+        &lt;</span><span style="color: rgb(255, 0, 0);">Binding</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Path</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">[1]</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">UpdateSourceTrigger</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">PropertyChanged</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">&gt;
+          &lt;</span><span style="color: rgb(255, 0, 0);">Binding.Converter</span><span style="color: rgb(0, 0, 255);">&gt;
+            &lt;</span><span style="color: rgb(255, 0, 0);">local:MyInt32Converter</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">xmlns:local</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">clr-namespace:BindedValidator</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> /&gt;
+          &lt;/</span><span style="color: rgb(255, 0, 0);">Binding.Converter</span><span style="color: rgb(0, 0, 255);">&gt;
+          &lt;</span><span style="color: rgb(255, 0, 0);">Binding.ValidationRules</span><span style="color: rgb(0, 0, 255);">&gt;
+            &lt;</span><span style="color: rgb(255, 0, 0);">local:MinMaxValidationRule</span><span style="color: rgb(0, 0, 255);">/&gt;
+              &lt;</span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(255, 0, 0);">local</span>:MinMaxValidationRule.ValidRange&gt;
+                &lt;<span style="color: rgb(255, 0, 0);">local</span>:Int32RangeChecker
+                  Minimum="{Binding Source={StaticResource dataSource}, Path=MinValue}"
+                  Maximum="{Binding Source={StaticResource dataSource}, Path=MaxValue}"/&gt;
+              &lt;/<span style="color: rgb(255, 0, 0);">local</span>:MinMaxValidationRule.ValidRange&gt;
+            &lt;/<span style="color: rgb(255, 0, 0);">local</span>:MinMaxValidationRule</span><span style="color: rgb(0, 0, 255);">&gt;
+          &lt;/</span><span style="color: rgb(255, 0, 0);">Binding.ValidationRules</span><span style="color: rgb(0, 0, 255);">&gt;
+        &lt;/</span><span style="color: rgb(255, 0, 0);">Binding</span><span style="color: rgb(0, 0, 255);">&gt;
+      &lt;/</span><span style="color: rgb(255, 0, 0);">TextBox.Text</span><span style="color: rgb(0, 0, 255);">&gt;
+    &lt;/</span><span style="color: rgb(255, 0, 0);">TextBox</span><span style="color: rgb(0, 0, 255);">&gt;<p>&nbsp;</p></span></pre>
+<p>There are a couple of tricks here. First, I'm using explicitly set
+UpdateSourceTrigger. This one, will&nbsp;force the validation on
+source&nbsp;change, rather then on focus lost. The other trick, is that
+if you even have data context, or you want to set control as data
+source for internal DP - this will not work. Why? 'cos our dependency
+object is not part of logical tree, so you can not use ElementName or
+DataContext as source for internal data binding.</p>
+<p>So far, so good. What to do if I want to bind to control (e.g. slider) in my page? You have to put <span style="color: rgb(255, 0, 0);">local</span>:Int32RangeChecker DependencyObject in your resources and use it following way.</p>
+<p></p><pre><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(255, 0, 0);">Slider</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Minimum</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">0</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Maximum</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">20</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Value</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">{Binding Source={StaticResource rangeConverter}, Path=Minimum, Mode=OneWayToSource}</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Name</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">minVal</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">/&gt;
+&lt;</span><span style="color: rgb(255, 0, 0);">Slider</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Minimum</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">0</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Maximum</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">20</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Value</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">{Binding Source={StaticResource rangeConverter}, Path=Maximum, Mode=OneWayToSource}</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Name</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">maxVal</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">/&gt;
+    &lt;</span><span style="color: rgb(255, 0, 0);">TextBox</span><span style="color: rgb(0, 0, 255);">&gt;
+      &lt;</span><span style="color: rgb(255, 0, 0);">TextBox.Text</span><span style="color: rgb(0, 0, 255);">&gt;
+        &lt;</span><span style="color: rgb(255, 0, 0);">Binding</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Path</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">[1]</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">UpdateSourceTrigger</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">PropertyChanged</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">&gt;
+          &lt;</span><span style="color: rgb(255, 0, 0);">Binding.Converter</span><span style="color: rgb(0, 0, 255);">&gt;
+            &lt;</span><span style="color: rgb(255, 0, 0);">local:MyInt32Converter</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">xmlns:local</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">clr-namespace:TreeViewItemEdit</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> /&gt;
+          &lt;/</span><span style="color: rgb(255, 0, 0);">Binding.Converter</span><span style="color: rgb(0, 0, 255);">&gt;
+          &lt;</span><span style="color: rgb(255, 0, 0);">Binding.ValidationRules</span><span style="color: rgb(0, 0, 255);">&gt;
+            &lt;</span><span style="color: rgb(255, 0, 0);">local:MinMaxValidationRule</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">ValidRange</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">{StaticResource rangeConverter}</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">/&gt;
+          </span><span style="color: rgb(0, 0, 255);">&lt;/</span><span style="color: rgb(255, 0, 0);">Binding.ValidationRules</span><span style="color: rgb(0, 0, 255);">&gt;
+        &lt;/</span><span style="color: rgb(255, 0, 0);">Binding</span><span style="color: rgb(0, 0, 255);">&gt;
+      &lt;/</span><span style="color: rgb(255, 0, 0);">TextBox.Text</span><span style="color: rgb(0, 0, 255);">&gt;
+    &lt;/</span><span style="color: rgb(255, 0, 0);">TextBox</span><span style="color: rgb(0, 0, 255);">&gt;<p>&nbsp;</p></span></pre>
+<p>Well. That's one of methods to do data binding inside validation
+rule. The other approach is by using Attached Properties. You can
+create static class with properties, can be attached to your validation
+range source. The XAML will looks like this</p>
+<p></p><pre><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(255, 0, 0);">TextBox</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 255);">
+</span><span style="color: rgb(0, 0, 255);">      </span><span style="color: rgb(0, 0, 0);">l:MinMaxValidator.Minimum</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">{Binding Source={StaticResource rangeConverter}, Path=Minimum}</span><span style="color: rgb(0, 0, 255);">"
+</span><span style="color: rgb(0, 0, 255);">      </span><span style="color: rgb(0, 0, 0);">l:MinMaxValidator.Maximum</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">{Binding Source={StaticResource rangeConverter}, Path=Maximum}</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">&gt;
+      &lt;</span><span style="color: rgb(255, 0, 0);">TextBox.Text</span><span style="color: rgb(0, 0, 255);">&gt;
+        &lt;</span><span style="color: rgb(255, 0, 0);">Binding</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Path</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">[1]</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">UpdateSourceTrigger</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">PropertyChanged</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">&gt;
+          &lt;</span><span style="color: rgb(255, 0, 0);">Binding.Converter</span><span style="color: rgb(0, 0, 255);">&gt;
+            &lt;</span><span style="color: rgb(255, 0, 0);">local:MyInt32Converter</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">xmlns:local</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">clr-namespace:TreeViewItemEdit</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> /&gt;
+          &lt;/</span><span style="color: rgb(255, 0, 0);">Binding.Converter</span><span style="color: rgb(0, 0, 255);">&gt;
+        &lt;/</span><span style="color: rgb(255, 0, 0);">Binding</span><span style="color: rgb(0, 0, 255);">&gt;
+      &lt;/</span><span style="color: rgb(255, 0, 0);">TextBox.Text</span><span style="color: rgb(0, 0, 255);">&gt;
+    &lt;/</span><span style="color: rgb(255, 0, 0);">TextBox</span><span style="color: rgb(0, 0, 255);">&gt;<p>&nbsp;</p></span></pre>
+<p>That's looks much better, isn't it? But how to evaluate validation,
+while you are in completely different class. How to know where to do it
+and create "on-the-fly" binding from code. Look here</p>
+<p></p><pre>    <span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">class</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">MinMaxValidator
+</span><span style="color: rgb(0, 0, 0);">    {
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);"> GetMinimum(</span><span style="color: rgb(163, 21, 21);">DependencyObject</span><span style="color: rgb(0, 0, 0);"> obj)
+        {
+            </span><span style="color: rgb(43, 145, 175);">return</span><span style="color: rgb(0, 0, 0);"> (</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">)obj.GetValue(MinimumProperty);
+        }
+
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">void</span><span style="color: rgb(0, 0, 0);"> SetMinimum(</span><span style="color: rgb(163, 21, 21);">DependencyObject</span><span style="color: rgb(0, 0, 0);"> obj, </span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);"> value)
+        {
+            obj.SetValue(MinimumProperty, value);
+        }
+
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">readonly</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);"> MinimumProperty =
+            </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);">.RegisterAttached(</span><span style="color: rgb(0, 128, 0);">"Minimum"</span><span style="color: rgb(0, 0, 0);">, </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(163, 21, 21);">MinMaxValidator</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">new</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">UIPropertyMetadata</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">.MinValue,OnAttachedPropertyChanged));
+
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);"> GetMaximum(</span><span style="color: rgb(163, 21, 21);">DependencyObject</span><span style="color: rgb(0, 0, 0);"> obj)
+        {
+            </span><span style="color: rgb(43, 145, 175);">return</span><span style="color: rgb(0, 0, 0);"> (</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">)obj.GetValue(MaximumProperty);
+        }
+
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">void</span><span style="color: rgb(0, 0, 0);"> SetMaximum(</span><span style="color: rgb(163, 21, 21);">DependencyObject</span><span style="color: rgb(0, 0, 0);"> obj, </span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);"> value)
+        {
+            obj.SetValue(MaximumProperty, value);
+        }
+
+        </span><span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">readonly</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);"> MaximumProperty =
+            </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);">.RegisterAttached(</span><span style="color: rgb(0, 128, 0);">"Maximum"</span><span style="color: rgb(0, 0, 0);">, </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(163, 21, 21);">MinMaxValidator</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">new</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">UIPropertyMetadata</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">.MaxValue,OnAttachedPropertyChanged));
+
+
+        </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">void</span><span style="color: rgb(0, 0, 0);"> OnAttachedPropertyChanged(</span><span style="color: rgb(163, 21, 21);">DependencyObject</span><span style="color: rgb(0, 0, 0);"> obj, </span><span style="color: rgb(163, 21, 21);">DependencyPropertyChangedEventArgs</span><span style="color: rgb(0, 0, 0);"> e)
+        {
+            </span><span style="color: rgb(163, 21, 21);">TextBox</span><span style="color: rgb(0, 0, 0);"> tb = obj </span><span style="color: rgb(43, 145, 175);">as</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">TextBox</span><span style="color: rgb(0, 0, 0);">;
+            </span><span style="color: rgb(43, 145, 175);">if</span><span style="color: rgb(0, 0, 0);"> (tb != </span><span style="color: rgb(43, 145, 175);">null</span><span style="color: rgb(0, 0, 0);">)
+            {
+                </span><span style="color: rgb(43, 145, 175);">if</span><span style="color: rgb(0, 0, 0);"> (!tb.IsInitialized)
+                {
+                    </span><span style="color: rgb(163, 21, 21);">EventHandler</span><span style="color: rgb(0, 0, 0);"> callback = </span><span style="color: rgb(43, 145, 175);">null</span><span style="color: rgb(0, 0, 0);">;
+                    callback = </span><span style="color: rgb(43, 145, 175);">delegate
+</span><span style="color: rgb(0, 0, 0);">                    {
+                        tb.Initialized -= callback;
+                        Validate(tb);
+                    };
+                    tb.Initialized += callback;
+                }
+            }
+        }
+
+        </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">void</span><span style="color: rgb(0, 0, 0);"> Validate(</span><span style="color: rgb(163, 21, 21);">TextBox</span><span style="color: rgb(0, 0, 0);"> tb)
+        { 
+            </span><span style="color: rgb(163, 21, 21);">BindingExpression</span><span style="color: rgb(0, 0, 0);"> exp = tb.GetBindingExpression(</span><span style="color: rgb(163, 21, 21);">TextBox</span><span style="color: rgb(0, 0, 0);">.TextProperty);
+                </span><span style="color: rgb(43, 145, 175);">if</span><span style="color: rgb(0, 0, 0);"> (exp != </span><span style="color: rgb(43, 145, 175);">null</span><span style="color: rgb(0, 0, 0);"> &amp;&amp; exp.ParentBinding != </span><span style="color: rgb(43, 145, 175);">null</span><span style="color: rgb(0, 0, 0);">)
+                {
+                    </span><span style="color: rgb(163, 21, 21);">MinMaxValidationRule</span><span style="color: rgb(0, 0, 0);"> myRule = </span><span style="color: rgb(43, 145, 175);">null</span><span style="color: rgb(0, 0, 0);">;
+                    </span><span style="color: rgb(43, 145, 175);">foreach</span><span style="color: rgb(0, 0, 0);"> (</span><span style="color: rgb(163, 21, 21);">ValidationRule</span><span style="color: rgb(0, 0, 0);"> rule </span><span style="color: rgb(43, 145, 175);">in</span><span style="color: rgb(0, 0, 0);"> exp.ParentBinding.ValidationRules)
+                    {
+                        </span><span style="color: rgb(43, 145, 175);">if</span><span style="color: rgb(0, 0, 0);"> (rule != </span><span style="color: rgb(43, 145, 175);">null</span><span style="color: rgb(0, 0, 0);"> &amp;&amp; rule </span><span style="color: rgb(43, 145, 175);">is</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">MinMaxValidationRule</span><span style="color: rgb(0, 0, 0);">)
+                        {
+                            myRule = rule </span><span style="color: rgb(43, 145, 175);">as</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">MinMaxValidationRule</span><span style="color: rgb(0, 0, 0);">;
+                        }
+                    }
+                    </span><span style="color: rgb(43, 145, 175);">if</span><span style="color: rgb(0, 0, 0);"> (myRule == </span><span style="color: rgb(43, 145, 175);">null</span><span style="color: rgb(0, 0, 0);">)
+                    {
+                        myRule = </span><span style="color: rgb(43, 145, 175);">new</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">MinMaxValidationRule</span><span style="color: rgb(0, 0, 0);">();
+                        exp.ParentBinding.ValidationRules.Add(myRule);
+                    }
+
+                    myRule.ValidRange = </span><span style="color: rgb(43, 145, 175);">new</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">Int32RangeChecker</span><span style="color: rgb(0, 0, 0);">();
+                    </span><span style="color: rgb(163, 21, 21);">Binding</span><span style="color: rgb(0, 0, 0);"> minBinding = </span><span style="color: rgb(43, 145, 175);">new</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">Binding</span><span style="color: rgb(0, 0, 0);">();
+                    minBinding.Source = tb;
+                    minBinding.Path = </span><span style="color: rgb(43, 145, 175);">new</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">PropertyPath</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(163, 21, 21);">MinMaxValidator</span><span style="color: rgb(0, 0, 0);">.MinimumProperty);
+                    
+                    myRule.ValidRange.Maximum = (</span><span style="color: rgb(43, 145, 175);">int</span><span style="color: rgb(0, 0, 0);">)tb.GetValue(</span><span style="color: rgb(163, 21, 21);">MinMaxValidator</span><span style="color: rgb(0, 0, 0);">.MaximumProperty);
+                    myRule.Validate(tb.Text, System.Globalization.</span><span style="color: rgb(163, 21, 21);">CultureInfo</span><span style="color: rgb(0, 0, 0);">.CurrentCulture);
+                }
+        }
+    }<p>&nbsp;</p></span></pre>
+<p>Looks scary, don't it? No fear. That's really simple. The only place
+to look deeper is Validate and OnPropertyChange method. What we're
+doing there? </p>
+<p>First of all, we have to be sure, that the property attached to
+textbox. Then we should check if the textbox initialized. Actually,
+binding and property attachment occures before initialization, so we
+have to subscribe to initialized event and run our code there. What we
+are doing in Validate method?</p>
+<p>The target is get updated values and assign to the validation. It
+can be done by databinding or by regular setter. Now, let's take a
+binding expression from the data source, my properties were attached
+to. Next, we have to tear it's parent binding and find the validatorule
+from validator rules collection, that we need. If this one not found,
+we'll just create new and assign values to&nbsp;its range.</p>
+<p>That's all, folks. We can bind range (or any other properties) of
+our validator and be quiet about triggers, data freshments and other
+nasty things, we suffer before Windows Presentation Foundation.</p>  
+                  
+            <span id="ctl00_Main_ctl07_ctl01">Filed under: <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF/default.aspx" rel="tag">WPF</a>, <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Tips+and+Tricks/default.aspx" rel="tag">Tips and Tricks</a></span><input name="ctl00$Main$ctl07$ctl01" id="ctl00_Main_ctl07_ctl01_State" value="value:Filed%20under%3A%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2FWPF%2Fdefault.aspx%22%20rel%3D%22tag%22%3EWPF%3C%2Fa%3E%2C%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2FTips%2Band%2BTricks%2Fdefault.aspx%22%20rel%3D%22tag%22%3ETips%20and%20Tricks%3C%2Fa%3E" type="hidden">
+    </div>
+        <div class="postfoot">
+            	
+      </div>
+    
+            
+                    <a name="Comments">
+                    </a><h3><a name="Comments">Comments</a></h3>
+<a name="Comments">                    </a><div id="comments">
+<a name="Comments">                
+                    </a><p><a name="Comments">No Comments</a></p>
+<a name="Comments">                
+                        </a></div>
+<a name="Comments">                    </a></div>
+<a name="Comments">                
+            
+            
+            
+            
+                    </a><div id="commentform">
+<a name="Comments">                    </a><h3><a name="Comments">Leave a Comment</a></h3>
+<a name="Comments">	                    </a><dl>
+<a name="Comments">                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle">Title</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02" style="color: Red; visibility: hidden;">*</span></dt>
+	                        <dd><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbTitle" value="re: Fully binded validation by using Dependency and Attached properties" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle" class="smallbox" type="text"></dd>
+
+                            <dt id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_NameTitle"><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName">Name</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10" style="color: Red; visibility: hidden;">*</span></dt>
+                            <dd id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_NameDesc"><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbName" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName" class="smallbox" type="text"></dd>
+
+                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbUrl">Your URL</label> <em>(optional</em>)</dt>
+                            <dd><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbUrl" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbUrl" class="smallbox" type="text"></dd>
+
+                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment">Comments</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07" style="color: Red; visibility: hidden;">*</span></dt>
+                            <dd><textarea name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbComment" rows="5" cols="25" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment"></textarea></dd>
+
+                            <dt><input id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_chkRemember" name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$chkRemember" type="checkbox"><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_chkRemember">Remember Me?</label></dt>
+               
+                            <dt><div id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaPanel" class="Captcha_Div">
+	<img src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/captcha.jpg" style="border-width: 0px;"><br><span>Enter the numbers above: </span><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$CaptchaTextBox" size="3" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaTextBox" type="text"><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13" style="color: Red; display: none;">*</span>
+</div><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$Main$ctl08$ctl02$ctl02$ctl02$btnSubmit", "", true, "CreateCommentForm", "", false, false))' id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_btnSubmit" type="submit"></dt>
+	                    </a></dl>
+<a name="Comments">                    </a></div>
+<a name="Comments">                    
+        
+        
+                    </a></div></div>
+<a name="Comments">                    </a><div id="contentfooter"><a name="Comments">&nbsp;</a></div>
+<a name="Comments">		        </a></div>
+<a name="Comments">                </a><div id="footer">
+<a name="Comments">                    
+					    </a><div class="Copyright"><div align="center"><a name="Comments">‎©2006 Microsoft Corporation. All rights reserved.‎  <span></span></a><a href="http://www.microsoft.com/israel/info/cpyright.asp">תנאי שימוש</a> |<span><a href="http://www.microsoft.com/library/toolbar/3.0/trademarks/he-il.mspx">סימנים מסחריים</a> |</span><span><a href="http://www.microsoft.com/info/iw/privacy.mspx">הצהרת פרטיות</a></span></div></div>
+					    
+					    
+
+                        
+					            <a href="http://communityserver.org/r.ashx?j" target="_blank"><img id="ctl00_BodyFooterRegion_ctl02_ctl03_ctl00" src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/PoweredByCS_commercial.gif" alt="Powered by Community Server (Commercial Edition), by Telligent Systems " style="border-width: 0px;"></a>
+    						
+    					
+					
+                </div>
+            </div>        
+        
+    
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaTextBox";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.display = "Dynamic";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.evaluationfunction = "CustomValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.clientvalidationfunction = "ValidateCaptcha";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.validateemptytext = "true";
+// -->
+</script>
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/05/31/Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx"
+dc:identifier="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/05/31/Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx"
+dc:title="Fully binded validation by using Dependency and Attached properties"
+trackback:ping="http://blogs.microsoft.co.il/blogs/tamir/trackback.ashx?PostID=13945" />
+</rdf:RDF>
+-->
+<script src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/microsft.js" type="text/javascript" charset="utf-8"></script><p class="feedburnerFlareBlock"><a href="http://del.icio.us/post?v=4&amp;partner=fb&amp;url=http%3A%2F%2Fblogs.microsoft.co.il%2Fblogs%2Ftamir%2Farchive%2F2007%2F05%2F31%2FFully-binded-validation-by-using-Dependency-and-Attached-properties.aspx&amp;title=Fully%20binded%20validation%20by%20using%20Dependency%20and%20Attached%20properties" class="first">Add to del.icio.us</a><span> • </span><a href="http://digg.com/submit?phase=2&amp;partner=fb&amp;url=http%3A%2F%2Fblogs.microsoft.co.il%2Fblogs%2Ftamir%2Farchive%2F2007%2F05%2F31%2FFully-binded-validation-by-using-Dependency-and-Attached-properties.aspx&amp;title=Fully+binded+validation+by+using+Dependency+and+Attached+properties">Digg This!</a><span> • </span><a href="http://www.stumbleupon.com/submit?url=http://blogs.microsoft.co.il/blogs/tamir/archive/2007/05/31/Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx&amp;title=Fully%20binded%20validation%20by%20using%20Dependency%20and%20Attached%20properties">Stumble It!</a><span> • </span><a href="http://www.feedburner.com/fb/a/emailFlare?itemTitle=Fully%20binded%20validation%20by%20using%20Dependency%20and%20Attached%20properties&amp;uri=http%3A%2F%2Fblogs.microsoft.co.il%2Fblogs%2Ftamir%2Farchive%2F2007%2F05%2F31%2FFully-binded-validation-by-using-Dependency-and-Attached-properties.aspx">Email this</a></p><script type="text/javascript" charset="utf-8" src="Fully-binded-validation-by-using-Dependency-and-Attached-properties.aspx_files/site-tracker.js"></script> <script type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_Main_ctl07_ctl01 = new Telligent_InlineEditorPanel('ctl00_Main_ctl07_ctl01','ctl00_Main_ctl07_ctl01','ctl00_Main_ctl07_ctl01_State','ctl00_Main_ctl07_ctl00',false,null,null,null);
+// ]]>
+</script>
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        </form>
+</body></html>

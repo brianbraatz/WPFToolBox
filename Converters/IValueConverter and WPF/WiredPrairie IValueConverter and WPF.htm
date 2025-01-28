@@ -1,0 +1,361 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0071)http://www.wiredprairie.us/journal/2006/05/ivalueconverter_and_wpf.html -->
+<HTML id=sixapart-standard xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>WiredPrairie: IValueConverter and WPF</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+href="WiredPrairie IValueConverter and WPF_files/styles-site.css" type=text/css 
+rel=stylesheet><LINK title=Atom 
+href="http://www.wiredprairie.us/journal/atom.xml" type=application/atom+xml 
+rel=alternate><LINK title="RSS 2.0" 
+href="http://www.wiredprairie.us/journal/index.xml" type=application/rss+xml 
+rel=alternate><LINK title=Home href="http://www.wiredprairie.us/journal/" 
+rel=start><LINK title="Knight Rider, the Movie? [sigh]" 
+href="http://www.wiredprairie.us/journal/2006/05/knight_rider_the_movie_sigh.html" 
+rel=prev><LINK title="Google Web Toolkit Released to little fanfair ..." 
+href="http://www.wiredprairie.us/journal/2006/05/google_web_toolkit_released_to.html" 
+rel=next><!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.wiredprairie.us/journal/2006/05/ivalueconverter_and_wpf.html"
+    trackback:ping="http://www.wiredprairie.us/journal/mt/mt-tb.cgi/187"
+    dc:title="IValueConverter and WPF"
+    dc:identifier="http://www.wiredprairie.us/journal/2006/05/ivalueconverter_and_wpf.html"
+    dc:subject="Coding"
+    dc:description="It&apos;s likely at some point you&apos;ll encounter a situation where you want to do some data binding in WPF. However, the data you&apos;re binding to may not be in the format you actually want to display to the end user...."
+    dc:creator="Aaron"
+    dc:date="2006-05-15T20:43:49-06:00" />
+</rdf:RDF>
+-->
+<SCRIPT src="WiredPrairie IValueConverter and WPF_files/mt-site.js" 
+type=text/javascript></SCRIPT>
+</HEAD>
+<BODY class=layout-two-column-right 
+onload=individualArchivesOnLoad(commenter_name)>
+<DIV id=container>
+<DIV class=pkg id=container-inner>
+<DIV id=banner>
+<DIV class=pkg id=banner-inner>
+<FORM action=http://www.wiredprairie.us/journal/mt/mt-search.cgi 
+method=get><INPUT type=hidden value=1 name=IncludeBlogs> <IMG height=14 
+src="WiredPrairie IValueConverter and WPF_files/Search.gif" width=14 border=0> 
+<INPUT id=Text2 name=search> <INPUT type=submit value=Search> 
+</FORM></DIV></DIV>
+<DIV id=navlistbar>
+<UL id=navlist>
+  <LI><A href="http://www.wiredprairie.us/journal/index.html">main</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/freeware.html">free</A> 
+  <LI><A href="http://www.wiredprairie.us/gallery/index.php">gallery</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/myfavorites.html">must 
+  install</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/about.html">about</A> 
+  <LI><A 
+  href="http://www.wiredprairie.us/journal/archivesbymonth.html">archives</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/index.xml"><IMG height=16 
+  alt=feed src="WiredPrairie IValueConverter and WPF_files/rssfeed.png" 
+  width=16></A> 
+  <LI>
+  <FORM action=http://www.wiredprairie.us/journal/mt/mt-search.cgi 
+  method=get><INPUT type=hidden value=1 name=IncludeBlogs> <INPUT id=Text2 
+  name=search> <INPUT type=submit value=Search> </FORM></LI></UL></DIV>
+<DIV id=pagebody>
+<DIV class=pkg id=pagebody-inner>
+<DIV id=alpha>
+<DIV class=pkg id=alpha-inner>
+<P class=content-nav><A 
+href="http://www.wiredprairie.us/journal/2006/05/knight_rider_the_movie_sigh.html">« 
+Knight Rider, the Movie? [sigh]</A> | <A 
+href="http://www.wiredprairie.us/journal/">Main</A> | <A 
+href="http://www.wiredprairie.us/journal/2006/05/google_web_toolkit_released_to.html">Google 
+Web Toolkit Released to little fanfair ... »</A> </P><A id=a000190></A>
+<DIV class=entry id=entry-190>
+<H3 class=entry-header>IValueConverter and WPF</H3>
+<DIV class=entry-content>
+<DIV class=entry-body>
+<P>It's likely at some point you'll encounter a situation where you want to do 
+some data binding in WPF. However, the data you're binding to may not be in the 
+format you actually want to display to the end user. WPF has a relatively simple 
+solution to this problem, <STRONG>value converters</STRONG>.</P>
+<P>In the following example, I wanted to have a slider that as I moved the 
+slider would increase the date on the image displayed. The slider's native data 
+type is a double. I wanted to display the date as Day of the Week, Date. </P>
+<P><IMG class=picture height=288 hspace=0 
+src="WiredPrairie IValueConverter and WPF_files/ValueConverterExample_new.png" 
+width=318 border=0></P>
+<P>As I use the slider, I'd like it to look more like this:</P>
+<P><IMG class=picture height=288 hspace=0 
+src="WiredPrairie IValueConverter and WPF_files/ValueConverterExample2_new.png" 
+width=306 border=0></P>
+<P>The date should update immediately as the slider value changes.</P>
+<P>There's no simple binding that does everything. There might be a completely 
+XAML based solution for this, but obscure XAML isn't the best for long term 
+maintenance, no matter how cool it was that it could be done all in XAML. So, 
+instead I present the value converter.</P>
+<P>Here's the label I'm using:</P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>&lt;</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: Consolas; mso-no-proof: yes">Label</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"> 
+</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: Consolas; mso-no-proof: yes">VerticalAlignment</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">=</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">"<SPAN 
+style="COLOR: blue">Top</SPAN>"<SPAN style="COLOR: blue"> </SPAN><SPAN 
+style="COLOR: red">HorizontalAlignment</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">Center</SPAN>"<SPAN 
+style="COLOR: blue"> </SPAN></SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN></SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: Consolas; mso-no-proof: yes">FontFamily</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">=</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">"<SPAN 
+style="COLOR: blue">Tahoma</SPAN>"<SPAN style="COLOR: blue"> </SPAN></SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN></SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: Consolas; mso-no-proof: yes">Foreground</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">=</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">"<SPAN 
+style="COLOR: blue">White</SPAN>"<SPAN style="COLOR: blue"> </SPAN></SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN></SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: Consolas; mso-no-proof: yes">Content</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">=</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">"<SPAN 
+style="COLOR: blue">{Binding Value, ElementName=DateSlider, Mode=OneWay, 
+Converter={StaticResource SillyDateConvert}}</SPAN>"<SPAN style="COLOR: blue"> 
+</SPAN></SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN></SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: Consolas; mso-no-proof: yes">FontSize</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">=</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">"<SPAN 
+style="COLOR: blue">10pt</SPAN>"<SPAN style="COLOR: blue"> </SPAN></SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN></SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: Consolas; mso-no-proof: yes">FontWeight</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">=</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">"<SPAN 
+style="COLOR: blue">Bold</SPAN>"<SPAN style="COLOR: blue"> </SPAN></SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN></SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: Consolas; mso-no-proof: yes">SnapsToDevicePixels</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">=</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">"<SPAN 
+style="COLOR: blue">True</SPAN>"<SPAN style="COLOR: blue"> 
+&gt;</SPAN></SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>&lt;</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: Consolas; mso-no-proof: yes">Label.BitmapEffect</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">&gt;</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>&lt;</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: Consolas; mso-no-proof: yes">OuterGlowBitmapEffect</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"> 
+</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: Consolas; mso-no-proof: yes">GlowColor</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">=</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">"<SPAN 
+style="COLOR: blue">Black</SPAN>"<SPAN style="COLOR: blue"> </SPAN><SPAN 
+style="COLOR: red">GlowSize</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">2</SPAN>"<SPAN style="COLOR: blue"> </SPAN><SPAN 
+style="COLOR: red">Opacity</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">1</SPAN>"<SPAN style="COLOR: blue"> /&gt;</SPAN></SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>&lt;/</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: Consolas; mso-no-proof: yes">Label.BitmapEffect</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">&gt;</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>&lt;/</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: Consolas; mso-no-proof: yes">Label</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">&gt;<SPAN 
+style="mso-spacerun: yes"> </SPAN></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt">The important attribute to pay 
+particular attention to is the <STRONG>Content</STRONG> attribute of the label. 
+Specifically, the <STRONG>Converter</STRONG> of the Binding. <FONT face=Consolas 
+color=#0000ff size=2>Converter={StaticResource SillyDateConvert} </FONT>refers 
+to a resource I declared in the Resources:</P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes; mso-fareast-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">&lt;</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: Consolas; mso-no-proof: yes; mso-fareast-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">wp:SillyDateConverter</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes; mso-fareast-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA"> 
+</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: Consolas; mso-no-proof: yes; mso-fareast-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">x:Key</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes; mso-fareast-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">=</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes; mso-fareast-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">"<SPAN 
+style="COLOR: blue">SillyDateConvert</SPAN>"<SPAN style="COLOR: blue"> 
+/&gt;</SPAN></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt">The namespace, 
+<STRONG>wp</STRONG>, is declared in the root element as </P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: Consolas; mso-no-proof: yes">xmlns:wp</SPAN><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">=</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">"<SPAN 
+style="COLOR: blue">clr-namespace:ShowValueConverter</SPAN>"</SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt">In a separate code file, I've 
+created a class, called the <STRONG>SillyDateConverter </STRONG>(C# here):</P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">[<SPAN 
+style="COLOR: teal">ValueConversion</SPAN>(<SPAN 
+style="COLOR: blue">typeof</SPAN>(<SPAN style="COLOR: blue">double</SPAN>), 
+<SPAN style="COLOR: blue">typeof</SPAN>(<SPAN 
+style="COLOR: teal">String</SPAN>))]</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Consolas; mso-no-proof: yes">public</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"> <SPAN 
+style="COLOR: blue">class</SPAN> <SPAN 
+style="COLOR: teal">SillyDateConverter</SPAN> : <SPAN 
+style="COLOR: teal">IValueConverter</SPAN></SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">{</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN><SPAN style="COLOR: blue">public</SPAN> <SPAN 
+style="COLOR: blue">object</SPAN> Convert(<SPAN 
+style="COLOR: blue">object</SPAN> value, <SPAN style="COLOR: teal">Type</SPAN> 
+targetType, </SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN><SPAN style="COLOR: blue">object</SPAN> 
+parameter, </SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>System.Globalization.<SPAN 
+style="COLOR: teal">CultureInfo</SPAN> culture)</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>{</SPAN><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"> </SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN><SPAN style="COLOR: teal">DateTime</SPAN> dt = 
+<SPAN style="COLOR: teal">DateTime</SPAN>.Now;</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>dt = dt.AddDays( (<FONT color=#0000ff 
+size=2>double</FONT>) value);</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN><SPAN style="COLOR: blue">return</SPAN> 
+dt.ToString(<SPAN style="COLOR: maroon">"D"</SPAN>);</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>}</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"></SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN><SPAN style="COLOR: blue">public</SPAN> <SPAN 
+style="COLOR: blue">object</SPAN> ConvertBack(<SPAN 
+style="COLOR: blue">object</SPAN> value, </SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN><SPAN style="COLOR: teal">Type</SPAN> 
+targetType, </SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN><SPAN style="COLOR: blue">object</SPAN> 
+parameter, </SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>System.Globalization.<SPAN 
+style="COLOR: teal">CultureInfo</SPAN> culture)</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>{</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN><SPAN style="COLOR: blue">throw</SPAN> <SPAN 
+style="COLOR: blue">new</SPAN> <SPAN style="COLOR: teal">Exception</SPAN>(<SPAN 
+style="COLOR: maroon">"The method or operation is not 
+implemented."</SPAN>);</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes"><SPAN 
+style="mso-spacerun: yes"></SPAN>}</SPAN></P>
+<P class=MsoNormal 
+style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: Consolas; mso-no-proof: yes">}</SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt">Since my code only does one way 
+binding, I've left the default exception in the <STRONG>ConvertBack</STRONG> 
+method. In the <STRONG>Convert</STRONG> method, I use the bound value from the 
+slider (passed as <STRONG>value</STRONG>), to construct and then return the 
+formatted date. </P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt">As a final example, I added 
+another converter to round a double. For some reason, the slider doesn't quite 
+operate the way I'd expect. Even though small change is set to 1, it allows 
+decimals to creep in if I use the mouse.</P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"><IMG class=picture height=276 
+hspace=0 
+src="WiredPrairie IValueConverter and WPF_files/ValueConverterExample3_new.png" 
+width=296 border=0></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt">Here is the sample project (zip): 
+<A 
+href="http://www.wiredprairie.us/journal/images/ShowValueConverter.zip">ShowValueConverter.zip 
+(21 KB)</A></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt"></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt">Built and tested with the 
+Feb/March 2006 CTP of WPF.</P></DIV>
+<DIV class=entry-more id=more></DIV></DIV>
+<P class=entry-footer><SPAN class=post-footers>Posted by Aaron on May 15, 2006 
+8:43 PM</SPAN> <SPAN class=separator>|</SPAN> <A class=permalink 
+href="http://www.wiredprairie.us/journal/2006/05/ivalueconverter_and_wpf.html">Permalink</A> 
+</P></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<SCRIPT src="WiredPrairie IValueConverter and WPF_files/urchin.js" 
+type=text/javascript>
+</SCRIPT>
+
+<SCRIPT type=text/javascript>
+_uacct = "UA-635767-1";
+urchinTracker();
+</SCRIPT>
+</BODY></HTML>

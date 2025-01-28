@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1"><title>WPF: Getting, sorting and filtering information in pure XAML (well almost)</title>
+
+
+
+
+  
+
+    <style type="text/css">
+    
+      .spanOption
+      {
+        font-weight: bold;        
+      }
+      
+      .spanMethod
+      {
+        font-weight: bold;        
+      }
+      
+      .spanParameter
+      {
+        font-weight: bold;
+      }
+    
+    </style>
+
+    <link rel="Stylesheet" type="text/css" href="Getting%20sorting%20and%20filtering%20information%20in%20pure%20XAML_files/gslb.css"><link rel="Stylesheet" type="text/css" href="Getting%20sorting%20and%20filtering%20information%20in%20pure%20XAML_files/gslb_002.css"><link rel="Stylesheet" type="text/css" href="Getting%20sorting%20and%20filtering%20information%20in%20pure%20XAML_files/manoli.css">
+    
+    <script type="text/javascript" src="Getting%20sorting%20and%20filtering%20information%20in%20pure%20XAML_files/gslb.js"></script>
+    <script type="text/javascript" src="Getting%20sorting%20and%20filtering%20information%20in%20pure%20XAML_files/gslb_004.js"></script>
+    <script type="text/javascript" src="Getting%20sorting%20and%20filtering%20information%20in%20pure%20XAML_files/gslb_002.js"></script>
+    <script type="text/javascript" src="Getting%20sorting%20and%20filtering%20information%20in%20pure%20XAML_files/gslb_003.js"></script></head><body>
+    <form name="frmMain" method="post" action="article-2007081301.aspx" id="frmMain">
+<div>
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTE5MDEwMTE5MWRk" type="hidden">
+</div>
+
+
+      <a id="lnkHome" href="http://www.galasoft.ch/index.html" target="_top" class="gslb_mainLnkHome" style="top: 8px; left: 8px;">
+        <img src="Getting%20sorting%20and%20filtering%20information%20in%20pure%20XAML_files/vsmallhead.gif" alt="Navigate back home" title="Navigate back home">
+      </a>
+      <script type="text/javascript">
+        new gslb.PositionedNode( document.getElementById( 'lnkHome' ) );
+      </script>
+    
+      <div class="gslb_mainDivImageTitle">
+        <img alt="GalaSoft Laurent Bugnion" title="GalaSoft Laurent Bugnion" src="Getting%20sorting%20and%20filtering%20information%20in%20pure%20XAML_files/header.gif" class="gslb_mainImgTitle">
+      </div>
+      
+      <div class="gslb_rsbDivPosting" style="margin-top: 2em; width: 60%;">
+        <div class="gslb_rsbDivPostingTitle">
+          WPF: Getting, sorting and filtering information in pure XAML (well almost)
+        </div>
+
+        <table style="margin: 0pt; width: 100%;">
+          <tbody><tr>
+            <td>
+              <div class="gslb_mainDivSummary">
+                <a href="#intro">Introduction</a> /
+                <a href="#binding">Binding to CultureInfo.GetCultures</a> /
+                <a href="#sortinggrouping">Sorting and grouping</a> /
+                <a href="#filtering">Filtering</a>
+              </div>
+            </td>
+            <td style="text-align: right; vertical-align: top;">
+              <div class="gslb_mainDivSummary">
+                <a href="http://www.galasoft.ch/mydotnet/articles/article-2007061401.aspx">&lt;&lt;&nbsp;Prev</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/articles_en.html#wpf">Index</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/mydotnet/articles/article-2007091401.html">Next&nbsp;&gt;&gt;</a>
+              </div>
+            </td>
+          </tr>
+        </tbody></table>
+        
+<div class="gslb_rsbDivFeature">
+<p class="gslb_rsbPParagraph">
+<a id="intro"></a>One question on the <a href="http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=1994315&amp;SiteID=1&amp;mode=1" target="_blank">WPF forum</a>
+caught my attention. It was a nice challenge, so I decided to give it a
+try. It turned out not bad, so I thought I would post it here for
+future reference.
+</p>
+<p class="gslb_rsbPParagraph">The question is: How to display all the
+cultures in a ListBox, and filter to display only these starting with
+"en-". Good news is: you can do a lot of that in pure XAML. Bad news
+is: If you want to filter, you need code-behind.
+</p>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="binding"></a>Binding to CultureInfo.GetCultures
+</div>
+<p class="gslb_rsbPParagraph">
+To display all the Cultures, you can create an <a href="http://msdn2.microsoft.com/en-us/library/system.windows.data.objectdataprovider.aspx" target="_blank">ObjectDataProvider</a> and initialize it using the static method <a href="http://msdn2.microsoft.com/en-us/library/system.globalization.cultureinfo.getcultures%28VS.71%29.aspx" target="_blank">CultureInfo.GetCultures</a>. However, this method takes a parameter, so you must call it in the correct way:
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">Window</span>
+    <span class="attr">x:Class</span><span class="kwrd">="WindowsApplication1.Window1"</span>
+    <span class="attr">xmlns</span><span class="kwrd">="http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span>
+    <span class="attr">xmlns:x</span><span class="kwrd">="http://schemas.microsoft.com/winfx/2006/xaml"</span>
+    <span class="attr">Title</span><span class="kwrd">="WindowsApplication1"</span>
+    <span class="attr">Height</span><span class="kwrd">="300"</span> <span class="attr">Width</span><span class="kwrd">="300"</span>
+    <span class="attr">xmlns:global</span><span class="kwrd">="clr-namespace:System.Globalization;assembly=mscorlib"</span>
+    <span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">Window.Resources</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">ObjectDataProvider</span> <span class="attr">x:Key</span><span class="kwrd">="CulturesProvider"</span>
+                            <span class="attr">ObjectType</span><span class="kwrd">="{x:Type global:CultureInfo}"</span> 
+                            <span class="attr">MethodName</span><span class="kwrd">="GetCultures"</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">ObjectDataProvider.MethodParameters</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">global:CultureTypes</span><span class="kwrd">&gt;</span>AllCultures<span class="kwrd">&lt;/</span><span class="html">global:CultureTypes</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">ObjectDataProvider.MethodParameters</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">ObjectDataProvider</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">Window.Resources</span><span class="kwrd">&gt;</span>
+    
+    <span class="kwrd">&lt;</span><span class="html">Grid</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">ListBox</span> <span class="attr">ItemsSource</span><span class="kwrd">="{Binding Source={StaticResource CulturesProvider}}"</span><span class="kwrd">/&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">Grid</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">Window</span><span class="kwrd">&gt;</span>
+</div>
+<div class="gslb_rsbDivLegend">
+Displaying all CultureInfos in a ListBox
+</div>
+</div>
+<p class="gslb_rsbPParagraph">In the code above, note the use of the
+System.Globalization namespace through the addition of the xmlns:global
+prefix. Also, note the use of <a href="http://msdn2.microsoft.com/en-us/library/system.windows.data.objectdataprovider.methodparameters.aspx" target="_blank">ObjectDataProvider.MethodParameters</a>
+to specify which overload of the static method GetCultures must be
+called, and to pass it the value AllCultures of the enumeration <a href="http://msdn2.microsoft.com/en-us/library/system.globalization.culturetypes.aspx" target="_blank">System.Globalization.CultureTypes</a>.
+</p>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="sortinggrouping"></a>Sorting and grouping
+</div>
+<p class="gslb_rsbPParagraph">
+Sorting and grouping is also possible in pure XAML. To sort and group a collection (in our case, an array), you use a <a href="http://msdn2.microsoft.com/en-us/library/system.windows.data.collectionviewsource.aspx" target="_blank">CollectionViewSource</a> object. This object has two properties <a href="http://msdn2.microsoft.com/en-us/library/system.windows.data.collectionviewsource.sortdescriptions.aspx" target="_blank">CollectionViewSource.SortDescriptions</a> and <a href="http://msdn2.microsoft.com/en-us/library/system.windows.data.collectionviewsource.groupdescriptions.aspx" target="_blank">CollectionViewSource.GroupDescriptions</a>.
+For example, the following code displays all the Cultures, grouped
+according to their parent (for example, "en-UK" and "en-US" both have
+the parent "en".
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">Window</span>
+    <span class="attr">x:Class</span><span class="kwrd">="WindowsApplication1.Window1"</span>
+    <span class="attr">xmlns</span><span class="kwrd">="http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span>
+    <span class="attr">xmlns:x</span><span class="kwrd">="http://schemas.microsoft.com/winfx/2006/xaml"</span>
+    <span class="attr">Title</span><span class="kwrd">="WindowsApplication1"</span>
+    <span class="attr">Height</span><span class="kwrd">="300"</span> <span class="attr">Width</span><span class="kwrd">="300"</span>
+    <span class="attr">xmlns:global</span><span class="kwrd">="clr-namespace:System.Globalization;assembly=mscorlib"</span>
+    <span class="attr">xmlns:scm</span><span class="kwrd">="clr-namespace:System.ComponentModel;assembly=WindowsBase"</span>
+    <span class="attr">xmlns:dat</span><span class="kwrd">="clr-namespace:System.Windows.Data;assembly=PresentationFramework"</span>
+    <span class="kwrd">&gt;</span>
+
+    <span class="kwrd">&lt;</span><span class="html">Window.Resources</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">ObjectDataProvider</span> <span class="attr">x:Key</span><span class="kwrd">="CulturesProvider"</span>
+                            <span class="attr">ObjectType</span><span class="kwrd">="{x:Type global:CultureInfo}"</span> 
+                            <span class="attr">MethodName</span><span class="kwrd">="GetCultures"</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">ObjectDataProvider.MethodParameters</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">global:CultureTypes</span><span class="kwrd">&gt;</span>AllCultures<span class="kwrd">&lt;/</span><span class="html">global:CultureTypes</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">ObjectDataProvider.MethodParameters</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">ObjectDataProvider</span><span class="kwrd">&gt;</span>
+
+        <span class="kwrd">&lt;</span><span class="html">CollectionViewSource</span> <span class="attr">x:Key</span><span class="kwrd">="MyCVS"</span>
+                              <span class="attr">Source</span><span class="kwrd">="{StaticResource CulturesProvider}"</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">CollectionViewSource.SortDescriptions</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">scm:SortDescription</span> <span class="attr">PropertyName</span><span class="kwrd">="IetfLanguageTag"</span> <span class="kwrd">/&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">CollectionViewSource.SortDescriptions</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">CollectionViewSource.GroupDescriptions</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">dat:PropertyGroupDescription</span> <span class="attr">PropertyName</span><span class="kwrd">="Parent"</span> <span class="kwrd">/&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">CollectionViewSource.GroupDescriptions</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">CollectionViewSource</span><span class="kwrd">&gt;</span>
+
+    <span class="kwrd">&lt;/</span><span class="html">Window.Resources</span><span class="kwrd">&gt;</span>
+    
+    <span class="kwrd">&lt;</span><span class="html">Grid</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">ListBox</span> <span class="attr">ItemsSource</span><span class="kwrd">="{Binding Source={StaticResource MyCVS}}"</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">ListBox.GroupStyle</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">x:Static</span> <span class="attr">Member</span><span class="kwrd">="GroupStyle.Default"</span><span class="kwrd">/&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">ListBox.GroupStyle</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">ListBox</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">Grid</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">Window</span><span class="kwrd">&gt;</span>
+</div>
+<div class="gslb_rsbDivLegend">
+Sorting and grouping in XAML
+</div>
+</div>
+<p class="gslb_rsbPParagraph">
+Note the use of the structure <a href="http://msdn2.microsoft.com/en-us/library/system.componentmodel.sortdescription.aspx" target="_blank">System.ComponentModel.SortDescription</a> and the class <a href="http://msdn2.microsoft.com/en-us/library/system.windows.data.propertygroupdescription.aspx" target="_blank">System.Windows.Data.PropertyGroupDescription</a>.
+Because these objects are defined in other namespaces and assemblies,
+they must be mapped again using the "scm" and "dat" prefix (the names
+of the prefixes is free, it can be anything). Also, note the use of the
+<a href="http://msdn2.microsoft.com/en-us/library/system.windows.controls.itemscontrol.groupstyle.aspx" target="_blank">GroupStyle</a> property on the ListBox to specify how the items must be grouped.
+</p>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="filtering"></a>Filtering
+</div>
+<p class="gslb_rsbPParagraph">
+What we want to do now is filtering according to the <a href="http://msdn2.microsoft.com/en-us/library/system.globalization.cultureinfo.ietflanguagetag.aspx" target="_blank">CultureInfo.IetfLanguageTag</a> and display only items of which that tag starts with "en-" (another way would be to check the <a href="http://msdn2.microsoft.com/en-us/library/system.globalization.cultureinfo.parent.aspx" target="_blank">CultureInfo.Parent</a>
+property). Unfortunately, there is no way to filter a
+CollectionViewSource in pure XAML. So we'll need a little snippet of
+code-behind. Filtering is done by specifying an event handler for the <a href="http://msdn2.microsoft.com/en-us/library/system.windows.data.collectionviewsource.filter.aspx" target="_blank">Filter</a> event. This event handler then uses the parameter "e" (of type <a href="http://msdn2.microsoft.com/en-us/library/system.windows.data.filtereventargs.aspx" target="_blank">FilterEventArgs</a>) to accept of reject items.
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">Window</span>
+    <span class="attr">x:Class</span><span class="kwrd">="WindowsApplication1.Window1"</span>
+    <span class="attr">xmlns</span><span class="kwrd">="http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span>
+    <span class="attr">xmlns:x</span><span class="kwrd">="http://schemas.microsoft.com/winfx/2006/xaml"</span>
+    <span class="attr">Title</span><span class="kwrd">="WindowsApplication1"</span>
+    <span class="attr">Height</span><span class="kwrd">="300"</span> <span class="attr">Width</span><span class="kwrd">="300"</span>
+    <span class="attr">xmlns:global</span><span class="kwrd">="clr-namespace:System.Globalization;assembly=mscorlib"</span>
+    <span class="kwrd">&gt;</span>
+
+    <span class="kwrd">&lt;</span><span class="html">Window.Resources</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">ObjectDataProvider</span> <span class="attr">x:Key</span><span class="kwrd">="CulturesProvider"</span>
+                            <span class="attr">ObjectType</span><span class="kwrd">="{x:Type global:CultureInfo}"</span> 
+                            <span class="attr">MethodName</span><span class="kwrd">="GetCultures"</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">ObjectDataProvider.MethodParameters</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">global:CultureTypes</span><span class="kwrd">&gt;</span>AllCultures<span class="kwrd">&lt;/</span><span class="html">global:CultureTypes</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">ObjectDataProvider.MethodParameters</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">ObjectDataProvider</span><span class="kwrd">&gt;</span>
+
+        <span class="kwrd">&lt;</span><span class="html">CollectionViewSource</span> <span class="attr">x:Key</span><span class="kwrd">="MyCVS"</span>
+                              <span class="attr">Source</span><span class="kwrd">="{StaticResource CulturesProvider}"</span>
+                              <span class="attr">Filter</span><span class="kwrd">="MyCVS_Filter"</span> <span class="kwrd">/&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">Window.Resources</span><span class="kwrd">&gt;</span>
+    
+    <span class="kwrd">&lt;</span><span class="html">Grid</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">ListBox</span> <span class="attr">ItemsSource</span><span class="kwrd">="{Binding Source={StaticResource MyCVS}}"</span><span class="kwrd">/&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">Grid</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">Window</span><span class="kwrd">&gt;</span>
+</div>
+</div>
+<p class="gslb_rsbPParagraph">
+with (code behind)
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">void</span> MyCVS_Filter(<span class="kwrd">object</span> sender, <span class="type">FilterEventArgs</span> e)
+{
+    <span class="type">CultureInfo</span> item = e.Item <span class="kwrd">as</span> <span class="type">CultureInfo</span>;
+    <span class="kwrd">if</span> (item.IetfLanguageTag.StartsWith(<span class="str">"en-"</span>))
+    {
+        e.Accepted = <span class="kwrd">true</span>;
+    }
+    <span class="kwrd">else</span>
+    {
+        e.Accepted = <span class="kwrd">false</span>;
+    }
+}
+</div>
+</div>
+<p class="gslb_rsbPParagraph">
+I hope that this helps people understand using ObjectDataProviders in
+XAML and also CollectionViewSources. For further examples, I encourage
+you to refer to Beatriz Costa excellent (but unfortunately too rare)
+postings in <a href="http://www.beacosta.com/" target="_blank">her own blog</a>.
+</p>
+</div>
+
+      
+    
+    
+  </div></form></body></html>

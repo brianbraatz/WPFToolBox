@@ -1,0 +1,484 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0064)http://blogs.msdn.com/johngossman/archive/2006/02/26/539598.aspx -->
+<HTML><HEAD><TITLE>Tales from the Smart Client : Model-View-ViewModel pattern example</TITLE>
+<META 
+content="I've been promising an example of the Model-View-ViewModel pattern for some time. With the Feb CTP of WinFX out and the Feb CTP of Expression Interactive Designer close, I feel like I can post something that will work for awhile. I had more ambitious" 
+name=description>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+href="http://blogs.msdn.com/johngossman/pingback.aspx" rel=pingback><LINK 
+media=print 
+href="Tales from the Smart Client  Model-View-ViewModel pattern example_files/print.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Tales from the Smart Client  Model-View-ViewModel pattern example_files/Common.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Tales from the Smart Client  Model-View-ViewModel pattern example_files/Blog.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Tales from the Smart Client  Model-View-ViewModel pattern example_files/common_print.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Tales from the Smart Client  Model-View-ViewModel pattern example_files/blog_print.css" 
+type=text/css rel=stylesheet><LINK href="/favicon.ico" type=image/ico 
+rel="shortcut icon"><LINK title="Tales from the Smart Client (RSS 2.0)" 
+href="http://blogs.msdn.com/johngossman/rss.xml" type=application/rss+xml 
+rel=alternate><LINK title="Tales from the Smart Client (Atom 1.0)" 
+href="http://blogs.msdn.com/johngossman/atom.xml" type=application/atom+xml 
+rel=alternate><LINK 
+title="Model-View-ViewModel pattern example Comment RSS (RSS 2.0)" 
+href="http://blogs.msdn.com/johngossman/commentrss.aspx?PostID=539598" 
+type=application/rss+xml rel=alternate>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<SCRIPT 
+src="Tales from the Smart Client  Model-View-ViewModel pattern example_files/global.js" 
+type=text/javascript></SCRIPT>
+
+<STYLE type=text/css>BODY {
+	FONT-SIZE: 84%
+}
+</STYLE>
+
+<SCRIPT language=JavaScript>var doImage=doImage;var TType=TType;
+function mhHover(tbl,idx,cls){var t,d;if(document.getElementById)t=document.getElementById(tbl);else t=document.all(tbl);if(t==null)return;if(t.getElementsByTagName)d=t.getElementsByTagName("TD");else d=t.all.tags("TD");if(d==null)return;if(d.length<=idx)return;d[idx].className=cls;}
+
+</SCRIPT>
+
+<SCRIPT language=javascript 
+src="Tales from the Smart Client  Model-View-ViewModel pattern example_files/minmax.js" 
+type=text/javascript></SCRIPT>
+</HEAD>
+<BODY>
+<FORM id=aspnetForm name=aspnetForm 
+action=/johngossman/archive/2006/02/26/539598.aspx method=post>
+<DIV><INPUT id=__VIEWSTATE type=hidden 
+value=/wEPDwUKLTMyNjg0MDc1MWRk4kqgif0qb+BsXqBU64DM+rPSfXA= name=__VIEWSTATE> 
+</DIV>
+<SCRIPT language=javascript 
+src="Tales from the Smart Client  Model-View-ViewModel pattern example_files/Telligent_Modal.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT language=javascript type=text/javascript>
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['CommonModal'],['CommonModalTitle'],['CommonModalClose'],['CommonModalContent'],['CommonModalFooter'],['CommonModalResize'],['CommonModalMask'],100);
+// ]]>
+</SCRIPT>
+
+<DIV id=AllContent>
+<DIV id=CommonHeader>
+<DIV id=msviMasthead>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD width="100%">
+      <TABLE height=22 cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD id=msviRegionIdGraphic bgColor=#ffffff></TD>
+          <TD width="100%" bgColor=#3568cc><IMG title="" height=22 alt=* 
+            src="Tales from the Smart Client  Model-View-ViewModel pattern example_files/topGradient.jpg" 
+            width=250></TD></TR></TBODY></TABLE></TD>
+    <TD id=msviGlobalToolbar noWrap align=left bgColor=#3568cc height=22>
+      <TABLE cellSpacing=0 cellPadding=0 border=0>
+        <TBODY>
+        <TR>
+          <TD class=gt0 onmouseover="mhHover('msviGlobalToolbar', 0, 'gt1')" 
+          onmouseout="mhHover('msviGlobalToolbar', 0, 'gt0')" noWrap><A 
+            style="FONT-SIZE: 95%" 
+            href="http://www.microsoft.com/">Microsoft.com Home</A></TD>
+          <TD class=gtsep>|</TD>
+          <TD class=gt0 onmouseover="mhHover('msviGlobalToolbar', 2, 'gt1')" 
+          onmouseout="mhHover('msviGlobalToolbar', 2, 'gt0')" noWrap><A 
+            style="FONT-SIZE: 95%" 
+            href="http://www.microsoft.com/library/toolbar/3.0/sitemap/en-us.mspx">Site 
+            Map</A></TD></TR></TBODY></TABLE></TD></TR>
+  <TR vAlign=top>
+    <TD width="100%">
+      <TABLE height=42 cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD id=msviBrandBanner bgColor=#ffffff><A 
+            href="http://msdn.microsoft.com/"><IMG title="" height=42 alt=MSDN 
+            src="Tales from the Smart Client  Model-View-ViewModel pattern example_files/msdn_masthead_ltr.gif" 
+            width=225 border=0></A></TD>
+          <TD width="100%" bgColor=#6799ff><IMG title="" height=42 alt=* 
+            src="Tales from the Smart Client  Model-View-ViewModel pattern example_files/topGradient2.jpg" 
+            width=250></TD></TR></TBODY></TABLE></TD>
+    <TD id=msviGlobalSearch bgColor=#6799ff>
+      <DIV id=msviNoSearch></DIV></TD></TR></TBODY></TABLE>
+<DIV id=msviLocalToolbar>
+<TABLE height=19 cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD id=msviHomePageLink noWrap width=177><A 
+      href="http://msdn.microsoft.com/">MSDN Home</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 2, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 2, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/developercenters/">Developer 
+Centers</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 4, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 4, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/flash">MSDN Flash</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 6, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 6, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/subscriptions/">Subscribers</A></TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 8, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 8, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 10, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 10, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 12, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 12, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 14, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 14, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 16, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 16, 'lt0')" noWrap>&nbsp;</TD>
+    <TD width="100%"></TD></TR></TBODY></TABLE></DIV></DIV></DIV>
+<TABLE dir=ltr cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD id=CommonLeftColumn 
+    style="BORDER-RIGHT: #999999 1px solid; OVERFLOW-X: hidden" width=181 
+    bgColor=#f1f1f1 height="100%">
+      <DIV class=mnpMenuTop id=mnpMenuTop>
+      <DIV class=mnpInherit>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent><A 
+      href="http://blogs.msdn.com/default.aspx">Blogs Home</A> </DIV></DIV>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent><A 
+      id=ctl00___ctl00___ctl00_ctl00_AggWelcome___Login 
+      href="http://blogs.msdn.com/login.aspx?ReturnUrl=%2fjohngossman%2farchive%2f2006%2f02%2f26%2f539598.aspx">Sign 
+      in</A> | <A id=ctl00___ctl00___ctl00_ctl00_AggWelcome___Register 
+      href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/johngossman/archive/2006/02/26/539598.aspx">Join</A> 
+      </DIV></DIV>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A href="http://blogs.msdn.com/search/">Search</A> 
+        <LI><A href="http://blogs.msdn.com/MainFeed.aspx?Type=AllBlogs">RSS</A> 
+        <LI><A href="http://blogs.msdn.com/Opml.aspx">OPML</A> 
+      </LI></UL></DIV></DIV></DIV></DIV>
+      <DIV class=mnpAds 
+      style="BACKGROUND: #f1f1f1; PADDING-BOTTOM: 20px; WIDTH: 181px; HEIGHT: 100%"></DIV></TD>
+    <TD width="100%">
+      <TABLE style="TABLE-LAYOUT: fixed" cellSpacing=0 cellPadding=0 
+      width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD width="100%">
+            <DIV class=clsDocBody id=pageContainer>
+            <DIV class=CommonContentArea>
+            <H2 class=CommonTitle><A class=headermaintitle 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_bth___BlogTitle 
+            href="http://blogs.msdn.com/johngossman/default.aspx">Tales from the 
+            Smart Client</A></H2>
+            <DIV class=CommonContent>John Gossman's observations on Avalon 
+            development</DIV>
+            <DIV class=CommonContent>
+            <STYLE>.DoNotDisplay {
+	DISPLAY: none
+}
+</STYLE>
+
+            <DIV class=BlogPostArea>
+            <H4 class=BlogPostHeader>Model-View-ViewModel pattern example </H4>
+            <DIV class=BlogPostContent>
+            <P>I've been promising an example of the Model-View-ViewModel 
+            pattern for some time.&nbsp; With the Feb CTP of WinFX out and the 
+            Feb CTP of Expression Interactive Designer close, I feel like I can 
+            post something that will work for awhile.&nbsp; I had more ambitious 
+            plans for a complex, real-world example, but realized that 1)&nbsp; 
+            I didn't have much time to write such a beast and 2)&nbsp; It was 
+            hard to create a complex example that still clearly explained the 
+            principles.&nbsp; </P>
+            <P>So, I came up with the idea of doing a toy contact 
+            database.&nbsp; The core model classes looks like this:</P>
+            <P>
+            <TABLE style="MARGIN-BOTTOM: 0px" cellSpacing=0 cellPadding=0 
+            width="100%">
+              <TBODY>
+              <TR>
+                <TD 
+                style="PADDING-RIGHT: 5px; PADDING-LEFT: 5px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px" 
+                vAlign=top colSpan=2><PRE><FONT color=#1000a0>public</FONT> <FONT color=#1000a0>class</FONT> <B>Contact</B>
+{
+      <FONT color=#808080>// Methods</FONT>
+      <FONT color=#1000a0>public</FONT> <B>Contact</B>(<A title=System.String href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=1"><FONT color=#006018>string</FONT></A> name, <A title=ContactsModel.Gender href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=2"><FONT color=#006018>Gender</FONT></A> gender, <A title=System.String href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=3"><FONT color=#006018>string</FONT></A> favoriteColor);
+      <FONT color=#1000a0>public</FONT> <FONT color=#1000a0>override</FONT> <A title=System.String href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=4"><FONT color=#006018>string</FONT></A> <B>ToString</B>();
+
+      <FONT color=#808080>// Properties</FONT>
+      <FONT color=#1000a0>public</FONT> <A title=System.String href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=5"><FONT color=#006018>string</FONT></A> <B>FavoriteColor</B> { <FONT color=#1000a0>get</FONT>; }
+      <FONT color=#1000a0>public</FONT> <A title=ContactsModel.Gender href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=6"><FONT color=#006018>Gender</FONT></A> <B>Gender</B> { <FONT color=#1000a0>get</FONT>; }
+      <FONT color=#1000a0>public</FONT> <A title=System.String href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=7"><FONT color=#006018>string</FONT></A> <B>Name</B> { <FONT color=#1000a0>get</FONT>; }
+}</PRE></TD></TR></TBODY></TABLE></P>
+            <P>
+            <TABLE style="MARGIN-BOTTOM: 0px" cellSpacing=0 cellPadding=0 
+            width="100%">
+              <TBODY>
+              <TR>
+                <TD 
+                style="PADDING-RIGHT: 5px; PADDING-LEFT: 5px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px" 
+                vAlign=top colSpan=2><PRE><FONT color=#1000a0>public</FONT> <FONT color=#1000a0>class</FONT> <B>ContactDatabase</B>
+{
+      <FONT color=#808080>// Events</FONT>
+      <FONT color=#1000a0>public</FONT> <FONT color=#1000a0>event</FONT> <A title=ContactsModel.ContactsChangedEventHandler href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=1"><FONT color=#006018>ContactsChangedEventHandler</FONT></A> <B>ContactDatabaseChanged</B>;
+
+      <FONT color=#808080>// Methods</FONT>
+      <FONT color=#1000a0>public</FONT> <B>ContactDatabase</B>();
+      <FONT color=#1000a0>public</FONT> <A title=System.Void href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=2"><FONT color=#006018>void</FONT></A> <B>AddContact</B>(<A title=ContactsModel.Contact href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=3"><FONT color=#006018>Contact</FONT></A> newContact);
+      <FONT color=#1000a0>private</FONT> <A title=System.Void href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=4"><FONT color=#006018>void</FONT></A> <B>OnContactDatabaseChanged</B>(<A title=ContactsModel.ContactsChangedType href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=5"><FONT color=#006018>ContactsChangedType</FONT></A> changeType, <A title=System.Int32 href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=6"><FONT color=#006018>int</FONT></A> index, <A title=ContactsModel.Contact href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=7"><FONT color=#006018>Contact</FONT></A> contact);
+      <FONT color=#1000a0>public</FONT> <A title=System.Void href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=8"><FONT color=#006018>void</FONT></A> <B>RemoveContact</B>(<A title=System.Int32 href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=9"><FONT color=#006018>int</FONT></A> index);
+
+      <FONT color=#808080>// Properties</FONT>
+      <FONT color=#1000a0>public</FONT> <A title="System.Collections.ObjectModel.ReadOnlyCollection<Contact>" href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=10"><FONT color=#006018>ReadOnlyCollection</FONT></A>&lt;<A title=ContactsModel.Contact href="http://www.aisto.com/roeder/dotnet/Default.aspx?Object=11"><FONT color=#006018>Contact</FONT></A>&gt; <B>Contacts</B> { <FONT color=#1000a0>get</FONT>; }
+}</PRE></TD></TR></TBODY></TABLE></P>
+            <P>Notice the classes have no special WPF dependencies.&nbsp; 
+            Imagine this is a pre-existing model, perhaps an interchange schema 
+            or a web-service with no UI or specific UI technology in mind.&nbsp; 
+            What I will be demonstrating is how to wrap this Model in a 
+            ViewModel an then build a UI on that ViewModel, all without changing 
+            the Model and especially without mixing UI code into it.</P>
+            <P>But to start, I want to show how much you can do with WPF data 
+            binding to just bind directly to the model...without any additional 
+            code.&nbsp; It turns out, quite alot.&nbsp; Here's a scrap of XAML I 
+            created using Expression:</P>
+            <P>&nbsp;&lt;!-- The code will set the data context for this item 
+            --&gt;<BR>&nbsp;&lt;Grid&nbsp; x:Name="MasterDetailContainer" 
+            <BR>&nbsp;&nbsp;&nbsp;Margin="28,25,28,11" 
+            RenderTransformOrigin="0.5,0.5"&gt;<BR>&nbsp;&nbsp;&lt;Grid.ColumnDefinitions&gt;<BR>&nbsp;&nbsp;&nbsp;&lt;ColumnDefinition 
+            Width="0.45*"/&gt;<BR>&nbsp;&nbsp;&nbsp;&lt;ColumnDefinition 
+            Width="0.55*"/&gt;<BR>&nbsp;&nbsp;&lt;/Grid.ColumnDefinitions&gt;<BR>&nbsp;&nbsp;&lt;Grid.RowDefinitions&gt;<BR>&nbsp;&nbsp;&nbsp;&lt;RowDefinition/&gt;<BR>&nbsp;&nbsp;&lt;/Grid.RowDefinitions&gt;<BR>&nbsp;&nbsp;<BR>&nbsp;&nbsp;&lt;!-- 
+            The parent's data context is going to be of type 
+            ContactDatabase<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; we bind the 
+            ListBox items to the ContactDatabase.Contacts property 
+            --&gt;<BR>&nbsp;&nbsp;&lt;ListBox x:Name="ContactsListBox" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;Margin="12,12,11,94" 
+            RenderTransformOrigin="0.5,0.5" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;ItemsSource="{Binding 
+            Path=Contacts}"<BR>&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;IsSynchronizedWithCurrentItem="True"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&lt;ContentControl&nbsp; 
+            x:Name="CurrentContactDetail" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;Margin="14,16,17,219" Grid.Column="1" 
+            RenderTransformOrigin="0.5,0.5" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;Content="{Binding Items.CurrentItem, 
+            ElementName=ContactsListBox, 
+            Mode=OneWay}"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&lt;Button 
+            x:Name="AddButton" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;HorizontalAlignment="Left" 
+            VerticalAlignment="Bottom" Margin="18,0,0,131" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;Width="86" Height="58" Grid.Column="1" 
+            RenderTransformOrigin="0.5,0.5" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;Content="Add"<BR>&nbsp;&nbsp;&nbsp;&nbsp;IsEnabled="false"/&gt;<BR>&nbsp;&nbsp;&lt;Button 
+            x:Name="RemoveButton" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;HorizontalAlignment="Stretch" 
+            VerticalAlignment="Bottom" Margin="135,0,93,131" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;Width="86" Height="58" Grid.Column="1" 
+            RenderTransformOrigin="1,0.48" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;Content="Remove"<BR>&nbsp;&nbsp;&nbsp;&nbsp;IsEnabled="false"/&gt;<BR>&nbsp;&lt;/Grid&gt;</P>
+            <P>The full project code at this point is attached.&nbsp; Take a 
+            look at it.&nbsp; In the next installment I will add a simple 
+            ViewModel.</P></DIV>
+            <DIV class=BlogPostFooter>Published Sunday, February 26, 2006 7:07 
+            PM by <A 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___AuthorLink 
+            href="http://blogs.msdn.com/user/Profile.aspx?UserID=4026">JohnGossman</A> 
+
+            <DIV><SPAN 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel></SPAN><INPUT 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel_State 
+            type=hidden value=nochange 
+            name=ctl00$_$ctl00$_$ctl00$ctl00$bcr$ctl00$_$Entry$_$InlineTagEditorPanel></DIV><BR><B>Attachment(s): 
+            </B><A 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___Attachment___DownLoadLink 
+            href="http://blogs.msdn.com/johngossman/attachment/539598.ashx">ContactViewModel0.zip</A> 
+            </DIV></DIV>
+            <DIV id=comments>
+            <H3>Comments </H3>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Tales from the Smart Client  Model-View-ViewModel pattern example_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl01_NameLink 
+                  title=TrackBack 
+                  href="http://questmaster.net/blogs/dirks_blog/archive/2006/02/27/500.aspx" 
+                  rel=nofollow>Life, Universe and Everything according to 
+                  Dirk</A> said:</H4>
+                  <DIV class=CommentText>John Gossmann has posted the first part 
+                  of his long-awaited example of a Model-View-ModelView 
+                  architecture,...</DIV>
+                  <DIV class=CommentFooter>February 27, 2006 5:21 AM 
+</DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Tales from the Smart Client  Model-View-ViewModel pattern example_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl02_NameLink 
+                  title=ViewModel>ViewModel</A> said:</H4>
+                  <DIV class=CommentText>I fail to see the relevance of this, 
+                  post the ViewModel already!!</DIV>
+                  <DIV class=CommentFooter>March 1, 2006 4:21 PM 
+              </DIV></TD></TR></TBODY></TABLE></DIV><EM>New Comments to this post 
+            are disabled</EM> </DIV></DIV></DIV></TD></TR></TBODY></TABLE></TD>
+    <TD id=CommonRightColumn style="FONT-SIZE: 100%">
+      <DIV class=CommonSidebar>
+      <DIV id=BlogLinksSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>This Blog</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___home 
+        href="http://blogs.msdn.com/johngossman/default.aspx">Home</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___Contactlink1 
+        href="http://blogs.msdn.com/johngossman/contact.aspx">Email</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___LinkListLink1 
+        href="http://blogs.msdn.com/johngossman/linklist.aspx">Links</A> 
+      </LI></UL></DIV></DIV></DIV>
+      <DIV id=TasksSideBar></DIV>
+      <DIV id=SubscriptionsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Syndication</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___bs___rss 
+        href="http://blogs.msdn.com/johngossman/rss.xml">RSS 2.0</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___bs___atom 
+        href="http://blogs.msdn.com/johngossman/atom.xml">Atom 1.0</A> 
+      </LI></UL></DIV></DIV></DIV>
+      <DIV id=RecentPostsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Recent Posts</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl00_Link 
+        href="http://blogs.msdn.com/johngossman/archive/2007/05/05/new-role.aspx">New 
+        role</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl01_Link 
+        href="http://blogs.msdn.com/johngossman/archive/2006/11/04/the-source-for-information-about-wpf-performance.aspx">The 
+        source for information about WPF performance</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl02_Link 
+        href="http://blogs.msdn.com/johngossman/archive/2006/10/06/More-on-basic-performance.aspx">More 
+        on basic performance</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl03_Link 
+        href="http://blogs.msdn.com/johngossman/archive/2006/09/05/741797.aspx">Stories 
+        from the Perf lab: Part I</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl04_Link 
+        href="http://blogs.msdn.com/johngossman/archive/2006/08/21/711452.aspx">Snoop: 
+        An essential tool for debugging and perf work with WPF</A> 
+      </LI></UL></DIV></DIV></DIV>
+      <DIV id=TagSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Tags</H4>
+      <DIV class=CommonSidebarContent>
+      <DIV class=CommonSidebarTagCloud>No tags have been created or used 
+      yet.</DIV></DIV></DIV></DIV>
+      <DIV id=NewsSideBar></DIV>
+      <DIV id=ArchiveSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Archives</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A href="http://blogs.msdn.com/johngossman/archive/2007/05.aspx">May 
+        2007 (1)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2006/11.aspx">November 
+        2006 (1)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2006/10.aspx">October 
+        2006 (1)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2006/09.aspx">September 
+        2006 (1)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2006/08.aspx">August 
+        2006 (1)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2006/04.aspx">April 2006 
+        (2)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2006/03.aspx">March 2006 
+        (5)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2006/02.aspx">February 
+        2006 (6)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2006/01.aspx">January 
+        2006 (2)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2005/10.aspx">October 
+        2005 (16)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2005/09.aspx">September 
+        2005 (7)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2005/08.aspx">August 
+        2005 (4)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2005/07.aspx">July 2005 
+        (3)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2005/06.aspx">June 2005 
+        (2)</A> 
+        <LI><A href="http://blogs.msdn.com/johngossman/archive/2005/05.aspx">May 
+        2005 (11)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2005/04.aspx">April 2005 
+        (8)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2005/03.aspx">March 2005 
+        (11)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2005/02.aspx">February 
+        2005 (4)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2005/01.aspx">January 
+        2005 (20)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2004/10.aspx">October 
+        2004 (12)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/johngossman/archive/2004/09.aspx">September 
+        2004 (7)</A> </LI></UL></DIV></DIV></DIV></DIV></TD></TR></TBODY></TABLE><!--NOINDEX_START-->
+<DIV id=CommonFooter><BR style="OVERFLOW: hidden; LINE-HEIGHT: 1px" clear=all>
+<TABLE id=msviFooter cellSpacing=0 cellPadding=0 width="100%">
+  <TBODY>
+  <TR vAlign=bottom>
+    <TD id=msviFooter2>
+      <DIV id=msviLocalFooter><NOBR><A 
+      href="http://go.microsoft.com/?linkid=317027">Manage Your Profile</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/isapi/gomscom.asp?target=/legal/" 
+      target=_parent>Legal</A> |</NOBR><WBR><NOBR><A 
+      href="http://register.microsoft.com/contactus30/contactus.asp?domain=msdn" 
+      target=_parent>Contact Us</A> |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/flash/" target=_parent>MSDN Flash 
+      Newsletter</A></NOBR></DIV>
+      <DIV id=msviGlobalFooter><SPAN>©2005 Microsoft Corporation. All rights 
+      reserved.&nbsp;</SPAN><NOBR><A 
+      href="http://www.microsoft.com/info/cpyright.mspx">Terms of Use</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://www.microsoft.com/info/privacy.mspx">Privacy 
+      Statement</A></NOBR></DIV></TD>
+    <TD width=105 bgColor=#669aff><IMG title="" height=29 alt=Microsoft 
+      src="Tales from the Smart Client  Model-View-ViewModel pattern example_files/bottomMSFTLogo.jpg" 
+      width=105 border=0></TD></TR></TBODY></TABLE></DIV></DIV><!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/johngossman/archive/2006/02/26/539598.aspx"
+dc:identifier="http://blogs.msdn.com/johngossman/archive/2006/02/26/539598.aspx"
+dc:title="Model-View-ViewModel pattern example"
+trackback:ping="http://blogs.msdn.com/johngossman/trackback.aspx?PostID=539598" />
+</rdf:RDF>
+--></FORM></BODY></HTML>

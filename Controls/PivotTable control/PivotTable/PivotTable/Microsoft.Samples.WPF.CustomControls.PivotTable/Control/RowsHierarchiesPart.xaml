@@ -1,0 +1,91 @@
+<local:AxisDisplayControl x:Class="Microsoft.Samples.WPF.CustomControls.RowsHierarchiesPart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Microsoft.Samples.WPF.CustomControls"
+	Background="Transparent">
+	<local:AxisDisplayControl.Resources>
+
+		<ResourceDictionary>
+			
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Resources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			
+			<local:RowsHierarchiesLevelTemplateSelector x:Key="LevelsTemplateSelector"/>
+
+			<Style TargetType="{x:Type ItemsControl}" x:Key="MainItemsControlStyle">
+				<Setter Property="Padding" Value="0"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type ItemsControl}">
+							<Border BorderBrush="Black" BorderThickness="0, 0, 1, 0">
+								<ItemsPresenter/>
+							</Border>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+
+			<Style TargetType="{x:Type ItemsControl}" x:Key="InnerItemsControlStyle">
+				<Setter Property="Padding" Value="0"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<ItemsPresenter/>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+
+			<DataTemplate x:Key="FirstLevelTemplate" DataType="{x:Type local:ILevel}">
+				<local:SharedSizeDecorator SharedWidthGroup="{Binding Path=UniqueName}"
+					SharedHeightGroup="RowsHierarchiesPart_SharedHeight">
+					<Border BorderThickness="1, 1, 0, 0" BorderBrush="Black">
+						<local:MembersFilterTreeView Level="{Binding}" Background="{StaticResource VerticalAxisElementsBrush}"/>
+					</Border>
+				</local:SharedSizeDecorator>
+			</DataTemplate>
+
+			<DataTemplate x:Key="DefaultLevelTemplate" DataType="{x:Type local:ILevel}">
+				<local:SharedSizeDecorator SharedWidthGroup="{Binding Path=UniqueName}"
+					SharedHeightGroup="RowsHierarchiesPart_SharedHeight">
+					<Border BorderThickness="1, 1, 0, 0" BorderBrush="Black">
+						<Grid Background="{StaticResource VerticalAxisElementsBrush}">
+							<TextBlock Padding="4, 1, 4, 1" Text="{Binding Path=Caption}" TextAlignment="Center"/>
+						</Grid>
+					</Border>
+				</local:SharedSizeDecorator>
+			</DataTemplate>
+
+			<DataTemplate 
+				x:Key="HierarchyTemplate" 
+				DataType="{x:Type local:IHierarchy}">
+				<ItemsControl
+					ItemTemplateSelector="{StaticResource LevelsTemplateSelector}"
+					ItemsSource="{Binding Path=Levels}"
+					Style="{StaticResource InnerItemsControlStyle}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+				</ItemsControl>
+			</DataTemplate>
+
+		</ResourceDictionary>
+	</local:AxisDisplayControl.Resources>
+
+	<ItemsControl
+		Name="HierarchiesItemsControl"
+		ItemsSource="{Binding Path=Hierarchies}"
+		ItemTemplate="{StaticResource HierarchyTemplate}"
+		Style="{StaticResource MainItemsControlStyle}"	
+		VerticalAlignment="Bottom">
+	
+		<ItemsControl.ItemsPanel>
+			<ItemsPanelTemplate>
+				<StackPanel Orientation="Horizontal"/>
+			</ItemsPanelTemplate>
+		</ItemsControl.ItemsPanel>
+	</ItemsControl>
+</local:AxisDisplayControl>

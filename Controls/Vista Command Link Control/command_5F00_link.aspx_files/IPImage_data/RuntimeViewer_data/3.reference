@@ -1,0 +1,134 @@
+﻿
+function PhotoStackClass()
+{
+    PhotoStackClass.photos = new Array();
+     // get unique global variable for this block
+    if(!window.PhotoStackInstances)
+        PhotoStackInstances = 0;
+    this.instanceIdentifier = "PHOTO_STACK_INSTANCE_"+ (PhotoStackInstances++);
+    window[this.instanceIdentifier] = this;
+    this.pendingScripts = 2;
+};
+
+PhotoStackClass.prototype.initialize = function()
+{
+    document.body.style.backgroundColor='transparent';
+
+    window.PhotoStackScriptLoaded = delegate(this, this.scriptLoaded);
+
+    var html = "";
+	html += '<script type="text/javascript" src="/Content/Components/Resources/PhotoStack/js/photostack.v2.js"></'+'script>';
+	html += '<script type="text/javascript" src="/Content/Components/Resources/PhotoStack/js/photocanvas.v2.js"></'+'script>';
+    environment.addHtmlWithScript(html);
+};
+
+PhotoStackClass.prototype.scriptLoaded = function()
+{
+    this.pendingScripts--;
+    if(this.pendingScripts<=0)
+    {
+        var html = "";
+        html += '<div id="SilverlightPhotoStackControlHost" style="height:100%;width:100%;">'
+        html += '  <script>'+ this.instanceIdentifier +'.createSilverlightControl();</script>'
+        html += '</div>';
+        environment.addHtmlWithScript(html);
+    }
+};
+
+PhotoStackClass.Scene = function() 
+{
+};
+
+PhotoStackClass.Scene.prototype =
+{
+    handleLoad: function(control, userContext, rootElement) 
+    {
+	    this.control = control;
+	    this.content = this.control.content;
+        root_Loaded(this.content);
+        this.Canvas = this.content.findName("PhotoStack");		
+        this.ScaleT = this.content.findName("PhotoStack_ScaleT");
+        this.Main = this.content.findName("Main");
+        this.resize();
+        $addHandler(window, "resize", delegate(this, this.resize));
+    },
+        
+    resize: function()
+    {
+       var sourceWidth = this.Canvas.width;
+       var sourceHeight = this.Canvas.height;
+       
+       if (sourceHeight > 0 && sourceWidth > 0) 
+       {
+           var targetWidth = document.body.clientWidth;
+           var targetHeight = document.body.clientHeight;
+
+	       var scale = Math.min(targetHeight / sourceHeight, targetWidth / sourceWidth);
+           this.ScaleT.scaleX = scale;
+           this.ScaleT.scaleY = scale;
+
+	       // Center the canvas
+	       var leftOffset = 0;
+	       if (scale > 0)
+	       {
+                leftOffset = Math.max(0, ((targetWidth - (this.Main.Width * scale)) / 2) / scale);
+           }
+	       this.Main["Canvas.Left"] = leftOffset;
+       }
+    }
+}
+
+
+PhotoStackClass.prototype.createSilverlightControl = function()
+{
+	this.scene = new PhotoStackClass.Scene();
+
+	createSilverlightBlockEx({
+		source: "/Content/Components/Resources/PhotoStack/xaml/page.v2.xaml.txt",
+		parentElement: document.getElementById("SilverlightPhotoStackControlHost"),
+		id: "PhotoStackSilverlightControl",
+		onLoad: delegate(this, this.onLoaded)
+	});
+};
+
+PhotoStackClass.prototype.onLoaded = function(control, userContext, rootElement)
+{
+    this.scene.handleLoad(control, userContext, rootElement);
+
+    for(var x=0; x < PhotoStackClass.photos.length; x++)
+    {
+        var photo = PhotoStackClass.photos[x];
+        addPhoto(photo.imageUrl, photo.title);
+    }
+};
+
+PhotoStackClass.prototype.preview = function()
+{
+    this.initialize();
+    this.addImage("/Content/Components/Resources/PhotoStack/photos/1.jpg", "A Beautiful View");
+};
+
+PhotoStackClass.prototype.addImage = function(imageUrl, title)
+{
+    if (environment.designTime)
+        throw "PhotoStack doesn't support this at design time.";
+
+    //TODO: Workaround WPF/E limitation
+    if (imageUrl && imageUrl.search(/\.jpe?g|\.png/i) == -1)
+        imageUrl = "/PublicServices/ImageProxy.aspx?url=" + escape(imageUrl);
+
+    PhotoStackClass.photos.push(new PhotoStackPhoto(imageUrl, title));
+    
+    if(this.scene && this.scene.content)
+    {
+        addPhoto(imageUrl, title);
+    }
+};
+
+function PhotoStackPhoto(imageUrl, title)
+{
+    this.imageUrl = imageUrl;
+    this.title = title;    
+}
+;
+if(window.blockScriptLoaded) blockScriptLoaded('photoStack', '1191159266');

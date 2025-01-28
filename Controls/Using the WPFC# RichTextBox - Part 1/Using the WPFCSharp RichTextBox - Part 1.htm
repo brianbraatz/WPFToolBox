@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head profile="http://gmpg.org/xfn/11">
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>kirupaBlog - If it isn’t broken, take it apart and fix it! » Blog Archive » Using the WPF/C# RichTextBox - Part 1</title>
+
+
+
+<meta name="generator" content="WordPress 2.0.7"><!-- leave this for stats --> 
+
+<link rel="stylesheet" href="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/style.css" type="text/css" media="screen">
+<link rel="alternate" type="application/rss+xml" title="kirupaBlog - If it isn’t broken, take it apart and fix it! RSS Feed" href="http://blog.kirupa.com/?feed=rss2">
+<link rel="pingback" href="http://blog.kirupa.com/xmlrpc.php">
+
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.kirupa.com/xmlrpc.php?rsd">
+
+<script src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1952673-1";
+urchinTracker();
+</script></head><body>
+
+<div id="wrap">
+<div id="header">
+<table border="0" cellpadding="5" cellspacing="0" width="100%">
+	<tbody><tr>
+		<td width="4">
+		<img src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/kirupaAvatar4.png" border="0"></td>
+		<td><h1><a href="http://blog.kirupa.com/">KIRUPA.CHINNATHAMBI</a></h1>
+<p class="description"> If it isn't broken, take it apart and fix it!</p></td>
+	</tr>
+</tbody></table>
+</div>
+<div id="content">
+									<div class="entry entry-1">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=105" rel="bookmark" title="Permanent Link to Using the WPF/C# RichTextBox - Part 1">Using the WPF/C# RichTextBox - Part 1</a></h2> 
+			<h3>June 24th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+		</div>
+		<div class="entrybody">
+			<p>With some free time I had, I decided to extend my earlier kNotepad example by building a clone of Wordpad called <a href="http://www.kirupa.com/forum/showthread.php?t=265975" target="_blank"><u>kWordpad</u></a>.
+All text typing/editing/viewing/etc. is now done using the RichTextbox
+control, but fiddling with the content stored in a RichTextBox is a lot
+different than using a plain TextBox.</p>
+<p>I did not find any good resources online to explain how to perform
+common tasks using the RichTextBox control, so&nbsp;in this and future
+posts, I will go through and provide code snippets to help you use the
+RichTextBox to perform common tasks.</p>
+<p>The RichTextBox control I reference in the following code snippets is called <em>MainRichTextBox</em>, so be sure to replace that name with the name of your RichTextBox in your own implementations.</p>
+<hr>
+<p><strong>Saving Content (MSDN)</strong></p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHidn">TextRange</span> <span class="kASHwrd">range</span>;
+</dt><dt><span class="kASHidn">FileStream</span> <span class="kASHwrd">fStream</span>;
+</dt><dt><span class="kASHwrd">range</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHidn">TextRange</span><span class="kASHop">(</span><span class="kASHwrd">MainRichTextBox</span>.<span class="kASHwrd">Document</span>.<span class="kASHwrd">ContentStart</span>, <span class="kASHwrd">MainRichTextBox</span>.<span class="kASHwrd">Document</span>.<span class="kASHwrd">ContentEnd</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">fStream</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHidn">FileStream</span><span class="kASHop">(</span><span class="kASHwrd">path</span>, <span class="kASHidn">FileMode</span>.<span class="kASHwrd">Create</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">range</span>.<span class="kASHwrd">Save</span><span class="kASHop">(</span><span class="kASHwrd">fStream</span>, <span class="kASHidn">DataFormats</span>.<span class="kASHwrd">Rtf</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">fStream</span>.<span class="kASHwrd">Close</span><span class="kASHop">(</span><span class="kASHop">)</span>;</dt>
+</dl>
+<p>The path variable references the location you wish to save your
+file, and the DataFormats class allows you to choose which format your
+saved file will be in. In my case, I am saving the contents as a Rich
+Text Format (RTF) file, but there are various other formats you can use.</p>
+<p><strong>Loading Content (MSDN)</strong></p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHidn">TextRange</span> <span class="kASHwrd">range</span>;
+</dt><dt><span class="kASHidn">FileStream</span> <span class="kASHwrd">fStream</span>;
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHkwrd">if</span> <span class="kASHop">(</span><span class="kASHidn">File</span>.<span class="kASHwrd">Exists</span><span class="kASHop">(</span><span class="kASHwrd">path</span><span class="kASHop">)</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHwrd">range</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHidn">TextRange</span><span class="kASHop">(</span><span class="kASHwrd">MainRichTextBox</span>.<span class="kASHwrd">Document</span>.<span class="kASHwrd">ContentStart</span>, <span class="kASHwrd">MainRichTextBox</span>.<span class="kASHwrd">Document</span>.<span class="kASHwrd">ContentEnd</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">fStream</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHidn">FileStream</span><span class="kASHop">(</span><span class="kASHwrd">path</span>, <span class="kASHidn">FileMode</span>.<span class="kASHwrd">OpenOrCreate</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">range</span>.<span class="kASHwrd">Load</span><span class="kASHop">(</span><span class="kASHwrd">fStream</span>, <span class="kASHidn">DataFormats</span>.<span class="kASHwrd">Rtf</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">fStream</span>.<span class="kASHwrd">Close</span><span class="kASHop">(</span><span class="kASHop">)</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<p>Loading a file is similar also. You specify the path and format the
+data is in, and the TextRange and FileStream objects take care of the
+rest.</p>
+<p>Both of the above code snippets come from the MSDN documentation concerning <a href="http://msdn2.microsoft.com/En-US/library/aa970917.aspx" target="_blank"><u>Saving, Loading, and Printing RichTextbox Content</u></a>.</p>
+<hr>
+<p><strong>Clearing / Emptying RichTextBox Content</strong></p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHwrd">MainRichTextBox</span>.<span class="kASHwrd">Document</span>.<span class="kASHwrd">Blocks</span>.<span class="kASHwrd">Clear</span><span class="kASHop">(</span><span class="kASHop">)</span>;</dt>
+</dl>
+<p>If you wish to clear the content from your RichTextBox, you can do
+so by using the Clear method from your RichTextBox's Document Block.
+This removes all content - text or otherwise - from inside your
+RichTextBox.</p>
+<hr>
+<p>All of the text formatting you do follows a similar format. You
+access the selected text via your RichTextBox's Selection property, and
+from there, using ApplyPropertyValue to assign the formatting you need.
+The following code snippets explain how to Bold, Italicize, Underline,
+and&nbsp;change the Font Size of the&nbsp;selected text:</p>
+<p><strong>Bold Selected Text</strong></p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHwrd">MainRichTextBox</span>.<span class="kASHwrd">Selection</span>.<span class="kASHwrd">ApplyPropertyValue</span><span class="kASHop">(</span><span class="kASHidn">RichTextBox</span>.<span class="kASHwrd">FontWeightProperty</span>, <span class="kASHqt">"Bold"</span><span class="kASHop">)</span>;</dt>
+</dl>
+<p><strong>Italicize Selected Text</strong></p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHwrd">MainRichTextBox</span>.<span class="kASHwrd">Selection</span>.<span class="kASHwrd">ApplyPropertyValue</span><span class="kASHop">(</span><span class="kASHidn">RichTextBox</span>.<span class="kASHwrd">FontStyleProperty</span>, <span class="kASHqt">"Italic"</span><span class="kASHop">)</span>;</dt>
+</dl>
+<p><strong>Underline Selected Text</strong></p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHwrd">MainRichTextBox</span>.<span class="kASHwrd">Selection</span>.<span class="kASHwrd">ApplyPropertyValue</span><span class="kASHop">(</span><span class="kASHidn">Inline</span>.<span class="kASHwrd">TextDecorationsProperty</span>, <span class="kASHidn">TextDecorations</span>.<span class="kASHwrd">Underline</span><span class="kASHop">)</span>;</dt>
+</dl>
+<p><strong>Changing Font Size</strong></p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHwrd">MainRichTextBox</span>.<span class="kASHwrd">Selection</span>.<span class="kASHwrd">ApplyPropertyValue</span><span class="kASHop">(</span><span class="kASHidn">RichTextBox</span>.<span class="kASHwrd">FontSizeProperty</span>, <span class="kASHqt">"12"</span><span class="kASHop">)</span>;</dt>
+</dl>
+<p>In the above line of code for changing the font size, be sure to
+note that I specified&nbsp;a default size of 12. In your own
+application, you would probably want the font size bound to a variable
+to allow for various font sizes.</p>
+<p> </p><hr>
+<p>There is more RichTextBox functionality that I have not covered yet,
+but I will devote a future post towards doing so. If you are curious to
+see my implementation of the above snippets, check out the attached
+source files in my <a href="http://www.kirupa.com/forum/showthread.php?t=265975" target="_blank"><u>kWordpad Preview</u></a>.</p>
+<p>Cheers!<br>Kirupa <img src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D105&amp;title=Using+the+WPF%2FC%23+RichTextBox+-+Part+1" title="del.icio.us:Using the WPF/C# RichTextBox - Part 1"><img src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Using the WPF/C# RichTextBox - Part 1"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D105&amp;title=Using+the+WPF%2FC%23+RichTextBox+-+Part+1" title="digg:Using the WPF/C# RichTextBox - Part 1"><img src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/digg.png" class="wp-notable_image" alt="digg:Using the WPF/C# RichTextBox - Part 1"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D105&amp;title=Using+the+WPF%2FC%23+RichTextBox+-+Part+1" title="reddit:Using the WPF/C# RichTextBox - Part 1"><img src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/reddit.png" class="wp-notable_image" alt="reddit:Using the WPF/C# RichTextBox - Part 1"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D105&amp;new_comment=Using+the+WPF%2FC%23+RichTextBox+-+Part+1&amp;linktype=" title="fark:Using the WPF/C# RichTextBox - Part 1"><img src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/fark.png" class="wp-notable_image" alt="fark:Using the WPF/C# RichTextBox - Part 1"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D105&amp;t=Using+the+WPF%2FC%23+RichTextBox+-+Part+1" title="Y!:Using the WPF/C# RichTextBox - Part 1"><img src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/yahoo.png" class="wp-notable_image" alt="Y!:Using the WPF/C# RichTextBox - Part 1"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+		
+<!-- You can start editing here. -->
+
+	<h3 id="comments">2 Responses to “Using the WPF/C# RichTextBox - Part 1”</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-14512">
+			<cite><a href="http://blog.kirupa.com/?p=109" rel="external nofollow">kirupaBlog - If it isn’t broken, take it apart and fix it! » Blog Archive » Using the WPF/C# RichTextBox - Part 2</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-14512" title="">July 8th, 2007 at 6:55 am</a> </small>
+
+			<p>[…]
+Following up with my earlier Part I of this series covering the
+RichTextbox, let’s look at more RichTextbox functionality that I used
+when creating kWordpad. […]
+</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-17151">
+			<cite>YamYam</cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-17151" title="">July 30th, 2007 at 2:12 pm</a> </small>
+
+			<p>Very nice Article. I took this site into my bookmark <img src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/icon_wink.gif" alt=";)" class="wp-smiley">  greets yamyam
+</p>
+
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://blog.kirupa.com/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input name="author" id="author" value="" size="22" tabindex="1" type="text">
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input name="email" id="email" value="" size="22" tabindex="2" type="text">
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input name="url" id="url" value="" size="22" tabindex="3" type="text">
+<label for="url"><small>Website</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100" rows="10" tabindex="4"></textarea></p>
+
+<p><input name="submit" id="submit" tabindex="5" value="Submit Comment" type="submit">
+<input name="comment_post_ID" value="105" type="hidden">
+</p>
+
+</form>
+
+
+	</div>
+			<div class="navigation">
+			<div class="alignleft"></div>
+			<div class="alignright"></div>
+		</div>
+		
+	</div>
+<div id="sidebar">
+<br>
+<h2>Search</h2>
+<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" id="blogsearch" align="middle" height="35" width="190">
+<param name="allowScriptAccess" value="sameDomain">
+<param name="movie" value="http://blog.kirupa.com/wp-content/blogsearch.swf"><param name="quality" value="high"><param name="bgcolor" value="#ffffff"><embed src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/blogsearch.swf" quality="high" bgcolor="#ffffff" name="blogsearch" allowscriptaccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="35" width="190">
+</object>
+<br>
+<br>
+<h2>Pages</h2>
+<ul>
+<li><a href="http://blog.kirupa.com/">Home</a></li>
+<li class="page_item"><a href="http://blog.kirupa.com/?page_id=2" title="About Me">About Me</a></li>
+ 
+</ul>
+<h2>Categories</h2>
+<ul>
+	<li><a href="http://blog.kirupa.com/?cat=9" title="View all posts filed under Design">Design</a> (15)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=12" title="View all posts filed under Flash/Actionscript">Flash/Actionscript</a> (13)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=11" title="View all posts filed under kirupa.com">kirupa.com</a> (13)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=14" title="View all posts filed under Life at Microsoft">Life at Microsoft</a> (1)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=5" title="View all posts filed under Nerdy">Nerdy</a> (49)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=10" title="View all posts filed under Programming">Programming</a> (58)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=1" title="View all posts filed under Random">Random</a> (47)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=13" title="View all posts filed under WPF / Blend / C#">WPF / Blend / C#</a> (42)
+</li>
+</ul>
+<h2>Popular</h2>
+<ul>
+<li><a href="http://blog.kirupa.com/?p=30" title="Dynamic Movie Clips and the ScrollPane in Flash">Dynamic Movie Clips and the ScrollPane in Flash</a> (57)</li><li><a href="http://blog.kirupa.com/?p=85" title="Fixing Error 2739 When Installing Adobe CS3 on Vista 32">Fixing Error 2739 When Installing Adobe CS3 on Vista 32</a> (39)</li><li><a href="http://blog.kirupa.com/?p=70" title="Run/Emulate Windows Mobile 6 on your Computer">Run/Emulate Windows Mobile 6 on your Computer</a> (39)</li><li><a href="http://blog.kirupa.com/?p=33" title="Answers to my Interview regarding kirupaForum">Answers to my Interview regarding kirupaForum</a> (21)</li><li><a href="http://blog.kirupa.com/?p=101" title="And So it Goes...Graduation @ MIT!">And So it Goes...Graduation @ MIT!</a> (17)</li></ul>
+<ul>
+	<li id="linkcat-1"><h2>Blogroll</h2>
+	<ul>
+<li><a href="http://weblogs.asp.net/scottgu" title="A great blog covering the .NET-related changes!">Scott Guthrie</a></li>
+<li><a href="http://blogs.msdn.com/jensenh/" title="A great blog on UI related topics.">Jensen Harris</a></li>
+<li><a href="http://www.istartedsomething.com/" title="A great place for up-to-date tech news by Long Zheng">istartedsomething</a></li>
+<li><a href="http://blogs.msdn.com/oldnewthing/" title="Raymond Chen's technical, yet entertaining, blog!">OldNewThing</a></li>
+<li><a href="http://www.senocular.com/" title="Trevor McCauley's site filled with useful Fireworks and Flash tips!">Senocular</a></li>
+<li><a href="http://blogs.zdnet.com/Stewart/">Ryan Stewart</a></li>
+
+	</ul>
+</li>
+	<li id="linkcat-2"><h2>Silverlight/WPF</h2>
+	<ul>
+<li><a href="http://rrelyea.spaces.live.com/" title="Rob frequently provides useful WPF information from around the web.">Rob Relyea</a></li>
+<li><a href="http://blogs.msdn.com/tims/" title="A great source for updates on silverlight, wpf, and other technologies.">Tim Sneath</a></li>
+<li><a href="http://blogs.msdn.com/mharsh/" title="Mike provides great coverage and insightful information concerning all things Silverlight.">Mike Harsh's Silverlight Blog</a></li>
+<li><a href="http://blogs.msdn.com/expression/" title="Updates from the Expression team.">Expression Blog</a></li>
+
+	</ul>
+</li>
+</ul>
+</div></div>
+<div id="footer">
+<!-- 29 queries. 0.184 seconds. -->
+</div>
+
+<div align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="850">
+			<tbody><tr>
+				<td>
+				<div align="center">
+					<hr color="#d3d2cb" size="1">
+					<table id="table1" border="0" cellpadding="10" cellspacing="0" width="850">
+						<tbody><tr>
+							<td>
+							<div align="center">
+								<table id="table3" background="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/blue_large_bg_gif6.gif" border="0" cellpadding="0" cellspacing="0" height="113" width="753">
+									<tbody><tr>
+										<td width="7">
+										<font face="Arial" size="2">
+										<img src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/projec1.gif" border="0" height="70" hspace="3" width="1"></font></td>
+										<td width="746">
+										<script type="text/javascript"><!--
+		google_ad_client = "pub-0633423995889665";
+		google_ad_width = 728;
+		google_ad_height = 90;
+		google_ad_format = "728x90_as";
+		google_ad_type = "text";
+		google_ad_channel ="6505164574";
+		google_color_border = "EFF4FA";
+		google_color_bg = "EFF4FA";
+		google_color_link = "0066CC";
+		google_color_url = "336699";
+		google_color_text = "333333";
+		//--></script>
+										<script type="text/javascript" src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/show_ads.js">
+										
+		</script><iframe name="google_ads_frame" src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="90" scrolling="no" width="728"></iframe>
+										</td>
+									</tr>
+								</tbody></table>
+							</div>
+							</td>
+						</tr>
+					</tbody></table>
+				</div>
+				<table border="0" cellspacing="0" width="100%">
+					<tbody><tr>
+						<td><hr color="#d3d2cb" size="1"></td>
+					</tr>
+				</tbody></table>
+				<div align="center">
+					<table id="tblFooter" border="0" cellpadding="3" cellspacing="0" width="850">
+						<tbody><tr>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="44">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/">
+							<font color="#0066cc">Home</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="137">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/index.htm"><font color="#0066cc">About 
+							kirupa.com</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="154">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/mods.htm">
+							<font color="#0066cc">Meet the Moderators</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="69">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/ad.htm">
+							<font color="#0066cc">Advertise</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="78">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/link.htm"><font color="#0066cc">Link 
+						to Us</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="70">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/credits.htm"><font color="#0066cc">Credits</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="24">
+							<font face="Verdana">
+							<a href="http://www.kirupa.com/modular/rss.htm">
+							<img src="Using%20the%20WPFCSharp%20RichTextBox%20-%20Part%201_files/rssfeed.gif" border="0" height="16" width="16"></a></font></td>
+							<td height="15" width="219">
+							Copyright <span class="homeLinkSM">
+							<font face="Times New Roman">©</font></span> 
+							1999-2007</td>
+						</tr>
+						</tbody></table>
+				</div>
+				</td>
+			</tr>
+		</tbody></table>
+<br>
+<br>
+
+
+</div>
+
+
+
+</body></html>

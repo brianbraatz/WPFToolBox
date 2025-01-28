@@ -1,0 +1,110 @@
+<UserControl x:Class="WPF2DChartCode.WpfControls.WpfChart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+		<Grid IsHitTestVisible ="True" Background ="White">
+			<Grid.Resources>
+				<ControlTemplate x:Key ="btnStyle" TargetType="{x:Type Button}">
+					<Border x:Name ="outerBorder"  BorderThickness ="0">
+						<Viewbox >
+							<ContentControl Margin ="2,2,2,2" Content ="{TemplateBinding Content}" />
+						</Viewbox>
+					</Border>
+					<ControlTemplate.Triggers >
+						<Trigger Property ="Button.IsMouseOver" Value ="True" >
+							<Setter TargetName ="outerBorder" Property="Background" Value ="SkyBlue" />
+						</Trigger >
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Grid.Resources>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="30px"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width ="Auto" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<TextBlock Margin="0,0,0,0" x:Name="titleBox" Grid.Column="2" Grid.Row="0" FontSize ="12"  RenderTransformOrigin="0.5,0.5" Text="Title" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Background ="White" />
+			<TextBlock Margin="0,0,0,0" x:Name="xAxisLabel" Grid.Column="0" Grid.Row="4"  Grid.ColumnSpan="3" FontSize ="12" RenderTransformOrigin="0.5,0.5" Text="X Label" TextAlignment="Center" Background ="White" />
+			<TextBlock Margin="0,0,0,0" x:Name="yAxisLabel" Grid.Column="0" Grid.Row="2" Grid.RowSpan="3" FontSize ="12" RenderTransformOrigin="0.5,0.5" Text="Y Label" TextAlignment="Center"  HorizontalAlignment ="Center" VerticalAlignment ="Center"  Background ="White"  >
+				<TextBlock.LayoutTransform>
+					<TransformGroup>
+						<TranslateTransform X="0" Y="0"/>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="-90"/>
+						<TranslateTransform X="0" Y="0"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</TextBlock.LayoutTransform>
+			</TextBlock>
+			<Rectangle Fill="sc#0.5, 1, 1, 1" Margin="2,0,0,2" x:Name="xGridlineLabels" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" RenderTransformOrigin="0.5,0.5" Stroke="{x:Null}" MinHeight="4"  />
+			<Rectangle Fill="sc#0.5, 1, 1, 1" Margin="2,0,0,2" x:Name="yGridLineLabels" Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5" MinHeight ="4" Stroke="{x:Null}">
+				<Rectangle.LayoutTransform>
+					<TransformGroup>
+						<TranslateTransform X="0" Y="0"/>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="-90"/>
+						<TranslateTransform X="0" Y="0"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Rectangle.LayoutTransform>
+			</Rectangle>
+			<Canvas Margin="0,0,0,0" x:Name="TextCanvas" Grid.Column="2" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Background ="White" />
+			<Canvas  Margin="0,0,0,0" x:Name ="ChartCanvas"   Grid.Column="2" Grid.Row="2" RenderTransformOrigin="0.5,0.5" ClipToBounds="False" Background="Transparent">
+				<Canvas.RenderTransform>
+					<TransformGroup>
+						<TranslateTransform X="0" Y="0"/>
+						<ScaleTransform ScaleX="1" ScaleY="-1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="0"/>
+					</TransformGroup>
+				</Canvas.RenderTransform>
+			</Canvas>
+			<Border Margin="0,0,0,0" Background="{x:Null}" Grid.Column ="2" Grid.Row ="2" BorderBrush="#FF000000" BorderThickness="1,1,1,1">
+				<Canvas  Margin="0,0,0,0" x:Name ="ChartTicksCanvas"  RenderTransformOrigin="0.5,0.5"   Background="Transparent" />
+			</Border >
+			<Grid Margin ="0,0,0,0"  x:Name ="TextGridCanvas" Grid.Column ="2" Grid.Row ="2" Background ="Transparent">
+				<Grid x:Name ="TextGrid" >
+					<Grid.ColumnDefinitions >
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="5"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height ="5" />
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<TextBlock x:Name ="TickerLabel" Grid.Column ="0" Grid.Row ="1" TextAlignment ="Right" Opacity ="0.6" />
+					<DockPanel Grid.Column ="0" Grid.Row ="2" LastChildFill ="True" HorizontalAlignment ="Center" VerticalAlignment ="Center" >
+						<Label x:Name ="NoDataLabel" BorderBrush ="Blue" BorderThickness ="1" Background ="Pink"  DockPanel.Dock ="Right" Content ="No Data" VerticalAlignment ="Center" TextBlock.TextAlignment ="Center" Opacity="0.0"/>
+					</DockPanel>
+				</Grid>
+			</Grid >
+
+			<!--  The following the the top interactive layer of the canvas -->
+			<Canvas  Margin="0,0,0,0" x:Name ="ChartInteractiveCanvas"   Grid.Column="2" Grid.Row="2" RenderTransformOrigin="0.5,0.5" ClipToBounds="False" Background="Transparent">
+				<Border  x:Name ="ChartToolBar" BorderBrush ="Blue" Background ="White"  BorderThickness ="1" Opacity ="0.15" >
+					<StackPanel  x:Name ="ChartToolBarPanel" Orientation ="Horizontal" Canvas.Left ="0" Canvas.Top ="0"  >
+						<Button x:Name ="ZoomResetCommand"  ToolTip ="Reset zoom to original view. You can also double-click on the chart to reset the zoom to its original view."  Template="{StaticResource btnStyle}" >
+							<Image x:Name="ZoomResetCommandImage" Source="Resources/Home.bmp" Height ="16" Width ="16" />
+						</Button >
+						<Button x:Name ="ZoomCommand"  ToolTip ="Zoom in chart" Template="{StaticResource btnStyle}">
+							<Image x:Name ="ZoomCommandImage" Source="Resources/ZoomIn.bmp" Height ="16" Width ="16" />
+						</Button >
+						<Button x:Name ="PanCommand"  ToolTip ="Pan chart" Template="{StaticResource btnStyle}" >
+							<Image x:Name ="PanCommandImage" Source="Resources/Breakpoint.bmp" Height ="16" Width ="16" />
+						</Button>
+					</StackPanel>
+				</Border>
+			</Canvas >			
+		
+    </Grid>
+</UserControl>

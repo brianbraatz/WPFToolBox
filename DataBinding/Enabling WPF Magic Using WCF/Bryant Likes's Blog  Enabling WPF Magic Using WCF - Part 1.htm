@@ -1,0 +1,1435 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0102)http://blogs.sqlxml.org/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx -->
+<HTML lang=en xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Bryant Likes's Blog : Enabling WPF Magic Using WCF - Part 1</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content=WCF,WPF name=keywords>
+<META 
+content="One of the magical features of WPF is the way that data bindings automagically refresh when they are bound to an object that implements INotifyPropertyChanged . You can also get this same magic by binding to a collection of objects (which implement INotifyPropertyChanged)" 
+name=description>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+href="http://blogs.sqlxml.org/bryantlikes/pingback.aspx" rel=pingback><LINK 
+media=screen 
+href="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/style.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/print.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/cactus.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/customcss.css" 
+type=text/css rel=stylesheet><LINK href="/favicon.ico" type=image/ico 
+rel="shortcut icon"><LINK title="Bryant Likes's Blog (RSS 2.0)" 
+href="http://feeds.feedburner.com/BryantLikesBlog" type=application/rss+xml 
+rel=alternate><LINK 
+title="Enabling WPF Magic Using WCF - Part 1 Comment RSS (RSS 2.0)" 
+href="http://blogs.sqlxml.org/bryantlikes/commentrss.aspx?PostID=7977" 
+type=application/rss+xml rel=alternate>
+<SCRIPT 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/global.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/urchin.js" 
+type=text/javascript>
+</SCRIPT>
+
+<SCRIPT type=text/javascript>
+_uacct = "UA-133109-1";
+urchinTracker();
+</SCRIPT>
+</HEAD>
+<BODY>
+<FORM id=aspnetForm name=aspnetForm 
+onsubmit="javascript:return WebForm_OnSubmit();" 
+action=/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx 
+method=post>
+<DIV><INPUT id=__EVENTTARGET type=hidden name=__EVENTTARGET> <INPUT 
+id=__EVENTARGUMENT type=hidden name=__EVENTARGUMENT> <INPUT id=__VIEWSTATE 
+type=hidden 
+value=/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgIFHmN0bDAwJF8kY3RsMDAkXyR3cyRfJFNlYXJjaEJveAUqY3RsMDAkXyRjdGwwMCRfJGN0bDAyJF8kZm9ybSRfJGNoa1JlbWVtYmVyIYIS4KdU7zrl4bjphRf8RdzvYS0= 
+name=__VIEWSTATE> </DIV>
+<SCRIPT type=text/javascript>
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</SCRIPT>
+
+<SCRIPT 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/WebResource.axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="D:\LINKS\DM-V-VM\Enabling WPF Magic Using WCF\Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files\WebResource(1).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</SCRIPT>
+
+<DIV id=masthead>
+<DIV id=userArea>
+<DIV id=welcome align=right>Welcome to SqlXml Blogs <A 
+id=ctl00___ctl00___duw1_ac1___Login 
+href="http://blogs.sqlxml.org/login.aspx?ReturnUrl=%2fbryantlikes%2farchive%2f2006%2f09%2f20%2fEnabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx">Sign 
+in</A> | <A id=ctl00___ctl00___duw1_ac1___Register 
+href="http://blogs.sqlxml.org/user/CreateUser.aspx?ReturnUrl=/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx">Join</A> 
+| <A id=ctl00___ctl00___duw1_Faq1 
+href="http://blogs.sqlxml.org/languages/en-US/docs/faq.aspx">Help</A> </DIV>
+<DIV id=SearchSideBar>
+<DIV id=Search align=right>
+<TABLE cellSpacing=0 cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD><INPUT class=searchBox id=ctl00___ctl00___ws___SearchBox 
+      onkeydown=KeyDownHandlerctl00___ctl00___ws___SearchButton(event); 
+      name=ctl00$_$ctl00$_$ws$_$SearchBox> </TD>
+    <TD><SPAN class=SearchButtonOuter><A class=SearchButton 
+      id=ctl00___ctl00___ws___SearchButton 
+      href="javascript:__doPostBack('ctl00$_$ctl00$_$ws$_$SearchButton','')">Search</A></SPAN> 
+    </TD></TR></TBODY></TABLE></DIV></DIV></DIV>
+<DIV id=title>
+<H1><A class=headermaintitle id=ctl00___ctl00___bt___BlogTitle 
+href="http://blogs.sqlxml.org/bryantlikes/default.aspx">Bryant Likes's 
+Blog</A></H1>
+<DIV>It's all about WebData</DIV></DIV></DIV>
+<DIV id=nav>
+<DIV id=navbar>
+<UL>
+  <LI><A id=ctl00___ctl00___Homelink1 
+  href="http://blogs.sqlxml.org/bryantlikes/default.aspx">Home</A> </LI>
+  <LI><A id=ctl00___ctl00___Contactlink1 
+  href="http://blogs.sqlxml.org/bryantlikes/contact.aspx">Email</A> </LI>
+  <LI><A id=ctl00___ctl00___Aboutlink1 
+  href="http://blogs.sqlxml.org/bryantlikes/about.aspx">About</A> </LI>
+  <LI><A id=ctl00___ctl00___rss 
+  href="http://feeds.feedburner.com/BryantLikesBlog">RSS 2.0</A> </LI>
+  <LI><A id=ctl00___ctl00___atom 
+  href="http://feeds.feedburner.com/BryantLikesBlog">Atom 1.0</A> 
+</LI></UL></DIV></DIV>
+<DIV id=content>
+<DIV id=leftmenu>
+<DIV id=TasksSideBar></DIV>
+<DIV id=RecentPostsSideBar>
+<H3>Recent Posts</H3>
+<UL>
+  <LI><A id=ctl00___ctl00___bs___rp___PostList_ctl01_Link 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2007/10/03/installing-subversion-as-a-windows-nt-service.aspx">Installing 
+  Subversion as a Windows NT Service</A> 
+  <LI><A id=ctl00___ctl00___bs___rp___PostList_ctl02_Link 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2007/08/16/which-transformer-are-you.aspx">Which 
+  Transformer Are You?</A> 
+  <LI><A id=ctl00___ctl00___bs___rp___PostList_ctl03_Link 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2007/08/16/verizon-rumor-stackup.aspx">Verizon 
+  Rumor Stackup</A> 
+  <LI><A id=ctl00___ctl00___bs___rp___PostList_ctl04_Link 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2007/07/18/creating-biztalk-application-references-with-nant.aspx">Creating 
+  BizTalk Application References with Nant</A> 
+  <LI><A id=ctl00___ctl00___bs___rp___PostList_ctl05_Link 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2007/06/05/web-experience-events.aspx">Web 
+  Experience Events</A> </LI></UL></DIV>
+<DIV id=TagSideBar>
+<H3>Tags</H3>
+<UL class=SidebarTagCloud>
+  <LI class=Tag5><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/.NET/default.aspx" 
+  rel=tag>.NET</A> 
+  <LI class=Tag2><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/ASP.Net_2F00_Web+Services/default.aspx" 
+  rel=tag>ASP.Net/Web Services</A> 
+  <LI class=Tag3><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Avanade/default.aspx" 
+  rel=tag>Avanade</A> 
+  <LI class=Tag3><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/BizTalk/default.aspx" 
+  rel=tag>BizTalk</A> 
+  <LI class=Tag4><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Certifications/default.aspx" 
+  rel=tag>Certifications</A> 
+  <LI class=Tag2><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Gadgets/default.aspx" 
+  rel=tag>Gadgets</A> 
+  <LI class=Tag1><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/General/default.aspx" 
+  rel=tag>General</A> 
+  <LI class=Tag6><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Live+Writer/default.aspx" 
+  rel=tag>Live Writer</A> 
+  <LI class=Tag1><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Reporting+Services/default.aspx" 
+  rel=tag>Reporting Services</A> 
+  <LI class=Tag1><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/SharePoint/default.aspx" 
+  rel=tag>SharePoint</A> 
+  <LI class=Tag5><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Silverlight/default.aspx" 
+  rel=tag>Silverlight</A> 
+  <LI class=Tag1><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Sql+and+Xml/default.aspx" 
+  rel=tag>Sql and Xml</A> 
+  <LI class=Tag4><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Test-Driven+Dev/default.aspx" 
+  rel=tag>Test-Driven Dev</A> 
+  <LI class=Tag6><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Virtualization/default.aspx" 
+  rel=tag>Virtualization</A> 
+  <LI class=Tag4><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Vista/default.aspx" 
+  rel=tag>Vista</A> 
+  <LI class=Tag5><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/WCF/default.aspx" 
+  rel=tag>WCF</A> 
+  <LI class=Tag6><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/WF/default.aspx" 
+  rel=tag>WF</A> 
+  <LI class=Tag6><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/Windows+Mobile/default.aspx" 
+  rel=tag>Windows Mobile</A> 
+  <LI class=Tag3><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/WPF/default.aspx" 
+  rel=tag>WPF</A> 
+  <LI class=Tag3><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/tags/WPF_2F00_E/default.aspx" 
+  rel=tag>WPF/E</A> </LI></UL></DIV>
+<DIV id=WLSearchBoxDiv>
+<TABLE style="WIDTH: 200px" cellSpacing=0 cellPadding=0>
+  <TBODY>
+  <TR id=WLSearchBoxPlaceholder>
+    <TD 
+    style="BORDER-RIGHT: #4b7b9f 2px; BORDER-TOP: #4b7b9f 2px solid; BORDER-LEFT: #4b7b9f 2px solid; WIDTH: 100%; BORDER-BOTTOM: #4b7b9f 2px solid"><INPUT 
+      id=WLSearchBoxInput 
+      style="BORDER-RIGHT: transparent 0px; PADDING-RIGHT: 0px; BACKGROUND-POSITION: right 50%; BORDER-TOP: transparent 0px; PADDING-LEFT: 0px; BACKGROUND-IMAGE: url(http://search.msn.com/s/siteowner/searchbox_background.png); PADDING-BOTTOM: 0px; BORDER-LEFT: transparent 0px; WIDTH: 100%; PADDING-TOP: 0px; BORDER-BOTTOM: transparent 0px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 16px" 
+      disabled value=Loading...></TD>
+    <TD 
+    style="BORDER-RIGHT: #4b7b9f 2px solid; BORDER-TOP: #4b7b9f 2px solid; BORDER-LEFT: #4b7b9f 2px solid; BORDER-BOTTOM: #4b7b9f 2px solid"><INPUT 
+      id=WLSearchBoxButton 
+      style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none" 
+      type=image 
+      src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/searchbutton_normal.png" 
+      align=absBottom></TD></TR></TBODY></TABLE>
+<SCRIPT type=text/javascript charset=utf-8>
+	var WLSearchBoxConfiguration=
+	{
+		"global":{
+			"serverDNS":"search.msn.com",
+			"market":"en-US"
+		},
+		"appearance":{
+			"autoHideTopControl":false,
+			"width":800,
+			"height":550,
+			"theme":"Blue"
+		},
+		"scopes":[
+			{
+				"type":"web",
+				"caption":"&#x27;&#x73;&#x20;&#x62;&#x6c;&#x6f;&#x67;",
+				"searchParam":"site:blogs.sqlxml.org"
+			}
+			,
+			{
+				"type":"web",
+				"caption":"&#x57;&#x65;&#x62;",
+				"searchParam":""
+			}
+		]
+	}
+	</SCRIPT>
+
+<SCRIPT 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/bootstrap.js" 
+type=text/javascript charset=utf-8></SCRIPT>
+</DIV>
+<DIV id=NewsSideBar>
+<DIV id=NewsSidebar>
+<H3>News</H3>
+<UL>
+  <LI><A href="http://feeds.feedburner.com/BryantLikesBlog"><IMG 
+  style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+  height=26 alt="" 
+  src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/BryantLikesBlog.gif" 
+  width=88></A> <BR><A 
+  href="http://signup.alerts.live.com/alerts/login.do?PINID=27401148&amp;returnURL=http://blogs.sqlxml.org/BryantLikes"><IMG 
+  alt="Windows Live Alerts" 
+  src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/alert_signup_eng.gif" 
+  border=0></A> <BR><A href="http://www.linkedin.com/in/bryantlikes"><IMG 
+  height=33 alt="View Bryant Likes's profile on LinkedIn" 
+  src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/btn_viewmy_120x33.gif" 
+  width=120 border=0></A> <BR><BR><IMG alt=Me 
+  src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/o_MVPPhotoSml.jpg"> 
+  <BR><BR>The posts on this weblog are provided "as is" with no warranties and 
+  confer no rights. The opinions expressed herin are the personal opinions of 
+  the individual authors and do not represent the views of <A 
+  href="http://www.avanade.com/">Avanade</A> in any way. </LI></UL></DIV></DIV>
+<DIV id=NavSideBar>
+<H3>Navigation</H3>
+<DIV id=headertab>
+<UL>
+  <LI><A id=ctl00___ctl00___bs___nm___Menu_ctl00_MenuItem 
+  href="http://blogs.sqlxml.org/default.aspx">Blogs</A> 
+  <LI><A id=ctl00___ctl00___bs___nm___Menu_ctl01_MenuItem 
+  href="http://blogs.sqlxml.org/photos/default.aspx">Photos</A> 
+  <LI><A id=ctl00___ctl00___bs___nm___Menu_ctl02_MenuItem 
+  href="http://blogs.sqlxml.org/files/default.aspx">Downloads</A> 
+</LI></UL></DIV></DIV>
+<DIV id=LinkSideBar></DIV>
+<DIV id=ArchiveSideBar>
+<H3>Archives</H3>
+<UL>
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2007/10.aspx">October 
+  2007 (1)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2007/08.aspx">August 
+  2007 (2)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2007/07.aspx">July 
+  2007 (1)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2007/06.aspx">June 
+  2007 (1)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2007/05.aspx">May 
+  2007 (4)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2007/04.aspx">April 
+  2007 (1)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2007/03.aspx">March 
+  2007 (4)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2007/02.aspx">February 2007 
+  (8)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2007/01.aspx">January 
+  2007 (8)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2006/12.aspx">December 2006 
+  (9)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2006/11.aspx">November 2006 
+  (7)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2006/10.aspx">October 
+  2006 (4)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2006/09.aspx">September 2006 
+  (11)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2006/08.aspx">August 
+  2006 (18)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2006/07.aspx">July 
+  2006 (5)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2006/06.aspx">June 
+  2006 (1)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2006/05.aspx">May 
+  2006 (3)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2006/04.aspx">April 
+  2006 (7)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2006/03.aspx">March 
+  2006 (7)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2006/02.aspx">February 2006 
+  (2)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2005/12.aspx">December 2005 
+  (5)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2005/11.aspx">November 2005 
+  (11)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2005/10.aspx">October 
+  2005 (3)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2005/09.aspx">September 2005 
+  (8)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2005/08.aspx">August 
+  2005 (7)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2005/07.aspx">July 
+  2005 (5)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2005/06.aspx">June 
+  2005 (11)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2005/05.aspx">May 
+  2005 (9)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2005/04.aspx">April 
+  2005 (14)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2005/03.aspx">March 
+  2005 (12)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2005/02.aspx">February 2005 
+  (17)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2005/01.aspx">January 
+  2005 (10)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2004/12.aspx">December 2004 
+  (9)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2004/11.aspx">November 2004 
+  (4)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2004/10.aspx">October 
+  2004 (10)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2004/09.aspx">September 2004 
+  (2)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2004/08.aspx">August 
+  2004 (4)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2004/07.aspx">July 
+  2004 (15)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2004/06.aspx">June 
+  2004 (11)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2004/05.aspx">May 
+  2004 (14)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2004/04.aspx">April 
+  2004 (12)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2004/03.aspx">March 
+  2004 (16)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2004/02.aspx">February 2004 
+  (16)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2003/11.aspx">November 2003 
+  (4)</A> 
+  <LI><A href="http://blogs.sqlxml.org/bryantlikes/archive/2003/10.aspx">October 
+  2003 (20)</A> 
+  <LI><A 
+  href="http://blogs.sqlxml.org/bryantlikes/archive/2003/09.aspx">September 2003 
+  (5)</A> </LI></UL></DIV></DIV>
+<DIV id=main><SPAN id=ctl00___ctl00___Ads1___StandardTop>
+<SCRIPT type=text/javascript><!--
+google_ad_client = "pub-9526670085455515";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text_image";
+google_ad_channel ="";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "000066";
+google_color_text = "333333";
+google_color_url = "0066FF";
+//--></SCRIPT>
+
+<SCRIPT 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/show_ads.js" 
+type=text/javascript>
+</SCRIPT>
+</SPAN>
+<DIV class=post>
+<H5 class="posthead pageTitle">Enabling WPF Magic Using WCF - Part 1 </H5>
+<P>One of the magical features of <A href="http://wpf.netfx3.com/">WPF</A> is 
+the way that data bindings automagically refresh when they are bound to an 
+object that implements <A 
+href="http://msdn2.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanged.aspx">INotifyPropertyChanged</A>. 
+You can also get this same magic by binding to a collection of objects (which 
+implement INotifyPropertyChanged) by making the collection an <A 
+href="http://windowssdk.msdn.microsoft.com/en-us/library/ms668604.aspx">ObservableCollection</A>. 
+This means that you can build a WPF application that is bound to a list of 
+objects that will automatically refresh itself whenever that list changes. </P>
+<P>But how do you keep the list itself up-to-date? <A 
+href="http://blogs.msdn.com/dancre/archive/2006/09/17/760104.aspx">One 
+example</A> is given in <A href="http://blogs.msdn.com/dancre/default.aspx">Dan 
+Crevier</A>'s excellent series on the DataModel&nbsp;- View - ViewModel design 
+pattern for WPF (starts <A 
+href="http://blogs.msdn.com/dancre/archive/2006/07/23/676272.aspx">here</A>). In 
+<A href="http://blogs.msdn.com/dancre/archive/2006/08/25/724938.aspx">part 
+6</A>, Dan uses a Timer to ping the data service to see if there is new data. 
+While this works great for examples, in real life you probably don't want to be 
+constantly pinging to see if there is new information. Since I'm currently 
+working on building a WPF application that will need this kind of functionality 
+I thought I would work through how this might work out in a real application and 
+how what this might look like using <A 
+href="http://wcf.netfx3.com/">WCF</A>&nbsp;(this will be in part 2). </P>
+<P>In order to walk before we run, let's start with a very simple WPF 
+application that reads a list of contacts from an XML file and displays them. 
+This will let us explore the INotifyPropertyChanged and ObservableCollection 
+magic first. So to start, here is our XML file that lists out some contacts:</P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&lt;</SPAN><SPAN 
+style="COLOR: maroon">ArrayOfContact</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+&lt;</SPAN><SPAN style="COLOR: maroon">Contact</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN style="COLOR: maroon">FirstName</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN>Tom<SPAN style="COLOR: blue">&lt;/</SPAN><SPAN 
+style="COLOR: maroon">FirstName</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN style="COLOR: maroon">LastName</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN>Jones<SPAN style="COLOR: blue">&lt;/</SPAN><SPAN 
+style="COLOR: maroon">LastName</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af"></SPAN><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">Phone</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN>888-111-2333<SPAN 
+style="COLOR: blue">&lt;/</SPAN><SPAN style="COLOR: maroon">Phone</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+&lt;/</SPAN><SPAN style="COLOR: maroon">Contact</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+&lt;</SPAN><SPAN style="COLOR: maroon">Contact</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af"></SPAN><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">FirstName</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN>Jill<SPAN style="COLOR: blue">&lt;/</SPAN><SPAN 
+style="COLOR: maroon">FirstName</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af"></SPAN><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">LastName</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN>Smith<SPAN style="COLOR: blue">&lt;/</SPAN><SPAN 
+style="COLOR: maroon">LastName</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af"></SPAN><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">Phone</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN>800-222-4455<SPAN 
+style="COLOR: blue">&lt;/</SPAN><SPAN style="COLOR: maroon">Phone</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af"></SPAN><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &lt;/</SPAN><SPAN 
+style="COLOR: maroon">Contact</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af"></SPAN><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">Contact</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af"></SPAN><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">FirstName</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN>Ed<SPAN style="COLOR: blue">&lt;/</SPAN><SPAN 
+style="COLOR: maroon">FirstName</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af"></SPAN><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">LastName</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN>Baker<SPAN style="COLOR: blue">&lt;/</SPAN><SPAN 
+style="COLOR: maroon">LastName</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af"></SPAN><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">Phone</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN>877-444-4321<SPAN 
+style="COLOR: blue">&lt;/</SPAN><SPAN style="COLOR: maroon">Phone</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af"></SPAN><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &lt;/</SPAN><SPAN 
+style="COLOR: maroon">Contact</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&lt;/</SPAN><SPAN 
+style="COLOR: maroon">ArrayOfContact</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P></DIV>
+<P>These contacts will be read from the file and will populate our Contact class 
+shown below:</P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;6</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">namespace</SPAN> ContactApp</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;7</SPAN>&nbsp;{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">&nbsp;8</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">class</SPAN> <SPAN 
+style="COLOR: teal">Contact</SPAN> : <SPAN 
+style="COLOR: teal">INotifyPropertyChanged</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">&nbsp;9</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">10</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">event</SPAN> 
+<SPAN style="COLOR: teal">PropertyChangedEventHandler</SPAN> 
+PropertyChanged;</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">11</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">12</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">private</SPAN> <SPAN style="COLOR: blue">string</SPAN> 
+_firstName;</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">13</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">14</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">string</SPAN> 
+FirstName</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">15</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">16</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">get</SPAN> { <SPAN 
+style="COLOR: blue">return</SPAN> _firstName; }</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">17</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">set</SPAN> </P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">18</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; { </P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">19</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _firstName = <SPAN 
+style="COLOR: blue">value</SPAN>;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">20</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; NotifyPropertyChanged(<SPAN 
+style="COLOR: maroon">"FirstName"</SPAN>);</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">21</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">22</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+}</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">23</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">24</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">private</SPAN> <SPAN style="COLOR: blue">string</SPAN> 
+_lastName;</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">25</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">26</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">string</SPAN> 
+LastName</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">27</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">28</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">get</SPAN> { <SPAN 
+style="COLOR: blue">return</SPAN> _lastName; }</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">29</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">set</SPAN> </P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">30</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">31</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _lastName = <SPAN 
+style="COLOR: blue">value</SPAN>;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">32</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; NotifyPropertyChanged(<SPAN 
+style="COLOR: maroon">"LastName"</SPAN>); </P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">33</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">34</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+}</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">35</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">36</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">private</SPAN> <SPAN style="COLOR: blue">string</SPAN> 
+_phone;</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">37</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">38</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">string</SPAN> 
+Phone</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">39</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">40</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">get</SPAN> { <SPAN 
+style="COLOR: blue">return</SPAN> _phone; }</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">41</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">set</SPAN> </P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">42</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">43</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _phone = <SPAN 
+style="COLOR: blue">value</SPAN>;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">44</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; NotifyPropertyChanged(<SPAN 
+style="COLOR: maroon">"Phone"</SPAN>); </P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">45</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">46</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+}</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">47</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">48</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">49</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">private</SPAN> <SPAN style="COLOR: blue">void</SPAN> 
+NotifyPropertyChanged(<SPAN style="COLOR: blue">string</SPAN> propertyName)</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">50</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+{</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">51</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">52</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">if</SPAN> (PropertyChanged != <SPAN 
+style="COLOR: blue">null</SPAN>)</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">53</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">54</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; PropertyChanged(<SPAN 
+style="COLOR: blue">this</SPAN>, <SPAN style="COLOR: blue">new</SPAN> <SPAN 
+style="COLOR: teal">PropertyChangedEventArgs</SPAN>(propertyName));</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">55</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">56</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">57</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+}</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">58</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">59</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">60</SPAN>&nbsp;}</P></DIV>
+<P>The list of contacts will be retrieved using a very simple interface which is 
+defined like this:</P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;5</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">namespace</SPAN> ContactApp</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;6</SPAN>&nbsp;{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">&nbsp;7</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">interface</SPAN> 
+<SPAN style="COLOR: teal">IContactProvider</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">&nbsp;8</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">&nbsp;9</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: teal">List</SPAN>&lt;<SPAN 
+style="COLOR: teal">Contact</SPAN>&gt; GetContacts();</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">10</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">11</SPAN>&nbsp;}</P></DIV>
+<P>Now we can define a class that reads our XML file and returns the list of 
+contacts by implementing our interface above:</P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;7</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">namespace</SPAN> ContactApp</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;8</SPAN>&nbsp;{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">&nbsp;9</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">class</SPAN> <SPAN 
+style="COLOR: teal">ContactProvider</SPAN> : <SPAN 
+style="COLOR: teal">IContactProvider</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">10</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">11</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">private</SPAN> <SPAN style="COLOR: blue">string</SPAN> 
+_filepath;</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">12</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">13</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">public</SPAN> ContactProvider(<SPAN 
+style="COLOR: blue">string</SPAN> filepath)</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">14</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">15</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; _filepath = filepath;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">16</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+}</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">17</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">18</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">public</SPAN> <SPAN 
+style="COLOR: teal">List</SPAN>&lt;<SPAN style="COLOR: teal">Contact</SPAN>&gt; 
+GetContacts()</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">19</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">20</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">using</SPAN> (<SPAN 
+style="COLOR: teal">FileStream</SPAN> fs = <SPAN style="COLOR: blue">new</SPAN> 
+<SPAN style="COLOR: teal">FileStream</SPAN>(_filepath, <SPAN 
+style="COLOR: teal">FileMode</SPAN>.Open))</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">21</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">22</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: teal">XmlSerializer</SPAN> xs = <SPAN 
+style="COLOR: blue">new</SPAN> <SPAN 
+style="COLOR: teal">XmlSerializer</SPAN>(<SPAN 
+style="COLOR: blue">typeof</SPAN>(<SPAN style="COLOR: teal">List</SPAN>&lt;<SPAN 
+style="COLOR: teal">Contact</SPAN>&gt;));</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">23</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">return</SPAN> 
+(<SPAN style="COLOR: teal">List</SPAN>&lt;<SPAN 
+style="COLOR: teal">Contact</SPAN>&gt;)xs.Deserialize(fs);</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">24</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">25</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+}</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">26</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">27</SPAN>&nbsp;}</P></DIV>
+<P>At this point we need to create what Dan calls the DataModel. The DataModel 
+wraps any code that&nbsp;manipulates the data and makes it accessible to WPF. 
+For our example here the DataModel will be very simple and will be an 
+ObservableList so that our WPF window will be able to bind to the collection and 
+refresh when it changes. At this point our DataModel looks like the 
+following:</P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;6</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">namespace</SPAN> ContactApp</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;7</SPAN>&nbsp;{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">&nbsp;8</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">class</SPAN> <SPAN 
+style="COLOR: teal">ContactDataModel</SPAN> : <SPAN 
+style="COLOR: teal">ObservableCollection</SPAN>&lt;<SPAN 
+style="COLOR: teal">Contact</SPAN>&gt;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">&nbsp;9</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">10</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">public</SPAN> ContactDataModel(<SPAN 
+style="COLOR: teal">List</SPAN>&lt;<SPAN style="COLOR: teal">Contact</SPAN>&gt; 
+contacts) : <SPAN style="COLOR: blue">base</SPAN>(contacts)</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">11</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+{}</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">12</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">13</SPAN>&nbsp;}</P></DIV>
+<P>Next we create the ViewModel. The ViewModel is what our window will bind to. 
+It will take in an instance of a ContactProvider class and expose the collection 
+of contacts which is our ContactDataModel. Below is what this looks like:</P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;6</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">namespace</SPAN> ContactApp</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;7</SPAN>&nbsp;{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">&nbsp;8</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">class</SPAN> <SPAN 
+style="COLOR: teal">ContactViewModel</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">&nbsp;9</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">10</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">private</SPAN> <SPAN 
+style="COLOR: teal">ContactProvider</SPAN> _provider;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">11</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">private</SPAN> <SPAN 
+style="COLOR: teal">ContactDataModel</SPAN> _contacts;</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">12</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">13</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">public</SPAN> ContactViewModel(<SPAN 
+style="COLOR: teal">ContactProvider</SPAN> provider)</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">14</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">15</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; _provider = provider;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">16</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; _contacts = <SPAN style="COLOR: blue">new</SPAN> <SPAN 
+style="COLOR: teal">ContactDataModel</SPAN>(_provider.GetContacts());</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">17</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+}</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">18</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">19</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">public</SPAN> <SPAN 
+style="COLOR: teal">ContactDataModel</SPAN> Contacts</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">20</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">21</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">get</SPAN> { <SPAN 
+style="COLOR: blue">return</SPAN> _contacts; }</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">22</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+}</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">23</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">24</SPAN>&nbsp;}</P></DIV>
+<P>Now we can add the data templates to our application.xaml file to tell WPF 
+how to format the objects we have created so far. </P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&lt;</SPAN><SPAN 
+style="COLOR: maroon">Application</SPAN><SPAN style="COLOR: blue"> </SPAN><SPAN 
+style="COLOR: red">x:Class</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">ContactApp.App</SPAN>"</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; </SPAN><SPAN 
+style="COLOR: red">xmlns</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">http://schemas.microsoft.com/winfx/2006/xaml/presentation</SPAN>"</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; </SPAN><SPAN 
+style="COLOR: red">xmlns:x</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">http://schemas.microsoft.com/winfx/2006/xaml</SPAN>"</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; </SPAN><SPAN 
+style="COLOR: red">xmlns:local</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">clr-namespace:ContactApp</SPAN>"<SPAN style="COLOR: blue"> 
+</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; </SPAN><SPAN 
+style="COLOR: red">StartupUri</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">Window1.xaml</SPAN>"</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+&lt;</SPAN><SPAN style="COLOR: maroon">Application.Resources</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">DataTemplate</SPAN><SPAN style="COLOR: blue"> </SPAN><SPAN 
+style="COLOR: red">DataType</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">{x:Type local:Contact}</SPAN>"<SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;</SPAN><SPAN style="COLOR: maroon">StackPanel</SPAN><SPAN 
+style="COLOR: blue"> </SPAN><SPAN style="COLOR: red">Orientation</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">Horizontal</SPAN>"<SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;</SPAN><SPAN style="COLOR: maroon">TextBlock</SPAN><SPAN 
+style="COLOR: blue"> </SPAN><SPAN style="COLOR: red">Text</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">{Binding 
+LastName}</SPAN>"<SPAN style="COLOR: blue"> /&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;</SPAN><SPAN style="COLOR: maroon">TextBlock</SPAN><SPAN 
+style="COLOR: blue"> </SPAN><SPAN style="COLOR: red">Text</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">, </SPAN>"<SPAN 
+style="COLOR: blue"> /&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;</SPAN><SPAN style="COLOR: maroon">TextBlock</SPAN><SPAN 
+style="COLOR: blue"> </SPAN><SPAN style="COLOR: red">Text</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">{Binding 
+FirstName}</SPAN>"<SPAN style="COLOR: blue"> /&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;</SPAN><SPAN style="COLOR: maroon">TextBlock</SPAN><SPAN 
+style="COLOR: blue"> </SPAN><SPAN style="COLOR: red">Text</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue"> </SPAN>"<SPAN 
+style="COLOR: blue"> /&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;</SPAN><SPAN style="COLOR: maroon">TextBlock</SPAN><SPAN 
+style="COLOR: blue"> </SPAN><SPAN style="COLOR: red">Text</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">{Binding 
+Phone}</SPAN>"<SPAN style="COLOR: blue"> /&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/</SPAN><SPAN style="COLOR: maroon">StackPanel</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/</SPAN><SPAN 
+style="COLOR: maroon">DataTemplate</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">DataTemplate</SPAN><SPAN style="COLOR: blue"> </SPAN><SPAN 
+style="COLOR: red">DataType</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">{x:Type local:ContactViewModel}</SPAN>"<SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;</SPAN><SPAN style="COLOR: maroon">ListBox</SPAN><SPAN style="COLOR: blue"> 
+</SPAN><SPAN style="COLOR: red">Name</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">ContactList</SPAN>"<SPAN 
+style="COLOR: blue"> </SPAN><SPAN style="COLOR: red">ItemsSource</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">{Binding 
+Contacts}</SPAN>"<SPAN style="COLOR: blue"> /&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/</SPAN><SPAN 
+style="COLOR: maroon">DataTemplate</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&nbsp;&nbsp;&nbsp; 
+&lt;/</SPAN><SPAN style="COLOR: maroon">Application.Resources</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: blue">&lt;/</SPAN><SPAN 
+style="COLOR: maroon">Application</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P></DIV>
+<P>Finally, we can create our Window to load&nbsp;bind to 
+a&nbsp;ContactViewModel and display our contacts:</P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;1</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">&lt;</SPAN><SPAN style="COLOR: maroon">Window</SPAN><SPAN 
+style="COLOR: blue"> </SPAN><SPAN style="COLOR: red">x:Class</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">ContactApp.Window1</SPAN>"</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;2</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; </SPAN><SPAN 
+style="COLOR: red">xmlns</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">http://schemas.microsoft.com/winfx/2006/xaml/presentation</SPAN>"</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;3</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; </SPAN><SPAN 
+style="COLOR: red">xmlns:x</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">http://schemas.microsoft.com/winfx/2006/xaml</SPAN>"</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;4</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; </SPAN><SPAN 
+style="COLOR: red">Title</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">ContactApp</SPAN>"<SPAN style="COLOR: blue"> </SPAN><SPAN 
+style="COLOR: red">Height</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">300</SPAN>"<SPAN style="COLOR: blue"> </SPAN><SPAN 
+style="COLOR: red">Width</SPAN><SPAN style="COLOR: blue">=</SPAN>"<SPAN 
+style="COLOR: blue">300</SPAN>"</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;5</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;6</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">Grid</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;7</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;</SPAN><SPAN 
+style="COLOR: maroon">ContentControl</SPAN><SPAN style="COLOR: blue"> 
+</SPAN><SPAN style="COLOR: red">x:Name</SPAN><SPAN 
+style="COLOR: blue">=</SPAN>"<SPAN style="COLOR: blue">_content</SPAN>"<SPAN 
+style="COLOR: blue"> /&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;8</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">&nbsp;&nbsp;&nbsp; &lt;/</SPAN><SPAN 
+style="COLOR: maroon">Grid</SPAN><SPAN style="COLOR: blue">&gt;</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;9</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">&lt;/</SPAN><SPAN style="COLOR: maroon">Window</SPAN><SPAN 
+style="COLOR: blue">&gt;</SPAN></P></DIV>
+<P>And here is the code behind that does the binding:</P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">14</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">namespace</SPAN> ContactApp</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">15</SPAN>&nbsp;{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">16</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">partial</SPAN> <SPAN 
+style="COLOR: blue">class</SPAN> <SPAN style="COLOR: teal">Window1</SPAN> : 
+System.Windows.<SPAN style="COLOR: teal">Window</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">17</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">18</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<SPAN style="COLOR: blue">public</SPAN> Window1()</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">19</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">20</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; InitializeComponent();</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">21</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; _content.Content = <SPAN style="COLOR: blue">new</SPAN> <SPAN 
+style="COLOR: teal">ContactViewModel</SPAN>(<SPAN style="COLOR: blue">new</SPAN> 
+<SPAN style="COLOR: teal">ContactProvider</SPAN>(<SPAN 
+style="COLOR: maroon">@"contacts.xml"</SPAN>));</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">22</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+}</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">23</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">24</SPAN>&nbsp;}</P></DIV>
+<P>So this is a very incomplete application that has a lot of holes and plenty 
+of room for improvement. However, it does what I wanted it to do in that it 
+loads a list of contacts from an XML file and displays them. Below is a 
+screenshot of the application as it now stands:</P>
+<P>&nbsp;<IMG 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/simple1.jpg"></P>
+<P>What happens if a change is made to that XML file? At this point nothing will 
+happen. In order to track changes to the XML file we will need to implement a 
+file system watcher on that file and then reload the list of contacts whenever 
+that happens. In order to implement this we will first add the following code 
+(in bold)&nbsp;to the ContactProvider class:</P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">&nbsp;9</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">class</SPAN> <SPAN 
+style="COLOR: teal">ContactProvider</SPAN> : <SPAN 
+style="COLOR: teal">IContactProvider</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">10</SPAN>&nbsp;{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">11</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">private</SPAN> <SPAN style="COLOR: blue">string</SPAN> 
+_filepath;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">12</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <STRONG><SPAN 
+style="COLOR: blue">private</SPAN> <SPAN 
+style="COLOR: teal">FileSystemWatcher</SPAN> _fileWatch;</STRONG></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">13</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">14</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <STRONG><SPAN 
+style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">event</SPAN> <SPAN 
+style="COLOR: teal">EventHandler</SPAN> ListChanged;</STRONG></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">15</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">16</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">public</SPAN> ContactProvider(<SPAN 
+style="COLOR: blue">string</SPAN> filepath)</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">17</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">18</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+_filepath = filepath;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">19</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<STRONG>_fileWatch = <SPAN style="COLOR: blue">new</SPAN> <SPAN 
+style="COLOR: teal">FileSystemWatcher</SPAN>(</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">20</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<STRONG><SPAN style="COLOR: teal">Path</SPAN>.GetDirectoryName(_filepath), <SPAN 
+style="COLOR: teal">Path</SPAN>.GetFileName(_filepath)</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">21</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+);</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">22</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<STRONG>_fileWatch.Changed += <SPAN style="COLOR: blue">new</SPAN> <SPAN 
+style="COLOR: teal">FileSystemEventHandler</SPAN>(OnListChanged);</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">23</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<STRONG>_fileWatch.EnableRaisingEvents = <SPAN 
+style="COLOR: blue">true</SPAN>;</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">24</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">25</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">...</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">35</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <STRONG><SPAN 
+style="COLOR: blue">private</SPAN> <SPAN style="COLOR: blue">void</SPAN> 
+OnListChanged(<SPAN style="COLOR: blue">object</SPAN> sender, <SPAN 
+style="COLOR: teal">FileSystemEventArgs</SPAN> e)</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">36</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <STRONG>{</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">37</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<STRONG><SPAN style="COLOR: blue">if</SPAN> (ListChanged != <SPAN 
+style="COLOR: blue">null</SPAN>)</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">38</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<STRONG>{</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">39</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<STRONG>ListChanged(<SPAN style="COLOR: blue">this</SPAN>, <SPAN 
+style="COLOR: teal">EventArgs</SPAN>.Empty);</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">40</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<STRONG>}</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">41</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <STRONG>}</STRONG></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">42</SPAN>&nbsp;}</P></DIV>
+<P>Additionally we will modify the ContactViewModel to reload our list when it 
+receive a ListChanged event. This will have to be done on the UI thread so we 
+will use the Dispatcher trick demonstrated by Dan. Below is the updated 
+ContactViewModel:</P>
+<DIV 
+style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">10</SPAN>&nbsp;<SPAN 
+style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">class</SPAN> <SPAN 
+style="COLOR: teal">ContactViewModel</SPAN></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">11</SPAN>&nbsp;{</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">12</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">private</SPAN> <SPAN 
+style="COLOR: teal">ContactProvider</SPAN> _provider;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">13</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">private</SPAN> <SPAN 
+style="COLOR: teal">ContactDataModel</SPAN> _contacts;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">14</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <STRONG><SPAN 
+style="COLOR: blue">private</SPAN> <SPAN style="COLOR: teal">Dispatcher</SPAN> 
+_dispatcher;</STRONG></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">15</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">16</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <SPAN 
+style="COLOR: blue">public</SPAN> ContactViewModel(<SPAN 
+style="COLOR: teal">ContactProvider</SPAN> provider)</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">17</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; {</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">18</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<STRONG>_dispatcher = <SPAN 
+style="COLOR: teal">Dispatcher</SPAN>.CurrentDispatcher;</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">19</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+_provider = provider;</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">20</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<STRONG>_provider.ListChanged += ListChanged;</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">21</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+_contacts = <SPAN style="COLOR: blue">new</SPAN> <SPAN 
+style="COLOR: teal">ContactDataModel</SPAN>(_provider.GetContacts());</P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">22</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">23</SPAN>&nbsp;</P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">...</SPAN></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">29</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <STRONG><SPAN 
+style="COLOR: blue">public</SPAN> <SPAN style="COLOR: blue">void</SPAN> 
+ListChanged(<SPAN style="COLOR: blue">object</SPAN> sender, <SPAN 
+style="COLOR: teal">EventArgs</SPAN> e)</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">30</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <STRONG>{</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">31</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<STRONG><SPAN style="COLOR: teal">List</SPAN>&lt;<SPAN 
+style="COLOR: teal">Contact</SPAN>&gt; contacts = 
+_provider.GetContacts();</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">32</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<STRONG>_dispatcher.BeginInvoke(<SPAN 
+style="COLOR: teal">DispatcherPriority</SPAN>.ApplicationIdle,</STRONG> </P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">33</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; <STRONG><SPAN style="COLOR: blue">new</SPAN> <SPAN 
+style="COLOR: teal">ThreadStart</SPAN>(<SPAN 
+style="COLOR: blue">delegate</SPAN></STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">34</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <STRONG>{</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">35</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<STRONG>_contacts.Clear();</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">36</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <STRONG><SPAN 
+style="COLOR: blue">foreach</SPAN> (<SPAN style="COLOR: teal">Contact</SPAN> 
+contact <SPAN style="COLOR: blue">in</SPAN> contacts)</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">37</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+<STRONG>_contacts.Add(contact);</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">38</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <STRONG>}));</STRONG></P>
+<P style="MARGIN: 0px"><SPAN 
+style="COLOR: #2b91af">39</SPAN>&nbsp;&nbsp;&nbsp;&nbsp; <STRONG>}</STRONG></P>
+<P style="MARGIN: 0px"><SPAN style="COLOR: #2b91af">40</SPAN>&nbsp;}</P></DIV>
+<P>That's it! Now if you run the application and edit the XML file the WPF 
+application will update as soon as you hit save. Magic! Now in a real world 
+application you're probably not going to be using a local file, so the next step 
+will be to migrate our Provider to WCF. This will done in part 2 since this post 
+is already too long...</P>
+<P><STRONG>Technorati Tags:</STRONG> <A 
+href="http://technorati.com/tag/WPF">WPF</A> <A 
+href="http://technorati.com/tag/WCF">WCF</A></P>
+<DIV class=postfoot><SPAN class=em>Posted:</SPAN> Wednesday, September 20, 2006 
+1:25 PM by <A id=ctl00___ctl00___ctl02___Entry___AuthorLink 
+href="http://blogs.sqlxml.org/user/Profile.aspx?UserID=2104">bryantlikes</A> 
+<DIV><SPAN id=ctl00___ctl00___ctl02___Entry___InlineTagEditorPanel>Filed under: 
+<A href="http://blogs.sqlxml.org/bryantlikes/archive/tags/WCF/default.aspx" 
+rel=tag>WCF</A>, <A 
+href="http://blogs.sqlxml.org/bryantlikes/archive/tags/WPF/default.aspx" 
+rel=tag>WPF</A></SPAN><INPUT 
+id=ctl00___ctl00___ctl02___Entry___InlineTagEditorPanel_State type=hidden 
+value=nochange 
+name=ctl00$_$ctl00$_$ctl02$_$Entry$_$InlineTagEditorPanel></DIV></DIV></DIV>
+<DIV id=comments>
+<H2>Comments </H2>
+<DIV class=CommentArea>
+<H4 class=CommentTitle><A 
+id=ctl00___ctl00___ctl02___Comments___Comments_ctl00_NameLink title=TrackBack 
+href="http://blogs.sqlxml.org/utility/Redirect.aspx?U=http%3a%2f%2fblogs.sqlxml.org%2fbryantlikes%2farchive%2f2006%2f09%2f20%2fEnabling-WPF-Magic-Using-WCF-_2D00_-Part-2.aspx" 
+rel=nofollow>Bryant Likes's Blog</A> said: <IMG class=CommentArrow 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/spacer.gif" 
+align=absBottom> </H4>
+<DIV class=CommentText>
+<DIV class=CommentText2>
+<DIV class=CommentText3>
+<P>In part 1 we created a very simple application that actually didn't even use 
+WCF. The next step in the</P></DIV></DIV></DIV>
+<DIV class=CommentFooter><A 
+id=ctl00___ctl00___ctl02___Comments___Comments_ctl00_PermaLink title=permalink 
+href="http://blogs.sqlxml.org/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx#7983">#</A> 
+September 20, 2006 6:13 PM </DIV></DIV>
+<DIV class=CommentArea>
+<H4 class=CommentTitle><A 
+id=ctl00___ctl00___ctl02___Comments___Comments_ctl01_NameLink title=TrackBack 
+href="http://blogs.sqlxml.org/utility/Redirect.aspx?U=http%3a%2f%2fblogs.sqlxml.org%2fbryantlikes%2farchive%2f2006%2f09%2f21%2fEnabling-WPF-Magic-Using-WCF-_2D00_-Part-3.aspx" 
+rel=nofollow>Bryant Likes's Blog</A> said: <IMG class=CommentArrow 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/spacer.gif" 
+align=absBottom> </H4>
+<DIV class=CommentText>
+<DIV class=CommentText2>
+<DIV class=CommentText3>
+<P>In Part 1 we created a simple WPF application that demonstrated WPF's ability 
+to automatically update</P></DIV></DIV></DIV>
+<DIV class=CommentFooter><A 
+id=ctl00___ctl00___ctl02___Comments___Comments_ctl01_PermaLink title=permalink 
+href="http://blogs.sqlxml.org/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx#8048">#</A> 
+September 21, 2006 1:45 PM </DIV></DIV>
+<DIV class=CommentAreaOwner>
+<H4 class=CommentTitle><A 
+id=ctl00___ctl00___ctl02___Comments___Comments_ctl02_NameLink title=TrackBack 
+href="http://blogs.sqlxml.org/utility/Redirect.aspx?U=http%3a%2f%2frrelyea.spaces.live.com%2f%3f_c11_blogpart_blogpart%3dblogview%26_c%3dblogpart%26partqs%3damonth%3d9%26ayear%3d2006">TrackBack</A> 
+said: <IMG class=CommentArrow 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/spacer.gif" 
+align=absBottom> </H4>
+<DIV class=CommentText>
+<DIV class=CommentText2>
+<DIV class=CommentText3></DIV></DIV></DIV>
+<DIV class=CommentFooter><A 
+id=ctl00___ctl00___ctl02___Comments___Comments_ctl02_PermaLink title=permalink 
+href="http://blogs.sqlxml.org/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx#8071">#</A> 
+September 22, 2006 7:32 AM </DIV></DIV>
+<DIV class=CommentArea>
+<H4 class=CommentTitle><A 
+id=ctl00___ctl00___ctl02___Comments___Comments_ctl03_NameLink title=TrackBack 
+href="http://blogs.sqlxml.org/utility/Redirect.aspx?U=http%3a%2f%2fblogs.sqlxml.org%2fbryantlikes%2farchive%2f2006%2f09%2f27%2fWPF-Patterns.aspx" 
+rel=nofollow>Bryant Likes's Blog</A> said: <IMG class=CommentArrow 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/spacer.gif" 
+align=absBottom> </H4>
+<DIV class=CommentText>
+<DIV class=CommentText2>
+<DIV class=CommentText3>
+<P>If you're doing WPF development, you really need to check out Dan Crevier 's 
+series on DataModel-View-ViewModel.</P></DIV></DIV></DIV>
+<DIV class=CommentFooter><A 
+id=ctl00___ctl00___ctl02___Comments___Comments_ctl03_PermaLink title=permalink 
+href="http://blogs.sqlxml.org/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx#8489">#</A> 
+September 27, 2006 1:32 PM </DIV></DIV>
+<DIV class=CommentArea>
+<H4 class=CommentTitle><A 
+id=ctl00___ctl00___ctl02___Comments___Comments_ctl04_NameLink 
+title=Emmanuel>Emmanuel</A> said: <IMG class=CommentArrow 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/spacer.gif" 
+align=absBottom> </H4>
+<DIV class=CommentText>
+<DIV class=CommentText2>
+<DIV class=CommentText3>
+<P>Great article, that's exactly what I was looking for. Any chance of having 
+the source code posted (all 3 articles) someday?</P>
+<P>Thanks!</P></DIV></DIV></DIV>
+<DIV class=CommentFooter><A 
+id=ctl00___ctl00___ctl02___Comments___Comments_ctl04_PermaLink title=permalink 
+href="http://blogs.sqlxml.org/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx#44494">#</A> 
+March 29, 2007 7:46 PM </DIV></DIV></DIV>
+<FIELDSET id=commentform><LEGEND>Leave a Comment</LEGEND>
+<P>
+<DIV><LABEL for=ctl00___ctl00___ctl02___form___tbTitle>Title</LABEL> 
+<EM>(required)</EM><SPAN 
+id=ctl00___ctl00___ctl02___form___Requiredfieldvalidator1 
+style="VISIBILITY: hidden; COLOR: red">*</SPAN></DIV>
+<DIV><INPUT class=smallbox id=ctl00___ctl00___ctl02___form___tbTitle 
+value="re: Enabling WPF Magic Using WCF - Part 1" 
+name=ctl00$_$ctl00$_$ctl02$_$form$_$tbTitle></DIV>
+<P></P>
+<P>
+<DIV id=ctl00___ctl00___ctl02___form___NameTitle><LABEL 
+for=ctl00___ctl00___ctl02___form___tbName>Name</LABEL> <EM>(required)</EM><SPAN 
+id=ctl00___ctl00___ctl02___form___Requiredfieldvalidator2 
+style="VISIBILITY: hidden; COLOR: red">*</SPAN></DIV>
+<DIV id=ctl00___ctl00___ctl02___form___NameDesc><INPUT class=smallbox 
+id=ctl00___ctl00___ctl02___form___tbName 
+name=ctl00$_$ctl00$_$ctl02$_$form$_$tbName></DIV>
+<P></P>
+<P>
+<DIV><LABEL for=ctl00___ctl00___ctl02___form___tbUrl>Your URL</LABEL> 
+<EM>(optional</EM>)</DIV>
+<DIV><INPUT class=smallbox id=ctl00___ctl00___ctl02___form___tbUrl 
+name=ctl00$_$ctl00$_$ctl02$_$form$_$tbUrl></DIV>
+<P></P>
+<P>
+<DIV><LABEL for=ctl00___ctl00___ctl02___form___tbComment>Comments</LABEL> 
+<EM>(required)</EM><SPAN 
+id=ctl00___ctl00___ctl02___form___Requiredfieldvalidator3 
+style="VISIBILITY: hidden; COLOR: red">*</SPAN></DIV>
+<DIV><TEXTAREA id=ctl00___ctl00___ctl02___form___tbComment name=ctl00$_$ctl00$_$ctl02$_$form$_$tbComment rows=5 cols=25></TEXTAREA></DIV>
+<P></P>
+<P>
+<DIV><INPUT id=ctl00___ctl00___ctl02___form___chkRemember type=checkbox 
+name=ctl00$_$ctl00$_$ctl02$_$form$_$chkRemember><LABEL 
+for=ctl00___ctl00___ctl02___form___chkRemember>Remember Me?</LABEL></DIV>
+<P></P>
+<P><INPUT id=ctl00___ctl00___ctl02___form___btnSubmit onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$_$ctl00$_$ctl02$_$form$_$btnSubmit", "", true, "", "", false, false))' type=submit value=Submit name=ctl00$_$ctl00$_$ctl02$_$form$_$btnSubmit> 
+</P></FIELDSET> 
+<FIELDSET id=postnotification><LEGEND>Comment Notification</LEGEND>
+<P>If you would like to receive an email when updates are made to this post, 
+please register <A id=ctl00___ctl00___ctl02___DetailedSubBar___RegisterLink 
+href="http://blogs.sqlxml.org/user/CreateUser.aspx?ReturnUrl=/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx">here</A> 
+</P>
+<P>Subscribe to this post's comments using <A 
+id=ctl00___ctl00___ctl02___DetailedSubBar___CommentRssLink 
+href="http://blogs.sqlxml.org/bryantlikes/commentrss.aspx?PostID=7977">RSS</A> 
+</P></FIELDSET> </DIV>
+<DIV id=footer><A href="http://communityserver.org/r.ashx?1" target=_blank><IMG 
+alt="Powered by Community Server (Personal Edition), by Telligent Systems " 
+src="Bryant Likes's Blog  Enabling WPF Magic Using WCF - Part 1_files/PoweredByCS_personal.gif" 
+border=0></A> </DIV></DIV>
+<SCRIPT type=text/javascript>
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvalidator1"), document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvalidator2"), document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvalidator3"));
+// -->
+</SCRIPT>
+
+<SCRIPT type=text/javascript>
+<!--
+var ctl00___ctl00___ctl02___form___Requiredfieldvalidator1 = document.all ? document.all["ctl00___ctl00___ctl02___form___Requiredfieldvalidator1"] : document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvalidator1");
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.controltovalidate = "ctl00___ctl00___ctl02___form___tbTitle";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.errormessage = "*";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.initialvalue = "";
+var ctl00___ctl00___ctl02___form___Requiredfieldvalidator2 = document.all ? document.all["ctl00___ctl00___ctl02___form___Requiredfieldvalidator2"] : document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvalidator2");
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator2.controltovalidate = "ctl00___ctl00___ctl02___form___tbName";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator2.errormessage = "*";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator2.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator2.initialvalue = "";
+var ctl00___ctl00___ctl02___form___Requiredfieldvalidator3 = document.all ? document.all["ctl00___ctl00___ctl02___form___Requiredfieldvalidator3"] : document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvalidator3");
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.controltovalidate = "ctl00___ctl00___ctl02___form___tbComment";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.errormessage = "*";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.initialvalue = "";
+// -->
+</SCRIPT>
+
+<SCRIPT language=javascript type=text/javascript>
+<!--
+function KeyDownHandlerctl00___ctl00___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</SCRIPT>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.sqlxml.org/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx"
+dc:identifier="http://blogs.sqlxml.org/bryantlikes/archive/2006/09/20/Enabling-WPF-Magic-Using-WCF-_2D00_-Part-1.aspx"
+dc:title="Enabling WPF Magic Using WCF - Part 1"
+trackback:ping="http://blogs.sqlxml.org/bryantlikes/trackback.aspx?PostID=7977" />
+</rdf:RDF>
+-->
+<SCRIPT type=text/javascript>
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</SCRIPT>
+</FORM></BODY></HTML>

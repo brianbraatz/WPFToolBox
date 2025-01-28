@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title id="title">PermaLink</title><!--
+//=-------
+// Copyright 2003, Chris Anderson
+// 
+//   Provided as is, with no warrenty, etc.
+//   License is granted to use, copy, modify, 
+//   with or without credit to me, just don't
+//   blame me if it doesn't work.
+//=-------
+-->
+
+
+    
+         
+        
+        <meta name="GENERATOR" content="Microsoft Visual Studio 7.0">
+        <meta name="CODE_LANGUAGE" content="C#">
+        <meta name="vs_defaultClientScript" content="JavaScript">
+        <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+    <link href="Hierarchical%20Binding_files/blogx.css" type="text/css" rel="stylesheet"></head><body xmlns="http://www.w3.org/1999/xhtml">
+        
+<script type="text/javascript" src="Hierarchical%20Binding_files/aghost.js"></script>
+<div id="header">
+    <p id="sideTitle">
+        <span class="blogTitleSub">ChrisAn's Blog</span>
+        <span class="blogTitleSubDisclaimer">Please read my <a href="http://www.simplegeek.com/FormatPage.aspx?path=SiteConfig/disclaimer.format.html">
+                disclaimer</a>.</span>
+    </p>
+        <div id="wpfeControl1Host"><div style="border: 4px solid rgb(212, 211, 170); margin: 6px; padding: 6px 10px 2px; width: 300px; background-color: rgb(231, 232, 209); font-family: Arial,Helvetica,sans-serif;">  <div><strong style="font-size: 20px; font-weight: bold; color: rgb(68, 68, 68); position: relative; top: 5px;">Install WPF/E</strong></div>  <div style="font-size: 14px; margin-bottom: 5px; color: rgb(68, 68, 68); margin-top: 7px;">    You must install the current version of WPF/E (codename) in order to view this content.&nbsp;    Get WPF/E <a href="http://go.microsoft.com/fwlink/?linkid=77792&amp;clcid=0x409" style="text-decoration: underline; color: rgb(144, 23, 8);">here</a>.    <div style="margin-top: 25px; text-align: center; font-size: 14px; background-color: rgb(251, 249, 230);">      <a href="http://www.microsoft.com/wpfe/" style="text-decoration: underline; color: rgb(144, 23, 8);">Learn More About WPF/E</a>    </div>  </div></div>
+         </div>
+<!-- <h1><a href="http://www.simplegeek.com" style="text-decoration:none;"><span style="color:black;">simple</span><span style="color:red;">geek</span></a></h1> -->
+    <p id="byline">a.k.a. Chris Anderson</p>
+</div>
+
+        <form name="PermaLink" method="post" action="PermaLink.aspx" id="PermaLink">
+<div>
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTExMjIxODcwMzBkZGmHrA3onIGPJrRjEGstF584/Wxb" type="hidden">
+</div>
+
+            <div id="content"><div class="entry"><h3 class="entryTitle">Hierarchical Binding</h3><div class="entryBody">
+    <p>
+        Today I spent some solid time working on the book (9 pages, wahoo!) and worked on
+        a bunch of data binding topics. While it didn't make the book, I really liked this
+        sample I wrote up for showing hierarchical binding. 
+    </p>
+    <p>
+        I started out with a chunk of XML: 
+    </p>
+    <p class="code">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Media xmlns=""&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Book Author="John" Title="Fish are
+        my friends" /&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Book Author="Dave" Title="Fish are
+        my enemies" /&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Book Author="Jane" Title="Fish are
+        my food" /&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;CD Artist="Jane" Title="Fish sign good"
+        /&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;DVD Director="John" Title="Fish: The
+        movie"&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Actor&gt;Jane&lt;/Actor&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Actor&gt;Dave&lt;/Actor&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/DVD&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Media&gt; 
+    </p>
+    <p>
+        What I wanted to do was data bind it into a TreeView that would show the structure
+        of the XML... so&nbsp;effectively I wanted: 
+    </p>
+    <p class="code">
+        &lt;Grid&nbsp;<br>
+        &nbsp;&nbsp;&nbsp; xmlns="http://schemas.microsoft.com/winfx/avalon/2005"&nbsp;<br>
+        &nbsp;&nbsp;&nbsp; xmlns:x="http://schemas.microsoft.com/winfx/xaml/2005"&gt;<br>
+        &nbsp; &lt;Grid.Resources&gt;<br>
+        &nbsp;&nbsp;&nbsp; &lt;XmlDataProvider x:Key="dataSource"&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... xml ...<br>
+        &nbsp;&nbsp;&nbsp; &lt;/XmlDataProvider&gt;<br>
+        &nbsp; &lt;/Grid.Resources&gt;<br>
+        &nbsp; &lt;TreeView&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ItemsSource="{Binding Source={StaticResource dataSource}}"
+        /&gt;<br>
+        &lt;/Grid&gt; 
+    </p>
+    <p>
+        Part of&nbsp;the data binding support in WinFX is native support for hierarchical
+        binding. Basically if you have some data that has hierarchy, and a control that has
+        native&nbsp;hierarchy support, you can&nbsp;wire the two together without a lot of
+        fanfare. The trick is the HierarchicalDataTemplate, which&nbsp;lets you specify how
+        to walk the object graph to produce the hierarchy. What's even better, that because
+        of the&nbsp;automatic look of data&nbsp;templates based on types, you can make this
+        extrememly simple: 
+    </p>
+    <p class="code">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;HierarchicalDataTemplate&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DataType='{x:Type
+        sx:XmlNode}'&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ItemsSource='{Binding
+        Path=ChildNodes}'&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;TextBlock Text='{Binding
+        Path=Name}' /&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/HierarchicalDataTemplate&gt; 
+    </p>
+    <p>
+        That's it. With that data template as the ItemTemplate for your TreeView, you will
+        get a complete dump of the template. The content of the HierarchicalDataTemplate is
+        the display tree for the item, and the ItemsSource property controls where the template
+        will get the next level of the hierarchy. Since ChildNodes returns something that
+        is an XmlNode, the template automatically recurses. Pretty cool, huh?
+    </p>
+    <p>
+        With a little fancier template, you can get something like this: 
+    </p>
+    <p>
+        <img src="Hierarchical%20Binding_files/xml-viewer.jpg"> 
+    </p>
+    <p>
+        <a href="http://blog.simplegeek.com/book/xml-viewer.xaml">XAML Source</a> 
+    </p>
+</div><p class="entryFooter"><a class="permalink" href="http://www.simplegeek.com/PermaLink.aspx/9777a579-e574-427f-897c-724c0c13a94a">01/02/2006 2:33 PM</a> | <span class="categories"> #<a href="http://www.simplegeek.com/categoryview.aspx/Programming%20Avalon">Programming Avalon</a> #<a href="http://www.simplegeek.com/categoryview.aspx/WinFX">WinFX</a></span></p></div></div>
+        </form>
+        <div id="footer">
+    <p id="copyright">Content © 2003 Chris Anderson | Subscribe to my <a class="standardsButton" href="http://www.simplegeek.com/blogxbrowsing.asmx/GetRss?">RSS</a> feed.</p>
+    <p id="poweredBy">Powered by <a href="http://www.simplegeek.com/">BlogX</a></p>
+</div>
+
+<!-- Generated by BlogX v.1.0.1.24 -->
+    </body></html>

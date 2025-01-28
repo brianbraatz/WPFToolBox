@@ -1,0 +1,872 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How can I control whether my Binding is synchronous or asynchronous?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">May 21, 2006</div>
+					<h2 id="post-27"><a id="postTitle" href="http://www.beacosta.com/blog/?p=27" rel="bookmark" title="How can I control whether my Binding is synchronous or asynchronous?">How can I control whether my Binding is synchronous or asynchronous?</a></h2>
+					<p><span id="text">I
+will explain in this post how you can control whether your binding is
+synchronous or asynchronous. As you know, a synchronous binding will
+freeze the UI while it’s fetching the data, while an asynchronous
+binding will start a second thread and keep the UI responsive.
+Understanding the default behavior will allow you to make the best
+decision for your particular scenario, whether that is keeping or
+changing it.</span></p>
+<p><span id="text">I will distinguish two very different scenarios in this sample: </span></p>
+<p><span id="text">- The whole data source takes a while to be
+available. For example, you are binding to a web service, an RSS feed,
+or an external XML file. In this case, the actual creation of the data
+object is not immediate.</span></p>
+<p><span id="text">- A property in your data source is slow. In this
+scenario, the data source is created very quickly, but one of its
+properties takes a while to return from the getter (for example, the
+property uses an HttpWebRequest). Note that the .NET guidelines
+recommend against having slow code in a property getter, and so we
+actually went back and forth about whether we should support this
+scenario.</span></p>
+<p><span id="text"><b>Slow data source</b></span></p>
+<p><span id="text">I talked in an <a href="http://www.beacosta.com/2006/03/why-should-i-use-objectdataprovider.html">earlier post</a>
+about ObjectDataPovider, and mentioned that you will need it if you
+want to retrieve your data asynchronously. Well, here is the scenario
+where you would want to use it: when your whole data source is slow. I
+simulated a slow data source with the following code:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;public class SlowDataSource<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private string property;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public string Property<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get { return property; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set { property = value; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public SlowDataSource()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thread.Sleep(3000);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.property = "Slow data source";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">ObjectDataProvider has an IsAsynchronous property,
+which when set to true, tells Avalon to create the data source object
+in a worker thread. Keep in mind that by default the IsAsynchronous
+property is false, so you have to remember to set it to true. The
+following code shows how to create the ObjectDataProvider and Binding
+such that binding to the SlowDataSource object will not block the UI
+thread:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;ObjectDataProvider odp = new ObjectDataProvider();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;odp.IsAsynchronous = true;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;odp.ObjectType = typeof(SlowDataSource);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Binding b = new Binding();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;b.Source = odp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;b.Path = new PropertyPath("Property");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tbSlowDSSync.SetBinding(TextBlock.TextProperty, b);</span></p>
+<p><span id="text">We made ObjectDataProvider synchronous by default
+because we typically expect object sources to be quick to retrieve.
+XmlDataProvider works similarly, except the IsAsynchronous property is
+set to true by default. We made it asynchronous by default because we
+expect it to be used mostly when binding to external XML files and RSS
+feeds, which can take a while to get to. If you only have 5 lines of
+XML embedded in your XAML page, however, you may want to set the
+IsAsynchronous property to false. </span></p>
+<p><span id="text"><b>Slow property in fast data source</b></span></p>
+<p><span id="text">In this second scenario, we get a handle to the data
+source pretty quickly, but one of its properties can be quite slow to
+retrieve. Here is a simulated sample of such a data source:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;public class DataSource<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private string slowProperty;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public string SlowProperty<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thread.Sleep(3000);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return slowProperty;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set { slowProperty = value; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public DataSource()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.slowProperty = "Slow property";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">In this scenario, we don’t have to use
+ObjectDataProvider anymore. We can create the object in the same thread
+as the application, and we may want to bind to other fast properties in
+this same data source synchronously. We want to bind to just that one
+slow property asynchronously, so we don’t block the UI. To achieve
+this, we can use the IsAsync property of Binding, as you can see in the
+following code snippet:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;DataSource source = new DataSource();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Binding b = new Binding();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;b.Source = source;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;b.IsAsync = true;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;b.Path = new PropertyPath("SlowProperty");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tbSlowPropAsync.SetBinding(TextBlock.TextProperty, b);</span></p>
+<p><span id="text">The IsAsync property is false by default, so you
+have to remember to set it to true in this scenario. We decided to make
+it false by default because slow setters are bad practice, so we don’t
+expect this to be a common scenario.</span></p>
+<p><span id="text">Note that you could just as easily create
+asynchronous data providers or bindings from within XAML; I made them
+in code because a few people have asked for examples.</span></p>
+<p><span id="text">Below is a screenshot of the application. The
+rectangle on top is animating so you can clearly see the UI freeze when
+doing the synchronous bindings.</span></p>
+<p><img style="margin: 0px auto 10px; display: block; text-align: center;" alt="" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/24AsynchronousBinding.png" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/24AsynchronousBinding.zip">Here</a> you can find the VS project with this sample code. This works with February CTP WPF bits. </span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=27"
+    dc:identifier="http://www.beacosta.com/blog/?p=27"
+    dc:title="How can I control whether my Binding is synchronous or asynchronous?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=27" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=27"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=27">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">9 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-139" class="comment">
+				<a name="comment-139" id="comment-139"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-139")'>
+					<cite>Comment by Pavan Podila<a href="#comment-139"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-05-22 16:33:21 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,<br>
+I am trying to use the scenario where I have a “Slow Property with a
+Fast DataSource”. I want to know if I can monitor the background thread
+that is used to asynchronously load the data. Sometimes the
+asynchronous loading takes so long that I would like to just cancel it.
+Can you tell me how I can accomplish that?</p>
+<p>Thanks,<br>
+Pavan</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-139", 139, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-140" class="comment odd">
+				<a name="comment-140" id="comment-140"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-140")'>
+					<cite>Comment by Bea<a href="#comment-140"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-05-23 20:13:03 						
+					</div>					
+					<div class="content">
+						<p>Hi Pavan,</p>
+<p>First of all, here is a quote from the .NET design guidelines:</p>
+<p>***<br>
+Do use a method, rather than a property, in the following situations:<br>
+The operation is orders of magnitude slower than a field access would
+be. If you are even considering providing an asynchronous version of an
+operation to avoid blocking the thread, it is very likely that the
+operation is too expensive to be a property. In particular operations
+that access the network or the file system (other than once for
+initialization) should likely be methods, not properties.<br>
+***</p>
+<p>One technique I often use is to have a slow method to change the
+data and a fast cached property with the value. Something like this:</p>
+<p>class MyData : INotifyPropertyChanged<br>
+{<br>
+private object _cachedValue;<br>
+public object MyProperty { get { return _cachedValue; } } // this is fast</p>
+<p>public void ChangeProperty() // this is slow<br>
+{<br>
+do work to compute the new value (possibly on a separate thread);<br>
+_cachedValue = newValue;<br>
+OnPropertyChanged(”MyProperty”);<br>
+}<br>
+}</p>
+<p>Knowing that, if you still really need to cancel your binding, here is how you can do it:<br>
+BindingOperations.ClearBinding(…).</p>
+<p>Let me know if this helped.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-140", 140, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-141" class="comment">
+				<a name="comment-141" id="comment-141"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-141")'>
+					<cite>Comment by Dan<a href="#comment-141"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-04 16:03:41 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>I am trying to set up a ’slow datasource’ type binding, as I have a
+TreeView bound to a method that builds data from a SQL Server. However,
+when I set IsAsynchronous to True, I get an exception at runtime saying
+‘Must create DependencySource on same Thread as the DependencyObject’.
+My ObjectDataProvider is set up as:</p>
+<p>&lt;ObjectDataProvider MethodName=”CreateData” x:Key=”ObjectData” ObjectType=”{x:Type me:DataAccess}” IsAsynchronous=”True”/&gt;</p>
+<p>and the DataAccess.CreateData method creates an
+ObservableCollection&lt;&gt;, into which it places the data. Can you
+suggest any reason why this is failing ?</p>
+<p>Many thanks,</p>
+<p>Dan</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-141", 141, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-363" class="comment odd">
+				<a name="comment-363" id="comment-363"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-363")'>
+					<cite>Comment by Bea<a href="#comment-363"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-18 11:22:05 						
+					</div>					
+					<div class="content">
+						<p>Hi Dan,</p>
+<p>I am not able to repro the behavior you describe. I created a sample with the code you describe (which you can find <a href="http://www.beacosta.com/BlogComments/32AsynchronousODP.zip" rel="nofollow">here</a>), but I am not able to cause the exception. Do you have a way to share your sample app? </p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-363", 363, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-1092" class="comment">
+				<a name="comment-1092" id="comment-1092"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-1092")'>
+					<cite>Comment by Dan<a href="#comment-1092"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-10-05 18:01:05 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,</p>
+<p>Many thanks for the reply; I gradually altered your working code to
+look more like mine until it broke The cause is the following:</p>
+<p>My CreateData method creates an ObservableCollection, where
+MyDataClass exposes a dependency property (’Text’). My databound
+control then uses a DataTemplate like the following:</p>
+<p>(DataTemplate x:Key=”SingleItemTemplate”)<br>
+(TextBlock Text=”{Binding Text}”/)<br>
+(/DataTemplate)</p>
+<p>It seems that the presence of the dependency property on MyDataClass
+is what’s causing the exception; I’ve changed the property to a normal
+instance property and it all seems to be working now (which leads me to
+wonder why I used a dependency property in the first place !).</p>
+<p>If you have any further insight, then I’d be very interested, but in any case it’s working now.</p>
+<p>Thanks again,</p>
+<p>Dan</p>
+<p>P.S. Apologies if this double-posts</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-1094" class="comment odd">
+				<a name="comment-1094" id="comment-1094"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-1094")'>
+					<cite>Comment by Bea<a href="#comment-1094"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-10-05 18:06:31 						
+					</div>					
+					<div class="content">
+						<p>Dan,</p>
+<p>I’m glad you were able to figure out your issue.</p>
+<p>In general, I advise people to not use DependencyProperties in the
+data source, so that your source can be easily reused by technologies
+other than WPF. However, using DependencyProperties in the source
+should work the same way as using CLR properties, and we have support
+for property change notifications in a different thread.</p>
+<p>Do you have a way to share your repro?</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-1279" class="comment odd">
+				<a name="comment-1279" id="comment-1279"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-1279")'>
+					<cite>Comment by Dan<a href="#comment-1279"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-10-08 02:08:32 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,</p>
+<p> Thanks for the reply; after some searching, I’ve worked out why I
+used a dependency property in the first place - I want to be able to
+make changes to the datasource and have it immediately reflected in the
+databound control (i.e. select an item on the tree/list, edit it using
+the form, and display the changes).</p>
+<p> I’ve uploaded a sample project that demonstrates the scenario <a href="http://www.freepath.co.uk/AsyncDataBinding.zip" title="here" rel="nofollow">;  change the datasource to asynchronous to show the exception.</a></p>
+<p><a href="http://www.freepath.co.uk/AsyncDataBinding.zip" title="here" rel="nofollow"> Have fun <img src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/icon_smile.gif" alt=":)" class="wp-smiley"> </a></p>
+<p><a href="http://www.freepath.co.uk/AsyncDataBinding.zip" title="here" rel="nofollow"> Dan</a></p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-4662" class="comment odd">
+				<a name="comment-4662" id="comment-4662"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-4662")'>
+					<cite>Comment by Bea<a href="#comment-4662"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-10-26 02:41:03 						
+					</div>					
+					<div class="content">
+						<p>Hi Dan,</p>
+<p>I am able to see the exception in your repro. As you mention, the
+combination of having an asynchronous DataProvider and having a
+DependencyProperty are enough to cause the exception to happen. The dev
+for this feature will be investigating this.</p>
+<p>As for the property changes - you don’t need to use a
+DependencyProperty to have property change notifications. You can have
+normal CLR properties and use an interface called
+INotifyPropertyChanged to provide the notifications you need. If that
+is the only reason why you’re using DependencyProperties, I would still
+discourage that.</p>
+<p>I hope this helps,<br>
+Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-5301" class="comment odd">
+				<a name="comment-5301" id="comment-5301"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-5301")'>
+					<cite>Comment by Bea<a href="#comment-5301"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-10-28 18:47:10 						
+					</div>					
+					<div class="content">
+						<p>Dan,</p>
+<p>It turns out that this exception is the result of a by design
+limitation of the property engine. The property engine’s dependency
+graph only works when all the players come from the same thread. In
+your case, the source and target of the bindings live in different
+threads, which causes the exception.</p>
+<p>Thanks for letting us know anyway, and keep the feedback coming!</p>
+<p>Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-1092", 1092, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1466" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1466" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20can%20I%20control%20whether%20my%20Binding%20is%20synchronous%20or%20asynchronous_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="27" type="hidden">
+		<input name="redirect_to" value="/blog/?p=27" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="b26030e858e44fcc6407fb56de33dee0" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>1497</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 1497;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

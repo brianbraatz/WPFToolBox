@@ -1,0 +1,801 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How should I data bind a Polygon’s Points to a data source?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20should%20I%20data%20bind%20a%20Polygon%92s%20Points%20to%20a%20data%20source_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20should%20I%20data%20bind%20a%20Polygon%92s%20Points%20to%20a%20data%20source_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">October 5, 2006</div>
+					<h2 id="post-35"><a id="postTitle" href="http://www.beacosta.com/blog/?p=35" rel="bookmark" title="How should I data bind a Polygon’s Points to a data source?">How should I data bind a Polygon’s Points to a data source?</a></h2>
+					<p><span id="text">Today I will talk about one solution for data binding the Points property of a Polygon to a source collection. </span></p>
+<p><span id="text">The Polygon’s Points property is of type
+System.Windows.Media.PointCollection, which can be found in Avalon’s
+PresentationCore.dll. The first approach I’ve seen most people take
+when they want to bind the Points property to some data is to add a
+property of type PointCollection to their source, and bind to it. This
+works in the sense that the Polygon will display the Points it is
+binding to, but there are a couple of problems with this approach:</span></p>
+<p><span id="text">- If we change the collection of points in the data
+source, the change will not be reflected in the UI. This can be fixed
+by making the collection of points in the source a DependencyProperty.</span></p>
+<p><span id="text">- Adding a PointCollection to the data source
+introduces a dependence on an Avalon type that brings in several UI
+concepts (dependency properties and freezable objects). Ideally, we
+should strive for no coupling between the presentation technology and
+the data source. I’m sure those of you who are porting applications
+from WinForms to Avalon understand the reasons why this is good
+practice: If your data layer is independent from the presentation
+layer, it will be easier to migrate to the next UI technology, or, more
+commonly, to present the same data in multiple ways within the same
+application.</span></p>
+<p><span id="text">With these issues in mind, the first step is to
+figure out how to store the collection of points in a way that is
+independent of presentation-related Avalon code. Every time I need to
+data bind to a collection, I think of ObservableCollection&lt;T&gt;
+because it provides collection change notifications. This would be my
+collection of choice if I were binding an ItemsControl to the points,
+but this scenario is a little different. </span></p>
+<p><span id="text">Before I go any further, let me explain the two types of change notifications we support in data binding:</span></p>
+<p><span id="text">
+<dl>
+<dt><strong>Property change notifications</strong></dt>
+<p><span id="text">
+<dd>Your data source needs to implement INotifyPropertyChanged and
+raise the PropertyChanged event, passing the appropriate property name
+in the event arguments, whenever a property changes. If you pass null
+or the empty string as the property name, the binding engine assumes
+that all properties of the source have changed. If you have a property
+in your source that is a collection, you can still benefit from
+property change notifications: you may need to notify the binding
+engine when the whole collection is being replaced by a different one.
+In other words, you may need to notify that the property that holds the
+collection has changed. </dd>
+<p></p></span></p>
+<p><span id="text">
+<dt><strong>Collection change notifications</strong></dt>
+<p></p></span><span id="text"></span><span id="text">
+<dd>Your data source needs to implement INotifyCollectionChanged.
+Typically, when you need collection change notifications, you can
+simply use an ObservableCollection&lt;T&gt; which does all the hard
+work of implementing this interface for you. I haven’t encountered a
+scenario where a customer needed collection change notifications but
+couldn’t use ObservableCollection&lt;T&gt; for some reason.This
+interface notifies the UI when there is some change in the collection,
+such as when an item is added or removed. If your data source is a
+business object, the binding engine is smart enough to add or remove
+only the UI items that are needed, rather than regenerating the entire
+collection of UI items. If your source is XML or an IBindingList, we
+are as clever as we can be with the information that we are given by
+those APIs.<span id="text">The item generator associated with an
+ItemsControl listens to these collection change notifications and is
+responsible for determining the corresponding changes that will be done
+to elements in the UI.</span><span id="text"></span><span id="text">In
+this scenario, I am binding a single DP (Polygon’s Points) to a
+collection. Since there is no ItemsControl involved, even if I provide
+collection change notifications in the data source, there is no item
+generator listening to those notifications. Now that I’ve determined
+that I don’t need all the complexity of ObservableCollection&lt;T&gt;,
+I can go ahead and pick a simpler collection. I decided to pick
+List&lt;T&gt;.</span></dd></span></p>
+
+<p></p></dl>
+<p></p></span><span id="text">But now I have a problem: if there is no
+one listening to collection changes in the UI, how can I automatically
+update my UI when I make a change to the source collection? The
+solution to this problem is to raise a property change notification
+when the collection changes. This may seem a little strange at first:
+there is a collection in the scenario, but there is no item generation
+in the UI, which makes this scenario somewhat unusual. But if you think
+about it, raising a property changed notification invalidates the
+Points property and causes the Polygon to re-render, which is what we
+want. This is how I implemented my data source:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;public class PolygonItem : INotifyPropertyChanged<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public event PropertyChangedEventHandler PropertyChanged;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private void OnPropertyChanged(string propertyName)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (this.PropertyChanged != null)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.PropertyChanged(this,
+new PropertyChangedEventArgs(propertyName));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private List&lt;Point&gt; points = new List&lt;Point&gt;();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public ReadOnlyCollection&lt;Point&gt; Points<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get
+{ return new ReadOnlyCollection&lt;Point&gt;(points); }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points
+= new List&lt;Point&gt;(value);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OnPropertyChanged(”Points”);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public void Subdivide()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int count = this.points.Count;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&lt;Point&gt;
+newPoints = new List&lt;Point&gt;(count * 2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (int i = 0; i &lt; count; i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Point
+previousPoint = this.points[i];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Point
+nextPoint = this.points[(i + 1) % count];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newPoints.Add(previousPoint);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vector
+offset = nextPoint - previousPoint;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vector
+normal = new Vector(offset.Y, -offset.X);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newPoints.Add(previousPoint
++ 0.5 * offset + 0.4 * normal);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.points = newPoints;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OnPropertyChanged(”Points”);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public PolygonItem()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Add(new Point(275, 100));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Add(new Point(375, 200));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Add(new Point(275, 300));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Add(new Point(175, 200));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">I decided to change the type of the public Points
+property to a ReadOnlyCollection&lt;T&gt; to prevent the user from
+making changes directly to the collection returned by the Points
+property, which would bypass change notifications.</span></p>
+<p><span id="text">At this point I have a source collection of type
+ReadOnlyCollection&lt;T&gt; and a target collection of type
+PointCollection. Because I have incompatible types and there is no
+default Converter between the two, I need to implement my own. Here is
+my code:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;public class Converter : IValueConverter<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public object
+Convert(object value, Type targetType, object parameter,
+System.Globalization.CultureInfo culture)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IEnumerable&lt;Point&gt;
+enumerable = value as IEnumerable&lt;Point&gt;;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PointCollection points = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (enumerable != null)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points
+= new PointCollection(enumerable);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return points;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public object
+ConvertBack(object value, Type targetType, object parameter,
+System.Globalization.CultureInfo culture)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw
+new NotSupportedException(”ConvertBack should never be called”);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">The UI is pretty straightforward:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:PolygonItem x:Key=”src”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:Converter x:Key=”converter”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button
+Click=”ChangeSource” Width=”150″ Margin=”20″&gt;Change data
+source&lt;/Button&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Polygon
+Fill=”#CD5C5C” Points=”{Binding Source={StaticResource src},
+Path=Points, Converter={StaticResource converter}}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;</span></p>
+<p><span id="text">When the Window is loaded, a Polygon is displayed
+with the points from the source collection. I also included a Button in
+the UI that modifies the source collection and raises a property
+changed notification, which causes the UI to be updated.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;private void ChangeSource(object sender, RoutedEventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PolygonItem polygon = this.Resources[”src”] as PolygonItem;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;polygon.Subdivide();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">This is a good solution when you make big changes to
+the source collection of points, like the scenario I have here. If
+you’re simply adding or removing an item at a time from the existing
+collection, this solution may not scale well with very frequent changes
+to the source. Keep in mind that every time a property change
+notification is raised, we are creating a whole new PointCollection in
+the Converter. If you can, it’s best to batch those operations and
+provide only one property change notification for a group of changes. </span></p>
+<p><span id="text">We’ve been discussing possible solutions that would
+make this scenario easier and more efficient for V2. Hopefully one of
+those solutions will make it to our final wish list. </span></p>
+<p><span id="text">Here is a screenshot of this application:</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20How%20should%20I%20data%20bind%20a%20Polygon%92s%20Points%20to%20a%20data%20source_files/32PolygonBinding.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/32PolygonBinding.zip">Here</a> you can find the VS project with this sample code. This works with Beta2 WPF bits. </span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=35"
+    dc:identifier="http://www.beacosta.com/blog/?p=35"
+    dc:title="How should I data bind a Polygon&#8217;s Points to a data source?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=35" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=35"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=35">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">4 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-79" class="comment">
+				<a name="comment-79" id="comment-79"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20should%20I%20data%20bind%20a%20Polygon%92s%20Points%20to%20a%20data%20source_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-79")'>
+					<cite>Comment by Anonymous<a href="#comment-79"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-10-06 03:34:56 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz. Looks like the link to your sample isn’t working.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-79", 79, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-80" class="comment odd">
+				<a name="comment-80" id="comment-80"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20should%20I%20data%20bind%20a%20Polygon%92s%20Points%20to%20a%20data%20source_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-80")'>
+					<cite>Comment by Bea<a href="#comment-80"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-10-06 09:50:38 						
+					</div>					
+					<div class="content">
+						<p>Hi,<br>
+Thanks for letting me know. I fixed the problem, so it should be working now.<br>
+Thanks a lot!<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-80", 80, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-81" class="comment">
+				<a name="comment-81" id="comment-81"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20should%20I%20data%20bind%20a%20Polygon%92s%20Points%20to%20a%20data%20source_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-81")'>
+					<cite>Comment by dr5274<a href="#comment-81"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-06-19 14:45:25 						
+					</div>					
+					<div class="content">
+						<p>Hello
+Bea. My company is building some business objects that represent data
+and collections of data. Currently these objects all implement
+INotifyPropertyChanged, as well as a strongly typed event handler. The
+INotifyPropertyChanged seems to be keeping a WPF client happy, and the
+strongly typed event allow CLR clients to not go back to the object for
+data. There’s questions amongst the developers as to whether or not we
+should implement thest as DependencyObjects with DependencyProperties.
+Some feel these aren’t appropriate for business objects, and would
+unnecessarily tie the classes to WPF. Others think DP’s would support
+WPF, and not impart too much class complexity. I found a comment from
+Rob Relyea that seemed to question the use of DP’s for business
+objects, but we’d like your opinion, too. Thanks!</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-81", 81, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-378" class="comment odd">
+				<a name="comment-378" id="comment-378"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20should%20I%20data%20bind%20a%20Polygon%92s%20Points%20to%20a%20data%20source_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-378")'>
+					<cite>Comment by Bea<a href="#comment-378"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-18 23:51:15 						
+					</div>					
+					<div class="content">
+						<p>Hello,</p>
+<p>That is a great question. I share the same opinion as Rob Relyea - I
+don’t think you should be using DPs and DOs in your data source. If
+there is a possibility that you will be using those business objects
+with UI technologies other than WPF, you should strive for the best
+possible separation between UI and data, as it will save you a lot of
+time in the future. I have talked to several customers that ported
+their apps from WinForms to WPF, and the importance of keeping a clean
+separation of data and UI always comes up in our conversations.</p>
+<p>If you feel that having elements specific to WPF would greatly
+simplify your UI layer, you may consider introducing an intermediate
+layer between your UI and your data. This layer collects all the
+information needed from the data source, and presents it to the UI
+layer in whatever form is most appropriate. You’ve probably heard of
+the <a href="http://blogs.msdn.com/johngossman/archive/2006/04/13/576163.aspx" rel="nofollow">Model-View-ViewModel pattern</a>
+that John Gossman discusses on his blog. This is a very common
+technique that is used by the Blend team and other customers that are
+writing big WPF apps.</p>
+<p>I hope this helps.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-378", 378, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1452" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1452" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20should%20I%20data%20bind%20a%20Polygon%92s%20Points%20to%20a%20data%20source_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="35" type="hidden">
+		<input name="redirect_to" value="/blog/?p=35" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="d92402530b2e685eb30ba37fef308c08" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>2643</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 2643;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

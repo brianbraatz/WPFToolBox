@@ -1,0 +1,575 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0059)http://blogs.msdn.com/dancre/archive/2006/07/23/676272.aspx -->
+<HTML><HEAD><TITLE>Dan Crevier's Blog : DataModel-View-ViewModel pattern: 1</TITLE>
+<META content=DM-V-VM name=keywords>
+<META 
+content="John Gossman has blogged several times about the M-V-VM pattern for developing WPF applications. We've been using a similar pattern on the Max team, with slightly different terminology (DataModel instead of ViewModel). I thought I'd do a series of posts" 
+name=description>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+href="http://blogs.msdn.com/dancre/pingback.aspx" rel=pingback><LINK media=print 
+href="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/print.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/Common.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/Blog.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/common_print.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/blog_print.css" 
+type=text/css rel=stylesheet><LINK href="/favicon.ico" type=image/ico 
+rel="shortcut icon"><LINK title="Dan Crevier's Blog (RSS 2.0)" 
+href="http://blogs.msdn.com/dancre/rss.xml" type=application/rss+xml 
+rel=alternate><LINK title="Dan Crevier's Blog (Atom 1.0)" 
+href="http://blogs.msdn.com/dancre/atom.xml" type=application/atom+xml 
+rel=alternate><LINK 
+title="DataModel-View-ViewModel pattern: 1 Comment RSS (RSS 2.0)" 
+href="http://blogs.msdn.com/dancre/commentrss.aspx?PostID=676272" 
+type=application/rss+xml rel=alternate>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<SCRIPT 
+src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/global.js" 
+type=text/javascript></SCRIPT>
+
+<STYLE type=text/css>BODY {
+	FONT-SIZE: 84%
+}
+</STYLE>
+
+<SCRIPT language=JavaScript>var doImage=doImage;var TType=TType;
+function mhHover(tbl,idx,cls){var t,d;if(document.getElementById)t=document.getElementById(tbl);else t=document.all(tbl);if(t==null)return;if(t.getElementsByTagName)d=t.getElementsByTagName("TD");else d=t.all.tags("TD");if(d==null)return;if(d.length<=idx)return;d[idx].className=cls;}
+
+</SCRIPT>
+
+<SCRIPT language=javascript 
+src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/minmax.js" 
+type=text/javascript></SCRIPT>
+</HEAD>
+<BODY>
+<FORM id=aspnetForm name=aspnetForm 
+action=/dancre/archive/2006/07/23/676272.aspx method=post>
+<DIV><INPUT id=__VIEWSTATE type=hidden 
+value=/wEPDwUKLTMyNjg0MDc1MWRk4kqgif0qb+BsXqBU64DM+rPSfXA= name=__VIEWSTATE> 
+</DIV>
+<SCRIPT language=javascript 
+src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/Telligent_Modal.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT language=javascript type=text/javascript>
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['CommonModal'],['CommonModalTitle'],['CommonModalClose'],['CommonModalContent'],['CommonModalFooter'],['CommonModalResize'],['CommonModalMask'],100);
+// ]]>
+</SCRIPT>
+
+<DIV id=AllContent>
+<DIV id=CommonHeader>
+<DIV id=msviMasthead>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD width="100%">
+      <TABLE height=22 cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD id=msviRegionIdGraphic bgColor=#ffffff></TD>
+          <TD width="100%" bgColor=#3568cc><IMG title="" height=22 alt=* 
+            src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/topGradient.jpg" 
+            width=250></TD></TR></TBODY></TABLE></TD>
+    <TD id=msviGlobalToolbar noWrap align=left bgColor=#3568cc height=22>
+      <TABLE cellSpacing=0 cellPadding=0 border=0>
+        <TBODY>
+        <TR>
+          <TD class=gt0 onmouseover="mhHover('msviGlobalToolbar', 0, 'gt1')" 
+          onmouseout="mhHover('msviGlobalToolbar', 0, 'gt0')" noWrap><A 
+            style="FONT-SIZE: 95%" 
+            href="http://www.microsoft.com/">Microsoft.com Home</A></TD>
+          <TD class=gtsep>|</TD>
+          <TD class=gt0 onmouseover="mhHover('msviGlobalToolbar', 2, 'gt1')" 
+          onmouseout="mhHover('msviGlobalToolbar', 2, 'gt0')" noWrap><A 
+            style="FONT-SIZE: 95%" 
+            href="http://www.microsoft.com/library/toolbar/3.0/sitemap/en-us.mspx">Site 
+            Map</A></TD></TR></TBODY></TABLE></TD></TR>
+  <TR vAlign=top>
+    <TD width="100%">
+      <TABLE height=42 cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD id=msviBrandBanner bgColor=#ffffff><A 
+            href="http://msdn.microsoft.com/"><IMG title="" height=42 alt=MSDN 
+            src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/msdn_masthead_ltr.gif" 
+            width=225 border=0></A></TD>
+          <TD width="100%" bgColor=#6799ff><IMG title="" height=42 alt=* 
+            src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/topGradient2.jpg" 
+            width=250></TD></TR></TBODY></TABLE></TD>
+    <TD id=msviGlobalSearch bgColor=#6799ff>
+      <DIV id=msviNoSearch></DIV></TD></TR></TBODY></TABLE>
+<DIV id=msviLocalToolbar>
+<TABLE height=19 cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD id=msviHomePageLink noWrap width=177><A 
+      href="http://msdn.microsoft.com/">MSDN Home</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 2, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 2, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/developercenters/">Developer 
+Centers</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 4, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 4, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/flash">MSDN Flash</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 6, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 6, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/subscriptions/">Subscribers</A></TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 8, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 8, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 10, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 10, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 12, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 12, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 14, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 14, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 16, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 16, 'lt0')" noWrap>&nbsp;</TD>
+    <TD width="100%"></TD></TR></TBODY></TABLE></DIV></DIV></DIV>
+<TABLE dir=ltr cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD id=CommonLeftColumn 
+    style="BORDER-RIGHT: #999999 1px solid; OVERFLOW-X: hidden" width=181 
+    bgColor=#f1f1f1 height="100%">
+      <DIV class=mnpMenuTop id=mnpMenuTop>
+      <DIV class=mnpInherit>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent><A 
+      href="http://blogs.msdn.com/default.aspx">Blogs Home</A> </DIV></DIV>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent><A 
+      id=ctl00___ctl00___ctl00_ctl00_AggWelcome___Login 
+      href="http://blogs.msdn.com/login.aspx?ReturnUrl=%2fdancre%2farchive%2f2006%2f07%2f23%2f676272.aspx">Sign 
+      in</A> | <A id=ctl00___ctl00___ctl00_ctl00_AggWelcome___Register 
+      href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/dancre/archive/2006/07/23/676272.aspx">Join</A> 
+      </DIV></DIV>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A href="http://blogs.msdn.com/search/">Search</A> 
+        <LI><A href="http://blogs.msdn.com/MainFeed.aspx?Type=AllBlogs">RSS</A> 
+        <LI><A href="http://blogs.msdn.com/Opml.aspx">OPML</A> 
+      </LI></UL></DIV></DIV></DIV></DIV>
+      <DIV class=mnpAds 
+      style="BACKGROUND: #f1f1f1; PADDING-BOTTOM: 20px; WIDTH: 181px; HEIGHT: 100%"></DIV></TD>
+    <TD width="100%">
+      <TABLE style="TABLE-LAYOUT: fixed" cellSpacing=0 cellPadding=0 
+      width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD width="100%">
+            <DIV class=clsDocBody id=pageContainer>
+            <DIV class=CommonContentArea>
+            <H2 class=CommonTitle><A class=headermaintitle 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_bth___BlogTitle 
+            href="http://blogs.msdn.com/dancre/default.aspx">Dan Crevier's 
+            Blog</A></H2>
+            <DIV class=CommonContent>In search of a better name...</DIV>
+            <DIV class=CommonContent>
+            <STYLE>.DoNotDisplay {
+	DISPLAY: none
+}
+</STYLE>
+
+            <DIV class=BlogPostArea>
+            <H4 class=BlogPostHeader>DataModel-View-ViewModel pattern: 1 </H4>
+            <DIV class=BlogPostContent>
+            <P><A href="http://blogs.msdn.com/johngossman/">John Gossman</A> has 
+            blogged several times about the M-V-VM pattern for developing WPF 
+            applications. We've been using a similar pattern on the Max team, 
+            with slightly different terminology (DataModel instead of 
+            ViewModel). I thought I'd do a series of posts about some of our 
+            learnings here. With this pattern, you can make a well componentized 
+            application that cleanly separates the visual style from the 
+            behavior and makes the behavior code highly testable.</P>
+            <P>I know this post will probably bring in some comments about 
+            terminology. I'm just using the terminology we use on our team and 
+            it works well for us. Use whatever you like!</P>
+            <P>The elements of this pattern are as follows:</P>
+            <P><STRONG>DataModel</STRONG></P>
+            <P>DataModel is responsible for exposing data in a way that is 
+            easily consumable by WPF. All of its public APIs must be called on 
+            the UI thread only. It must implement INotifyPropertyChanged and/or 
+            INotifyCollectionChanged as appropriate. When data is expensive to 
+            fetch, it abstracts away the expensive operations, never blocking 
+            the UI thread (that is evil!). It also keeps the data "live" and can 
+            be used to combine data from multiple sources.&nbsp;These sorts of 
+            classes are fairly straightforward to unit test.</P>
+            <P><STRONG>ViewModel</STRONG></P>
+            <P>A ViewModel is a model for a view in the application (duh!). It 
+            exposes data relevant to the view and exposes the behaviors for the 
+            views, usually with Commands. The model is fairly specific to a view 
+            in the application, but does not subclass from any WPF classes or 
+            make assumptions about the UI that will be bound to it. Since they 
+            are separate from the actual UI, these classes are also relatively 
+            straightforward to unit test.</P>
+            <P><STRONG>View</STRONG></P>
+            <P>A View is the actual UI behind a view in the application. The 
+            pattern we use is to set the DataContext of a view to its ViewModel. 
+            This makes it easy to get to the ViewModel through binding. It also 
+            matches the DataTemplate/Data pattern of WPF. Ideally, the view can 
+            be implemented purely as Xaml with no code behind. The <A 
+            href="http://blogs.msdn.com/dancre/archive/2006/03/04/543854.aspx">attached 
+            property trick</A> comes in very handy for this.</P>
+            <P>The lines between DataModels and ViewModels can be blurry. 
+            DataModels are often shown in the UI with some DataTemplate, which 
+            isn't really so different than the way we use ViewModels. However, 
+            the distinction usually makes sense in practice. I also want to 
+            point out that there's often composition at many layers. ViewModels 
+            may compose other ViewModels and DataModels. And, DataModels may be 
+            composed of other DataModels.</P>
+            <P>Next, I plan to work my way up to a sample that includes all of 
+            these layers. I also plan to include some examples of unit testing 
+            including some issues like dealing with Dispatchers.</P>
+            <P><A 
+            href="http://blogs.msdn.com/dancre/archive/2006/07/23/676300.aspx">Part 
+            2: A DataModel base class</A></P></DIV>
+            <DIV class=BlogPostFooter>Published Sunday, July 23, 2006 8:14 PM by 
+            <A id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___AuthorLink 
+            href="http://blogs.msdn.com/user/Profile.aspx?UserID=3401">dancre</A> 
+
+            <DIV><SPAN 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel>Filed 
+            under: <A 
+            href="http://blogs.msdn.com/dancre/archive/tags/DM-V-VM/default.aspx" 
+            rel=tag>DM-V-VM</A></SPAN><INPUT 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel_State 
+            type=hidden value=nochange 
+            name=ctl00$_$ctl00$_$ctl00$ctl00$bcr$ctl00$_$Entry$_$InlineTagEditorPanel></DIV></DIV></DIV>
+            <DIV id=comments>
+            <H3>Comments </H3>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl01_NameLink 
+                  title=Joe>Joe</A> said:</H4>
+                  <DIV class=CommentText>Trying to understand your distinction 
+                  between VM and DM. &nbsp;Is it right to say that a DataModel 
+                  holds the data (or wraps the data) but the ViewModel holds 
+                  view specific state like sort order, filtering etc...? <BR>In 
+                  some cases you don't need a ViewModel because WPF provides it 
+                  for you (DataTemplates etc..) <BR><BR>If this is right then 
+                  isn't your ViewModel the same as John Gossman's? &nbsp;The 
+                  only difference is that you have a DataModel and he has a 
+                  plain Model.</DIV>
+                  <DIV class=CommentFooter>July 24, 2006 1:48 PM </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="CommentOwner CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="CommentOwner  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl02_NameLink 
+                  title=dancre href="http://blogs.msdn.com/dancre">dancre</A> 
+                  said:</H4>
+                  <DIV class=CommentText>A ViewModel is a bit more than that. It 
+                  basically contains all of the behavior for a view and the view 
+                  will have no codebehind. I hope it will become more clear as I 
+                  build up an example. One of the key things is that it exposes 
+                  things like commands and may aggregate several different 
+                  DataModels.</DIV>
+                  <DIV class=CommentFooter>July 24, 2006 7:22 PM </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl03_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.msdn.com/okoboji/archive/2006/07/25/678403.aspx" 
+                  rel=nofollow>Okoboji: a lake, a mythical university, Kevin 
+                  Moore's blog</A> said:</H4>
+                  <DIV class=CommentText>Control Licensing in Cider (WPF 
+                  designer for VS) James provides some great information on 
+                  supporting...</DIV>
+                  <DIV class=CommentFooter>July 25, 2006 8:50 PM </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl04_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.sqlxml.org/bryantlikes/archive/2006/09/27/WPF-Patterns.aspx" 
+                  rel=nofollow>Bryant Likes's Blog</A> said:</H4>
+                  <DIV class=CommentText>If you're doing WPF development, you 
+                  really need to check out Dan Crevier 's series on 
+                  DataModel-View-ViewModel.</DIV>
+                  <DIV class=CommentFooter>September 27, 2006 4:31 PM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl05_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.msdn.com/dancre/archive/2006/10/11/datamodel-view-viewmodel-pattern-series.aspx" 
+                  rel=nofollow>Dan Crevier's Blog</A> said:</H4>
+                  <DIV class=CommentText>
+                  <P>I thought I should add a post with the full list of posts 
+                  in the D-V-VM pattern. They are: 
+                  DataModel-View-ViewModel</P></DIV>
+                  <DIV class=CommentFooter>October 11, 2006 10:00 PM 
+</DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl06_NameLink 
+                  title="Udi Dahan - The Software Simplist" 
+                  href="http://www.udidahan.com/" rel=nofollow>Udi Dahan - The 
+                  Software Simplist</A> said:</H4>
+                  <DIV class=CommentText>
+                  <P>By this:</P>
+                  <P>"When data is expensive to fetch, it abstracts away the 
+                  expensive operations, never blocking the UI thread (that is 
+                  evil!). It also keeps the data "live" and can be used to 
+                  combine data from multiple sources."</P>
+                  <P>Do you mean that the data model is also responsible for 
+                  when to communicate out? If so, I'd say that you're violating 
+                  the Single Responsibility Principle. </P></DIV>
+                  <DIV class=CommentFooter>October 12, 2006 8:57 AM </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="CommentOwner CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="CommentOwner  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl07_NameLink 
+                  title=dancre href="http://blogs.msdn.com/dancre">dancre</A> 
+                  said:</H4>
+                  <DIV class=CommentText>
+                  <P>See part 6 for the activation model.</P></DIV>
+                  <DIV class=CommentFooter>October 12, 2006 11:20 AM 
+              </DIV></TD></TR></TBODY></TABLE></DIV><EM>New Comments to this post 
+            are disabled</EM> </DIV></DIV></DIV></TD></TR></TBODY></TABLE></TD>
+    <TD id=CommonRightColumn style="FONT-SIZE: 100%">
+      <DIV class=CommonSidebar>
+      <DIV id=BlogLinksSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>This Blog</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___home 
+        href="http://blogs.msdn.com/dancre/default.aspx">Home</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___Contactlink1 
+        href="http://blogs.msdn.com/dancre/contact.aspx">Email</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___LinkListLink1 
+        href="http://blogs.msdn.com/dancre/linklist.aspx">Links</A> 
+      </LI></UL></DIV></DIV></DIV>
+      <DIV id=TasksSideBar></DIV>
+      <DIV id=SubscriptionsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Syndication</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___bs___rss 
+        href="http://blogs.msdn.com/dancre/rss.xml">RSS 2.0</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___bs___atom 
+        href="http://blogs.msdn.com/dancre/atom.xml">Atom 1.0</A> 
+      </LI></UL></DIV></DIV></DIV>
+      <DIV id=RecentPostsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Recent Posts</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl00_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/10/11/more-skydrive-goodness.aspx">More 
+        SkyDrive goodness</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl01_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/22/frustrating-error-using-remote-desktop.aspx">Frustrating 
+        error using Remote Desktop</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl02_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/21/tafiti.aspx">Tafiti</A> 
+
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl03_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/09/windows-live-skydrive-spaces-integration.aspx">Windows 
+        Live SkyDrive/Spaces integration</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl04_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/09/windows-live-folders-is-now-windows-live-skydrive.aspx">Windows 
+        Live Folders is now Windows Live SkyDrive!</A> 
+</LI></UL></DIV></DIV></DIV>
+      <DIV id=TagSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Tags</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarTagCloud>
+        <LI class=CommonTag3><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/ASP.NET/default.aspx" 
+        rel=tag>ASP.NET</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Debugging/default.aspx" 
+        rel=tag>Debugging</A> 
+        <LI class=CommonTag1><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/DM-V-VM/default.aspx" 
+        rel=tag>DM-V-VM</A> 
+        <LI class=CommonTag1><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Max/default.aspx" 
+        rel=tag>Max</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/PageModel/default.aspx" 
+        rel=tag>PageModel</A> 
+        <LI class=CommonTag4><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/PanelLayoutAnimator/default.aspx" 
+        rel=tag>PanelLayoutAnimator</A> 
+        <LI class=CommonTag2><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/pdc2005/default.aspx" 
+        rel=tag>pdc2005</A> 
+        <LI class=CommonTag4><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Tips+_2600_amp_3B00_+Tricks/default.aspx" 
+        rel=tag>Tips &amp; Tricks</A> 
+        <LI class=CommonTag2><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Utilities/default.aspx" 
+        rel=tag>Utilities</A> 
+        <LI class=CommonTag3><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/VirtualizingTilePanel/default.aspx" 
+        rel=tag>VirtualizingTilePanel</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Vista/default.aspx" 
+        rel=tag>Vista</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Web+Perf/default.aspx" 
+        rel=tag>Web Perf</A> </LI></UL></DIV></DIV></DIV>
+      <DIV id=NewsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>News</H4>
+      <DIV class=CommonSidebarContent>The posts on this weblog are provided "AS 
+      IS" with no warranties, and confer no rights. The opinions expressed 
+      herein are my own personal opinions and do not represent my employer's 
+      view in any way. </DIV></DIV></DIV>
+      <DIV id=ArchiveSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Archives</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/10.aspx">October 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/08.aspx">August 
+        2007 (4)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/07.aspx">July 
+        2007 (4)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/06.aspx">June 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/03.aspx">March 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/02.aspx">February 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/01.aspx">January 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/12.aspx">December 
+        2006 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/11.aspx">November 
+        2006 (2)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/10.aspx">October 
+        2006 (3)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/dancre/archive/2006/09.aspx">September 2006 
+        (8)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/08.aspx">August 
+        2006 (7)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/07.aspx">July 
+        2006 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/03.aspx">March 
+        2006 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/02.aspx">February 
+        2006 (11)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/01.aspx">January 
+        2006 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/12.aspx">December 
+        2005 (2)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/11.aspx">November 
+        2005 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/10.aspx">October 
+        2005 (3)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/dancre/archive/2005/09.aspx">September 2005 
+        (7)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/06.aspx">June 
+        2005 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/05.aspx">May 2005 
+        (11)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/04.aspx">April 
+        2005 (3)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/02.aspx">February 
+        2005 (3)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/01.aspx">January 
+        2005 (3)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/12.aspx">December 
+        2004 (15)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/11.aspx">November 
+        2004 (4)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/10.aspx">October 
+        2004 (10)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/dancre/archive/2004/09.aspx">September 2004 
+        (8)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/08.aspx">August 
+        2004 (8)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/07.aspx">July 
+        2004 (5)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/06.aspx">June 
+        2004 (5)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/05.aspx">May 2004 
+        (13)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/04.aspx">April 
+        2004 (15)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/03.aspx">March 
+        2004 (18)</A> </LI></UL></DIV></DIV></DIV></DIV></TD></TR></TBODY></TABLE><!--NOINDEX_START-->
+<DIV id=CommonFooter><BR style="OVERFLOW: hidden; LINE-HEIGHT: 1px" clear=all>
+<TABLE id=msviFooter cellSpacing=0 cellPadding=0 width="100%">
+  <TBODY>
+  <TR vAlign=bottom>
+    <TD id=msviFooter2>
+      <DIV id=msviLocalFooter><NOBR><A 
+      href="http://go.microsoft.com/?linkid=317027">Manage Your Profile</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/isapi/gomscom.asp?target=/legal/" 
+      target=_parent>Legal</A> |</NOBR><WBR><NOBR><A 
+      href="http://register.microsoft.com/contactus30/contactus.asp?domain=msdn" 
+      target=_parent>Contact Us</A> |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/flash/" target=_parent>MSDN Flash 
+      Newsletter</A></NOBR></DIV>
+      <DIV id=msviGlobalFooter><SPAN>©2005 Microsoft Corporation. All rights 
+      reserved.&nbsp;</SPAN><NOBR><A 
+      href="http://www.microsoft.com/info/cpyright.mspx">Terms of Use</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://www.microsoft.com/info/privacy.mspx">Privacy 
+      Statement</A></NOBR></DIV></TD>
+    <TD width=105 bgColor=#669aff><IMG title="" height=29 alt=Microsoft 
+      src="Dan Crevier's Blog  DataModel-View-ViewModel pattern 1_files/bottomMSFTLogo.jpg" 
+      width=105 border=0></TD></TR></TBODY></TABLE></DIV></DIV><!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/dancre/archive/2006/07/23/datamodel-view-viewmodel-pattern-1.aspx"
+dc:identifier="http://blogs.msdn.com/dancre/archive/2006/07/23/datamodel-view-viewmodel-pattern-1.aspx"
+dc:title="DataModel-View-ViewModel pattern: 1"
+trackback:ping="http://blogs.msdn.com/dancre/trackback.aspx?PostID=676272" />
+</rdf:RDF>
+--></FORM></BODY></HTML>

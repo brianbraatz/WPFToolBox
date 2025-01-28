@@ -1,0 +1,1178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How do I sort groups of data items?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">January 28, 2006</div>
+					<h2 id="post-17"><a id="postTitle" href="http://www.beacosta.com/blog/?p=17" rel="bookmark" title="How do I sort groups of data items?">How do I sort groups of data items?</a></h2>
+					<p><span id="text">With
+the introduction of CollectionViewSource, we are now able to do basic
+grouping of data items in an ItemsControl without using code. In this
+post I will show you how to group items and sort those groups.</span></p>
+<p><span id="text">The data source of this sample consists of a list of
+objects of type Animal. Animal has a Name and a Category (which is an
+enumeration). I want to group the items depending on their Category.
+This is easily done in markup by using CollectionViewSource:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:Animals x:Key=”animals”/&gt;</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource
+x:Key=”cvs” Source=”{Binding Source={StaticResource animals},
+Path=AnimalList}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource.GroupDescriptions&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;PropertyGroupDescription
+PropertyName=”Category”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource.GroupDescriptions&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource&gt;</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate x:Key=”animalTemplate”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Text=”{Binding Path=Name}” Foreground=”MediumSeaGreen”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;ItemsControl
+ItemsSource=”{Binding Source={StaticResource cvs}}”
+ItemTemplate=”{StaticResource animalTemplate}”/&gt;</span></p>
+<p><span id="text">As I explained in a previous post,
+CollectionViewSource creates a custom View over the source list through
+markup. A view is a layer on top of a source data list that allows us
+to group, sort, and filter items, as well as keep track of the
+currently selected item. </span></p>
+<p><span id="text">If you try the sample markup above, you will see the
+names of the animals, but no information about the groups. The next
+step is to provide a template to display the group titles.
+CollectionViewSource wraps each group of items in an object of type
+CollectionViewGroup, and we are interested in its “Name” property,
+which we can display using the following template:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate x:Key=”categoryTemplate”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Text=”{Binding Path=Name}” FontWeight=”Bold” Foreground=”ForestGreen”
+Margin=”0,5,0,0″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</span></p>
+<p><span id="text">In order to use this template for the group titles,
+we have to add it to the GroupStyle property of ItemsControl (which
+takes a collection of GroupStyle objects):</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;ItemsControl ItemsSource=”{Binding Source={StaticResource cvs}}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ItemsControl.GroupStyle&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GroupStyle
+HeaderTemplate=”{StaticResource categoryTemplate}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ItemsControl.GroupStyle&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ItemsControl&gt;</span></p>
+<p><span id="text">We could add more GroupStyles to the collection, in
+which case they would be applied to different levels of groups. (For
+simplicity, we just have one level of grouping in this sample.)</span></p>
+<p><span id="text">At this point, the groups and items display
+correctly, but we would like to sort the groups and the items within
+the groups. I’ve seen a few people approach this by looking for a
+specific “SortGroups” method or something similar. We didn’t design a
+special API to sort groups because you can accomplish that simply by
+sorting the items by the same property by which you are grouping:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource
+x:Key=”cvs” Source=”{Binding Source={StaticResource animals},
+Path=AnimalList}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource.GroupDescriptions&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;PropertyGroupDescription
+PropertyName=”Category”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource.GroupDescriptions&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource.SortDescriptions&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;scm:SortDescription PropertyName=”Category” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;scm:SortDescription PropertyName=”Name” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource.SortDescriptions&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource&gt;</span></p>
+<p><span id="text">Adding two sort descriptions allows us to sort the
+groups first and then the items within the groups. Notice that because
+Category is an enumeration, sorting by that property will display the
+groups in the order they are defined in the enumeration (which may or
+may not be alphabetically). Name is of type string, so the leaf items
+will be displayed alphabetically.</span></p>
+<p><span id="text">This is a screenshot of the completed sample:</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/14SortingGroups.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/14SortingGroups.zip">Here</a> you can find the VS project with this sample code. This works with January CTP WPF bits. </span></p>
+<p><span id="text">Update September 17, 2007: <a href="http://www.beacosta.com/Zips/14SortingGroupsOrcasBeta2.zip">Here</a> you can find this sample with Orcas Beta 2 bits.</span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=13" title="View all posts in Sorting, filtering, grouping" rel="category">Sorting, filtering, grouping</a>, <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=17"
+    dc:identifier="http://www.beacosta.com/blog/?p=17"
+    dc:title="How do I sort groups of data items?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=17" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=17"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=17">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">19 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-271" class="comment">
+				<a name="comment-271" id="comment-271"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-271")'>
+					<cite>Comment by Pascal Bourque<a href="#comment-271"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-01 12:11:05 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>In your GroupStyle’s HeaderTemplate (”categoryTemplate”), you bind a TextBlock’s Text property to Path=Name:</p>
+<p>&lt;TextBlock Text=”{Binding Path=Name}” … /&gt;</p>
+<p>I assume this is the “Name” property on some Group definition class, but I can’t find any doc for it…</p>
+<p>In other words, my question is: what is the data type of the
+DataContext of a DataTemplate that is used as a Group’s HeaderTemplate?
+And what properties other than “Name” do I have access to regarding the
+current group?</p>
+<p>Thanks! <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/icon_smile.gif" alt=":-)" class="wp-smiley"></p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-271", 271, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-272" class="comment odd">
+				<a name="comment-272" id="comment-272"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-272")'>
+					<cite>Comment by Bea<a href="#comment-272"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-02 17:01:12 						
+					</div>					
+					<div class="content">
+						<p>CollectionViewSource
+wraps each group in a CollectionViewGroup object. The Name property of
+CollectionViewGroup returns the Name of the group (notice that this is
+of type object, not string).</p>
+<p>There are a few other interesting properties in CollectionViewGroup,
+such as the Items property that returns the items within that group.
+There is also an ItemCount property that tells us how many items there
+are in the group. The bool IsBottomLevel property gives us information
+about whether the item is a leaf. You can easily look up
+“CollectionViewGroup” to find more complete information of everything
+in contains.</p>
+<p>Let me know if this helped.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-272", 272, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-273" class="comment">
+				<a name="comment-273" id="comment-273"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-273")'>
+					<cite>Comment by Pascal Bourque<a href="#comment-273"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-03 10:33:51 						
+					</div>					
+					<div class="content">
+						<p>Thanks for the info! It does help! <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/icon_smile.gif" alt=":-)" class="wp-smiley"></p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-273", 273, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-274" class="comment">
+				<a name="comment-274" id="comment-274"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-274")'>
+					<cite>Comment by jestin r<a href="#comment-274"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-05 16:14:36 						
+					</div>					
+					<div class="content">
+						<p>Hi,<br>
+Your sample is really interesting but my case is a little complex.<br>
+In fact I’m making an album photos with an XML file (databinding). Here an example of the XML source:<br>
+&lt; Application &gt;<br>
+&lt; Albums &gt;<br>
+&lt; Album name="Default" auteur="default"&gt;<br>
+&lt; Photo&gt;<br>
+&lt; Name &gt;titi&lt; / Name &gt;<br>
+&lt; Image &gt;D:\Wallpaper\As_cold_as_silence_2.jpg&lt; / Image &gt;<br>
+&lt; / Photo &gt;<br>
+&lt; / Album &gt;<br>
+&lt; Album name="test" auteur="Nous" &gt;<br>
+…<br>
+&lt; / Album &gt;<br>
+&lt; / Albums &gt;<br>
+&lt; / Application &gt;<br>
+I have two listbox in a grid (which contains the datacontext XPath=/Application/Albums/Album).<br>
+One of the two contains the list of albums’ name and the other one the
+list of photos of the album selected in the previous one. By using
+dataTemplate I succeeded in doing this but I want to integrate sort.
+The problem is that when I follow your sample my list of photos is
+sorted (and contains all photos of all albums (first problem)) but when
+I want to changed the album (by clicking on the ohter listbox) that
+don’t switch (second problem). And that normal because the source of
+the “ItemSource” of the list of photos is the static
+CollectionViewSource which is XML source. Here the part of the code:<br>
+&lt; CollectionViewSource x:Key="NameView" Source="{Binding
+Source={StaticResource PhotosXMLSource},
+XPath=/Application/Albums/Album/Photo}" &gt; &lt;
+CollectionViewSource.SortDescriptions &gt; &lt; cm:SortDescription
+PropertyName="Name" Direction="Ascending" /&gt; &lt;
+/CollectionViewSource.SortDescriptions &gt; &lt; / CollectionViewSource
+&gt;</p>
+<p>So I need to integrate my Template in the CollectionViewSource. But I don’t succeed in doing this:<br>
+&lt; CollectionViewSource x:Key="NameView" Source="{Binding
+Source={StaticResource TemplatePhoto}" &gt; It doesn’t find data and
+doesn’t display my photos.<br>
+My listbox has this code: ItemTemplate=”{DynamicResource
+PhotoTemplate}” ItemsSource=”{Binding Source={StaticResource NameView}}”<br>
+and my template :<br>
+…&lt; TextBlock Text=”{Binding Mode=OneWay, XPath=Name}”…</p>
+<p>Can you help me?</p>
+<p>Sincerely.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-274", 274, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-275" class="comment odd">
+				<a name="comment-275" id="comment-275"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-275")'>
+					<cite>Comment by Bea<a href="#comment-275"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-06 10:05:16 						
+					</div>					
+					<div class="content">
+						<p>Hi Jestin,</p>
+<p>If I understand correctly, you’re trying to have both the names of the albums and the photos for each album sorted, right?</p>
+<p>If so, you just encountered a very interesting scenario. I was able
+to solve your problem by using only XAML, but I have to admit it was a
+little tricky.</p>
+<p>I started by using a CollectionViewSource to sort the first ListBox,
+with a SortDescription with property set to @name. So far so good, the
+tricky part is to get the second ListBox sorted.</p>
+<p>If you add a second CollectionViewSource with the same source as the
+first one, a second view is created on top of the collection and master
+detail will break. I assume this is what was going on in your attempt,
+since you mentioned that the second ListBox is not in sync with the
+first one anymore, and was displaying all items. </p>
+<p>So, one solution I found to this problem was to add a second
+CollectionViewSource bound to the first one, and add sorting there. In
+this case, the sort property is Name. Then I bound the second ListBox
+to this CollectionViewSource.</p>
+<p>This seems to work pretty well. You can find my source code <a href="http://www.beacosta.com/BlogComments/24PhotoAlbumXML.zip" rel="nofollow">here</a>.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-275", 275, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-276" class="comment">
+				<a name="comment-276" id="comment-276"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-276")'>
+					<cite>Comment by Owen<a href="#comment-276"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-06-05 09:53:23 						
+					</div>					
+					<div class="content">
+						<p>Is there a way to make the Group Items selectable without ripping out and replacing the innards of ListView?</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-276", 276, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-345" class="comment odd">
+				<a name="comment-345" id="comment-345"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-345")'>
+					<cite>Comment by Bea<a href="#comment-345"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-17 16:20:54 						
+					</div>					
+					<div class="content">
+						<p>Hi Owen,</p>
+<p>No, there is no way to make the group headers selectable, if you’re
+using any Control that derives from Selector (e.g ListBox or ListView).
+TreeView has a different selection model, and there you can select an
+item that has children.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-345", 345, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-277" class="comment">
+				<a name="comment-277" id="comment-277"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-277")'>
+					<cite>Comment by Paul<a href="#comment-277"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-06-11 17:56:06 						
+					</div>					
+					<div class="content">
+						<p>Great stuff!</p>
+<p>I was wondering how you might sort a collection view by ItemCount? I
+try adding that as a sort description and it doesn’t seem to work.</p>
+<p>Thanks,</p>
+<p>paul</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-277", 277, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-348" class="comment odd">
+				<a name="comment-348" id="comment-348"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-348")'>
+					<cite>Comment by Bea<a href="#comment-348"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-17 17:12:21 						
+					</div>					
+					<div class="content">
+						<p>Hi Paul,</p>
+<p>That is a really interesting scenario! Unfortunately our current
+feature set does not support that. We have ways to control the order of
+the groups if you know them ahead of time, but that does not solve your
+problem.</p>
+<p>The only way to support that would be to add a “group sorting”
+feature. If we did that, the order of the events would be: item sorting
+-&gt; generation of groups -&gt; group sorting. I’ve added this request
+to our feature list. This is the first time that I hear someome asking
+for this feature - if other readers feel that this would be a good
+feature to add, please leave me a comment. We typically decide the next
+set of features based on how much customers want them.</p>
+<p>Thanks for your comment!<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-348", 348, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-278" class="comment">
+				<a name="comment-278" id="comment-278"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-278")'>
+					<cite>Comment by Jan Kučera<a href="#comment-278"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-08-24 05:01:41 						
+					</div>					
+					<div class="content">
+						<p>Hello,<br>
+I’d like to ask, how can I sort the groups in non-alphabetical order, eg to use custom comparer or something like this.</p>
+<p>Thank you,<br>
+Jan</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-278", 278, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-347" class="comment odd">
+				<a name="comment-347" id="comment-347"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-347")'>
+					<cite>Comment by Bea<a href="#comment-347"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-17 16:56:12 						
+					</div>					
+					<div class="content">
+						<p>Hi Jan,</p>
+<p>Yes, you can certainly do custom sorting. I actually blogged about custom sorting in <a href="http://www.beacosta.com/blog/?p=24" rel="nofollow">this</a> blog post.</p>
+<p>You can also have custom groups - you can write some code that
+determines how you want your data to be grouped. If you’re curious
+about custom grouping, you can look at <a href="http://www.beacosta.com/BlogComments/28CustomGrouping.zip" rel="nofollow">this</a> sample I just uploaded.</p>
+<p>Hope this helped.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-347", 347, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-339" class="comment">
+				<a name="comment-339" id="comment-339"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-339")'>
+					<cite>Comment by Suke<a href="#comment-339"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-15 23:22:44 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>Great info!.</p>
+<p>I’m trying to display my groups horizontally (instead of of
+vertically as in your example). I’ve tried to modify the groupstyle but
+I end up with a stack of the grouped data (same as your example).</p>
+<p>Thank you,</p>
+<p>Suke</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-339", 339, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-346" class="comment odd">
+				<a name="comment-346" id="comment-346"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-346")'>
+					<cite>Comment by Bea<a href="#comment-346"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-17 16:40:22 						
+					</div>					
+					<div class="content">
+						<p>Hi Suke,</p>
+<p>You can display your groups horizontally by setting the Panel
+property of GroupStyle to a template with a horizontal Panel. If you
+modify my sample to include the following XAML, the groups will be
+displayed horizontally:</p>
+<p>	&lt;ItemsPanelTemplate x:Key=”horizontalPanel”&gt;<br>
+		&lt;StackPanel Orientation=”Horizontal” /&gt;<br>
+	&lt;/ItemsPanelTemplate&gt;</p>
+<p>        &lt;ItemsControl ItemsSource=”{Binding Source={StaticResource cvs}}”<br>
+            Width=”600″ ItemTemplate=”{StaticResource animalTemplate}”&gt;<br>
+            &lt;ItemsControl.GroupStyle&gt;<br>
+                &lt;GroupStyle HeaderTemplate=”{StaticResource categoryTemplate}” Panel=”{StaticResource horizontalPanel}”/&gt;<br>
+            &lt;/ItemsControl.GroupStyle&gt;<br>
+        &lt;/ItemsControl&gt;</p>
+<p>If you wanted the actual items to be displayed horizontally, you
+would have to set the ItemsPanel property of ItemsControl to the same
+template.<br>
+<a href="http://www.beacosta.com/BlogComments/27SortingGroups.zip" rel="nofollow">Here</a> you can find a project with this XAML.</p>
+<p>Let me know if this helps.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-346", 346, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-379" class="comment">
+				<a name="comment-379" id="comment-379"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-379")'>
+					<cite>Comment by Topaz<a href="#comment-379"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-19 01:49:45 						
+					</div>					
+					<div class="content">
+						<p>Hello Bea,<br>
+Thanks for your time and knowledge sharing.<br>
+I wanted to ask you also about grouping.<br>
+I want to build a horizontal stack Panel just like in the previous example (asked by Suke)<br>
+and for each group in the CollectionViewSource I want to add a list
+box. Items can be added during runtime and thus new groups can be
+created (groups that need to be sorted - the list boxes need to be
+sorted)<br>
+Want are the necessary steps in order to accomplish this.</p>
+<p>Thanks</p>
+<p>Topaz</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-379", 379, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-384" class="comment odd">
+				<a name="comment-384" id="comment-384"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-384")'>
+					<cite>Comment by Bea<a href="#comment-384"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-19 11:33:15 						
+					</div>					
+					<div class="content">
+						<p>Hi Topaz,</p>
+<p>I wrote some code for you, which you can find <a href="http://www.beacosta.com/BlogComments/34SortingGroups.zip" rel="nofollow">here</a>. Let me know if this is what you want.</p>
+<p>I started by adding a ListBox to the template for the groups, and bound that ListBox to the items for that group:</p>
+<p>&lt;DataTemplate x:Key=”categoryTemplate”&gt;<br>
+&lt;StackPanel&gt;<br>
+&lt;TextBlock Text=”{Binding Path=Name}” FontWeight=”Bold” Foreground=”ForestGreen” Margin=”0,5,0,0″/&gt;<br>
+&lt;ListBox ItemsSource=”{Binding Path=Items}” ItemTemplate=”{StaticResource animalTemplate}”/&gt;<br>
+&lt;/StackPanel&gt;<br>
+&lt;/DataTemplate&gt;</p>
+<p>Then I set the ItemTemplate of the main ItemsControl to an empty DataTemplate. That’s all I had to do!</p>
+<p>If you add new items they will be added to the UI, and if the
+addition of new items generates new groups, they will also be added
+automatically.</p>
+<p>I hope this helps!</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-384", 384, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-410" class="comment">
+				<a name="comment-410" id="comment-410"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-410")'>
+					<cite>Comment by Topaz<a href="#comment-410"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-23 08:44:22 						
+					</div>					
+					<div class="content">
+						<p>Bea,<br>
+your full scale explanation\example helped me a lot!!</p>
+<p>Thank you very much.<br>
+Topaz</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-431" class="comment odd">
+				<a name="comment-431" id="comment-431"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-431")'>
+					<cite>Comment by Bea<a href="#comment-431"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-24 12:47:46 						
+					</div>					
+					<div class="content">
+						<p>Hi Topaz,</p>
+<p>I’m glad it was useful.</p>
+<p>Thanks for reading my blog!<br>
+Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-410", 410, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-1322" class="comment">
+				<a name="comment-1322" id="comment-1322"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-1322")'>
+					<cite>Comment by Udi<a href="#comment-1322"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-10-08 14:22:09 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>Im trying to create a treeview with a source of a Dictionary that is created by codebehind.</p>
+<p>dictionary is built with </p>
+<p>where ExtendedUser is made from:</p>
+<p>enum status<br>
+User user (it is an imported type that i receive from a third party)</p>
+<p>i would like a tree view that binds to that collection and group by status while showing extendedUser.User.Name.</p>
+<p>how do i perform this?<br>
+Thanks!<br>
+Udi.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-1322", 1322, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-5360" class="comment odd">
+				<a name="comment-5360" id="comment-5360"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-5360")'>
+					<cite>Comment by Bea<a href="#comment-5360"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-10-28 22:30:58 						
+					</div>					
+					<div class="content">
+						<p>Hi Udi,</p>
+<p>It seems that there were some issues with the formatting of your
+question. Maybe you inserted “&lt;” and “&gt;” tags as part of your
+XAML code directly? I believe these characters have to be escaped in
+the comment.</p>
+<p>If you post again, I will take a look at your problem.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-5360", 5360, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1446" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1446" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20sort%20groups%20of%20data%20items_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="17" type="hidden">
+		<input name="redirect_to" value="/blog/?p=17" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="7a36fb9fb90c3b59bcfe948c8dd9ff58" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>7852</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 7852;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

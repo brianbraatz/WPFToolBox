@@ -1,0 +1,28 @@
+<UserControl x:Class="Microsoft.Samples.WPF.CustomControls.CellDescriptionControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Microsoft.Samples.WPF.CustomControls"
+	Grid.Row="{Binding Path=RowNumber}"
+	Grid.Column="{Binding Path=ColumnNumber}">
+	<UserControl.Resources>
+		<Style TargetType="{x:Type local:CellDescriptionControl}">
+			<Style.Triggers>
+				<Trigger Property="IsSelected" Value="true">
+					<Setter Property="Background" Value="LightBlue"/>
+				</Trigger>
+				<Trigger Property="IsSelected" Value="false">
+					<Setter Property="Background" Value="White"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+	</UserControl.Resources>
+	<Grid>
+		<local:SharedSizeDecorator
+			SharedWidthGroup="{Binding Path=SharedWidthGroup}"
+			SharedHeightGroup="{Binding Path=SharedHeightGroup}">
+			<Border BorderThickness="0, 0, 1, 1" BorderBrush="Black" Padding="4, 1, 4, 1">
+				<TextBlock Text="{Binding Path=Cell.Value}" TextAlignment="Center"/>
+			</Border>
+		</local:SharedSizeDecorator>
+	</Grid>
+</UserControl>

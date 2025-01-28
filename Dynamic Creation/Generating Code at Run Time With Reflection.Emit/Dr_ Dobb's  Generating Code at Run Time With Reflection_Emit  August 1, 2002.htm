@@ -1,0 +1,1330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0036)http://www.ddj.com/windows/184416570 -->
+<!-- Title: gatekeeper --><HTML><HEAD><TITLE>Dr. Dobb's | Generating Code at Run Time With Reflection.Emit | August 1, 2002</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!--SiteCatalyst code version: G.7. Copyright 1997-2004 Omniture, Inc.
+More info available at http://www.omniture.com
+-->
+<SCRIPT language=JavaScript>
+<!--
+var s_pageName="";
+var s_server="";
+var s_channel="";
+var s_pageType="";
+var s_prop1="";
+var s_prop2="";
+var s_prop3="Dr. Dobb's Journal | 184416570 | Generating Code at Run Time With Reflection.Emit";
+var s_prop4="Generating Code at Run Time With Reflection.Emit";
+var s_prop5="Windows/.NET";
+var s_prop6="";
+var s_prop7="Chris Sells and Shawn Van Ness";
+var s_prop8="68.121.96.3 | Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30; Alexa Toolbar)";
+var s_prop9="";
+var s_prop10="";
+var s_prop11="";
+var s_prop12="";
+var s_prop13="http://www.ddj.com/windows/dhandler.jhtml";
+var s_prop14="";
+var s_prop15="";
+var s_prop16="";
+
+/* E-commerce Variables */
+var s_campaign="";
+var s_state="";
+var s_zip="";
+var s_events="event5";
+var s_products="";
+var s_purchaseID="";
+var s_eVar1="";
+var s_eVar2="";
+var s_eVar3="";
+var s_eVar4="";
+var s_eVar5="";
+//-->
+</SCRIPT>
+
+<META 
+content="The .Net Framework SDK includes several tools that convert source code into executable code - the C# and VB.NET compilers get most of the attention, but there are others." 
+name=description>
+<META 
+content=.net,framework,sdk,includes,several,tools,convert,source,code,into,executable,-,c#,vb.net,compilers,get,most,attention,there,others 
+name=keywords>
+<META content="Generating Code at Run Time With Reflection.Emit" name=headline>
+<META content="" name=created><LINK rev=Stylesheet 
+href="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/Layout.css" 
+type=text/css rel=Stylesheet><LINK rev=Stylesheet 
+href="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/FontStyles.css" 
+type=text/css rel=Stylesheet><LINK rev=Stylesheet 
+href="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/newarticle.css" 
+type=text/css rel=Stylesheet>
+<SCRIPT 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/popwindow.js"></SCRIPT>
+
+<SCRIPT language=javascript>
+<!--
+function jobsopen(){
+      document.getElementById("jobscontainer").style.height = '';
+      }
+
+function jobsclose(){
+      document.getElementById("jobscontainer").style.height = "41px";
+      }
+
+//-->
+</SCRIPT>
+
+<SCRIPT language=JavaScript type=text/javascript>
+var addtoMethod=1;
+var AddURL = document.location.href;
+var AddTitle = escape(document.title);
+
+</SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/add2.js" 
+type=text/javascript></SCRIPT>
+
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR></HEAD>
+<BODY vLink=#006699 link=#006699 bgColor=#ffffff leftMargin=0 topMargin=0 
+marginheight="0" marginwidth="0">
+<TABLE cellSpacing=0 cellPadding=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <SCRIPT> var ckRef=document.referrer; if(ckRef && ckRef.indexOf('/as5/redirect/')==-1 || !ckRef) { document.write('<script language="JavaScript" src="http://i.cmpnet.com/shared/omniture/s_code_remote.js"><\/script>'); document.close(); }</SCRIPT>
+    </TD></TR></TBODY></TABLE><!-- End SiteCatalyst code version: G.7. --><!-- http://as.cmpnet.com/html.ng/pagepos=fullpage&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=75640&amp;AdID=125688&amp;TargetID=2878&amp;Segments=1411,3108,3448,4875,11070,12139&amp;Targets=2625,2878,8607&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3216,3224,3318,3337,3577,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+target=_parent><IMG alt="" 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/iopsblank.gif" 
+border=0></A><IMG height=1 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/dcfc.gif" 
+width=1 border=0> <!-- CMP LOGO and AD BANNER AT TOP -->
+<DIV id=TopAdContainer><IMG height=90 alt="" hspace=15 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/logo_cmp.jpg" 
+width=90 align=left border=0> <!-- http://as.cmpnet.com/html.ng/pagepos=top&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 -->
+<SCRIPT 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/DartRichMedia_1_03.js"></SCRIPT>
+<!-- Sniffer Code for Flash version=80 -->
+<SCRIPT language=JavaScript>
+<!--
+var swf_click = "http://as.cmpnet.com/event.ng/Type=click&FlightID=104649&AdID=174048&TargetID=5644&Segments=1411,1551,2310,3108,3448,3661,3741,4650,4875,5470,6124,6877,8660,10021,10552&Targets=1251,2625,2878,5644,4879,7241&Values=34,46,51,63,77,87,93,102,140,203,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&RawValues=&Redirect=http://www.businessobjects.com/devxi/1169";
+var dcswf_click = escape(swf_click);
+var ShockMode = 0;
+var plugin = (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]) ? navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin : 0;
+
+if (plugin && parseInt(plugin.description.substring(plugin.description.indexOf(".")-1)) >= 8) 
+{
+ShockMode = 1;
+}
+else if (navigator.userAgent && navigator.userAgent.indexOf("MSIE")>=0 
+&& (navigator.userAgent.indexOf("Windows 95")>=0 || navigator.userAgent.indexOf("Windows 98")>=0 || navigator.userAgent.indexOf("Windows NT")>=0)) {
+document.write('<SCRIPT LANGUAGE=VBScript\> \n');
+document.write('on error resume next \n');
+document.write('ShockMode = (IsObject(CreateObject("ShockwaveFlash.ShockwaveFlash.8")))\n');
+document.write('<\/SCRIPT\> \n');
+}
+if ( ShockMode ) {
+document.write('<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"');
+document.write(' codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"');
+document.write(' ID=flashad WIDTH=728 HEIGHT=90>');
+document.write(' <PARAM NAME=movie VALUE="http://i.cmpnet.com/ads/graphics/as5/ke/BusinessObjects/Dev_728x90.swf?clickTag='+dcswf_click+'"> '); 
+document.write(' <PARAM NAME=quality VALUE=autohigh> ');
+document.write(' <PARAM NAME=wmode VALUE=opaque> ');
+document.write(' <EMBED SRC="http://i.cmpnet.com/ads/graphics/as5/ke/BusinessObjects/Dev_728x90.swf?clickTag='+dcswf_click+'" QUALITY=autohigh WMODE=opaque '); 
+document.write(' NAME=flashad swLiveConnect=TRUE WIDTH=728 HEIGHT=90');
+document.write(' TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">');
+document.write('</EMBED>');
+document.write('</OBJECT>');
+} else if (!(navigator.appName && navigator.appName.indexOf("Netscape")>=0 && navigator.appVersion.indexOf("2.")>=0)){
+document.write('<A HREF="http://as.cmpnet.com/event.ng/Type=click&FlightID=104649&AdID=174048&TargetID=5644&Segments=1411,1551,2310,3108,3448,3661,3741,4650,4875,5470,6124,6877,8660,10021,10552&Targets=1251,2625,2878,5644,4879,7241&Values=34,46,51,63,77,87,93,102,140,203,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&RawValues=&Redirect=http://www.businessobjects.com/devxi/1169" target="_top"><IMG SRC="http://i.cmpnet.com/ads/graphics/as5/ke/BusinessObjects/Dev_728x90.gif" WIDTH=728 HEIGHT=90 BORDER=0></A>');
+}
+//-->
+</SCRIPT>
+<NOEMBED><A 
+href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=104649&amp;AdID=174048&amp;TargetID=5644&amp;Segments=1411,1551,2310,3108,3448,3661,3741,4650,4875,5470,6124,6877,8660,10021,10552&amp;Targets=1251,2625,2878,5644,4879,7241&amp;Values=34,46,51,63,77,87,93,102,140,203,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&amp;RawValues=&amp;Redirect=http://www.businessobjects.com/devxi/1169" 
+target=_top><IMG height=90 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/Dev_728x90.gif" 
+width=728 border=0></A> </NOEMBED><NOSCRIPT><A 
+href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=104649&amp;AdID=174048&amp;TargetID=5644&amp;Segments=1411,1551,2310,3108,3448,3661,3741,4650,4875,5470,6124,6877,8660,10021,10552&amp;Targets=1251,2625,2878,5644,4879,7241&amp;Values=34,46,51,63,77,87,93,102,140,203,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&amp;RawValues=&amp;Redirect=http://www.businessobjects.com/devxi/1169" 
+target=_top><IMG height=90 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/Dev_728x90.gif" 
+width=728 border=0></A> </NOSCRIPT><IMG height=1 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(1).gif" 
+width=1 border=0> </DIV><!-- /CMP LOGO and AD BANNER AT TOP --><!-- LOGO and USER/PORTAL NAV and SEARCH -->
+<TABLE class=elfixo cellSpacing=0 cellPadding=0 width=990 border=0>
+  <TBODY>
+  <TR>
+    <TD width=1 bgColor=#000000 rowSpan=2><IMG height=1 alt="" 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+      width=1 border=0></TD>
+    <TD width=362 bgColor=#000000 colSpan=2><IMG height=1 alt="" 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+      width=362 border=0></TD>
+    <TD width=397 bgColor=#000000><IMG height=1 alt="" 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+      width=397 border=0></TD>
+    <TD width=1 bgColor=#000000 rowSpan=2><IMG height=1 alt="" 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+      width=1 border=0></TD></TR>
+  <TR>
+    <TD vAlign=center align=left width=362 bgColor=#349f2c><A 
+      href="http://www.ddj.com/"><IMG alt="" hspace=3 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/logo_ddj.gif" 
+      vspace=5 border=0></A></TD>
+    <TD vAlign=top align=left width=228 bgColor=#349f2c><!-- <span class="fphead">FOCAL POINTS: Sponsored Links</span><br /> --><!-- http://as.cmpnet.com/html.ng/pagepos=focallink1&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+      href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=75640&amp;AdID=125688&amp;TargetID=2878&amp;Segments=1411,3108,3448,4875,12765&amp;Targets=2625,2878&amp;Values=34,46,51,63,77,87,93,102,140,442,897,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+      target=_parent><IMG alt="" 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/iopsblank.gif" 
+      border=0></A><IMG height=1 
+      src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(2).gif" 
+      width=1 border=0> </TD>
+    <TD vAlign=center align=right bgColor=#349f2c><!-- SEARCH -->
+      <FORM action=/TechSearch/searchResults.jhtml><INPUT class=searchInput 
+      style="WIDTH: 290px; HEIGHT: 20px" onfocus="this.value=''" size=11 
+      name=queryText> <INPUT type=image alt="" hspace=3 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/search.gif" 
+      align=absBottom> </FORM><!-- /SEARCH --><A 
+      style="FONT: 10px verdana, sans-serif  bold; COLOR: #ffc20e" 
+      href="http://www.ddj.com/TechSearch/searchResults.jhtml;jsessionid=NNTY0PNDYYODKQSNDLPSKHSCJUNN2JVN">Site 
+      Archive (Complete)</A></TD></TR><!-- /LOGO, and SEARCH -->
+  <TR>
+    <TD bgColor=#000000 colSpan=5><IMG height=1 alt="" 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+      width=250 border=0></TD></TR>
+  <TR>
+    <TD bgColor=#000000></TD>
+    <TD bgColor=#ffb305 colSpan=3>
+      <DIV class=portalNAVPad><SPAN class=noLINE><A class=portalNAV 
+      href="http://www.ddj.com/about.html">ABOUT US</A> | <A class=portalNAV 
+      href="http://www.ddj.com/contact.html">CONTACT</A> | <A class=portalNAV 
+      href="http://www.ddj.com/advertise/">ADVERTISE</A> | <A class=portalNAV 
+      href="http://www.ddj.com/subscribe/">SUBSCRIBE</A> | <!-- <a href="/pubs/" CLASS=portalNAV>ARCHIVES</a> | --><A class=portalNAV 
+      href="http://www.ddj.com/code/">SOURCE CODE</A> | <A class=portalNAV 
+      href="http://www.ddj.com/currentIssuePage.html">CURRENT PRINT ISSUE</A> | 
+      <A class=portalNAV 
+      href="http://www.forums.ddj.com/jive3/index.jspa;jsessionid=NNTY0PNDYYODKQSNDLPSKHSCJUNN2JVN?categoryID=51">FORUMS 
+      </A>| <A class=portalNAV 
+      href="http://www.ddj.com/newsletters/">NEWSLETTERS</A> | <A 
+      class=portalNAV href="http://www.ddj.com/resources/">RESOURCES</A> | <A 
+      class=portalNAV href="http://www.ddj.com/blog/">BLOGS</A> | <A 
+      class=portalNAV href="http://www.ddj.com/mediaCenter/">PODCASTS</A> | <A 
+      class=portalNAV 
+      href="http://www.techcareers.com/?affiliate=ddj">CAREERS</A> 
+    </SPAN></DIV></TD>
+    <TD bgColor=#000000></TD></TR>
+  <TR>
+    <TD bgColor=#000000 colSpan=5><IMG height=1 alt="" 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+      width=250 border=0></TD></TR></TBODY></TABLE>
+<DIV style="WIDTH: 990px; HEIGHT: 14px"><!-- http://as.cmpnet.com/html.ng/pagepos=txtlink20&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=75640&amp;AdID=125688&amp;TargetID=2878&amp;Segments=1411,3108,3448,4875&amp;Targets=2625,2878&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1646,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+target=_parent><IMG alt="" 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/iopsblank.gif" 
+border=0></A><IMG height=1 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(3).gif" 
+width=1 border=0> </DIV>
+<TABLE class=elfixo cellSpacing=0 cellPadding=0 width=900 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top><!-- LEFT COL -->
+      <SCRIPT language=Javascript>
+  function launcher(art_id,urlPrefix,siteUrl) {
+ uri = "/article/emailBox.jhtml?articleID=" +art_id+"&urlPrefix="+ urlPrefix+"&host_url="+siteUrl;
+  window.open(uri,"","toolbar=no,scrollbars=auto,location=no,status=no,width=480,height=415,resizable=1");
+  }
+</SCRIPT>
+
+      <DIV class=LColMargin><A href="http://www.ddj.com/windows/"><IMG 
+      alt=Windows/.NET hspace=0 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/header_windows.gif" 
+      border=0></A> <IMG height=1 hspace=0 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/rule.gif" 
+      width=405 align=left border=0><BR></DIV>
+      <DIV class=articlepadding>
+      <TABLE class=elfixo cellSpacing=0 cellPadding=0 width=160 align=right 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD width=10 rowSpan=5><IMG height=1 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+            width=10 border=0></TD>
+          <TD width=75><IMG height=1 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+            width=75 border=0></TD>
+          <TD width=75><IMG height=1 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+            width=75 border=0></TD></TR>
+        <TR>
+          <TD vAlign=top><IMG height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><A title="Send As Email" 
+            href="javascript:launcher(184416570,'/windows/','www.ddj.com')">Email</A><BR><IMG 
+            height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><A 
+            href="http://www.ddj.com/windows/184416570#articleComments">Discuss</A> 
+          </TD>
+          <TD vAlign=top><IMG height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><A 
+            href="http://www.ddj.com/article/printableArticle.jhtml?articleID=184416570&amp;dept_url=/windows/">Print</A><BR><IMG 
+            height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><A 
+            href="http://www.cmpreprints.com/faxback.jhtml" 
+            target=_new>Reprint</A> </TD></TR>
+        <TR>
+          <TD 
+          style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 7px" 
+          vAlign=center colSpan=2 height=7>
+            <DIV align=center><IMG height=1 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/dotted_line3.gif" 
+            width=140 border=0><BR><SPAN class=add2header>add 
+        to:</SPAN></DIV></TD></TR>
+        <TR>
+          <TD vAlign=top><IMG height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><SPAN class=add2ddj 
+            title="Add this page to Delicious" 
+            onclick=addto(2)><U>Del.icio.us</U></SPAN><BR><IMG height=12 
+            hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><SPAN class=add2ddj 
+            title="Add this page to Digg" 
+            onclick=addto(3)><U>Digg</U></SPAN><BR><IMG height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><SPAN class=add2ddj 
+            title="Add this page to Google" 
+            onclick=addto(5)><U>Google</U></SPAN><BR><IMG height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><SPAN class=add2ddj 
+            title="Add this page to Spurl" onclick=addto(8)><U>Spurl</U></SPAN> 
+          </TD>
+          <TD vAlign=top><IMG height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><SPAN class=add2ddj 
+            title="Add this page to Slashdot" 
+            onclick=addto(6)><U>Slashdot</U></SPAN><BR><IMG height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><SPAN class=add2ddj 
+            title="Add this page to Yahoo! MyWeb" onclick=addto(7)><U>Y! 
+            MyWeb</U></SPAN><BR><IMG height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><SPAN class=add2ddj 
+            title="Add this page to Blink" 
+            onclick=addto(1)><U>Blink</U></SPAN><BR><IMG height=12 hspace=0 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redsquare.gif" 
+            width=15 align=absMiddle border=0><SPAN class=add2ddj 
+            title="Add this page to Furl" onclick=addto(4)><U>Furl</U></SPAN> 
+        </TD></TR></TBODY></TABLE>
+      <DIV class=Bspace4><EM>August 01, 2002</EM><BR>
+      <H5>Generating Code at Run Time With Reflection.Emit</H5>
+      <H2></H2></DIV>
+      <DIV class=Bspace15>
+      <DIV class=PageNumbers>(Page <A 
+      href="http://www.ddj.com/windows/184416570?pgno=1">1</A> of <A 
+      href="http://www.ddj.com/windows/184416570?pgno=5">5</A>)<BR></DIV></DIV>
+      <DIV class=Bspace15><EM>Chris Sells and Shawn Van Ness</EM></DIV><!-- teaser -->
+      <DIV class=Bspace15><SPAN class=greenBlurb>The .Net Framework SDK includes 
+      several tools that convert source code into executable code - the C# and 
+      VB.NET compilers get most of the attention, but there are 
+      others.</SPAN></DIV><!-- end teaser -->
+      <P>
+      <P>
+      <P>If you're familiar with the Regex class (in the 
+      System.Text.RegularExpressions namespace) you may have already noticed 
+      that it, too, has the ability to compile your favorite regular expressions 
+      into a .NET assembly. In fact, the .NET Common Language Runtime (CLR) 
+      contains a whole namespace full of classes to help us build assemblies, 
+      define types, and emit their implementations, all at run time. These 
+      classes, which comprise the System.Reflection.Emit namespace, are known 
+      collectively as "Reflection.Emit."</P>
+      <P>
+      <P>Java programmers have long enjoyed the benefits of reflection and 
+      full-fidelity type information, and .NET (finally) delivers that bit of 
+      nirvana to the Windows platform. But the classes in the Reflection.Emit 
+      namespace raise the bar even further, allowing us to generate new types 
+      and emit new code, dynamically.</P>
+      <P>
+      <P>And, as the Regex class demonstrates, Reflection.Emit is not just for 
+      building compilers (although it's certainly good for that — the JScript 
+      .NET compiler makes heavy use of Reflection.Emit). It is a very important 
+      bit of software technology in its own right because, when combined with 
+      the power of .NET's Intermediate Language (IL), it allows us to do 
+      something we've never really been able to do before: generate portable, 
+      low-level code at run time.</P>
+      <P>
+      <P>
+      <H4>Hello, Reflection.Emit!</H4>
+      <P>
+      <P>
+      <P>
+      <P>Before we start writing full-fledged compilers, let's take a look at a 
+      trivial example of Reflection.Emit in action (<A 
+      href="http://www.ddj.com/showArticle.jhtml?documentID=win0208c&amp;pgno=5">Listing 
+      1</A>) to get acquainted with the cast of characters — there are quite a 
+      few. Long before we begin emitting any actual code, we have to set up the 
+      context in which that code will live. An application domain, an assembly, 
+      a module, a type, and a method are all required, at the very least. This 
+      is all the same stuff required of any executable .NET code. Even if we 
+      never intend on saving this code to disk, the architecture of the .NET 
+      run-time environment still requires our code stream to belong to an 
+      assembly, a module, and so forth. Emitting the actual code is the very 
+      last thing we do (before saving it, or executing it). <A 
+      href="http://www.ddj.com/showArticle.jhtml?documentID=win0208c&amp;pgno=3">Figure 
+      1</A> shows the cascading set of "Builder" classes employed by 
+      Reflection.Emit to model this architecture.</P>
+      <P>The goal of the program in Listing 1 is simple: generate a dynamic 
+      assembly that houses a single module and a single type, and exposes a 
+      single method (which simply writes a line of text to the console), then 
+      save this assembly to disk as an executable file. (For a more useful 
+      example of Reflection.Emit in action, the sample code available online 
+      includes an RPN arithmetic expression engine.)</P>
+      <P>
+      <P>Step one is to define a new, dynamic assembly in our current 
+      application domain. (Reflection.Emit does not allow us a way to add code 
+      to a preexisting assembly.) For our purposes, a weakly named assembly, 
+      i.e., one without a cryptographic signature, will suffice.</P>
+      <P><PRE>AssemblyName an = new AssemblyName();
+an.Name = "HelloReflectionEmit";
+AppDomain ad = AppDomain.CurrentDomain;
+AssemblyBuilder ab = ad.DefineDynamicAssembly(an,
+    AssemblyBuilderAccess.Save);</PRE>Next, we spawn a dynamic module from 
+      our assembly. Even though we intend to save the module and assembly as a 
+      single file, the two abstractions are distinct to Reflection.Emit — the 
+      module represents a physical store of code and resources, and the assembly 
+      contains the metadata for those modules. Most of the time, you'll simply 
+      want to use the same name for the assembly and module, which is what we do 
+      here.
+      <P></P>Also, because we intend on saving this code to disk, we must 
+      specify a filename for the module. We specify the same filename that we'll 
+      specify to AssemblyBuilder.Save(), later on, in order to have the assembly 
+      metadata and module merged into one single executable file. 
+      <P></P><PRE>ModuleBuilder mb = ab.DefineDynamicModule(an.Name, "Hello.exe");</PRE>Now 
+      we're getting somewhere. It's time to declare a type: public class Bar in 
+      namespace Foo. Note the "Namespace.Typename" syntax, which is the same 
+      syntax used elsewhere in the CLR's Reflection library. This syntax is well 
+      documented — a full tour can be had, starting with the MSDN documentation 
+      for the System.Type.FullName property.
+      <P></P><PRE>TypeBuilder tb = mb.DefineType("Foo.Bar",
+    TypeAttributes.Public|TypeAttributes.Class);</PRE>Reflection.Emit is 
+      just like C# (and most other object-oriented programming languages) in 
+      that if we neglect to build a default constructor for this type, one will 
+      be generated for us, which simply calls the default constructor of the 
+      base class. So, to make this new class useful, all we need to do is 
+      implement a method. Skipping ahead just a bit, we'll want this method to 
+      act as the EXE's entry point, so let's design it as a static method, 
+      accepting an array of strings, and returning an integer. The parameters 
+      and return type are optional (as is the name "Main"), but hey, if we're 
+      going to write a "Hello, World" program, let's do it properly.
+      <P></P><PRE>MethodBuilder fb = tb.DefineMethod("Main",
+    MethodAttributes.Public|
+    MethodAttributes.Static,
+    typeof(int), new Type[] { typeof(string[]) });</PRE>The actual code 
+      emitted by Listing 1 — a single call to System.Console.WriteLine() — is 
+      described by a short sequence of IL instructions. We'll get better 
+      acquainted with IL, the Intermediate Language that is the heart and soul 
+      of .NET, in the next section.
+      <P></P><PRE>// Emit the ubiquitous "Hello, World!" method, in IL
+ILGenerator ilg = fb.GetILGenerator();
+ilg.Emit(...); // stay tuned </PRE>The TypeBuilder.CreateType() method 
+      effectively "closes the door." No new code or data members will be allowed 
+      in afterward. So all that's left to do is declare the assembly's subsystem 
+      and entry point, then save our shiny new EXE file to disk. Newly created 
+      assemblies are born as DLLs by default, unless/until 
+      AssemblyBuilder.SetEntryPoint() is called, which effectively transforms 
+      the assembly into an EXE file. 
+      <P></P><PRE>// Seal the lid on this type
+Type t = tb.CreateType();
+// Set the entrypoint (thereby declaring it an EXE)
+ab.SetEntryPoint(fb,PEFileKinds.ConsoleApplication);
+
+
+// Save it
+ab.Save("Hello.exe");</PRE>To recap what we've done so far: IL code can 
+      exist only as the body of a method or constructor. Methods and 
+      constructors can only exist within the context of a type (or a module, in 
+      the case of global functions). Each type must belong to a module and each 
+      module must be associated with an assembly. Even assemblies, when 
+      dynamically generated, do not exist in a vacuum — they are associated with 
+      an application domain, and thus are given a finite boundary for security, 
+      lifetime, and remoting purposes.
+      <P></P>Now, let's learn a bit about IL, so we can finish the 
+      implementation of our Hello, World program.
+      <P></P>
+      <H4>IL: A Hitchhiker's Guide</H4>IL is the native language of .NET — what 
+      machine language is to a CPU. Once loaded into an application domain, each 
+      IL method is translated into native machine code immediately before it's 
+      first executed. This process is known as "just-in-time compilation," or 
+      JIT compilation. The JIT compiler is a wonderful thing because it 
+      decouples the software we ship from any specific hardware platform, and it 
+      allows our code to be optimized for whichever/whatever hardware and 
+      operating system the user happens to be running, present or future. IL and 
+      JIT compilation are, at long last, a license for chip manufacturers to 
+      innovate.
+      <P></P>Most of the Win32 programmers I work with today don't possess an 
+      intimate knowledge of x86 assembly language, but it's a funny thing: 
+      They're all sufficiently familiar with native x86 code to step through it 
+      in a debugger (well, most of them are). Unfortunately, stepping through IL 
+      in a debugger is a difficult thing to arrange, unless you've compiled it 
+      directly with ILASM.EXE. But IL is worth getting to know anyway, and 
+      Reflection.Emit is just one good reason why. At any rate, if you can 
+      comprehend x86 at all, even just stepping through the most trivial of 
+      functions in a debugger, you'll find IL a refreshing walk in the park.
+      <P></P>And if not? Don't worry. With a little help from ILDASM.EXE, you 
+      can fake it. ILDASM.EXE is the disassembler tool included with the .NET 
+      Framework SDK. It is simply indispensable for learning IL. How do you 
+      calculate the cosine of a 64-bit IEEE value in IL? You could dig through a 
+      mountain of spec documents... Nah, just write a few lines of C# code, 
+      compile, then disassemble. <A 
+      href="http://www.ddj.com/showArticle.jhtml?documentID=win0208c&amp;pgno=4">Figure 
+      2</A> shows ILDASM.EXE in action.
+      <P></P>If you have experience with any low-level machine languages at all, 
+      the first thing you'll notice about IL is that it is entirely stack based 
+      — there are no registers. This makes sense if you consider that IL is 
+      designed to be portable to chip architectures other than good 'ol x86. 
+      After all, who can say how many registers the next generation of chips 
+      from Intel and AMD will have? IL avoids making any assumptions along these 
+      lines by simply not employing the concept of registers at all. All 
+      parameters for every instruction (even simple arithmetic and comparison 
+      operations) are either specified explicitly as operands, or taken from the 
+      stack. The results of these operations are then pushed onto the stack. The 
+      mapping of an IL method's stack space onto the physical chip's register 
+      space is left completely to the JIT compiler and its optimization logic.
+      <P></P><A 
+      href="http://www.ddj.com/showArticle.jhtml?documentID=win0208c&amp;pgno=2">Example 
+      1</A> is a small sampling of some common IL instructions you may 
+      encounter, including the instructions emitted by Listing 1. Every IL 
+      instruction consists of an opcode followed by zero or more operands. In 
+      general, it's helpful to think of the opcodes beginning with "Ld" as 
+      pushing items onto the stack, and the opcodes beginning with "St" as 
+      popping items off the stack. For a complete reference, refer to the Common 
+      Intermediate Language (CIL) specification (see References). Or, just fire 
+      up ILDASM.EXE, and fake it. Now as promised, let's revisit those calls to 
+      ILGenerator.Emit() from Listing 1.
+      <P></P>The first opcode, Ldstr, will take its operand (a string literal) 
+      and push a reference to it onto the stack. For this to work at run time, 
+      the string itself must obviously be contained within the module's data 
+      section, somewhere. This is where the power of a class library like 
+      Reflection.Emit becomes truly apparent — it hides these gruesome details 
+      behind such innocent little method calls. We needn't worry about laying 
+      out vast, cumbersome data sections to store our strings, and patching up 
+      our code with the appropriate references. Reflection.Emit will handle all 
+      those messy details for us. 
+      <P></P><PRE>ILGenerator ilg = fb.GetILGenerator();
+ilg.Emit(OpCodes.Ldstr, "Hello, World!");</PRE>The next opcode, Call, will 
+      execute a subroutine (a method). The parameters for the method call will 
+      be taken from the stack, and its return value, if any, will be pushed on. 
+      The return type of Console.WriteLine() is void, so in this case, nothing 
+      will be left on the stack frame afterward. 
+      <P></P><PRE>ilg.Emit(OpCodes.Call,
+        typeof(Console).GetMethod("WriteLine",
+                new Type[] {typeof(string)} ));</PRE>If you plan on 
+      generating lots of calls to Console.WriteLine(), you should be aware that 
+      the ILGenerator class exposes a method for just that purpose: 
+      ILGenerator.EmitWriteLine() generates the exact same code as our example. 
+      (Could this be the first assembler ever devised that includes explicit 
+      support for creating "Hello, World" sample programs?)
+      <P></P>We finish up our method implementation with two more opcodes: 
+      Ldc_I4_0 followed by Ret. This easy sequence pushes the number 0 onto the 
+      stack (as a 4-byte integer) then exits the method, effectively returning 
+      0. The Ldc_I4_0 opcode is a special "short form" opcode — it's 
+      functionally equivalent to the Ldc_I4 opcode followed by a 4-byte operand 
+      of 0x00000000. But loading the value 0 onto the stack is such a common 
+      operation, the designers of IL included a number of special shorthand 
+      opcodes like this, to keep life easy (and binaries tiny). 
+      <P></P><PRE>ilg.Emit(OpCodes.Ldc_I4_0);
+ilg.Emit(OpCodes.Ret);</PRE>Similar short form opcodes exist for the 
+      constants 1 through 7, and a not-quite-as-short form (Ldc_I4_S) exists for 
+      signed, single-byte operands -128 through +127. However, one must be 
+      careful when emitting instructions of this latter type. Consider the 
+      following code: 
+      <P></P><PRE>ilg.Emit(OpCodes.Ldarg_S, 13);</PRE>Which will generate the 
+      corresponding IL: 
+      <P></P><PRE>ldarg.s 13
+nop
+nop
+nop </PRE>Whoa, where did all those nop instructions come from? 
+      ILGenerator.Emit() is a very heavily overloaded method. The ldarg.s 
+      expects an 8-bit operand, but in our call to ILGenerator.Emit() we 
+      accidentally specified a 32-bit value (0x0000000D, aka 13). But why does 
+      this matter? To understand, we must consider IL's serialization format.
+      <P></P>Each IL instruction is serialized as a simple sequence of bytes, 
+      one after the next, with no delimiter between instructions — the byte-size 
+      of each IL instruction is simply determined by the opcode. Multibyte 
+      operands are serialized in little-endian order (with the low-order bytes 
+      before the high-order bytes). When the run time encounters the ldarg.s 
+      opcode, for example, it will know that the next instruction begins just 
+      one byte further on (after the operand).
+      <P></P>Lucky for us, 0x00 happens to be the bytecode for nop (which does 
+      nothing, by design). And IL operands are always written in little-endian 
+      form, so the 0x0D will be emitted earliest in memory, and therefore be 
+      treated as the operand to our ldarg.s instruction. So, all the superfluous 
+      0x00 bytes (nop instructions) will be tucked neatly behind the end of the 
+      ldarg.s 13 instruction.
+      <P></P>One could argue that this is a bug in Reflection.Emit — in a 
+      perfect world, the ILGenerator.Emit() function would be smart enough to 
+      validate its operand-parameters against the opcode specified, and either 
+      convert the parameters or throw an exception, as appropriate. Until this 
+      is fixed, you'll want to take great care to cast your operands explicitly: 
+
+      <P></P><PRE>ilg.Emit(OpCodes.Ldarg_S, (sbyte)13);</PRE>In a way, 
+      ILGenerator.Emit() is so heavily overloaded that it suffers from the same 
+      fundamental problem as C's printf() function: The compiler can't be 
+      expected to catch errors based on the semantics of the function, and the 
+      implementation never quite catches everything you think it should because 
+      the matrix of possible input is so complex.
+      <P></P>Scared yet? The single-byte short form operations can actually pose 
+      far greater dangers than emitting an occasional nop. Remember that the 
+      8-bit operand to short-form instructions is considered a signed value 
+      (with range -128 to +127). This means that if you happen to specify an 
+      8-bit value larger than 127, it stands at risk to be sign-extended as a 
+      negative number by the runtime, and thus misused in ways that are 
+      difficult to forsee: 
+      <P></P><PRE>// load an array of double[300] onto the stack
+int max = 300;
+
+ilg.Emit(OpCodes.Ldc_I4, max);
+ild.Emit(OpCodes.Newarr, typeof(double));
+
+int idx = 200; // valid array index, but &gt;127
+
+ilg.Emit(OpCodes.Ldc_I4_S, (sbyte)idx);
+
+ilg.Emit(OpCodes.Ldelem_R8); // kaboom: IndexOutOfRangeException</PRE>In 
+      this code, the value 200 is treated as -56 (or 0xC8) when cast as an 
+      sbyte. When the runtime gets around to using this value for something 
+      meaningful (like comparing it to the size of an array, which is done 
+      implicitly as part of the Ldelem instruction), it will be sign-extended to 
+      32-bits: 0xFFFFFFC8, not 0x000000C8 as one might expect. Clearly, 
+      0xFFFFFFC8 is outside the range of our little array, and this code will 
+      blow up at run time, but only when idx&gt;127. Be careful out there.
+      <P></P>The lesson here is clear: Always review a representative sample of 
+      the IL code generated by your Reflection.Emit call, for correctness, 
+      personally. Don't rely on unit-testing to uncover all the subtle 
+      signed/unsigned mismatch problems, let alone discover superfluous nop 
+      instructions. Still not convinced? We'll explore still-uglier problems in 
+      the next section.
+      <P></P>
+      <H4>More Fun With IL: Validity, Verifiability, and Security</H4>Now that 
+      we're all IL experts (our generated "Hello, World" code in Listing 1 works 
+      brilliantly, after all), it's interesting to consider some of the things 
+      you can't do with IL (at least from within the confines of a 
+      safe/verifiable execution context).
+      <P></P>IL certainly offers a "Turing Complete" set of instructions, and 
+      then some. However, it has some interesting constraints and limitations 
+      when compared to most native machine languages. For the most part, these 
+      limitations exist for one of two reasons: to simplify the implementation 
+      of JIT compilers (a stated goal of the Common Intermediate Language 
+      specification), or to help the run time verify the safety of your code.
+      <P></P>The first issue you should be aware of is that there are two 
+      flavors of IL opcodes: verifiable and unverifiable. A most tempting 
+      example of an unverifiable opcode is cpblk, which is similar in purpose to 
+      the C language memcpy() function. If a method contains any unverifiable 
+      opcodes such as cpblk, it will not be allowed to execute in restricted, 
+      secure contexts (instead, a Security.VerificationException will be 
+      thrown). The typical example of a "restricted, secure context" is code 
+      downloaded from the Internet, but the real definition depends on your 
+      users' .NET security policies.
+      <P></P>Another thing you might notice about IL is the conspicuous lack of 
+      a "peek" instruction, which is curious for a stack-based language. Unlike 
+      the system stack used by, say, a native x86 thread, you can't just access 
+      any arbitrary value on an IL stack frame. You can only pop values off the 
+      top, one at a time. In fact, you can't even peek at the top element, 
+      without explicitly popping it off and pushing it back on. One might think 
+      this limitation exists for the sake of simplifying the JIT compiler — 
+      certainly, limiting the complexity of IL in this way allows for a more 
+      efficient JIT compilation experience, enhancing the system's ability to 
+      map objects on the IL stack frame onto physical hardware resources 
+      (memory, chip registers, and the like) efficiently. But it also provides a 
+      measure of security, so that untrusted code can't snoop for interesting 
+      information further down the caller's stack frame. If a "peek" instruction 
+      did exist, it would almost certainly be unverifiable. Later in this 
+      section, we'll also see that it's illegal (invalid IL) to pop off more 
+      items than exist on our stack frame.
+      <P></P>While it's possible to execute unverifiable IL in an appropriately 
+      trusted context, it's never possible to execute invalid IL. That may seem 
+      like a painfully obvious statement, but unfortunately Reflection.Emit 
+      makes it very easy to generate invalid IL, so the topic bears further 
+      examination.
+      <P></P>Remember our earlier example, where we accidentally emitted an 
+      ldarg.s instruction with a 4-byte operand, and so produced a few 
+      unexpected nop instructions? The converse situation (specifying a 
+      too-small operand) is actually far worse: 
+      <P></P><PRE>ilg.Emit(OpCodes.Ldarg, (sbyte)13); // ldarg expects a 16-bit operand</PRE>Here, 
+      the ldarg instruction is expecting a 16-bit operand, but we only give it 8 
+      bits. This emitted code will fail spectacularly, but not because 8 bits 
+      are missing from the operand — the "missing" bits will be taken from the 
+      opcode of the following instruction (remember our earlier discussion of 
+      IL's serialization format), effectively transforming the remainder of the 
+      codestream into useless garbage.
+      <P></P>When we think about correctness and validity in a stream of 
+      low-level code, we typically think about the aforementioned problems 
+      (invalid opcodes and such). But the correctness and validity of IL is a 
+      far more subtle matter.
+      <P></P>For example, a method cannot be allowed to grow its stack frame to 
+      an indefinite size (or reduce it below zero). You may have already noticed 
+      the .maxstack directive output in all methods disassembled by ILDASM — 
+      this qualifier exists on all IL methods, to inform the system that the 
+      stack size for the given method will never exceed a clearly defined, 
+      finite depth.
+      <P></P>The JIT compiler contains a code-safety verifier, which will walk 
+      the branches of each method's flow-control logic, making careful note of 
+      the number (and type) of items on the stack at each instruction point. 
+      (Note that this is possible only because the number and type of items 
+      consumed/produced on the stack is well-defined by each IL opcode.) If the 
+      depth of a method's stack frame at any instruction point ever exceeds 
+      .maxstack or drops below zero, or if two incompatible stack states are 
+      ever deemed possible at a single instruction point, the system will throw 
+      an InvalidProgramException.
+      <P></P>To illustrate this rule, consider the following bit of IL, which is 
+      invalid: 
+      <P></P><PRE>.method private hidebysig static
+    void Kaboom1(int32 x) cil managed
+{
+  // if (x == 0) goto S1;
+  ldarg.0
+  brfalse.s S1
+
+  ldc.i4 13 // kaboom: InvalidProgramException
+
+S1:
+  // return;
+  ret
+}</PRE>The ldc.i4 13 instruction alters the state of the stack frame by 
+      pushing a 4-byte integer — but this instruction may or may not be skipped 
+      by the conditional branch instruction (brfalse.s S1) that precedes it. 
+      When the JIT compiler gets around to this method, it will be unable to 
+      determine the depth of the stack frame at S1, and it will complain, 
+      loudly. To fix the above code, simply remove the ldc.i4 13 instruction (or 
+      replace it with a nop instruction, or follow it by a pop instruction, 
+      or... you get the idea).
+      <P></P>To summarize, more generally: Correct IL must never allow a branch 
+      instruction to result in two or more incompatible stack-states, at any 
+      single instruction point. By "incompatible stack-state" we refer not only 
+      to the depth of the stack, but also to the types of the items on it. (Note 
+      we should say "nature," rather than "type," because the CLI only considers 
+      a small subset of the basic types we know and love, for the purposes of IL 
+      validation: object references, addresses, and the basic numeric types. 
+      Refer to the CIL spec for complete details.)
+      <P></P>By way of (bad) example, consider the following IL code. It is 
+      invalid because the nature of the item on the stack at S2 is indeterminate 
+      (maybe int64, maybe float64): 
+      <P></P><PRE>.method private hidebysig static
+    double Kaboom2(int32 x) cil managed
+{
+  // if (x == 0) goto S1;
+  ldarg.0
+  brfalse.s S1
+
+  ldc.i8 7 // push((int64)7);
+  br.s S2 // goto S2;
+
+S1:
+  ldc.r8 13.0 // push((float64)13);
+  // kaboom: InvalidProgramException
+S2:
+  // return (pop());
+  ret
+}</PRE>To fix this code, one might simply insert a conv.r8 instruction 
+      after the ldc.i8 7 instruction. This would keep the state of the stack 
+      frame at S2 healthy, happy, and deterministic.
+      <P></P>The topic of security and verifiability in IL is an interesting 
+      one, deserving an article all its own. As a bare minimum, it's important 
+      to understand how the CLR's verifier (and the JIT compiler) will be 
+      evaluating your code, before you undertake a nontrivial project with 
+      Reflection.Emit. Otherwise, you might labor all night to produce a 
+      brilliant work of IL art, only to get an InvalidProgramException for your 
+      efforts when you execute your generated code, the next day.
+      <P></P>
+      <H4>Would You Like Your Code for Here, or To Go?</H4>When creating a 
+      dynamic assembly with Reflection.Emit, you must declare, ahead of time, 
+      what you plan on doing with it. Do you want to run it or save it? Or both? 
+      (Of course, if your answer is "neither," then you should probably should 
+      have stopped reading this article long ago.)
+      <P></P>You must make a special note of what you pass for the 
+      AssemblyBuilderAccess parameter to the AppDomain.DefineDynamicAssembly() 
+      method, because it affects how you must call some of the AssemblyBuilder 
+      methods, later (namely, AssemblyBuilder.DefineDynamicModule(), and of 
+      course, AssemblyBuilder.Save()).
+      <P></P>This portion of the Reflection.Emit API is a bit schizophrenic. The 
+      reason for the schizophrenia is that there are really two different 
+      use-cases for generating dynamic assemblies: "transient" dynamic 
+      assemblies (created with the AssemblyBuilderAccess.Run flag), which are 
+      never intended to be written to disk, and "persistable" dynamic assemblies 
+      (created with AssemblyBuilderAccess.Save or 
+      AssemblyBuilderAccess.RunAndSave), which are. 
+      <P></P><PRE>public enum AssemblyBuilderAccess
+{
+    Run        = 1, // transient
+    Save       = 2, // persistable
+    RunAndSave = 3  // persistable
+}</PRE>One could argue that the DefineDynamicAssembly() method should have 
+      been refactored into two distinct methods, perhaps named something like 
+      DefinePersistableDynamicAssembly() and DefineTransientDynamicAssembly(), 
+      rather than switching semantics based on a flag specified at run time. But 
+      nobody ever consults me about these things, so we're stuck with using the 
+      AssemblyBuilderAccess enumeration to specify, at run time, what we would 
+      like to simply declare at design time.
+      <P></P>The AssemblyBuilderAccess flags do have other implications, with 
+      respect to the lifetime of dynamically generated code. The .NET run time 
+      never garbage-collects code. This is just as true for code generated with 
+      Reflection.Emit as it is for conventionally loaded assemblies — the 
+      lifetime of all executable code is tied to the lifetime of its application 
+      domain. Put another way, the only way to unload code is to unload its 
+      application domain. However, if your dynamic assembly's code is generated 
+      via AssemblyBuilderAccess.Save, then the code is not immediately eligible 
+      for execution — it exists only as a stream of bytes in memory, and is 
+      therefore fair game for garbage collection.
+      <P></P>Clearly, one should take care when designing systems that will have 
+      users generating lots of code into transient dynamic assemblies, because 
+      you'll be consuming resources that won't go away unless/until the hosting 
+      application domain goes away.
+      <P></P>In fact, it's interesting to consider how the .NET regular 
+      expression classes are designed in this regard, because they don't really 
+      offer an easy way for callers to deal with this problem. The Regex class 
+      allows one to specify an option (RegexOptions.Compiled) which will cause 
+      the underlying implementation of the regex state machine to be generated, 
+      via Reflection.Emit, into a transient dynamic assembly. 
+      <P></P><PRE>[Flags]
+public enum RegexOptions
+{
+   None                    = 0x00,
+   IgnoreCase              = 0x01,
+   Multiline               = 0x02,
+   ExplicitCapture         = 0x04,
+   Compiled                = 0x08, // Reflection.Emit!
+   Singleline              = 0x10,
+   IgnorePatternWhitespace  = 0x20,
+   RightToLeft             = 0x40,
+   ECMAScript              = 0x100
+}</PRE>
+      <P>
+      <P>This feature greatly increases performance for frequently executed 
+      regex searches, at some expense of startup time (Reflection.Emit is not 
+      terribly slow, but it's not free). However, there's another caveat: Unless 
+      you go to great lengths to instantiate and compile your Regex objects 
+      within their own application domain, there'll be no way to release the 
+      resources they consume — once generated, the IL code that represents the 
+      regex state machine will not be released even when the corresponding Regex 
+      object is freed and garbage-collected. The only way to unload the compiled 
+      regexes' code is to unload the entire application domain.</P>
+      <P>
+      <P>This is all well and good if your app needs only a fixed set of 
+      regexes, which are well known at design time. But it's probably 
+      inappropriate if, for example, you're implementing a search engine where 
+      users can enter new and various regexes all day long.</P>
+      <P>
+      <P>There are two ways to workaround this problem with 
+      RegexOptions.Compiled. One workaround involves a two-phase approach: use 
+      the static Regex.CompileToAssembly() method to save your compiled regexes 
+      to disk as a persistable dynamic assembly (say, "MyTempRegexes.dll"), then 
+      load that assembly into a new application domain via AppDomain.Load().</P>
+      <P>
+      <P>The other alternative is to instantiate the Regex within a remote 
+      application domain, directly, via AppDomain.CreateInstance(). This 
+      solution is a little cleaner, but requires a bit more typing: Because the 
+      Regex class is [Serializable], and it does not derive from 
+      System.MarshalByRefObject, the resulting object (and its IL code) will end 
+      up back in your own application domain unless we build a remotable wrapper 
+      class (call it, say, MarshalByRefRegex) to expose the underlying regex 
+      functionality across the app domain boundary.</P>
+      <P>
+      <P>This is an important reminder: Application domains are more than just 
+      code-lifetime boundaries — they are also marshaling boundaries. So if we 
+      employ either of these techniques to segregate our transient dynamic 
+      assemblies into their own app domains, we will incur small a performance 
+      penalty each time we access them, because the calls must be marshaled 
+      across an app domain boundary. The performance hit will be light because 
+      the calls are only being marshaled intraprocess, but still it will likely 
+      consume much of the performance gain achieved by compiling with 
+      Reflection.Emit in the first place — depending on your application, of 
+      course. Remember, this issue is only relevant in the (arguably rare) case 
+      that we care about unloading our emitted code. In all other cases, we are 
+      free to use Reflection.Emit within our own app domains, without worry.</P>
+      <P>
+      <P>
+      <H4>Conclusion</H4>
+      <P>
+      <P>In much the same way that XML has saved us from ever again needing to 
+      design low-level file formats for our apps, Reflection.Emit technology may 
+      save us from ever again having to devise our own state machines (like 
+      regular expression engines) that are so commonplace in advanced 
+      applications.</P>
+      <P>Close your eyes, and imagine the possibilities: parsers, interpreters, 
+      state machines, static table-lookup code... All of these things and more 
+      can now be implemented as fast, native code, optimized for each individual 
+      user's platform, thus offering a level of performance never before 
+      attainable. The Age of The Interpreter might finally be over.</P>
+      <P>
+      <P>The downloadable sample code accompanying this article includes a 
+      parser and an engine for evaluating RPN arithmetic expressions. The design 
+      follows very closely after the classes in the 
+      System.Text.RegularExpressions namespace to offer a familiar look and 
+      feel, but also to offer the same level of control over how the code is 
+      generated.</P>
+      <P>
+      <P>
+      <H4>Reference</H4>
+      <P>
+      <P>
+      <P>
+      <P>The CIL Instruction Set Specification <A 
+      href="http://msdn.microsoft.com/net/ecma/PartitionIIICILOct01.pdf/">http://msdn.microsoft.com/net/ecma/PartitionIIICILOct01.pdf/</A></P>
+      <P>Download code at <A 
+      href="http://www.ddj.com/code/">http://www.ddj.com/code/</A></P>
+      <HR>
+      <I><B>Chris Sells</B> in an independent consultant, specializing in 
+      distributed applications in .NET and COM, as well as an instructor for 
+      DevelopMentor. He's written several books, including </I>ATL Internals<I> 
+      , which is in the process of being updated for ATL7 as you read this. He's 
+      also working on </I>Essential Windows Forms<I> for Addison-Wesley and 
+      </I>Mastering Visual Studio .NET<I> for O'Reilly. In his free time, Chris 
+      hosts the Web Services DevCon (November, 2002) and directs the Genghis 
+      source-available project. More information about Chris, and his various 
+      projects, is available at <A 
+      href="http://www.sellsbrothers.com/">http://www.sellsbrothers.com/</A>. 
+      <BR><BR><B>Shawn Van Ness </B>is a software engineer and consultant, 
+      specializing in .NET, COM and XML technologies. Shawn has contributed 
+      numerous tools and technologies for software development to the public 
+      domain. Find out more at <A 
+      href="http://www.arithex.com/">http://www.arithex.com/</A>. </I>
+      <BLOCKQUOTE></BLOCKQUOTE>
+      <CENTER>1 | <A href="http://www.ddj.com/windows/184416570?pgno=2">2</A> | 
+      <A href="http://www.ddj.com/windows/184416570?pgno=3">3</A> | <A 
+      href="http://www.ddj.com/windows/184416570?pgno=4">4</A> | <A 
+      href="http://www.ddj.com/windows/184416570?pgno=5">5</A> <A 
+      class=autoPagebreak 
+      href="http://www.ddj.com/windows/184416570?pgno=2">Next Page</A> <IMG 
+      height=13 alt="" hspace=5 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/redarrow.gif" 
+      width=7 align=absBottom border=0> </CENTER><!-- ARTICLE COMMENTS--><A 
+      name=articleComments></A><BR>
+      <TABLE cellSpacing=1 cellPadding=4 width="90%" border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <H3></H3></TD></TR></TBODY></TABLE><BR>Please <A 
+      href="http://www.ddj.com/profile/login.jhtml?_DARGS=/article/articleComments.jhtml_A&amp;_DAV=/windows/184416570">log 
+      in</A> to post comments.<BR><!-- AROUND THE WEB AND TOP 5 ARTICLES -->
+      <TABLE class=elfixo cellSpacing=0 cellPadding=0 width=467 border=0>
+        <TBODY>
+        <TR>
+          <TD width=229><IMG height=1 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+            width=229 border=0></TD>
+          <TD width=9><IMG height=1 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+            width=9 border=0></TD>
+          <TD width=229><IMG height=1 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+            width=229 border=0></TD></TR>
+        <TR>
+          <TD vAlign=top><!-- AROUND THE WEB --><!-- AROUND THE WEB -->
+            <DIV id=GreenContainerBoxSM2>
+            <DIV id=GreenBARSM2><SPAN class=BARTitles>RELATED 
+            ARTICLES</SPAN></DIV>
+            <DIV class=PaddingStyle2>
+            <DIV class=Bspace5><A 
+            href="http://www.ddj.com/web-development/202405169">Google Sets Aids 
+            Image Recognition</A> </DIV>
+            <DIV class=Bspace5><A href="http://www.ddj.com/202404971">Amazon Web 
+            Services Start-Up Challenge Contest</A> </DIV>
+            <DIV class=Bspace5><A 
+            href="http://www.ddj.com/java/202404964">Custom Image Processing in 
+            Java</A> </DIV>
+            <DIV class=Bspace5><A 
+            href="http://www.ddj.com/architect/202404599">Dr. Dobb's Agile 
+            Newsletter 10/07</A> </DIV>
+            <DIV class=Bspace5><A 
+            href="http://www.ddj.com/windows/202404462">Popfly Beta Goes 
+            Public</A> </DIV></DIV></DIV></TD>
+          <TD width=9><IMG height=1 alt="" 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+            width=9 border=0></TD>
+          <TD vAlign=top><!-- TOP 5 ARTICLES -->
+            <DIV id=GreenContainerBoxSM2>
+            <DIV id=GreenBARSM2><SPAN class=BARTitles>TOP 5 
+ARTICLES</SPAN></DIV>
+            <DIV class=PaddingStyle2>
+            <DIV class=PaddingStyle2>
+            <DIV class=Bspace5><A 
+            href="http://www.ddj.com/development-tools/202401072">Smart 
+            Compilers—But Smart Enough? </A></DIV>
+            <DIV class=Bspace5><A 
+            href="http://www.ddj.com/hpc-high-performance-computing/202401098">Apply 
+            Critical Sections Consistently </A></DIV>
+            <DIV class=Bspace5><A 
+            href="http://www.ddj.com/architect/189401902">Quick-Kill Project 
+            Management </A></DIV>
+            <DIV class=Bspace5><A 
+            href="http://www.ddj.com/hpc-high-performance-computing/200001985">The 
+            Pillars of Concurrency </A></DIV>
+            <DIV class=Bspace5><A 
+            href="http://www.ddj.com/windows/202300122">The Model-View-Presenter 
+            Pattern in ASP.NET 
+      </A></DIV></DIV></DIV></DIV></TD></TR></TBODY></TABLE></DIV></TD>
+    <TD width=10><IMG height=1 alt="" 
+      src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/blank.gif" 
+      width=10 border=0></TD>
+    <TD vAlign=top><!-- RIGHT COL --><!-- RIGHT COL --><!-- ARTICLE contaier table for media center and departments -->
+      <TABLE class=elfixo cellSpacing=0 cellPadding=0 width=575 border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top width=400 rowSpan=2><!-- YET TO RECEIVE AD PARAMS-->
+            <DIV class=clear><!-- http://as.cmpnet.com/html.ng/pagepos=sponsbox&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 -->
+            <DIV id=SponsorBox>
+            <DIV id=SponsorBar><SPAN class=miniBARTitles>FREE WEBINAR</SPAN> 
+            </DIV>
+            <DIV class=SPONSORPad>Do-It-Yourself Build and Release Management: 
+            Costs and Benefits of Creating and Maintaining a Homegrown System. 
+            <A 
+            href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=104330&amp;AdID=173541&amp;TargetID=9027&amp;Segments=1411,3108,3448,4875,7785,12683&amp;Targets=2625,2878,9027&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3544,3577,4080&amp;RawValues=&amp;Redirect=https://www.cmpnetseminars.com/ars/eventregistration.do?mode=eventreg&amp;F=1000666&amp;K=4SD" 
+            target=_blank>Register today!</A></DIV></DIV><IMG height=1 
+            src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(4).gif" 
+            width=1 border=0> </DIV><!----------------------SEARCH JOBS BOX----------------->
+            <DIV id=jobscontainer 
+            style="OVERFLOW: hidden; WIDTH: 402px; HEIGHT: 41px">
+            <FORM id=form1 name=form1 
+            action=http://www.TechCareers.com/js/action/searchresults.asp?affiliate=ddj&amp;_DARGS=/template_parts/dept/right/right.jhtml 
+            method=post><INPUT type=hidden value=modifydate[d] name=FOrderBy> 
+            <DIV id=TechCareersBox>
+            <DIV id=SponsorBar style="BACKGROUND-COLOR: teal"><SPAN 
+            class=miniBARTitles>DR. DOBB'S CAREER CENTER</SPAN> <!-- http://as.cmpnet.com/html.ng/pagepos=careers1&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+            href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=75634&amp;AdID=125682&amp;TargetID=2625&amp;Segments=1411,3108,3448,4875,11102&amp;Targets=2625,2878,7744&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1339,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080,4377&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+            target=_parent><IMG alt="" 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/iopsblank.gif" 
+            border=0></A><IMG height=1 
+            src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(5).gif" 
+            width=1 border=0> </DIV>
+            <DIV 
+            style="PADDING-RIGHT: 0px; PADDING-LEFT: 5px; PADDING-BOTTOM: 5px; WIDTH: 100%; PADDING-TOP: 5px">Ready 
+            to take that job and shove it? <SPAN class=pointerhand 
+            style="TEXT-DECORATION: underline" onclick=jobsopen()>open</SPAN> | 
+            <SPAN class=pointerhand style="TEXT-DECORATION: underline" 
+            onclick=jobsclose()>close</SPAN><BR></DIV></DIV>
+            <TABLE cellSpacing=1 cellPadding=5 width="100%" bgColor=#000000 
+            border=0>
+              <TBODY>
+              <TR bgColor=#ffffff>
+                <TD class=noLINE vAlign=top bgColor=#cde5e8 
+                  colSpan=2><B>Search jobs on</B> <A class=thirteenBOLD 
+                  href="http://www.techcareers.com/?affiliate=ddj">Dr. Dobb's 
+                  TechCareers</A></TD></TR>
+              <TR bgColor=#ffffff>
+                <TD vAlign=top width="50%">
+                  <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD vAlign=top>
+                        <DIV><STRONG>Function:</STRONG><BR><SELECT size=1 
+                        name=FCareerFocus1> <OPTION value=23 
+                          selected>Information Technology</OPTION> <OPTION 
+                          value=25>Engineering</OPTION></SELECT></DIV><BR>
+                        <DIV><STRONG>Keyword(s):</STRONG><BR><INPUT size=25 
+                        name=FKeywords></DIV><BR>
+                        <DIV><B>State:</B>&nbsp;&nbsp; <INPUT maxLength=2 size=8 
+                        name=FState> <INPUT id=submit1 type=submit align=right value=Go name=submit1></DIV></TD></TR></TBODY></TABLE></TD>
+                <TD class=noLINE vAlign=top width="50%"><!------------------FEATURED JOB----------------->
+                  <LI><A 
+                  href="http://www.techcareers.com/JS/Form/SignUpForm.asp?affiliate=ddj">Post 
+                  Your Resume</A> 
+                  <LI><A 
+                  href="http://www.techcareers.com/MKT/Content/EMP/Default.asp?affiliate=ddj">Employers 
+                  Area</A> 
+                  <LI><A 
+                  href="http://www.techcareers.com/content/news.asp?affiliate=ddj">News 
+                  &amp; Features</A> 
+                  <LI><A 
+                  href="http://www.techcareers.com/content/forum.asp?affiliate=ddj">Blogs 
+                  &amp; Forums</A> 
+                  <LI><A 
+                  href="http://www.techcareers.com/JS/CareerResources/?affiliate=ddj">Career 
+                  Resources</A> <BR><BR><B>Browse By:</B> <BR><A 
+                  href="http://www.techcareers.com/JS/JobSearch/?affiliate=ddj">Location</A> 
+                  | <A 
+                  href="http://www.techcareers.com/JS/JobSearch/?affiliate=ddj">Employer</A> 
+                  | <A 
+                  href="http://www.techcareers.com/JS/JobSearch/?affiliate=ddj">City</A><BR><!-- http://as.cmpnet.com/html.ng/pagepos=careers2&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+                  href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=75640&amp;AdID=125688&amp;TargetID=2878&amp;Segments=1411,3108,3448,4875,11103&amp;Targets=2625,2878,7743&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1339,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080,4378&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+                  target=_parent><IMG alt="" 
+                  src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/iopsblank.gif" 
+                  border=0></A><IMG height=1 
+                  src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(6).gif" 
+                  width=1 border=0> </LI></TD></TR>
+              <TR bgColor=#ffffff>
+                <TD vAlign=top bgColor=#cde5e8 colSpan=2><B>Most Recent 
+                  Posts:</B></TD></TR>
+              <TR bgColor=#ffffff>
+                <TD class=noLINE vAlign=top colSpan=2><!--  <script language=javascript
+src=http://www.4jobs.com/common/partnership/jobs/display.asp?max=4&col=1&par=http://www.techcareers.com&slo=N&vj=N&des=y&ran=Y&i1=23&aor=OR&loc=Y&ind=N&sal=N&comp=Y&bc=FFFFFF&bg=FFFFFF&jbc=FFFFFF&jbg=FFFFFF&pad=5&wid=&tar=n&qsn1=affiliate&qsv1=ddj&date=Y></script> --><!-- <script language="javascript" src="http://www.dobbsprojects.com/prox/tcrss.js"></script> -->
+                  <SCRIPT language=javascript 
+                  src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/tcrss.js"></SCRIPT>
+                </TD></TR></TBODY></TABLE></FORM></DIV>
+            <DIV class=Bspace15></DIV><!----------------------END SEARCH JOBS BOX-----------------><BR><!-- VIDEO BOX --><!-- END VIDEO BOX --><BR>
+            <DIV align=center><!-- http://as.cmpnet.com/html.ng/pagepos=jumbobox&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+            href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=102031&amp;AdID=170839&amp;TargetID=5812&amp;Segments=1411,3106,3108,3448,3742,4569,4875,4950,5385,5472,6879,6938,7788,8127,10554,11548,14113&amp;Targets=2625,2878,3885,4532,5812,7240,10200&amp;Values=34,46,51,63,77,87,93,102,140,290,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.ni.com/mstudio/?metc=mth6se" 
+            target=_parent><IMG height=280 alt="" 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/060519_ban_mstudio_336x2809.27.gif" 
+            width=336 border=0></A><IMG height=1 
+            src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(7).gif" 
+            width=1 border=0> </DIV><BR>
+            <TABLE>
+              <TBODY>
+              <TR>
+                <TD vAlign=top><!-- <img src="http://i.cmpnet.com/ddj/rule.gif" width="180" height="1" hspace="0" vspace="0" border="0" alt=""> --><!-- INFO LINK--><!-- <droplet src="/template_parts/common/info_link.jhtml"/> --></TD>
+                <TD vAlign=top><!-- MICROSITES -->
+                  <DIV id=ArticlerightcolBox>
+                  <DIV id=TOCBAR><SPAN class=BARTitles>MICROSITES</SPAN></DIV>
+                  <DIV class=PaddingStyle2><SPAN class=blogName>FEATURED 
+                  TOPIC</SPAN> <!-- http://as.cmpnet.com/html.ng/pagepos=microsite1&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+                  href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=96663&amp;AdID=159361&amp;TargetID=8824&amp;Segments=1411,3108,3448,4875,12454&amp;Targets=2625,2878,8824&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080,5161&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.ddj.com/focal/msoffice-oba" 
+                  target=_parent><IMG height=125 alt="" 
+                  src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/125x125_411_PDQ.gif" 
+                  width=125 border=0></A><IMG height=1 
+                  src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(8).gif" 
+                  width=1 border=0> <BR><BR><SPAN class=blogName>ADDITIONAL 
+                  TOPICS</SPAN> <!-- http://as.cmpnet.com/html.ng/pagepos=microsite2&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+                  href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=96686&amp;AdID=159416&amp;TargetID=8823&amp;Segments=1411,3108,3448,4875,12455&amp;Targets=2625,2878,8823&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080,5162&amp;RawValues=&amp;Redirect=http://www.ddj.com/focal/msoffice-oba" 
+                  target=_blank>"Get the 411 on OBA PDQ! Learn to build and 
+                  deploy Microsoft Office Business Applications"</A><IMG 
+                  height=1 
+                  src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(9).gif" 
+                  width=1 border=0> <!-- http://as.cmpnet.com/html.ng/pagepos=microsite3&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+                  href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=75640&amp;AdID=125688&amp;TargetID=2878&amp;Segments=1411,3108,3448,4875,12456&amp;Targets=2625,2878,8825&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080,5163&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+                  target=_parent><IMG alt="" 
+                  src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/iopsblank.gif" 
+                  border=0></A><IMG height=1 
+                  src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(10).gif" 
+                  width=1 border=0> </DIV></DIV><!-- END MICROSITES --><BR><!-- INFO LINK-->
+                  <DIV id=ArticlerightcolBox><SPAN 
+                  class=blogName>INFO-LINK</SPAN> 
+                  <DIV class=Bspace5><!-- http://as.cmpnet.com/html.ng/pagepos=infolink1&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+                  href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=93692&amp;AdID=155455&amp;TargetID=4845&amp;Segments=1411,3108,3448,4875,6084,6088,6876,7870,7920,9375,10127,11549&amp;Targets=2625,2878,4845,4855&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3183,3318,3337,3577,4080&amp;RawValues=&amp;Redirect=http://www.ddj.com/focal/msoffice-oba" 
+                  target=_blank>Get code samples, downloads, and community 
+                  resources for Office system platform.</A><IMG height=1 
+                  src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(11).gif" 
+                  width=1 border=0> </DIV>
+                  <DIV class=Bspace5><!-- http://as.cmpnet.com/html.ng/pagepos=infolink2&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 -->Web 
+                  Developers: reduce the time, cost and risk of deploying web 
+                  applications.<A 
+                  href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=101443&amp;AdID=168758&amp;TargetID=4921&amp;Segments=1411,3108,3448,4875,6085,6097,8876&amp;Targets=2625,2878,7437,4921&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3184,3318,3337,3577,4080&amp;RawValues=&amp;Redirect=http://www.dobbsprojects.com/lcap/symphoniq1/?method=text" 
+                  target=_blank> FREE WHITEPAPER</A><IMG height=1 
+                  src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(12).gif" 
+                  width=1 border=0> </DIV>
+                  <DIV class=Bspace5><!-- http://as.cmpnet.com/html.ng/pagepos=infolink3&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+                  href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=101456&amp;AdID=168775&amp;TargetID=5776&amp;Segments=1411,3108,3448,4875,6089,8088&amp;Targets=2625,2878,7601,5776&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3185,3318,3337,3577,4080&amp;RawValues=&amp;Redirect=http://www.dobbsprojects.com/lcap/perforce1/?method=text" 
+                  target=_blank>Secure the competitive advantage. organize and 
+                  manage change in your development environment. SCM Source 
+                  E-zine. Download Now!</A><IMG height=1 
+                  src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(13).gif" 
+                  width=1 border=0> </DIV>
+                  <DIV class=Bspace5><!-- http://as.cmpnet.com/html.ng/pagepos=infolink4&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+                  href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=91746&amp;AdID=160274&amp;TargetID=5775&amp;Segments=1411,3108,3448,4875,6090,8089&amp;Targets=2625,2878,7244,5775&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3186,3318,3337,3577,4080&amp;RawValues=&amp;Redirect=http://www.evansdata.com/EDC_Global_2007_volume1_CMP.html" 
+                  target=_blank>BE HEARD: take a survey and enter to win 
+                  $500!</A><IMG height=1 
+                  src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(14).gif" 
+                  width=1 border=0> </DIV></DIV><BR><!-- http://as.cmpnet.com/html.ng/pagepos=testdrive&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+                  href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=75634&amp;AdID=125682&amp;TargetID=2625&amp;Segments=1411,3108,3448,4875,8135&amp;Targets=2625,2878&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,3654,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+                  target=_parent><IMG alt="" 
+                  src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/iopsblank.gif" 
+                  border=0></A><IMG height=1 
+                  src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(15).gif" 
+                  width=1 border=0> </TD></TR>
+              <TR>
+                <TD colSpan=2><!-- Industry Brains -->
+                  <SCRIPT 
+                  src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/jsct" 
+                  type=text/javascript></SCRIPT>
+<!-- end Industry Brains --></TD></TR></TBODY></TABLE>
+          <TD rowSpan=2>
+          <TD vAlign=top width=10 rowSpan=2>&nbsp;</TD>
+          <TD vAlign=top width=165><!-- DEPARTMENTS -->
+            <DIV id=DepartmentBOX>
+            <DIV id=DepartmentBar><SPAN 
+            class=miniBARTitles>DEPARTMENTS</SPAN></DIV><SPAN class=deptLinks>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/?cid=vnav">Home</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/architect/?cid=vnav">Architecture &amp; 
+            Design</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/cpp/?cid=vnav">C/C++</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/database/?cid=vnav">Database</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/development-tools/?cid=vnav">Development 
+            Tools</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/embedded/?cid=vnav">Embedded 
+            Systems</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/hpc-high-performance-computing/?cid=vnav">High 
+            Performance Computing</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/java/?cid=vnav">Java</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/mobile/?cid=vnav">Mobility</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/linux-open-source/?cid=vnav">Open 
+            Source</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/security/?cid=vnav">Security</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/web-development/?cid=vnav">Web 
+            Development</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPad><A class=deptLinks 
+            href="http://www.ddj.com/windows/?cid=vnav">Windows/.NET</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV></SPAN><!--<div id="EventBar"><span class="eventBARTitles"><a href="/events/" class="eventBARTitles">Events</a></span></div>--></DIV>
+            <DIV id=DepartmentBOXSilverlight>
+            <DIV class=DeptLinkPadSilverlight><A class=deptLinksSilverlight 
+            href="http://www.ddjsilverlight.com/">Play Sparkleball</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV>
+            <DIV class=DeptLinkPadSilverlight><A class=deptLinksSilverlight 
+            href="http://www.ddjvista.com/">Flipbook</A></DIV>
+            <DIV id=dividerLine><IMG height=1 hspace=0 src="" width=5 
+            border=0></DIV><!-- <div id="EventBar"><span class="eventBARTitles"><a href="/dept/events/" class="eventBARTitles">Events</a></span></div> --></DIV><BR>
+            <DIV align=center border="0" vspace="0" hspace="0" height="601" 
+            width="161"><!-- http://as.cmpnet.com/html.ng/pagepos=sky&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+            href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=104323&amp;AdID=173538&amp;TargetID=1254&amp;Segments=1411,1552,3105,3108,3219,3448,3743,4875,4949,5473,6044,6878,7787,8651,8674,10022,10555&amp;Targets=1254,2625,2781,2878,7243&amp;Values=34,46,51,63,77,87,93,102,140,206,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=https://www.cmpnetseminars.com/ars/eventregistration.do?mode=eventreg&amp;F=1000666&amp;K=3SD5" 
+            target=_parent><IMG height=600 alt="" 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/4EC160x600.gif" 
+            width=160 border=0></A><IMG height=1 
+            src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(16).gif" 
+            width=1 border=0> </DIV><BR><!-- http://as.cmpnet.com/html.ng/pagepos=tile&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+            href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=104620&amp;AdID=173949&amp;TargetID=2780&amp;Segments=1411,3108,3250,3448,4875,4951,5387,5471,6125&amp;Targets=2625,2780,2878&amp;Values=34,46,51,63,77,87,93,102,140,205,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.joltawards.com/" 
+            target=_parent><IMG height=125 alt="" 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/jolt-125x125.gif" 
+            width=125 border=0></A><IMG height=1 
+            src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(17).gif" 
+            width=1 border=0> 
+</TD></TR></TBODY></TABLE><!-- IMU AD--></TD></TR></TBODY></TABLE><IMG height=1 
+alt="" hspace=5 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/rule.gif" 
+width=900 align=left vspace=10 border=0> <BR clear=left><!-- AD BANNER AT BOTTOM -->
+<DIV id=BottomAdContainer><!-- http://as.cmpnet.com/html.ng/pagepos=bottom&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 -->
+<SCRIPT 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/DartRichMedia_1_03.js"></SCRIPT>
+<!-- Sniffer Code for Flash version=80 -->
+<SCRIPT language=JavaScript>
+<!--
+var swf_click = "http://as.cmpnet.com/event.ng/Type=click&FlightID=104651&AdID=174049&TargetID=5642&Segments=1411,1551,3108,3448,3741,4875,5470,7786,11862&Targets=1251,2625,2878,4879,5642,8387&Values=34,46,51,63,77,87,93,102,140,204,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&RawValues=&Redirect=http://www.businessobjects.com/devxi/1169";
+var dcswf_click = escape(swf_click);
+var ShockMode = 0;
+var plugin = (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]) ? navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin : 0;
+
+if (plugin && parseInt(plugin.description.substring(plugin.description.indexOf(".")-1)) >= 8) 
+{
+ShockMode = 1;
+}
+else if (navigator.userAgent && navigator.userAgent.indexOf("MSIE")>=0 
+&& (navigator.userAgent.indexOf("Windows 95")>=0 || navigator.userAgent.indexOf("Windows 98")>=0 || navigator.userAgent.indexOf("Windows NT")>=0)) {
+document.write('<SCRIPT LANGUAGE=VBScript\> \n');
+document.write('on error resume next \n');
+document.write('ShockMode = (IsObject(CreateObject("ShockwaveFlash.ShockwaveFlash.8")))\n');
+document.write('<\/SCRIPT\> \n');
+}
+if ( ShockMode ) {
+document.write('<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"');
+document.write(' codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"');
+document.write(' ID=flashad WIDTH=728 HEIGHT=90>');
+document.write(' <PARAM NAME=movie VALUE="http://i.cmpnet.com/ads/graphics/as5/ke/BusinessObjects/Dev_728x90.swf?clickTag='+dcswf_click+'"> '); 
+document.write(' <PARAM NAME=quality VALUE=autohigh> ');
+document.write(' <PARAM NAME=wmode VALUE=opaque> ');
+document.write(' <EMBED SRC="http://i.cmpnet.com/ads/graphics/as5/ke/BusinessObjects/Dev_728x90.swf?clickTag='+dcswf_click+'" QUALITY=autohigh WMODE=opaque '); 
+document.write(' NAME=flashad swLiveConnect=TRUE WIDTH=728 HEIGHT=90');
+document.write(' TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">');
+document.write('</EMBED>');
+document.write('</OBJECT>');
+} else if (!(navigator.appName && navigator.appName.indexOf("Netscape")>=0 && navigator.appVersion.indexOf("2.")>=0)){
+document.write('<A HREF="http://as.cmpnet.com/event.ng/Type=click&FlightID=104651&AdID=174049&TargetID=5642&Segments=1411,1551,3108,3448,3741,4875,5470,7786,11862&Targets=1251,2625,2878,4879,5642,8387&Values=34,46,51,63,77,87,93,102,140,204,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&RawValues=&Redirect=http://www.businessobjects.com/devxi/1169" target="_top"><IMG SRC="http://i.cmpnet.com/ads/graphics/as5/ke/BusinessObjects/Dev_728x90.gif" WIDTH=728 HEIGHT=90 BORDER=0></A>');
+}
+//-->
+</SCRIPT>
+<NOEMBED><A 
+href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=104651&amp;AdID=174049&amp;TargetID=5642&amp;Segments=1411,1551,3108,3448,3741,4875,5470,7786,11862&amp;Targets=1251,2625,2878,4879,5642,8387&amp;Values=34,46,51,63,77,87,93,102,140,204,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&amp;RawValues=&amp;Redirect=http://www.businessobjects.com/devxi/1169" 
+target=_top><IMG height=90 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/Dev_728x90.gif" 
+width=728 border=0></A> </NOEMBED><NOSCRIPT><A 
+href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=104651&amp;AdID=174049&amp;TargetID=5642&amp;Segments=1411,1551,3108,3448,3741,4875,5470,7786,11862&amp;Targets=1251,2625,2878,4879,5642,8387&amp;Values=34,46,51,63,77,87,93,102,140,204,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&amp;RawValues=&amp;Redirect=http://www.businessobjects.com/devxi/1169" 
+target=_top><IMG height=90 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/Dev_728x90.gif" 
+width=728 border=0></A> </NOSCRIPT><IMG height=1 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(18).gif" 
+width=1 border=0> </DIV><!-- /AD BANNER AT BOTTOM -->
+<DIV class=LColMargin>
+<TABLE class=elfixo cellSpacing=0 cellPadding=0 width=900 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=600></TD>
+    <TD vAlign=top width=300><!-- put Microsoft Resource Center box on article pages -->
+      <TABLE cellPadding=1 border=0>
+        <TBODY>
+        <TR>
+          <TD><!-- http://as.cmpnet.com/html.ng/affiliate=ddj&pagepos=mslink1&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+            href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=75640&amp;AdID=125688&amp;TargetID=2878&amp;Segments=1411,3108,3448,4875,7953&amp;Targets=2625,2878&amp;Values=34,46,51,63,77,87,93,102,140,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3556,3577,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+            target=_parent><IMG alt="" 
+            src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/iopsblank.gif" 
+            border=0></A><IMG height=1 
+            src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(19).gif" 
+            width=1 border=0> </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></DIV><IMG 
+height=1 alt="" hspace=5 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/rule.gif" 
+width=900 align=left vspace=8 border=0> <BR clear=left><!-- COPYRIGHT AND LINKS -->
+<DIV id=COPYRIGHTContainer><SPAN class=tenBOLD>
+<DIV class=Bspace8><!--<a href="http://www.sdmediagroup.com/reg/faq.html" class=nineBOLD>What are the <span class="green9">green links</span>?</a> |--><!-- The value for parameter category is the same as deptID. It has value when the blog pages are called. --><A 
+href="http://www.ddj.com/rss/windowsNet.xml"><IMG hspace=3 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/rss.jpg" 
+align=absBottom border=0></A> | <!-- <a href="/sitemap/" class="tenBOLD">Site map</a> --></DIV></SPAN><SPAN 
+class=tenBOLD>
+<DIV class=Bspace8><A class=tenBOLD 
+href="http://www.cmp.com/delivery/copyright.html" target=new>Copyright © 2007 
+CMP Technology</A>, <A class=tenBOLD 
+href="http://www.cmp.com/delivery/privacy.html">Privacy Policy</A>, <A 
+class=tenBOLD href="http://www.cmp.com/delivery/privacy.html#california">Your 
+California Privacy Rights</A>, <A class=tenBOLD 
+href="http://www.cmp.com/delivery/terms.html">Terms of Service</A><BR>Comments 
+about the web site: <A class=tenBOLD 
+href="mailto:webmaster@ddj.com">webmaster@ddj.com</A> </DIV>Related Sites: <A 
+class=tenBOLD href="http://www.dotnetjunkies.com/" 
+target=_blank>DotNetJunkies</A>, <A class=tenBOLD 
+href="http://msdn.microsoft.com/msdnmag/" target=_blank>MSDN Magazine</A>, <A 
+class=tenBOLD href="http://www.sdexpo.com/" target=_blank>SD Expo</A>, <A 
+class=tenBOLD href="http://www.sqljunkies.com/" target=_blank>SqlJunkies</A>, <A 
+class=tenBOLD href="http://www.technetmagazine.com/" target=_blank>TechNet 
+Magazine</A></SPAN> </DIV><!-- /COPYRIGHT AND LINKS --><!-- http://as.cmpnet.com/html.ng/pagepos=toptile&affiliate=ddj&site=sdmg&country=united_states&state=ca&server=atg&city=san_jose&target=/windows/184416570 --><A 
+href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=75640&amp;AdID=125688&amp;TargetID=2878&amp;Segments=1411,3108,3448,4875,7725,8771,8892&amp;Targets=2625,2878,5537&amp;Values=34,46,51,63,77,87,93,102,140,265,442,944,945,975,1431,1605,1766,1785,1925,1945,2217,2299,2310,2352,2678,2916,3318,3337,3577,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+target=_parent><IMG alt="" 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/iopsblank.gif" 
+border=0></A><IMG height=1 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\Generating Code at Run Time With Reflection.Emit\Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files\dcfc(20).gif" 
+width=1 border=0> <!-- start Vibrant Media IntelliTXT script section -->
+<SCRIPT 
+src="Dr_ Dobb's  Generating Code at Run Time With Reflection_Emit  August 1, 2002_files/ddj_edit.js" 
+type=text/javascript></SCRIPT>
+<!-- end Vibrant Media IntelliTXT script section --></BODY></HTML>

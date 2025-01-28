@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - RichTextBox Selections</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2005/09/190431.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2005/09/250805.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2005/09/240927.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>RichTextBox Selections</h2></a><p style="text-align: right;">September 24, 2005<br>New York City</p><p>
+My first two days of good solid work on the book were Wednesday and Friday. (Thursday I had to review pages for <i>Programming Microsoft Windows Forms</i>, and today I fulfilled my civic duty by journeying to Washington D.C. for a modest gathering on the Ellipse.)
+</p>
+<p>
+On Wednesday I began by writing a short program to print the <i>Control</i> class hierarchy, and then I decided that a good way to learn a bunch of stuff would be to write a WordPad clone using the new <i>RichTextBox</i>.
+The WPF version of this control doesn't deal with RTF files like the
+Win32 and WinForms versions. It maintains a document in the form of a <i>FlowDocument</i> object, which (of course) has an XML representation for storage.
+</p>
+<p>
+I was really stumped for awhile on how to programmatically format a block of text selected by the user. The <i>RichTextBox</i> has a property named <i>Selection</i> of type <i>TextRange</i>, and <i>TextRange</i> turns out to be two <i>TextPointer</i>
+objects, but beyond that, there seemed no clear way to set the
+formatting of the selection other than to get down and dirty with the
+components of the <i>FlowDocument</i>.
+</p>
+<p>
+After exhausting just about every other possibility, I examined the innocently named <i>ApplyPropertyValue</i> method of <i>TextRange</i>, and that was it. The first argument is an object of type <i>DependencyProperty</i> (which are static fields), and the second argument is defined as <i>object</i>, but it's an object of the type of the property associated with the <i>DependencyProperty</i>. The syntax looks like this:
+</p>
+<pre>txtbox.Selection.ApplyPropertyValue(TextElement.FontFamilyProperty, new FontFamily("Times New Roman"));
+</pre>
+<p>
+and:
+</p>
+<pre> txtbox.Selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Subscript);
+</pre>
+<p>
+and:
+</p>
+<pre> txtbox.Selection.ApplyPropertyValue(FlowDocument.FontStyleProperty, FontStyles.Italic);
+</pre>
+<p>
+This indicates some of the importance (and strangeness) of dependency properties in WPF. The <i>FontFamily</i>, <i>BaselineAlignment</i>, and <i>FontStyle</i> properties are defined in three different classes, but they can all be set for a particular selection using the same method.
+</p>
+<p>
+Having a good explanation of dependency properties in the book will be
+crucial, of course, but that will need to happen long before <i>RichTextBox</i>
+is discussed. The goal will be to find the ideal example and provide a
+much better explanation than the incomprehensible one in the beta WPF
+docs.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2005/09/190431.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2005/09/250805.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Data-Binding Sources: The Three Alternatives</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/200923.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/211105.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/03/210946.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Data-Binding Sources: The Three Alternatives</h2></a><p style="text-align: right;">March 21, 2006<br>It's Spring in NYC?</p><p>
+I hope 
+<a href="http://www.charlespetzold.com/blog/2006/03/200923.html">
+yesterday's discussion</a>
+of a digital clock program using data binding didn't imply that there
+was only one way to implement a property that successfully serves as a
+source in a data binding. There are at least three ways to do it.
+</p>
+<p>A brief overview: In WPF, a data binding links two properties of two
+objects. One is considered the "target" of the data binding and the
+other is the "source." There are several different "modes" of linking
+these two properties together, but the most common (and generally the
+default) is <i>BindingMode.OneWay</i>.  In this type of binding, whenever the source property changes, the target property is updated to reflect the new value.
+</p>
+<p>
+Obviously there must exist some kind of mechanism for the source object
+to notify the outside world when the bound property has changed.
+Veteran .NET programmers will immediately shout out "Events!" and
+that's certainly true. In pre-WPF days, such an event to signal a
+change in a property is given the name of the property with the word <i>Changed</i> appended.
+</p>
+<p>
+That approach still works in WPF. Here is an 
+<a href="http://www.charlespetzold.com/blog/2006/03/alt1/ClockTicker.cs">alternative ClockTicker.cs</a> file that you can slip into yesterday's DigitalClock project and the clock will work just the same. This alternative <i>ClockTicker</i> class has a property named <i>DateTime</i> and an event named <i>DateTimeChanged</i>. The code in WPF responsible for implementing data bindings knows enough to look around (via reflection) for an event named <i>DateTimeChanged</i> when the source property is named <i>DateTime</i>. Notice that this is a <i>really</i> old-fashioned looking event because it's based on the <i>EventHandler</i> delegate. Nothing new about it.
+</p>
+<p>
+The approach I showed yesterday (here's the original
+<a href="http://www.charlespetzold.com/blog/2006/03/ClockTicker.cs">ClockTicker.cs</a> file for your convenience) implements the <i>INotifyPropertyChanged</i> interface and has an event named <i>PropertyChanged</i>,
+which identifies the particular event that's changed with a string.
+This is a good approach to use if you have a bunch of properties that
+might change because you only need one event for all of them.
+</p>
+<p>
+The third approach is more "modern" and more "WPFish," and involves backing the property with an object of type <i>DependencyProperty</i>.  Here's yet another
+<a href="http://www.charlespetzold.com/blog/2006/03/alt2/ClockTicker.cs">alternative ClockTicker.cs</a> file that you use in the DigitalClock project.
+A class that defines dependency properties must derive from <i>DependencyObject</i>. The dependency property gets the same name as the CLR property but with the word <i>Property</i> appended. The <i>DateTime</i> property is then implemented with calls to <i>GetValue</i> and <i>SetValue</i> defined by <i>DependencyObject</i>. (Complete details on defining dependency properties are in Chapter 8 of my forthcoming book 
+<a href="http://www.charlespetzold.com/wpf"><i>Applications = Code + Markup</i></a>).
+</p>
+<p>
+What's interesting in the dependency property version of <i>ClockTicker</i> is the simplicity of the <i>TimerOnTick</i> handler. Rather than fire a new event, this one simply sets the <i>DateTime</i> property to its new value. That's enough to trigger activity within the data binding itself to update the target.
+</p>
+<p>Which approach is the best? Although defining dependency properties
+is a PITA, it's really the way to go. Consider that target properties
+of data bindings are <i>required</i> to be backed by dependency properties, and the choice is obvious.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/200923.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/211105.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

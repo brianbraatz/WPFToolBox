@@ -1,0 +1,403 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Adventures with WPF : Events</title>
+ 
+
+
+
+
+<meta name="keywords" content="C#,Visual Studio">
+<meta name="description" content="Just a brief post with a code snippet demonstrating how to create a custom event with WPF... for most this won't be unfamiliar, but for those who are new to UI development, this is key... Below is the snippet where I register the event. In this example,">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/mgrayson/pingback.aspx">
+<link rel="stylesheet" href="Events%20with%20Custom%20Controls_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="Events%20with%20Custom%20Controls_files/print.css" type="text/css" media="print">
+<link rel="stylesheet" href="Events%20with%20Custom%20Controls_files/summer.css" type="text/css" media="screen">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Adventures with WPF (RSS 2.0)" href="http://blogs.msdn.com/mgrayson/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Adventures with WPF (Atom 1.0)" href="http://blogs.msdn.com/mgrayson/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Events Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/mgrayson/commentrss.aspx?PostID=603722">
+
+	<script src="Events%20with%20Custom%20Controls_files/global.js" type="text/javascript"></script></head><body>
+<form name="aspnetForm" method="post" action="/mgrayson/archive/2006/05/22/events.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFHmN0bDAwJF8kY3RsMDAkXyR3cyRfJFNlYXJjaEJveF0RlpzcH1+/MkXXJXQs3Ibd4GgM" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="Events%20with%20Custom%20Controls_files/WebResource.js" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript" src="Events%20with%20Custom%20Controls_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script language="javascript" type="text/javascript">
+var RatingControlAJAX = {
+"SaveRating":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Blogs.Controls.BlogRatePost',id,'SaveRating',[p0],cb,0,0,0,1);}};
+</script><script language="javascript" type="text/javascript">
+var ThreadSubscribeLinkButton = {
+"ToggleEmailReplies":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Controls.ThreadSubscribeLinkButton',id,'ToggleEmailReplies',[p0],cb,0,0,0,0);}};
+</script><script type="text/javascript" src="Events%20with%20Custom%20Controls_files/ratingcontrol.js"></script>
+<script src="Events%20with%20Custom%20Controls_files/WebResource_002.js" type="text/javascript"></script><script language="JavaScript" type="text/javascript">var ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton_trackWorking = false;var ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton_trackStatus = false;function updateSubscriptionText() {if(ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton_trackStatus == true) {document.getElementById('ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton').innerHTML = 'Stop sending me email alerts for this post';} else {document.getElementById('ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton').innerHTML = 'Send me email alerts for new comments to this post';}}function toggleSubscription() {ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton_trackWorking = true;document.getElementById('ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton').innerHTML = 'Updating email notifications...';ThreadSubscribeLinkButton.ToggleEmailReplies('ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton',451430, toggleSubscriptionCallback);}function toggleSubscriptionCallback(response) {ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton_trackWorking = false;if((response.error == null) && (response.value == true)) {if(ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton_trackStatus == true) {ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton_trackStatus = false;} else {ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton_trackStatus = true;}updateSubscriptionText();} else {updateSubscriptionText();alert('An error happened while processing your request.  Please notify an administrator and try again later.');}}</script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+
+        			
+   
+<div id="masthead">
+	<div id="userArea">
+		
+			<div id="welcome" align="right">
+				
+						Signed in as <a href="http://blogs.msdn.com/user/EditProfile.aspx?ReturnUrl=/blogs/post.aspx?App=mgrayson&amp;y=2006&amp;m=05&amp;d=22&amp;PostName=events">bbraatz</a>
+ | <a id="ctl00___ctl00___duw1_rc1___logout" href="http://blogs.msdn.com/logout.aspx">Sign out</a>
+
+
+
+					
+				 |  <a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+			</div>
+		
+		
+		<div id="SearchSideBar">
+			
+	
+<div id="Search" align="right">
+	<table border="0" cellpadding="0" cellspacing="0">
+	<tbody><tr><td>
+		<input name="ctl00$_$ctl00$_$ws$_$SearchBox" id="ctl00___ctl00___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___ws___SearchButton(event);" type="text"> 
+	</td><td>
+		<span class="SearchButtonOuter"><a id="ctl00___ctl00___ws___SearchButton" class="SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$ws$_$SearchButton','')">Search</a></span>
+	</td></tr>
+	</tbody></table>
+</div>
+	
+		</div>
+	</div>
+	<div id="title">
+		
+
+<h1><a id="ctl00___ctl00___bt___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/mgrayson/default.aspx">Adventures with WPF</a></h1>
+<div></div>
+
+
+	</div>
+</div>
+<div id="nav">
+	<div id="navbar">
+		<ul>
+			<li><a id="ctl00___ctl00___Homelink1" href="http://blogs.msdn.com/mgrayson/default.aspx">Home</a></li>
+			<li><a id="ctl00___ctl00___Contactlink1" href="http://blogs.msdn.com/mgrayson/contact.aspx">Email</a></li>
+			
+			<li><a id="ctl00___ctl00___rss" href="http://blogs.msdn.com/mgrayson/rss.xml">RSS 2.0</a></li>
+			<li><a id="ctl00___ctl00___atom" href="http://blogs.msdn.com/mgrayson/atom.xml">Atom 1.0</a></li>
+			
+		</ul>
+	</div>
+</div>
+<div id="content">
+	<div id="leftmenu">
+		
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="RecentPostsSideBar">
+	
+	
+<h3>Recent Posts</h3>	
+<ul>
+        <li><a id="ctl00___ctl00___bs___rp___PostList_ctl01_Link" href="http://blogs.msdn.com/mgrayson/archive/2007/04/12/real-world-wpf-videos-designers-and-developers-working-together.aspx">Real World WPF Videos: Designers and Developers working together?!</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___rp___PostList_ctl02_Link" href="http://blogs.msdn.com/mgrayson/archive/2007/04/11/more-video-tutorials.aspx">More Video Tutorials</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___rp___PostList_ctl03_Link" href="http://blogs.msdn.com/mgrayson/archive/2007/03/14/blend-release-candidate-is-out.aspx">Blend Release Candidate is out!</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___rp___PostList_ctl04_Link" href="http://blogs.msdn.com/mgrayson/archive/2007/03/08/suggestions-for-a-real-world-wpf-video-please.aspx">Suggestions for a Real World WPF Video, please?</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___rp___PostList_ctl05_Link" href="http://blogs.msdn.com/mgrayson/archive/2007/02/28/real-world-wpf-videos-bsf-showcase.aspx">Real World WPF Videos: BSF Showcase</a></li>
+    </ul>
+    
+	
+
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul class="SidebarTagCloud">
+<li class="Tag5"><a href="http://blogs.msdn.com/mgrayson/archive/tags/3D/default.aspx" rel="tag">3D</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/mgrayson/archive/tags/Applications/default.aspx" rel="tag">Applications</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/mgrayson/archive/tags/Blend/default.aspx" rel="tag">Blend</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/mgrayson/archive/tags/C_2300_/default.aspx" rel="tag">C#</a></li>
+<li class="Tag3"><a href="http://blogs.msdn.com/mgrayson/archive/tags/Controls/default.aspx" rel="tag">Controls</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/mgrayson/archive/tags/Design/default.aspx" rel="tag">Design</a></li>
+<li class="Tag3"><a href="http://blogs.msdn.com/mgrayson/archive/tags/Developer/default.aspx" rel="tag">Developer</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/mgrayson/archive/tags/General/default.aspx" rel="tag">General</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/mgrayson/archive/tags/Links/default.aspx" rel="tag">Links</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/mgrayson/archive/tags/Media/default.aspx" rel="tag">Media</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/mgrayson/archive/tags/Videos/default.aspx" rel="tag">Videos</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/mgrayson/archive/tags/Visual+Studio/default.aspx" rel="tag">Visual Studio</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/mgrayson/archive/tags/XAML/default.aspx" rel="tag">XAML</a></li>
+</ul>
+
+</div>
+
+<div id="NewsSideBar">
+	
+</div>
+
+<div id="LinkSideBar">
+	
+
+	
+</div>
+
+<div id="ArchiveSideBar">
+	
+	
+<h3>Archives</h3>
+<ul>
+
+        <li>
+            <a href="http://blogs.msdn.com/mgrayson/archive/2007/04.aspx">April 2007 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/mgrayson/archive/2007/03.aspx">March 2007 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/mgrayson/archive/2007/02.aspx">February 2007 (4)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/mgrayson/archive/2006/09.aspx">September 2006 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/mgrayson/archive/2006/06.aspx">June 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/mgrayson/archive/2006/05.aspx">May 2006 (10)</a>
+        </li>
+    
+</ul>
+	
+</div>
+	</div>
+	<div id="main">
+		
+			
+
+<div class="post">
+	<h5 class="posthead pageTitle">Events <span class="CommonRateControl" id="ctl00___ctl00___ctl02___Entry___Ratings" title="Not yet rated"><img title="Poor" src="Events%20with%20Custom%20Controls_files/star-left-off.gif" align="absmiddle" border="0"><img title="Poor" src="Events%20with%20Custom%20Controls_files/star-right-off.gif" align="absmiddle" border="0"><img title="Fair" src="Events%20with%20Custom%20Controls_files/star-left-off.gif" align="absmiddle" border="0"><img title="Fair" src="Events%20with%20Custom%20Controls_files/star-right-off.gif" align="absmiddle" border="0"><img title="Average" src="Events%20with%20Custom%20Controls_files/star-left-off.gif" align="absmiddle" border="0"><img title="Average" src="Events%20with%20Custom%20Controls_files/star-right-off.gif" align="absmiddle" border="0"><img title="Good" src="Events%20with%20Custom%20Controls_files/star-left-off.gif" align="absmiddle" border="0"><img title="Good" src="Events%20with%20Custom%20Controls_files/star-right-off.gif" align="absmiddle" border="0"><img title="Excellent" src="Events%20with%20Custom%20Controls_files/star-left-off.gif" align="absmiddle" border="0"><img title="Excellent" src="Events%20with%20Custom%20Controls_files/star-right-off.gif" align="absmiddle" border="0"></span><input value="0" id="ctl00___ctl00___ctl02___Entry___Ratings_Value" type="hidden"></h5>
+	<p><font color="#808080" face="Verdana" size="2">Just
+a brief post with a code snippet demonstrating how to create a custom
+event with WPF... for most this won't be unfamiliar, but for those who
+are new to UI development, this is key...</font></p>
+<p><font color="#808080" face="Verdana" size="2">Below is the snippet
+where I register the event. In this example, I have a Save button in a
+user control (called 'MyUserControl'), and the click of that Save
+button needs to be heard in the parent window. The event is called
+'SaveButtonClickedEvent'...</font></p><font color="#808080" face="Verdana" size="2"><font color="#0000ff" size="2">
+</font><blockquote dir="ltr" style="margin-right: 0px;">
+<p><font color="#0000ff" size="2"><font face="Courier New">public</font></font><font face="Courier New"><font color="#000000" size="2"> </font><font color="#0000ff" size="2">static</font><font color="#000000" size="2"> </font><font color="#0000ff" size="2">readonly</font><font color="#000000" size="2"> </font><font color="#008080" size="2">RoutedEvent</font><font color="#000000" size="2">&nbsp;SaveButtonClickedEvent = </font><font color="#008080" size="2">EventManager</font><font color="#000000" size="2">.RegisterRoutedEvent(</font><font color="#800000" size="2">"SaveButtonClicked"</font><font color="#000000" size="2">, </font><font color="#008080" size="2">RoutingStrategy</font><font color="#000000" size="2">.Bubble, </font><font color="#0000ff" size="2">typeof</font><font color="#000000" size="2">(</font><font color="#008080" size="2">RoutedEventHandler</font><font color="#000000" size="2">), </font><font color="#0000ff" size="2">typeof</font><font color="#000000" size="2">(</font><font color="#008080" size="2">MyUserControl</font><font size="2"><font color="#000000">));</font></font></font></p></blockquote><font face="Courier New"><font size="2"></font></font></font>
+<p><font color="#808080" face="Verdana" size="2">I now expose my custom event so I can add a handler in the main window...</font></p><font color="#808080" face="Verdana" size="2"><font color="#0000ff" size="2">
+</font><blockquote dir="ltr" style="margin-right: 0px;">
+<p><font color="#0000ff" size="2"><font face="Courier New">public</font></font><font face="Courier New"><font color="#000000" size="2"> </font><font color="#0000ff" size="2">event</font><font color="#000000" size="2"> </font><font color="#008080" size="2">RoutedEventHandler</font></font><font size="2"><font color="#000000" face="Courier New">&nbsp;SaveButtonClicked </font><font color="#000000" face="Courier New">{</font></font></p>
+<blockquote dir="ltr" style="margin-right: 0px;">
+<p><font size="2"><font face="Courier New"><font color="#0000ff" size="2">add</font><font size="2"> <font color="#000000">{ AddHandler(SaveButtonClickedEvent,</font> </font><font color="#0000ff" size="2">value</font></font><font size="2"><font color="#000000" face="Courier New">); }</font></font></font></p>
+<p><font size="2"><font size="2"><font face="Courier New"><font color="#0000ff" size="2">remove</font><font size="2"> <font color="#000000">{ RemoveHandler(SaveButtonClickedEvent, </font></font><font color="#0000ff" size="2">value</font></font><font size="2"><font color="#000000" face="Courier New">); }</font></font></font></font></p></blockquote>
+<p><font size="2"><font size="2"><font size="2"><font color="#000000" face="Courier New">}</font></font></font></font></p></blockquote><font size="2"><font size="2"><font size="2"></font></font>
+</font><p><font size="2"><font color="#808080" face="Verdana" size="2">Now,
+when the saved button in the user control is actually clicked I use the
+following line of code to raise the event up to the parent...</font></font></p><font size="2"><font color="#808080" face="Verdana" size="2"><font size="2">
+</font><blockquote dir="ltr" style="margin-right: 0px;">
+<p><font size="2"><font color="#000000" face="Courier New">RaiseEvent(</font></font><font face="Courier New"><font color="#0000ff" size="2">new</font><font size="2"> </font><font color="#008080" size="2">RoutedEventArgs</font><font size="2">(</font><font color="#008080" size="2">MyUserControl</font><font size="2"><font color="#000000">.SaveButtonClickedEvent, some_args_here));</font></font></font></p></blockquote><font face="Courier New"><font size="2"></font></font></font>
+</font><p><font size="2"><font color="#808080" face="Verdana" size="2">... where 'some_args_here' can be any value or object.</font></font></p>
+<p><font size="2"><font color="#808080" face="Verdana" size="2">Finally, I can add a listenter for the event in my main window with the following lines...</font></font></p><font size="2"><font color="#808080" face="Verdana" size="2"><font color="#0000ff" size="2"><font color="#008080" size="2">
+</font></font><blockquote dir="ltr" style="margin-right: 0px;">
+<p><font color="#0000ff" size="2"><font color="#008080" size="2"><font face="Courier New">MyUserControl</font></font><font face="Courier New"><font color="#000000" size="2">&nbsp;myUserControl = </font><font color="#0000ff" size="2">new</font><font color="#000000" size="2"> </font><font color="#008080" size="2">MyUserControl</font><font size="2"><font color="#000000">();</font></font></font></font></p>
+<p><font color="#0000ff" size="2"><font face="Courier New"><font size="2"><font face="Courier New"><font color="#000000" size="2">myUserControl.SaveButtonClicked += </font><font color="#0000ff" size="2">new</font><font color="#000000" size="2"> </font><font color="#008080" size="2">RoutedEventHandler</font><font size="2"><font color="#000000">(MyUserControl_SaveButtonClicked);</font></font></font></font></font></font></p></blockquote>
+<p dir="ltr"><font color="#0000ff" size="2"><font face="Courier New"><font size="2"><font color="#808080">Simple. The 'some_args_here' object can then be found in the event args under e.OriginalSource.</font></font></font></font></p>
+<p dir="ltr"><font color="#0000ff" size="2"><font face="Courier New"><font size="2">Martin<font face="Courier New"><font size="2"></font></font></font></font></font></p><font color="#0000ff" size="2"><font face="Courier New"><font size="2"><font face="Courier New"><font size="2"></font></font></font>
+	</font></font><div class="postfoot">
+<font color="#0000ff" size="2"><font face="Courier New">		<span class="em">Posted:</span> Monday, May 22, 2006 12:50 PM
+		by
+		<a id="ctl00___ctl00___ctl02___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=32486">Martin Grayson</a>
+		
+		</font></font><div><span id="ctl00___ctl00___ctl02___Entry___InlineTagEditorPanel"><font color="#0000ff" size="2"><font face="Courier New">Filed under: <a href="http://blogs.msdn.com/mgrayson/archive/tags/C_2300_/default.aspx" rel="tag">C#</a>, <a href="http://blogs.msdn.com/mgrayson/archive/tags/Visual+Studio/default.aspx" rel="tag">Visual Studio</a></font></font></span><font color="#0000ff" size="2"><font face="Courier New"><input name="ctl00$_$ctl00$_$ctl02$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl02___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></font></font></div>
+<font color="#0000ff" size="2"><font face="Courier New">		
+	</font></font></div>
+</font></font></font></div><font color="#808080" face="Verdana" size="2"><font size="2"><font color="#808080" face="Verdana" size="2"><font color="#0000ff" size="2"><font face="Courier New">            
+
+
+</font></font><div id="comments">
+<font color="#0000ff" size="2"><font face="Courier New">	</font></font><h2>
+<font color="#0000ff" size="2"><font face="Courier New">	Comments
+</font></font></h2>
+<font color="#0000ff" size="2"><font face="Courier New">	
+		</font></font><div class="CommentArea">
+<font color="#0000ff" size="2"><font face="Courier New">			</font></font><h4 class="CommentTitle">
+<font color="#0000ff" size="2"><font face="Courier New">				<a id="ctl00___ctl00___ctl02___Comments___Comments_ctl00_NameLink" title="Yossi">Yossi</a> 
+				said:
+				<img src="Events%20with%20Custom%20Controls_files/spacer.gif" class="CommentArrow" align="absbottom">
+			</font></font></h4>
+<font color="#0000ff" size="2"><font face="Courier New">			</font></font><div class="CommentText">
+<font color="#0000ff" size="2"><font face="Courier New">				</font></font><div class="CommentText2">
+<font color="#0000ff" size="2"><font face="Courier New">					</font></font><div class="CommentText3"><p><font color="#0000ff" size="2"><font face="Courier New">Nice..</font></font></p>
+<p><font color="#0000ff" size="2"><font face="Courier New">What is the diference from a "regular" .NET events?</font></font></p>
+</div>
+<font color="#0000ff" size="2"><font face="Courier New">				</font></font></div>
+<font color="#0000ff" size="2"><font face="Courier New">			</font></font></div>
+<font color="#0000ff" size="2"><font face="Courier New">			</font></font><div class="CommentFooter"><font color="#0000ff" size="2"><font face="Courier New"><a id="ctl00___ctl00___ctl02___Comments___Comments_ctl00_PermaLink" title="permalink" href="http://blogs.msdn.com/mgrayson/archive/2006/05/22/events.aspx#4186970">#</a> August 2, 2007 7:53 AM </font></font></div>
+<font color="#0000ff" size="2"><font face="Courier New">		</font></font></div>
+<font color="#0000ff" size="2"><font face="Courier New">	
+</font></font></div>
+
+<font color="#0000ff" size="2"><font face="Courier New">	
+
+
+	
+</font></font><fieldset id="commentform">
+<legend><font color="#0000ff" size="2"><font face="Courier New">Leave a Comment
+
+	</font></font></legend><p>
+<font color="#0000ff" size="2"><font face="Courier New">    </font></font></p><div><label for="ctl00___ctl00___ctl02___form___tbTitle"><font color="#0000ff" size="2"><font face="Courier New">Title</font></font></label><font color="#0000ff" size="2"><font face="Courier New"> <em>(required)</em><span id="ctl00___ctl00___ctl02___form___Requiredfieldvalidator1" style="color: Red; visibility: hidden;">*</span></font></font></div>
+<font color="#0000ff" size="2"><font face="Courier New">	</font></font><div><font color="#0000ff" size="2"><font face="Courier New"><input name="ctl00$_$ctl00$_$ctl02$_$form$_$tbTitle" value="re: Events" id="ctl00___ctl00___ctl02___form___tbTitle" class="smallbox" type="text"></font></font></div>
+<font color="#0000ff" size="2"><font face="Courier New">	
+	</font></font><p>
+<font color="#0000ff" size="2"><font face="Courier New">    
+    </font></font></p>
+<font color="#0000ff" size="2"><font face="Courier New">    </font></font><p>
+<font color="#0000ff" size="2"><font face="Courier New">    </font></font></p><div><label for="ctl00___ctl00___ctl02___form___tbUrl"><font color="#0000ff" size="2"><font face="Courier New">Your URL</font></font></label><font color="#0000ff" size="2"><font face="Courier New"> <em>(optional</em>)</font></font></div>
+<font color="#0000ff" size="2"><font face="Courier New">    </font></font><div><font color="#0000ff" size="2"><font face="Courier New"><input name="ctl00$_$ctl00$_$ctl02$_$form$_$tbUrl" id="ctl00___ctl00___ctl02___form___tbUrl" class="smallbox" type="text"></font></font></div>
+<font color="#0000ff" size="2"><font face="Courier New">    
+    </font></font><p>
+<font color="#0000ff" size="2"><font face="Courier New">    </font></font></p><div><label for="ctl00___ctl00___ctl02___form___tbComment"><font color="#0000ff" size="2"><font face="Courier New">Comments</font></font></label><font color="#0000ff" size="2"><font face="Courier New"> <em>(required)</em><span id="ctl00___ctl00___ctl02___form___Requiredfieldvalidator3" style="color: Red; visibility: hidden;">*</span></font></font></div>
+<font color="#0000ff" size="2"><font face="Courier New">    </font></font><div><textarea name="ctl00$_$ctl00$_$ctl02$_$form$_$tbComment" rows="5" cols="25" id="ctl00___ctl00___ctl02___form___tbComment"></textarea></div>
+<font color="#0000ff" size="2"><font face="Courier New">	
+	</font></font><p>
+<font color="#0000ff" size="2"><font face="Courier New">    </font></font></p><div></div>
+<font color="#0000ff" size="2"><font face="Courier New">    
+	</font></font><p>
+<font color="#0000ff" size="2"><font face="Courier New">    <input name="ctl00$_$ctl00$_$ctl02$_$form$_$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$_$ctl00$_$ctl02$_$form$_$btnSubmit", "", true, "", "", false, false))' id="ctl00___ctl00___ctl02___form___btnSubmit" type="submit">
+	</font></font></p>
+
+</fieldset>
+
+
+
+<font color="#0000ff" size="2"><font face="Courier New">	
+
+</font></font><fieldset id="postnotification">
+<font color="#0000ff" size="2"><font face="Courier New">	<legend>Comment Notification</legend>
+	</font></font><p>
+<font color="#0000ff" size="2"><font face="Courier New">	
+	<a href="javascript:toggleSubscription();" id="ctl00___ctl00___ctl02___DetailedSubBar___BlogThreadButton" trackingresourcename="Weblogs_UnTrack" nottrackingresourcename="Weblogs_Track" workingresourcename="Weblogs_TrackWorking">Send me email alerts for new comments to this post</a>
+	</font></font></p>
+<font color="#0000ff" size="2"><font face="Courier New">	</font></font><p>
+<font color="#0000ff" size="2"><font face="Courier New">	Subscribe to this post's comments using
+	<a id="ctl00___ctl00___ctl02___DetailedSubBar___CommentRssLink" href="http://blogs.msdn.com/mgrayson/commentrss.aspx?PostID=603722">RSS</a>
+	</font></font></p>
+</fieldset>
+<font color="#0000ff" size="2"><font face="Courier New">   
+    
+	</font></font></font></font></font></div>
+<font color="#808080" face="Verdana" size="2"><font size="2"><font color="#808080" face="Verdana" size="2"><font color="#0000ff" size="2"><font face="Courier New">	</font></font><div id="footer">
+<font color="#0000ff" size="2"><font face="Courier New">		
+	</font></font></div>
+</font></font></font></div>
+
+<font color="#808080" face="Verdana" size="2"><font size="2"><font color="#808080" face="Verdana" size="2"><font color="#0000ff" size="2"><font face="Courier New"><script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvalidator1"), document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvalidator3"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00___ctl00___ctl02___form___Requiredfieldvalidator1 = document.all ? document.all["ctl00___ctl00___ctl02___form___Requiredfieldvalidator1"] : document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvalidator1");
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.controltovalidate = "ctl00___ctl00___ctl02___form___tbTitle";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.errormessage = "*";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.initialvalue = "";
+var ctl00___ctl00___ctl02___form___Requiredfieldvalidator3 = document.all ? document.all["ctl00___ctl00___ctl02___form___Requiredfieldvalidator3"] : document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvalidator3");
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.controltovalidate = "ctl00___ctl00___ctl02___form___tbComment";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.errormessage = "*";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.initialvalue = "";
+// -->
+</script>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+<script language="javascript">var ctl00___ctl00___ctl02___Entry___Ratings=new RateControl('ctl00___ctl00___ctl02___Entry___Ratings','ctl00___ctl00___ctl02___Entry___Ratings','ctl00___ctl00___ctl02___Entry___Ratings_Value', 5, '/Themes/default/images/common/', false, 'CommonRateControl','CommonRateControlActive','CommonRateControlReadOnly',['Terrible','Poor','Fair','Average','Good','Excellent'],false,true);</script>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/mgrayson/archive/2006/05/22/events.aspx"
+dc:identifier="http://blogs.msdn.com/mgrayson/archive/2006/05/22/events.aspx"
+dc:title="Events"
+trackback:ping="http://blogs.msdn.com/mgrayson/trackback.aspx?PostID=603722" />
+</rdf:RDF>
+-->
+
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        
+</font></font></font></font></font></form></body></html>

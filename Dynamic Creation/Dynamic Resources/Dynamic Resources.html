@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Dynamic Resources</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/120553.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/180953.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/03/160655.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Dynamic Resources</h2></a><p style="text-align: right;">March 16, 2006<br>New York City</p><p>
+Have you ever felt as if you <i>finally</i> understood something down <i>cold</i>,
+and you started coding with such supreme confidence and blissful
+self-assuredness that you felt as if you were striding over miles of
+terrain with each keystroke towards a succinct and elegant summation of
+everything you know? </p>
+<p>
+And then when it doesn't work, you feel as if those confident strides took you right off the edge of a cliff?
+</p>
+<p>
+Has this ever happened to you?
+</p>
+<p>
+The subject is dynamic resources, the primary purpose of which seems to
+be to automatically reflect changes in system colors, fonts, and other
+parameters in your application. Anything more sophisticated than that
+probably requires data binding.
+</p>
+<p>
+Here's some XAML that works, which I guess means that it does what I want it to do. You can download or run it 
+<a href="http://www.charlespetzold.com/blog/2006/03/DynamicResourceDemo.xaml">here</a>.
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;!--&nbsp;======================================================
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DynamicResourceDemo.xaml&nbsp;(c)&nbsp;2006&nbsp;by&nbsp;Charles&nbsp;Petzold&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;======================================================&nbsp;--&gt;
+&lt;StackPanel&nbsp;xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Background="{DynamicResource&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{x:Static&nbsp;SystemColors.InactiveCaptionBrushKey}}"&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel.Resources&gt;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LinearGradientBrush&nbsp;x:Key="dynabrush1"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StartPoint="0&nbsp;0"&nbsp;EndPoint="1&nbsp;1"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LinearGradientBrush.GradientStops&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="0"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color="{DynamicResource&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{x:Static&nbsp;SystemColors.ActiveCaptionColorKey}}"&nbsp;/&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="1"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color="{DynamicResource&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{x:Static&nbsp;SystemColors.InactiveCaptionColorKey}}"&nbsp;/&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/LinearGradientBrush.GradientStops&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/LinearGradientBrush&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;SolidColorBrush&nbsp;x:Key="dynabrush2"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color="{DynamicResource&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{x:Static&nbsp;SystemColors.ActiveCaptionColorKey}}"&nbsp;/&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel.Resources&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;HorizontalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FontSize="96"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content="Dynamic&nbsp;Resources"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Background="{StaticResource&nbsp;dynabrush1}"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Foreground="{StaticResource&nbsp;dynabrush2}"&nbsp;/&gt;<br><br>&lt;/StackPanel&gt;<br>
+</ul>
+<p>
+If you run this program in XAML Cruncher or XamlPad or IE, and you
+change system colors via the Control Panel, the colors displayed by
+this program also change. That's what I want it to do.
+</p>
+<p>
+Towards the top of the file, the <i>StackPanel</i> gets a <i>Background</i> property of <i>SystemColors.InactiveCaptionBrush</i>. That's the well-documented syntax for defining a <i>DynamicResource</i> based on the <i>SystemColors.InactiveCaptionBrushKey</i> property so that the key is retained rather than the brush itself, and the background color of the <i>StackPanel</i> changes whenever the system colors change. No problem.
+</p>
+<p>
+Following that is a <i>Resources</i> section for the <i>StackPanel</i>. I define a <i>LinearGradientBrush</i> and a <i>SolidColorBrush</i>, both of which use colors from <i>SystemColors</i>. Once again, the <i>Key</i> properties are used in <i>DynamicResource</i> elements so that the brushes change when the system color changes.
+</p>
+<p>
+Towards the end of the file, a <i>Label</i> control uses the two
+brushes defined as resources to color its background and foreground.
+And here's the part that stumped me: I originally used <i>DynamicResource</i> for these two <i>Label</i>
+attributes, and it didn't work! The program was unresponsive to changes
+in system colors. It was only when I changed these two attributes to <i>StaticResource</i> that the <i>Label</i> brushes changed when the system colors changed.
+</p>
+<p>
+This baffled me, and I had to convince myself why using <i>StaticResource</i> for these attributes made the brushes dynamic while <i>DynamicResource</i> made them static. Here's what I came up with:
+</p>
+<p>
+When the system colors changes, the two brushes I've defined as
+resources are not recreated. Instead, the new colors simply replace the
+previous colors in the <i>GradientStops</i> collection of the <i>LinearGradientBrush</i> and the <i>Color</i> property of the <i>SolidColorBrush</i>. Same object, different colors.
+</p>
+<p>
+<b>Why does <i>StaticResource</i> work here?</b> Because after the system colors change, the <i>Label</i>
+simply redraws itself normally using the existing foreground and
+background brushes. These brushes have changed since they were last
+used because the colors that made up the brushes were defined as
+dynamic resources.
+</p>
+<p>
+<b>Why doesn't <i>DynamicResource</i> work here?</b> This is the tough
+one. Could it be that redrawing logic is skipped if the brush
+referenced by the key is the same object (which it will be in this
+case) even if the brush properties have changed? That's the only thing
+that makes sense to me (but it doesn't make <i>that</i> much sense to me).
+</p>
+
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/120553.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/180953.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

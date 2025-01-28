@@ -1,0 +1,1087 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head profile="http://gmpg.org/xfn/11">
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>kirupaBlog - If it isn’t broken, take it apart and fix it!</title>
+
+
+
+<meta name="generator" content="WordPress 2.0.7"><!-- leave this for stats --> 
+
+<link rel="stylesheet" href="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/style.css" type="text/css" media="screen">
+<link rel="alternate" type="application/rss+xml" title="kirupaBlog - If it isn’t broken, take it apart and fix it! RSS Feed" href="http://blog.kirupa.com/?feed=rss2">
+<link rel="pingback" href="http://blog.kirupa.com/xmlrpc.php">
+
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.kirupa.com/xmlrpc.php?rsd">
+
+<script src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1952673-1";
+urchinTracker();
+</script></head><body>
+
+<div id="wrap">
+<div id="header">
+<table border="0" cellpadding="5" cellspacing="0" width="100%">
+	<tbody><tr>
+		<td width="4">
+		<img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/kirupaAvatar4.png" border="0"></td>
+		<td><h1><a href="http://blog.kirupa.com/">KIRUPA.CHINNATHAMBI</a></h1>
+<p class="description"> If it isn't broken, take it apart and fix it!</p></td>
+	</tr>
+</tbody></table>
+</div>
+<div id="content">
+									<div class="entry entry-1">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=93" rel="bookmark" title="Permanent Link to Reading XML Data Directly as Nodes and Elements">Reading XML Data Directly as Nodes and Elements</a></h2> 
+			<h3>May 5th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=93#respond" class="commentslink" title="Comment on Reading XML Data Directly as Nodes and Elements">No Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>In one of my <a href="http://www.kirupa.com/net/readingXML_pg3.htm" target="_blank"><u>earlier .NET tutorials</u></a>,
+I cover how to read an XML file sequentially and parse the information
+as you reach it. While that approach works, for many situations where
+you face an XML file whose structure is consistent, better approaches
+exist.&nbsp;One such approach, which I will cover in this blog post,
+involves loading the XML data directly into memory and picking out
+important pieces of data directly using XmlDocument, XmlNode, and
+XmlElement.</p>
+<p><strong>Our XML Data</strong><br>The XML data I will be using is stored here: <a title="http://www.kirupa.com/net/files/sampleXML.xml" href="http://www.kirupa.com/net/files/sampleXML.xml"><u>http://www.kirupa.com/net/files/sampleXML.xml</u></a>&nbsp;An image emphasizing the data's structure can be seen&nbsp;below:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/xmlFile.gif" border="1" height="305" width="404"> </p>
+<p>We have a root Books node with four Book child nodes. Each Book
+child node contains an ISBN attribute, and contains two sub-child nodes
+called title and author. To read the above data, you can place the
+following code inside your Main method, and print out all of the
+relevant information:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHidn">XmlDocument</span> <span class="kASHwrd">doc</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHidn">XmlDocument</span><span class="kASHop">(</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">doc</span>.<span class="kASHwrd">Load</span><span class="kASHop">(</span><span class="kASHqt">"http://www.kirupa.com/net/files/sampleXML.xml"</span><span class="kASHop">)</span>;
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHidn">XmlNodeList</span> <span class="kASHwrd">bookList</span> <span class="kASHop">=</span> <span class="kASHwrd">doc</span>.<span class="kASHwrd">GetElementsByTagName</span><span class="kASHop">(</span><span class="kASHqt">"Book"</span><span class="kASHop">)</span>;
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHkwrd">foreach</span> <span class="kASHop">(</span><span class="kASHidn">XmlNode</span> <span class="kASHwrd">node</span> <span class="kASHkwrd">in</span> <span class="kASHwrd">bookList</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHidn">XmlElement</span> <span class="kASHwrd">bookElement</span> <span class="kASHop">=</span> <span class="kASHop">(</span><span class="kASHidn">XmlElement</span><span class="kASHop">)</span> <span class="kASHwrd">node</span>;
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHkwrd">string</span> <span class="kASHwrd">title</span> <span class="kASHop">=</span> <span class="kASHwrd">bookElement</span>.<span class="kASHwrd">GetElementsByTagName</span><span class="kASHop">(</span><span class="kASHqt">"title"</span><span class="kASHop">)</span><span class="kASHop">[</span><span class="kASHnum">0</span><span class="kASHop">]</span>.<span class="kASHwrd">InnerText</span>;
+</dt><dt><span class="kASHkwrd">string</span> <span class="kASHwrd">author</span> <span class="kASHop">=</span> <span class="kASHwrd">bookElement</span>.<span class="kASHwrd">GetElementsByTagName</span><span class="kASHop">(</span><span class="kASHqt">"author"</span><span class="kASHop">)</span><span class="kASHop">[</span><span class="kASHnum">0</span><span class="kASHop">]</span>.<span class="kASHwrd">InnerText</span>;
+</dt><dt><span class="kASHkwrd">string</span> <span class="kASHwrd">isbn</span> <span class="kASHop">=</span> <span class="kASHqt">""</span>;
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHkwrd">if</span> <span class="kASHop">(</span><span class="kASHwrd">bookElement</span>.<span class="kASHwrd">HasAttributes</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHwrd">isbn</span> <span class="kASHop">=</span> <span class="kASHwrd">bookElement</span>.<span class="kASHwrd">Attributes</span><span class="kASHop">[</span><span class="kASHqt">"ISBN"</span><span class="kASHop">]</span>.<span class="kASHwrd">InnerText</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHidn">Console</span>.<span class="kASHwrd">WriteLine</span><span class="kASHop">(</span><span class="kASHqt">"{0} ({1}) is written by {2}\n"</span>, <span class="kASHwrd">title</span>, <span class="kASHwrd">isbn</span>, <span class="kASHwrd">author</span><span class="kASHop">)</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<p>The above code is fairly straightforward. I load my XML document by
+passing in the URL of my XML file, and I store a list of all nodes that
+begin with the tag Book in <em>bookList</em>. Once I have this list, I enumerate through <em>bookList</em>
+and process the children and attribute information. The details are not
+important at this time, for I will provide plently of that in a
+tutorial that covers this exact issue. What I want focus on next is the
+differences in the code itself that make this approach easier on the
+eyes and the mind.</p>
+<p><strong>Code Readability is Important</strong><br>Contrast the above snippet of code with the code presented&nbsp;in the&nbsp;<a href="http://www.kirupa.com/net/readingXML_pg2.htm" target="_blank"><u>simplified approach</u></a>&nbsp;(pasted below):</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHidn">XmlTextReader</span> <span class="kASHwrd">reader</span> <span class="kASHop">=</span> <span class="kASHwrd">new</span> <span class="kASHidn">XmlTextReader</span><span class="kASHop">(</span><span class="kASHqt">"C:\\links.xml"</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">while</span> <span class="kASHop">(</span><span class="kASHwrd">reader</span>.<span class="kASHwrd">Read</span><span class="kASHop">())</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHidn">XmlNodeType</span> <span class="kASHwrd">nodeType</span> <span class="kASHop">=</span> <span class="kASHwrd">reader</span>.<span class="kASHwrd">NodeType</span>;
+</dt><dt><span class="kASHkwrd">switch</span> <span class="kASHop">(</span><span class="kASHwrd">nodeType</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHkwrd">case</span> <span class="kASHidn">XmlNodeType</span>.<span class="kASHwrd">Element</span><span class="kASHop">:</span>
+</dt><dt><span class="kASHwrd">Console</span>.<span class="kASHwrd">WriteLine</span><span class="kASHop">(</span><span class="kASHqt">"Element name is {0}"</span>, <span class="kASHwrd">reader</span>.<span class="kASHwrd">Name</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHkwrd">if</span> <span class="kASHop">(</span><span class="kASHwrd">reader</span>.<span class="kASHwrd">HasAttributes</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHwrd">for</span> <span class="kASHop">(</span><span class="kASHkwrd">int</span> <span class="kASHwrd">i</span> <span class="kASHop">=</span> <span class="kASHnum">0</span>; <span class="kASHwrd">i</span> <span class="kASHop">&lt;</span> <span class="kASHwrd">reader</span>.<span class="kASHwrd">AttributeCount</span>; <span class="kASHwrd">i</span><span class="kASHop">++)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHwrd">reader</span>.<span class="kASHwrd">MoveToAttribute</span><span class="kASHop">(</span><span class="kASHwrd">i</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">Console</span>.<span class="kASHwrd">WriteLine</span><span class="kASHop">(</span><span class="kASHqt">"Attribute is {0} with Value {1}: "</span>, <span class="kASHwrd">reader</span>.<span class="kASHwrd">Name</span>, <span class="kASHwrd">reader</span>.<span class="kASHwrd">Value</span><span class="kASHop">)</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt><span class="kASHkwrd">break</span>;
+</dt><dt><span class="kASHkwrd">case</span> <span class="kASHidn">XmlNodeType</span>.<span class="kASHwrd">Text</span><span class="kASHop">:</span>
+</dt><dt><span class="kASHwrd">Console</span>.<span class="kASHwrd">WriteLine</span><span class="kASHop">(</span><span class="kASHqt">"Value is: "</span> <span class="kASHop">+</span> <span class="kASHwrd">reader</span>.<span class="kASHwrd">Value</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHkwrd">break</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt>&nbsp;</dt>
+</dl>
+<p>When looking at both code pieces, there is a major difference in the
+level of information you can see without actually running both code
+pieces in a program. From my view, the Node/Element approach presented
+earlier makes more sense than the above approach involving the
+XmlTextReader. My justification for that view is that you can see
+clearly what I am trying to do. You can mentally recreate both the
+input and hazard a guess as to what&nbsp;the output is, whereas in the
+XmlTextReader snippet, it is very difficult to know what is going on
+without actually inputting a sample XML file. Having clearly written
+code that by itself explains what it does is often called
+self-documented code.</p>
+<p>Focusing on style and syntax may seem trivial, but it is important
+because there will be times when somebody else (or even you!) will be
+working with&nbsp;that piece of code.&nbsp;A challenge I face with some
+of my real-world projects&nbsp;is how to make sense of code that others
+have written. Reading comments help, but working on code that is
+-&nbsp;in may ways - self-documenting, helps greatly also.</p>
+<p>Cheers!<br>Kirupa <img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=93#respond" class="commentslink2" title="Comment on Reading XML Data Directly as Nodes and Elements">No Comments;</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D93&amp;title=Reading+XML+Data+Directly+as+Nodes+and+Elements" title="del.icio.us:Reading XML Data Directly as Nodes and Elements"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Reading XML Data Directly as Nodes and Elements"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D93&amp;title=Reading+XML+Data+Directly+as+Nodes+and+Elements" title="digg:Reading XML Data Directly as Nodes and Elements"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/digg.png" class="wp-notable_image" alt="digg:Reading XML Data Directly as Nodes and Elements"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D93&amp;title=Reading+XML+Data+Directly+as+Nodes+and+Elements" title="reddit:Reading XML Data Directly as Nodes and Elements"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/reddit.png" class="wp-notable_image" alt="reddit:Reading XML Data Directly as Nodes and Elements"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D93&amp;new_comment=Reading+XML+Data+Directly+as+Nodes+and+Elements&amp;linktype=" title="fark:Reading XML Data Directly as Nodes and Elements"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/fark.png" class="wp-notable_image" alt="fark:Reading XML Data Directly as Nodes and Elements"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D93&amp;t=Reading+XML+Data+Directly+as+Nodes+and+Elements" title="Y!:Reading XML Data Directly as Nodes and Elements"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/yahoo.png" class="wp-notable_image" alt="Y!:Reading XML Data Directly as Nodes and Elements"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-2">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=92" rel="bookmark" title="Permanent Link to Orcas Installation, .NET Framework 3.5, and Error Code 87">Orcas Installation, .NET Framework 3.5, and Error Code 87</a></h2> 
+			<h3>May 2nd, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=92#comments" class="commentslink" title="Comment on Orcas Installation, .NET Framework 3.5, and Error Code 87">8 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>It turns out the installer hobbits are not pleased with me, for I ran into <a href="http://blog.kirupa.com/?p=85"><u>another</u></a> temporary installation hitch.&nbsp;When attempting to install the new <a href="http://msdn2.microsoft.com/en-us/vstudio/aa700831.aspx" target="_blank"><u>Visual Studio Orcas Beta 1</u></a>&nbsp;preview, I received the following error screen after the installer started:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/OrcasInstall6.png" border="1" height="271" width="364"> </p>
+<p>More specifically, the full text of the error message from the log files&nbsp;was the following:</p>
+<blockquote><p>[05/02/07,02:31:41] Microsoft .NET Framework v3.5 (x64): [2] <font color="#ff0000">Error code 87</font> for this component means "The parameter is incorrect.</p>
+</blockquote>
+<p>In this post, I will outline the various approaches you can take to
+fix this issue. If one approach does not work,&nbsp;there is still
+hope, for one of the other approaches might work! Let's look at my
+first approach.</p>
+<p><strong>1. Move Installer Files to a Directory Path with No Spaces</strong><br>I
+scanned the MSDN forums for others who had similar issues, and many
+were able to resolve this error by moving the Orcas setup files to a
+directory whose path did not contain any spaces. For example, <font color="#0080ff">C:\Orcas\Beta\</font>&nbsp;would have worked whereas what I originally had, <font color="#0080ff">C:\Install\Orcas Beta 1\</font> would not have worked because of the spaces in "Orcas Beta 1".</p>
+<p>Unfortunately, the above approach did not work on either my two test machines.</p>
+<p><strong>2. Install .NET Framework 3.5 Beta&nbsp;Separately<br></strong>The
+installation seems to fail only when&nbsp;installing the .NET Framework
+3.5 Beta.&nbsp;On one of my machines, separately installing the .NET
+Framework 3.5 Beta separately&nbsp;prior to running the Orcas setup
+worked. You can download the .NET Framework 3.5 Beta&nbsp;by <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=E3715E6F-E123-428B-8A0F-028AFB9E0322&amp;displaylang=en" target="_blank"><u>clicking here</u></a>.</p>
+<p>While one of my computers was able to install Orcas using the above
+approach, one of my computers gave me the same error code. Time for
+Step 3.</p>
+<p><strong>3. Run the Orcas .NET Framework Install Separately</strong><br>If you navigate to your Orcas installation folder, find the .NET 3.5 Beta&nbsp;installers and run the installer separately. </p>
+<p>For X86, you can find the installer at:</p>
+<blockquote><p><font color="#0080ff">[Orcas Install Folder]\WCU\dotNetFramework\dotNetFX35\x86</font></p>
+</blockquote>
+<p>For X64, you can find the 64-bit version of the&nbsp;installer at:</p>
+<blockquote><p><font color="#0080ff">[Orcas Install Folder]\WCU\dotNetFramework\dotNetFX35\x64</font></p>
+</blockquote>
+<p>For some reason installing the .NET Framework from this location
+fixed the problem on my remaining computer, and I was able to get up
+and running with the new Orcas beta.</p>
+<p>Hope this helped you save some debugging time.</p>
+<p>Cheers!<br>Kirupa <img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=92#comments" class="commentslink2" title="Comment on Orcas Installation, .NET Framework 3.5, and Error Code 87">8 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D92&amp;title=Orcas+Installation%2C+.NET+Framework+3.5%2C+and+Error+Code+87" title="del.icio.us:Orcas Installation, .NET Framework 3.5, and Error Code 87"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Orcas Installation, .NET Framework 3.5, and Error Code 87"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D92&amp;title=Orcas+Installation%2C+.NET+Framework+3.5%2C+and+Error+Code+87" title="digg:Orcas Installation, .NET Framework 3.5, and Error Code 87"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/digg.png" class="wp-notable_image" alt="digg:Orcas Installation, .NET Framework 3.5, and Error Code 87"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D92&amp;title=Orcas+Installation%2C+.NET+Framework+3.5%2C+and+Error+Code+87" title="reddit:Orcas Installation, .NET Framework 3.5, and Error Code 87"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/reddit.png" class="wp-notable_image" alt="reddit:Orcas Installation, .NET Framework 3.5, and Error Code 87"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D92&amp;new_comment=Orcas+Installation%2C+.NET+Framework+3.5%2C+and+Error+Code+87&amp;linktype=" title="fark:Orcas Installation, .NET Framework 3.5, and Error Code 87"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/fark.png" class="wp-notable_image" alt="fark:Orcas Installation, .NET Framework 3.5, and Error Code 87"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D92&amp;t=Orcas+Installation%2C+.NET+Framework+3.5%2C+and+Error+Code+87" title="Y!:Orcas Installation, .NET Framework 3.5, and Error Code 87"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/yahoo.png" class="wp-notable_image" alt="Y!:Orcas Installation, .NET Framework 3.5, and Error Code 87"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-3">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=89" rel="bookmark" title="Permanent Link to Silverlight Now Supports .NET (And Why that Matters?)">Silverlight Now Supports .NET (And Why that Matters?)</a></h2> 
+			<h3>May 1st, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=89#respond" class="commentslink" title="Comment on Silverlight Now Supports .NET (And Why that Matters?)">No Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>At today's <a href="http://www.visitmix.com/" target="_blank"><u>MIX</u></a>
+conference in Las Vegas, Ray Ozzie and Scott Guthrie provided some
+interesting information for developers and designers. The one I was
+most interested in was the updates to Silverlight such as the inclusion
+of a&nbsp;cross-platform&nbsp;version of the&nbsp;.NET CLR. This means
+that developers do not have to just&nbsp;use JavaScript to code
+their&nbsp;Silverlight content, but they can use languages such as C#,
+VB.net, Python, etc.</p>
+<p>To learn more about the CLR support in Silverlight, take a look at <a href="http://channel9.msdn.com/showpost.aspx?postid=304508"><u>Scott Guthrie's 36 minute Channel 9 Video</u></a> outlining some of the technical details. The main reason why adding support for .NET matters, like I mentioned in <a href="http://blog.kirupa.com/?p=86" target="_blank"><u>my earlier post</u></a>,
+is that millions of .NET developers will attempt to port their existing
+familiarity in the .NET languages towards targeting Silverlight. Beyond
+just that, you gain the ability to take full advantage of Visual Studio
+to handle the coding, and, like before, you still have access to the
+nifty Expression Studio programs for creating the user interface. Let's
+look at the integration between those two software suites and their
+role with designers and developers in greater detail.</p>
+<p><strong>It's Actually about the Designers, Developers, and the Tools</strong><br>Having
+the right tools can greatly improve&nbsp;your final product&nbsp;and
+even speed up development by making complicated/repetitive/unnecessary
+tasks easier.&nbsp;Extremely talented individuals can create great
+applications <a href="http://en.wikipedia.org/wiki/List_of_problems_solved_by_MacGyver" target="_blank"><u>MacGuyver</u></a>-style with a rock and some shoestring. For the rest of us, there is <a href="http://msdn2.microsoft.com/en-us/vstudio/default.aspx" target="_blank"><u>Visual Studio</u></a> and <a href="http://www.microsoft.com/expression/" target="_blank"><u>Expression Studio</u></a>.</p>
+<p>At the keynote, Scott Guthrie and Wayne Smith gave hands-on demos
+where they created or extended small applications using Visual Studio
+as well as products from Expression Studio such as Design and Blend.
+The integration between these products is what makes, at least in my
+view, life easier for both designers and developers.</p>
+<p>The following diagram provides a brief overview of how I view
+application development and where these current products from Microsoft
+fall into:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/diagram.png" height="480" width="454"> </p>
+<p>When creating any type of web or client based content, you often
+have two roles of creators - designers and developers. The designers
+are responsible for how the product looks, and the developers are
+responsible for how the product works. In many real-life situations,
+unless one person is both the designer and developer, what the designer
+expected and what the developer coded are often different things.</p>
+<p>The XAML format really acts as a bridge between the designer and
+developer camps. Everything that constitutes a user-interface can be
+defined in a XAML file, and the XAML file can be independently worked
+on by a designer using Notepad or any of the Expression Studio tools.
+The developer can independently write, test, and debug the applicaton's
+logic using Visual Studio. When it comes time to actually deploy the
+application, the XAML file the designer worked on is molded to the code
+files the developer worked on to create your final application. Nothing
+gets lost in translation. What the designer worked on is what is
+visible on the screen, and what the developer worked on powers the
+functionality of the application. Everyone is happy!</p>
+<p><strong>Demos and More Coverage</strong><br>If you are looking for demos, there are a some (with more planned) on the <a href="http://www.visitmix.com/" target="_blank"><u>VisitMix.com</u></a> site, and I've provided links to those I saw demo'ed at the keynote below:</p>
+<ul>
+<li><a href="http://www.visitmix.com/Blogs/Joshua/beau-ambur-of-metaliq/" target="_blank">Metaliq's app code-named "Top Banana"</a><br>&nbsp;
+</li><li><a href="http://www.visitmix.com/Blogs/Joshua/cbs-mix07-keynote-demo/">CBS MIX07 Keynote Demo</a><br>&nbsp;
+</li><li><a href="http://www.visitmix.com/Blogs/Joshua/major-league-baseball-mix07-demo/">Major League Baseball MIX07 Demo</a><br>&nbsp;
+</li><li><a href="http://www.visitmix.com/Blogs/Joshua/netflix-uses-silverlight-for-video-on-demand/">Netflix Uses Silverlight for Video on Demand</a></li>
+</ul>
+<p>There is a lot of good coverage of this topic and more from today's MIX announcement&nbsp;by <a href="http://blogs.zdnet.com/Stewart/?p=356" target="_blank"><u>Ryan Stewart</u></a>, <a href="http://blogs.msdn.com/mharsh/archive/2007/04/30/silverlight-including-net-support-download-it-today.aspx" target="_blank"><u>Mike Harsh</u></a>, <a href="http://blogs.msdn.com/jasonz/archive/2007/04/30/announcing-net-framework-support-for-silverlight.aspx" target="_blank"><u>Jason Zander</u></a>, and <a href="http://www.techcrunch.com/2007/04/30/silverlight-the-web-just-got-richer/" target="_blank"><u>Michael Arrington</u></a>.</p>
+<p>Cheers!<br>Kirupa <img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=89#respond" class="commentslink2" title="Comment on Silverlight Now Supports .NET (And Why that Matters?)">No Comments;</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=5" title="View all posts in Nerdy" rel="category tag">Nerdy</a>,  <a href="http://blog.kirupa.com/?cat=9" title="View all posts in Design" rel="category tag">Design</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D89&amp;title=Silverlight+Now+Supports+.NET+%28And+Why+that+Matters%3F%29" title="del.icio.us:Silverlight Now Supports .NET (And Why that Matters?)"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Silverlight Now Supports .NET (And Why that Matters?)"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D89&amp;title=Silverlight+Now+Supports+.NET+%28And+Why+that+Matters%3F%29" title="digg:Silverlight Now Supports .NET (And Why that Matters?)"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/digg.png" class="wp-notable_image" alt="digg:Silverlight Now Supports .NET (And Why that Matters?)"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D89&amp;title=Silverlight+Now+Supports+.NET+%28And+Why+that+Matters%3F%29" title="reddit:Silverlight Now Supports .NET (And Why that Matters?)"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/reddit.png" class="wp-notable_image" alt="reddit:Silverlight Now Supports .NET (And Why that Matters?)"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D89&amp;new_comment=Silverlight+Now+Supports+.NET+%28And+Why+that+Matters%3F%29&amp;linktype=" title="fark:Silverlight Now Supports .NET (And Why that Matters?)"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/fark.png" class="wp-notable_image" alt="fark:Silverlight Now Supports .NET (And Why that Matters?)"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D89&amp;t=Silverlight+Now+Supports+.NET+%28And+Why+that+Matters%3F%29" title="Y!:Silverlight Now Supports .NET (And Why that Matters?)"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/yahoo.png" class="wp-notable_image" alt="Y!:Silverlight Now Supports .NET (And Why that Matters?)"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-4">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=88" rel="bookmark" title="Permanent Link to Flash CS3’s Publishing to HTML Changes">Flash CS3’s Publishing to HTML Changes</a></h2> 
+			<h3>April 27th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=88#comments" class="commentslink" title="Comment on Flash CS3’s Publishing to HTML Changes">1 Comment</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>One
+of the less publicized changes in Flash CS3 has been the improvements
+made when publishing your content to HTML. By default, in Flash 8 and
+earlier, when you specify HTML as a publishing option, two files would
+be generated - your HTML and SWF files. While the HTML file contained
+the tags required to play your SWF and worked well
+out-of-the-box,&nbsp;it had some unresolved issues. The main issue for
+developers revolved around avoding the dreaded "Click here to activate
+and use this control" message that affected Internet Explorer users:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/activate_ss.jpg" border="1" height="106" width="260"></p>
+<p>To remedy that problem, you often had to&nbsp;use solutions such as <a href="http://www.kirupa.com/developer/flash8/flash_fix.htm" target="_blank"><u>my article</u></a>&nbsp;where you use a third party JavaScript file such as <a href="http://blog.deconcept.com/2006/04/24/swfobject-nee-flashobject-1-4-released/" target="_blank"><u>FlashObject</u></a>&nbsp;to
+handle embedding the Flash content. Beyond specifying the parameters to
+your JavaScript file, you needed to specify a div section in your HTML
+where the Flash content would actually be loaded. While
+these&nbsp;steps were not time consuming, they still&nbsp;added a few
+extra roadblocks between&nbsp;you and providing your users with a
+consistent experience.</p>
+<p><strong>Flash CS3's Changes - Embed and Standards</strong><br>In
+Flash CS3, though, a lot of the extra steps needed to publish your
+content in earlier versions&nbsp;can be avoided. By default, the embed
+issue is fixed after a&nbsp;publish operation.&nbsp;Unlike the two
+files generated by Flash versions earlier than 8, the new publish
+option in&nbsp;Flash CS3 generates three files - the usual HTML and SWF
+files, but also a JavaScript file:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/blog_files.png" border="1" height="135" width="286"> </p>
+<p>The JavaScript file fixes the embed issue, and the HTML produced
+relies exclusively on the JavaScript to display the Flash content. Rest
+assured that the classic embed/param approach still exists inside
+&lt;noscript&gt; tags where users who have JavaScript disabled in their
+browser can still view your content.</p>
+<p>While I focused primarily on the embed issue, Flash CS3's
+HTML&nbsp;output seems more standards compliant also. Over the years,
+various 3rd party implementations have been provided to improve the
+HTML output, and the most common one I noticed was the <a href="http://www.alistapart.com/articles/flashsatay/" target="_blank"><u>Flash Satay</u></a>
+approach. With CS3, most browsers will see a cleaner version of the
+code used to display Flash content, but&nbsp;the caveat is that the
+embed/object/param tags have not disappeareed entirely. If your users
+do not have JavaScript enabled, the browser will read the information
+from, what I mentioned earlier,&nbsp;the &lt;noscript&gt; tags which
+do&nbsp;contain embed/object/param.</p>
+<p>Cheers!<br>Kirupa <img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=88#comments" class="commentslink2" title="Comment on Flash CS3’s Publishing to HTML Changes">1 Comment</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=12" title="View all posts in Flash/Actionscript" rel="category tag">Flash/Actionscript</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D88&amp;title=Flash+CS3%27s+Publishing+to+HTML+Changes" title="del.icio.us:Flash CS3's Publishing to HTML Changes"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Flash CS3's Publishing to HTML Changes"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D88&amp;title=Flash+CS3%27s+Publishing+to+HTML+Changes" title="digg:Flash CS3's Publishing to HTML Changes"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/digg.png" class="wp-notable_image" alt="digg:Flash CS3's Publishing to HTML Changes"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D88&amp;title=Flash+CS3%27s+Publishing+to+HTML+Changes" title="reddit:Flash CS3's Publishing to HTML Changes"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/reddit.png" class="wp-notable_image" alt="reddit:Flash CS3's Publishing to HTML Changes"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D88&amp;new_comment=Flash+CS3%27s+Publishing+to+HTML+Changes&amp;linktype=" title="fark:Flash CS3's Publishing to HTML Changes"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/fark.png" class="wp-notable_image" alt="fark:Flash CS3's Publishing to HTML Changes"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D88&amp;t=Flash+CS3%27s+Publishing+to+HTML+Changes" title="Y!:Flash CS3's Publishing to HTML Changes"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/yahoo.png" class="wp-notable_image" alt="Y!:Flash CS3's Publishing to HTML Changes"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-5">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=87" rel="bookmark" title="Permanent Link to Implementing Save and Restore (MVC, Consistency, etc.)">Implementing Save and Restore (MVC, Consistency, etc.)</a></h2> 
+			<h3>April 24th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=87#comments" class="commentslink" title="Comment on Implementing Save and Restore (MVC, Consistency, etc.)">1 Comment</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>For
+several research&nbsp;projects I am currently working on, the user
+saves their work to the disk when exiting the program. Unlike my
+earlier Notepad clone, the data that is saved&nbsp;or later
+opened&nbsp;is more complex than simply writing and reading&nbsp;a
+simple&nbsp;string of data to a text field. The saved file contains
+data that really modifies how the application behaves.</p>
+<p>Let's say&nbsp;you have an application that allows you to specify
+the coordinates of a map, add your own points of interest to
+it,&nbsp;and save what you've created to a data&nbsp;file:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/mapexample.jpg" height="205" width="371"> </p>
+<p>When the you launch the same application and open you save
+file,&nbsp;you would probably&nbsp;like the application to retrieve the
+map based on the saved coordinates and display the points of
+interest&nbsp;you added. In other words, you would expect that opening
+your save file would allow you to pick up from where you left off and
+continue without having to spend time redo-ing what you did earlier.</p>
+<p>Often times, functionality to save and restore an application's
+state is taken for granted. Actually implementing save and restore
+functionality requires a certain level of planning before a lot of code
+is actually written. There are numerous ways to implement save and
+restore, but one approach I use is to make the&nbsp;design more
+modular. Let's look at what modular design really entails.</p>
+<p><strong>Modular Design</strong><br>A modular design allows you to
+divide major chunks of your application into smaller, more maintainable
+portions. A common modular design idiom is called the <a href="http://en.wikipedia.org/wiki/Model-view-controller"><u>Model View Controller (MVC)</u></a>
+design pattern. With an MVC approach, your application is approximately
+divided into three components - your data (Model), the UI (View), and
+input (Controller). As an aside, many modern programming languages and
+tools enforce MVC out of the box!</p>
+<p>While you have three components in MVC, they are interdependent and
+require constant communication between each other. This is done to
+ensure that changes on one end are propagated throughout&nbsp;your
+application like you would want.&nbsp;For example, if your Model were
+to be updated, your view would automatically adjust to react to the
+model's new change. Let's focus on the model for a bit, for it
+is&nbsp;important when tackling our original problem. When saving and
+restoring an application's state, your Model would need&nbsp;store all
+of the information from the save file. In a well designed
+system,&nbsp;your View would update itself after being signaled by the
+Model, draw the maps, and place the pushpins based on the data stored
+in the Model.</p>
+<p><strong>Simple, Consistent Entry Point</strong><br>Beyond knowing
+how implement a modular design, there are various implementation
+details that go into play here. One detail&nbsp;that I like to focus in
+my applications is a simple, consistent&nbsp;entry point for updating
+the model easily.</p>
+<p>Ideally, you want to be in a position where all of your View
+modifications can be made by using the following functions to update
+your Model:</p>
+<blockquote><p>LoadMapFromCoordinates(....);<br>RegisterPin(5, "Red", Coordinate(....));<br>RegisterPin(2, "Blue",.....);<br>RegisterPin(1, "Blue",.....)</p>
+</blockquote>
+<p>What is nice about the above approach is that you can not only use
+the above functions for reading saved data from your file, you can also
+use the same functions when processing user actions within your
+applications. Essentially, you are reusing the same function for
+multiple purposes, and that is a good thing.&nbsp;Besides the obvious
+reasons such as code maintainability, this is a good thing because
+regardless of how the data gets to your model, via a save file or via
+user input, the end state of your application will be the same. Or at
+least it should be!</p>
+<p>The main takeway from this post is that having a good save and
+restore functionality requires some planning. Second, the guts of your
+application can be ridiculously complicated, but&nbsp;access to them,
+though, should be kept as simple and consistent as possible.</p>
+<p>Cheers!<br>Kirupa <img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=87#comments" class="commentslink2" title="Comment on Implementing Save and Restore (MVC, Consistency, etc.)">1 Comment</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=5" title="View all posts in Nerdy" rel="category tag">Nerdy</a>,  <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D87&amp;title=Implementing+Save+and+Restore+%28MVC%2C+Consistency%2C+etc.%29" title="del.icio.us:Implementing Save and Restore (MVC, Consistency, etc.)"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Implementing Save and Restore (MVC, Consistency, etc.)"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D87&amp;title=Implementing+Save+and+Restore+%28MVC%2C+Consistency%2C+etc.%29" title="digg:Implementing Save and Restore (MVC, Consistency, etc.)"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/digg.png" class="wp-notable_image" alt="digg:Implementing Save and Restore (MVC, Consistency, etc.)"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D87&amp;title=Implementing+Save+and+Restore+%28MVC%2C+Consistency%2C+etc.%29" title="reddit:Implementing Save and Restore (MVC, Consistency, etc.)"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/reddit.png" class="wp-notable_image" alt="reddit:Implementing Save and Restore (MVC, Consistency, etc.)"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D87&amp;new_comment=Implementing+Save+and+Restore+%28MVC%2C+Consistency%2C+etc.%29&amp;linktype=" title="fark:Implementing Save and Restore (MVC, Consistency, etc.)"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/fark.png" class="wp-notable_image" alt="fark:Implementing Save and Restore (MVC, Consistency, etc.)"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D87&amp;t=Implementing+Save+and+Restore+%28MVC%2C+Consistency%2C+etc.%29" title="Y!:Implementing Save and Restore (MVC, Consistency, etc.)"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/yahoo.png" class="wp-notable_image" alt="Y!:Implementing Save and Restore (MVC, Consistency, etc.)"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-6">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=86" rel="bookmark" title="Permanent Link to Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers">Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers</a></h2> 
+			<h3>April 20th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=86#comments" class="commentslink" title="Comment on Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers">7 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>Whenever
+a new product is released to compete with an existing market leader,
+the x-killer scenario is quickly thrown around. The x-killer scenario
+occurs when a newly introduced&nbsp;product is paraded by 3rd parties
+as something created to kill&nbsp;an existing product.&nbsp;To be more
+specific,&nbsp;in this case, the new product is Microsoft's
+Silverlight, and the existing product is Adobe's Flash-based
+technologies.</p>
+<p><strong>Silverlight - the Flash Killer?</strong><br>At the <a href="http://www.nab.org/AM/Template.cfm?Section=Home" target="_blank"><u>NAB</u></a>&nbsp;conference a few days ago,&nbsp;Microsoft announced and released a pre-release version of <a href="http://www.microsoft.com/silverlight/" target="_blank"><u>Silverlight</u></a>&nbsp;(formerly
+known as WPF/e). In its current state, Silverlight is a
+Windows/Mac&nbsp;browser plug-in that allows developers to write
+interactive applications such as media players, games, etc.&nbsp;using
+JavaScript and a subset of the functionality found&nbsp;in Windows
+Presentation Foundation (WPF).</p>
+<p>All in all, it seems like a great new technology, has a cool logo,
+and&nbsp;it features a&nbsp;catchy name (from MS nonetheless!)
+Underneath&nbsp;this though, it&nbsp;is supposedly dangerous.&nbsp;If
+you do a quick news search using the keywords"<a href="http://news.google.com/news?hl=en&amp;ned=us&amp;ie=UTF-8&amp;q=silverlight+flash+killer" target="_blank"><u><strong>silverlight flash killer</strong></u></a>",
+you are going to see a long list of articles from various publications
+that&nbsp;attribute Silverlight as a "flash killer" in the title or in
+the body of the text:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/searchresults.gif" border="1" height="254" width="540"> </p>
+<p>This notion isn't just secluded to news publications. A quick search on blog search engine&nbsp;<a href="http://www.technorati.com/search/%22flash+killer%22?language=n&amp;authority=a7" target="_blank"><u>Technorati</u></a> turns up similar results&nbsp;(search filter set to high-authority to remove noise). Last, but not least, even a <a href="http://www.kirupa.com/forum/showthread.php?t=257598" target="_blank"><u>kForum thread</u></a> concerning Silverlight's threat to Flash&nbsp;didn't escape the clutches of the x-killer people.</p>
+<p><strong>One + One != Zero</strong><br>When you have&nbsp;invested a
+lot of resources towards using a particular technology, any perceived
+threat to it can put you on the defensive. Such a threat can make an
+x-killer case sound appealing, but&nbsp;one thing to keep in mind,
+though,&nbsp;is that&nbsp;a new product being introduced does not
+signal the end of all products that compete&nbsp;or coexist
+with&nbsp;it. The world of developer&nbsp;languages is not&nbsp;a
+zero-sum game where x-killers&nbsp;end up being&nbsp;proven true all
+the time. Silverlight is as much of a Flash-killer as Flash was in
+killing off animated GIFs, JavaScript, and HTML.&nbsp;The Flash Player
+has had a good ten years of air-time to do&nbsp;so also! Instead, all
+of these technologies coexist even though a lot of the functionality
+seems to overlap. That is because no one technology is right for all
+tasks. The introduction of a new product should be seen as a good thing
+because somebody out there values your preferred playground (the web,
+the desktop, etc.) as something worth investing in.</p>
+<p>If anything, the introduction of Silverlight makes the world of
+internet applications more accessible to a larger group of developers.
+At its core, Silverlight is just a natural extension of a subset of the
+new WPF/XAML language you might use for your desktop application. This
+similarity&nbsp;allows a lot of Windows developers, who are familiar
+(or will be soon!)&nbsp;with WPF and the development tools for using
+them such as Visual Studio or Expression Blend, to try their hand at
+creating applications that run in the browser.</p>
+<p>Any successful&nbsp;technology such as Flash that&nbsp;has been
+around for a while has&nbsp;a whole ecosystem around it where the
+environment sustains the product just as much as the product itself.
+Almost all developer technologies fit this category. You probably don't
+see C++, C, etc.&nbsp;getting front page coverage on websites and
+publications, but they are still as relevant today as they were decades
+earlier even if newer technologies and platforms seem to be getting
+more attention.</p>
+<p>Current developers are not suddenly going to switch sides to either
+Adobe or MS&nbsp;because of Silverlight, WPF, Flex, Apollo, Flash CS3,
+etc. If anything,&nbsp;you'll get some cross-pollination where
+developers are familiar enough with both companies' offerings to use
+the right tool for the right job. Beyond cross-pollination, what
+excites me most about these technologies is that you now open the
+playing field to many more developers who now feel more comfortable
+porting their existing knowledge developing client-side applications
+towards the browser.</p>
+<p>In the end, the key is to look beyond your own preferences and
+look&nbsp;at the broader picture as a whole. As a designer/developer,
+your primary&nbsp;goal should be to create the best software for your
+users, and the new wave of products from both&nbsp;Adobe and Microsoft
+make that job a lot easier.</p>
+<p><strong>External Links</strong><br>The following are a list of links
+that I found useful when wanting to learn more about these new
+technologies and how they all fit together, and they are guaranteed
+x-killer and <a href="http://en.wikipedia.org/wiki/Fear%2C_uncertainty_and_doubt" target="_blank"><u>FUD</u></a>&nbsp;free:</p>
+<ul>
+<li><a href="http://www.on10.net/Blogs/tina/out-with-wpfe-in-with-microsoft-silverlight-this-has-just-been-announced/"><u>On10: Quick Silverlight Overview</u></a><br>A quick video showcasing what Silverlight is currently.<br>&nbsp;
+</li><li><a href="http://channel9.msdn.com/Showpost.aspx?postid=301419" target="_blank"><u>Channel9: Creating Silverlight Media using Expression Media Encoder</u></a><br>A
+40 minute video showcasing how to take media content and convert it
+using the Expression Media Encoder to publish to Silverlight.<br>&nbsp;
+</li><li><a href="http://weblogs.macromedia.com/mesh/archives/2007/03/do_apollo_and_w.html"><u>Mike Chambers: Do Apollo and WPF Compete Against Each Other?</u></a><br>Mike's
+analysis on the current state of where Adobe and Microsoft's products
+stand when pitted against "Webiness, Desktopiness, and&nbsp;Cross
+Platforminess."<br>&nbsp;
+</li><li><a href="http://scobleizer.com/2007/04/20/microsoft-wpf-vs-adobe-apollo-part-329/" target="_blank"><u>Robert Scoble: Microsoft WPF vs. Adobe Apollo, part 329</u></a><br>Scoble
+asks whether you are a developer who has switched sides either to or
+from WPF and Apollo. The Electric Rain video Scoble made is really
+cool, and they are one of those companies that provide tools for both
+SWF/Flash as well as XAML/WPF.<br>&nbsp;
+</li><li><a href="http://blogs.zdnet.com/Stewart/" target="_blank"><u>Ryan Stweart: The Universal Desktop</u></a><br>A
+great blog that focuses entirely on the emerging web/designer/developer
+technologies such as all of the various products and acronyms discussed
+in this post.<br>&nbsp;
+</li><li><a href="http://blogs.msdn.com/msmossyblog/archive/2007/04/19/silverlight-or-flash-pick-now-or-else.aspx" target="_blank"><u>Scott Barnes: Silverlight or Flash, Pick Now or Else!</u></a><br>A
+nice, concise post explaining why choice is a good thing. If you
+frequent the popular Adobe or MS (or others!)&nbsp;blogs, you've
+probably ran across his insightful comments also.</li>
+</ul>
+<p>Cheers!<br>Kirupa <img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=86#comments" class="commentslink2" title="Comment on Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers">7 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=1" title="View all posts in Random" rel="category tag">Random</a>,  <a href="http://blog.kirupa.com/?cat=5" title="View all posts in Nerdy" rel="category tag">Nerdy</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D86&amp;title=Why+Flex%2FFlash%2FSilverlight%2FWPF%2Fetc.+are+not+X-Killers" title="del.icio.us:Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D86&amp;title=Why+Flex%2FFlash%2FSilverlight%2FWPF%2Fetc.+are+not+X-Killers" title="digg:Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/digg.png" class="wp-notable_image" alt="digg:Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D86&amp;title=Why+Flex%2FFlash%2FSilverlight%2FWPF%2Fetc.+are+not+X-Killers" title="reddit:Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/reddit.png" class="wp-notable_image" alt="reddit:Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D86&amp;new_comment=Why+Flex%2FFlash%2FSilverlight%2FWPF%2Fetc.+are+not+X-Killers&amp;linktype=" title="fark:Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/fark.png" class="wp-notable_image" alt="fark:Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D86&amp;t=Why+Flex%2FFlash%2FSilverlight%2FWPF%2Fetc.+are+not+X-Killers" title="Y!:Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/yahoo.png" class="wp-notable_image" alt="Y!:Why Flex/Flash/Silverlight/WPF/etc. are not X-Killers"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-7">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=85" rel="bookmark" title="Permanent Link to Fixing Error 2739 When Installing Adobe CS3 on Vista 32">Fixing Error 2739 When Installing Adobe CS3 on Vista 32</a></h2> 
+			<h3>April 19th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=85#comments" class="commentslink" title="Comment on Fixing Error 2739 When Installing Adobe CS3 on Vista 32">39 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>When installing Adobe&nbsp;CS3 on Vista, you might run into an&nbsp;<strong>Internal Error 2739</strong>&nbsp;that prevents your setup from proceeding. Adobe is currently addressing this issue <a href="http://kb.adobe.com/selfservice/viewContent.do?externalId=kb401521&amp;sliceId=1" target="_blank"><u>here</u></a>,
+and they have working instructions for the 64-bit version of Vista, but
+it looks like they are still working on updating the instructions for
+the 32-bit version:&nbsp;</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/cs3steps.gif" border="1" height="157" width="527"></p>
+<p>If you are running Vista 32, in this post I will briefly address the
+missing steps needed between steps 2 and 3 to get CS3 installed. Like
+the tagline on their support site says, this error is caused by a
+registration issue with the <em>jscript.dll</em> file.</p>
+<p>To register your DLL file, click on your Start orb. Type in the words <strong>cmd</strong>:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/cs3_start.png" border="1" height="149" width="266"></p>
+<p>After you typed cmd, you should see the <strong>cmd</strong> (Command Prompt) icon appear as your search result. Right click on that result and select "Run as Administrator":</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/cs3_run_as_admin.jpg" border="1" height="155" width="424"></p>
+<p>Your command prompt running with administrator privileges will now appear. From this prompt, type the following and press Enter:</p>
+<blockquote><p><strong>regsvr32 jscript.dll</strong></p>
+</blockquote>
+<p>After you type the above and press Enter, you will receive a
+confirmation dialog box informing you that the registration was
+successful:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/cs3_regsvr.png" border="0" height="170" width="405"></p>
+<p>That's all there is to it. Now, you can go back to run your
+installer again. This time everything should work, and you'll be
+presented with the spiffy new installer - well, new if you only used
+Macromedia's products and were more familiar with their less spiffy
+installers:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/newInstaller.jpg" border="1" height="289" width="506"></p>
+<p>If you are running the 64-bit version of Vista, be sure to follow the full instructions from the <a href="http://kb.adobe.com/selfservice/viewContent.do?externalId=kb401521&amp;sliceId=1" target="_blank"><u>Adobe Technote link</u></a>, for the instructions for registering the dll are not the same as what I presented in this post.</p>
+<p>Future Flash-related articles on the site will focus primarily on
+Flash CS3/ActionScript 3.0, and I have a few .NET and Blend specific
+tutorials in the pipeline also.</p>
+<p>Cheers!<br>Kirupa <img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=85#comments" class="commentslink2" title="Comment on Fixing Error 2739 When Installing Adobe CS3 on Vista 32">39 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=5" title="View all posts in Nerdy" rel="category tag">Nerdy</a>,  <a href="http://blog.kirupa.com/?cat=9" title="View all posts in Design" rel="category tag">Design</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D85&amp;title=Fixing+Error+2739+When+Installing+Adobe+CS3+on+Vista+32" title="del.icio.us:Fixing Error 2739 When Installing Adobe CS3 on Vista 32"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Fixing Error 2739 When Installing Adobe CS3 on Vista 32"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D85&amp;title=Fixing+Error+2739+When+Installing+Adobe+CS3+on+Vista+32" title="digg:Fixing Error 2739 When Installing Adobe CS3 on Vista 32"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/digg.png" class="wp-notable_image" alt="digg:Fixing Error 2739 When Installing Adobe CS3 on Vista 32"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D85&amp;title=Fixing+Error+2739+When+Installing+Adobe+CS3+on+Vista+32" title="reddit:Fixing Error 2739 When Installing Adobe CS3 on Vista 32"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/reddit.png" class="wp-notable_image" alt="reddit:Fixing Error 2739 When Installing Adobe CS3 on Vista 32"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D85&amp;new_comment=Fixing+Error+2739+When+Installing+Adobe+CS3+on+Vista+32&amp;linktype=" title="fark:Fixing Error 2739 When Installing Adobe CS3 on Vista 32"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/fark.png" class="wp-notable_image" alt="fark:Fixing Error 2739 When Installing Adobe CS3 on Vista 32"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D85&amp;t=Fixing+Error+2739+When+Installing+Adobe+CS3+on+Vista+32" title="Y!:Fixing Error 2739 When Installing Adobe CS3 on Vista 32"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/yahoo.png" class="wp-notable_image" alt="Y!:Fixing Error 2739 When Installing Adobe CS3 on Vista 32"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-8">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=84" rel="bookmark" title="Permanent Link to AttachMovie, Auxiliary Data, and Dynamic Languages">AttachMovie, Auxiliary Data, and Dynamic Languages</a></h2> 
+			<h3>April 17th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=84#comments" class="commentslink" title="Comment on AttachMovie, Auxiliary Data, and Dynamic Languages">4 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>In
+my earlier post, I discussed using the Tag element to store auxiliary
+data to a WPF control. You have similar functionality in ActionScript's
+attachMovie function (and others!), and in this post I will explain
+some of the interesting things about this and what allows it to work
+the way it does.</p>
+<p><strong>Hello AttachMovie</strong><br>The attachMovie function is
+used to take content during runtime&nbsp;from your library and display
+it on your stage. For an in-depth look at attachmovie, the <a href="http://www.kirupa.com/developer/flash8/animateDynamicMC.htm" target="_blank"><u>Animating Dynamic MovieClips</u></a>
+tutorial&nbsp;will come in handy.&nbsp;AttachMovie, though, does more
+than just simply displaying library elements on your stage. One
+interesting feature&nbsp;concerns&nbsp;the arguments attachMovie
+takes.&nbsp;Among its strictly defined arguments are <em>idName</em>, <em>newName</em>, and <em>depth</em>, but attachMovie also&nbsp;takes an arbitrary amount of loosely defined arguments denoted as <em>initObject</em>:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/attachMovie.png" border="1" height="101" width="536"> </p>
+<p>What the initObject allows you to do is pass in data the newly attached movieclip will have within its <a href="http://search.atomz.com/search/?sp-advanced=1&amp;sp-q=scope&amp;B1=search&amp;sp-a=00040c2f-sp00000000&amp;sp-w-control=1;" target="_blank"><u>scope</u></a>.
+The data can be mapped to variables such&nbsp;as the properties _x,
+_alpha, etc., but the data can also be random variables that the
+attached movie stores within itself.</p>
+<p>For example, let's look at the following code snippet of a attachMovie function:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHidn">this</span>.<span class="kASHidn">attachMovie</span><span class="kASHop">(</span><span class="kASHqt">"circleMC"</span>,
+</dt><dt><span class="kASHqt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "newCircle"</span>,
+</dt><dt><span class="kASHidn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this</span>.<span class="kASHwrd">getNextHighestDepth</span><span class="kASHop">()</span>,
+</dt><dt><span class="kASHop">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</span><span class="kASHidn">_x</span><span class="kASHop">:</span><span class="kASHnum">40</span>, <span class="kASHidn">_y</span><span class="kASHop">:</span><span class="kASHnum">50</span>, <span class="kASHidn">_alpha</span><span class="kASHop">:</span><span class="kASHnum">75</span>, <span class="kASHwrd">kName</span><span class="kASHop">:</span><span class="kASHqt">"Kirupa"</span>, k<span class="kASHwrd">Color</span><span class="kASHop">:</span><span class="kASHqt">"Blue"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<span class="kASHwrd">kAge</span><span class="kASHop">:</span><span class="kASHnum">22</span><span class="kASHop">})</span>; </dt>
+</dl>
+<p>The main thing to notice in the above snippet of code is the last
+two lines where the initObject arguments are passed in. The _x, _y, and
+_alpha properties ensure that the attached movie clip is positioned at
+40, 50 with an alpha of 75. More interestingly, the attached movie also
+stores within its scope the variables <em>kName</em>, <em>kColor</em>, and <em>kAge</em>
+and their respective values. These variables and their data can be
+easily accessed by code contained inside the attached movie clip!</p>
+<p>What confuses many is this whole idea of having variables stored and
+passed into some cloud and accessed later. After all, there really is
+no easy way to know which values have been passed in to your attached
+movieclip unless you look carefully at the code or add trace statements
+to your movie clip itself.</p>
+<p>To explain it a little better, let's look at the following image:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/worldView.png" height="272" width="429"> </p>
+<p>In the above image, you have your newly attached&nbsp;movie
+clip&nbsp;called newCircle&nbsp;storing the variables you passed into
+it. One thing to note is that these variables are localized to this
+instance of the newCircle&nbsp;movie clip. If you were to add more
+newCircle movie clips, they too would contain copies of the kName,
+kColor, and kAge values. This is almost&nbsp;like what you see with
+constructors in a strictly OOP language that creates&nbsp;new
+objects&nbsp;that inherit&nbsp;certain values.</p>
+<p><strong>Dynamic Languages Giveth and they Taketh</strong><br>So, in
+the end, attachMovie and other similar functions provide a great level
+of flexibility when it comes to adding your own data to them. This
+flexibilty comes with the cost of increased time debugging when things
+don't work as you expected. For example, for your attachMovie
+function's initObject argument, if&nbsp;you accidentally spelled
+kColor:"Foo" as kColour:"Foo", your attached movie clip will not inform
+you of the misspelled kColour variable or&nbsp;point out
+a&nbsp;reference to a non-existant kColor variable in your attached
+movie clip. For all it knows, Flash will assume that you meant to
+create a new variable called kColour instead, and kColor will be
+populated later using some approach like _root.newCircle.kColor =
+"Green". It is extremely difficult to guess what your intentions were,
+so Flash correctly doesn't attempt to interfere.</p>
+<p>The above advantages and disadvantages are part of the dynamic,
+non-strict nature of the ActionScript language. Contrasting this you
+have more strict languages such as the C and Java languages&nbsp;where
+you cannot use a variable without declaring it, and almost always,
+declaring a type to go with the variable. The stricter approach makes
+testing your applications easier, but you lose the flexibilty that you
+enjoy with a dynamic language. There are good and bad points to both
+language types, and you'll see ActionScript 2.0 and 3.0 incorporate
+some nice features from the more strict languages, and you see good
+dynamic language support in, for example,&nbsp;the .NET CLR with <a href="http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython" target="_blank"><u>IronPython</u></a>, <a href="http://www.rubyclr.com/"><u>RubyCLR</u></a>, and others.</p>
+<p><strong>WPF Equivalent to initObject</strong><br>If you are using
+C#, you can almost emulate the above functionality. The Tag element, as
+mentioned in my earlier post, takes in an argument of type object,
+which is great because you can pass in a value of any type to it. The
+downside is that the Tag element stores only one such object. You can't
+pass in a sequence of object variables like you are able to in
+attachMovie.</p>
+<p>To simulate such functionality, you would need to use something like&nbsp;<a href="http://blog.kirupa.com/?p=42" target="_blank"><u>Structs</u></a>
+where you create your own datatype that takes in as many arguments as
+you want. Your&nbsp;Tag element would be set equal to your Structs
+which, in turn, store all of these&nbsp;values that you want.
+Consequently,&nbsp;a less efficient solution would be to pass in all of
+your arguments to a List and pass that List to your Tag element.</p>
+<p>Cheers!<br>Kirupa <img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=84#comments" class="commentslink2" title="Comment on AttachMovie, Auxiliary Data, and Dynamic Languages">4 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=12" title="View all posts in Flash/Actionscript" rel="category tag">Flash/Actionscript</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D84&amp;title=AttachMovie%2C+Auxiliary+Data%2C+and+Dynamic+Languages" title="del.icio.us:AttachMovie, Auxiliary Data, and Dynamic Languages"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/delicious.png" class="wp-notable_image" alt="del.icio.us:AttachMovie, Auxiliary Data, and Dynamic Languages"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D84&amp;title=AttachMovie%2C+Auxiliary+Data%2C+and+Dynamic+Languages" title="digg:AttachMovie, Auxiliary Data, and Dynamic Languages"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/digg.png" class="wp-notable_image" alt="digg:AttachMovie, Auxiliary Data, and Dynamic Languages"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D84&amp;title=AttachMovie%2C+Auxiliary+Data%2C+and+Dynamic+Languages" title="reddit:AttachMovie, Auxiliary Data, and Dynamic Languages"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/reddit.png" class="wp-notable_image" alt="reddit:AttachMovie, Auxiliary Data, and Dynamic Languages"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D84&amp;new_comment=AttachMovie%2C+Auxiliary+Data%2C+and+Dynamic+Languages&amp;linktype=" title="fark:AttachMovie, Auxiliary Data, and Dynamic Languages"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/fark.png" class="wp-notable_image" alt="fark:AttachMovie, Auxiliary Data, and Dynamic Languages"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D84&amp;t=AttachMovie%2C+Auxiliary+Data%2C+and+Dynamic+Languages" title="Y!:AttachMovie, Auxiliary Data, and Dynamic Languages"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/yahoo.png" class="wp-notable_image" alt="Y!:AttachMovie, Auxiliary Data, and Dynamic Languages"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-9">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=83" rel="bookmark" title="Permanent Link to Using the Tag Element to Store Auxiliary Data in WPF">Using the Tag Element to Store Auxiliary Data in WPF</a></h2> 
+			<h3>April 11th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=83#comments" class="commentslink" title="Comment on Using the Tag Element to Store Auxiliary Data in WPF">2 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>One
+of the difficulties of graphically representing data using WPF (Windows
+Presentation Foundation)&nbsp;controls&nbsp;is&nbsp;that it can be
+tricky to retrieve that data at a later stage.&nbsp;This isn't a
+problem when you are using controls such as a button where its function
+doesn't really change depending on what the program is actually doing.</p>
+<p>When you get UI controls representing data that can change,
+though,&nbsp;then it becomes more important to have the control store
+auxiliary information about the data. One example where auxiliary data
+is useful is when you are showing folder and file data from a remote
+web server using TreeViews:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/treeViewItemView.png" border="1" height="222" width="495"> </p>
+<p>In the above example, I am building my TreeView incrementally.
+Depending on the TreeViewItem I click, the program will either do
+nothing or expand that TreeViewItem to display the subfolders and
+files. In such a situation, it would be helpful if I stored information
+on whether what I am clicking on&nbsp;is a folder or a&nbsp;file. It
+would be even more helpful, if the TreeViewItem I am clicking on stored
+that information itself.</p>
+<p><strong>The Tag Element</strong><br>To store auxiliary data on your control like we want, you can use your control's Tag element:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/tagSS.gif" border="1" height="242" width="411"> </p>
+<p>What makes the Tag element&nbsp;useful is that it&nbsp;allows you to store data of type <em>object</em>.&nbsp;In programming terms, having something that stores values&nbsp;as <em>object</em>
+is the equivalent of being handed a signed blank check. You can do
+pretty much anything! This type of flexibility is essential because you
+won't know what kind of auxiliary data you will be storing. For
+example, you may be storing a string of names in one application, or
+you may be storing a custom folder type in another application.</p>
+<p>To retrieve your data stored in the Tag format, you cannot simply
+set a variable equal to that of your Tag object unless your variable is
+of type <em>object</em> also. You will&nbsp;need to typecast the data from the generic object to the more specific type that you want your data in:</p>
+<p><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/tagCode.gif" height="97" width="409"> </p>
+<p>In the above example, if you look at the second line, I am
+retrieving a TreeViewItem that I stored in a MenuItem. In order to
+access it, I call selected.Tag and then use the "as Type" syntax to go
+from object to TreeViewItem as in&nbsp;<em>selected.Tag as TreeViewItem</em>.
+In the commented out line, you'll see the more traditional syntax for
+typecasting where you place the type you want inside parenthesis in
+front of your more generic data - <em>(TreeViewItem) selected.Tag</em>.</p>
+<p>One downside of storing data as an&nbsp;object is that you lose some
+performance in the boxing/unboxing process when you typecast from a
+basic type to a more specific type. That is really a minor issue
+considering the major advantages you gain by being able to store
+auxiliary information on a control itself.</p>
+<p><strong>The FTPBrowser</strong><br>The program screenshot and code
+snippets in this post came from a FTP Browser I am working on in my
+spare time. You can see a very preliminary, non-feature complete
+version (+ source) by clicking on the following link: <a title="WPF] FTP Browser (Beta)" href="http://www.kirupa.com/forum/showthread.php?t=253751&amp;highlight=ftp"><u>WPF FTP Browser (Beta)</u></a>. Once I actually finish the application, I'll be sure to write about it it here.</p>
+<p>Cheers!<br>Kirupa <img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=83#comments" class="commentslink2" title="Comment on Using the Tag Element to Store Auxiliary Data in WPF">2 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D83&amp;title=Using+the+Tag+Element+to+Store+Auxiliary+Data+in+WPF" title="del.icio.us:Using the Tag Element to Store Auxiliary Data in WPF"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Using the Tag Element to Store Auxiliary Data in WPF"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D83&amp;title=Using+the+Tag+Element+to+Store+Auxiliary+Data+in+WPF" title="digg:Using the Tag Element to Store Auxiliary Data in WPF"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/digg.png" class="wp-notable_image" alt="digg:Using the Tag Element to Store Auxiliary Data in WPF"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D83&amp;title=Using+the+Tag+Element+to+Store+Auxiliary+Data+in+WPF" title="reddit:Using the Tag Element to Store Auxiliary Data in WPF"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/reddit.png" class="wp-notable_image" alt="reddit:Using the Tag Element to Store Auxiliary Data in WPF"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D83&amp;new_comment=Using+the+Tag+Element+to+Store+Auxiliary+Data+in+WPF&amp;linktype=" title="fark:Using the Tag Element to Store Auxiliary Data in WPF"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/fark.png" class="wp-notable_image" alt="fark:Using the Tag Element to Store Auxiliary Data in WPF"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D83&amp;t=Using+the+Tag+Element+to+Store+Auxiliary+Data+in+WPF" title="Y!:Using the Tag Element to Store Auxiliary Data in WPF"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/yahoo.png" class="wp-notable_image" alt="Y!:Using the Tag Element to Store Auxiliary Data in WPF"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-10">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=82" rel="bookmark" title="Permanent Link to Streaming Audio to the Web via HTTP">Streaming Audio to the Web via HTTP</a></h2> 
+			<h3>April 9th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=82#comments" class="commentslink" title="Comment on Streaming Audio to the Web via HTTP">11 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>Have
+you ever wanted to be an online equivalent of a radio DJ serving up
+music for others to listen to? If you are like me, then you probably
+haven't. But there are more practical uses to streaming your music from
+a computer. You probably have or one day will be working on computers
+do not belong to you. For example, a computer at your university lab,
+workplace, relatives, etc. In those cases, you simply can't plop all of
+your music from your portable music player and play it on the foreign
+computer.</p>
+<p>In this post, I will explain how to stream music from your computer
+via HTTP using&nbsp;the&nbsp;Windows Media Encoder. To listen back to
+your music, as long as you (or others!) know your computer's IP
+address, you can listen to your streaming music like you would tuning
+into a radio station.</p>
+<p>The following steps show you how it is done.</p>
+<p><strong>Step 1: Downloading and Installing</strong><br>You'll need to download and install&nbsp;the <a href="http://www.microsoft.com/windows/windowsmedia/forpros/encoder/default.mspx" target="_blank"><u>Windows Media Encoder</u></a>. The program works well in XP, but with Vista, the program's icons look a little weird and there are some minor glitches.</p>
+<p><strong>Step 2: Broadcast&nbsp;a Live Event</strong><br>Once you launch the application, the New Session wizard will appear. Select the&nbsp;<strong>Broadcast a Live Event</strong> icon and press OK:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/newSession.png" border="1" height="159" width="282"> </p>
+<p><strong>Step 3: Select Audio Device</strong><br>The next screen will
+ask you to select which devices you want to use. Select Audio and in
+the Audio&nbsp;drop-down menu, select default audio device and press
+Next (we'll change this later):</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/defaultAudioDevice.gif" border="1" height="134" width="276"> </p>
+<p><strong>Step 4: Pull from the Encoder</strong><br>In this step, you
+will be asked how you wish&nbsp;to broadcast the music. We just want to
+request the music when we need it, so select the option for <strong>Pull music from encoder</strong> and press Next:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/pullEncoder.gif" border="1" height="145" width="310"> </p>
+<p><strong>Step 5: Port and URL Information</strong><br>In the next
+step, you can specify the HTTP port that will&nbsp;be used to stream
+your music. The default value of 8080 is usually good, and you can also
+view the URLs that you can use to connect to the stream:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/httpPort.gif" border="1" height="159" width="403"> &nbsp;</p>
+<p>If your computer doesn't connect to the internet directly (as in my
+setup), the URL information won't be that helpful for non LAN based
+connections. Click Next once you have specified a new HTTP port or
+accepted the default HTTP port.</p>
+<p><strong>Step 6: Specify Streaming Quality/Bitrate</strong><br>In the
+next screen, you get to specify the bit rate of your streaming audio.
+There are various settings you can pick, but be sure to pick one that
+your internet connection supports. Rememeber, your current computer's
+upload speed matters just as much as the listener computer's download
+speed:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/encodingAudio.gif" border="1" height="196" width="266"> </p>
+<p>You can stop here by pressing Finish or make some more adjustments
+by pressing Next. By pressing Next, you can choose whether to archive
+your stream to a file and specify the tag information such as your
+stream's name,&nbsp;details, etc.&nbsp;For the sake of brevity, click
+Finish.</p>
+<p><strong>Step 7: Select Output Information</strong><br>After you
+click Finish, you will be returned to the main Windows Media Encoder
+window. From the toolbar at the top, press the Properties button. The
+Sources tab should be selected by default with the Devices option under
+"Source from" selected. </p>
+<p>Under the Audio drop-down menu, select the menu option for what is
+the equivalent of "What U Hear." You want to select the option that
+streams whatever sound is played by your soundcard:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/audioSource.gif" border="1" height="250" width="390"> </p>
+<p><strong>Step 8: It's Showtime</strong><br>You are almost done! Click
+the Apply button, and after a few seconds, press the Start Encoding
+button in your toolbar. You won't see anything happening unless you are
+currently playing some music in the background. Launch your favorite
+music application and start playing some music. You will see the
+equalizers in Windows Media Encoder start to move.</p>
+<p>You can mute your System sound and everything will still work
+properly. The only thing you cannot mute is the actual application that
+is playing the music (Windows Media Player, iTunes, WinAmp, etc.). I
+know it sounds strange, but all of these sounds are being recorded and
+played back internally. You hearing them is not that relevant...at
+least on the server computer that is streaming the songs.</p>
+<p><strong>Step 9: Listening to the Stream</strong><br>To listen to the
+music that is currently being played,&nbsp;use&nbsp;a media player that
+can read Windows Media streams. I use Windows Media Player (WMP), so
+from WMP, go to File | Open Url... and enter your IP address (<a href="http://www.whatismyip.com/" target="_blank"><u>find your IP address</u></a>)&nbsp;followed
+by your port number (specified&nbsp;in Step 5) http://18.12.34.56:8080
+where 18.12.34.56 is my IP address and the port number is 8080:</p>
+<p align="center"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/openURL.png" border="0" height="229" width="399"> &nbsp;</p>
+<p>After a few seconds of buffering, you should start to hear music
+playing. The music that is playing is what is currently playing on your
+computer running Windows Media Encoder.</p>
+<p><strong>Loose Ends</strong><br>Phew - while the above looks like a
+lot of work, it should only take you about 20 seconds to go from
+launching Windows Media Encoder to having your Encoder listening for
+sounds to stream. With that siad, there are some things that you should
+keep in mind. </p>
+<ul>
+<li>To get the most out of this type of setup, you should enable Remote
+Desktop on your server-like computer. That allows you to remotely
+access Windows Media Encoder, change various settings, and more
+importantly, alter what is being played.<br> 
+</li><li>Remember that unlike radio stations, there is a limit to how
+many people can connect to your computer to listen to your music. The
+reason is that each person will be using up part of your upload
+bandwidth, and many home broadband connections limit upstream speeds to
+a fraction of the downstream speed.<br> 
+</li><li>Finally, you may be asking why go through&nbsp;all this when
+you already have Remote Desktop. After all, Remote Desktop allows
+sounds generated by your remote computer to be played back&nbsp;on your
+local machine. The reason is that the sound quality is usually really
+poor. By using Windows Media Encoder, you are ensuring a reasonably
+high sound quality with the option of adjusting it if needed.</li>
+</ul>
+<p>I hope this article and the past few articles&nbsp;helped you to
+better deal with the emptiness associated with being separated from
+your primary computer for an extended period of time.</p>
+<p>Cheers!<br>Kirupa <img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/icon_razz.gif" alt=":P" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=82#comments" class="commentslink2" title="Comment on Streaming Audio to the Web via HTTP">11 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=1" title="View all posts in Random" rel="category tag">Random</a>,  <a href="http://blog.kirupa.com/?cat=5" title="View all posts in Nerdy" rel="category tag">Nerdy</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D82&amp;title=Streaming+Audio+to+the+Web+via+HTTP" title="del.icio.us:Streaming Audio to the Web via HTTP"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Streaming Audio to the Web via HTTP"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D82&amp;title=Streaming+Audio+to+the+Web+via+HTTP" title="digg:Streaming Audio to the Web via HTTP"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/digg.png" class="wp-notable_image" alt="digg:Streaming Audio to the Web via HTTP"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D82&amp;title=Streaming+Audio+to+the+Web+via+HTTP" title="reddit:Streaming Audio to the Web via HTTP"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/reddit.png" class="wp-notable_image" alt="reddit:Streaming Audio to the Web via HTTP"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D82&amp;new_comment=Streaming+Audio+to+the+Web+via+HTTP&amp;linktype=" title="fark:Streaming Audio to the Web via HTTP"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/fark.png" class="wp-notable_image" alt="fark:Streaming Audio to the Web via HTTP"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D82&amp;t=Streaming+Audio+to+the+Web+via+HTTP" title="Y!:Streaming Audio to the Web via HTTP"><img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/yahoo.png" class="wp-notable_image" alt="Y!:Streaming Audio to the Web via HTTP"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+			<div class="navigation">
+			<div class="alignleft"><a href="http://blog.kirupa.com/index.php?paged=6">« Previous Entries</a></div>
+			<div class="alignright"><a href="http://blog.kirupa.com/index.php?paged=4">Next Entries »</a></div>
+		</div>
+		
+	</div>
+<div id="sidebar">
+<br>
+<h2>Search</h2>
+<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" id="blogsearch" align="middle" height="35" width="190">
+<param name="allowScriptAccess" value="sameDomain">
+<param name="movie" value="http://blog.kirupa.com/wp-content/blogsearch.swf"><param name="quality" value="high"><param name="bgcolor" value="#ffffff"><embed src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/blogsearch.swf" quality="high" bgcolor="#ffffff" name="blogsearch" allowscriptaccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="35" width="190">
+</object>
+<br>
+<br>
+<h2>Pages</h2>
+<ul>
+<li><a href="http://blog.kirupa.com/">Home</a></li>
+<li class="page_item"><a href="http://blog.kirupa.com/?page_id=2" title="About Me">About Me</a></li>
+ 
+</ul>
+<h2>Categories</h2>
+<ul>
+	<li><a href="http://blog.kirupa.com/?cat=9" title="View all posts filed under Design">Design</a> (15)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=12" title="View all posts filed under Flash/Actionscript">Flash/Actionscript</a> (13)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=11" title="View all posts filed under kirupa.com">kirupa.com</a> (13)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=14" title="View all posts filed under Life at Microsoft">Life at Microsoft</a> (1)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=5" title="View all posts filed under Nerdy">Nerdy</a> (49)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=10" title="View all posts filed under Programming">Programming</a> (58)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=1" title="View all posts filed under Random">Random</a> (47)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=13" title="View all posts filed under WPF / Blend / C#">WPF / Blend / C#</a> (42)
+</li>
+</ul>
+<h2>Popular</h2>
+<ul>
+<li><a href="http://blog.kirupa.com/?p=30" title="Dynamic Movie Clips and the ScrollPane in Flash">Dynamic Movie Clips and the ScrollPane in Flash</a> (57)</li><li><a href="http://blog.kirupa.com/?p=85" title="Fixing Error 2739 When Installing Adobe CS3 on Vista 32">Fixing Error 2739 When Installing Adobe CS3 on Vista 32</a> (39)</li><li><a href="http://blog.kirupa.com/?p=70" title="Run/Emulate Windows Mobile 6 on your Computer">Run/Emulate Windows Mobile 6 on your Computer</a> (39)</li><li><a href="http://blog.kirupa.com/?p=33" title="Answers to my Interview regarding kirupaForum">Answers to my Interview regarding kirupaForum</a> (21)</li><li><a href="http://blog.kirupa.com/?p=101" title="And So it Goes...Graduation @ MIT!">And So it Goes...Graduation @ MIT!</a> (17)</li></ul>
+<ul>
+	<li id="linkcat-1"><h2>Blogroll</h2>
+	<ul>
+<li><a href="http://blogs.msdn.com/oldnewthing/" title="Raymond Chen's technical, yet entertaining, blog!">OldNewThing</a></li>
+<li><a href="http://weblogs.asp.net/scottgu" title="A great blog covering the .NET-related changes!">Scott Guthrie</a></li>
+<li><a href="http://blogs.zdnet.com/Stewart/">Ryan Stewart</a></li>
+<li><a href="http://www.senocular.com/" title="Trevor McCauley's site filled with useful Fireworks and Flash tips!">Senocular</a></li>
+<li><a href="http://www.istartedsomething.com/" title="A great place for up-to-date tech news by Long Zheng">istartedsomething</a></li>
+<li><a href="http://blogs.msdn.com/jensenh/" title="A great blog on UI related topics.">Jensen Harris</a></li>
+
+	</ul>
+</li>
+	<li id="linkcat-2"><h2>Silverlight/WPF</h2>
+	<ul>
+<li><a href="http://rrelyea.spaces.live.com/" title="Rob frequently provides useful WPF information from around the web.">Rob Relyea</a></li>
+<li><a href="http://blogs.msdn.com/tims/" title="A great source for updates on silverlight, wpf, and other technologies.">Tim Sneath</a></li>
+<li><a href="http://blogs.msdn.com/mharsh/" title="Mike provides great coverage and insightful information concerning all things Silverlight.">Mike Harsh's Silverlight Blog</a></li>
+<li><a href="http://blogs.msdn.com/expression/" title="Updates from the Expression team.">Expression Blog</a></li>
+
+	</ul>
+</li>
+</ul>
+</div></div>
+<div id="footer">
+<!-- 41 queries. 0.310 seconds. -->
+</div>
+
+<div align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="850">
+			<tbody><tr>
+				<td>
+				<div align="center">
+					<hr color="#d3d2cb" size="1">
+					<table id="table1" border="0" cellpadding="10" cellspacing="0" width="850">
+						<tbody><tr>
+							<td>
+							<div align="center">
+								<table id="table3" background="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/blue_large_bg_gif6.gif" border="0" cellpadding="0" cellspacing="0" height="113" width="753">
+									<tbody><tr>
+										<td width="7">
+										<font face="Arial" size="2">
+										<img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/projec1.gif" border="0" height="70" hspace="3" width="1"></font></td>
+										<td width="746">
+										<script type="text/javascript"><!--
+		google_ad_client = "pub-0633423995889665";
+		google_ad_width = 728;
+		google_ad_height = 90;
+		google_ad_format = "728x90_as";
+		google_ad_type = "text";
+		google_ad_channel ="6505164574";
+		google_color_border = "EFF4FA";
+		google_color_bg = "EFF4FA";
+		google_color_link = "0066CC";
+		google_color_url = "336699";
+		google_color_text = "333333";
+		//--></script>
+										<script type="text/javascript" src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/show_ads.js">
+										
+		</script><iframe name="google_ads_frame" src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="90" scrolling="no" width="728"></iframe>
+										</td>
+									</tr>
+								</tbody></table>
+							</div>
+							</td>
+						</tr>
+					</tbody></table>
+				</div>
+				<table border="0" cellspacing="0" width="100%">
+					<tbody><tr>
+						<td><hr color="#d3d2cb" size="1"></td>
+					</tr>
+				</tbody></table>
+				<div align="center">
+					<table id="tblFooter" border="0" cellpadding="3" cellspacing="0" width="850">
+						<tbody><tr>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="44">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/">
+							<font color="#0066cc">Home</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="137">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/index.htm"><font color="#0066cc">About 
+							kirupa.com</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="154">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/mods.htm">
+							<font color="#0066cc">Meet the Moderators</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="69">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/ad.htm">
+							<font color="#0066cc">Advertise</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="78">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/link.htm"><font color="#0066cc">Link 
+						to Us</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="70">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/credits.htm"><font color="#0066cc">Credits</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="24">
+							<font face="Verdana">
+							<a href="http://www.kirupa.com/modular/rss.htm">
+							<img src="Reading%20XML%20Data%20Directly%20as%20Nodes%20and%20Elements_files/rssfeed.gif" border="0" height="16" width="16"></a></font></td>
+							<td height="15" width="219">
+							Copyright <span class="homeLinkSM">
+							<font face="Times New Roman">©</font></span> 
+							1999-2007</td>
+						</tr>
+						</tbody></table>
+				</div>
+				</td>
+			</tr>
+		</tbody></table>
+<br>
+<br>
+
+
+</div>
+
+
+
+</body></html>

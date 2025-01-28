@@ -1,0 +1,804 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0059)http://blogs.msdn.com/dancre/archive/2006/07/26/679851.aspx -->
+<HTML><HEAD><TITLE>Dan Crevier's Blog : DM-V-VM part 3: A sample DataModel</TITLE>
+<META content=DM-V-VM name=keywords>
+<META 
+content="In part 2 , I showed a base class for DataModels. In this post, I will describe a sample implementation. For this sample, I'll use a DataModel that represents a stock. The model will be in charge of asynchronously fetching the stock quote and making it's" 
+name=description>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+href="http://blogs.msdn.com/dancre/pingback.aspx" rel=pingback><LINK media=print 
+href="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/print.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/Common.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/Blog.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/common_print.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/blog_print.css" 
+type=text/css rel=stylesheet><LINK href="/favicon.ico" type=image/ico 
+rel="shortcut icon"><LINK title="Dan Crevier's Blog (RSS 2.0)" 
+href="http://blogs.msdn.com/dancre/rss.xml" type=application/rss+xml 
+rel=alternate><LINK title="Dan Crevier's Blog (Atom 1.0)" 
+href="http://blogs.msdn.com/dancre/atom.xml" type=application/atom+xml 
+rel=alternate><LINK 
+title="DM-V-VM part 3: A sample DataModel Comment RSS (RSS 2.0)" 
+href="http://blogs.msdn.com/dancre/commentrss.aspx?PostID=679851" 
+type=application/rss+xml rel=alternate>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<SCRIPT 
+src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/global.js" 
+type=text/javascript></SCRIPT>
+
+<STYLE type=text/css>BODY {
+	FONT-SIZE: 84%
+}
+</STYLE>
+
+<SCRIPT language=JavaScript>var doImage=doImage;var TType=TType;
+function mhHover(tbl,idx,cls){var t,d;if(document.getElementById)t=document.getElementById(tbl);else t=document.all(tbl);if(t==null)return;if(t.getElementsByTagName)d=t.getElementsByTagName("TD");else d=t.all.tags("TD");if(d==null)return;if(d.length<=idx)return;d[idx].className=cls;}
+
+</SCRIPT>
+
+<SCRIPT language=javascript 
+src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/minmax.js" 
+type=text/javascript></SCRIPT>
+</HEAD>
+<BODY>
+<FORM id=aspnetForm name=aspnetForm 
+action=/dancre/archive/2006/07/26/679851.aspx method=post>
+<DIV><INPUT id=__VIEWSTATE type=hidden 
+value=/wEPDwUKLTMyNjg0MDc1MWRk4kqgif0qb+BsXqBU64DM+rPSfXA= name=__VIEWSTATE> 
+</DIV>
+<SCRIPT language=javascript 
+src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/Telligent_Modal.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT language=javascript type=text/javascript>
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['CommonModal'],['CommonModalTitle'],['CommonModalClose'],['CommonModalContent'],['CommonModalFooter'],['CommonModalResize'],['CommonModalMask'],100);
+// ]]>
+</SCRIPT>
+
+<DIV id=AllContent>
+<DIV id=CommonHeader>
+<DIV id=msviMasthead>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD width="100%">
+      <TABLE height=22 cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD id=msviRegionIdGraphic bgColor=#ffffff></TD>
+          <TD width="100%" bgColor=#3568cc><IMG title="" height=22 alt=* 
+            src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/topGradient.jpg" 
+            width=250></TD></TR></TBODY></TABLE></TD>
+    <TD id=msviGlobalToolbar noWrap align=left bgColor=#3568cc height=22>
+      <TABLE cellSpacing=0 cellPadding=0 border=0>
+        <TBODY>
+        <TR>
+          <TD class=gt0 onmouseover="mhHover('msviGlobalToolbar', 0, 'gt1')" 
+          onmouseout="mhHover('msviGlobalToolbar', 0, 'gt0')" noWrap><A 
+            style="FONT-SIZE: 95%" 
+            href="http://www.microsoft.com/">Microsoft.com Home</A></TD>
+          <TD class=gtsep>|</TD>
+          <TD class=gt0 onmouseover="mhHover('msviGlobalToolbar', 2, 'gt1')" 
+          onmouseout="mhHover('msviGlobalToolbar', 2, 'gt0')" noWrap><A 
+            style="FONT-SIZE: 95%" 
+            href="http://www.microsoft.com/library/toolbar/3.0/sitemap/en-us.mspx">Site 
+            Map</A></TD></TR></TBODY></TABLE></TD></TR>
+  <TR vAlign=top>
+    <TD width="100%">
+      <TABLE height=42 cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD id=msviBrandBanner bgColor=#ffffff><A 
+            href="http://msdn.microsoft.com/"><IMG title="" height=42 alt=MSDN 
+            src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/msdn_masthead_ltr.gif" 
+            width=225 border=0></A></TD>
+          <TD width="100%" bgColor=#6799ff><IMG title="" height=42 alt=* 
+            src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/topGradient2.jpg" 
+            width=250></TD></TR></TBODY></TABLE></TD>
+    <TD id=msviGlobalSearch bgColor=#6799ff>
+      <DIV id=msviNoSearch></DIV></TD></TR></TBODY></TABLE>
+<DIV id=msviLocalToolbar>
+<TABLE height=19 cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD id=msviHomePageLink noWrap width=177><A 
+      href="http://msdn.microsoft.com/">MSDN Home</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 2, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 2, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/developercenters/">Developer 
+Centers</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 4, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 4, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/flash">MSDN Flash</A></TD>
+    <TD><SPAN class=ltsep>|</SPAN></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 6, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 6, 'lt0')" noWrap><A 
+      href="http://msdn.microsoft.com/subscriptions/">Subscribers</A></TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 8, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 8, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 10, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 10, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 12, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 12, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 14, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 14, 'lt0')" noWrap>&nbsp;</TD>
+    <TD></TD>
+    <TD class=lt0 onmouseover="mhHover('msviLocalToolbar', 16, 'lt1')" 
+    onmouseout="mhHover('msviLocalToolbar', 16, 'lt0')" noWrap>&nbsp;</TD>
+    <TD width="100%"></TD></TR></TBODY></TABLE></DIV></DIV></DIV>
+<TABLE dir=ltr cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD id=CommonLeftColumn 
+    style="BORDER-RIGHT: #999999 1px solid; OVERFLOW-X: hidden" width=181 
+    bgColor=#f1f1f1 height="100%">
+      <DIV class=mnpMenuTop id=mnpMenuTop>
+      <DIV class=mnpInherit>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent><A 
+      href="http://blogs.msdn.com/default.aspx">Blogs Home</A> </DIV></DIV>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent><A 
+      id=ctl00___ctl00___ctl00_ctl00_AggWelcome___Login 
+      href="http://blogs.msdn.com/login.aspx?ReturnUrl=%2fdancre%2farchive%2f2006%2f07%2f26%2f679851.aspx">Sign 
+      in</A> | <A id=ctl00___ctl00___ctl00_ctl00_AggWelcome___Register 
+      href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/dancre/archive/2006/07/26/679851.aspx">Join</A> 
+      </DIV></DIV>
+      <DIV class=CommonSidebarArea>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A href="http://blogs.msdn.com/search/">Search</A> 
+        <LI><A href="http://blogs.msdn.com/MainFeed.aspx?Type=AllBlogs">RSS</A> 
+        <LI><A href="http://blogs.msdn.com/Opml.aspx">OPML</A> 
+      </LI></UL></DIV></DIV></DIV></DIV>
+      <DIV class=mnpAds 
+      style="BACKGROUND: #f1f1f1; PADDING-BOTTOM: 20px; WIDTH: 181px; HEIGHT: 100%"></DIV></TD>
+    <TD width="100%">
+      <TABLE style="TABLE-LAYOUT: fixed" cellSpacing=0 cellPadding=0 
+      width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD width="100%">
+            <DIV class=clsDocBody id=pageContainer>
+            <DIV class=CommonContentArea>
+            <H2 class=CommonTitle><A class=headermaintitle 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_bth___BlogTitle 
+            href="http://blogs.msdn.com/dancre/default.aspx">Dan Crevier's 
+            Blog</A></H2>
+            <DIV class=CommonContent>In search of a better name...</DIV>
+            <DIV class=CommonContent>
+            <STYLE>.DoNotDisplay {
+	DISPLAY: none
+}
+</STYLE>
+
+            <DIV class=BlogPostArea>
+            <H4 class=BlogPostHeader>DM-V-VM part 3: A sample DataModel </H4>
+            <DIV class=BlogPostContent>
+            <P>In <A 
+            href="http://blogs.msdn.com/dancre/archive/2006/07/23/676300.aspx">part 
+            2</A>, I showed a base class for DataModels. In this post, I will 
+            describe a sample implementation. For this sample, I'll use a 
+            DataModel that represents a stock. The model will be in charge of 
+            asynchronously fetching the stock quote and making it's value 
+            available.</P>
+            <P>As part of making this class more testable, we first define an 
+            interface for retrieving stock quotes:</P>
+            <DIV 
+            style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">public</SPAN> <SPAN 
+            style="COLOR: blue">interface</SPAN> <SPAN 
+            style="COLOR: teal">IStockQuoteProvider</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: gray">///</SPAN><SPAN style="COLOR: green"> 
+            </SPAN><SPAN style="COLOR: gray">&lt;summary&gt;</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: gray">///</SPAN><SPAN style="COLOR: green"> Get a 
+            quote. This function may block on slow operations like hitting the 
+            network.</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: gray">///</SPAN><SPAN style="COLOR: green"> 
+            </SPAN><SPAN style="COLOR: gray">&lt;/summary&gt;</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: gray">///</SPAN><SPAN style="COLOR: green"> 
+            </SPAN><SPAN style="COLOR: gray">&lt;param 
+            name="symbol"&gt;</SPAN><SPAN style="COLOR: green">The stock 
+            symbol.</SPAN><SPAN style="COLOR: gray">&lt;/param&gt;</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: gray">///</SPAN><SPAN style="COLOR: green"> 
+            </SPAN><SPAN style="COLOR: gray">&lt;param 
+            name="quote"&gt;</SPAN><SPAN style="COLOR: green">The 
+            quote.</SPAN><SPAN style="COLOR: gray">&lt;/param&gt;</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: gray">///</SPAN><SPAN style="COLOR: green"> 
+            </SPAN><SPAN style="COLOR: gray">&lt;returns&gt;</SPAN><SPAN 
+            style="COLOR: green">Whether we were able to get a 
+            quote.</SPAN><SPAN style="COLOR: gray">&lt;/returns&gt;</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">bool</SPAN> TryGetQuote(<SPAN 
+            style="COLOR: blue">string</SPAN> symbol, <SPAN 
+            style="COLOR: blue">out</SPAN> <SPAN 
+            style="COLOR: blue">double</SPAN> quote);</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; }</P></DIV>
+            <P>This will let us plug in mock providers for unit testing. Let's 
+            walk through the model implementation. First the class declaration 
+            and constructor:</P>
+            <DIV 
+            style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">public</SPAN> <SPAN 
+            style="COLOR: blue">class</SPAN> <SPAN 
+            style="COLOR: teal">StockModel</SPAN> : <SPAN 
+            style="COLOR: teal">DataModel</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">public</SPAN> StockModel(<SPAN 
+            style="COLOR: blue">string</SPAN> symbol, <SPAN 
+            style="COLOR: teal">IStockQuoteProvider</SPAN> quoteProvider)</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; _symbol = symbol;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; _quoteProvider = quoteProvider;</P>
+            <P style="MARGIN: 0px">&nbsp;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">this</SPAN>.State = 
+            <SPAN style="COLOR: teal">ModelState</SPAN>.Fectching;</P>
+            <P style="MARGIN: 0px">&nbsp;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: green">// Queue a work item 
+            to fetch the quote</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">if</SPAN> (!<SPAN 
+            style="COLOR: teal">ThreadPool</SPAN>.QueueUserWorkItem(<SPAN 
+            style="COLOR: blue">new</SPAN> <SPAN 
+            style="COLOR: teal">WaitCallback</SPAN>(FetchQuoteCallback)))</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">this</SPAN>.State = <SPAN 
+            style="COLOR: teal">ModelState</SPAN>.Invalid;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; }</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            }</P></DIV>
+            <P>The constructor takes the stock symbol and the quote provider. It 
+            sets the initial model state to fetching and queues a work item to 
+            be called on a background thread. Don't forget to <A 
+            href="http://blogs.msdn.com/dancre/archive/2006/03/14/551287.aspx">check 
+            the return result of QueueUserWorkItem</A>! If it fails, the model 
+            will be put in the invalid state.</P>
+            <P>Next, the symbol property. This one is simple!</P>
+            <DIV 
+            style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">public</SPAN> <SPAN 
+            style="COLOR: blue">string</SPAN> Symbol</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">get</SPAN> { <SPAN 
+            style="COLOR: blue">return</SPAN> _symbol; }</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            }</P></DIV>
+            <P>For the quote property, we'll have a private setter that will 
+            send the property changed event:</P>
+            <DIV 
+            style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">public</SPAN> <SPAN 
+            style="COLOR: blue">double</SPAN> Quote</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">get</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; VerifyCalledOnUIThread();</P>
+            <P style="MARGIN: 0px">&nbsp;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">return</SPAN> _quote;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; }</P>
+            <P style="MARGIN: 0px">&nbsp;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">private</SPAN> <SPAN 
+            style="COLOR: blue">set</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; VerifyCalledOnUIThread();</P>
+            <P style="MARGIN: 0px">&nbsp;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">if</SPAN> (_quote != <SPAN 
+            style="COLOR: blue">value</SPAN>)</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _quote = 
+            <SPAN style="COLOR: blue">value</SPAN>;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            SendPropertyChanged(<SPAN style="COLOR: maroon">"Quote"</SPAN>);</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; }</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            }</P></DIV>
+            <P>Now, here's the callback to fetch the quote. Remember, this will 
+            be called on a background thread where it's okay for us to do 
+            expensive operations like hitting a web service to get a quote.</P>
+            <DIV 
+            style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">private</SPAN> <SPAN 
+            style="COLOR: blue">void</SPAN> FetchQuoteCallback(<SPAN 
+            style="COLOR: blue">object</SPAN> state)</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">double</SPAN> 
+            fetchedQuote;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">if</SPAN> 
+            (_quoteProvider.TryGetQuote(_symbol, <SPAN 
+            style="COLOR: blue">out</SPAN> fetchedQuote))</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">this</SPAN>.Dispatcher.BeginInvoke(<SPAN 
+            style="COLOR: teal">DispatcherPriority</SPAN>.ApplicationIdle,</P>
+            <P 
+            style="MARGIN: 0px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            <SPAN style="COLOR: blue">new</SPAN> <SPAN 
+            style="COLOR: teal">ThreadStart</SPAN>(<SPAN 
+            style="COLOR: blue">delegate</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">this</SPAN>.Quote = 
+            fetchedQuote;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">this</SPAN>.State = 
+            <SPAN style="COLOR: teal">ModelState</SPAN>.Active;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }));</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; }</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">else</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; {</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">this</SPAN>.Dispatcher.BeginInvoke(<SPAN 
+            style="COLOR: teal">DispatcherPriority</SPAN>.ApplicationIdle,</P>
+            <P 
+            style="MARGIN: 0px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            <SPAN style="COLOR: blue">new</SPAN> <SPAN 
+            style="COLOR: teal">ThreadStart</SPAN>(<SPAN 
+            style="COLOR: blue">delegate</SPAN></P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { <SPAN 
+            style="COLOR: blue">this</SPAN>.State = <SPAN 
+            style="COLOR: teal">ModelState</SPAN>.Invalid; }));</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            &nbsp;&nbsp;&nbsp; }</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+            }</P></DIV>
+            <P>We need to dispatch back to the UI thread to set the properties. 
+            This avoids any complex locking logic and makes sure that all of the 
+            property changed events come from the UI thread.</P>
+            <P>Finally, we just have the fields:</P>
+            <DIV 
+            style="FONT-SIZE: 10pt; BACKGROUND: white; COLOR: black; FONT-FAMILY: courier new">
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">private</SPAN> <SPAN 
+            style="COLOR: blue">string</SPAN> _symbol;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">private</SPAN> <SPAN 
+            style="COLOR: blue">double</SPAN> _quote;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <SPAN 
+            style="COLOR: blue">private</SPAN> <SPAN 
+            style="COLOR: teal">IStockQuoteProvider</SPAN> _quoteProvider;</P>
+            <P style="MARGIN: 0px">&nbsp;&nbsp;&nbsp; }</P></DIV>
+            <P>So, that's it! What we've got is a class that's perfectly suited 
+            to being displayed in a WPF DataTemplate. It's got the symbol and 
+            quote available for binding. And, the state can be used in a trigger 
+            to change the look while it's fetching or if there's an error. The 
+            UI thread will never be blocked on slow operations.</P>
+            <P>Next up, I'll show some unit tests for this class, which will 
+            show you how to unit test code that uses a dispatcher.</P></DIV>
+            <DIV class=BlogPostFooter>Published Wednesday, July 26, 2006 10:01 
+            PM by <A 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___AuthorLink 
+            href="http://blogs.msdn.com/user/Profile.aspx?UserID=3401">dancre</A> 
+
+            <DIV><SPAN 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel>Filed 
+            under: <A 
+            href="http://blogs.msdn.com/dancre/archive/tags/DM-V-VM/default.aspx" 
+            rel=tag>DM-V-VM</A></SPAN><INPUT 
+            id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel_State 
+            type=hidden value=nochange 
+            name=ctl00$_$ctl00$_$ctl00$ctl00$bcr$ctl00$_$Entry$_$InlineTagEditorPanel></DIV></DIV></DIV>
+            <DIV id=comments>
+            <H3>Comments </H3>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl01_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.msdn.com/dancre/archive/2006/07/26/679870.aspx" 
+                  rel=nofollow>Dan Crevier's Blog</A> said:</H4>
+                  <DIV class=CommentText>In part 3, I showed code for 
+                  StockModel, a DataModel for stocks. On the Max team, we are 
+                  big believers...</DIV>
+                  <DIV class=CommentFooter>July 27, 2006 1:27 AM </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl02_NameLink 
+                  title=Joe>Joe</A> said:</H4>
+                  <DIV class=CommentText>Not sure about the way you tied the 
+                  retreival logic with the model state. <BR>I would preferred 
+                  you model the data in one class (and collections of that data) 
+                  and then model the service that populates that data in 
+                  another. &nbsp;This way you separate the data away from 
+                  performing a function on that data. &nbsp;Even worse this 
+                  logic retreives just one quote - what happens when you want to 
+                  retreive a portfolio of quotes. &nbsp;You would need to put 
+                  this logic into the Quote container. <BR><BR>You could argue 
+                  that different sources of data would all support the same 
+                  interface - IStockQuote. &nbsp;It just seems to be better 
+                  practice to force the boundary between the retrieval of the 
+                  data and the state itself to be more explicit. &nbsp;It's not 
+                  common practice now to derive from ADO's DataSet and add your 
+                  database functions in there. &nbsp;In general seperating state 
+                  from program logic lends itself to more scalable 
+                  solutions.</DIV>
+                  <DIV class=CommentFooter>August 6, 2006 1:13 PM </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="CommentOwner CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="CommentOwner  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl03_NameLink 
+                  title=dancre href="http://blogs.msdn.com/">dancre</A> 
+                  said:</H4>
+                  <DIV class=CommentText>Good feedback. It would probably have 
+                  been better to also show a factored out StockQuote class that 
+                  just contains the raw data. I think that's a more typical 
+                  pattern. The quote provider can have the logic to batch up 
+                  queries, but it really hasn't been given enough information to 
+                  do so properly in this case. <BR><BR>The big advantage to 
+                  having the model control when to retrieve the data is that it 
+                  helps with virtualization. However, the way I wrote it in this 
+                  example, you don't get that advantage. Hold on and I'll show a 
+                  more realistic example where we only fetch the expensive data 
+                  when the DataModel is visible in the UI. This is a key piece 
+                  of the pattern that I left out.</DIV>
+                  <DIV class=CommentFooter>August 7, 2006 12:14 PM </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl04_NameLink 
+                  title="Marko Vuksanovic" 
+                  href="http://markovuksanovic@hotmail.com/" rel=nofollow>Marko 
+                  Vuksanovic</A> said:</H4>
+                  <DIV class=CommentText>I've noticed that in the sample here 
+                  you retreive the stock information inside a thread.... What 
+                  happens with the following scenario: <BR><BR>You need to fetch 
+                  a photo prom the internet (let's say a larg photo that it will 
+                  take at leaset 10 secs to download). That image is loaded into 
+                  a BitmapImaga object. This means that inside a thread you need 
+                  to catch the DownloadCompleted event.... But if the thread is 
+                  completed before the event is fired it will be destroyed and 
+                  you will not have the image stored in that object... So how 
+                  would you suggest to have that event captured inside the 
+                  thread, so that the thread is not destroyed before the event 
+                  is fired.... Or I am missing something!?</DIV>
+                  <DIV class=CommentFooter>September 2, 2006 3:59 AM 
+</DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="CommentOwner CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="CommentOwner  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl05_NameLink 
+                  title=dancre href="http://blogs.msdn.com/dancre">dancre</A> 
+                  said:</H4>
+                  <DIV class=CommentText>If you are doing an expensive operation 
+                  like fetching an image over the network, there are basically 
+                  two approaches. One is to do it synchronously on a background 
+                  thread and the other is to use the asynchronous APIs. If you 
+                  are using the asynchronous APIs, there's no need to set up 
+                  your own background thread. Just dispatch the results to the 
+                  UI thread in your DownloadCompleted event.</DIV>
+                  <DIV class=CommentFooter>September 4, 2006 12:00 PM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl06_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.sqlxml.org/bryantlikes/archive/2006/09/27/WPF-Patterns.aspx" 
+                  rel=nofollow>Bryant Likes's Blog</A> said:</H4>
+                  <DIV class=CommentText>If you're doing WPF development, you 
+                  really need to check out Dan Crevier 's series on 
+                  DataModel-View-ViewModel.</DIV>
+                  <DIV class=CommentFooter>September 27, 2006 4:31 PM 
+              </DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl07_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.msdn.com/dancre/archive/2006/10/11/datamodel-view-viewmodel-pattern-series.aspx" 
+                  rel=nofollow>Dan Crevier's Blog</A> said:</H4>
+                  <DIV class=CommentText>
+                  <P>I thought I should add a post with the full list of posts 
+                  in the D-V-VM pattern. They are: 
+                  DataModel-View-ViewModel</P></DIV>
+                  <DIV class=CommentFooter>October 11, 2006 10:00 PM 
+</DIV></TD></TR>
+              <TR vAlign=top>
+                <TD class="Comment CommentAvatar"><IMG 
+                  src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/anonymous.gif" 
+                  border=1>&nbsp; </TD>
+                <TD class="Comment  CommentContent" width="100%">
+                  <H4 class=CommentTitle><A 
+                  id=ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl08_NameLink 
+                  title=TrackBack 
+                  href="http://blogs.msdn.com/dancre/archive/2006/07/26/dm-v-vm-part-4-unit-testing-the-datamodel.aspx" 
+                  rel=nofollow>Dan Crevier's Blog</A> said:</H4>
+                  <DIV class=CommentText>
+                  <P>In part 3 , I showed code for StockModel, a DataModel for 
+                  stocks. On the Max team, we are big believers</P></DIV>
+                  <DIV class=CommentFooter>January 6, 2007 11:39 PM 
+              </DIV></TD></TR></TBODY></TABLE></DIV><EM>New Comments to this post 
+            are disabled</EM> </DIV></DIV></DIV></TD></TR></TBODY></TABLE></TD>
+    <TD id=CommonRightColumn style="FONT-SIZE: 100%">
+      <DIV class=CommonSidebar>
+      <DIV id=BlogLinksSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>This Blog</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___home 
+        href="http://blogs.msdn.com/dancre/default.aspx">Home</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___Contactlink1 
+        href="http://blogs.msdn.com/dancre/contact.aspx">Email</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___LinkListLink1 
+        href="http://blogs.msdn.com/dancre/linklist.aspx">Links</A> 
+      </LI></UL></DIV></DIV></DIV>
+      <DIV id=TasksSideBar></DIV>
+      <DIV id=SubscriptionsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Syndication</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___bs___rss 
+        href="http://blogs.msdn.com/dancre/rss.xml">RSS 2.0</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___bs___atom 
+        href="http://blogs.msdn.com/dancre/atom.xml">Atom 1.0</A> 
+      </LI></UL></DIV></DIV></DIV>
+      <DIV id=RecentPostsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Recent Posts</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl00_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/10/11/more-skydrive-goodness.aspx">More 
+        SkyDrive goodness</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl01_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/22/frustrating-error-using-remote-desktop.aspx">Frustrating 
+        error using Remote Desktop</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl02_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/21/tafiti.aspx">Tafiti</A> 
+
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl03_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/09/windows-live-skydrive-spaces-integration.aspx">Windows 
+        Live SkyDrive/Spaces integration</A> 
+        <LI><A id=ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl04_Link 
+        href="http://blogs.msdn.com/dancre/archive/2007/08/09/windows-live-folders-is-now-windows-live-skydrive.aspx">Windows 
+        Live Folders is now Windows Live SkyDrive!</A> 
+</LI></UL></DIV></DIV></DIV>
+      <DIV id=TagSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Tags</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarTagCloud>
+        <LI class=CommonTag3><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/ASP.NET/default.aspx" 
+        rel=tag>ASP.NET</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Debugging/default.aspx" 
+        rel=tag>Debugging</A> 
+        <LI class=CommonTag1><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/DM-V-VM/default.aspx" 
+        rel=tag>DM-V-VM</A> 
+        <LI class=CommonTag1><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Max/default.aspx" 
+        rel=tag>Max</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/PageModel/default.aspx" 
+        rel=tag>PageModel</A> 
+        <LI class=CommonTag4><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/PanelLayoutAnimator/default.aspx" 
+        rel=tag>PanelLayoutAnimator</A> 
+        <LI class=CommonTag2><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/pdc2005/default.aspx" 
+        rel=tag>pdc2005</A> 
+        <LI class=CommonTag4><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Tips+_2600_amp_3B00_+Tricks/default.aspx" 
+        rel=tag>Tips &amp; Tricks</A> 
+        <LI class=CommonTag2><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Utilities/default.aspx" 
+        rel=tag>Utilities</A> 
+        <LI class=CommonTag3><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/VirtualizingTilePanel/default.aspx" 
+        rel=tag>VirtualizingTilePanel</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Vista/default.aspx" 
+        rel=tag>Vista</A> 
+        <LI class=CommonTag6><A 
+        href="http://blogs.msdn.com/dancre/archive/tags/Web+Perf/default.aspx" 
+        rel=tag>Web Perf</A> </LI></UL></DIV></DIV></DIV>
+      <DIV id=NewsSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>News</H4>
+      <DIV class=CommonSidebarContent>The posts on this weblog are provided "AS 
+      IS" with no warranties, and confer no rights. The opinions expressed 
+      herein are my own personal opinions and do not represent my employer's 
+      view in any way. </DIV></DIV></DIV>
+      <DIV id=ArchiveSideBar>
+      <DIV class=CommonSidebarArea>
+      <H4 class=CommonSidebarHeader>Archives</H4>
+      <DIV class=CommonSidebarContent>
+      <UL class=CommonSidebarList>
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/10.aspx">October 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/08.aspx">August 
+        2007 (4)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/07.aspx">July 
+        2007 (4)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/06.aspx">June 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/03.aspx">March 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/02.aspx">February 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2007/01.aspx">January 
+        2007 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/12.aspx">December 
+        2006 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/11.aspx">November 
+        2006 (2)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/10.aspx">October 
+        2006 (3)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/dancre/archive/2006/09.aspx">September 2006 
+        (8)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/08.aspx">August 
+        2006 (7)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/07.aspx">July 
+        2006 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/03.aspx">March 
+        2006 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/02.aspx">February 
+        2006 (11)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2006/01.aspx">January 
+        2006 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/12.aspx">December 
+        2005 (2)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/11.aspx">November 
+        2005 (1)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/10.aspx">October 
+        2005 (3)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/dancre/archive/2005/09.aspx">September 2005 
+        (7)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/06.aspx">June 
+        2005 (6)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/05.aspx">May 2005 
+        (11)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/04.aspx">April 
+        2005 (3)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/02.aspx">February 
+        2005 (3)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2005/01.aspx">January 
+        2005 (3)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/12.aspx">December 
+        2004 (15)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/11.aspx">November 
+        2004 (4)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/10.aspx">October 
+        2004 (10)</A> 
+        <LI><A 
+        href="http://blogs.msdn.com/dancre/archive/2004/09.aspx">September 2004 
+        (8)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/08.aspx">August 
+        2004 (8)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/07.aspx">July 
+        2004 (5)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/06.aspx">June 
+        2004 (5)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/05.aspx">May 2004 
+        (13)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/04.aspx">April 
+        2004 (15)</A> 
+        <LI><A href="http://blogs.msdn.com/dancre/archive/2004/03.aspx">March 
+        2004 (18)</A> </LI></UL></DIV></DIV></DIV></DIV></TD></TR></TBODY></TABLE><!--NOINDEX_START-->
+<DIV id=CommonFooter><BR style="OVERFLOW: hidden; LINE-HEIGHT: 1px" clear=all>
+<TABLE id=msviFooter cellSpacing=0 cellPadding=0 width="100%">
+  <TBODY>
+  <TR vAlign=bottom>
+    <TD id=msviFooter2>
+      <DIV id=msviLocalFooter><NOBR><A 
+      href="http://go.microsoft.com/?linkid=317027">Manage Your Profile</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/isapi/gomscom.asp?target=/legal/" 
+      target=_parent>Legal</A> |</NOBR><WBR><NOBR><A 
+      href="http://register.microsoft.com/contactus30/contactus.asp?domain=msdn" 
+      target=_parent>Contact Us</A> |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/flash/" target=_parent>MSDN Flash 
+      Newsletter</A></NOBR></DIV>
+      <DIV id=msviGlobalFooter><SPAN>©2005 Microsoft Corporation. All rights 
+      reserved.&nbsp;</SPAN><NOBR><A 
+      href="http://www.microsoft.com/info/cpyright.mspx">Terms of Use</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://msdn.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</A> 
+      |</NOBR><WBR><NOBR><A 
+      href="http://www.microsoft.com/info/privacy.mspx">Privacy 
+      Statement</A></NOBR></DIV></TD>
+    <TD width=105 bgColor=#669aff><IMG title="" height=29 alt=Microsoft 
+      src="Dan Crevier's Blog  DM-V-VM part 3 A sample DataModel_files/bottomMSFTLogo.jpg" 
+      width=105 border=0></TD></TR></TBODY></TABLE></DIV></DIV><!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/dancre/archive/2006/07/26/dm-v-vm-part-3-a-sample-datamodel.aspx"
+dc:identifier="http://blogs.msdn.com/dancre/archive/2006/07/26/dm-v-vm-part-3-a-sample-datamodel.aspx"
+dc:title="DM-V-VM part 3: A sample DataModel"
+trackback:ping="http://blogs.msdn.com/dancre/trackback.aspx?PostID=679851" />
+</rdf:RDF>
+--></FORM></BODY></HTML>

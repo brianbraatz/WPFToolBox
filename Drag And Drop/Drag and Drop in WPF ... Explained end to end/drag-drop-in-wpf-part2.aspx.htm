@@ -1,0 +1,377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Jaime Rodriguez : Drag &amp;amp; drop in WPF part2 ...</title>
+ 
+
+
+
+
+<meta name="keywords" content="Windows Presentation Foundation">
+<meta name="description" content="Last part, we focused on the drag... In this part we will focus on drop (which is relatively straight forward) ... DropTargets must set AllowDrop = true It all begins with a Visual Element setting its AllowDrop to true; this tells the D&amp;amp;D subsystem">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/jaimer/pingback.aspx">
+<link rel="stylesheet" href="drag-drop-in-wpf-part2.aspx_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="drag-drop-in-wpf-part2.aspx_files/print.css" type="text/css" media="print">
+<link rel="stylesheet" href="drag-drop-in-wpf-part2.aspx_files/blue%2520right%2520sidebar.css" type="text/css" media="screen">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Jaime Rodriguez  (RSS 2.0)" href="http://blogs.msdn.com/jaimer/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Jaime Rodriguez  (Atom 1.0)" href="http://blogs.msdn.com/jaimer/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Drag &amp;amp; drop in WPF part2 ... Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/jaimer/commentrss.aspx?PostID=3835321">
+
+	<script src="drag-drop-in-wpf-part2.aspx_files/global.js" type="text/javascript"></script></head><body>
+<form name="aspnetForm" method="post" action="/jaimer/archive/2007/07/12/drag-drop-in-wpf-part2.aspx" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFI2N0bDAwJF8kY3RsMDAkXyRicyRfJHdzJF8kU2VhcmNoQm94rkRXbV1z5ohWybmugg6l5bfTy3M=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script language="javascript" type="text/javascript" src="drag-drop-in-wpf-part2.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script language="javascript" type="text/javascript">
+var RatingControlAJAX = {
+"SaveRating":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Blogs.Controls.BlogRatePost',id,'SaveRating',[p0],cb,0,0,0,1);}};
+</script><script language="javascript" type="text/javascript">
+var ThreadSubscribeLinkButton = {
+"ToggleEmailReplies":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Controls.ThreadSubscribeLinkButton',id,'ToggleEmailReplies',[p0],cb,0,0,0,0);}};
+</script><script type="text/javascript" src="drag-drop-in-wpf-part2.aspx_files/ratingcontrol.js"></script>
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Signed in as <a href="http://blogs.msdn.com/user/EditProfile.aspx?ReturnUrl=/blogs/post.aspx?App=jaimer&amp;y=2007&amp;m=07&amp;d=12&amp;PostName=drag-drop-in-wpf-part2">bbraatz</a>
+ | <a id="ctl00___ctl00___duw1_rc1___logout" href="http://blogs.msdn.com/logout.aspx">Sign out</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="wrapper">
+	<div id="container">
+		<div id="header">
+			
+<div id="title">
+<h1><a id="ctl00___ctl00___bth___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/jaimer/default.aspx">Jaime Rodriguez </a></h1>
+<p id="tagline">On .net client stuff..  </p></div>
+
+		</div>
+		<div id="contentwrapper">
+			<div id="sidebar-a">
+				
+<div id="BlogLinksSideBar">
+	
+<div id="WeblogLinks">
+<h3>This Blog</h3>
+<ul>
+    <li><a id="ctl00___ctl00___bs___wl___email" href="http://blogs.msdn.com/jaimer/emailsubscriptions.aspx">Email alerts</a></li>
+	
+	<li><a id="ctl00___ctl00___bs___wl___Contactlink1" href="http://blogs.msdn.com/jaimer/contact.aspx">Email</a></li>
+</ul>
+</div>
+</div>
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="SubscriptionsSideBar">
+	
+<div id="Subscriptions">
+ <h3>Syndication</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___bs___rss" href="http://blogs.msdn.com/jaimer/rss.xml">RSS 2.0</a></li>
+        <li><a id="ctl00___ctl00___bs___bs___atom" href="http://blogs.msdn.com/jaimer/atom.xml">Atom 1.0</a></li>
+    </ul>
+ </div>
+</div>
+
+<div id="SearchSideBar">
+	
+<h3>Search</h3>	
+<div id="Search">
+<ul><li>
+<input name="ctl00$_$ctl00$_$bs$_$ws$_$SearchBox" id="ctl00___ctl00___bs___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event);" type="text"> <a id="ctl00___ctl00___bs___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')">Go</a>
+</li></ul>
+</div>
+
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul>
+	<ul class="SidebarTagCloud">
+<li class="Tag6"><a href="http://blogs.msdn.com/jaimer/archive/tags/acropolis/default.aspx" rel="tag">acropolis</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/jaimer/archive/tags/blend/default.aspx" rel="tag">blend</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/jaimer/archive/tags/cider+designer/default.aspx" rel="tag">cider designer</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/jaimer/archive/tags/Client+in+general+/default.aspx" rel="tag">Client in general </a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/jaimer/archive/tags/expression/default.aspx" rel="tag">expression</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/jaimer/archive/tags/Personal/default.aspx" rel="tag">Personal</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/jaimer/archive/tags/silverlight/default.aspx" rel="tag">silverlight</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/jaimer/archive/tags/Vista+Sidebar+Gadgets/default.aspx" rel="tag">Vista Sidebar Gadgets</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/jaimer/archive/tags/vs2008/default.aspx" rel="tag">vs2008</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/jaimer/archive/tags/Windows+Presentation+Foundation/default.aspx" rel="tag">Windows Presentation Foundation</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/jaimer/archive/tags/wpfe/default.aspx" rel="tag">wpfe</a></li>
+</ul>
+
+	</ul>
+</div>
+
+<div id="NewsSideBar">
+	
+<h3>News</h3>
+<div id="news">The information in this weblog is provided "AS IS" with
+no warranties, and confers no rights. This weblog does not represent
+the thoughts, intentions, plans or strategies of my employer. It is
+solely my opinion. </div>
+</div>
+
+<div id="ArchiveSideBar">
+	
+	
+<h3>Archives</h3>
+<ul>
+
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/09.aspx">September 2007 (3)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/08.aspx">August 2007 (8)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/07.aspx">July 2007 (7)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/06.aspx">June 2007 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/05.aspx">May 2007 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/04.aspx">April 2007 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/03.aspx">March 2007 (4)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/02.aspx">February 2007 (3)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/01.aspx">January 2007 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/12.aspx">December 2006 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/10.aspx">October 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/09.aspx">September 2006 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/08.aspx">August 2006 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/07.aspx">July 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/06.aspx">June 2006 (7)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/05.aspx">May 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/04.aspx">April 2006 (4)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/03.aspx">March 2006 (4)</a>
+        </li>
+    
+</ul>
+	
+</div>
+
+<div id="LinkSideBar">
+	
+        <h3>Stuff I Subscribe to</h3>
+        <ul>
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl01_Link" href="http://blogs.msdn.com/saraford/rss.xml">VS Tip of the day</a></li>
+            </ul>
+    
+
+	
+</div>
+			</div>
+			<div id="content"><div id="content2">
+				
+        
+
+<div class="post">
+	<div class="postview">			
+		<h2>Drag &amp;amp; drop in WPF part2 ...</h2>
+		<p>Last
+part, we focused on the drag...&nbsp;&nbsp; In this part we will focus
+on drop (which is relatively straight forward) ...&nbsp;&nbsp;</p>
+<h3><font color="#0080ff">DropTargets must set&nbsp; AllowDrop = true </font></h3>
+<p>It all begins with a Visual Element setting its AllowDrop to true;
+this tells the D&amp;D subsystem your control is a drop target&nbsp;
+...&nbsp; You can do this in XAML or in code..&nbsp;</p>
+<p mce_keep="true">&nbsp;</p>
+<h3><font color="#0080c0">DragEnter, DragOver, DragLeave</font> </h3>
+<p>I hardly ever subscribe to any of these events..&nbsp; but let's walk through the niceties on each .. </p>
+<ul>
+<li>DragEnter -- happens when cursor/mouse enters;&nbsp; useful for
+things like "highlighting" the target by showing an adorner, or similar
+...&nbsp;&nbsp;&nbsp;&nbsp; You would think that when mouseEnter, you
+can query the dataobject and provide feedback on whether the drop would
+be allowed... Well, you can, but it is pretty useless. Dragover can
+override that, so the place to handle the feedback is on DragOver.. </li><li>DragLeave -- happens when cursor leaves..&nbsp; Here you should undo any thing you did on DragEnter .. 
+</li><li>Dragover -- here you can provide feedback to whether the drop would succeed ..&nbsp; </li></ul>
+<h3><font color="#0080c0">Walking through the Drop code with an example:</font> </h3>
+<p>From our previous work in progress project, I replaced old
+DropTarget StackPanel with a DropTargetText and DropTargetImages
+...&nbsp;&nbsp; <br>DropTargetImages will handle DragOver,DragEnter,
+Dragleave&nbsp; to check if dataObject type is Images and if not, it
+will set e.Effects to None, and provide some&nbsp;ugly&nbsp;feedback.. <br>DropTargetText will handle Dragover&nbsp; and Drop&nbsp; (since our old dataobject type is Text) </p>
+<table class="" unselectable="on" border="0" cellpadding="2" cellspacing="0" width="800">
+<tbody>
+<tr>
+<td class="" style="background-color: rgb(219, 219, 219);" valign="top" width="800">
+<p>void Window1_Loaded(object sender, RoutedEventArgs e)<br>&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.DragSource.PreviewMouseLeftButtonDown += new
+MouseButtonEventHandler(DragSource_PreviewMouseLeftButtonDown);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.DragSource.PreviewMouseMove += new
+MouseEventHandler(DragSource_PreviewMouseMove); </p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // DROP <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.DropTargetImages.DragEnter += new
+DragEventHandler(DropTargetImages_DragEnter);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.DropTargetImages.DragLeave += new
+DragEventHandler(DropTargetImages_DragLeave);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.DropTargetImages.DragOver += new
+DragEventHandler(DropTargetImages_DragOver);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.DropTargetText.DragOver += new DragEventHandler(DropTargetText_DragOver);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.DropTargetText.Drop += new DragEventHandler(DropTargetText_Drop); 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; } 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; void DropTargetText_Drop(object sender, DragEventArgs e)<br>&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IDataObject data = e.Data; 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (data.GetDataPresent(DataFormats.Text))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MessageBox.Show( <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+string.Format("right format, thanks for dropping '{0}'" , <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+((string)data.GetData(DataFormats.Text)))); <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; } 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; void DropTargetImages_DragOver(object sender, DragEventArgs e)<br>&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!e.Data.GetDataPresent("Images"))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e.Effects = DragDropEffects.None;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e.Handled = true;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp;&nbsp; } 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; void DropTargetText_DragOver(object sender, DragEventArgs e)<br>&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!e.Data.GetDataPresent("Text"))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e.Effects = DragDropEffects.None;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e.Handled = true;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <br>&nbsp;&nbsp;&nbsp;&nbsp; } 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; void DropTargetImages_DragLeave(object sender, DragEventArgs e)<br>&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RunStoryboard("Timeline2"); 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; } 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; void RunStoryboard(string name)<br>&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Storyboard sb = this.FindResource(name) as Storyboard ;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.Diagnostics.Debug.Assert(sb != null);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sb.Begin(DropTargetImages); 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; } 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; void DropTargetImages_DragEnter(object sender, DragEventArgs e)<br>&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!e.Data.GetDataPresent("Image"))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RunStoryboard("Timeline1"); 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e.Effects = DragDropEffects.None;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e.Handled = true;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } 
+</p><p>&nbsp;&nbsp;&nbsp;&nbsp; }</p></td></tr></tbody></table>
+<p mce_keep="true">&nbsp;</p>
+<p>The <a href="http://jaimersamples.members.winisp.net/samples/dragdrop/drop.zip" mce_href="http://jaimersamples.members.winisp.net/samples/dragdrop/drop.zip">source code for snippet above is here</a>. </p>
+<p>Handling the Drop can be that straight forward, &nbsp;but it almost never is that simple..&nbsp; </p>
+<p><a class="" href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part-3-the-results-and-code.aspx" mce_href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part-3-the-results-and-code.aspx">In Part3</a>, I can walk through much more samples of handling drop ...&nbsp; </p>
+		<div class="postfoot">
+			Published Thursday, July 12, 2007 1:40 PM
+			by
+			<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=4419">jaimer</a>
+			
+			<span class="CommonRateControl" id="ctl00___ctl00___ctl01___Entry___Ratings" title="Not yet rated"><img title="Poor" src="drag-drop-in-wpf-part2.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Poor" src="drag-drop-in-wpf-part2.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Fair" src="drag-drop-in-wpf-part2.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Fair" src="drag-drop-in-wpf-part2.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Average" src="drag-drop-in-wpf-part2.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Average" src="drag-drop-in-wpf-part2.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Good" src="drag-drop-in-wpf-part2.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Good" src="drag-drop-in-wpf-part2.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Excellent" src="drag-drop-in-wpf-part2.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Excellent" src="drag-drop-in-wpf-part2.aspx_files/star-right-off.gif" align="absmiddle" border="0"></span><input value="0" id="ctl00___ctl00___ctl01___Entry___Ratings_Value" type="hidden">
+			<div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/jaimer/archive/tags/Windows+Presentation+Foundation/default.aspx" rel="tag">Windows Presentation Foundation</a></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+										
+		</div>
+	</div>
+</div>
+
+
+<h3>
+	Comments
+</h3>	
+<div id="comments">
+
+		<div class="comment">
+			No Comments
+		</div>
+	
+
+</div>
+
+	
+
+
+
+<em>New Comments to this post are disabled</em>	
+   
+    
+			</div></div>
+			<div id="contentfooter">&nbsp;</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+<script language="javascript">var ctl00___ctl00___ctl01___Entry___Ratings=new RateControl('ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings_Value', 5, '/Themes/default/images/common/', false, 'CommonRateControl','CommonRateControlActive','CommonRateControlReadOnly',['Terrible','Poor','Fair','Average','Good','Excellent'],false,true);</script>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part2.aspx"
+dc:identifier="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part2.aspx"
+dc:title="Drag &amp;amp; drop in WPF part2 ..."
+trackback:ping="http://blogs.msdn.com/jaimer/trackback.aspx?PostID=3835321" />
+</rdf:RDF>
+-->
+</form>
+</body></html>

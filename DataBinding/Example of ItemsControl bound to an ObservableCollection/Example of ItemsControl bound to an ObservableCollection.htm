@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1"><title>WPF: Example of ItemsControl bound to an ObservableCollection</title>
+
+
+
+
+  
+
+    <style type="text/css">
+    
+      .spanOption
+      {
+        font-weight: bold;        
+      }
+      
+      .spanMethod
+      {
+        font-weight: bold;        
+      }
+      
+      .spanParameter
+      {
+        font-weight: bold;
+      }
+    
+    </style>
+
+    <link rel="Stylesheet" type="text/css" href="Example%20of%20ItemsControl%20bound%20to%20an%20ObservableCollection_files/gslb.css"><link rel="Stylesheet" type="text/css" href="Example%20of%20ItemsControl%20bound%20to%20an%20ObservableCollection_files/gslb_002.css"><link rel="Stylesheet" type="text/css" href="Example%20of%20ItemsControl%20bound%20to%20an%20ObservableCollection_files/manoli.css">
+    
+    <script type="text/javascript" src="Example%20of%20ItemsControl%20bound%20to%20an%20ObservableCollection_files/gslb.js"></script>
+    <script type="text/javascript" src="Example%20of%20ItemsControl%20bound%20to%20an%20ObservableCollection_files/gslb_004.js"></script>
+    <script type="text/javascript" src="Example%20of%20ItemsControl%20bound%20to%20an%20ObservableCollection_files/gslb_002.js"></script>
+    <script type="text/javascript" src="Example%20of%20ItemsControl%20bound%20to%20an%20ObservableCollection_files/gslb_003.js"></script></head><body>
+    <form name="frmMain" method="post" action="article-2007041201.aspx" id="frmMain">
+<div>
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTE5MDEwMTE5MWRk" type="hidden">
+</div>
+
+
+      <a id="lnkHome" href="http://www.galasoft.ch/index.html" target="_top" class="gslb_mainLnkHome" style="top: 8px; left: 8px;">
+        <img src="Example%20of%20ItemsControl%20bound%20to%20an%20ObservableCollection_files/vsmallhead.gif" alt="Navigate back home" title="Navigate back home">
+      </a>
+      <script type="text/javascript">
+        new gslb.PositionedNode( document.getElementById( 'lnkHome' ) );
+      </script>
+    
+      <div class="gslb_mainDivImageTitle">
+        <img alt="GalaSoft Laurent Bugnion" title="GalaSoft Laurent Bugnion" src="Example%20of%20ItemsControl%20bound%20to%20an%20ObservableCollection_files/header.gif" class="gslb_mainImgTitle">
+      </div>
+      
+      <div class="gslb_rsbDivPosting" style="margin-top: 2em; width: 60%;">
+        <div class="gslb_rsbDivPostingTitle">
+          WPF: Example of ItemsControl bound to an ObservableCollection
+        </div>
+
+        <table style="margin: 0pt; width: 100%;">
+          <tbody><tr>
+            <td>
+                <div class="gslb_mainDivSummary">
+                  <a href="#intro">Introduction</a> /
+                  <a href="#do">DependencyObject</a> /
+                  <a href="#observablecollection">ObservableCollection</a> /
+                  <a href="#databinding">Databinding</a> /
+                  <a href="#itemscontrol">ItemsControl</a> /
+                  <a href="#resources">Resources</a> /
+                  <a href="#history">History</a>
+                </div>
+            </td>
+            <td style="text-align: right; vertical-align: top;">
+              <div class="gslb_mainDivSummary">
+                <a href="http://www.galasoft.ch/mydotnet/articles/article-2006111301.aspx">&lt;&lt;&nbsp;Prev</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/articles_en.html#wpf">Index</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/mydotnet/articles/article-2007060701.aspx">Next&nbsp;&gt;&gt;</a>
+              </div>
+            </td>
+          </tr>
+        </tbody></table>
+
+        <div class="gslb_rsbDivFeature">
+          <div class="gslb_rsbDivTitle">
+            <a id="intro"></a>Introduction:
+          </div>
+<p class="gslb_rsbPParagraph">
+One of the most exciting feature I learned about in the WPF course two weeks ago was that you can bind an <a href="http://msdn2.microsoft.com/en-us/library/ms668604.aspx" target="_blank">ObservableCollection</a>'s content to just any type of Panel, by using an <a href="http://msdn2.microsoft.com/en-us/library/system.windows.controls.itemscontrol.aspx" target="_blank">ItemsControl</a> and the <a href="http://msdn2.microsoft.com/en-us/library/system.windows.controls.itemspaneltemplate.aspx" target="_blank">ItemsPanelTemplate</a> property.
+</p>
+<p class="gslb_rsbPParagraph">
+In order to check if I had understood the technique properly, I made a
+small working example. It actually worked out pretty well, so well in
+fact that I decided to publish it, hoping that it can help someone out
+there.
+</p>
+          <div class="gslb_rsbDivTitle">
+            <a id="do"></a>The business object: DependencyObject
+          </div>
+
+<p class="gslb_rsbPParagraph">
+There are various ways to add a <a href="http://msdn2.microsoft.com/en-us/library/system.windows.dependencyproperty.aspx" target="_blank">DependencyProperty</a> to a CLR object. In this example, I simply derive my business object from <a href="http://msdn2.microsoft.com/en-us/library/system.windows.dependencyobject.aspx" target="_blank">DependencyObject</a>.
+This way adding a DependencyProperty is very easy. Note that the
+property Title is here just for convenience. The actual value is not
+stored in the object, but in the WPF framework, because the
+DependencyProperty is registered with it. Note the use of <a href="http://msdn2.microsoft.com/en-us/library/system.windows.dependencyobject.getvalue.aspx" target="_blank">GetValue</a> and <a href="http://msdn2.microsoft.com/en-us/library/system.windows.dependencyobject.setvalue.aspx" target="_blank">SetValue</a>.
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">public</span> <span class="kwrd">class</span> <span class="type">MyDataItem</span> : <span class="type">DependencyObject</span>
+{
+  <span class="rem">// Note how the TitleProperty
+  // is a DependencyProperty,
+  // and the Title CLR property is
+  // here just for convenience. The string itself
+  // is not stored in the object, it's
+  // stored in the WPF framework.</span>
+
+  <span class="kwrd">public</span> <span class="kwrd">string</span> Title
+  {
+    get { <span class="kwrd">return</span> (<span class="kwrd">string</span>) GetValue( TitleProperty ); }
+    set { SetValue( TitleProperty, <span class="kwrd">value</span> ); }
+  }
+
+  <span class="rem">// Using a DependencyProperty as the backing store for Title.
+  // This enables animation, styling, binding, etc...</span>
+  <span class="kwrd">public</span> <span class="kwrd">static</span> <span class="kwrd">readonly</span> <span class="type">DependencyProperty</span> TitleProperty =
+      <span class="type">DependencyProperty</span>.Register( <span class="str">"Title"</span>, <span class="kwrd">typeof</span>( <span class="kwrd">string</span> ),
+        <span class="kwrd">typeof</span>( <span class="type">MyDataItem</span> ), <span class="kwrd">new</span> <span class="type">UIPropertyMetadata</span>( <span class="str">""</span> ) );
+
+  <span class="kwrd">public</span> MyDataItem( <span class="kwrd">string</span> title )
+  {
+    Title = title;
+  }
+}</div>
+<div class="gslb_rsbDivLegend">
+        MyDataItem implementation
+</div>
+</div>
+
+          <div class="gslb_rsbDivTitle">
+            <a id="observablecollection"></a>ObservableCollection in the UI layer
+          </div>
+          
+<p class="gslb_rsbPParagraph">
+In this example, the examples are stored in an ObservableCollection.
+This built-in generic collection is great for databinding, because it
+raises events automatically when an item is added or removed. If you
+databind such a collection to the ItemsSource property of an
+ItemsControl, you don't need to worry about adding or removing UI
+elements from the panel, the WPF framework takes care of that for you.
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">private</span> <span class="type">ObservableCollection</span>&lt;<span class="type">MyDataItem</span>&gt; dataItems;
+<span class="kwrd">public</span> <span class="type">ObservableCollection</span>&lt;<span class="type">MyDataItem</span>&gt; DataItems
+{
+  get { <span class="kwrd">return</span> dataItems; }
+}</div>
+<div class="gslb_rsbDivLegend">
+        In the page: ObservableCollection
+</div>
+</div>
+<p class="gslb_rsbPParagraph">The rest of the Page code-behind is
+pretty straight forward: Initializing the ObservableCollection, adding
+a few items for the example, and handling the buttons' events.
+</p>
+<p class="gslb_rsbPParagraph">There are four buttons: One adds an item
+to the collection. One removes an item from the collection. One
+increases the index on the second item in the collection (if
+available). The last button decreases that same index.
+</p>
+<p class="gslb_rsbPParagraph">Note that there are strictly no
+interaction between these buttons and the UI display. The interaction
+happens on the ObservableCollection and the MyDataItem instances
+contained in that collection. The rest occurs strictly through data
+binding.
+</p>
+          
+          <div class="gslb_rsbDivTitle">
+            <a id="databinding"></a>WPF magic: the data binding
+          </div>
+
+<p class="gslb_rsbPParagraph">
+In order to update the UI automatically when the collection gets updated it needs a little XAML work.
+</p>
+<p class="gslb_rsbPParagraph">First, we specify how the data items must
+be represented in the UI. This is the step I love, because it's when
+you take abstract data and give them a shape. To do this, we use a <a href="http://msdn2.microsoft.com/en-us/library/system.windows.datatemplate.aspx" target="_blank">DataTemplate</a>
+and add it in the Page's resources. The DataTemplate here defines a
+Border with rounded corners, with a gradient as background, and
+containing a TextBlock. The Content of the TextBlock is bound directly
+to the Title property of the data item.
+</p>
+<p class="gslb_rsbPParagraph">Note that this works because the data
+context of the DataTemplate will be automatically set when it is
+actually bound to the data item. For the moment, we only work on
+resources, so there is no binding yet.
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">DataTemplate</span> <span class="attr">x:Key</span><span class="kwrd">="itemsTemplate"</span><span class="kwrd">&gt;</span>
+  <span class="kwrd">&lt;</span><span class="html">Border</span> <span class="attr">Width</span><span class="kwrd">="120"</span>
+          <span class="attr">Height</span><span class="kwrd">="50"</span>
+          <span class="attr">CornerRadius</span><span class="kwrd">="10,10,10,10"</span>
+          <span class="attr">Margin</span><span class="kwrd">="4,0,4,0"</span>
+          <span class="attr">Padding</span><span class="kwrd">="4,4,4,4"</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">Border.Background</span><span class="kwrd">&gt;</span>
+      <span class="kwrd">&lt;</span><span class="html">LinearGradientBrush</span> <span class="attr">EndPoint</span><span class="kwrd">="1,0.5"</span>
+                           <span class="attr">StartPoint</span><span class="kwrd">="0,0.5"</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">GradientStop</span> <span class="attr">Color</span><span class="kwrd">="#FF767676"</span> <span class="attr">Offset</span><span class="kwrd">="0"</span><span class="kwrd">/&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">GradientStop</span> <span class="attr">Color</span><span class="kwrd">="#FFFF0000"</span> <span class="attr">Offset</span><span class="kwrd">="1"</span><span class="kwrd">/&gt;</span>
+      <span class="kwrd">&lt;/</span><span class="html">LinearGradientBrush</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">Border.Background</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">Grid</span> <span class="attr">Width</span><span class="kwrd">="Auto"</span>
+    <span class="attr">Height</span><span class="kwrd">="Auto"</span><span class="kwrd">&gt;</span>
+      <span class="kwrd">&lt;</span><span class="html">Grid.ColumnDefinitions</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">ColumnDefinition</span> <span class="attr">Width</span><span class="kwrd">="39.942"</span><span class="kwrd">/&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">ColumnDefinition</span> <span class="attr">Width</span><span class="kwrd">="*"</span><span class="kwrd">/&gt;</span>
+      <span class="kwrd">&lt;/</span><span class="html">Grid.ColumnDefinitions</span><span class="kwrd">&gt;</span>
+      <span class="kwrd">&lt;</span><span class="html">TextBlock</span> <span class="attr">HorizontalAlignment</span><span class="kwrd">="Center"</span>
+                 <span class="attr">Margin</span><span class="kwrd">="0,0,0,0"</span>
+                 <span class="attr">VerticalAlignment</span><span class="kwrd">="Center"</span>
+                 <span class="attr">Grid</span>.<span class="attr">Column</span><span class="kwrd">="1"</span>
+                 <span class="attr">FontSize</span><span class="kwrd">="14"</span>
+                 <span class="attr">FontWeight</span><span class="kwrd">="Bold"</span>
+                 <span class="attr">Foreground</span><span class="kwrd">="#FFFFFFFF"</span>
+                 <span class="attr">TextWrapping</span><span class="kwrd">="Wrap"</span>
+                 <span class="attr">Text</span><span class="kwrd">="{Binding Title}"</span><span class="kwrd">/&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">Grid</span><span class="kwrd">&gt;</span>
+  <span class="kwrd">&lt;/</span><span class="html">Border</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">DataTemplate</span><span class="kwrd">&gt;</span></div>
+<div class="gslb_rsbDivLegend">
+        DataTemplate, giving a shape to a data item
+</div>
+</div>
+
+          <div class="gslb_rsbDivTitle">
+            <a id="itemscontrol"></a>Finding a parent for the items: ItemsControl
+          </div>
+
+<p class="gslb_rsbPParagraph">After the items have been shaped, we need
+to place them on a panel of some sort. Think of the way a ListBox
+works: You bind its ItemsSource property to a collection, and you
+specify how the items should be displayed. Well, ListBox derives from <a href="http://msdn2.microsoft.com/en-us/library/system.windows.controls.itemscontrol.aspx" target="_blank">ItemsControl</a>, and you can shape that "invisible" container to to look like another panel. To do this, we use the <a href="http://msdn2.microsoft.com/en-us/library/system.windows.controls.itemspaneltemplate.aspx" target="_blank">ItemsPanelTemplate</a> property, and we define how the ItemsControl must be represented. In our case, we use a simple horizontal StackPanel.
+</p>
+<p class="gslb_rsbPParagraph">
+Note how the ItemsSource property is bound to the ObservableCollection
+contained in the page. This is where the link between the Business
+Logic Layer and the UI Layer is done. To simplify the syntax, we simply
+gave a x:Name to the Window, and then we use the ElementName/Path
+syntax in the binding.
+</p>
+<p class="gslb_rsbPParagraph">Note also how we tell the ItemsControl
+that the items must be represented using the DataTemplate we defined
+earlier. The ItemTemplate property is used for this. This is where the
+DataTemplate's data context is set to be the data item itself.
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">ItemsControl</span> <span class="attr">Grid</span>.<span class="attr">Column</span><span class="kwrd">="1"</span>
+              <span class="attr">Grid</span>.<span class="attr">Row</span><span class="kwrd">="0"</span>
+              <span class="attr">Width</span><span class="kwrd">="Auto"</span>
+              <span class="attr">Height</span><span class="kwrd">="Auto"</span>
+              <span class="attr">ItemsSource</span><span class="kwrd">="{Binding ElementName=mainWindow, Path=DataItems}"</span>
+              <span class="attr">ItemTemplate</span><span class="kwrd">="{StaticResource itemsTemplate}"</span>
+              <span class="attr">Grid</span>.<span class="attr">ColumnSpan</span><span class="kwrd">="2"</span><span class="kwrd">&gt;</span>
+  <span class="kwrd">&lt;</span><span class="html">ItemsControl.ItemsPanel</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">ItemsPanelTemplate</span><span class="kwrd">&gt;</span>
+      <span class="kwrd">&lt;</span><span class="html">StackPanel</span> <span class="attr">Orientation</span><span class="kwrd">="Horizontal"</span> <span class="kwrd">/&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">ItemsPanelTemplate</span><span class="kwrd">&gt;</span>
+  <span class="kwrd">&lt;/</span><span class="html">ItemsControl.ItemsPanel</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">ItemsControl</span><span class="kwrd">&gt;</span></div>
+<div class="gslb_rsbDivLegend">
+        ItemsControl, defining a panel for the UI items
+</div>
+</div>
+<p class="gslb_rsbPParagraph">There's nothing more to it! The rest of
+the code is only there to simulate actions on the Business Logic Layer.
+I hope that this simple example helps you understand better how data
+binding works, and how ItemsControl and ObservableCollection can be
+used to display a various number of items without having to write a lot
+of code behind.
+</p>
+
+          <div class="gslb_rsbDivTitle">
+            <a id="resources"></a>Resources
+          </div>
+          
+          <p class="gslb_rsbPParagraph">
+            Click to see the code.
+            <br>Right-click and "Save as..." to save locally.
+          </p>
+
+<ul class="gslb_rsbList">
+<li>
+<a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2007041201/xbap/GalaSoftLb.Wpf.ItemsControlExample.Xbap.xbap">XBAP example</a> (open in IE, with .NET 3.0 installed)
+</li>
+<li>
+<a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2007041201/Page1.xaml.txt">XAML code</a>
+</li>
+<li>
+<a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2007041201/Page1.xaml.cs.txt">code behind</a>
+</li>
+<li>
+<a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2007041201/MyDataItem.cs.txt">dependency object</a>
+</li>
+<li>
+<a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2007041201/GalaSoftLb.Wpf.ItemsControlExample.zip">Whole project</a>
+</li>
+</ul>
+
+          <div class="gslb_rsbDivTitle">
+            <a id="history"></a>History
+          </div>
+          
+          <p class="gslb_rsbPParagraph">
+            </p><table class="gslb_tableHistory" cellspacing="0">
+              <tbody><tr>
+                <td class="gslb_tdHistory">Date</td>
+                <td class="gslb_tdHistory">Version</td>
+                <td class="gslb_tdHistory">
+                  Description
+                </td>
+              </tr>
+              <tr>
+                <td class="gslb_tdHistory">12.04.2007</td>
+                <td class="gslb_tdHistory">V1.0.0</td>
+                <td class="gslb_tdHistory">
+                First published version
+                </td>
+              </tr>
+            </tbody></table>
+          
+
+        </div>
+      </div>
+      
+    </form>
+    
+  </body></html>

@@ -1,0 +1,697 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How do I apply more than one filter?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20apply%20more%20than%20one%20filter_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20apply%20more%20than%20one%20filter_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">September 4, 2006</div>
+					<h2 id="post-32"><a id="postTitle" href="http://www.beacosta.com/blog/?p=32" rel="bookmark" title="How do I apply more than one filter?">How do I apply more than one filter?</a></h2>
+					<p><span id="text">Today I will explain how you can apply more than one filter to a data bound view of a collection.</span></p>
+<p><span id="text">I showed in my last post the two ways of filtering.
+CollectionViewSource allows us to filter by attaching an event handler
+to the Filter event (of type FilterEventHandler). You may be wondering
+what happens if we attach more than one filter event handler to the
+same CollectionViewSource’s Filter event. It turns out that each of the
+event handlers is called in the sequence they were attached, once for
+each item. This allows each handler to override whatever filtering
+decision was made in the previous ones.</span></p>
+<p><span id="text">The good news is that within any event handler, you
+have access to the filtering decision made by the previous handlers.
+You can use this information to decide whether to filter the current
+item. I will show you how to do this next.</span></p>
+<p><span id="text">In my XAML file, I created an instance of an
+ObservableCollection with items of type AsterixCharacter, which
+contains two properties: one with the name of the character, and
+another one with its hair color. I then created a CollectionViewSource
+whose Source property points to this collection and bound the ListBox
+to it.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:AsterixCharacters x:Key=”asterix”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource Source=”{StaticResource asterix}” x:Key=”cvs”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate x:Key=”characterTemplate”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel Orientation=”Horizontal”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Width=”150″ Text=”{Binding Path=Name}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Text=”{Binding Path=Hair}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel Margin=”10″ Width=”200″ &gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CheckBox
+Content=”Filter out A” Checked=”AddAFilter” Unchecked=”RemoveAFilter”
+Margin=”5″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CheckBox
+Content=”Filter out white hair” Checked=”AddWhiteHairFilter”
+Unchecked=”RemoveWhiteHairFilter” Margin=”5″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox
+ItemsSource=”{Binding Source={StaticResource cvs}}”
+ItemTemplate=”{StaticResource characterTemplate}” Margin=”5″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;</span></p>
+<p><span id="text">When the first check box is checked, I want to
+filter out all Asterix characters whose names start with A. Likewise,
+when the second check box is checked, I want to filter out all
+characters with white hair. It is important to me that these two filter
+conditions are in different handlers (I could be reusing one of the
+handlers in another scenario, for example). Here is the code where I
+add and remove the filter event handler associated with the first check
+box:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;CollectionViewSource cvs;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;public Window1()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitializeComponent();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs = (CollectionViewSource)(this.Resources[”cvs”]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void AddAFilter(object sender, RoutedEventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs.Filter += new FilterEventHandler(FilterOutA);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void RemoveAFilter(object sender, RoutedEventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs.Filter -= new FilterEventHandler(FilterOutA);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">In order for the filter event handlers to work
+properly without interfering with each other, I made sure they only set
+the Accepted property of the FilterEventArgs to false when necessary to
+filter an item out. I never set the Accepted property to true, since
+that might override another filter’s decision to keep an item out of
+the view. Here is my implementation:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;private void FilterOutA(object sender, FilterEventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AsterixCharacter character = e.Item as AsterixCharacter;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ((character == null) || character.Name.StartsWith(”A”))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.Accepted = false;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void FilterOutWhiteHair(object sender, FilterEventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AsterixCharacter character = e.Item as AsterixCharacter;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ((character == null) || (character.Hair == HairColor.White))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.Accepted = false;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">Here is a screenshot of the completed sample:</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20apply%20more%20than%20one%20filter_files/29MultipleFilters.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/29MultipleFilters.zip">Here</a> you can find the VS project with this sample code. This works with July CTP WPF bits. </span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=13" title="View all posts in Sorting, filtering, grouping" rel="category">Sorting, filtering, grouping</a>, <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=32"
+    dc:identifier="http://www.beacosta.com/blog/?p=32"
+    dc:title="How do I apply more than one filter?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=32" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=32"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=32">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">2 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-111" class="comment">
+				<a name="comment-111" id="comment-111"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20apply%20more%20than%20one%20filter_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-111")'>
+					<cite>Comment by shao<a href="#comment-111"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-05 07:44:24 						
+					</div>					
+					<div class="content">
+						<p>shao said…<br>
+Hi,<br>
+I’ve been trying to create filters for a scattered plot graph where the
+data is binding to a xml file. The problem I’m encountering is that
+when I create my CollectionViewSource, it looks like this: </p>
+<p>[CollectionViewSource x:Key=”DataView” Source=”{Binding Source={StaticResource tableDS}, XPath=/table/row/column.5}” /]</p>
+<p>Since I need column.5 is the one I need to filter out information
+from to determine whether this node should appear on the graph or not,
+I am passing the XPath /table/row/column.5, however, I need other
+columns to construct my ellipses in my graph. For example, the size of
+each of the ellipse is based on column.4 and its coordinates are based
+on column.2 and column.3. </p>
+<p>This is my DataTemplate:<br>
+[DataTemplate x:Key=”rowTemplate” ]<br>
+[Ellipse Stroke=”#FF979798″ Width=”{Binding Converter={StaticResource
+convertSize}, XPath=column.4}” Height=”{Binding
+Converter={StaticResource convertSize}, XPath=column.4}”
+RenderTransformOrigin=”0.282,0.316″ ]<br>
+[Ellipse.Fill]<br>
+[RadialGradientBrush GradientOrigin=”0.307,0.241″]<br>
+[GradientStop Color=”#FFFFFFFF” Offset=”0″/]<br>
+[GradientStop Color=”#FF8983AA” Offset=”1″/]<br>
+[/RadialGradientBrush]<br>
+[/Ellipse.Fill]<br>
+[Ellipse.ToolTip]<br>
+[StackPanel Width=”250″ TextBlock.FontSize=”12″]<br>
+[TextBlock FontWeight=”Bold” Text=”{Binding XPath=column.0}” /]<br>
+[StackPanel Orientation=”Horizontal”]<br>
+[TextBlock Text=”Velocity: ” /]<br>
+[TextBlock Text=”{Binding XPath=column.2}” /]<br>
+[TextBlock Text=” Change: ” /]<br>
+[TextBlock Text=”{Binding XPath=column.3}” /]<br>
+[/StackPanel]<br>
+[TextBlock Text=”{Binding XPath=column.5}” TextWrapping=”Wrap”/]<br>
+[/StackPanel]<br>
+[/Ellipse.ToolTip] </p>
+<p>[/Ellipse]<br>
+[/DataTemplate]</p>
+<p>And this is my ItemsControl:<br>
+[ItemsControl ItemTemplate=”{DynamicResource rowTemplate}”
+ItemsSource=”{Binding Source={StaticResource DataView},
+XPath=/table/row }” Margin=”8,-285,8,0″ VerticalAlignment=”Top”
+Height=”420.952″]<br>
+[ItemsControl.ItemsPanel]<br>
+[ItemsPanelTemplate]<br>
+[Canvas Width=”600″ Height=”440″ /]<br>
+[/ItemsPanelTemplate]<br>
+[/ItemsControl.ItemsPanel]</p>
+<p>[ItemsControl.ItemContainerStyle]<br>
+[Style TargetType=”{x:Type ContentPresenter}” ]<br>
+[Setter Property=”Canvas.Left” Value=”{Binding Converter={StaticResource convertOrbit}, XPath=column.2}”/]<br>
+[Setter Property=”Canvas.Bottom” Value=”{Binding Converter={StaticResource convertHeight}, XPath=column.3}”/]</p>
+<p>[/Style]<br>
+[/ItemsControl.ItemContainerStyle]<br>
+[/ItemsControl] </p>
+<p>I thought about passing just /table/row in my CollectionViewSource,
+but it simply passes the whole thing and leaves me with no way to
+navigate through it. The Select method from XPathNavigator class simply
+doesn’t work here..</p>
+<p>Below is the code I’m using:<br>
+private void ShowOnlyTechnologyFilter(object sender, FilterEventArgs e)<br>
+{</p>
+<p>XmlElement elem = e.Item as XmlElement;<br>
+XPathNavigator nav = elem.CreateNavigator();<br>
+XPathNodeIterator nodes = nav.Select(”/table/row/column.5″);<br>
+if (nodes != null)<br>
+{</p>
+<p>if (nodes.Current.Value.ToString().Equals(”Technology”))<br>
+{<br>
+e.Accepted = true;<br>
+}<br>
+else<br>
+{<br>
+e.Accepted = false;<br>
+}<br>
+}<br>
+}</p>
+<p>private void TechnologyFilter_checked(object sender, RoutedEventArgs e)<br>
+{</p>
+<p>DataView.Filter += new FilterEventHandler(ShowOnlyTechnologyFilter);<br>
+}</p>
+<p>private void TechnologyFilter_Unchecked(object sender, RoutedEventArgs e)<br>
+{<br>
+DataView.Filter -= new FilterEventHandler(ShowOnlyTechnologyFilter);<br>
+}</p>
+<p>Can you please give me some suggestions on how I should create this filter? </p>
+<p>Thanks,<br>
+Susan</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-111", 111, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-371" class="comment odd">
+				<a name="comment-371" id="comment-371"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20apply%20more%20than%20one%20filter_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-371")'>
+					<cite>Comment by Bea<a href="#comment-371"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-18 18:40:19 						
+					</div>					
+					<div class="content">
+						<p>Hi Susan,</p>
+<p>Have you tried using a MultiBinding in the Source property of the
+CollectionViewSource? Within that MultiBinding, you can have a Binding
+per column that you’re interested in. You will need to write a
+MultiBinding Converter that takes all the different data items you bind
+to as parameters. As the return value, I would probably create a custom
+object with a property for each of the data items you care about. You
+will also need to change your DataTemplate so that it understands the
+custom object you returned from the MultiBinding Converter.</p>
+<p>Let me know if this makes sense.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-371", 371, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1443" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1443" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20apply%20more%20than%20one%20filter_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="32" type="hidden">
+		<input name="redirect_to" value="/blog/?p=32" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="c79c6edbd4255b7d1368755aad9324e3" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>6475</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 6475;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

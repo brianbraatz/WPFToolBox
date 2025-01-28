@@ -1,0 +1,300 @@
+﻿<?Mapping XmlNamespace="rdc" ClrNamespace="RD.Controls"?>
+<Button 
+	xmlns="http://schemas.microsoft.com/winfx/avalon/2005" 
+	xmlns:x="http://schemas.microsoft.com/winfx/xaml/2005"
+	xmlns:rdc="rdc" 
+	x:Class="RD.Controls.EvolveButton"
+	Template="{DynamicResource mainEvolveButtonTemplate}"
+	>
+
+	<Button.Resources>
+
+		<ControlTemplate x:Key="mainEvolveButtonTemplate" TargetType="{x:Type rdc:EvolveButton}">
+			<Grid>
+				<Rectangle x:Name="_mainRect" Style="{StaticResource MainRect_Style}" />
+				<Rectangle Style="{StaticResource InnerRect_Style}" />
+				<Grid x:Name="_mainGrid" Grid.RowSpan="3" Opacity="0">
+					<RowDefinition Height="5" />
+					<RowDefinition Height="*" />
+					<RowDefinition Height="2" />
+					<Rectangle x:Name="_mainGlassyRect" />
+					<Rectangle x:Name="_innerGlassyRect" />
+					<Rectangle x:Name="_glassyRect" />
+					<Rectangle x:Name="_glassyLightRect">
+						<Rectangle.BitmapEffect>
+							<BlurBitmapEffect Radius="4" />
+						</Rectangle.BitmapEffect>
+					</Rectangle>
+				</Grid>
+				<Grid x:Name="_pressedGrid" Visibility="Hidden">
+					<Rectangle x:Name="_pressedRect" Style="{StaticResource MainPressedRect_Style}" />
+					<Rectangle Style="{StaticResource InnerRect_Style}" />
+				</Grid>
+				<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Path=Content, RelativeSource=/TemplatedParent}" />
+			</Grid>
+
+			<ControlTemplate.Triggers>
+				<MultiTrigger>
+					<MultiTrigger.Conditions>
+						<Condition Property="ButtonType" Value="Cancel" />
+					</MultiTrigger.Conditions>
+					<Setter TargetName="_mainGlassyRect" Property="Style" Value="{StaticResource MainGlassyRect_Cancel_Style}" />
+					<Setter TargetName="_innerGlassyRect" Property="Style" Value="{StaticResource InnerGlassyRect_Cancel_Style}" />
+					<Setter TargetName="_glassyRect" Property="Style" Value="{StaticResource Glassy_Cancel_Style}" />
+					<Setter TargetName="_glassyLightRect" Property="Style" Value="{StaticResource Glassy_Light_Cancel_Style}" />
+				</MultiTrigger>
+				<MultiTrigger>
+					<MultiTrigger.Conditions>
+						<Condition Property="ButtonType" Value="No" />
+					</MultiTrigger.Conditions>
+					<Setter TargetName="_mainGlassyRect" Property="Style" Value="{StaticResource MainGlassyRect_Cancel_Style}" />
+					<Setter TargetName="_innerGlassyRect" Property="Style" Value="{StaticResource InnerGlassyRect_Cancel_Style}" />
+					<Setter TargetName="_glassyRect" Property="Style" Value="{StaticResource Glassy_Cancel_Style}" />
+					<Setter TargetName="_glassyLightRect" Property="Style" Value="{StaticResource Glassy_Light_Cancel_Style}" />
+				</MultiTrigger>
+
+				<MultiTrigger>
+					<MultiTrigger.Conditions>
+						<Condition Property="ButtonType" Value="OK" />
+					</MultiTrigger.Conditions>
+					<Setter TargetName="_mainGlassyRect" Property="Style" Value="{StaticResource MainGlassyRect_Style}" />
+					<Setter TargetName="_innerGlassyRect" Property="Style" Value="{StaticResource InnerGlassyRect_Style}" />
+					<Setter TargetName="_glassyRect" Property="Style" Value="{StaticResource Glassy_Style}" />
+					<Setter TargetName="_glassyLightRect" Property="Style" Value="{StaticResource Glassy_Light_Style}" />
+				</MultiTrigger>
+				<MultiTrigger>
+					<MultiTrigger.Conditions>
+						<Condition Property="ButtonType" Value="Yes" />
+					</MultiTrigger.Conditions>
+					<Setter TargetName="_mainGlassyRect" Property="Style" Value="{StaticResource MainGlassyRect_Style}" />
+					<Setter TargetName="_innerGlassyRect" Property="Style" Value="{StaticResource InnerGlassyRect_Style}" />
+					<Setter TargetName="_glassyRect" Property="Style" Value="{StaticResource Glassy_Style}" />
+					<Setter TargetName="_glassyLightRect" Property="Style" Value="{StaticResource Glassy_Light_Style}" />
+				</MultiTrigger>
+
+				<EventTrigger RoutedEvent="Mouse.MouseEnter">
+					<EventTrigger.Actions>
+						<BeginStoryboard Storyboard="{StaticResource Opacity_Up}" />
+					</EventTrigger.Actions>
+				</EventTrigger>
+
+				<EventTrigger RoutedEvent="Mouse.MouseLeave">
+					<EventTrigger.Actions>
+						<BeginStoryboard Storyboard="{StaticResource Opacity_Down}" />
+					</EventTrigger.Actions>
+				</EventTrigger>
+
+				<Trigger Property="IsPressed" Value="True">
+					<Setter TargetName="_pressedGrid" Property="Visibility" Value="Visible" />
+				</Trigger>
+			</ControlTemplate.Triggers>
+		</ControlTemplate>
+
+		<!-- BEGIN Main button effect -->
+		<Style x:Key="MainButton_Style" TargetType="{x:Type Rectangle}">
+			<Setter Property="Height" Value="28" />
+			<Setter Property="Width" Value="100" />
+			<Setter Property="RadiusX" Value="4" />
+			<Setter Property="RadiusY" Value="4" />
+			<Setter Property="Focusable" Value="False" />
+		</Style>
+
+		<Style x:Key="MainInnerButton_Style" TargetType="{x:Type Rectangle}">
+			<Setter Property="Height" Value="26" />
+			<Setter Property="Width" Value="98" />
+			<Setter Property="RadiusX" Value="4" />
+			<Setter Property="RadiusY" Value="4" />
+			<Setter Property="Canvas.Top" Value="1" />
+			<Setter Property="Canvas.Left" Value="1" />
+		</Style>
+
+		<Style x:Key="MainRect_Style" TargetType="{x:Type Rectangle}" BasedOn="{StaticResource MainButton_Style}">
+			<Setter Property="Stroke" Value="#FF808080" />
+			<Setter Property="StrokeThickness" Value="1" />
+			<Setter Property="Fill">
+				<Setter.Value>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStop Offset="0" Color="#FFFFFFFF" />
+							<GradientStop Offset="0.75" Color="#FFD8D9D8" />
+							<GradientStop Offset="1.0" Color="#FFD8D9D8" />
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<!-- END Effect -->
+
+		<!-- BEGIN Glassy Effects for Accept Button -->
+		<Style x:Key="MainGlassyRect_Style" TargetType="{x:Type Rectangle}" BasedOn="{StaticResource MainButton_Style}">
+			<Setter Property="Stroke" Value="#FF808080" />
+			<Setter Property="StrokeThickness" Value="1" />
+			<Setter Property="Grid.RowSpan" Value="3" />
+			<Setter Property="Fill">
+				<Setter.Value>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStop Offset="0.0" Color="#FF5EB4DE" />
+							<GradientStop Offset="0.5" Color="#FF1C74A2" />
+							<GradientStop Offset="0.8" Color="#FF5EB4DE" />
+							<GradientStop Offset="0.9" Color="#FF5EB4DE" />
+							<GradientStop Offset="1.0" Color="#FFE9F1F8" />
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<Style x:Key="InnerGlassyRect_Style" TargetType="{x:Type Rectangle}" BasedOn="{StaticResource MainInnerButton_Style}">
+			<Setter Property="Stroke" Value="#FFBCD6EB" />
+			<Setter Property="StrokeThickness" Value="0.5" />
+			<Setter Property="Grid.RowSpan" Value="3" />
+		</Style>
+
+		<Style x:Key="Glassy_Style" TargetType="{x:Type Rectangle}">
+			<Setter Property="Height" Value="8" />
+			<Setter Property="Width" Value="88" />
+			<Setter Property="Grid.Row" Value="0" />
+			<Setter Property="RadiusX" Value="6" />
+			<Setter Property="RadiusY" Value="6" />
+			<Setter Property="VerticalAlignment" Value="Bottom" />
+			<Setter Property="Fill">
+				<Setter.Value>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStop Offset="0.0" Color="#FF76C3E4" />
+							<GradientStop Offset="0.8" Color="#FF2F86B3" />
+							<GradientStop Offset="1.0" Color="#FF2F86B3" />
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<Style x:Key="Glassy_Light_Style" TargetType="{x:Type Rectangle}">
+			<Setter Property="Height" Value="28" />
+			<Setter Property="Width" Value="100" />
+			<Setter Property="Grid.RowSpan" Value="3" />
+			<Setter Property="Fill">
+				<Setter.Value>
+					<RadialGradientBrush Center="0.5,0.5" RadiusX="0.3" RadiusY="0.5" GradientOrigin="0.5,0.5">
+						<RadialGradientBrush.GradientStops>
+							<GradientStop Offset="0.0" Color="#FFC0DCE8" />
+							<GradientStop Offset="0.2" Color="#CFC0DCE8" />
+							<GradientStop Offset="0.5" Color="#6FC0DCE8" />
+							<GradientStop Offset="0.8" Color="#00C0DCE8" />
+							<GradientStop Offset="1.0" Color="#00C0DCE8" />
+						</RadialGradientBrush.GradientStops>
+					</RadialGradientBrush>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<!-- END Effect -->
+
+		<!-- BEGIN Glassy Effects for Cancel Button -->
+		<Style x:Key="MainGlassyRect_Cancel_Style" TargetType="{x:Type Rectangle}" BasedOn="{StaticResource MainButton_Style}">
+			<Setter Property="Stroke" Value="#FF808080" />
+			<Setter Property="StrokeThickness" Value="1" />
+			<Setter Property="Grid.RowSpan" Value="3" />
+			<Setter Property="Fill">
+				<Setter.Value>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStop Offset="0.0" Color="#FFE9C8FF" />
+							<GradientStop Offset="0.5" Color="#FFA878C8" />
+							<GradientStop Offset="0.8" Color="#FFE9C8FF" />
+							<GradientStop Offset="0.9" Color="#FFE9C8FF" />
+							<GradientStop Offset="1.0" Color="#FFFAF2FF" />
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<Style x:Key="InnerGlassyRect_Cancel_Style" TargetType="{x:Type Rectangle}" BasedOn="{StaticResource MainInnerButton_Style}">
+			<Setter Property="Stroke" Value="#FFE1BEF8" />
+			<Setter Property="StrokeThickness" Value="0.5" />
+			<Setter Property="Grid.RowSpan" Value="3" />
+		</Style>
+
+		<Style x:Key="Glassy_Cancel_Style" TargetType="{x:Type Rectangle}">
+			<Setter Property="Height" Value="8" />
+			<Setter Property="Width" Value="88" />
+			<Setter Property="Grid.Row" Value="0" />
+			<Setter Property="RadiusX" Value="6" />
+			<Setter Property="RadiusY" Value="6" />
+			<Setter Property="VerticalAlignment" Value="Bottom" />
+			<Setter Property="Fill">
+				<Setter.Value>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStop Offset="0.0" Color="#FFE7CBFA" />
+							<GradientStop Offset="0.8" Color="#FFB88BD5" />
+							<GradientStop Offset="1.0" Color="#FFB88BD5" />
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<Style x:Key="Glassy_Light_Cancel_Style" TargetType="{x:Type Rectangle}">
+			<Setter Property="Height" Value="28" />
+			<Setter Property="Width" Value="100" />
+			<Setter Property="Grid.RowSpan" Value="3" />
+			<Setter Property="Fill">
+				<Setter.Value>
+					<RadialGradientBrush Center="0.5,0.5" RadiusX="0.3" RadiusY="0.5" GradientOrigin="0.5,0.5">
+						<RadialGradientBrush.GradientStops>
+							<GradientStop Offset="0.0" Color="#FFE3D0F0" />
+							<GradientStop Offset="0.2" Color="#CFE3D0F0" />
+							<GradientStop Offset="0.5" Color="#6FE3D0F0" />
+							<GradientStop Offset="0.8" Color="#00E3D0F0" />
+							<GradientStop Offset="1.0" Color="#00E3D0F0" />
+						</RadialGradientBrush.GradientStops>
+					</RadialGradientBrush>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<!-- END Effect -->
+		
+		<!-- BEGIN Pressed effect -->
+		<Style x:Key="MainPressedRect_Style" TargetType="{x:Type Rectangle}" BasedOn="{StaticResource MainButton_Style}">
+			<Setter Property="Stroke" Value="#FF808080" />
+			<Setter Property="StrokeThickness" Value="1" />
+			<Setter Property="Fill">
+				<Setter.Value>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStop Offset="0" Color="#FFB5B7B5" />
+							<GradientStop Offset="0.7" Color="#FFF2F2F2" />
+							<GradientStop Offset="1.0" Color="#FFF2F2F2" />
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<Style x:Key="InnerRect_Style" TargetType="{x:Type Rectangle}" BasedOn="{StaticResource MainInnerButton_Style}">
+			<Setter Property="Stroke" Value="White" />
+			<Setter Property="StrokeThickness" Value="0.5" />
+		</Style>
+		<!-- END Effect -->
+		
+		<Style x:Key="Text_Style" TargetType="{x:Type TextBlock}">
+			<Setter Property="FontFamily" Value="Segoe UI" />
+			<Setter Property="FontSize" Value="12" />
+			<Setter Property="Foreground" Value="Black" />
+		</Style>
+
+		<Storyboard x:Key="Opacity_Up">
+			<DoubleAnimation AutoReverse="False" BeginTime="0:0:0" Duration="0:0:0.2" From="0" To="1"
+											Storyboard.TargetName="_mainGrid" Storyboard.TargetProperty="(Grid.Opacity)" />
+		</Storyboard>
+		<Storyboard x:Key="Opacity_Down">
+			<DoubleAnimation AutoReverse="False" BeginTime="0:0:0" Duration="0:0:0.2" From="1" To="0"
+											Storyboard.TargetName="_mainGrid" Storyboard.TargetProperty="(Grid.Opacity)" />
+		</Storyboard>
+		
+	</Button.Resources>
+
+</Button>

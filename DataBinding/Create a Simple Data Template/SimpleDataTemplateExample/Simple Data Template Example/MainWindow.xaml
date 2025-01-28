@@ -1,0 +1,55 @@
+﻿<Window x:Class="SimpleDataTemplateSample.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:SimpleDataTemplateSample"
+    Title="Simple Data Template Sample" 
+	Width="530" 
+	Height="303" 
+    >
+
+	<Grid Name="mainGrid">
+		<Grid.Resources>
+
+			<!--
+				Create the data source for the list box; the data source is an instance
+				of the Books type
+			-->
+			<ObjectDataProvider x:Key="BooksODP" ObjectType="{x:Type local:Books}" />
+
+			<!--
+				Data template to display a list box item, which contains the book image, 
+				the book title, and the book author(s).
+			-->
+			<DataTemplate x:Key="BookListItemTemplate">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+					<Image Grid.RowSpan="2" Grid.Column="0" Source="{Binding Path=ImageUri}" Width="130" Height="150" Stretch="Fill"/>
+					<TextBlock Grid.Row="0" Grid.Column="1" Padding="5,0,0,0" Text="{Binding Path=Title}" FontSize="20" FontWeight="SemiBold" />
+					<TextBlock Grid.Row="1" Grid.Column="1" Padding="5,0,0,0" Text="{Binding Path=Author}" />
+				</Grid>
+			</DataTemplate>
+		</Grid.Resources>
+
+		<!--
+			Listbox of books, bound to Books data source (BooksODP),
+			and using data template ie set using the ItemTemplate attribute
+		-->
+		<ListBox 
+			Grid.Column="1" 
+			Grid.Row="1" 
+			Name="BooksListBox"
+			DataContext="{Binding Source={StaticResource BooksODP}}"
+			ItemsSource="{Binding}" 
+			ItemTemplate="{DynamicResource BookListItemTemplate}" 
+			IsSynchronizedWithCurrentItem="True">
+		</ListBox>
+
+	</Grid>
+</Window>

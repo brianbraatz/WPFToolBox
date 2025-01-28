@@ -1,0 +1,1303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr"><head>
+
+  
+    
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta content="true" name="MSSmartTagsPreventParsing">
+  <meta content="blogger" name="generator">
+  <link rel="alternate" type="application/atom+xml" title="Just code - Atom" href="http://dedjo.blogspot.com/feeds/posts/default">
+<link rel="alternate" type="application/rss+xml" title="Just code - RSS" href="http://dedjo.blogspot.com/feeds/posts/default?alt=rss">
+<link rel="service.post" type="application/atom+xml" title="Just code - Atom" href="http://www.blogger.com/feeds/6507247203309841795/posts/default">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.blogger.com/rsd.g?blogID=6507247203309841795">
+<link rel="alternate" type="application/atom+xml" title="Just code - Atom" href="http://dedjo.blogspot.com/feeds/325424432300544607/comments/default"><title>Just code: How to filter ItemsControl View, rather then Data Source</title>
+
+  
+
+    
+    <style id="page-skin-1" type="text/css"><!--
+/*
+-----------------------------------------------
+Blogger Template Style
+Name:     Minima Stretch
+Designer: Douglas Bowman / Darren Delaye
+URL:      www.stopdesign.com
+Date:     26 Feb 2004
+----------------------------------------------- */
+
+/* Variable definitions
+   ====================
+   <Variable name="bgcolor" description="Page Background Color"
+             type="color" default="#fff">
+   <Variable name="textcolor" description="Text Color"
+             type="color" default="#333">
+   <Variable name="linkcolor" description="Link Color"
+             type="color" default="#58a">
+   <Variable name="pagetitlecolor" description="Blog Title Color"
+             type="color" default="#666">
+   <Variable name="descriptioncolor" description="Blog Description Color"
+             type="color" default="#999">
+   <Variable name="titlecolor" description="Post Title Color"
+             type="color" default="#c60">
+   <Variable name="bordercolor" description="Border Color"
+             type="color" default="#ccc">
+   <Variable name="sidebarcolor" description="Sidebar Title Color"
+             type="color" default="#999">
+   <Variable name="sidebartextcolor" description="Sidebar Text Color"
+             type="color" default="#666">
+   <Variable name="visitedlinkcolor" description="Visited Link Color"
+             type="color" default="#999">
+   <Variable name="bodyfont" description="Text Font"
+             type="font" default="normal normal 100% Georgia, Serif">
+   <Variable name="headerfont" description="Sidebar Title Font"
+             type="font"
+             default="normal normal 78% 'Trebuchet MS',Trebuchet,Arial,Verdana,Sans-serif">
+   <Variable name="pagetitlefont" description="Blog Title Font"
+             type="font"
+             default="normal normal 200% Georgia, Serif">
+   <Variable name="descriptionfont" description="Blog Description Font"
+             type="font"
+             default="normal normal 78% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif">
+   <Variable name="postfooterfont" description="Post Footer Font"
+             type="font"
+             default="normal normal 78% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif">
+*/
+
+/* Use this with templates/template-twocol.html */
+
+body {
+  background:#ffffff;
+  margin:0;
+  color:#333333;
+  font:x-small Georgia Serif;
+  font-size/* */:/**/small;
+  font-size: /**/small;
+  text-align: center;
+  }
+a:link {
+  color:#5588aa;
+  text-decoration:none;
+  }
+a:visited {
+  color:#999999;
+  text-decoration:none;
+  }
+a:hover {
+  color:#cc6600;
+  text-decoration:underline;
+}
+a img {
+  border-width:0;
+  }
+
+/* Header
+-----------------------------------------------
+ */
+
+#header-wrapper {
+  margin:0 2% 10px;
+  border:1px solid #cccccc;
+  }
+
+#header { 
+  margin: 5px;
+  border: 1px solid #cccccc;
+  text-align: center;
+  color:#666666;
+}
+
+#header-inner {
+  background-position: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#header h1 {
+  margin:5px 5px 0;
+  padding:15px 20px .25em;
+  line-height:1.2em;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  font: normal normal 200% Georgia, Serif;
+}
+
+#header a {
+  color:#666666;
+  text-decoration:none;
+  }
+
+#header a:hover {
+  color:#666666;
+  }
+
+#header .description {
+  margin:0 5px 5px;
+  padding:0 20px 15px;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  line-height: 1.4em;
+  font: normal normal 78% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+  color: #999999;
+}
+
+#header img {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* Outer-Wrapper
+----------------------------------------------- */
+#outer-wrapper {
+  margin:0;
+  padding:10px;
+  text-align:left;
+  font: normal normal 100% Georgia, Serif;
+  }
+
+#main-wrapper {
+  margin-left: 2%;
+  width: 67%;
+  float: left;
+  display: inline;       /* fix for doubling margin in IE */
+  word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
+  overflow: hidden;      /* fix for long non-text content breaking IE sidebar float */
+  }
+
+#sidebar-wrapper {
+  margin-right: 2%;
+  width: 25%;
+  float: right;
+  display: inline;       /* fix for doubling margin in IE */
+  word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
+  overflow: hidden;      /* fix for long non-text content breaking IE sidebar float */
+}
+
+
+/* Headings
+----------------------------------------------- */
+
+h2 {
+  margin:1.5em 0 .75em;
+  font:normal normal 78% 'Trebuchet MS',Trebuchet,Arial,Verdana,Sans-serif;
+  line-height: 1.4em;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  color:#999999;
+}
+
+
+/* Posts
+-----------------------------------------------
+ */
+h2.date-header {
+  margin:1.5em 0 .5em;
+  }
+
+.post {
+  margin:.5em 0 1.5em;
+  border-bottom:1px dotted #cccccc;
+  padding-bottom:1.5em;
+  }
+.post h3 {
+  margin:.25em 0 0;
+  padding:0 0 4px;
+  font-size:140%;
+  font-weight:normal;
+  line-height:1.4em;
+  color:#cc6600;
+}
+
+.post h3 a, .post h3 a:visited, .post h3 strong {
+  display:block;
+  text-decoration:none;
+  color:#cc6600;
+  font-weight:normal;
+}
+
+.post h3 strong, .post h3 a:hover {
+  color:#333333;
+}
+
+.post p {
+  margin:0 0 .75em;
+  line-height:1.6em;
+}
+
+.post-footer {
+  margin: .75em 0;
+  color:#999999;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font: normal normal 78% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+  line-height: 1.4em;
+}
+
+.comment-link {
+  margin-left:.6em;
+  }
+.post img {
+  padding:4px;
+  border:1px solid #cccccc;
+  }
+.post blockquote {
+  margin:1em 20px;
+  }
+.post blockquote p {
+  margin:.75em 0;
+  }
+
+/* Comments
+----------------------------------------------- */
+#comments h4 {
+  margin:1em 0;
+  font-weight: bold;
+  line-height: 1.4em;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  color: #999999;
+  }
+
+#comments-block {
+  margin:1em 0 1.5em;
+  line-height:1.6em;
+  }
+#comments-block .comment-author {
+  margin:.5em 0;
+  }
+#comments-block .comment-body {
+  margin:.25em 0 0;
+  }
+#comments-block .comment-footer {
+  margin:-.25em 0 2em;
+  line-height: 1.4em;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  }
+#comments-block .comment-body p {
+  margin:0 0 .75em;
+  }
+.deleted-comment {
+  font-style:italic;
+  color:gray;
+  }
+
+.feed-links {
+  clear: both;
+  line-height: 2.5em;
+}
+
+#blog-pager-newer-link {
+  float: left;
+ }
+ 
+#blog-pager-older-link {
+  float: right;
+ }
+ 
+#blog-pager {   
+  text-align: center; 
+ }
+
+/* Sidebar Content
+----------------------------------------------- */
+.sidebar { 
+  color: #666666;
+  line-height: 1.5em;
+ }
+
+.sidebar ul {
+  list-style:none;
+  margin:0 0 0;
+  padding:0 0 0;
+}
+.sidebar li {
+  margin:0;
+  padding:0 0 .25em 15px;
+  text-indent:-15px;
+  line-height:1.5em;
+  }
+
+.sidebar .widget, .main .widget { 
+  border-bottom:1px dotted #cccccc;
+  margin:0 0 1.5em;
+  padding:0 0 1.5em;
+ }
+
+.main .Blog { 
+  border-bottom-width: 0;
+ }
+
+/* Profile 
+----------------------------------------------- */
+.profile-img { 
+  float: left;
+  margin: 0 5px 5px 0;
+  padding: 4px;
+  border: 1px solid #cccccc;
+}
+
+.profile-data {
+  margin:0;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font: normal normal 78% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+  color: #999999;
+  font-weight: bold;
+  line-height: 1.6em;
+}
+
+.profile-datablock { 
+  margin:.5em 0 .5em;
+}
+
+.profile-textblock { 
+  margin: 0.5em 0;
+  line-height: 1.6em;
+}
+
+.profile-link { 
+  font: normal normal 78% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+/* Footer
+----------------------------------------------- */
+#footer {
+  width:660px;
+  clear:both;
+  margin:0 auto;
+  padding-top:15px;
+  line-height: 1.6em;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  text-align: center;
+}
+
+/** Page structure tweaks for layout editor wireframe */
+body#layout #header { 
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+--></style>
+  <link rel="stylesheet" type="text/css" href="filter%20ItemsControl%20View%20rather%20then%20Data%20Source_files/3319451950-blogarchive.css"><!-- --><style type="text/css">@import url('http://www.blogger.com/css/blog_controls.css');
+@import url('http://www.blogger.com/dyn-css/authorization.css?blogID=6507247203309841795');
+#navbar-iframe { display:block }
+</style>
+
+<link rel="stylesheet" type="text/css" href="filter%20ItemsControl%20View%20rather%20then%20Data%20Source_files/2791266615-blog.css"><script type="text/javascript" src="filter%20ItemsControl%20View%20rather%20then%20Data%20Source_files/1533466593-widgets.js"></script></head><body>
+  <div class="navbar section" id="navbar"><div class="widget Navbar" id="Navbar1"><iframe src="filter%20ItemsControl%20View%20rather%20then%20Data%20Source_files/navbar.htm" marginwidth="0" marginheight="0" id="navbar-iframe" frameborder="0" height="30" scrolling="no" width="100%"></iframe>
+<div id="space-for-ie"></div></div></div>
+
+  <div id="outer-wrapper"><div id="wrap2">
+
+    <!-- skip links for text browsers -->
+    <span id="skiplinks" style="display: none;">
+      <a href="#main">skip to main </a> |
+      <a href="#sidebar">skip to sidebar</a>
+    </span>
+
+    <div id="header-wrapper">
+      <div class="header section" id="header"><div class="widget Header" id="Header1">
+
+  
+    
+    <div id="header-inner">
+      <div class="titlewrapper">
+        <h1 class="title">
+          
+            <a href="http://dedjo.blogspot.com/">Just code</a>
+          
+        </h1>
+      </div>
+      <div class="descriptionwrapper">
+        <p class="description"><span>It's code, just code here. Nothing else</span></p>
+      </div>
+    </div>
+  
+</div></div>
+    </div>
+ 
+    <div id="content-wrapper">
+
+      <div id="crosscol-wrapper" style="text-align: center;">
+        <div class="crosscol section" id="crosscol"></div>
+      </div>
+
+      <div id="main-wrapper">
+        <div class="main section" id="main"><div class="widget Blog" id="Blog1">
+  
+  <div class="blog-posts hfeed">
+
+    
+  
+
+
+    <!-- google_ad_section_start -->
+    
+      
+        <h2 class="date-header">Sunday, October 21, 2007</h2>
+      
+      
+  <div class="post hentry">
+    <a name="325424432300544607"></a>
+    
+      <h3 class="post-title entry-title">
+     
+        
+          <a href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html">How to filter ItemsControl View, rather then Data Source</a>
+        
+     
+      </h3>
+    
+
+    <div class="post-header-line-1"></div>
+
+    <div class="post-body entry-content">
+      <p></p><p>How to filter data source of ItemsControl, <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/07/20/Filtering-hierarchical-data-and-another-TreeView-bug.aspx" target="_blank">you, probably, know</a>, but what to do, when you want to filter <strong>view</strong>
+of the control's items, rather then the data behind? What's the strange
+requirement, you'll ask. I'll give you very simple example for business
+case, when you need to filter only what you are viewing in ListBox or
+any other items control, rather then data behind. You have two
+listboxes bounded to the same data source. In one, and only one, of
+those listboxes you want to filter data. What to do?</p>  <p><img alt="image" src="filter%20ItemsControl%20View%20rather%20then%20Data%20Source_files/image2.png" border="0" height="200" width="195"> </p>  <p>If&nbsp; you'll filter data by using <em><u>CollectionViewSource.GetDefaultView(YourListBox.ItemsSource).Filter = new Predicate(FilterOdds)</u></em> statement or, even <em>YourListBox.Items.Filter = new Predicate(FilterOdds)</em> statement, you'll filter data in both ListBoxes. This is not what you want. You need to filter <strong>the view</strong> of the data and not a data itself.</p>  <p>Just enumerate listbox items and Collapse "unnecessaries", according predefined criteria. Like following:</p>  <p>for (int i = 0; i &lt; MyListBox.Items.Count; i++)    <br>{     <br>&nbsp; ListBoxItem itm = MyListBox.Items[i] as ListBoxItem;     <br>&nbsp;&nbsp; if (FilterOdds(itm.Content))     <br>&nbsp;&nbsp;&nbsp; MyListBox.Items[i].Visibility = Visibility.Collapsed;     <br>}</p>  <p><img alt="image" src="filter%20ItemsControl%20View%20rather%20then%20Data%20Source_files/image5.png" border="0" height="185" width="200"> </p>  <p>But,
+if you want to be even more precise, pay attention on what has been
+virtualized and what has not by getting underlying
+VirtualizingStackPanel and enumerating and operating it's items. How to
+do it? Get and see in <a href="http://blogs.microsoft.co.il/blogs/tamir/attachment/28670.ashx" target="_blank">source code for this article</a>.</p>  
+      <div style="clear: both;"></div> 
+    </div>
+    <div class="post-footer">
+    <p class="post-footer-line post-footer-line-1"><span class="post-author vcard">
+        
+          Posted by
+          <span class="fn">Tamir Khason</span>
+        
+      </span> <span class="post-timestamp">
+        
+          at
+        
+          <a class="timestamp-link" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html" rel="bookmark" title="permanent link"><abbr class="published" title="2007-10-21T17:39:00+02:00">17:39</abbr></a>
+        
+        
+      </span> <span class="post-comment-link">
+        
+      </span> <span class="post-icons">
+        
+        
+          <span class="item-action">
+          <a href="http://www.blogger.com/email-post.g?blogID=6507247203309841795&amp;postID=325424432300544607" title="Email Post">
+            <span class="email-post-icon">&nbsp;</span>
+          </a>
+          </span>
+        
+
+        
+        
+  
+    <span class="item-control blog-admin pid-963817122">
+      <a href="http://www.blogger.com/post-edit.g?blogID=6507247203309841795&amp;postID=325424432300544607" title="Edit Post">
+        <span class="quick-edit-icon">&nbsp;</span>
+      </a>
+    </span>
+  
+
+      </span> </p>
+
+      <p class="post-footer-line post-footer-line-2"><span class="post-labels">
+        
+      </span> </p>
+
+      <p class="post-footer-line post-footer-line-3"></p>
+    </div>
+  </div>
+
+      
+        
+  <div class="comments" id="comments">
+    <a name="comments"></a>
+    
+      <h4>
+        
+          0 comments:
+        
+      </h4>
+
+      <dl id="comments-block">
+        
+      </dl>
+
+      <p class="comment-footer">
+        <a href="http://www.blogger.com/comment.g?blogID=6507247203309841795&amp;postID=325424432300544607" onclick="">Post a Comment</a>
+      </p>
+    
+
+    <div id="backlinks-container">
+    <div id="Blog1_backlinks-container">
+       
+    </div>
+    </div>
+  </div>
+
+      
+      
+    
+    <!-- google_ad_section_end -->
+  </div>
+
+  
+  
+  <div class="blog-pager" id="blog-pager">
+    
+      <span id="blog-pager-newer-link">
+      <a class="blog-pager-newer-link" href="http://dedjo.blogspot.com/2007/10/merge-your-live-accounts.html" id="Blog1_blog-pager-newer-link" title="Newer Post">Newer Post</a>
+      </span>
+    
+
+    
+      <span id="blog-pager-older-link">
+      <a class="blog-pager-older-link" href="http://dedjo.blogspot.com/2007/10/how-to-build-dynamic-menus-and-toolbars.html" id="Blog1_blog-pager-older-link" title="Older Post">Older Post</a>
+      </span>
+    
+
+    
+      <a class="home-link" href="http://dedjo.blogspot.com/">Home</a>
+      
+
+  </div>
+  <div class="clear"></div>
+
+
+  
+  
+   
+    <div class="post-feeds">
+      
+        
+          
+            
+  <div class="feed-links">
+  Subscribe to:
+  
+     <a class="feed-link" href="http://dedjo.blogspot.com/feeds/325424432300544607/comments/default" target="_blank" type="application/atom+xml">Post Comments (Atom)</a>
+  
+  </div>
+
+          
+        
+      
+    </div>
+  
+
+</div></div>
+      </div>
+
+      <div id="sidebar-wrapper">
+        <div class="sidebar section" id="sidebar"><div class="widget LinkList" id="LinkList1">
+
+
+ <div class="widget-content">
+   <ul>
+     
+       <li><a href="http://khason.biz/">Home</a></li>
+     
+   </ul>
+   
+  <div class="clear"></div>
+  <span class="widget-item-control">
+  <span class="item-control blog-admin">
+    <a class="quickedit" href="http://www.blogger.com/rearrange?blogID=6507247203309841795&amp;widgetType=LinkList&amp;widgetId=LinkList1&amp;action=editWidget" onclick='return _WidgetManager._PopupConfig(document.getElementById("LinkList1"));' target="configLinkList1" title="Edit">
+      <span class="quick-edit-icon">&nbsp;</span>
+    </a>
+  </span>
+  </span>
+  <div class="clear"></div>
+
+ </div>
+</div><div class="widget Profile" id="Profile1">
+    
+      <h2>About Me</h2>
+    
+    <div class="widget-content">
+     
+
+      
+
+      <dl class="profile-datablock">
+        <dt class="profile-data">Tamir Khason</dt>
+
+        
+
+        
+      </dl>
+      <a class="profile-link" href="http://www.blogger.com/profile/10080563963497874781">View my complete profile</a>
+    
+
+     
+  <div class="clear"></div>
+  <span class="widget-item-control">
+  <span class="item-control blog-admin">
+    <a class="quickedit" href="http://www.blogger.com/rearrange?blogID=6507247203309841795&amp;widgetType=Profile&amp;widgetId=Profile1&amp;action=editWidget" onclick='return _WidgetManager._PopupConfig(document.getElementById("Profile1"));' target="configProfile1" title="Edit">
+      <span class="quick-edit-icon">&nbsp;</span>
+    </a>
+  </span>
+  </span>
+  <div class="clear"></div>
+
+    </div>
+  </div><div class="widget BlogArchive" id="BlogArchive1">
+  
+    <h2>Blog Archive</h2>
+  
+  <div class="widget-content">
+  <div id="ArchiveList">
+  <div id="BlogArchive1_ArchiveList">
+    
+     
+  
+      <ul>
+        <li class="archivedate expanded">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=close&amp;toggle=YEARLY-1167602400000&amp;toggleopen=MONTHLY-1191189600000">
+        <span class="zippy toggle-open">▼ </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/search?updated-min=2007-01-01T00%3A00%3A00%2B02%3A00&amp;updated-max=2008-01-01T00%3A00%3A00%2B02%3A00&amp;max-results=50">2007</a>
+            (<span class="post-count">144</span>)
+          
+            
+  
+      <ul>
+        <li class="archivedate expanded">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=close&amp;toggle=MONTHLY-1191189600000&amp;toggleopen=MONTHLY-1191189600000">
+        <span class="zippy toggle-open">▼ </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2007_10_01_archive.html">October</a>
+            (<span class="post-count">11</span>)
+          
+          
+            
+  <ul class="posts">
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/clipboard-setdata-getdata-troubles-with.html">Clipboard SetData / GetData troubles with VPC and ...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/merge-your-live-accounts.html">Merge your Live accounts</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html">How to filter ItemsControl View, rather then Data ...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/how-to-build-dynamic-menus-and-toolbars.html">How to build dynamic menus and toolbars</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/very-useful-excel-feature.html">Very useful Excel feature</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/sorted-dictionary-class-for-silverlight.html">Sorted dictionary class for Silverlight</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/formatting-templates-and-one-small-tip.html">Formatting templates and one small tip</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/visual-studio-2008-beta-2-is-crashing.html">Visual Studio 2008 beta 2 is crashing? Install thi...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/wpf-perf-sessions-is-over-and-results.html">WPF perf sessions is over and results are coming. ...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/life-before-starbucks-and-microsoft-vs.html">Life before Starbucks and Microsoft vs. Crapper</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/10/microsoft-releases-source-code-for-net.html">Microsoft releases the source code for .NET base c...</a></li>
+    
+  </ul>
+
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1188594000000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2007_09_01_archive.html">September</a>
+            (<span class="post-count">11</span>)
+          
+          
+            
+  <ul class="posts">
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/paper-clip-vista-battery-saver-is-one.html">Paper clip - Vista Battery Saver is one of 20 best...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/wpf-performance-labs.html">WPF Performance Labs</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/how-to-invoke-client-side-javascript.html">How to invoke client side JavaScript from Silverli...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/drag-and-drop-between-silverlight-and.html">Drag and Drop between Silverlight and HTML + Placi...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/blend-2-september-preview-is-available.html">Blend 2 September preview is available for downloa...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/find-similar-images-on-your-computer.html">Find similar images on your computer with Duplicat...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/how-to-use-imagesource-no-handler-in.html">How to use ImageSource (no handler) in WinForms as...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/petzold-book-with-personal-dedication.html">Petzold's book with personal dedication has been a...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/live-releases.html">Live releases</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/now-it-official-silverlight-comes-on.html">Now it's official - Silverlight comes on Linux</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/09/working-with-xml-in-silverlight-and.html">Working with XML in Silverlight and bonus - generi...</a></li>
+    
+  </ul>
+
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1185915600000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2007_08_01_archive.html">August</a>
+            (<span class="post-count">19</span>)
+          
+          
+            
+  <ul class="posts">
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/action-required-battery-tracker.html">[Action Required] Battery Tracker - download new v...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/battery-tracker-power-management-and.html">Battery Tracker - Power management and battery tra...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/xbox-360-don-know-to-swim.html">XBox 360 don't know to swim</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/how-to-test-localized-application.html">How to test localized application?</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/italian-locale-for-vista-battery-saver.html">Italian locale for Vista Battery Saver</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/add-windows-live-skydrive-attachment-to.html">Add Windows Live SkyDrive attachment to your post,...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/microsoft-live-come-to-nokia.html">Microsoft Live comes to Nokia</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/vista-battery-saver-paperclips.html">Vista Battery Saver paperclips</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/z-order-hack-for-winforms-interop.html">Z-Order hack for WinForms interop controls in WPF</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/where-is-tafiti.html">Where is Tafiti?</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/how-to-doevents-in-wpf.html">How to DoEvents in WPF?</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/how-to-measure-text-length-in-textblock.html">How to measure text length in TextBlock</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/vista-battery-saver-beta-2-r1-refresh.html">Vista Battery Saver beta 2 r1 - refresh</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/new-major-version-20-of-nokia-mail-for.html">New major version 2.0 of Nokia Mail For Exchange h...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/german-locale-for-vista-battery-saver.html">German locale for Vista Battery Saver</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/microsoft-research-some-useful-updates.html">Microsoft research - some useful updates</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/how-to-use-windows-vista-search-api.html">How to use Windows Vista Search API from WPF appli...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/this-way-you-love-it.html">This way you love it</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/08/damned-oracle.html">Damned Oracle</a></li>
+    
+  </ul>
+
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1183237200000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2007_07_01_archive.html">July</a>
+            (<span class="post-count">29</span>)
+          
+          
+            
+  <ul class="posts">
+    
+      <li><a href="http://dedjo.blogspot.com/2007/07/quick-wpf-tip-alternative-text-for.html">Quick WPF tip: Alternative text for images</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/07/microsoft-expression-blend-2-august.html">Microsoft Expression Blend 2 August Preview is ava...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/07/vista-battery-saver-french-version.html">Vista Battery Saver - French version</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/07/microsoft-is-going-open-source.html">Microsoft is going Open Source</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/07/wpf-events-and-memory-leaks.html">WPF Events and memory leaks</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/07/vista-battery-saver-beta-2-is-available.html">Vista Battery Saver Beta 2 is available for downlo...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/07/hack-read-only-properties-and-fields.html">Hack read only properties and fields using reflect...</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/07/blue-monster-in-sap.html">The Blue Monster in SAP</a></li>
+    
+      <li><a href="http://dedjo.blogspot.com/2007/07/channel-8-is-on-air.html">Channel 8 is on the air</a></li>
+    
+  </ul>
+
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1180645200000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2007_06_01_archive.html">June</a>
+            (<span class="post-count">8</span>)
+          
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1177966800000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2007_05_01_archive.html">May</a>
+            (<span class="post-count">19</span>)
+          
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1175374800000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2007_04_01_archive.html">April</a>
+            (<span class="post-count">20</span>)
+          
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1172700000000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2007_03_01_archive.html">March</a>
+            (<span class="post-count">20</span>)
+          
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1170280800000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2007_02_01_archive.html">February</a>
+            (<span class="post-count">4</span>)
+          
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1167602400000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2007_01_01_archive.html">January</a>
+            (<span class="post-count">3</span>)
+          
+          
+        </li>
+      </ul>
+  
+
+          
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=YEARLY-1136066400000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/search?updated-min=2006-01-01T00%3A00%3A00%2B02%3A00&amp;updated-max=2007-01-01T00%3A00%3A00%2B02%3A00&amp;max-results=12">2006</a>
+            (<span class="post-count">12</span>)
+          
+            
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1164924000000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2006_12_01_archive.html">December</a>
+            (<span class="post-count">5</span>)
+          
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1162332000000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2006_11_01_archive.html">November</a>
+            (<span class="post-count">1</span>)
+          
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1159650000000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2006_10_01_archive.html">October</a>
+            (<span class="post-count">3</span>)
+          
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1157058000000&amp;toggleopen=MONTHLY-1191189600000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://dedjo.blogspot.com/2006_09_01_archive.html">September</a>
+            (<span class="post-count">3</span>)
+          
+          
+        </li>
+      </ul>
+  
+
+          
+          
+        </li>
+      </ul>
+  
+
+    
+    
+    
+  </div>
+  </div>
+  
+  <div class="clear"></div>
+  <span class="widget-item-control">
+  <span class="item-control blog-admin">
+    <a class="quickedit" href="http://www.blogger.com/rearrange?blogID=6507247203309841795&amp;widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=editWidget" onclick='return _WidgetManager._PopupConfig(document.getElementById("BlogArchive1"));' target="configBlogArchive1" title="Edit">
+      <span class="quick-edit-icon">&nbsp;</span>
+    </a>
+  </span>
+  </span>
+  <div class="clear"></div>
+
+  </div>
+</div><div class="widget Label" id="Label1">
+  
+    <h2>Tags</h2>
+  
+  <div class="widget-content">
+    <ul>
+    
+      <li>
+        
+          <a href="http://dedjo.blogspot.com/search/label/wpf">wpf</a>
+        
+        (14)
+      </li>
+    
+      <li>
+        
+          <a href="http://dedjo.blogspot.com/search/label/source">source</a>
+        
+        (7)
+      </li>
+    
+      <li>
+        
+          <a href="http://dedjo.blogspot.com/search/label/C%23">C#</a>
+        
+        (4)
+      </li>
+    
+      <li>
+        
+          <a href="http://dedjo.blogspot.com/search/label/vista">vista</a>
+        
+        (4)
+      </li>
+    
+      <li>
+        
+          <a href="http://dedjo.blogspot.com/search/label/microsft">microsft</a>
+        
+        (2)
+      </li>
+    
+      <li>
+        
+          <a href="http://dedjo.blogspot.com/search/label/book%20review">book review</a>
+        
+        (1)
+      </li>
+    
+      <li>
+        
+          <a href="http://dedjo.blogspot.com/search/label/learning">learning</a>
+        
+        (1)
+      </li>
+    
+    </ul>
+
+    
+  <div class="clear"></div>
+  <span class="widget-item-control">
+  <span class="item-control blog-admin">
+    <a class="quickedit" href="http://www.blogger.com/rearrange?blogID=6507247203309841795&amp;widgetType=Label&amp;widgetId=Label1&amp;action=editWidget" onclick='return _WidgetManager._PopupConfig(document.getElementById("Label1"));' target="configLabel1" title="Edit">
+      <span class="quick-edit-icon">&nbsp;</span>
+    </a>
+  </span>
+  </span>
+  <div class="clear"></div>
+
+  </div>
+</div><div class="widget AdSense" id="AdSense2">
+  <div class="widget-content">
+    <script type="text/javascript"><!--
+google_ad_client="pub-5201723395025347";
+google_ad_host="pub-1556223355139109";
+google_ad_width=120;
+google_ad_height=600;
+google_ad_format="120x600_as";
+google_ad_type="text";
+google_color_border="999999";
+google_color_bg="FFFFFF";
+google_color_link="999999";
+google_color_url="5588AA";
+google_color_text="666666";
+//--></script>
+<script type="text/javascript" src="filter%20ItemsControl%20View%20rather%20then%20Data%20Source_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="filter%20ItemsControl%20View%20rather%20then%20Data%20Source_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="600" scrolling="no" width="120"></iframe>
+
+  </div>
+</div><div class="widget Feed" id="Feed1">
+    <h2>Just code - Tamir Khason</h2>
+    <div class="widget-content">
+    <ul id="Feed1_feedItemListDisplay">
+      
+        <li>
+          <span class="item-title">
+            <a href="http://feeds.feedburner.com/%7Er/microsft/%7E3/174358667/clipboard-setdata-getdata-troubles-with-vpc-and-ts.aspx">
+              Clipboard SetData / GetData troubles with VPC and TS
+            </a>
+          </span>
+          
+          
+        </li>
+      
+        <li>
+          <span class="item-title">
+            <a href="http://feeds.feedburner.com/%7Er/microsft/%7E3/174200839/california-wildfires.aspx">
+              California wildfires
+            </a>
+          </span>
+          
+          
+        </li>
+      
+        <li>
+          <span class="item-title">
+            <a href="http://feeds.feedburner.com/%7Er/microsft/%7E3/173868225/merge-your-live-accounts.aspx">
+              Merge your Live accounts
+            </a>
+          </span>
+          
+          
+        </li>
+      
+        <li>
+          <span class="item-title">
+            <a href="http://feeds.feedburner.com/%7Er/microsft/%7E3/172917910/how-to-filter-itemscontrol-view-rather-then-data-source.aspx">
+              How to filter ItemsControl View, rather then Data Source
+            </a>
+          </span>
+          
+          
+        </li>
+      
+        <li>
+          <span class="item-title">
+            <a href="http://feeds.feedburner.com/%7Er/microsft/%7E3/171542858/how-to-build-dynamic-menus-and-toolbars.aspx">
+              How to build dynamic menus and toolbars
+            </a>
+          </span>
+          
+          
+        </li>
+      
+    </ul>
+    
+  <div class="clear"></div>
+  <span class="widget-item-control">
+  <span class="item-control blog-admin">
+    <a class="quickedit" href="http://www.blogger.com/rearrange?blogID=6507247203309841795&amp;widgetType=Feed&amp;widgetId=Feed1&amp;action=editWidget" onclick='return _WidgetManager._PopupConfig(document.getElementById("Feed1"));' target="configFeed1" title="Edit">
+      <span class="quick-edit-icon">&nbsp;</span>
+    </a>
+  </span>
+  </span>
+  <div class="clear"></div>
+
+    </div>
+  </div></div>
+      </div>
+
+      <!-- spacer for skins that want sidebar and main to be the same height-->
+      <div class="clear">&nbsp;</div>
+
+    </div> <!-- end content-wrapper -->
+
+    <div id="footer-wrapper">
+      <div class="footer section" id="footer"><div class="widget AdSense" id="AdSense1">
+  <div class="widget-content">
+    <script type="text/javascript"><!--
+google_ad_client="pub-5201723395025347";
+google_ad_host="pub-1556223355139109";
+google_ad_width=468;
+google_ad_height=60;
+google_ad_format="468x60_as";
+google_ad_type="text";
+google_color_border="666666";
+google_color_bg="FFFFFF";
+google_color_link="666666";
+google_color_url="5588AA";
+google_color_text="999999";
+//--></script>
+<script type="text/javascript" src="filter%20ItemsControl%20View%20rather%20then%20Data%20Source_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="filter%20ItemsControl%20View%20rather%20then%20Data%20Source_files/ads_002.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="60" scrolling="no" width="468"></iframe>
+
+  </div>
+</div></div>
+    </div>
+
+  </div></div> <!-- end outer-wrapper -->
+<script type="text/javascript">
+_WidgetManager._Init('http://www.blogger.com/rearrange?blogID=6507247203309841795', 'http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html','6507247203309841795');
+_WidgetManager._SetPageActionUrl('http://www.blogger.com/display?blogID=6507247203309841795', 'Nz8KnQMs_JoVtPbnL5HEZdSp1gw=:1193341677689');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'title': 'Just code', 'pageType': 'item', 'url': 'http://dedjo.blogspot.com/2007/10/how-to-filter-itemscontrol-view-rather.html', 'homepageUrl': 'http://dedjo.blogspot.com/', 'pageTitle': 'Just code: How to filter ItemsControl View, rather then Data Source', 'encoding': 'UTF-8', 'isPrivate': false, 'languageDirection': 'ltr', 'feedLinks': '\u003clink rel\u003d\"alternate\" type\u003d\"application/atom+xml\" title\u003d\"Just code - Atom\" href\u003d\"http://dedjo.blogspot.com/feeds/posts/default\" /\>\n\u003clink rel\u003d\"alternate\" type\u003d\"application/rss+xml\" title\u003d\"Just code - RSS\" href\u003d\"http://dedjo.blogspot.com/feeds/posts/default?alt\u003drss\" /\>\n\u003clink rel\u003d\"service.post\" type\u003d\"application/atom+xml\" title\u003d\"Just code - Atom\" href\u003d\"http://www.blogger.com/feeds/6507247203309841795/posts/default\" /\>\n\u003clink rel\u003d\"EditURI\" type\u003d\"application/rsd+xml\" title\u003d\"RSD\" href\u003d\"http://www.blogger.com/rsd.g?blogID\u003d6507247203309841795\" /\>\n\u003clink rel\u003d\"alternate\" type\u003d\"application/atom+xml\" title\u003d\"Just code - Atom\" href\u003d\"http://dedjo.blogspot.com/feeds/325424432300544607/comments/default\" /\>\n'}}]);
+_WidgetManager._SetSystemMarkup({'layout': {'varName': '', 'template': '\u003cdiv class\u003d\'widget-wrap1\'\>  \u003cdiv class\u003d\'widget-wrap2\'\> \u003cdiv class\u003d\'widget-wrap3\'\> \u003cdiv class\u003d\'widget-content\'\> \u003cdiv class\u003d\'layout-title\'\>\u003cdata:layout-title\>\u003c/data:layout-title\>\u003c/div\> \u003ca class\u003d\'editlink\' expr:href\u003d\'data:widget.quickEditUrl\' expr:onclick\u003d\'\"return _WidgetManager._PopupConfig(document.getElementById(\\\"\" +       data:widget.instanceId + \"\\\"));\"\' target\u003d\'chooseWidget\'\>\u003cdata:edit-link\>\u003c/data:edit-link\>\u003c/a\> \u003c/div\> \u003c/div\> \u003c/div\> \u003c/div\>'}, 'quickedit': {'varName': '', 'template': '\u003cdiv class\u003d\'clear\'\>\u003c/div\> \u003cspan class\u003d\'widget-item-control\'\> \u003cspan class\u003d\'item-control blog-admin\'\> \u003ca class\u003d\'quickedit\' expr:href\u003d\'data:widget.quickEditUrl\' expr:onclick\u003d\'\"return _WidgetManager._PopupConfig(document.getElementById(\\\"\" +       data:widget.instanceId + \"\\\"));\"\' expr:target\u003d\'\"config\" + data:widget.instanceId\' expr:title\u003d\'data:edit-link\'\> \u003cspan class\u003d\'quick-edit-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\> \u003c/span\> \u003cdiv class\u003d\'clear\'\>\u003c/div\>'}, 'all-head-content': {'varName': 'page', 'template': '\u003cmeta expr:content\u003d\'\"text/html; charset\u003d\" + data:page.encoding\' http-equiv\u003d\'Content-Type\'/\> \u003cmeta content\u003d\'true\' name\u003d\'MSSmartTagsPreventParsing\'/\> \u003cmeta content\u003d\'blogger\' name\u003d\'generator\'/\> \u003cdata:blog.feedLinks\>\u003c/data:blog.feedLinks\> \u003cb:if cond\u003d\'data:page.isPrivate\'\> \u003cmeta content\u003d\'NOINDEX,NOFOLLOW\' name\u003d\'robots\'/\> \u003c/b:if\>'}});
+_WidgetManager._RegisterWidget('_AdSenseView', new _WidgetInfo('AdSense1',  'footer',{'main': {'varName': '', 'template': '\u003cdiv class\u003d\'widget-content\'\> \u003cdata:adCode\>\u003c/data:adCode\> \u003c/div\>'}}, document.getElementById('AdSense1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LinkListView', new _WidgetInfo('LinkList1',  'sidebar',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:title\'\>\u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\>\u003c/b:if\> \u003cdiv class\u003d\'widget-content\'\> \u003cul\> \u003cb:loop values\u003d\'data:links\' var\u003d\'link\'\> \u003cli\>\u003ca expr:href\u003d\'data:link.target\'\>\u003cdata:link.name\>\u003c/data:link.name\>\u003c/a\>\u003c/li\> \u003c/b:loop\> \u003c/ul\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}}, document.getElementById('LinkList1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_ProfileView', new _WidgetInfo('Profile1',  'sidebar',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:title !\u003d \"\"\'\> \u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\> \u003c/b:if\> \u003cdiv class\u003d\'widget-content\'\> \u003cb:if cond\u003d\'data:team \u003d\u003d \"true\"\'\>  \u003cul\> \u003cb:loop values\u003d\'data:authors\' var\u003d\'i\'\> \u003cli\>\u003ca expr:href\u003d\'data:i.userUrl\'\>\u003cdata:i.display-name\>\u003c/data:i.display-name\>\u003c/a\>\u003c/li\> \u003c/b:loop\> \u003c/ul\> \u003cb:else\>\u003c/b:else\>  \u003cb:if cond\u003d\'data:photo.url !\u003d \"\"\'\> \u003ca expr:href\u003d\'data:userUrl\'\>\u003cimg class\u003d\'profile-img\' expr:alt\u003d\'data:photo.alt\' expr:height\u003d\'data:photo.height\' expr:src\u003d\'data:photo.url\' expr:width\u003d\'data:photo.width\'/\>\u003c/a\> \u003c/b:if\> \u003cdl class\u003d\'profile-datablock\'\> \u003cdt class\u003d\'profile-data\'\>\u003cdata:displayname\>\u003c/data:displayname\>\u003c/dt\> \u003cb:if cond\u003d\'data:showlocation \u003d\u003d \"true\"\'\> \u003cdd class\u003d\'profile-data\'\>\u003cdata:location\>\u003c/data:location\>\u003c/dd\> \u003c/b:if\> \u003cb:if cond\u003d\'data:aboutme !\u003d \"\"\'\>\u003cdd class\u003d\'profile-textblock\'\>\u003cdata:aboutme\>\u003c/data:aboutme\>\u003c/dd\>\u003c/b:if\> \u003c/dl\> \u003ca class\u003d\'profile-link\' expr:href\u003d\'data:userUrl\'\>\u003cdata:viewProfileMsg\>\u003c/data:viewProfileMsg\>\u003c/a\> \u003c/b:if\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}}, document.getElementById('Profile1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogArchiveView', new _WidgetInfo('BlogArchive1',  'sidebar',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:title\'\> \u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\> \u003c/b:if\> \u003cdiv class\u003d\'widget-content\'\> \u003cdiv id\u003d\'ArchiveList\'\> \u003cdiv expr:id\u003d\'data:widget.instanceId + \"_ArchiveList\"\'\> \u003cb:if cond\u003d\'data:style \u003d\u003d \"HIERARCHY\"\'\> \u003cb:include data\u003d\'data\' name\u003d\'interval\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:style \u003d\u003d \"FLAT\"\'\> \u003cb:include data\u003d\'data\' name\u003d\'flat\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:style \u003d\u003d \"MENU\"\'\> \u003cb:include data\u003d\'data\' name\u003d\'menu\'\>\u003c/b:include\> \u003c/b:if\> \u003c/div\> \u003c/div\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}, 'flat': {'varName': 'data', 'template': '\u003cul\> \u003cb:loop values\u003d\'data:data\' var\u003d\'i\'\> \u003cli class\u003d\'archivedate\'\> \u003ca expr:href\u003d\'data:i.url\'\>\u003cdata:i.name\>\u003c/data:i.name\>\u003c/a\> (\u003cdata:i.post-count\>\u003c/data:i.post-count\>) \u003c/li\> \u003c/b:loop\> \u003c/ul\>'}, 'menu': {'varName': 'data', 'template': '\u003cselect expr:id\u003d\'data:widget.instanceId + \"_ArchiveMenu\"\'\> \u003coption value\u003d\'\'\>\u003cdata:title\>\u003c/data:title\>\u003c/option\> \u003cb:loop values\u003d\'data:data\' var\u003d\'i\'\> \u003coption expr:value\u003d\'data:i.url\'\>\u003cdata:i.name\>\u003c/data:i.name\> (\u003cdata:i.post-count\>\u003c/data:i.post-count\>)\u003c/option\> \u003c/b:loop\> \u003c/select\>'}, 'interval': {'varName': 'intervalData', 'template': '\u003cb:loop values\u003d\'data:intervalData\' var\u003d\'i\'\> \u003cul\> \u003cli expr:class\u003d\'\"archivedate \" + data:i.expclass\'\> \u003cb:include data\u003d\'i\' name\u003d\'toggle\'\>\u003c/b:include\> \u003ca class\u003d\'post-count-link\' expr:href\u003d\'data:i.url\'\>\u003cdata:i.name\>\u003c/data:i.name\>\u003c/a\> (\u003cspan class\u003d\'post-count\'\>\u003cdata:i.post-count\>\u003c/data:i.post-count\>\u003c/span\>) \u003cb:if cond\u003d\'data:i.data\'\> \u003cb:include data\u003d\'i.data\' name\u003d\'interval\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:i.posts\'\> \u003cb:include data\u003d\'i.posts\' name\u003d\'posts\'\>\u003c/b:include\> \u003c/b:if\> \u003c/li\> \u003c/ul\> \u003c/b:loop\>'}, 'toggle': {'varName': 'interval', 'template': '\u003cb:if cond\u003d\'data:interval.toggleId\'\> \u003cb:if cond\u003d\'data:interval.expclass \u003d\u003d \"expanded\"\'\> \u003ca class\u003d\'toggle\' expr:href\u003d\'data:widget.actionUrl + \"&amp;action\u003dtoggle\" +       \"&amp;dir\u003dclose&amp;toggle\u003d\" + data:interval.toggleId +       \"&amp;toggleopen\u003d\" + data:toggleopen\'\> \u003cspan class\u003d\'zippy toggle-open\'\>&#9660; \u003c/span\> \u003c/a\> \u003cb:else\>\u003c/b:else\> \u003ca class\u003d\'toggle\' expr:href\u003d\'data:widget.actionUrl + \"&amp;action\u003dtoggle\" +         \"&amp;dir\u003dopen&amp;toggle\u003d\" + data:interval.toggleId +         \"&amp;toggleopen\u003d\" + data:toggleopen\'\> \u003cspan class\u003d\'zippy\'\>&#9658; \u003c/span\> \u003c/a\> \u003c/b:if\> \u003c/b:if\>'}, 'posts': {'varName': 'posts', 'template': '\u003cul class\u003d\'posts\'\> \u003cb:loop values\u003d\'data:posts\' var\u003d\'i\'\> \u003cli\>\u003ca expr:href\u003d\'data:i.url\'\>\u003cdata:i.title\>\u003c/data:i.title\>\u003c/a\>\u003c/li\> \u003c/b:loop\> \u003c/ul\>'}}, document.getElementById('BlogArchive1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LabelView', new _WidgetInfo('Label1',  'sidebar',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:title\'\> \u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\> \u003c/b:if\> \u003cdiv class\u003d\'widget-content\'\> \u003cul\> \u003cb:loop values\u003d\'data:labels\' var\u003d\'label\'\> \u003cli\> \u003cb:if cond\u003d\'data:blog.url \u003d\u003d data:label.url\'\> \u003cdata:label.name\>\u003c/data:label.name\> \u003cb:else\>\u003c/b:else\> \u003ca expr:href\u003d\'data:label.url\'\>\u003cdata:label.name\>\u003c/data:label.name\>\u003c/a\> \u003c/b:if\> (\u003cdata:label.count\>\u003c/data:label.count\>) \u003c/li\> \u003c/b:loop\> \u003c/ul\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}}, document.getElementById('Label1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_AdSenseView', new _WidgetInfo('AdSense2',  'sidebar',{'main': {'varName': '', 'template': '\u003cdiv class\u003d\'widget-content\'\> \u003cdata:adCode\>\u003c/data:adCode\> \u003c/div\>'}}, document.getElementById('AdSense2'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_FeedView', new _WidgetInfo('Feed1',  'sidebar',{'main': {'varName': '', 'template': '\u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\> \u003cdiv class\u003d\'widget-content\'\> \u003cul expr:id\u003d\'data:widget.instanceId + \"_feedItemListDisplay\"\'\> \u003cb:loop values\u003d\'data:feedData.items\' var\u003d\'i\'\> \u003cli\> \u003cspan class\u003d\'item-title\'\> \u003ca expr:href\u003d\'data:i.alternate.href\'\> \u003cdata:i.title\>\u003c/data:i.title\> \u003c/a\> \u003c/span\> \u003cb:if cond\u003d\'data:showItemDate\'\> \u003cb:if cond\u003d\'data:i.str_published !\u003d \"\"\'\> \u003cspan class\u003d\'item-date\'\> &#160;-&#160;\u003cdata:i.str_published\>\u003c/data:i.str_published\> \u003c/span\> \u003c/b:if\> \u003c/b:if\> \u003cb:if cond\u003d\'data:showItemAuthor\'\> \u003cb:if cond\u003d\'data:i.author !\u003d \"\"\'\> \u003cspan class\u003d\'item-author\'\> &#160;-&#160;\u003cdata:i.author\>\u003c/data:i.author\> \u003c/span\> \u003c/b:if\> \u003c/b:if\> \u003c/li\> \u003c/b:loop\> \u003c/ul\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}}, document.getElementById('Feed1'), {'title': 'Just code - Tamir Khason', 'showItemDate': false, 'showItemAuthor': false, 'feedUrl': 'http://blogs.microsoft.co.il/blogs/tamir/rss.aspx', 'numItemsShow': 5, 'locale': 'en_US', 'timeZone': 'Asia/Jerusalem', 'feedReaderJsonBaseUrl': '/feedReaderJson', 'feedWidgetRefreshIntervalSec': 1800, 'feedData': {'title': 'Just code - Tamir Khason', 'items': [{'guid': 'b5c4f5bc-c09b-4439-a595-91a98c1847df:29381', 'title': 'Clipboard SetData / GetData troubles with VPC and TS', 'published': 1193238046, 'updated': 0, 'alternate': {'href': 'http://feeds.feedburner.com/~r/microsft/~3/174358667/clipboard-setdata-getdata-troubles-with-vpc-and-ts.aspx', 'type': 'application/octet-stream'}, 'author': 'Tamir Khason', 'summary': '\u003cp\>This one of those posts you can categorize is WTF (see me WPF presentation to know what is it) it is not working. However, you, probably will face with the problem now or after. \u003c/p\>  \u003cp\>\u003cu\>Symptoms\u003c/u\>: You are trying to set and get clipboard data from Virtual PC or remote computer by using Terminal Services and nothing happens. When you are using .NET, you&#39;re getting Unhandled exception. If you&#39;ll dig deeper, you&#39;ll find 0x800401D0 (CLIPBRD_E_CANT_OPEN) exception.\u003c/p\>  \u003cp\>\u003cu\>Reason\u003c/u\>: Passing data through TS or VPC pipes bug\u003c/p\>  \u003cp\>\u003cu\>Solution\u003c/u\>: Just retry a couple of times.\u003c/p\>  \u003cp\>Actually, in unmanaged and COM world, you&#39;ll never face this problem, because of the way we are handling OleSetClipboard() and OleGetClipboard() methods (which wrapped by .NET Clipboard.GetData/Clipboard.SetData Set/Get Text etc. methods).&#160; So, something like following functions will solve your problems.\u003c/p\>  \u003cblockquote\>   \u003cp\>public static IDataObject GetRemoteClipboardDataObject()     \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160; {      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; for (int i \u003d 0; i &lt; 10; i++)      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; {      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; try      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; {      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; return Clipboard.GetDataObject();      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; }      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; catch { }      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; System.Threading.Thread.Sleep(100);      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; }      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160; }\u003c/p\>    \u003cp\>public static void SetRemoteClipboardDataObject(object data)     \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160; {      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; for (int i \u003d 0; i &lt; 10; i++)      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; {      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; try      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; {      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; Clipboard.SetDataObject(data);      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; return;      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; }      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; catch { }      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; System.Threading.Thread.Sleep(100);      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; }      \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160; }\u003c/p\> \u003c/blockquote\>  \u003cp\>Now, to be honest with myself, take a look into one of Clipboard.SetDataObject method signatures in .NET framework 2.0 \u003c/p\>  \u003cblockquote\>   \u003cpre\>//Attempts to place data on the system Clipboard the specified number of times and with the specified delay between attempts, optionally leaving the data on the Clipboard after the application exits. \u003c/pre\>\n\n  \u003cpre\>public static void SetDataObject (\n    Object data,\n    bool copy,\n    int retryTimes,\n    int retryDelay\n)\u003c/pre\>\n\u003c/blockquote\>\n\n\u003cpre\>Don&#39;t it looks familiar? :) Have a nice day and be honest with yourselves.\u003c/pre\>\u003cimg src\u003d\"http://blogs.microsoft.co.il/aggbug.aspx?PostID\u003d29381\" width\u003d\"1\" height\u003d\"1\"\>\u003cdiv\>\n\u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003d6l3t1EA\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003d6l3t1EA\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dgh2KljA\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dgh2KljA\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003djXcJOEa\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003djXcJOEa\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dWWXk2fa\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dWWXk2fa\" border\u003d\"0\"\>\u003c/a\>\n\u003c/div\>\u003cimg src\u003d\"http://feeds.feedburner.com/~r/microsft/~4/174358667\" height\u003d\"1\" width\u003d\"1\"\>', 'str_published': 'Oct 24, 2007', 'str_updated': '', 'custom_content': [{'custom_content_id': 'http://purl.org/rss/1.0/modules/slash/:comments', 'custom_content_value': ['0']}, {'custom_content_id': 'http://rssnamespace.org/feedburner/ext/1.0:awareness', 'custom_content_value': ['http://api.feedburner.com/awareness/1.0/GetItemData?uri\u003dmicrosft&itemurl\u003dhttp%3A%2F%2Fblogs.microsoft.co.il%2Fblogs%2Ftamir%2Farchive%2F2007%2F10%2F24%2Fclipboard-setdata-getdata-troubles-with-vpc-and-ts.aspx']}, {'custom_content_id': 'http://wellformedweb.org/CommentAPI/:commentRss', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx?PostID\u003d29381']}, {'custom_content_id': ':comments', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/archive/2007/10/24/clipboard-setdata-getdata-troubles-with-vpc-and-ts.aspx#comments']}, {'custom_content_id': 'http://wellformedweb.org/CommentAPI/:comment', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/commentapi.aspx?PostID\u003d29381']}]}, {'guid': 'b5c4f5bc-c09b-4439-a595-91a98c1847df:29318', 'title': 'California wildfires', 'published': 1193211561, 'updated': 0, 'alternate': {'href': 'http://feeds.feedburner.com/~r/microsft/~3/174200839/california-wildfires.aspx', 'type': 'application/octet-stream'}, 'author': 'Tamir Khason', 'summary': '\u003ch2\>To all my friends and co-workers from California region - take care and be strong! \u003c/h2\>  \u003cp\>\u003cimg alt\u003d\"View image detail\" src\u003d\"http://cache.gettyimages.com/xt/200011412-001.jpg?v\u003d1&amp;g\u003dTSIR&amp;s\u003d1\"\>\u003c/p\>\u003cimg src\u003d\"http://blogs.microsoft.co.il/aggbug.aspx?PostID\u003d29318\" width\u003d\"1\" height\u003d\"1\"\>\u003cdiv\>\n\u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dVBcaAAA\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dVBcaAAA\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dAmA2jdA\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dAmA2jdA\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dsmZNg6a\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dsmZNg6a\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dczSlFga\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dczSlFga\" border\u003d\"0\"\>\u003c/a\>\n\u003c/div\>\u003cimg src\u003d\"http://feeds.feedburner.com/~r/microsft/~4/174200839\" height\u003d\"1\" width\u003d\"1\"\>', 'str_published': 'Oct 24, 2007', 'str_updated': '', 'custom_content': [{'custom_content_id': 'http://purl.org/rss/1.0/modules/slash/:comments', 'custom_content_value': ['0']}, {'custom_content_id': 'http://rssnamespace.org/feedburner/ext/1.0:awareness', 'custom_content_value': ['http://api.feedburner.com/awareness/1.0/GetItemData?uri\u003dmicrosft&itemurl\u003dhttp%3A%2F%2Fblogs.microsoft.co.il%2Fblogs%2Ftamir%2Farchive%2F2007%2F10%2F24%2Fcalifornia-wildfires.aspx']}, {'custom_content_id': 'http://wellformedweb.org/CommentAPI/:commentRss', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx?PostID\u003d29318']}, {'custom_content_id': ':comments', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/archive/2007/10/24/california-wildfires.aspx#comments']}, {'custom_content_id': 'http://wellformedweb.org/CommentAPI/:comment', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/commentapi.aspx?PostID\u003d29318']}]}, {'guid': 'b5c4f5bc-c09b-4439-a595-91a98c1847df:29207', 'title': 'Merge your Live accounts', 'published': 1193154189, 'updated': 0, 'alternate': {'href': 'http://feeds.feedburner.com/~r/microsft/~3/173868225/merge-your-live-accounts.aspx', 'type': 'application/octet-stream'}, 'author': 'Tamir Khason', 'summary': '\u003cp\>New huge feature was added to wave 2 of Windows.Live - merging of Live accounts. Just \u003ca href\u003d\"https://account.live.com/managelinks.aspx\"\>go to this page\u003c/a\> and merge all of them. From now, you can use all Live products by choosing proper account from upper right corner, rather then relogin with other credentials. \u003c/p\>  \u003cp\>\u003ca href\u003d\"http://www.liveside.net/blogs/main/archive/2007/10/18/update-to-windows-live-account-enables-linked-ids.aspx\"\>via LifeSide\u003c/a\>\u003c/p\>\u003cimg src\u003d\"http://blogs.microsoft.co.il/aggbug.aspx?PostID\u003d29207\" width\u003d\"1\" height\u003d\"1\"\>\u003cdiv\>\n\u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dzhhk0QA\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dzhhk0QA\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003d2ENbi4A\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003d2ENbi4A\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dyhtMVKa\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dyhtMVKa\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dUMpvZTa\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dUMpvZTa\" border\u003d\"0\"\>\u003c/a\>\n\u003c/div\>\u003cimg src\u003d\"http://feeds.feedburner.com/~r/microsft/~4/173868225\" height\u003d\"1\" width\u003d\"1\"\>', 'str_published': 'Oct 23, 2007', 'str_updated': '', 'custom_content': [{'custom_content_id': 'http://purl.org/rss/1.0/modules/slash/:comments', 'custom_content_value': ['0']}, {'custom_content_id': 'http://rssnamespace.org/feedburner/ext/1.0:awareness', 'custom_content_value': ['http://api.feedburner.com/awareness/1.0/GetItemData?uri\u003dmicrosft&itemurl\u003dhttp%3A%2F%2Fblogs.microsoft.co.il%2Fblogs%2Ftamir%2Farchive%2F2007%2F10%2F23%2Fmerge-your-live-accounts.aspx']}, {'custom_content_id': 'http://wellformedweb.org/CommentAPI/:commentRss', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx?PostID\u003d29207']}, {'custom_content_id': ':comments', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/archive/2007/10/23/merge-your-live-accounts.aspx#comments']}, {'custom_content_id': 'http://wellformedweb.org/CommentAPI/:comment', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/commentapi.aspx?PostID\u003d29207']}]}, {'guid': 'b5c4f5bc-c09b-4439-a595-91a98c1847df:28670', 'title': 'How to filter ItemsControl View, rather then Data Source', 'published': 1192980660, 'updated': 0, 'alternate': {'href': 'http://feeds.feedburner.com/~r/microsft/~3/172917910/how-to-filter-itemscontrol-view-rather-then-data-source.aspx', 'type': 'application/octet-stream'}, 'author': 'Tamir Khason', 'summary': '\u003cp\>How to filter data source of ItemsControl, \u003ca href\u003d\"http://blogs.microsoft.co.il/blogs/tamir/archive/2007/07/20/Filtering-hierarchical-data-and-another-TreeView-bug.aspx\"\>you, probably, know\u003c/a\>, but what to do, when you want to filter \u003cstrong\>view\u003c/strong\> of the control&#39;s items, rather then the data behind? What&#39;s the strange requirement, you&#39;ll ask. I&#39;ll give you very simple example for business case, when you need to filter only what you are viewing in ListBox or any other items control, rather then data behind. You have two listboxes bounded to the same data source. In one, and only one, of those listboxes you want to filter data. What to do?\u003c/p\>\n\u003cp\>\u003cimg height\u003d\"200\" alt\u003d\"image\" src\u003d\"http://blogs.microsoft.co.il/blogs/tamir/WindowsLiveWriter/HowtofilterItemsControlViewratherthenDat_F647/image_f9089066-3652-4176-b433-3405d252bc13.png\" width\u003d\"195\" border\u003d\"0\"\> \u003c/p\>\n\u003cp\>If&#160; you&#39;ll filter data by using \u003cem\>\u003cu\>CollectionViewSource.GetDefaultView(YourListBox.ItemsSource).Filter \u003d new Predicate(FilterOdds)\u003c/u\>\u003c/em\> statement or, even \u003cem\>YourListBox.Items.Filter \u003d new Predicate(FilterOdds)\u003c/em\> statement, you&#39;ll filter data in both ListBoxes. This is not what you want. You need to filter \u003cstrong\>the view\u003c/strong\> of the data and not a data itself.\u003c/p\>\n\u003cp\>Just enumerate listbox items and Collapse &quot;unnecessaries&quot;, according predefined criteria. Like following:\u003c/p\>\n\u003cp\>for (int i \u003d 0; i &lt; MyListBox.Items.Count; i++) \u003cbr\>{ \u003cbr\>&#160; ListBoxItem itm \u003d MyListBox.Items[i] as ListBoxItem; \u003cbr\>&#160;&#160; if (FilterOdds(itm.Content)) \u003cbr\>&#160;&#160;&#160; MyListBox.Items[i].Visibility \u003d Visibility.Collapsed; \u003cbr\>}\u003c/p\>\n\u003cp\>\u003cimg height\u003d\"185\" alt\u003d\"image\" src\u003d\"http://blogs.microsoft.co.il/blogs/tamir/WindowsLiveWriter/HowtofilterItemsControlViewratherthenDat_F647/image_112bed3e-9608-413b-b575-7114b1e47449.png\" width\u003d\"200\" border\u003d\"0\"\> \u003c/p\>\n\u003cp\>But, if you want to be even more precise, pay attention on what has been virtualized and what has not by getting underlying VirtualizingStackPanel and enumerating and operating it&#39;s items. How to do it? Get and see in \u003ca href\u003d\"http://blogs.microsoft.co.il/blogs/tamir/attachment/28670.ashx\"\>source code for this article\u003c/a\>.\u003c/p\>\n\u003cp\>\u003cstrong\>UPD:\u003c/strong\> This article was read by a couple of hundrends of visitors, \u003cu\>however\u003c/u\>&#160;only one sent me an e-mail (comments are not working?) about a mistake. Try to imagine, that data source was changed. What are you think will happen to bounded listbox? That&#39;s right, this will not be updated, due to fact, that we filtered view, not source. What to do? When you want to filter your view, subscribe to DataChanged event of it&#39;s data source. There perform filterring. Don&#39;t forget to unsubscribe, when you&#39;re removing the filter.\u003c/p\>\n\u003cp\>Source code was updated. Please, fix my mistakes. I&#39;m only human and sometimes (not too ofter) I&#39;m getting wrong... Tnx to Zahi, who notice me about an error.\u003c/p\>\u003cimg src\u003d\"http://blogs.microsoft.co.il/aggbug.aspx?PostID\u003d28670\" width\u003d\"1\" height\u003d\"1\"\>\u003cdiv\>\n\u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dNLMXolA\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dNLMXolA\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dlChPH0A\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dlChPH0A\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dxPWTOIa\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dxPWTOIa\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003djtFTCma\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003djtFTCma\" border\u003d\"0\"\>\u003c/a\>\n\u003c/div\>\u003cimg src\u003d\"http://feeds.feedburner.com/~r/microsft/~4/172917910\" height\u003d\"1\" width\u003d\"1\"\>', 'str_published': 'Oct 21, 2007', 'str_updated': '', 'custom_content': [{'custom_content_id': 'http://purl.org/rss/1.0/modules/slash/:comments', 'custom_content_value': ['2']}, {'custom_content_id': 'http://rssnamespace.org/feedburner/ext/1.0:origEnclosureLink', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/attachment/28670.ashx']}, {'custom_content_id': 'http://rssnamespace.org/feedburner/ext/1.0:awareness', 'custom_content_value': ['http://api.feedburner.com/awareness/1.0/GetItemData?uri\u003dmicrosft&itemurl\u003dhttp%3A%2F%2Fblogs.microsoft.co.il%2Fblogs%2Ftamir%2Farchive%2F2007%2F10%2F21%2Fhow-to-filter-itemscontrol-view-rather-then-data-source.aspx']}, {'custom_content_id': 'http://wellformedweb.org/CommentAPI/:commentRss', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx?PostID\u003d28670']}, {'custom_content_id': ':comments', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/archive/2007/10/21/how-to-filter-itemscontrol-view-rather-then-data-source.aspx#comments']}, {'custom_content_id': 'http://wellformedweb.org/CommentAPI/:comment', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/commentapi.aspx?PostID\u003d28670']}]}, {'guid': 'b5c4f5bc-c09b-4439-a595-91a98c1847df:28152', 'title': 'How to build dynamic menus and toolbars', 'published': 1192703220, 'updated': 0, 'alternate': {'href': 'http://feeds.feedburner.com/~r/microsft/~3/171542858/how-to-build-dynamic-menus-and-toolbars.aspx', 'type': 'application/octet-stream'}, 'author': 'Tamir Khason', 'summary': '\u003cp\>The challenge is as following:\u003c/p\>\n\u003cul\>\n\u003cli\>I want to have external XAML files with menus and toolbars\u003c/li\>\n\u003cli\>I do not want to recompile project if I want to change something in those menus and toolbars\u003c/li\>\n\u003cli\>I want to provide commands for those menus and toolbars without recompiling\u003c/li\>\n\u003cli\>I want to write least amount of code to provide such functionality\u003c/li\>\u003c/ul\>\n\u003cp\>What&#39;s the problem? The answer is XamlReader. First let&#39;s create menus and toolbars in external loose XAML files and put them into our BIN directory. \u003c/p\>\n\u003cp\>\u003cu\>Menu1.xaml\u003c/u\>\u003c/p\>\n\u003cp\>&lt;Menu xmlns\u003d&quot;\u003ca href\u003d\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\>http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;\u003c/a\> \u003cbr\>&#160;&#160;&#160; xmlns:x\u003d&quot;\u003ca href\u003d\"http://schemas.microsoft.com/winfx/2006/xaml\"\>http://schemas.microsoft.com/winfx/2006/xaml&quot;\u003c/a\>&gt; \u003cbr\>&#160; &lt;MenuItem Header\u003d&quot;Edit&quot;&gt; \u003cbr\>&#160;&#160;&#160; &lt;MenuItem Command\u003d&quot;ApplicationCommands.Cut&quot;/&gt; \u003cbr\>&#160;&#160;&#160; &lt;MenuItem Command\u003d&quot;ApplicationCommands.Copy&quot;/&gt; \u003cbr\>&#160;&#160;&#160; &lt;MenuItem Command\u003d&quot;ApplicationCommands.Paste&quot;/&gt; \u003cbr\>&#160; &lt;/MenuItem&gt; \u003cbr\>&lt;/Menu&gt;\u003c/p\>\n\u003cp\>\u003cu\>ToolBar1.xaml\u003c/u\>\u003c/p\>\n\u003cp\>&lt;ToolBar xmlns\u003d&quot;\u003ca href\u003d\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\>http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;\u003c/a\> \u003cbr\>&#160;&#160;&#160; xmlns:x\u003d&quot;\u003ca href\u003d\"http://schemas.microsoft.com/winfx/2006/xaml\"\>http://schemas.microsoft.com/winfx/2006/xaml&quot;\u003c/a\>&gt; \u003cbr\>&#160; &lt;Button Command\u003d&quot;ApplicationCommands.Cut&quot;&gt; \u003cbr\>&#160;&#160;&#160; &lt;Image Source\u003d&quot;pack://siteoforigin:,,,/cut.png&quot;/&gt; \u003cbr\>&#160; &lt;/Button&gt; \u003cbr\>&#160;&#160;&#160; &lt;Button Command\u003d&quot;ApplicationCommands.Copy&quot;&gt; \u003cbr\>&#160;&#160;&#160;&#160;&#160; &lt;Image Source\u003d&quot;pack://siteoforigin:,,,/copy.png&quot;/&gt; \u003cbr\>&#160;&#160;&#160; &lt;/Button&gt; \u003cbr\>&#160;&#160;&#160; &lt;Button Command\u003d&quot;ApplicationCommands.Paste&quot;&gt; \u003cbr\>&#160;&#160;&#160;&#160;&#160; &lt;Image Source\u003d&quot;pack://siteoforigin:,,,/paste.png&quot;/&gt; \u003cbr\>&#160;&#160;&#160; &lt;/Button&gt; \u003cbr\>&lt;/ToolBar&gt;\u003c/p\>\n\u003cp\>Now let&#39;s create out window\u003c/p\>\n\u003cp\>\u003cu\>Window1.xaml\u003c/u\>\u003c/p\>\n\u003cp\>&lt;Window x:Class\u003d&quot;DynamicMenu.Window1&quot; \u003cbr\>&#160;&#160;&#160; xmlns\u003d&quot;\u003ca href\u003d\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\>http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;\u003c/a\> \u003cbr\>&#160;&#160;&#160; xmlns:x\u003d&quot;\u003ca href\u003d\"http://schemas.microsoft.com/winfx/2006/xaml\"\>http://schemas.microsoft.com/winfx/2006/xaml&quot;\u003c/a\> \u003cbr\>&#160;&#160;&#160; Title\u003d&quot;DynamicMenu&quot; Height\u003d&quot;300&quot; Width\u003d&quot;300&quot; \u003cbr\>&#160;&#160;&#160; &gt; \u003cbr\>&#160; &lt;Window.Resources&gt; \u003cbr\>&#160;&#160;&#160; &lt;Style TargetType\u003d&quot;Image&quot;&gt; \u003cbr\>&#160;&#160;&#160;&#160;&#160; &lt;Style.Triggers&gt; \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;Trigger Property\u003d&quot;IsEnabled&quot; Value\u003d&quot;False&quot;&gt; \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;Setter Property\u003d&quot;Opacity&quot; Value\u003d&quot;0.5&quot;/&gt; \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/Trigger&gt; \u003cbr\>&#160;&#160;&#160;&#160;&#160; &lt;/Style.Triggers&gt; \u003cbr\>&#160;&#160;&#160; &lt;/Style&gt; \u003cbr\>&#160; &lt;/Window.Resources&gt; \u003cbr\>&#160;&#160;&#160; &lt;StackPanel Name\u003d&quot;main&quot;&gt; \u003cbr\>&#160;&#160;&#160;&#160;&#160; &lt;TextBox/&gt; \u003cbr\>&#160;&#160;&#160;&#160;&#160; &lt;TextBox/&gt; \u003cbr\>&#160;&#160;&#160; &lt;/StackPanel&gt; \u003cbr\>&lt;/Window&gt;\u003c/p\>\n\u003cp\>Now, the only thing we should do it to read Menu1.xaml and TooBar1.xaml from our BIN directory and add Menu and ToolBar controls dynamically to the page\u003c/p\>\n\u003cp\>public Window1() \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160; { \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; InitializeComponent(); \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; using (FileStream s \u003d new FileStream(&quot;Menu1.xaml&quot;, FileMode.Open)) \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; { \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; Menu menu \u003d XamlReader.Load(s, new ParserContext()) as Menu; \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; if (menu !\u003d null) \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; { \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; main.Children.Insert(0, menu); \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; } \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; } \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; using (FileStream s \u003d new FileStream(&quot;ToolBar1.xaml&quot;, FileMode.Open)) \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; { \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; ToolBar tool \u003d XamlReader.Load(s, new ParserContext()) as ToolBar; \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; if (tool !\u003d null) \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; { \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; main.Children.Insert(1, tool); \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; } \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; } \u003cbr\>&#160;&#160;&#160;&#160;&#160;&#160; } \u003c/p\>\n\u003cp\>\u003cimg height\u003d\"158\" alt\u003d\"image\" src\u003d\"http://blogs.microsoft.co.il/blogs/tamir/WindowsLiveWriter/Howtobuilddynamicmenusandtoolbars_AF32/image_5f784c5f-1228-4859-a907-e308a481105d.png\" width\u003d\"225\" border\u003d\"0\"\> \u003c/p\>\n\u003cp\>We done. Have a nice day :)\u003c/p\>\n\u003cp\>\u003ca href\u003d\"http://blogs.microsoft.co.il/blogs/tamir/attachment/28152.ashx\"\>Source code for this article\u003c/a\>\u003c/p\>\u003cimg src\u003d\"http://blogs.microsoft.co.il/aggbug.aspx?PostID\u003d28152\" width\u003d\"1\" height\u003d\"1\"\>\u003cdiv\>\n\u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dqguoXdA\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dqguoXdA\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dHbLbM5A\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dHbLbM5A\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dwYmEGda\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dwYmEGda\" border\u003d\"0\"\>\u003c/a\> \u003ca href\u003d\"http://feeds.feedburner.com/~f/microsft?a\u003dAWBduHa\"\>\u003cimg src\u003d\"http://feeds.feedburner.com/~f/microsft?i\u003dAWBduHa\" border\u003d\"0\"\>\u003c/a\>\n\u003c/div\>\u003cimg src\u003d\"http://feeds.feedburner.com/~r/microsft/~4/171542858\" height\u003d\"1\" width\u003d\"1\"\>', 'str_published': 'Oct 18, 2007', 'str_updated': '', 'custom_content': [{'custom_content_id': 'http://purl.org/rss/1.0/modules/slash/:comments', 'custom_content_value': ['0']}, {'custom_content_id': 'http://rssnamespace.org/feedburner/ext/1.0:origEnclosureLink', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/attachment/28152.ashx']}, {'custom_content_id': 'http://rssnamespace.org/feedburner/ext/1.0:awareness', 'custom_content_value': ['http://api.feedburner.com/awareness/1.0/GetItemData?uri\u003dmicrosft&itemurl\u003dhttp%3A%2F%2Fblogs.microsoft.co.il%2Fblogs%2Ftamir%2Farchive%2F2007%2F10%2F18%2Fhow-to-build-dynamic-menus-and-toolbars.aspx']}, {'custom_content_id': 'http://wellformedweb.org/CommentAPI/:commentRss', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx?PostID\u003d28152']}, {'custom_content_id': ':comments', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/archive/2007/10/18/how-to-build-dynamic-menus-and-toolbars.aspx#comments']}, {'custom_content_id': 'http://wellformedweb.org/CommentAPI/:comment', 'custom_content_value': ['http://blogs.microsoft.co.il/blogs/tamir/commentapi.aspx?PostID\u003d28152']}]}]}}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1',  'header',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:useImage\'\> \u003cb:if cond\u003d\'data:imagePlacement \u003d\u003d \"REPLACE\"\'\>  \u003cdiv id\u003d\'header-inner\'\> \u003ca expr:href\u003d\'data:blog.homepageUrl\' style\u003d\'display: block\'\> \u003cimg expr:alt\u003d\'data:title\' expr:height\u003d\'data:height\' expr:id\u003d\'data:widget.instanceId + \"_headerimg\"\' expr:src\u003d\'data:sourceUrl\' expr:width\u003d\'data:width\' style\u003d\'display: block\'/\> \u003c/a\> \u003c/div\> \u003cb:else\>\u003c/b:else\>  \u003cdiv expr:style\u003d\'\"background-image: url(\\\"\" + data:sourceUrl + \"\\\"); \"                      + \"background-repeat: no-repeat; \"                      + \"width: \" + data:width + \"px; \"                      + \"height: \" + data:height + \"px;\"\' id\u003d\'header-inner\'\> \u003cdiv class\u003d\'titlewrapper\' style\u003d\'background: transparent\'\> \u003ch1 class\u003d\'title\' style\u003d\'background: transparent; border-width: 0px\'\> \u003cb:if cond\u003d\'data:blog.url \u003d\u003d data:blog.homepageUrl\'\> \u003cdata:title\>\u003c/data:title\> \u003cb:else\>\u003c/b:else\> \u003ca expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:title\>\u003c/data:title\>\u003c/a\> \u003c/b:if\> \u003c/h1\> \u003c/div\> \u003cdiv class\u003d\'descriptionwrapper\'\> \u003cp class\u003d\'description\'\>\u003cspan\>\u003cdata:description\>\u003c/data:description\>\u003c/span\>\u003c/p\> \u003c/div\> \u003c/div\> \u003c/b:if\> \u003cb:else\>\u003c/b:else\>  \u003cdiv id\u003d\'header-inner\'\> \u003cdiv class\u003d\'titlewrapper\'\> \u003ch1 class\u003d\'title\'\> \u003cb:if cond\u003d\'data:blog.url \u003d\u003d data:blog.homepageUrl\'\> \u003cdata:title\>\u003c/data:title\> \u003cb:else\>\u003c/b:else\> \u003ca expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:title\>\u003c/data:title\>\u003c/a\> \u003c/b:if\> \u003c/h1\> \u003c/div\> \u003cdiv class\u003d\'descriptionwrapper\'\> \u003cp class\u003d\'description\'\>\u003cspan\>\u003cdata:description\>\u003c/data:description\>\u003c/span\>\u003c/p\> \u003c/div\> \u003c/div\> \u003c/b:if\>'}}, document.getElementById('Header1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_NavbarView', new _WidgetInfo('Navbar1',  'navbar',{'main': {'varName': '', 'template': '&lt;iframe src\u003d&quot;http://www.blogger.com/navbar.g?targetBlogID\u003d6507247203309841795&amp;amp;blogName\u003dJust+code&amp;amp;publishMode\u003dPUBLISH_MODE_BLOGSPOT&amp;amp;navbarType\u003dSILVER&amp;amp;layoutType\u003dLAYOUTS&amp;amp;homepageUrl\u003dhttp%3A%2F%2Fdedjo.blogspot.com%2F&amp;amp;searchRoot\u003dhttp%3A%2F%2Fdedjo.blogspot.com%2Fsearch&quot; marginwidth\u003d&quot;0&quot; marginheight\u003d&quot;0&quot; scrolling\u003d&quot;no&quot; frameborder\u003d&quot;0&quot; height\u003d&quot;30px&quot; width\u003d&quot;100%&quot; id\u003d&quot;navbar-iframe&quot;&gt;&lt;/iframe&gt; &lt;div id\u003d&quot;space-for-ie&quot;&gt;&lt;/div&gt;'}}, document.getElementById('Navbar1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1',  'main',{'main': {'varName': 'top', 'template': '\u003cdiv class\u003d\'blog-posts hfeed\'\> \u003cb:include data\u003d\'top\' name\u003d\'status-message\'\>\u003c/b:include\> \u003cdata:adStart\>\u003c/data:adStart\> \u003cb:loop values\u003d\'data:posts\' var\u003d\'post\'\> \u003cb:if cond\u003d\'data:post.dateHeader\'\> \u003ch2 class\u003d\'date-header\'\>\u003cdata:post.dateHeader\>\u003c/data:post.dateHeader\>\u003c/h2\> \u003c/b:if\> \u003cb:include data\u003d\'post\' name\u003d\'post\'\>\u003c/b:include\> \u003cb:if cond\u003d\'data:blog.pageType \u003d\u003d \"item\"\'\> \u003cb:include data\u003d\'post\' name\u003d\'comments\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:post.includeAd\'\> \u003cdata:adEnd\>\u003c/data:adEnd\> \u003cdata:adCode\>\u003c/data:adCode\> \u003cdata:adStart\>\u003c/data:adStart\> \u003c/b:if\> \u003c/b:loop\> \u003cdata:adEnd\>\u003c/data:adEnd\> \u003c/div\>  \u003cb:include name\u003d\'nextprev\'\>\u003c/b:include\>  \u003cb:include name\u003d\'feedLinks\'\>\u003c/b:include\>'}, 'nextprev': {'varName': '', 'template': '\u003cdiv class\u003d\'blog-pager\' id\u003d\'blog-pager\'\> \u003cb:if cond\u003d\'data:newerPageUrl\'\> \u003cspan id\u003d\'blog-pager-newer-link\'\> \u003ca class\u003d\'blog-pager-newer-link\' expr:href\u003d\'data:newerPageUrl\' expr:id\u003d\'data:widget.instanceId + \"_blog-pager-newer-link\"\' expr:title\u003d\'data:newerPageTitle\'\>\u003cdata:newerPageTitle\>\u003c/data:newerPageTitle\>\u003c/a\> \u003c/span\> \u003c/b:if\> \u003cb:if cond\u003d\'data:olderPageUrl\'\> \u003cspan id\u003d\'blog-pager-older-link\'\> \u003ca class\u003d\'blog-pager-older-link\' expr:href\u003d\'data:olderPageUrl\' expr:id\u003d\'data:widget.instanceId + \"_blog-pager-older-link\"\' expr:title\u003d\'data:olderPageTitle\'\>\u003cdata:olderPageTitle\>\u003c/data:olderPageTitle\>\u003c/a\> \u003c/span\> \u003c/b:if\> \u003cb:if cond\u003d\'data:blog.homepageUrl !\u003d data:blog.url\'\> \u003ca class\u003d\'home-link\' expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:homeMsg\>\u003c/data:homeMsg\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cb:if cond\u003d\'data:newerPageUrl\'\> \u003ca class\u003d\'home-link\' expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:homeMsg\>\u003c/data:homeMsg\>\u003c/a\> \u003c/b:if\> \u003c/b:if\> \u003c/div\> \u003cdiv class\u003d\'clear\'\>\u003c/div\>'}, 'post': {'varName': 'post', 'template': '\u003cdiv class\u003d\'post hentry\'\> \u003ca expr:name\u003d\'data:post.id\'\>\u003c/a\> \u003cb:if cond\u003d\'data:post.title\'\> \u003ch3 class\u003d\'post-title entry-title\'\> \u003cb:if cond\u003d\'data:post.link\'\> \u003ca expr:href\u003d\'data:post.link\'\>\u003cdata:post.title\>\u003c/data:post.title\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cb:if cond\u003d\'data:post.url\'\> \u003ca expr:href\u003d\'data:post.url\'\>\u003cdata:post.title\>\u003c/data:post.title\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cdata:post.title\>\u003c/data:post.title\> \u003c/b:if\> \u003c/b:if\> \u003c/h3\> \u003c/b:if\> \u003cdiv class\u003d\'post-header-line-1\'\>\u003c/div\> \u003cdiv class\u003d\'post-body entry-content\'\> \u003cp\>\u003cdata:post.body\>\u003c/data:post.body\>\u003c/p\> \u003cdiv style\u003d\'clear: both;\'\>\u003c/div\>  \u003c/div\> \u003cdiv class\u003d\'post-footer\'\> \u003cp class\u003d\'post-footer-line post-footer-line-1\'\>\u003cspan class\u003d\'post-author vcard\'\> \u003cb:if cond\u003d\'data:top.showAuthor\'\> \u003cdata:top.authorLabel\>\u003c/data:top.authorLabel\> \u003cspan class\u003d\'fn\'\>\u003cdata:post.author\>\u003c/data:post.author\>\u003c/span\> \u003c/b:if\> \u003c/span\> \u003cspan class\u003d\'post-timestamp\'\> \u003cb:if cond\u003d\'data:top.showTimestamp\'\> \u003cdata:top.timestampLabel\>\u003c/data:top.timestampLabel\> \u003cb:if cond\u003d\'data:post.url\'\> \u003ca class\u003d\'timestamp-link\' expr:href\u003d\'data:post.url\' rel\u003d\'bookmark\' title\u003d\'permanent link\'\>\u003cabbr class\u003d\'published\' expr:title\u003d\'data:post.timestampISO8601\'\>\u003cdata:post.timestamp\>\u003c/data:post.timestamp\>\u003c/abbr\>\u003c/a\> \u003c/b:if\> \u003c/b:if\> \u003c/span\> \u003cspan class\u003d\'post-comment-link\'\> \u003cb:if cond\u003d\'data:blog.pageType !\u003d \"item\"\'\> \u003cb:if cond\u003d\'data:post.allowComments\'\> \u003ca class\u003d\'comment-link\' expr:href\u003d\'data:post.addCommentUrl\' expr:onclick\u003d\'data:post.addCommentOnclick\'\>\u003cb:if cond\u003d\'data:post.numComments \u003d\u003d 1\'\>1 \u003cdata:top.commentLabel\>\u003c/data:top.commentLabel\>\u003cb:else\>\u003c/b:else\>\u003cdata:post.numComments\>\u003c/data:post.numComments\> \u003cdata:top.commentLabelPlural\>\u003c/data:top.commentLabelPlural\>\u003c/b:if\>\u003c/a\> \u003c/b:if\> \u003c/b:if\> \u003c/span\> \u003cspan class\u003d\'post-icons\'\>  \u003cb:if cond\u003d\'data:post.emailPostUrl\'\> \u003cspan class\u003d\'item-action\'\> \u003ca expr:href\u003d\'data:post.emailPostUrl\' expr:title\u003d\'data:top.emailPostMsg\'\> \u003cspan class\u003d\'email-post-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\> \u003c/b:if\>  \u003cb:include data\u003d\'post\' name\u003d\'postQuickEdit\'\>\u003c/b:include\> \u003c/span\> \u003c/p\> \u003cp class\u003d\'post-footer-line post-footer-line-2\'\>\u003cspan class\u003d\'post-labels\'\> \u003cb:if cond\u003d\'data:post.labels\'\> \u003cdata:postLabelsLabel\>\u003c/data:postLabelsLabel\> \u003cb:loop values\u003d\'data:post.labels\' var\u003d\'label\'\> \u003ca expr:href\u003d\'data:label.url\' rel\u003d\'tag\'\>\u003cdata:label.name\>\u003c/data:label.name\>\u003c/a\>\u003cb:if cond\u003d\'data:label.isLast !\u003d \"true\"\'\>,\u003c/b:if\> \u003c/b:loop\> \u003c/b:if\> \u003c/span\> \u003c/p\> \u003cp class\u003d\'post-footer-line post-footer-line-3\'\>\u003c/p\> \u003c/div\> \u003c/div\>'}, 'postQuickEdit': {'varName': 'post', 'template': '\u003cb:if cond\u003d\'data:post.editUrl\'\> \u003cspan expr:class\u003d\'\"item-control \" + data:post.adminClass\'\> \u003ca expr:href\u003d\'data:post.editUrl\' expr:title\u003d\'data:top.editPostMsg\'\> \u003cspan class\u003d\'quick-edit-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\> \u003c/b:if\>'}, 'commentDeleteIcon': {'varName': 'comment', 'template': '\u003cspan expr:class\u003d\'\"item-control \" + data:comment.adminClass\'\> \u003ca expr:href\u003d\'data:comment.deleteUrl\' expr:title\u003d\'data:top.deleteCommentMsg\'\> \u003cspan class\u003d\'delete-comment-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\>'}, 'backlinkDeleteIcon': {'varName': 'backlink', 'template': '\u003cspan expr:class\u003d\'\"item-control \" + data:backlink.adminClass\'\> \u003ca expr:href\u003d\'data:backlink.deleteUrl\' expr:title\u003d\'data:top.deleteBacklinkMsg\'\> \u003cspan class\u003d\'delete-comment-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\>'}, 'comments': {'varName': 'post', 'template': '\u003cdiv class\u003d\'comments\' id\u003d\'comments\'\> \u003ca name\u003d\'comments\'\>\u003c/a\> \u003cb:if cond\u003d\'data:post.allowComments\'\> \u003ch4\> \u003cb:if cond\u003d\'data:post.numComments \u003d\u003d 1\'\> 1 \u003cdata:commentLabel\>\u003c/data:commentLabel\>: \u003cb:else\>\u003c/b:else\> \u003cdata:post.numComments\>\u003c/data:post.numComments\> \u003cdata:commentLabelPlural\>\u003c/data:commentLabelPlural\>: \u003c/b:if\> \u003c/h4\> \u003cdl id\u003d\'comments-block\'\> \u003cb:loop values\u003d\'data:post.comments\' var\u003d\'comment\'\> \u003cdt class\u003d\'comment-author\' expr:id\u003d\'data:comment.anchorName\'\> \u003ca expr:name\u003d\'data:comment.anchorName\'\>\u003c/a\> \u003cb:if cond\u003d\'data:comment.authorUrl\'\> \u003ca expr:href\u003d\'data:comment.authorUrl\' rel\u003d\'nofollow\'\>\u003cdata:comment.author\>\u003c/data:comment.author\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cdata:comment.author\>\u003c/data:comment.author\> \u003c/b:if\> \u003cdata:commentPostedByMsg\>\u003c/data:commentPostedByMsg\> \u003c/dt\> \u003cdd class\u003d\'comment-body\'\> \u003cb:if cond\u003d\'data:comment.isDeleted\'\> \u003cspan class\u003d\'deleted-comment\'\>\u003cdata:comment.body\>\u003c/data:comment.body\>\u003c/span\> \u003cb:else\>\u003c/b:else\> \u003cp\>\u003cdata:comment.body\>\u003c/data:comment.body\>\u003c/p\> \u003c/b:if\> \u003c/dd\> \u003cdd class\u003d\'comment-footer\'\> \u003cspan class\u003d\'comment-timestamp\'\> \u003ca expr:href\u003d\'data:comment.url\' title\u003d\'comment permalink\'\> \u003cdata:comment.timestamp\>\u003c/data:comment.timestamp\> \u003c/a\> \u003cb:include data\u003d\'comment\' name\u003d\'commentDeleteIcon\'\>\u003c/b:include\> \u003c/span\> \u003c/dd\> \u003c/b:loop\> \u003c/dl\> \u003cp class\u003d\'comment-footer\'\> \u003ca expr:href\u003d\'data:post.addCommentUrl\' expr:onclick\u003d\'data:post.addCommentOnclick\'\>\u003cdata:postCommentMsg\>\u003c/data:postCommentMsg\>\u003c/a\> \u003c/p\> \u003c/b:if\> \u003cdiv id\u003d\'backlinks-container\'\> \u003cdiv expr:id\u003d\'data:widget.instanceId + \"_backlinks-container\"\'\> \u003cb:if cond\u003d\'data:post.showBacklinks\'\> \u003cb:include data\u003d\'post\' name\u003d\'backlinks\'\>\u003c/b:include\> \u003c/b:if\> \u003c/div\> \u003c/div\> \u003c/div\>'}, 'backlinks': {'varName': 'post', 'template': '\u003ca name\u003d\'links\'\>\u003c/a\>\u003ch4\>\u003cdata:post.backlinksLabel\>\u003c/data:post.backlinksLabel\>\u003c/h4\> \u003cb:if cond\u003d\'data:post.numBacklinks !\u003d 0\'\> \u003cdl class\u003d\'comments-block\' id\u003d\'comments-block\'\> \u003cb:loop values\u003d\'data:post.backlinks\' var\u003d\'backlink\'\> \u003cdiv class\u003d\'collapsed-backlink backlink-control\'\> \u003cdt class\u003d\'comment-title\'\> \u003cspan class\u003d\'backlink-toggle-zippy\'\>&#160;\u003c/span\> \u003ca expr:href\u003d\'data:backlink.url\' rel\u003d\'nofollow\'\>\u003cdata:backlink.title\>\u003c/data:backlink.title\>\u003c/a\> \u003cb:include data\u003d\'backlink\' name\u003d\'backlinkDeleteIcon\'\>\u003c/b:include\> \u003c/dt\> \u003cdd class\u003d\'comment-body collapseable\'\> \u003cdata:backlink.snippet\>\u003c/data:backlink.snippet\> \u003c/dd\> \u003cdd class\u003d\'comment-footer collapseable\'\> \u003cspan class\u003d\'comment-author\'\>\u003cdata:post.authorLabel\>\u003c/data:post.authorLabel\> \u003cdata:backlink.author\>\u003c/data:backlink.author\>\u003c/span\> \u003cspan class\u003d\'comment-timestamp\'\>\u003cdata:post.timestampLabel\>\u003c/data:post.timestampLabel\> \u003cdata:backlink.timestamp\>\u003c/data:backlink.timestamp\>\u003c/span\> \u003c/dd\> \u003c/div\> \u003c/b:loop\> \u003c/dl\> \u003c/b:if\> \u003cp class\u003d\'comment-footer\'\> \u003ca class\u003d\'comment-link\' expr:href\u003d\'data:post.createLinkUrl\' expr:id\u003d\'data:widget.instanceId + \"_backlinks-create-link\"\' target\u003d\'_blank\'\>\u003cdata:post.createLinkLabel\>\u003c/data:post.createLinkLabel\>\u003c/a\> \u003c/p\>'}, 'feedLinks': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:blog.pageType !\u003d \"item\"\'\>  \u003cb:if cond\u003d\'data:feedLinks\'\> \u003cdiv class\u003d\'blog-feeds\'\> \u003cb:include data\u003d\'feedLinks\' name\u003d\'feedLinksBody\'\>\u003c/b:include\> \u003c/div\> \u003c/b:if\> \u003cb:else\>\u003c/b:else\>  \u003cdiv class\u003d\'post-feeds\'\> \u003cb:loop values\u003d\'data:posts\' var\u003d\'post\'\> \u003cb:if cond\u003d\'data:post.allowComments\'\> \u003cb:if cond\u003d\'data:post.feedLinks\'\> \u003cb:include data\u003d\'post.feedLinks\' name\u003d\'feedLinksBody\'\>\u003c/b:include\> \u003c/b:if\> \u003c/b:if\> \u003c/b:loop\> \u003c/div\> \u003c/b:if\>'}, 'feedLinksBody': {'varName': 'links', 'template': '\u003cdiv class\u003d\'feed-links\'\> \u003cdata:feedLinksMsg\>\u003c/data:feedLinksMsg\> \u003cb:loop values\u003d\'data:links\' var\u003d\'f\'\> \u003ca class\u003d\'feed-link\' expr:href\u003d\'data:f.url\' expr:type\u003d\'data:f.mimeType\' target\u003d\'_blank\'\>\u003cdata:f.name\>\u003c/data:f.name\> (\u003cdata:f.feedType\>\u003c/data:f.feedType\>)\u003c/a\> \u003c/b:loop\> \u003c/div\>'}, 'status-message': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:navMessage\'\> \u003cdiv class\u003d\'status-msg-wrap\'\> \u003cdiv class\u003d\'status-msg-body\'\> \u003cdata:navMessage\>\u003c/data:navMessage\> \u003c/div\> \u003cdiv class\u003d\'status-msg-border\'\> \u003cdiv class\u003d\'status-msg-bg\'\> \u003cdiv class\u003d\'status-msg-hidden\'\>\u003cdata:navMessage\>\u003c/data:navMessage\>\u003c/div\> \u003c/div\> \u003c/div\> \u003c/div\> \u003cdiv style\u003d\'clear: both;\'\>\u003c/div\> \u003c/b:if\>'}}, document.getElementById('Blog1'), {}, 'displayModeFull'));
+</script>
+</body></html>

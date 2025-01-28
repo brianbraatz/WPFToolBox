@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html dir="ltr"><head><link href="navbar_data/2173601441-navbar.css" rel="stylesheet" type="text/css">
+<link href="navbar_data/4250603300-4.css" rel="stylesheet" type="text/css">
+<!-- base --></head><body><script type="text/javascript" src="navbar_data/3625575137-cookies.js"></script>
+<script type="text/javascript" src="navbar_data/1019856700-common.js"></script>
+<script type="text/javascript" src="navbar_data/1118085881-dom.js"></script>
+<script type="text/javascript">
+
+  
+   var ID = "13336855";
+   var FLAG_COOKIE_NAME = 'flaggedBlog';
+   var MAX_FLAGGED_BLOGS = 10;
+   var FLAG_BLOG_URL = "http://www.blogger.com" +
+                       "/flag-blog.g?nav=" +
+                       "4" +
+                       "&toFlag=" + ID;
+   var UNFLAG_BLOG_URL = "http://www.blogger.com" +
+                       "/unflag-blog.g?nav=" +
+                       "4" +
+                       "&toFlag=" + ID;
+   var FLAG_IMAGE_URL = "http://www.blogger.com" + "/img/navbar/" +
+                        "4" + "/flag.gif";
+   var UNFLAG_IMAGE_URL = "http://www.blogger.com" +
+                           "/img/navbar/1/unflag.gif";
+
+   var ncHasFlagged = false;
+   var servletTarget = new Image();
+
+  
+  function hasFlagged() {
+    if (getCookie(FLAG_COOKIE_NAME)) {
+      var bloglist = getCookie(FLAG_COOKIE_NAME);
+      var blogarray = bloglist.split(",")
+      if (FindInArray(blogarray, ID) > 0) {
+        return true;
+      }
+    }
+    return ncHasFlagged;
+  }
+  
+
+  function toggleFlag() {
+    var date = new Date();
+    if (hasFlagged()) {
+      removeBlogFromFlagCookie();
+      servletTarget.src = UNFLAG_BLOG_URL + '&d=' + date.getTime();
+      document.getElementById('bt-flag').style.background =
+        'url(' + FLAG_IMAGE_URL + ') left no-repeat';
+      ncHasFlagged = false;
+      document.getElementById('bt-unflag-body').style.display = 'none';
+      document.getElementById('bt-flag-body').style.display = 'inline'
+      refreshDrop();
+    } else {
+      setBloggerFlagCookie();
+      servletTarget.src = FLAG_BLOG_URL + '&d=' + date.getTime();
+      document.getElementById('bt-flag').style.background =
+        'url(' + UNFLAG_IMAGE_URL + ') left no-repeat';
+      ncHasFlagged = true;
+      document.getElementById('bt-flag-body').style.display = 'none'
+      document.getElementById('bt-unflag-body').style.display = 'inline'
+      refreshDrop();
+    }
+  }
+
+  
+  function showDrop() {
+   var overlap = 5;
+   var dropdown_position =
+     GetPageOffsetRight(document.getElementById('b-flag-this')) - overlap + "px";
+
+   document.getElementById('unflagi').style.display = 'none';
+   document.getElementById('flagi').style.display = 'none';
+
+   if (!hasFlagged()) {
+      document.getElementById('flagi').style.display = 'inline';
+      document.getElementById('flagi').style.left = dropdown_position;
+      showElement(document.getElementById('flagi'));
+    } else {
+      document.getElementById('unflagi').style.display = 'inline';
+      document.getElementById('unflagi').style.left = dropdown_position;
+      showElement(document.getElementById('unflagi'));
+    }
+  }
+
+  
+  function hideDrop() {
+      hideElement(document.getElementById('flagi'));
+      hideElement(document.getElementById('unflagi'));
+  }
+
+  
+  function refreshDrop() {
+    hideDrop();
+    showDrop();
+  }
+
+  
+  function setBloggerFlagCookie() {
+    var bloglist = ""
+    if (getCookie(FLAG_COOKIE_NAME)) {
+      bloglist = getCookie(FLAG_COOKIE_NAME)
+      var blogarray = bloglist.split(",")
+      if (blogarray.length >= MAX_FLAGGED_BLOGS) {
+        blogarray.shift()
+      }
+      InsertArray(blogarray, ID)
+      bloglist = blogarray.toString();
+    } else {
+      bloglist = ID
+    }
+    setCookie(FLAG_COOKIE_NAME, bloglist, null, null, '/', null)
+   }
+
+  
+  function removeBlogFromFlagCookie(){
+    if (getCookie(FLAG_COOKIE_NAME)) {
+      var bloglist = getCookie(FLAG_COOKIE_NAME);
+      var blogarray = bloglist.split(",")
+      if (FindInArray(blogarray, ID) > 0) {
+        DeleteArrayElement(blogarray, ID)
+        bloglist = blogarray.toString();
+      }
+      setCookie(FLAG_COOKIE_NAME, bloglist, null, null, '/', null);
+    }
+  }
+  
+
+  </script>
+<div id="flagi" style="position: absolute;" onmouseover="showDrop()" onmouseout="hideDrop();"><div id="flagi-body">Notify Blogger about  <a href="http://help.blogger.com/bin/answer.py?answer=42517" target="_blank">objectionable content</a> on this page.</div></div>
+<div id="unflagi" style="position: absolute;" onmouseover="showDrop()" onmouseout="hideDrop()"><div id="unflagi-body">You flagged this blog as having  <a href="http://help.blogger.com/bin/answer.py?answer=42517" target="_blank">objectionable content</a>.</div></div>
+<div id="b-navbar"><a href="http://www.blogger.com/" id="b-logo" title="Go to Blogger.com"><div id="navbar-logo"></div></a>
+<div id="b-sms" class="b-mobile"><a href="sms:?body=Hi%2C%20check%20out%20Shawn%20M.%20Livermore%20at%20http%3A%2F%2Fshawnlivermore.blogspot.com%2F">Send As SMS</a></div>
+<div id="b-search"><table cellpadding="0" cellspacing="0"><tbody><tr><td class="navsearch" nowrap="nowrap" valign="middle"><form id="searchthis" action="http://shawnlivermore.blogspot.com/search" method="get" style="display: inline;"><table cellpadding="0" cellspacing="0"><tbody><tr><td valign="middle"><input id="b-query" name="q" type="text"></td>
+<td class="navbutton" valign="middle"><noscript><input type="image"
+src="http://www.blogger.com/img/navbar/4/btn_search_this.gif"
+id="b-searchbtn" alt="Search This Blog" title="Search this blog"></noscript>
+<script type="text/javascript">
+  document.write("\u003cdiv id\u003d\"b-search-this\" onclick\u003d\"document.getElementById(\'searchthis\').submit()\"\>\u003cdiv class\u003d\"bt1\"\>&nbsp;\u003c/div\>\n\u003cdiv class\u003d\"bt2\"\>Search Blog\u003c/div\>\n\u003cdiv class\u003d\"bt1\"\>&nbsp;\u003c/div\>\u003c/div\>");
+</script><div id="b-search-this" onclick="document.getElementById('searchthis').submit()"><div class="bt1">&nbsp;</div>
+<div class="bt2">Search Blog</div>
+<div class="bt1">&nbsp;</div></div></td>
+<td class="navbutton" valign="middle"><script type="text/javascript">
+  document.write("\u003cdiv id\u003d\"b-flag-this\" onclick\u003d\"toggleFlag();\" onmouseover\u003d\"showDrop()\" onmouseout\u003d\"hideDrop()\"\>\u003cdiv class\u003d\"bt1\"\>&nbsp;\u003c/div\>\n\u003cdiv class\u003d\"bt2\"\>\u003cdiv id\u003d\"bt-flag\"\>\u003cdiv id\u003d\"bt-flag-body\"\>Flag Blog\u003c/div\>\n\u003cdiv id\u003d\"bt-unflag-body\" style\u003d\"display:none\"\>Unflag Blog\u003c/div\>\u003c/div\>\u003c/div\>\n\u003cdiv class\u003d\"bt1\"\>&nbsp;\u003c/div\>\u003c/div\>");
+</script><div id="b-flag-this" onclick="toggleFlag();" onmouseover="showDrop()" onmouseout="hideDrop()"><div class="bt1">&nbsp;</div>
+<div class="bt2"><div id="bt-flag"><div id="bt-flag-body">Flag Blog</div>
+<div id="bt-unflag-body" style="display: none;">Unflag Blog</div></div></div>
+<div class="bt1">&nbsp;</div></div></td></tr></tbody></table></form></td>
+<td nowrap="nowrap" valign="middle" width="100%"><a href="http://www.blogger.com/next-blog?navBar=true" id="b-next">Next Blog»</a></td>
+<td class="navbar-right" align="right" nowrap="nowrap" valign="middle"><a href="http://www.blogger.com/signup.g" id="b-getorpost">Create Blog</a>
+|
+<a href="http://www.blogger.com/">Sign In</a></td></tr></tbody></table></div></div></body></html>

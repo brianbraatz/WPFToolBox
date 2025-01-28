@@ -1,0 +1,605 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0034)http://www.beacosta.com/blog/?p=28 -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration?</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><!-- Editable Meta Tags -->
+<META content="" name=description>
+<META content="" name=keywords>
+<META content="Sreejith - GFXedit.com" name=author>
+<META content="Your Name" name=copyright>
+<META content="WordPress 2.2.2" name=generator>
+<META content=index,follow name=robots><!-- Meta Tags End--><!-- Style Sheet -->
+<STYLE type=text/css media=screen>@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</STYLE>
+<!-- Style Sheet End --><!-- Includes -->
+<SCRIPT src="" type=text/javascript></SCRIPT>
+
+<SCRIPT src="" type=text/javascript></SCRIPT>
+<!-- End Includes --><!-- Feed and Ping URLS--><LINK title="RSS 2.0" 
+href="http://www.beacosta.com/blog/?feed=rss2" type=application/rss+xml 
+rel=alternate><LINK title="RSS .92" 
+href="http://www.beacosta.com/blog/?feed=rss" type=text/xml rel=alternate><LINK 
+title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom" 
+type=application/atom+xml rel=alternate><LINK 
+href="http://www.beacosta.com/blog/xmlrpc.php" rel=pingback><!--?php wp_get_archives('type=monthly&format=link'); ?--><LINK 
+title=RSD href="http://www.beacosta.com/blog/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</SCRIPT>
+
+<STYLE type=text/css>.comment {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 8px; PADDING-BOTTOM: 4px; MARGIN: 6px 3px 3px; PADDING-TOP: 4px; POSITION: relative; BACKGROUND-COLOR: #fff
+}
+.odd {
+	BACKGROUND-COLOR: #f8f8f8
+}
+.comment DIV {
+	POSITION: relative
+}
+.comment .comment IMG {
+	MARGIN: 0px
+}
+.comment .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png); OVERFLOW: hidden; WIDTH: 13px; HEIGHT: 13px
+}
+.collapsed .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png)
+}
+.comment .reply {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 0px; FONT-SIZE: 80%; PADDING-BOTTOM: 6px; PADDING-TOP: 0px; TEXT-ALIGN: right
+}
+.comment {
+	BORDER-RIGHT: #ddd 1px solid; BORDER-TOP: #ddd 1px solid; MARGIN-TOP: 10px; BORDER-LEFT: #ddd 1px solid; BORDER-BOTTOM: #ddd 1px solid
+}
+INPUT#subscribe {
+	WIDTH: auto
+}
+.comment .body .content {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; OVERFLOW: auto; WIDTH: 100%; PADDING-TOP: 0px
+}
+.comment .title abbr {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.collapsed .body {
+	DISPLAY: none
+}
+.collapsed .comment {
+	DISPLAY: none
+}
+#commentform TEXTAREA {
+	WIDTH: 97%
+}
+</STYLE>
+<!-- End Feed and Ping URLS--></HEAD>
+<BODY>
+<DIV id=container>
+<DIV id=banner>
+<H1><A title="Beatriz Costa" accessKey=1 
+href="http://www.beacosta.com/blog">Beatriz Costa</A></H1>
+<H2 title="WPF Data Binding">WPF Data Binding</H2></DIV>
+<DIV id=center>
+<DIV class=content>
+<DIV class=post>
+<DIV class=date>June 4, 2006</DIV>
+<H2 id=post-28><A id=postTitle 
+title="How can I bind an ItemsControl to the values of an enumeration?" 
+href="http://www.beacosta.com/blog/?p=28" rel=bookmark>How can I bind an 
+ItemsControl to the values of an enumeration?</A></H2>
+<P><SPAN id=text>Today I will show how you can bind a ComboBox to all the 
+possible values of an enumeration, using only XAML. This scenario was blocked by 
+a bug in Feb CTP bits, so you will need Beta 2 bits to run this 
+sample.</SPAN></P>
+<P><SPAN id=text>I have the following enumeration in the code behind of this 
+sample:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public enum 
+TShirtSizes<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Small,<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medium,<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Large<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>In the UI of my application, I have a ComboBox for TechEd staff 
+to pick their T-Shirt size (you guys are all going to TechEd in Boston next 
+week, right?). I want the entries in that ComboBox to display the values in the 
+enum. </SPAN></P>
+<P><SPAN id=text>This is really easy to do. It turns out that there is a static 
+method on Enum that returns an Array of all the values of a particular 
+enumeration. This is how we could get the array of values through 
+code:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;Enum.GetValues(typeof(TShirtSizes));</SPAN></P>
+<P><SPAN id=text>Binding to this method can easily be done in XAML by using 
+ObjectDataProvider:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider 
+MethodName="GetValues" ObjectType="{x:Type sys:Enum}" 
+x:Key="odp"&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider.MethodParameters&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;x:Type 
+TypeName="local:TShirtSizes"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider.MethodParameters&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&gt;Select 
+the size of your TechEd 
+T-Shirt:&lt;/Label&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ComboBox 
+ItemsSource="{Binding Source={StaticResource odp}}" 
+IsSynchronizedWithCurrentItem="true"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;</SPAN></P>
+<P><SPAN id=text>I explained binding to a method using ObjectDataProvider in an 
+<A 
+href="http://www.beacosta.com/2006/03/why-should-i-use-objectdataprovider.html">earlier 
+post</A>. As you can see, there is nothing special about using 
+ObjectDataProvider to bind to a *static* method (with the exception of the bug 
+in Feb CTP).</SPAN></P>
+<P><SPAN id=text>Keep in mind that the values of the enumeration will be 
+displayed in the ComboBox in the order they are defined (though you can control 
+their order by sorting them with the help of a CollectionViewSource).</SPAN></P>
+<P><SPAN id=text>Below is a screenshot of the application:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" alt="" 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/25BindToEnum.png" 
+border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/25BindToEnum.zip">Here</A> you can find the 
+VS project with this sample code. This works with Beta2 WPF bits. </SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" alt="" 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/blogbadges_1.jpg" 
+border=0></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+</P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=28"
+    dc:identifier="http://www.beacosta.com/blog/?p=28"
+    dc:title="How can I bind an ItemsControl to the values of an enumeration?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=28" />
+</rdf:RDF>	--><!-- You can start editing here. -->
+<P><A href="http://www.beacosta.com/blog/?feed=rss2&amp;p=28"><ABBR 
+title="Really Simple Syndication">RSS</ABBR> feed</A> | <A 
+href="http://www.beacosta.com/blog/wp-trackback.php?p=28">Trackback <ACRONYM 
+title='\"Uniform' Identifier\? Resource>URI</ACRONYM></A> </P>
+<H2 id=comments>9 Comments <A title="Leave a comment" 
+href="http://www.beacosta.com/blog/?p=28#postcomment">»</A> </H2>
+<DIV class=commentlist>
+<DIV class=comment id=div-comment-128 style="BACKGROUND: #404040"><A 
+id=comment-128 name=comment-128></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-128")' 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/briansthreadedcomments.png"> 
+<CITE>Comment by Jonathan Merriweather<A 
+href="http://www.beacosta.com/blog/?p=28#comment-128"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-06-05 21:53:49 </DIV>
+<DIV class=content>
+<P>Hey,</P>
+<P>I’m wanting to bind to System.Windows.Forms.SystemInformation.UserName. </P>
+<P>How can I bind to the .NET framework classes just like how I bind to my own 
+classes?</P>
+<P>Cheers,</P>
+<P>Jon Merriweather</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-128", 128, true); return false;' 
+href="http://www.beacosta.com/blog/?p=28#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class="comment odd" id=div-comment-129 style="BACKGROUND: #404040"><A 
+id=comment-129 name=comment-129></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-129")' 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/briansthreadedcomments.png"> 
+<CITE>Comment by Jonathan Merriweather<A 
+href="http://www.beacosta.com/blog/?p=28#comment-129"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-06-05 22:48:37 </DIV>
+<DIV class=content>
+<P>I figured it out.. you must use this as your namespace:</P>
+<P>xmlns:forms=”clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms”</P>
+<P>Cheers</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-129", 129, true); return false;' 
+href="http://www.beacosta.com/blog/?p=28#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class=comment id=div-comment-130 style="BACKGROUND: #404040"><A 
+id=comment-130 name=comment-130></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-130")' 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=28#comment-130"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-06-06 10:02:34 </DIV>
+<DIV class=content>
+<P>That’s correct <IMG class=wp-smiley alt=:) 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/icon_smile.gif"> 
+You got it!<BR>Bea</P></DIV><SMALL>(Comments wont nest below this level)</SMALL> 
+</DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-130", 130, false); return false;' 
+href="http://www.beacosta.com/blog/?p=28#">Reply here</A> </DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV>
+<DIV class=comment id=div-comment-131 style="BACKGROUND: #404040"><A 
+id=comment-131 name=comment-131></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-131")' 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/briansthreadedcomments.png"> 
+<CITE>Comment by Sam<A 
+href="http://www.beacosta.com/blog/?p=28#comment-131"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-06-08 13:29:10 </DIV>
+<DIV class=content>
+<P>I’ve got a binding problem I can’t think of any way to solve:</P>
+<P>I want to draw my own fancy border around a TextBox.<BR>Problem is, it can’t 
+be scaled automagically like a rectangle could, I need to bind to the size of 
+the textbox to use it as coordinates in a path.</P>
+<P>With a custom converter this does work nicely for ActualWidth or ActualHeight 
+alone, but of course to get the bottom right corner I need to bind to 
+ActualHeight and ActualWidth at once, and I can’t find no way to achieve 
+this.</P>
+<P>Is there a way to bind to ActualWidth and ActualHeight at once? Or to create 
+a converter that is bound to both and can itself be bound to?</P>
+<P>Or maybe there is a whole other way to get the size of a control in a 
+template for userdrawn content that can be bound to?</P>
+<P>Thanks a lot!<BR>Sam</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-131", 131, true); return false;' 
+href="http://www.beacosta.com/blog/?p=28#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class="comment odd" id=div-comment-132 style="BACKGROUND: #404040"><A 
+id=comment-132 name=comment-132></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-132")' 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=28#comment-132"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-06-09 09:20:55 </DIV>
+<DIV class=content>
+<P>Hi Sam,</P>
+<P>I believe a MultiBinding would solve your problem. Basically, it allows you 
+to bind to two sources at the same time. You will have to write a converter that 
+takes both sources as a parameter and produces the final value you want to show 
+in the target.</P>
+<P>I will keep this in mind for a future blog post. In the meantime, I’m pretty 
+sure the SDK has samples with this. If it doesn’t I’ll make this my *next* blog 
+post. Let me know.</P>
+<P>Bea</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-132", 132, true); return false;' 
+href="http://www.beacosta.com/blog/?p=28#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class=comment id=div-comment-133 style="BACKGROUND: #404040"><A 
+id=comment-133 name=comment-133></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-133")' 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/briansthreadedcomments.png"> 
+<CITE>Comment by Sam<A 
+href="http://www.beacosta.com/blog/?p=28#comment-133"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-06-10 01:46:33 </DIV>
+<DIV class=content>
+<P>Oh I love those keywords triggering a whole new load of information on 
+google.<BR>Multibind was *the* magic word (names *are* power nowadays).</P>
+<P>Charles Petzold had an usable example for me how to do it, and it works 
+lovely!</P>
+<P>Thanks a lot, I owe you one!</P></DIV><SMALL>(Comments wont nest below this 
+level)</SMALL> </DIV>
+<DIV class="comment odd" id=div-comment-134 style="BACKGROUND: #404040"><A 
+id=comment-134 name=comment-134></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-134")' 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=28#comment-134"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-06-10 10:11:16 </DIV>
+<DIV class=content>
+<P>I’m glad to hear that <IMG class=wp-smiley alt=:) 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/icon_smile.gif"></P></DIV></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-133", 133, false); return false;' 
+href="http://www.beacosta.com/blog/?p=28#">Reply here</A> </DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV>
+<DIV class=comment id=div-comment-975 style="BACKGROUND: #404040"><A 
+id=comment-975 name=comment-975></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-975")' 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/briansthreadedcomments.png"> 
+<CITE>Comment by perter<A 
+href="http://www.beacosta.com/blog/?p=28#comment-975"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2007-10-04 07:12:37 </DIV>
+<DIV class=content>
+<P>After looking at your enumeration binding example (June 4 2006 blog) I have 
+implemented something similar in my app. However, language translation is an 
+obvious issue going forward. Would you know of any good samples to outline how 
+to do this properly for translation and secondly a good overview of 
+globalization for WPF apps? I would love to see a sample implementation in 
+simple terms rather than the MSDN docs. Thanks!</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-975", 975, true); return false;' 
+href="http://www.beacosta.com/blog/?p=28#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class="comment odd" id=div-comment-1095 style="BACKGROUND: #404040"><A 
+id=comment-1095 name=comment-1095></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-1095")' 
+src="Beatriz Costa » How can I bind an ItemsControl to the values of an enumeration_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=28#comment-1095"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2007-10-05 18:18:34 </DIV>
+<DIV class=content>
+<P>Hi perter,</P>
+<P>Yes, I realize that this sample is quite limited when it comes to language 
+translation. I have seen people implementing this scenario by adding attributes 
+over each value in the enumeration with better descriptions of each value. This 
+method is more realistic than the one in this post because it allows sentences 
+to be displayed in the ComboBox, but I’m not sure how this would tie into 
+globalization. You’re probably aware of the globalization <A 
+href="http://msdn2.microsoft.com/en-us/library/ms788718.aspx" rel=nofollow>docs 
+in MSDN</A>. Other than that, our WPF globalization expert, Chris Han, maintains 
+a blog <A href="http://blogs.msdn.com/text/" rel=nofollow>here</A>. He’s 
+incredibly smart and knowledgeable on this topic, and may be able to give you 
+some pointers.</P>
+<P>Sorry if I can’t be more helpful on that topic,<BR>Bea</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-1095", 1095, true); return false;' 
+href="http://www.beacosta.com/blog/?p=28#">Reply to this comment</A> 
+</DIV></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV>
+<DIV class=comment id=addcomment style="BACKGROUND: #404040"><A 
+id=addcommentanchor name=addcommentanchor></A>
+<FORM id=commentform action=http://www.beacosta.com/blog/wp-comments-post.php 
+method=post>
+<DIV class=add>
+<DIV id=reroot style="DISPLAY: none"><SMALL><A onclick="reRoot(); return false;" 
+href="http://www.beacosta.com/blog/?p=28#">Click here to cancel "reply". 
+</A></SMALL></DIV><SMALL>Name (required) </SMALL>
+<DIV><INPUT class=textarea id=author tabIndex=1 size=28 name=author> 
+</DIV><SMALL>E-mail (required - never shown publicly) </SMALL>
+<DIV><INPUT id=email tabIndex=2 size=28 name=email> </DIV><SMALL><ACRONYM 
+title="Uniform Resource Identifier">URI</ACRONYM> </SMALL>
+<DIV><INPUT id=url tabIndex=3 size=28 name=url> </DIV><SMALL>Your Comment (<A 
+onclick="changeCommentSize(-80); return false;" 
+href="http://www.beacosta.com/blog/?p=28#">smaller size</A> | <A 
+onclick="changeCommentSize(80); return false;" 
+href="http://www.beacosta.com/blog/?p=28#">larger size</A>) </SMALL>
+<DIV style="WIDTH: 100%"><TEXTAREA id=comment tabIndex=4 name=comment rows=14 cols=60></TEXTAREA> 
+</DIV><SMALL>You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt; 
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;code&gt; 
+&lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your comment. </SMALL>
+<DIV><INPUT type=hidden value=28 name=comment_post_ID> <INPUT type=hidden 
+value=/blog/?p=28 name=redirect_to> <INPUT id=addcommentbutton onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" tabIndex=5 type=button value="Add comment" name=addcommentbutton> 
+</DIV></DIV><INPUT id=comment_reply_ID type=hidden value=0 
+name=comment_reply_ID></FORM></DIV>
+<P>
+<DIV align=center></DIV>
+<P></P></DIV></DIV>
+<DIV id=right>
+<DIV class=sidebar><!-- Meta -->
+<H2>Meta:</H2>
+<UL class=noli>
+  <LI><A title="Syndicate this site using RSS" 
+  href="http://feeds.feedburner.com/BeatrizCosta"><ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> 
+  <LI><A title="The latest comments to all posts in RSS" 
+  href="http://feeds.feedburner.com/CommentsForBeatrizCosta">Comments <ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> </LI></UL><!-- Search -->
+<H2>Search</H2><BR>
+<FORM id=searchform action="" method=get><INPUT id=s size=15 name=s> <INPUT type=submit value=Search name=submit> </FORM><!-- Categories -->
+<H2>Categories</H2>
+<UL class=menu>
+  <LI><A title="View all posts filed under General" 
+  href="http://www.beacosta.com/blog/?cat=3">General</A> 
+  <LI><A title="View all posts filed under WPF Data Binding" 
+  href="http://www.beacosta.com/blog/?cat=2">WPF Data Binding</A> 
+  <UL class=children>
+    <LI><A title="View all posts filed under Binding to ADO.NET" 
+    href="http://www.beacosta.com/blog/?cat=12">Binding to ADO.NET</A> 
+    <LI><A title="View all posts filed under ListBox" 
+    href="http://www.beacosta.com/blog/?cat=14">ListBox</A> 
+    <LI><A title="View all posts filed under ListView" 
+    href="http://www.beacosta.com/blog/?cat=9">ListView</A> 
+    <LI><A title="View all posts filed under Master-detail" 
+    href="http://www.beacosta.com/blog/?cat=10">Master-detail</A> 
+    <LI><A title="View all posts filed under Sorting, filtering, grouping" 
+    href="http://www.beacosta.com/blog/?cat=13">Sorting, filtering, grouping</A> 
+
+    <LI><A title="View all posts filed under Styles and Templates" 
+    href="http://www.beacosta.com/blog/?cat=11">Styles and Templates</A> 
+    <LI><A title="View all posts filed under TreeView" 
+    href="http://www.beacosta.com/blog/?cat=7">TreeView</A> </LI></UL></LI></UL><!-- Archives -->
+<H2>Archives</H2>
+<UL>
+  <LI><A title="September 2007" 
+  href="http://www.beacosta.com/blog/?m=200709">September 2007</A> 
+  <LI><A title="August 2007" 
+  href="http://www.beacosta.com/blog/?m=200708">August 2007</A> 
+  <LI><A title="May 2007" href="http://www.beacosta.com/blog/?m=200705">May 
+  2007</A> 
+  <LI><A title="April 2007" href="http://www.beacosta.com/blog/?m=200704">April 
+  2007</A> 
+  <LI><A title="January 2007" 
+  href="http://www.beacosta.com/blog/?m=200701">January 2007</A> 
+  <LI><A title="November 2006" 
+  href="http://www.beacosta.com/blog/?m=200611">November 2006</A> 
+  <LI><A title="October 2006" 
+  href="http://www.beacosta.com/blog/?m=200610">October 2006</A> 
+  <LI><A title="September 2006" 
+  href="http://www.beacosta.com/blog/?m=200609">September 2006</A> 
+  <LI><A title="August 2006" 
+  href="http://www.beacosta.com/blog/?m=200608">August 2006</A> 
+  <LI><A title="July 2006" href="http://www.beacosta.com/blog/?m=200607">July 
+  2006</A> 
+  <LI><A title="June 2006" href="http://www.beacosta.com/blog/?m=200606">June 
+  2006</A> 
+  <LI><A title="May 2006" href="http://www.beacosta.com/blog/?m=200605">May 
+  2006</A> 
+  <LI><A title="April 2006" href="http://www.beacosta.com/blog/?m=200604">April 
+  2006</A> 
+  <LI><A title="March 2006" href="http://www.beacosta.com/blog/?m=200603">March 
+  2006</A> 
+  <LI><A title="February 2006" 
+  href="http://www.beacosta.com/blog/?m=200602">February 2006</A> 
+  <LI><A title="January 2006" 
+  href="http://www.beacosta.com/blog/?m=200601">January 2006</A> 
+  <LI><A title="December 2005" 
+  href="http://www.beacosta.com/blog/?m=200512">December 2005</A> 
+  <LI><A title="November 2005" 
+  href="http://www.beacosta.com/blog/?m=200511">November 2005</A> 
+  <LI><A title="October 2005" 
+  href="http://www.beacosta.com/blog/?m=200510">October 2005</A> 
+  <LI><A title="September 2005" 
+  href="http://www.beacosta.com/blog/?m=200509">September 2005</A> 
+  <LI><A title="August 2005" 
+  href="http://www.beacosta.com/blog/?m=200508">August 2005</A> </LI></UL></DIV>
+<DIV id=footer>
+<DIV class=copyright><SMALL><SPAN class=copy>Copyright © 2007 <STRONG><A 
+title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</A> 
+</STRONG></SPAN><BR><BR></SMALL></DIV></DIV></DIV></DIV></BODY></HTML>

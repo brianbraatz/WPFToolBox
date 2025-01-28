@@ -1,0 +1,55 @@
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+  <Grid>
+
+    <Grid.Resources>
+
+      <XmlDataProvider x:Key="ops" XPath="/data/level1">
+        <x:XData>
+          <data xmlns="">
+            <level1 name="1">
+              <level2 name="1-1">
+                <level3 name="test">Some Value</level3>
+                <level3>Yet an other value from level 3</level3>
+              </level2>
+              <level2 name="1-2">
+                <level3>Some other Value</level3>
+                <level3>Yet an other Value</level3>
+              </level2>
+            </level1>
+
+            <level1 name="2">
+              <level2 name="2-1">
+                <level3>Some Value</level3>
+                <level3>Yet an other value from level 3</level3>
+              </level2>
+              <level2 name="2-2">
+                <level3>Some other Value</level3>
+                <level3>Yet an other Value</level3>
+              </level2>
+            </level1>
+          </data>
+        </x:XData>
+      </XmlDataProvider>
+
+    </Grid.Resources>
+
+    <GroupBox Header="Level 1" DataContext="{Binding Source={StaticResource ops}}" >
+      <StackPanel Orientation="Horizontal">
+        <ListBox Name="level1List" MinWidth="100" ItemsSource="{Binding}" DisplayMemberPath="@name" IsSynchronizedWithCurrentItem="True" />
+
+        <GroupBox Header="Level2" DataContext="{Binding Path=CurrentItem}">
+          <StackPanel Orientation="Horizontal">
+            <ListBox MinWidth="100" ItemsSource="{Binding}" DisplayMemberPath="@name" IsSynchronizedWithCurrentItem="True" />
+            <GroupBox Header="Level3" DataContext="{Binding Path=CurrentItem}">
+              <StackPanel Orientation="Horizontal">
+                <ListBox MinWidth="200" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True"  />
+                <Label Content="{Binding Path=CurrentItem}" />
+              </StackPanel>
+            </GroupBox>
+          </StackPanel>
+        </GroupBox>
+
+      </StackPanel>
+    </GroupBox>
+  </Grid>
+</Page>

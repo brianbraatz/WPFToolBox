@@ -1,0 +1,595 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0038)http://www.beacosta.com/blog/?m=200509 -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Beatriz Costa » 2005» September</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><!-- Editable Meta Tags -->
+<META content="" name=description>
+<META content="" name=keywords>
+<META content="Sreejith - GFXedit.com" name=author>
+<META content="Your Name" name=copyright>
+<META content="WordPress 2.2.2" name=generator>
+<META content=index,follow name=robots><!-- Meta Tags End--><!-- Style Sheet -->
+<STYLE type=text/css media=screen>@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</STYLE>
+<!-- Style Sheet End --><!-- Includes -->
+<SCRIPT src="" type=text/javascript></SCRIPT>
+
+<SCRIPT src="" type=text/javascript></SCRIPT>
+<!-- End Includes --><!-- Feed and Ping URLS--><LINK title="RSS 2.0" 
+href="http://www.beacosta.com/blog/?feed=rss2" type=application/rss+xml 
+rel=alternate><LINK title="RSS .92" 
+href="http://www.beacosta.com/blog/?feed=rss" type=text/xml rel=alternate><LINK 
+title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom" 
+type=application/atom+xml rel=alternate><LINK 
+href="http://www.beacosta.com/blog/xmlrpc.php" rel=pingback><!--?php wp_get_archives('type=monthly&format=link'); ?--><LINK 
+title=RSD href="http://www.beacosta.com/blog/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</SCRIPT>
+
+<STYLE type=text/css>.comment {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 8px; PADDING-BOTTOM: 4px; MARGIN: 6px 3px 3px; PADDING-TOP: 4px; POSITION: relative; BACKGROUND-COLOR: #fff
+}
+.odd {
+	BACKGROUND-COLOR: #f8f8f8
+}
+.comment DIV {
+	POSITION: relative
+}
+.comment .comment IMG {
+	MARGIN: 0px
+}
+.comment .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png); OVERFLOW: hidden; WIDTH: 13px; HEIGHT: 13px
+}
+.collapsed .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png)
+}
+.comment .reply {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 0px; FONT-SIZE: 80%; PADDING-BOTTOM: 6px; PADDING-TOP: 0px; TEXT-ALIGN: right
+}
+.comment {
+	BORDER-RIGHT: #ddd 1px solid; BORDER-TOP: #ddd 1px solid; MARGIN-TOP: 10px; BORDER-LEFT: #ddd 1px solid; BORDER-BOTTOM: #ddd 1px solid
+}
+INPUT#subscribe {
+	WIDTH: auto
+}
+.comment .body .content {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; OVERFLOW: auto; WIDTH: 100%; PADDING-TOP: 0px
+}
+.comment .title abbr {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.collapsed .body {
+	DISPLAY: none
+}
+.collapsed .comment {
+	DISPLAY: none
+}
+#commentform TEXTAREA {
+	WIDTH: 97%
+}
+</STYLE>
+<!-- End Feed and Ping URLS--></HEAD>
+<BODY>
+<DIV id=container>
+<DIV id=banner>
+<H1><A title="Beatriz Costa" accessKey=1 
+href="http://www.beacosta.com/blog">Beatriz Costa</A></H1>
+<H2 title="WPF Data Binding">WPF Data Binding</H2></DIV>
+<DIV id=center>
+<DIV class=content>
+<DIV class=post>
+<DIV class=date>September 27, 2005</DIV>
+<H2 id=post-4><A id=postTitle 
+title="How do I bind the items of a ComboBox? How do I get a ComboBoxItem from a data bound ComboBox?" 
+href="http://www.beacosta.com/blog/?p=4" rel=bookmark>How do I bind the items of 
+a ComboBox? How do I get a ComboBoxItem from a data bound ComboBox?</A></H2>
+<P><SPAN id=text>DataContext is one of the most fundamental concepts in Data 
+Binding. The Binding object needs to get its data from somewhere, and there are 
+a few ways to specify the source of the data. In this post I talk about setting 
+the Source property directly in the Binding vs inheriting a DataContext from the 
+nearest element when traversing up in the tree. The other two alternatives are 
+setting the ElementName and RelativeSource properties in the Binding object, but 
+I will leave that for a future post. For example, let’s assume we have the 
+following data sources (GreekGod being a class defined in the code 
+behind):<BR></SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGod 
+Name=”Zeus” Description=”Supreme God of the Olympians” RomanName=”Jupiter” 
+x:Key=”zeus”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGod 
+Name=”Poseidon” Description=”God of the sea, earthquakes and horses” 
+RomanName=”Neptune” 
+x:Key=”poseidon”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+DataContext=”{StaticResource 
+poseidon}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+TextContent=”{Binding Source={StaticResource zeus}, 
+Path=Name}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+TextContent=”{Binding 
+Path=Description}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+TextContent=”{Binding 
+Path=RomanName}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR></SPAN></P>
+<P><SPAN id=text>The first TextBlock inherits the DataContext from the parent 
+StackPanel and has a Source set in the Binding object too. In this case, Source 
+takes priority, causing the TextBlock to bind to the Name property of the 
+resource with key “zeus” - this displays “Zeus”. The second TextBlock does not 
+have a Source set directly in the Binding object, so it inherits the DataContext 
+from the StackPanel. As you might guess, this binds to the Description property 
+of the resource with key “poseidon”, displaying “God of the sea, earthquakes and 
+horses”. The third TextBlock should be straightforward - it displays “Neptune”. 
+Most data bound applications I see from users tend to use DataContext much more 
+heavily than Source. My recommendation is to use DataContext only when you need 
+to bind more than one property to a particular source. When binding only one 
+property to a source, I always use Source. The reason for this is ease of 
+debugging - I would rather see all the information about the Binding in one 
+place than search for the nearest DataContext to understand what is going on. In 
+a small sample like the one above there is no big advantage, but in complex 
+applications this could save you some time.<BR></SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » combo box_files/DataContext-757085.jpg" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/1DataContextSample.zip">Here</A> you can find 
+the VS project with this sample code. This works with Beta 1 WPF 
+bits.</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on How do I bind the items of a ComboBox? How do I get a ComboBoxItem from a data bound ComboBox?" 
+href="http://www.beacosta.com/blog/?p=4#comments">Comments (2)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=4"
+    dc:identifier="http://www.beacosta.com/blog/?p=4"
+    dc:title="How do I bind the items of a ComboBox? How do I get a ComboBoxItem from a data bound ComboBox?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=4" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>September 21, 2005</DIV>
+<H2 id=post-7><A id=postTitle 
+title="How can I get a ListBoxItem from a data bound ListBox?" 
+href="http://www.beacosta.com/blog/?p=7" rel=bookmark>How can I get a 
+ListBoxItem from a data bound ListBox?</A></H2>
+<P><SPAN id=text>Data binding a list box to an enumeration of items could not be 
+easier in WPF:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGods 
+x:Key=”greekGods”/&gt;</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”itemTemplate”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Name}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{StaticResource greekGods}” ItemTemplate=”{StaticResource 
+itemTemplate}” Name=”listBox”/&gt;</SPAN></P>
+<P><SPAN id=text>The ItemsSource property of ListBox takes an IEnumerable, which 
+is the list of items you want to display. In this case, the GreekGods data 
+source is of type ObservableCollection<T></T>, which implements IEnumerable. The 
+ItemTemplate property specifies the DataTemplate that will be used to control 
+how the data is displayed. In this case, we will have a TextBlock for each item 
+that will display the GreekGod’s name.</SPAN></P>
+<P><SPAN id=text>Some of you might find surprising, however, that doing 
+listBox.Items[i] in code returns the data we’re binding to, and not the 
+TextBlock or the ListBoxItem. In my opinion, it is actually pretty cool that 
+retrieving the data in a particular position of the list box is so easy, because 
+most of the time this is exactly what you want. </SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;GreekGod greekGod = 
+(GreekGod)(listBox.Items[0]);</SPAN></P>
+<P><SPAN id=text>But what about when you want to have access to the actual 
+ListBoxItem generated? This is a bit tricky to discover but can be just as 
+easily done with the following code: </SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;ListBoxItem lbi1 = 
+(ListBoxItem)(listBox.ItemContainerGenerator.ContainerFromIndex(0));</SPAN></P>
+<P><SPAN id=text>There is also a 
+listBox.ItemContainerGenerator.ContainerFromItem(object item) that returns the 
+ListBoxItem given the corresponding data item. This method is frequently used, 
+for example, to retrieve the ListBoxItem for the current item:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;ListBoxItem lbi2 = 
+(ListBoxItem)(listBox.ItemContainerGenerator.ContainerFromIndex(listBox.Items.CurrentItem));</SPAN></P>
+<P><SPAN id=text>I will talk about selection and current item in detail in some 
+other post, but for this sample it is sufficient to know that to keep the 
+selection and current item in sync, I set IsSynchronizedWithCurrentItem=”true” 
+in the ListBox.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » combo box_files/GetListBoxItem-776835.jpg" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/3GetListBoxItem.zip">Here</A> you can find 
+the VS project with this sample code. This works with September CTP WPF bits. 
+Put a breakpoint at the end of the ButtonClick handler in Window1.xaml.cs to 
+inspect the values of the variables.</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in ListBox" href="http://www.beacosta.com/blog/?cat=14" 
+rel=category>ListBox</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on How can I get a ListBoxItem from a data bound ListBox?" 
+href="http://www.beacosta.com/blog/?p=7#comments">Comments (5)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=7"
+    dc:identifier="http://www.beacosta.com/blog/?p=7"
+    dc:title="How can I get a ListBoxItem from a data bound ListBox?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=7" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>September 11, 2005</DIV>
+<H2 id=post-5><A id=postTitle title="What does “{Binding}” mean?" 
+href="http://www.beacosta.com/blog/?p=5" rel=bookmark>What does “{Binding}” 
+mean?</A></H2>
+<P><SPAN id=text>Most Bindings you see in samples have the Source and Path 
+properties set. The Source property specifies the object you’re binding to and 
+the Path specifies a property in that object whose value you’re interested in. 
+I’ve seen several people get confused when encountering an empty Binding for the 
+first time - “{Binding}”. It seems at first sight that we’re not giving the 
+Binding enough information to do anything useful. This is not true and I will 
+explain why. If you read my previous post you should understand that it is not 
+necessary to set a Source in a Binding, as long as there is a DataContext set 
+somewhere up in the tree. As for the Path, it should be left out when you want 
+to bind to a whole object, and not only to a single property of an object. One 
+scenario is when the source is of type string and you simply want to bind to the 
+string itself (and not to its Length property, for example).</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;system:String 
+x:Key=”helloString”&gt;Hello&lt;/system:String&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Border DataContext=”{StaticResource 
+helloString}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+TextContent=”{Binding}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Border&gt;</SPAN></P>
+<P><SPAN id=text>Another common scenario is when you want to bind some element 
+to an object with several properties.</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGod 
+Name=”Zeus” Description=”Supreme God of the Olympians” RomanName=”Jupiter” 
+x:Key=”zeus”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Border DataContext=”{StaticResource 
+zeus}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentControl 
+Content=”{Binding}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Border&gt;</SPAN></P>
+<P><SPAN id=text>In this case, ContentControl does not know how to display the 
+GreekGod data. Therefore you will only see the results of a ToString(), which is 
+typically not what you want. Instead, you can use a DataTemplate, which allows 
+you to specify the appearance of your data.<BR></SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGod 
+Name=”Zeus” Description=”Supreme God of the Olympians” RomanName=”Jupiter” 
+x:Key=”zeus”/&gt;</SPAN><BR><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”contentTemplate”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DockPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Foreground=”RoyalBlue” TextContent=”{Binding Path=Name}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+TextContent=”:” Margin=”0,0,5,0″ 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Foreground=”Silver” TextContent=”{Binding Path=Description}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DockPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Border DataContext=”{StaticResource 
+zeus}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentControl 
+Content=”{Binding}” ContentTemplate=”{StaticResource 
+contentTemplate}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Border&gt;</SPAN></P>
+<P><SPAN id=text>Notice that none of the Binding statements inside the 
+DataTemplate has a Source. That is because a DataContext is automatically set to 
+the data object being templated.<BR></SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » combo box_files/EmptyBinding-718770.jpg" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/2EmptyBinding.zip">Here</A> you can find the 
+VS project with this sample code. This works with Beta 1 WPF bits.</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on What does “{Binding}” mean?" 
+href="http://www.beacosta.com/blog/?p=5#respond">Comments (0)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=5"
+    dc:identifier="http://www.beacosta.com/blog/?p=5"
+    dc:title="What does &#8220;{Binding}&#8221; mean?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=5" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>September 7, 2005</DIV>
+<H2 id=post-6><A id=postTitle 
+title="How should I decide whether to use DataContext or Source?" 
+href="http://www.beacosta.com/blog/?p=6" rel=bookmark>How should I decide 
+whether to use DataContext or Source?</A></H2>
+<P><SPAN id=text>DataContext is one of the most fundamental concepts in Data 
+Binding.</SPAN></P>
+<P><SPAN id=text>The Binding object needs to get its data from somewhere, and 
+there are a few ways to specify the source of the data. In this post I talk 
+about setting the Source property directly in the Binding vs inheriting a 
+DataContext from the nearest element when traversing up in the tree. The other 
+two alternatives are setting the ElementName and RelativeSource properties in 
+the Binding object, but I will leave that for a future post.</SPAN></P>
+<P><SPAN id=text>For example, let’s assume we have the following data sources 
+(GreekGod being a class defined in the code behind):</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGod 
+Name=”Zeus” Description=”Supreme God of the Olympians” RomanName=”Jupiter” 
+x:Key=”zeus”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGod 
+Name=”Poseidon” Description=”God of the sea, earthquakes and horses” 
+RomanName=”Neptune” 
+x:Key=”poseidon”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+DataContext=”{StaticResource 
+poseidon}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+TextContent=”{Binding Source={StaticResource zeus}, 
+Path=Name}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+TextContent=”{Binding 
+Path=Description}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+TextContent=”{Binding 
+Path=RomanName}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;</SPAN></P>
+<P><SPAN id=text>The first TextBlock inherits the DataContext from the parent 
+StackPanel and has a Source set in the Binding object too. In this case, Source 
+takes priority, causing the TextBlock to bind to the Name property of the 
+resource with key “zeus” - this displays “Zeus”.</SPAN></P>
+<P><SPAN id=text>The second TextBlock does not have a Source set directly in the 
+Binding object, so it inherits the DataContext from the StackPanel. As you might 
+guess, this binds to the Description property of the resource with key 
+“poseidon”, displaying “God of the sea, earthquakes and horses”.</SPAN></P>
+<P><SPAN id=text>The third TextBlock should be straightforward - it displays 
+“Neptune”.</SPAN></P>
+<P><SPAN id=text>Most data bound applications I see from users tend to use 
+DataContext much more heavily than Source. My recommendation is to use 
+DataContext only when you need to bind more than one property to a particular 
+source. When binding only one property to a source, I always use Source. The 
+reason for this is ease of debugging - I would rather see all the information 
+about the Binding in one place than search for the nearest DataContext to 
+understand what is going on. In a small sample like the one above there is no 
+big advantage, but in complex applications this could save you some 
+time.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » combo box_files/DataContext-757085.jpg" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/1DataContextSample.zip">Here</A> you can find 
+the VS project with this sample code. This works with Beta 1 WPF 
+bits.</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on How should I decide whether to use DataContext or Source?" 
+href="http://www.beacosta.com/blog/?p=6#respond">Comments (0)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=6"
+    dc:identifier="http://www.beacosta.com/blog/?p=6"
+    dc:title="How should I decide whether to use DataContext or Source?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=6" />
+</rdf:RDF>	-->
+<P>
+<DIV align=center></DIV>
+<P></P></DIV></DIV>
+<DIV id=right>
+<DIV class=sidebar><!-- Meta -->
+<H2>Meta:</H2>
+<UL class=noli>
+  <LI><A title="Syndicate this site using RSS" 
+  href="http://feeds.feedburner.com/BeatrizCosta"><ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> 
+  <LI><A title="The latest comments to all posts in RSS" 
+  href="http://feeds.feedburner.com/CommentsForBeatrizCosta">Comments <ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> </LI></UL><!-- Search -->
+<H2>Search</H2><BR>
+<FORM id=searchform action="" method=get><INPUT id=s size=15 name=s> <INPUT type=submit value=Search name=submit> </FORM><!-- Categories -->
+<H2>Categories</H2>
+<UL class=menu>
+  <LI><A title="View all posts filed under General" 
+  href="http://www.beacosta.com/blog/?cat=3">General</A> 
+  <LI><A title="View all posts filed under WPF Data Binding" 
+  href="http://www.beacosta.com/blog/?cat=2">WPF Data Binding</A> 
+  <UL class=children>
+    <LI><A title="View all posts filed under Binding to ADO.NET" 
+    href="http://www.beacosta.com/blog/?cat=12">Binding to ADO.NET</A> 
+    <LI><A title="View all posts filed under ListBox" 
+    href="http://www.beacosta.com/blog/?cat=14">ListBox</A> 
+    <LI><A title="View all posts filed under ListView" 
+    href="http://www.beacosta.com/blog/?cat=9">ListView</A> 
+    <LI><A title="View all posts filed under Master-detail" 
+    href="http://www.beacosta.com/blog/?cat=10">Master-detail</A> 
+    <LI><A title="View all posts filed under Sorting, filtering, grouping" 
+    href="http://www.beacosta.com/blog/?cat=13">Sorting, filtering, grouping</A> 
+
+    <LI><A title="View all posts filed under Styles and Templates" 
+    href="http://www.beacosta.com/blog/?cat=11">Styles and Templates</A> 
+    <LI><A title="View all posts filed under TreeView" 
+    href="http://www.beacosta.com/blog/?cat=7">TreeView</A> </LI></UL></LI></UL><!-- Archives -->
+<H2>Archives</H2>
+<UL>
+  <LI><A title="September 2007" 
+  href="http://www.beacosta.com/blog/?m=200709">September 2007</A> 
+  <LI><A title="August 2007" 
+  href="http://www.beacosta.com/blog/?m=200708">August 2007</A> 
+  <LI><A title="May 2007" href="http://www.beacosta.com/blog/?m=200705">May 
+  2007</A> 
+  <LI><A title="April 2007" href="http://www.beacosta.com/blog/?m=200704">April 
+  2007</A> 
+  <LI><A title="January 2007" 
+  href="http://www.beacosta.com/blog/?m=200701">January 2007</A> 
+  <LI><A title="November 2006" 
+  href="http://www.beacosta.com/blog/?m=200611">November 2006</A> 
+  <LI><A title="October 2006" 
+  href="http://www.beacosta.com/blog/?m=200610">October 2006</A> 
+  <LI><A title="September 2006" 
+  href="http://www.beacosta.com/blog/?m=200609">September 2006</A> 
+  <LI><A title="August 2006" 
+  href="http://www.beacosta.com/blog/?m=200608">August 2006</A> 
+  <LI><A title="July 2006" href="http://www.beacosta.com/blog/?m=200607">July 
+  2006</A> 
+  <LI><A title="June 2006" href="http://www.beacosta.com/blog/?m=200606">June 
+  2006</A> 
+  <LI><A title="May 2006" href="http://www.beacosta.com/blog/?m=200605">May 
+  2006</A> 
+  <LI><A title="April 2006" href="http://www.beacosta.com/blog/?m=200604">April 
+  2006</A> 
+  <LI><A title="March 2006" href="http://www.beacosta.com/blog/?m=200603">March 
+  2006</A> 
+  <LI><A title="February 2006" 
+  href="http://www.beacosta.com/blog/?m=200602">February 2006</A> 
+  <LI><A title="January 2006" 
+  href="http://www.beacosta.com/blog/?m=200601">January 2006</A> 
+  <LI><A title="December 2005" 
+  href="http://www.beacosta.com/blog/?m=200512">December 2005</A> 
+  <LI><A title="November 2005" 
+  href="http://www.beacosta.com/blog/?m=200511">November 2005</A> 
+  <LI><A title="October 2005" 
+  href="http://www.beacosta.com/blog/?m=200510">October 2005</A> 
+  <LI><A title="September 2005" 
+  href="http://www.beacosta.com/blog/?m=200509">September 2005</A> 
+  <LI><A title="August 2005" 
+  href="http://www.beacosta.com/blog/?m=200508">August 2005</A> </LI></UL></DIV>
+<DIV id=footer>
+<DIV class=copyright><SMALL><SPAN class=copy>Copyright © 2007 <STRONG><A 
+title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</A> 
+</STRONG></SPAN><BR><BR></SMALL></DIV></DIV></DIV></DIV></BODY></HTML>

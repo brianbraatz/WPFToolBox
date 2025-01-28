@@ -1,0 +1,1007 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How can I have an independent view when my source is ADO.NET?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">January 11, 2007</div>
+					<h2 id="post-39"><a id="postTitle" href="http://www.beacosta.com/blog/?p=39" rel="bookmark" title="How can I have an independent view when my source is ADO.NET?">How can I have an independent view when my source is ADO.NET?</a></h2>
+					<p><span id="text">I talked about binding to ADO.NET in an <a href="http://www.beacosta.com/2006/03/how-do-i-bind-to-adonet.html">earlier blog post</a>.
+In that post, I explained briefly how binding to ADO.NET behaves
+differently from other data sources when there are 2 or more views over
+the source. Today I will explain this scenario in more detail and will
+show a workaround that makes the binding to ADO.NET behave consistently
+with binding to other sources.</span></p>
+<p><span id="text">Consider the scenario where we bind an ItemsControl
+to a CollectionViewSource whose Source property is set to some
+collection of objects. In this scenario, a CollectionView is created
+internally and the ItemsControl is in fact bound to this view (which
+the CollectionViewSource exposes through its View property). Remember
+that views are used to sort, filter, and group the items of a
+collection, as well as track the current item. Let’s assume we sort
+this view. Now imagine we have a second ItemsControl bound to a second
+CollectionViewSource whose Source property is set to the same
+collection as previously. As you probably expect, a second view is
+created, independent from the first one. This means that we can sort
+this second view differently, without affecting the order of the items
+in the first view. </span></p>
+<p><span id="text">This is the current behavior when the
+CollectionViewSource’s Source is a collection of objects or XML, but
+not when it’s an ADO.NET DataTable or DataView. When the source comes
+from ADO.NET, the view does not handle sorting and filtering itself;
+instead it delegates those operations to the DataView (if the source is
+a DataTable we get the corresponding DataView, if the source is a
+DataView we use it directly). This has the advantage of greatly
+increasing the performance of these operations. However, it has an
+important side effect in the behavior of views: they are not
+independent from each other. Let’s consider the scenario I described
+above, but this time the Source property of both CollectionViewSources
+is set to the same DataTable. When we add a SortDescription to the
+CollectionViewSource, internally we get the DataView that corresponds
+to the DataTable and use that to sort it. Because both
+CollectionViewSources use the same DataTable, they will end up sorting
+by using the same DataView. Consequently, sorting one
+CollectionViewSource will affect the items displayed in both
+ItemsControls. </span></p>
+<p><span id="text">Let’s look at the come that illustrates this
+scenario. I started by defining an Access data source that happens to
+contain the names of the sacred rivers of India. I wrote a simple
+method that uses ADO.NET to fill a DataTable with that data, which you
+can see below:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;private DataTable GetData()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string mdbFile = “IndiaSacredRivers.mdb”;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string connString =<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string.Format(”Provider=Microsoft.Jet.OLEDB.4.0;
+Data Source={0}”, mdbFile);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OleDbConnection conn = new OleDbConnection(connString);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DataTable sacredRiversTable = new DataTable();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OleDbDataAdapter sacredRiversAdapter = new OleDbDataAdapter();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sacredRiversAdapter.SelectCommand
+= new OleDbCommand(”SELECT * FROM SacredRivers;”, conn);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sacredRiversAdapter.Fill(sacredRiversTable);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return sacredRiversTable;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">Then, I added the DataTable to the Window’s resources, in the Window’s constructor.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;public Window1()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.Resources.Add(”sacredRiversTable”, this.GetData());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitializeComponent();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">In XAML, I added two CollectionViewSources to the
+Window’s resources and pointed their Source property to the DataTable I
+added to the resources before. I then added two ListBoxes and bound
+each of them to a CollectionViewSource:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource
+Source=”{StaticResource sacredRiversTable}” x:Key=”cvs1″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource
+Source=”{StaticResource sacredRiversTable}” x:Key=”cvs2″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding Source={StaticResource cvs1}}” DisplayMemberPath=”RiverName” (…) /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding Source={StaticResource cvs2}}” DisplayMemberPath=”RiverName” (…) /&gt;</span></p>
+<p><span id="text">Finally, I added a Button that, when pressed, adds a SortDescription to the first CollectionViewSource.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Content=”Sort first view descending” Click=”SortCvs1DescendingHandler” (…) /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void SortCvs1DescendingHandler(object sender, RoutedEventArgs args)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs1.SortDescriptions.Clear();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs1.SortDescriptions.Add(new
+SortDescription(”RiverName”, ListSortDirection.Descending));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((Button)sender).IsEnabled = false;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">When you press this Button, you will notice that
+both ListBoxes become sorted. This is not the desired behavior — it’s
+an unfortunate tradeoff we had to make to maximize the performance of
+these operations. The good news is that there is an easy workaround
+that will produce a behavior consistent with the other sources. If you
+need independent sorting, you can simply create two different
+DataViews, by passing the DataTable as a parameter to the constructor,
+and use those as your sources. This can all be done in XAML, with the
+help of ObjectDataProvider:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider
+x:Key=”independentView1″ ObjectType=”{x:Type data:DataView}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider.ConstructorParameters&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StaticResource
+ResourceKey=”sacredRiversTable” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider.ConstructorParameters&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider
+x:Key=”independentView2″ ObjectType=”{x:Type data:DataView}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider.ConstructorParameters&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StaticResource
+ResourceKey=”sacredRiversTable” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider.ConstructorParameters&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource
+Source=”{StaticResource independentView1}” x:Key=”cvs3″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource
+Source=”{StaticResource independentView2}” x:Key=”cvs4″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding Source={StaticResource cvs3}}” DisplayMemberPath=”RiverName” (…) /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding Source={StaticResource cvs4}}” DisplayMemberPath=”RiverName” (…) /&gt;</span></p>
+<p><span id="text">This time, clicking the Button to sort the first
+view will have no effect in the order of the items of the second
+ListBox, as desired.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Content=”Sort first view descending” Click=”SortCvs3DescendingHandler” (…) /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void SortCvs3DescendingHandler(object sender, RoutedEventArgs args)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs3.SortDescriptions.Clear();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs3.SortDescriptions.Add(new
+SortDescription(”RiverName”, ListSortDirection.Descending));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((Button)sender).IsEnabled = false;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">Here is a screenshot of this application:</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/36ADOIndependentView.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/36ADOIndependentView.zip">Here</a> you can find the VS project with this sample code. This works with RTM WPF bits. </span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=12" title="View all posts in Binding to ADO.NET" rel="category">Binding to ADO.NET</a>, <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=39"
+    dc:identifier="http://www.beacosta.com/blog/?p=39"
+    dc:title="How can I have an independent view when my source is ADO.NET?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=39" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=39"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=39">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">12 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-41" class="comment">
+				<a name="comment-41" id="comment-41"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-41")'>
+					<cite>Comment by Ivan (elgoog)<a href="#comment-41"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-12 15:42:46 						
+					</div>					
+					<div class="content">
+						<p>I
+have a problem an it seems that I can not find a solution… I have a DB
+data. One table (Customers) has column with foreign keys (Countries). I
+need a xaml form that shows data from table and combobox to select
+another foreign key, that is country customer lives in. This is not
+master detail scenario, and I can not connect selected value (country
+combobox) to be populated in current record of customers.<br>
+Any ideas?<br>
+Thanx in advance… Ivan</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-41", 41, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-42" class="comment odd">
+				<a name="comment-42" id="comment-42"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-42")'>
+					<cite>Comment by Ivan (elgoog)<a href="#comment-42"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-12 16:09:42 						
+					</div>					
+					<div class="content">
+						<p>Unbelievable, I had to ask for help in order to find solution several seconds later…<br>
+&lt;ComboBox<br>
+x:Name=”cmbCountry”<br>
+ItemsSource=”{Binding Path=COUNTRY}”<br>
+DisplayMemberPath=”COUNTRY_NAME”<br>
+SelectedValuePath=”COUNTRY_ID”<br>
+SelectedValue=”{Binding CUSTOMERS/COUNTRY_ID}”/&gt;</p>
+<p>Anyway, thanx for your postings <img src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/icon_smile.gif" alt=":)" class="wp-smiley"><br>
+Ivan</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-42", 42, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-43" class="comment">
+				<a name="comment-43" id="comment-43"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-43")'>
+					<cite>Comment by Bea<a href="#comment-43"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-12 16:58:01 						
+					</div>					
+					<div class="content">
+						<p>Good to know you found the answer.<br>
+Thanks,<br>
+Bea</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-43", 43, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-44" class="comment">
+				<a name="comment-44" id="comment-44"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-44")'>
+					<cite>Comment by krijn<a href="#comment-44"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-13 00:27:16 						
+					</div>					
+					<div class="content">
+						<p>Hi</p>
+<p>It seems that editing one DataRow (DataRowView at runtime) inside
+another Dialog doesn’t work for more then one value by using BeginEdit,
+CancelEdit or EndEdit.</p>
+<p>Steps taken :<br>
+1.ListBox with itemssource = EmployeesDataTable and simple DataTemplate<br>
+2. EditEmployeeDialog with ShowDialog(dataContext)<br>
+3. code to show the Dialog :<br>
+dataRowView.BeginEdit<br>
+if dialog.ShowDialog(dataRowView) ..<br>
+dialog.EndEdit</p>
+<p>Although data inside the DataRow is changed the UI doesn’t get updated correctly ..<br>
+Unless I only edit one particular field !</p>
+<p>Have you any idea what problem is causing this behavior ?</p>
+<p>Thanks</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-44", 44, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-45" class="comment odd">
+				<a name="comment-45" id="comment-45"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-45")'>
+					<cite>Comment by krijn<a href="#comment-45"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-13 00:29:24 						
+					</div>					
+					<div class="content">
+						<p>.. unless I Refresh the DataView manually after the EndEdit call :</p>
+<p>CollectionViewSource.GetDefaultView(rowView.DataView).Refresh()</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-45", 45, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-51" class="comment">
+				<a name="comment-51" id="comment-51"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-51")'>
+					<cite>Comment by Bea<a href="#comment-51"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-14 22:58:50 						
+					</div>					
+					<div class="content">
+						<p>Hi Krijn,</p>
+<p>Well, you just found a bug, and a workaround for that bug. <img src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/icon_smile.gif" alt=":)" class="wp-smiley">
+I was able to repro the bad behavior you described (which is
+independent of the dialog box). Thanks a lot for reporting this issue,
+I really appreciate it!</p>
+<p>Bea</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-51", 51, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-46" class="comment">
+				<a name="comment-46" id="comment-46"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-46")'>
+					<cite>Comment by Ivan (elgoog)<a href="#comment-46"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-14 07:59:15 						
+					</div>					
+					<div class="content">
+						<p>Hello Beatriz, </p>
+<p>I have folowing scenario…<br>
+One DataTable, 2 ListViews bind to two new DataRowViews of mentioned
+DataTable. Both ListViews are set to SelectionMode.Single. DataTables
+have diferent Filter depending on Date so they are presenting different
+rows. </p>
+<p>And following problem…<br>
+When performing dragdrop functionality Selection is not working
+properly. Since I dropped item “From one Date” “To another Date” I
+change the row.Date property and use following …</p>
+<p>foreach (DataRowView drv in row.Table.DefaultView)<br>
+{<br>
+if (row == drv.Row)<br>
+{<br>
+lv.SelectedItem = drv;<br>
+lv.ScrollIntoView(drv);<br>
+break;<br>
+}<br>
+}</p>
+<p>As expected this selects and brings new row into view… But, all previously selected rows remain selected.<br>
+lv.UnselectAll() does not work, and DataRowView does not have Selected property…</p>
+<p>Am I missing something?</p>
+<p>Best regards, Ivan</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-46", 46, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-49" class="comment odd">
+				<a name="comment-49" id="comment-49"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-49")'>
+					<cite>Comment by Bea<a href="#comment-49"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-14 22:59:56 						
+					</div>					
+					<div class="content">
+						<p>Hi Ivan,</p>
+<p>There are several issues with binding to DataView today, due to the
+way this class was implemented. I explained one of consequences of that
+implementation (and workaround) in this post, and it seems to me like
+you’re hitting another one.</p>
+<p>I will make sure that we have a bug tracking that issue. Thanks a lot for reporting this!</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-49", 49, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-47" class="comment">
+				<a name="comment-47" id="comment-47"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-47")'>
+					<cite>Comment by John Eyles<a href="#comment-47"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-15 07:20:00 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz.</p>
+<p>I’m trying to databind an animating panel to an ADO.NET datatable.
+Each item in the panel is represented by a custom control, which I have
+to hook events to (mouse enter, mouse leave). Additionally, the custom
+controls change color, opacity etc based on the underlying data. If I
+bind an ItemsControl to a DataSet, the Items property returns a data
+row view collection, which I can’t hook events to. Do I need to load
+the dataset data into an observable collection before binding it to the
+ItemsControl? Otherwise what is the best way of accessing the items
+generated by the ItemsControl as MyCustomItem type?</p>
+<p>I am setting the data context in code behind (as per your blogs –
+thanks!), and setting the custom control type and visual tree of each
+item in a data template. </p>
+<p>ItemsControl ItemsSource=”{Binding}” x:Name=”lstItems”
+ItemTemplate=”{DynamicResource DataTemplate1}”
+ItemsPanel=”{DynamicResource ItemsPanelTemplate1}”</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-47", 47, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-48" class="comment odd">
+				<a name="comment-48" id="comment-48"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-48")'>
+					<cite>Comment by Bea<a href="#comment-48"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-15 22:49:55 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>Regarding your question about the animated panel bound to an ADO.NET
+DataTable. If I understand correctly, you want a handle to your custom
+control instances so that you can set event handlers on those.</p>
+<p>If you have your custom controls in a DataTemplate (which I’m
+assuming is your scenario), I don’t think you can add a handler to the
+event directly, but you can use an EventSetter to do that. You can read
+up more on EventSetters <a href="http://msdn2.microsoft.com/en-gb/library/system.windows.eventsetter.aspx" rel="nofollow">here</a>.</p>
+<p>It’s true that when you read the Items property of ItemsControl you
+get items from the actual data collection, and not the visuals created
+to wrap the data. This is actually the intended design. <a href="http://www.beacosta.com/Archive/2005_09_01_bcosta_archive.html" rel="nofollow">Here </a>you
+can find a couple of blog posts where I explained how to get to the
+ComboBoxItem/ListBoxItem when all you have is the data item. In your
+case, since you’re using an ItemsControl, the generated item that is
+wrapping your custom control is a ContentPresenter (and not a
+ListBoxItem or ComboBoxItem like in my earlier blog samples).</p>
+<p>I noticed that you are using DynamicResources in your XAML. Are your
+templates being swapped at runtime? If not, StaticResource is a better
+choice because it will give you better performance.</p>
+<p>Hope this helps.<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-48", 48, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-50" class="comment">
+				<a name="comment-50" id="comment-50"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-50")'>
+					<cite>Comment by John Eyles<a href="#comment-50"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-16 05:32:37 						
+					</div>					
+					<div class="content">
+						<p>Thanks
+Beatriz (re databinding an animated panel). Dan Crevier suggested using
+a Value Converter to convert from a DataRowView to MyCustomItem. I can
+do it for the entire dataset (and convert it to a collection of
+myCustomItem), but is it possible to apply a Value Converter to
+individual items loaded (to change their type) and keep the
+ItemsControl bound to a dataset? Funny enough, the dynamic resource
+tags where generated by Expression Blend. I’ve just been lazy <img src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/icon_smile.gif" alt=":)" class="wp-smiley"> Cheers, John Eyles.</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-52" class="comment odd">
+				<a name="comment-52" id="comment-52"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-52")'>
+					<cite>Comment by Bea<a href="#comment-52"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-01-16 22:49:35 						
+					</div>					
+					<div class="content">
+						<p>Hi John,</p>
+<p>I personally prefer to do as much as I can in templates, to have as
+much as possible in XAML. Sometimes you need more flexibility than what
+we offer within templates, and in that case I value converters are the
+best option. This may be your situation. </p>
+<p>Blend creates DynamicResources most of the time to allow swapping of
+resource dictionaries at runtime. If you need this feature, then you
+should keep that code, otherwise you can have a slight performance
+improvement by using StaticResources.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-50", 50, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1431" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1431" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20can%20I%20have%20an%20independent%20view%20when%20my%20source%20is%20ADO.NET_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="39" type="hidden">
+		<input name="redirect_to" value="/blog/?p=39" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="096b24801c5372fd33afdc21f97ae849" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>4505</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 4505;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

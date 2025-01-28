@@ -1,0 +1,714 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+
+
+
+
+<meta name="keywords" content="Development: 	BizTalk 2006, BizTalk 2004, C#, ASP.Net, VB.Net, Java, Jscript, VB 6, JSP, InfoPath, XML, XSD, COM, DCOM, COM+, Pascal, RealBasic, Voice Recognition (SAPI &amp; SMAPI), Sharepoint, SOAP 
+Project Mgt: 	PMP Certified (CPI, SPI, ROI, CV, SV, EVM, CPM, FPA) 
+Processes: 	MSF, RUP, Agile, CMM, Extreme Programming, 6 Sigma
+Infrastructure: DNS (BIND), IIS, SSL, IP-Telephony, Exchange, Great Plains, Active Directory, SMTP, NNTP, LAN, WAN, WiFi, SQL Notification Services 
+Standards: 	HIPAA, ANSI 837, 835, 997 EDI formats
+Databases: 	SQL Server, Oracle, Sybase, DB2, Informix
+Platforms: 	Windows (all), AS/400, Mainframes, Unix, Macintosh 
+Reporting:	Crystal Reports, Active Reports, Cognos, SQL Server Reporting Services
+Patterns:	Singleton, Class Factory, Faade, Proxy, Bridge, Data Adapter, MVC, MVP 
+Portals:	Sharepoint, DotNetNuke">
+<meta name="description" content="Aside from his recent 3 books published with Wrox, Shawn has been developing Microsoft solutions for nearly a decade. Shawn has been consulting within the field of architecture and hands-on development of Microsoft software solutions, leveraging proven leadership abilities, time-proven methodologies, and exceptional communications, within highly visible projects for Fortune 500 clientele. His range of technical competence ranges in various different platforms, but specialties would include Asp.Net, VB.net, C#, Biztalk, SQL Server, Patterns and Practices, and general solution architectures. His experience within enterprise implementations of Microsoft solutions is extensive and has led to exposure at various Microsoft connections. Shawn will provide the team with a solid understanding of the WPF, Interactive Expression Designer, and all of the supporting WinFX runtime related technology considerations. ">
+<meta name="author" content="Shawn Livermore">
+<link rev="made" href="http://shawnlivermore.blogspot.com/2006/04/shawnlivermore@gmail.com">
+<meta name="copyright" content="2007">
+<meta http-equiv="expires" content="12/31/2007">
+<meta name="distribution" content="global">
+<meta name="robots" content="all">
+<meta name="rating" content="general">
+<meta http-equiv="content-type" content="text/html;charset=us-ascii">
+<meta http-equiv="content-language" content="en"><title>Shawn M. Livermore: Routed Events in the WPF</title>
+
+  
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="MSSmartTagsPreventParsing" content="true">
+<meta name="generator" content="Blogger">
+<link rel="alternate" type="application/atom+xml" title="Shawn M. Livermore - Atom" href="http://shawnlivermore.blogspot.com/feeds/posts/default">
+<link rel="alternate" type="application/rss+xml" title="Shawn M. Livermore - RSS" href="http://shawnlivermore.blogspot.com/feeds/posts/default?alt=rss">
+<link rel="service.post" type="application/atom+xml" title="Shawn M. Livermore - Atom" href="http://www.blogger.com/feeds/13336855/posts/default">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.blogger.com/rsd.g?blogID=13336855">
+<link rel="alternate" type="application/atom+xml" title="Shawn M. Livermore - Atom" href="http://shawnlivermore.blogspot.com/feeds/114456297465815579/comments/default">
+<style type="text/css">
+@import url("http://www.blogger.com/css/blog_controls.css");
+@import url("http://www.blogger.com/dyn-css/authorization.css?blogID=13336855");
+</style>
+<script type="text/javascript" src="routed-events-in-wpf_files/backlink_002.js"></script>
+<script type="text/javascript" src="routed-events-in-wpf_files/backlink_control.js"></script><style type="text/css">.comment-toggler {background:url(http://www.blogger.com/img/triangle.gif) no-repeat left center;padding-right:11px;margin-right:0.1em;cursor:pointer;cursor:hand;}#blogger-dcom-block dd {display:none;margin-top:1em;padding-left:14px;margin-left:0.4em;}</style>
+<script type="text/javascript">var BL_backlinkURL = "http://www.blogger.com/dyn-js/backlink_count.js";var BL_blogId = "13336855";</script>
+
+
+  <style type="text/css">
+/*
+-----------------------------------------------
+Blogger Template Style
+Name:     Minima
+Designer: Douglas Bowman
+URL:      www.stopdesign.com
+Date:     26 Feb 2004
+----------------------------------------------- */
+
+
+body {
+  background:#fff;
+  margin:0;
+  padding:40px 20px;
+  font:x-small Georgia,Serif;
+  text-align:center;
+  color:#333;
+  font-size/* */:/**/small;
+  font-size: /**/small;
+  }
+a:link {
+  color:#58a;
+  text-decoration:none;
+  }
+a:visited {
+  color:#969;
+  text-decoration:none;
+  }
+a:hover {
+  color:#c60;
+  text-decoration:underline;
+  }
+a img {
+  border-width:0;
+  }
+
+
+/* Header
+----------------------------------------------- */
+#header {
+  width:660px;
+  margin:0 auto 10px;
+  border:1px solid #ccc;
+  }
+#blog-title {
+  margin:5px 5px 0;
+  padding:20px 20px .25em;
+  border:1px solid #eee;
+  border-width:1px 1px 0;
+  font-size:200%;
+  line-height:1.2em;
+  font-weight:normal;
+  color:#666;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  }
+#blog-title a {
+  color:#666;
+  text-decoration:none;
+  }
+#blog-title a:hover {
+  color:#c60;
+  }
+#description {
+  margin:0 5px 5px;
+  padding:0 20px 20px;
+  border:1px solid #eee;
+  border-width:0 1px 1px;
+  max-width:700px;
+  font:78%/1.4em "Trebuchet MS",Trebuchet,Arial,Verdana,Sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  color:#999;
+  }
+
+
+/* Content
+----------------------------------------------- */
+#content {
+  width:660px;
+  margin:0 auto;
+  padding:0;
+  text-align:left;
+  }
+#main {
+  width:410px;
+  float:left;
+  }
+#sidebar {
+  width:220px;
+  float:right;
+  }
+
+
+/* Headings
+----------------------------------------------- */
+h2 {
+  margin:1.5em 0 .75em;
+  font:78%/1.4em "Trebuchet MS",Trebuchet,Arial,Verdana,Sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  color:#999;
+  }
+
+
+/* Posts
+----------------------------------------------- */
+.date-header {
+  margin:1.5em 0 .5em;
+  }
+.post {
+  margin:.5em 0 1.5em;
+  border-bottom:1px dotted #ccc;
+  padding-bottom:1.5em;
+  }
+.post-title {
+  margin:.25em 0 0;
+  padding:0 0 4px;
+  font-size:140%;
+  font-weight:normal;
+  line-height:1.4em;
+  color:#c60;
+  }
+.post-title a, .post-title a:visited, .post-title strong {
+  display:block;
+  text-decoration:none;
+  color:#c60;
+  font-weight:normal;
+  }
+.post-title strong, .post-title a:hover {
+  color:#333;
+  }
+.post div {
+  margin:0 0 .75em;
+  line-height:1.6em;
+  }
+p.post-footer {
+  margin:-.25em 0 0;
+  color:#ccc;
+  }
+.post-footer em, .comment-link {
+  font:78%/1.4em "Trebuchet MS",Trebuchet,Arial,Verdana,Sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  }
+.post-footer em {
+  font-style:normal;
+  color:#999;
+  margin-right:.6em;
+  }
+.comment-link {
+  margin-left:.6em;
+  }
+.post img {
+  padding:4px;
+  border:1px solid #ddd;
+  }
+.post blockquote {
+  margin:1em 20px;
+  }
+.post blockquote p {
+  margin:.75em 0;
+  }
+
+
+/* Comments
+----------------------------------------------- */
+#comments h4 {
+  margin:1em 0;
+  font:bold 78%/1.6em "Trebuchet MS",Trebuchet,Arial,Verdana,Sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  color:#999;
+  }
+#comments h4 strong {
+  font-size:130%;
+  }
+#comments-block {
+  margin:1em 0 1.5em;
+  line-height:1.6em;
+  }
+#comments-block dt {
+  margin:.5em 0;
+  }
+#comments-block dd {
+  margin:.25em 0 0;
+  }
+#comments-block dd.comment-timestamp {
+  margin:-.25em 0 2em;
+  font:78%/1.4em "Trebuchet MS",Trebuchet,Arial,Verdana,Sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  }
+#comments-block dd p {
+  margin:0 0 .75em;
+  }
+.deleted-comment {
+  font-style:italic;
+  color:gray;
+  }
+
+
+/* Sidebar Content
+----------------------------------------------- */
+#sidebar ul {
+  margin:0 0 1.5em;
+  padding:0 0 1.5em;
+  border-bottom:1px dotted #ccc;
+  list-style:none;
+  }
+#sidebar li {
+  margin:0;
+  padding:0 0 .25em 15px;
+  text-indent:-15px;
+  line-height:1.5em;
+  }
+#sidebar p {
+  color:#666;
+  line-height:1.5em;
+  }
+
+
+/* Profile
+----------------------------------------------- */
+#profile-container {
+  margin:0 0 1.5em;
+  border-bottom:1px dotted #ccc;
+  padding-bottom:1.5em;
+  }
+.profile-datablock {
+  margin:.5em 0 .5em;
+  }
+.profile-img {
+  display:inline;
+  }
+.profile-img img {
+  float:left;
+  padding:4px;
+  border:1px solid #ddd;
+  margin:0 8px 3px 0;
+  }
+.profile-data {
+  margin:0;
+  font:bold 78%/1.6em "Trebuchet MS",Trebuchet,Arial,Verdana,Sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  }
+.profile-data strong {
+  display:none;
+  }
+.profile-textblock {
+  margin:0 0 .5em;
+  }
+.profile-link {
+  margin:0;
+  font:78%/1.4em "Trebuchet MS",Trebuchet,Arial,Verdana,Sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  }
+
+
+/* Footer
+----------------------------------------------- */
+#footer {
+  width:660px;
+  clear:both;
+  margin:0 auto;
+  }
+#footer hr {
+  display:none;
+  }
+#footer p {
+  margin:0;
+  padding-top:15px;
+  font:78%/1.6em "Trebuchet MS",Trebuchet,Verdana,Sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  }
+  </style><!-- -->
+
+<style type="text/css">@import url(http://www.blogger.com/css/navbar/classic.css);
+div.b-mobile {display:none;}
+</style></head><body><iframe src="routed-events-in-wpf_files/navbar.htm" marginwidth="0" marginheight="0" id="navbar-iframe" frameborder="0" height="30" scrolling="no" width="100%"></iframe>
+<div id="space-for-ie"></div>
+
+<div id="header">
+
+  <h1 id="blog-title">
+    <a href="http://shawnlivermore.blogspot.com/">
+	Shawn M. Livermore
+	</a>
+  </h1>
+  <p id="description"><b>MCAD, MCSD, PMP</b><br>
+Software Architect, Author, and Consultant to Fortune 500 companies for nearly a decade.</p>
+
+</div>
+
+<!-- Begin #content -->
+<div id="content">
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4566551393489036";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as_rimg";
+google_cpa_choice = "CAAQ_fiWhAIaCGHhhAlQG8-RKNvD93M";
+google_ad_channel = "";
+//--></script>
+<script type="text/javascript" src="routed-events-in-wpf_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="routed-events-in-wpf_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="60" scrolling="no" width="468"></iframe>
+
+</center>
+
+<!-- Begin #main -->
+<div id="main"><div id="main2">
+
+
+    
+  <h2 class="date-header">4.08.2006</h2>
+  
+
+     
+  <!-- Begin .post -->
+  <div class="post"><a name="114456297465815579"></a>
+         
+    <h3 class="post-title">
+	 
+	 Routed Events in the WPF
+	 
+    </h3>
+    
+
+	         <div class="post-body">
+	<div>
+      <div style="clear: both;"></div><strong><span style="font-family: Georgia;">Routed Events</span></strong><br><span style="font-family: Georgia;">Raising
+and handling events with the WPF is based on the new XAML markup
+structures, and how events are routed through a tree of elements. When
+a XAML page contains nested controls, there are interactive
+complexities that never before existed in the typical .NET UI
+environment. ‘Nested’ controls create what is known as a Logical Tree
+and a Visual Tree. Application developers have been required in times
+past to ‘Walk-the-Tree’ by raising events and/or calling methods for
+each logical ‘node’ within a nested hierarchy. Events in the WPF are
+called Routed because there is a brand new chronological process by
+which to handle these events. This ordered, or routed, list of events
+will fire in a controlled fashion, providing full view of event the
+most complex Visual Trees. With the advent of Routed Events in the WPF,
+the complications involved with capturing a series of hierarchical
+events are encapsulated and simplified. Routed Events are a pipeline of
+event handlers that are automatically fired for a control when any of
+its nested controls’ events fire. This means that it performs as a
+self-aware component, knowing when its members are being interacted
+with, and providing handler logic to respond to user or system related
+interactions. </span><br><span style="font-family: Georgia;"></span><br><span style="font-family: Georgia;">A </span>FrameworkElement <span style="font-family: Georgia;">could
+possible contain other sibling and child elements, which forms a tree
+of elements. In the WPF, the parent element can provide information to
+child elements, providing usage, customization, and visibility to the
+potentially smaller, nested objects. "Control Composition" is a term
+used to describe the creation or design concepts used when creating
+controls and providing thought to the handling of information within
+the tree. It leads developers to creating better structure for controls
+to control and direct the logical flow of events for the tree and its
+members. </span><br><span style="font-family: Georgia;">There are 3 types of routed events: </span><br><span style="font-family: Georgia;">*     Tunneling </span><br><span style="font-family: Georgia;">*     Bubbling</span><br><span style="font-family: Georgia;">*     Direct</span><br><span style="font-family: Georgia;"></span><br><span style="font-family: Georgia;">A
+Bubbling event is the first place we will start, as it provides event
+handling from the originating element of a Visual Tree to the root of
+the tree. Tunneling events, on the other hand, fire in the opposite
+direction and are used to hook into the pre-condition of the controls
+within the visual tree from the top of the visual tree down. Tunneling
+and Bubbling event models assist in the complicated logic associated to
+events raised from / by controls within other controls. Developers can
+hook into an action before or after it occurs in context to its parent
+and child controls. </span><div style="clear: both; padding-bottom: 0.25em;"></div>
+    </div>
+    </div>
+    
+    <p class="post-footer">
+      <em>posted by Shawn Livermore at <a href="http://shawnlivermore.blogspot.com/2006/04/routed-events-in-wpf.html" title="permanent link">4/08/2006 11:09:00 PM</a></em>
+        <span class="item-action"><a href="http://www.blogger.com/email-post.g?blogID=13336855&amp;postID=114456297465815579" title="Email Post"><span class="email-post-icon">&nbsp;</span></a></span><span class="item-control blog-admin pid-592200407"><a style="border: medium none ;" href="http://www.blogger.com/post-edit.g?blogID=13336855&amp;postID=114456297465815579" title="Edit Post"><span class="quick-edit-icon">&nbsp;</span></a></span>
+    </p>
+  
+  </div>
+  <!-- End .post -->
+  
+  
+  <!-- Begin #comments -->
+ 
+  <div id="comments">
+
+	<a name="comments"></a>
+        <h4>0 Comments:</h4>
+        <dl id="comments-block">
+      
+    </dl>
+		<p class="comment-timestamp">
+
+    <a class="comment-link" href="http://www.blogger.com/comment.g?blogID=13336855&amp;postID=114456297465815579">Post a Comment</a>
+    </p>
+    
+   
+    <a name="links"></a><h4>Links to this post:</h4>
+    <dl id="comments-block">
+    <script type="text/javascript" src="routed-events-in-wpf_files/backlink.js" charset="utf-8" defer="true">
+</script>
+<noscript><a
+href="http://blogsearch.google.com/?ui=blg&q=link%3Ahttp%3A%2F%2Fshawnlivermore.blogspot.com%2F2006%2F04%2Frouted-events-in-wpf.html">See
+links to this post</a></noscript>
+<div id="blogger-dcom-block" style="display: none;">
+        <dt class="comment-title">
+        <span class="comment-toggler">&nbsp;</span>
+        <a href="http://shawnlivermore.blogspot.com/2006/04/%3C$BlogBacklinkURL$%3E" rel="nofollow">&lt;$BlogBacklinkTitle$&gt;</a> <span class="item-control blog-admin"><a style="border: medium none ;" href="http://www.blogger.com/delete-backlink.g?blogID=13336855&amp;postID=114456297465815579&amp;backlinkURL=%3C$BlogBacklinkURLEscaped$%3E" title="Remove Link"><span class="delete-comment-icon">&nbsp;</span></a></span>
+        </dt>
+        <dd class="comment-body">&lt;$BlogBacklinkSnippet$&gt;
+        <br>
+        <span class="comment-poster">
+        <em>posted by &lt;$BlogBacklinkAuthor$&gt; @ &lt;$BlogBacklinkDateTime$&gt;</em>
+        </span>
+        </dd>
+    </div>
+<script type="text/javascript">if (typeof BL_addOnLoadEvent == 'function') { BL_addOnLoadEvent(function() { BL_writeBacklinks(); }); }</script>
+
+    </dl>
+    <p class="comment-timestamp"><script type="text/javascript">function BlogThis() {
+Q=''; x=document; y=window;
+if(x.selection) {
+  Q=x.selection.createRange().text;
+} else if (y.getSelection) {
+  Q=y.getSelection();
+} else if (x.getSelection) {
+  Q=x.getSelection();
+}
+popw = y.open('http://www.blogger.com/blog-this.g?t=' +
+  escape(Q) + '&u=' + escape(location.href) + '&n=' +
+  escape(document.title),'bloggerForm',
+  'scrollbars=no,width=475,height=300,top=175,left=75,status=yes,resizable=yes');
+void(0);
+}
+</script>
+<a class="comment-link" href="javascript:BlogThis();" id="b-backlink">Create a Link</a></p>
+    
+
+		<p class="comment-timestamp">
+	<a href="http://shawnlivermore.blogspot.com/">&lt;&lt; Home</a>
+    </p>
+    </div>
+
+
+
+  <!-- End #comments -->
+
+
+</div></div>
+<!-- End #main -->
+
+
+
+
+
+
+<!-- Begin #sidebar -->
+<div id="sidebar"><div id="sidebar2">
+  
+  
+<!-- Sidebar -->
+<div id="sideBar">
+
+
+
+		<!-- 
+			
+			+++++++++++++++++++++++++++++++++++++++++++++++++
+					
+			Add things to your sidebar here.
+			Use the format:
+			
+			<li><a href="URL">Link Text</a></li>
+		
+			+++++++++++++++++++++++++++++++++++++++++++++++++
+					
+		-->
+<a href="http://shawnlivermore.blogspot.com/atom.xml">Atom Feed <img src="routed-events-in-wpf_files/icon_xml2.gif"></a>
+<br>
+<a href="mailto:shawnlivermore@gmail.com">Email...</a>
+<br>Phone...951-323-4014
+
+<br><br>
+<a href="http://www.amazon.com/gp/product/0470041803/sr=8-1/qid=1144446286/ref=sr_1_1/103-5368156-2833445?%5Fencoding=UTF8">
+<img src="routed-events-in-wpf_files/0470041803.jpg"></a>
+
+<br><br>
+<a href="http://www.amazon.com/gp/product/0471749516/103-5750659-5163022?v=glance&amp;n=283155">
+<img src="routed-events-in-wpf_files/0471749516.jpg"></a>
+<br><br>
+
+
+<script type="text/javascript"><!--
+google_ad_client = "pub-4566551393489036";
+google_ad_width = 200;
+google_ad_height = 90;
+google_ad_format = "200x90_0ads_al_s";
+google_ad_channel = "";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "A9501B";
+google_color_text = "000000";
+google_color_url = "804000";
+//--></script>
+<script type="text/javascript" src="routed-events-in-wpf_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="routed-events-in-wpf_files/ads_002.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="90" scrolling="no" width="200"></iframe>
+<br>
+
+
+<script type="text/javascript"><!--
+google_ad_client = "pub-4566551393489036";
+google_ad_width = 180;
+google_ad_height = 60;
+google_ad_format = "180x60_as_rimg";
+google_cpa_choice = "CAAQ7euWhAIaCNDk2KGlmBxHKL3D93M";
+google_ad_channel = "";
+//--></script>
+<script type="text/javascript" src="routed-events-in-wpf_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="routed-events-in-wpf_files/ads_003.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="60" scrolling="no" width="180"></iframe>
+<br>
+
+
+<h2>For Prospective Authors</h2>
+<ul>
+<a href="http://www.aristeia.com/authorAdvice_frames.html">start here...</a><br>
+</ul>
+</div>
+
+<h2 class="sidebar-title">WPF / Sparkle Resources</h2>
+<a href="http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=119&amp;SiteID=1">MSDN WPF Forum</a> <br>
+<a href="http://xamlshare.com/">xamlshare.com</a><br>
+<a href="http://msdn.microsoft.com/winfx/reference/presentation/default.aspx">WPF on WinFX Dev Center</a> <br>
+<a href="http://www.microsoft.com/communities/newsgroups/en-us/default.aspx?dg=microsoft.public.expression.interactivedesigner&amp;cat=en_US_caf786b0-4309-2b4e-3ae7-b7b227f4cd9a&amp;lang=en&amp;cr=US">Sparkle News Group</a> <br>
+<a href="http://blogs.msdn.com/mswanson/articles/WPFToolsAndControls.aspx">Michael Swanson's WPF Tools</a><br>
+
+
+
+  <h2 class="sidebar-title">Previous Posts</h2>
+    <ul id="recently">
+    
+        <li><a href="http://shawnlivermore.blogspot.com/2006/04/xaml.html">XAML</a></li>
+     
+        <li><a href="http://shawnlivermore.blogspot.com/2006/03/getting-started-with-wpf.html">Getting Started with WPF</a></li>
+     
+        <li><a href="http://shawnlivermore.blogspot.com/2006/02/next-book-net-development-with-windows.html">Next Book: .NET Development with the Windows Prese...</a></li>
+     
+        <li><a href="http://shawnlivermore.blogspot.com/2006/01/sending-messages-using-callbacks-in.html">Sending Messages using Callbacks in Asp.NET 2.0</a></li>
+     
+        <li><a href="http://shawnlivermore.blogspot.com/2005/12/aspnet-20-instant-results-book.html">ASP.NET 2.0 Instant Results Book</a></li>
+     
+        <li><a href="http://shawnlivermore.blogspot.com/2005/11/aspnet-20-asynchronous-pages-speeding.html">Asp.Net 2.0 - Asynchronous Pages - speeding it up ...</a></li>
+     
+        <li><a href="http://shawnlivermore.blogspot.com/2005/10/startcom.html">start.com</a></li>
+     
+        <li><a href="http://shawnlivermore.blogspot.com/2005/09/aspnet-20-beta-2-has-killed-image.html">ASP.Net 2.0 beta 2 has killed the Image Generation...</a></li>
+     
+        <li><a href="http://shawnlivermore.blogspot.com/2005/09/barbara-bush-its-good-enough-for-poor.html">Barbara Bush: It's Good Enough for the Poor</a></li>
+     
+        <li><a href="http://shawnlivermore.blogspot.com/2005/08/visual-web-developer-and-sql-express.html">Visual Web Developer and SQL Express 05</a></li>
+     
+  </ul>
+
+<h2>.Net Architects</h2>
+<ul>
+<a href="http://blogs.interknowlogy.com/timmccarthy/">Tim McCarthy</a><br>
+<a href="http://imar.spaanjaars.com/">Imar Spaanjaars</a><br>
+<a href="http://blogs.interknowlogy.com/timhuckaby/">Tim Huckaby</a><br>
+<a href="http://callmealex.com/cs">Alex Lowe</a><br>
+<a href="http://blogs.msdn.com/william_zentmayer/default.aspx">William Zentmayer</a><br>
+<a href="http://blogs.msdn.com/kaevans/default.aspx">Kirk Allen</a><br>
+</ul>	
+</div>
+    
+<h2>Biztalk Blogs</h2>
+<ul>
+<a href="http://geekswithblogs.net/ajames/">Andy James</a><br>
+<a href="http://weblogs.asp.net/arpans">Arpan Shah</a><br>
+<a href="http://sphear.demon.nl/weblogs/carlo/">Carlo Poli</a><br>
+<a href="http://weblogs.asp.net/cbrumme">Chris Brumme</a><br>
+<a href="http://weblogs.asp.net/darrenj">Darren Jefford</a><br>
+<a href="http://blogs.msdn.com/kevinsmi/">Kevin Smith</a><br>
+<a href="http://blogs.msdn.com/Biztalk_Core_Engine">Lee Graber</a><br>
+<a href="http://markharrison.europe.webmatrixhosting.net/">Mark Harrison</a><br>
+<a href="http://martijnh.blogspot.com/">Martijn Hoogendoorn</a><br>
+<a href="http://blogs.msdn.com/oallen/">Owen Allen</a><br>
+<a href="http://radio.weblogs.com/0126624/">Patrick Tissenghem</a><br>
+<a href="http://www.traceofthought.net/">Scott Colestock</a><br>
+<a href="http://blogs.msdn.com/scottwoo">Scott Woodgate</a><br>
+<a href="http://www.asaris-matrix.com/sweber/playground/default.aspx">Sig Webers</a><br>
+<a href="http://weblogs.asp.net/stefan_gossner/">Stefan GoÃner</a><br>
+<a href="http://blogs.msdn.com/infopath/">The InfoPath Team</a><br>
+</ul>
+	
+
+
+</div>
+      <p id="powered-by"><a href="http://www.blogger.com/"><img src="routed-events-in-wpf_files/bloggerbutton1.gif" alt="Powered by Blogger"></a></p>
+  
+  <!--
+  <p>This is a paragraph of text that could go in the sidebar.</p>
+  -->
+  
+
+
+<center>
+
+<script type="text/javascript" src="routed-events-in-wpf_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="routed-events-in-wpf_files/ads_004.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="60" scrolling="no" width="180"></iframe><script type="text/javascript"><!--
+google_ad_client = "pub-4566551393489036";
+google_ad_width = 120;
+google_ad_height = 240;
+google_ad_format = "120x240_as_rimg";
+google_cpa_choice = "CAAQuduWhAIaCF-BK8WXs4gQKOPC93M";
+google_ad_channel = "";
+//--></script>
+<script type="text/javascript" src="routed-events-in-wpf_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="routed-events-in-wpf_files/ads_005.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="240" scrolling="no" width="120"></iframe>
+
+<br>
+
+
+</center>
+
+
+</div>
+<!-- End #sidebar -->
+
+
+
+<!-- End #content -->
+
+
+
+<!-- Begin #footer -->
+<div id="footer"><hr>
+  <p><!--This is an optional footer. If you want text here, place it inside these tags, and remove this comment. -->&nbsp;</p>
+
+</div>
+<!-- End #footer -->
+
+
+  <script type="text/javascript"><!--
+google_ad_client = "pub-4566551393489036";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as_rimg";
+google_cpa_choice = "CAAQlfaWhAIaCDgcetl7W8a7KNvD93M";
+google_ad_channel = "";
+//--></script>
+<script type="text/javascript" src="routed-events-in-wpf_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="routed-events-in-wpf_files/ads_006.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="60" scrolling="no" width="468"></iframe>
+
+<br>
+
+
+<!--WEBBOT bot="HTMLMarkup" startspan ALT="Site Meter" -->
+<script type="text/javascript" language="JavaScript">var site="s14shawnlivermore"</script>
+<a id="idSiteMeterHREF" href="http://www.sitemeter.com/stats.asp?site=s14shawnlivermore" target="_top"><img src="routed-events-in-wpf_files/meter.gif" alt="Site Meter" border="0"></a><iframe src="routed-events-in-wpf_files/a.txt" frameborder="0" height="0" width="0"></iframe><script type="text/javascript" language="JavaScript1.2" src="routed-events-in-wpf_files/counter.js">
+</script>
+<noscript>
+<a href="http://s14.sitemeter.com/stats.asp?site=s14shawnlivermore" target="_top">
+<img src="http://s14.sitemeter.com/meter.asp?site=s14shawnlivermore" alt="Site Meter" border="0"/></a>
+</noscript>
+<!--WEBBOT bot="HTMLMarkup" Endspan -->
+</body></html>

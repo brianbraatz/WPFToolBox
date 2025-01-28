@@ -1,0 +1,77 @@
+﻿<Window x:Class="Samples.DragDrop.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="TestingGround" Height="300" Width="300"
+    xmlns:dnd="clr-namespace:Samples.DragDrop"
+        WindowState="Maximized"
+    >
+	<Window.Resources>
+		<dnd:DefaultDragSourceAdvisor x:Key="sourceAdvisor1"/>
+		<dnd:DefaultDragSourceAdvisor x:Key="sourceAdvisor2"/>
+		<dnd:DefaultDragSourceAdvisor x:Key="sourceAdvisor3"/>
+
+		<dnd:DefaultDropTargetAdvisor x:Key="targetAdvisor1"/>
+		<dnd:DefaultDropTargetAdvisor x:Key="targetAdvisor2"/>
+		<dnd:DefaultDropTargetAdvisor x:Key="targetAdvisor3"/>
+
+		<Style TargetType="{x:Type Button}">
+			<Setter Property="Width" Value="50"/>
+			<Setter Property="Height" Value="60"/>
+			<Setter Property="Margin" Value="3"/>
+		</Style>
+	</Window.Resources>
+	<Grid x:Name="_mainGrid">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+
+		<Border Grid.Row="0" Grid.Column="0" BorderBrush="Black" BorderThickness="2" CornerRadius="8">
+			<WrapPanel x:Name="_topPanel" Background="White"
+                   dnd:DragDropManager.DropTargetAdvisor="{StaticResource targetAdvisor1}"
+                     >
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+			</WrapPanel>
+		</Border>
+
+		<Border Grid.Row="0" Grid.Column="1" BorderBrush="Green" BorderThickness="2" CornerRadius="8">
+			<WrapPanel Background="White"
+                 dnd:DragDropManager.DragSourceAdvisor="{StaticResource sourceAdvisor2}"
+                     >
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+				<Button Content="Top"/>
+			</WrapPanel>
+		</Border>
+
+		<Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Red" BorderThickness="2" CornerRadius="8"
+              >
+			<WrapPanel x:Name="_bottomPanel" Background="White"
+                 dnd:DragDropManager.DragSourceAdvisor="{StaticResource sourceAdvisor3}"
+                   dnd:DragDropManager.DropTargetAdvisor="{StaticResource targetAdvisor2}"
+                   >
+				<Button Content="Bottom"/>
+				<Button Content="Bottom"/>
+				<Button Content="Bottom"/>
+				<Button Content="Bottom"/>
+				<Button Content="Bottom"/>
+				<Button Content="Bottom"/>
+				<Button Content="Bottom"/>
+			</WrapPanel>
+		</Border>
+	</Grid>
+</Window>

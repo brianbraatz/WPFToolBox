@@ -1,0 +1,37 @@
+﻿function LocustClass()
+{
+     this.__getLocationByIP = new Location();
+}
+
+LocustClass.prototype.getLocationByIP = function(ip)
+{
+     var url = "http://locust.danwaters.com/locust.asmx/GetLocationByIP?ipAddress=" + ip;
+     var resultXml = environment.getXml(url);
+     
+     var country = resultXml.getElementsByTagName("Country").length == 1 ? resultXml.getElementsByTagName("Country")[0].text : "";
+     var cityState= resultXml.getElementsByTagName("CityState").length == 1 ? resultXml.getElementsByTagName("CityState")[0].text : "";
+     var longitude= resultXml.getElementsByTagName("Longitude").length == 1 ? resultXml.getElementsByTagName("Longitude")[0].text : "";
+     var latitude= resultXml.getElementsByTagName("Latitude").length == 1 ? resultXml.getElementsByTagName("Latitude")[0].text : "";
+     var myIP= resultXml.getElementsByTagName("IPAddress").length == 1 ? resultXml.getElementsByTagName("IPAddress")[0].text : "";
+     
+     var resultLocation = new Location(myIP, cityState, country, latitude, longitude);
+     return resultLocation;
+}
+
+function Location(ip, cityState, country, latitude, longitude)
+{
+     this.IPAddress = ip;
+     this.CityState = cityState;
+     this.Country = country;
+     this.Latitude = latitude;
+     this.Longitude = longitude;
+}
+
+Location.prototype.toString = function()
+{
+     return "IP: " + this.IPAddress + "<br>" +
+          "Location: " + this.CityState + "<br>" + 
+          "Country: " + this.Country + "<br>" +
+          "Lat/Long: " + this.Latitude + ", " + this.Longitude;
+};
+if(window.blockScriptLoaded) blockScriptLoaded('_Daan_Locust IP Locator', '1191159266');

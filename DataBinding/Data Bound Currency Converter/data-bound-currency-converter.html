@@ -1,0 +1,907 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:b="http://www.google.com/2005/gml/b" xmlns:data="http://www.google.com/2005/gml/data" xmlns:expr="http://www.google.com/2005/gml/expr"><head>
+
+  
+    
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta content="true" name="MSSmartTagsPreventParsing">
+  <meta content="blogger" name="generator">
+  <link rel="alternate" type="application/atom+xml" title="WPF and C#: Tip a Day - Atom" href="http://ascendedguard.com/feeds/posts/default">
+<link rel="alternate" type="application/rss+xml" title="WPF and C#: Tip a Day - RSS" href="http://ascendedguard.com/feeds/posts/default?alt=rss">
+<link rel="service.post" type="application/atom+xml" title="WPF and C#: Tip a Day - Atom" href="http://www.blogger.com/feeds/7691677196452729636/posts/default">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.blogger.com/rsd.g?blogID=7691677196452729636">
+<link rel="alternate" type="application/atom+xml" title="WPF and C#: Tip a Day - Atom" href="http://ascendedguard.com/feeds/2136676961492174260/comments/default">
+
+  
+
+    <meta content="A collection of various tricks and tips in C# and Windows Presentation Foundation (WPF)." name="DESCRIPTION">
+    <meta content="WPF,Windows Presentation Foundation,tips,C#,C Sharp" name="KEYWORDS"><title>WPF and C#: Tip a Day: Data Bound Currency Converter</title>
+    
+    <style id="page-skin-1" type="text/css"><!--
+/*
+-----------------------------------------------
+Blogger Template Style
+Name: 	  Thisaway (Blue)
+Designer: Dan Rubin
+URL:      www.superfluousbanter.org
+Date:     29 Feb 2004
+Updated by: Blogger Team
+----------------------------------------------- */
+
+/* Variable definitions
+   ====================
+   <Variable name="textColor" description="Text Color"
+             type="color" default="#204063">
+   <Variable name="blogTitleColor" description="Blog Title Color"
+             type="color" default="#eef6fe">
+   <Variable name="blogDescriptionColor" description="Blog Description Color"
+             type="color" default="#eef6fe">
+   <Variable name="postTitleColor" description="Post Title Color"
+             type="color" default="#477fba">
+   <Variable name="dateHeaderColor" description="Date Header Color"
+             type="color" default="#8facc8">
+   <Variable name="sidebarHeaderColor" description="Sidebar Title Color"
+             type="color" default="#809fbd">
+   <Variable name="mainLinkColor" description="Link Color"
+             type="color" default="#4386ce">
+   <Variable name="mainVisitedLinkColor" description="Visited Link Color"
+             type="color" default="#2462a5">
+   <Variable name="sidebarLinkColor" description="Sidebar Link Color"
+             type="color" default="#599be2">
+   <Variable name="sidebarVisitedLinkColor"
+              description="Sidebar Visited Link Color"
+             type="color" default="#3372b6">
+
+   <Variable name="bodyFont" description="Text Font"
+             type="font" default="normal normal 100% Helvetica,Arial,Verdana,'Trebuchet MS', Sans-serif">
+   <Variable name="headerFont" description="Sidebar Title Font"
+             type="font"
+             default="normal bold 100% Helvetica,Arial,Verdana,'Trebuchet MS', Sans-serif">
+   <Variable name="pageTitleFont" description="Blog Title Font"
+             type="font"
+             default="normal bold 200% Helvetica,Arial,Verdana,'Trebuchet MS', Sans-serif">
+   <Variable name="blogDescriptionFont" description="Blog Description Font"
+             type="font"
+             default="normal normal 80% Helvetica,Arial,Verdana,'Trebuchet MS', Sans-serif">
+*/
+
+/* global
+----------------------------------------------- */
+body {
+  margin: 0;
+  text-align: center; 
+  min-width: 760px;
+  background: #4386ce url(http://www.blogblog.com/thisaway_blue/bg_body.gif) repeat-x left top;
+  color: #204063;
+  font-size: small;
+}
+
+blockquote {
+  margin: 0;
+  padding: 0 10px 0 10px;
+  border-left: 6px solid #d8e7f78;
+  border-right: 6px solid #d8e7f7;
+  color: #477fba;
+}
+
+code {
+  color: #477fba;
+}
+
+hr {
+  display: none;
+}
+
+
+/* layout
+----------------------------------------------- */
+#outer-wrapper {
+  margin: 0 auto;
+  width: 760px;
+  text-align: left;
+  font: normal normal 97% Arial, sans-serif;
+}
+
+#header-wrapper {
+  padding-bottom: 15px;
+  background: url(http://www.blogblog.com/thisaway_blue/bg_header_bottom.gif) no-repeat left bottom;
+}
+
+#header {
+  background: #204063 url(http://www.blogblog.com/thisaway_blue/bg_header.gif) repeat-x left bottom;
+}
+
+#content-wrapper {
+  position: relative;
+  width: 760px;
+  background: #f7f0e9 url(http://www.blogblog.com/thisaway_blue/bg_main_wrapper.gif) repeat-y left top;
+}
+
+#main-wrapper {
+  display: inline; /* fixes a strange ie margin bug */
+  float: left;
+  margin: 0 0 0 3px;
+  padding: 0;
+  width: 483px;
+  word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
+  overflow: hidden;     /* fix for long non-text content breaking IE sidebar float */
+}
+
+#main {
+  padding: 22px 8px 0 8px;
+  background: url(http://www.blogblog.com/thisaway_blue/bg_content.gif) repeat-x left top;
+}
+
+.post {
+  margin: 0 8px 14px 21px;
+  padding: 0;
+  border-bottom: 3px solid #d8e7f7;
+}
+
+#comments {
+  margin: 0 16px 14px 29px;
+  padding: 10px;
+  border: 1px solid #cedef0;
+  background-color: #e4ecf5;
+}
+
+#sidebar-wrapper {
+  display: inline; /* fixes a strange ie margin bug */
+  float: right;
+  margin: 0 3px 0 0;
+  width: 269px;
+  color: #204063;
+  line-height: 1.4em;
+  font-size: 90%;
+  background: url(http://www.blogblog.com/thisaway_blue/bg_sidebar.gif) repeat-x left top;
+  word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
+  overflow: hidden;     /* fix for long non-text content breaking IE sidebar float */
+}
+
+#sidebar {
+  padding: 7px 11px 0 14px;
+  background: url(http://www.blogblog.com/thisaway_blue/bg_sidebar_arrow.gif) repeat-y 179px 0;
+}
+
+#sidebar .widget { 
+  margin-bottom: 20px;
+ }
+
+
+#footer-wrapper {
+  padding-top: 15px;
+  background: url(http://www.blogblog.com/thisaway_blue/bg_footer_top.gif) no-repeat left top;
+  clear: both;
+}
+
+#footer {
+  background: #152e49 url(http://www.blogblog.com/thisaway_blue/bg_footer.gif) repeat-x left top;
+  text-align: center;
+  min-height: 2em;
+}
+
+/* headings
+----------------------------------------------- */
+
+#header h1 {
+  margin: 0;
+  padding: 24px 0 0 84px;
+  background: url(http://www.blogblog.com/thisaway_blue/icon_header.gif) no-repeat 16px 26px;
+}
+
+h2.date-header {
+  margin: 0;
+  padding: 0 0 0 29px;
+  text-transform: uppercase;
+  color: #8facc8;
+  background: url(http://www.blogblog.com/thisaway_blue/icon_date.gif) no-repeat 13px 0;
+  font-size: 80%;
+  font-weight: normal;
+}
+
+.date-header span {
+  margin: 0 0 0 5px;
+  padding: 0 25px 0 25px;
+  background: url(http://www.blogblog.com/thisaway_blue/bg_date.gif) no-repeat 0 0;
+}
+
+.sidebar h2 {
+  padding: 1px 0 0 36px;
+  color: #809fbd;
+  background: url(http://www.blogblog.com/thisaway_blue/icon_sidebar_heading.gif) no-repeat 0 45%;
+  font: normal bold 100% Helvetica,Arial,Verdana,'Trebuchet MS', Sans-serif;
+}
+
+.sidebar .Profile h2 {
+  color: #527595;
+  background: url(http://www.blogblog.com/thisaway_blue/icon_sidebar_profileheading.gif) no-repeat 0 45%;
+}
+
+.post h3 {
+  margin: 13px 0 13px 0;
+  padding: 0;
+  color: #477fba;
+  font-size: 140%;
+}
+
+.post h3 a, .post h3 a:visited { 
+  color: #477fba;
+ }
+
+#comments h4 {
+  margin-top: 0;
+  font-size: 120%;
+}
+
+
+/* text
+----------------------------------------------- */
+
+#header h1 {
+  color: #eef6fe;
+  font: normal bold 198% Arial, sans-serif;
+}
+
+#header .description {
+  margin: 0;
+  padding: 7px 16px 0 84px;
+  color: #eef6fe;
+  font: normal normal 79% Helvetica,Arial,Verdana,'Trebuchet MS', Sans-serif;
+}
+
+.post-body p {
+  line-height: 1.4em;
+  /* Fix bug in IE5/Win with italics in posts */
+  margin: 0;
+  height: 1%;
+  overflow: visible;
+}
+
+.post-footer {
+  font-size: 80%;
+  color: #8facc8;
+}
+
+.uncustomized-post-template .post-footer {
+  text-align: right;
+}
+
+.uncustomized-post-template .post-footer .post-author,
+.uncustomized-post-template .post-footer .post-timestamp {
+  display: block;
+  float: left;
+  text-align: left;
+  margin-right: 4px;
+}
+
+p.comment-author {
+  font-size: 83%;
+}
+
+.deleted-comment {
+  font-style:italic;
+  color:gray;
+}
+
+.comment-body p {
+  line-height: 1.4em;
+}
+
+.feed-links { 
+  clear: both;
+  line-height: 2.5em;
+  margin-bottom: 0.5em;
+  margin-left: 29px;
+}
+
+#footer .widget { 
+  margin: 0;
+  padding: 0 0 15px 55px;
+  color: #fef6ee;
+  font-size: 90%;
+  line-height: 1.4em;
+  background: url(http://www.blogblog.com/thisaway_blue/icon_footer.gif) no-repeat 16px 0;
+}
+
+
+/* lists
+----------------------------------------------- */
+
+.post ul {
+  padding-left: 32px;
+  list-style-type: none;
+  line-height: 1.4em;
+}
+
+.post li {
+  padding: 0 0 4px 17px;
+  background: url(http://www.blogblog.com/thisaway_blue/icon_list_item.gif) no-repeat 0 3px;
+}
+
+#comments ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+#comments li {
+  padding: 0 0 1px 17px;
+  background: url(http://www.blogblog.com/thisaway_blue/icon_comment.gif) no-repeat 0 3px;
+}
+
+.sidebar ul {
+  padding: 0;
+  list-style-type: none;
+  line-height: 1.2em;
+  margin-left: 0;
+}
+
+.sidebar li {
+  padding: 0 0 4px 17px;
+  background: url(http://www.blogblog.com/thisaway_blue/icon_list_item.gif) no-repeat 0 3px;
+}
+
+#blog-pager-newer-link {
+  float: left;
+  margin-left: 29px;
+ }
+ 
+#blog-pager-older-link {
+  float: right;
+  margin-right: 16px;
+ }
+ 
+#blog-pager {   
+  text-align: center; 
+ }
+
+/* links
+----------------------------------------------- */
+a {
+  color: #4386ce;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #2462a5;
+}
+
+a.comment-link {
+/* ie5.0/win doesn't apply padding to inline elements,
+   so we hide these two declarations from it */
+  background/* */:/**/url(http://www.blogblog.com/thisaway_blue/icon_comment.gif) no-repeat 0 45%;
+  padding-left: 14px;
+}
+
+html>body a.comment-link {
+  /* respecified, for ie5/mac's benefit */
+  background: url(http://www.blogblog.com/thisaway_blue/icon_comment.gif) no-repeat 0 45%;
+  padding-left: 14px;
+}
+
+.sidebar a {
+  color: #599be2;
+}
+
+.sidebar a:hover {
+  color: #3372b6;
+}
+
+
+#header h1 a {
+  color: #eef6fe;
+  text-decoration: none;
+}
+
+#header h1 a:hover {
+  color: #b4c7d9;
+}
+
+.post h3 a {
+  text-decoration: none;
+}
+
+a img { 
+ border-width: 0;
+}
+
+.clear {
+  clear: both;
+  line-height: 0;
+  height: 0;
+}
+
+.profile-textblock { 
+  clear: both;
+  margin-bottom: 10px;
+  margin-left: 0;
+}
+
+.profile-img { 
+  float: left;
+  margin: 0 5px 5px 0;
+  padding: 3px;
+  border: 1px solid #bdd4eb;
+}
+
+.profile-link { 
+  padding: 0 0 0 17px;
+  background: url(http://www.blogblog.com/thisaway_blue/icon_profile.gif) no-repeat 0 0;
+}
+
+/** Page structure tweaks for layout editor wireframe */
+
+body#layout #main,
+body#layout #sidebar { 
+  padding: 0;
+}
+
+--></style>
+  <link rel="stylesheet" type="text/css" href="data-bound-currency-converter_files/3319451950-blogarchive.css"><!-- --><style type="text/css">@import url('http://www.blogger.com/css/blog_controls.css');
+@import url('http://www.blogger.com/dyn-css/authorization.css?blogID=7691677196452729636');
+#navbar-iframe { display:block }
+</style>
+
+<link rel="stylesheet" type="text/css" href="data-bound-currency-converter_files/2791266615-blog.css"><script type="text/javascript" src="data-bound-currency-converter_files/1533466593-widgets.js"></script></head><body>
+  <div class="navbar section" id="navbar"><div class="widget Navbar" id="Navbar1"><iframe src="data-bound-currency-converter_files/navbar.htm" marginwidth="0" marginheight="0" id="navbar-iframe" frameborder="0" height="30" scrolling="no" width="100%"></iframe>
+<div id="space-for-ie"></div></div></div>
+
+
+  <div id="outer-wrapper"><div id="wrap2">
+
+    <!-- skip links for text browsers -->
+    <span id="skiplinks" style="display: none;">
+      <a href="#main">skip to main </a> |
+      <a href="#sidebar">skip to sidebar</a>
+    </span>
+
+    <div id="header-wrapper">
+      <div class="header section" id="header"><div class="widget Header" id="Header1">
+
+  
+    
+    <div id="header-inner">
+      <div class="titlewrapper">
+        <h1 class="title">
+          
+            <a href="http://ascendedguard.com/">WPF and C#: Tip a Day</a>
+          
+        </h1>
+      </div>
+      <div class="descriptionwrapper">
+        <p class="description"><span>Various tips and tricks within the C# language, and specifically WPF as I work my way through issues everyday.</span></p>
+      </div>
+    </div>
+  
+</div></div>
+    </div>
+ 
+    <div id="content-wrapper">
+
+      <div id="crosscol-wrapper" style="text-align: center;">
+        <div class="crosscol section" id="crosscol"></div>
+      </div>
+
+      <div id="main-wrapper">
+        <div class="main section" id="main"><div class="widget Blog" id="Blog1">
+  
+  <div class="blog-posts hfeed">
+
+    
+  
+
+
+    <!-- google_ad_section_start -->
+    
+      
+        <h2 class="date-header">Monday, August 13, 2007</h2>
+      
+      
+  <div class="post hentry">
+    <a name="2136676961492174260"></a>
+    
+      <h3 class="post-title entry-title">
+     
+        
+          <a href="http://ascendedguard.com/2007/08/data-bound-currency-converter.html">Data Bound Currency Converter</a>
+        
+     
+      </h3>
+    
+
+    <div class="post-header-line-1"></div>
+
+    <div class="post-body entry-content">
+      <p>In my previous article, <a href="http://ascendedguard.com/2007/08/data-binding-with-value-converters.html">Data Binding with Value Converters</a>,
+I discussed using Value Converters (implementing IValueConverter) to
+assist in converting values for data binding. While a simple Value
+Converter is good for things like converting degrees to radians, you
+need something <em>slightly</em> more complex to allow things like currency exchange.<br><br><strong>Currency Exchange Basics:</strong><br><br>Currency
+exchanges are actually pretty simple. You have an amount of money in
+currency A. You want to know how much that is worth in currency B. The
+first thing you do, is get the currency exchange rate, from a bank, or
+some other source (I use <a href="http://www.xe.com/">http://www.xe.com/</a>). Multiply your current value (in Currency A) by this rate, and you arrive at an equivalent value of Currency B.<br><br>For
+example, I have $24.00 (US) in my pocket. Well, I'm currently in Iraq
+(Iraqi Dinars). The conversion rate from United States Dollars (USD) to
+Iraqi Dinars (IQD) is 1238.50. That means, 24 USD is equal to 29,724.00
+Iraqi Dinars.<br><br><strong>Implementing the Interface:</strong><br><br>Implementing the interface is <em>exactly</em> like we did with <a href="http://ascendedguard.com/2007/08/data-binding-with-value-converters.html">Degrees and Radians</a>,
+with one small change. This time, we utilize the parameter named
+'parameter.' This parameter allows us to pass a value along to the
+IValueConverter. In this case, we will pass the exchange rate. See my
+sample code below. Please note that although the comments are talking
+about USD to IQD, this could, in theory, be used for ANY currency.<br><br><br><br><br></p><div style="overflow: auto;"><pre style="color: rgb(0, 0, 0);"><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">1</span><span style="color: rgb(0, 0, 255);">public</span> <span style="color: rgb(0, 0, 255);">class</span> Converter : IValueConverter<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">2</span>{<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">3</span>    <span style="color: rgb(0, 130, 0);">//Convert from USD to IQD using the exchange rate in the parameter</span><br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">4</span>    <span style="color: rgb(0, 130, 0);">//Exchange rate is USD -&gt; IQD.</span><br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">5</span>    <span style="color: rgb(0, 0, 255);">public</span> <span style="color: rgb(0, 0, 255);">object</span> Convert(<span style="color: rgb(0, 0, 255);">object</span> value, Type targetType, <span style="color: rgb(0, 0, 255);">object</span> parameter, System.Globalization.CultureInfo culture)<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">6</span>    {<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">7</span>        <span style="color: rgb(0, 0, 255);">if</span> ((<span style="color: rgb(0, 0, 255);">string</span>)value == <span style="color: rgb(132, 130, 132);">""</span>) <span style="color: rgb(0, 0, 255);">return</span> 0.0;<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">8</span>        <span style="color: rgb(0, 0, 255);">double</span> dollars = System.Convert.ToDouble(value);<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">9</span>        <span style="color: rgb(0, 0, 255);">double</span> rate = System.Convert.ToDouble(parameter);<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">10</span>        <span style="color: rgb(0, 0, 255);">double</span> dinar = dollars * rate;<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">11</span>        <span style="color: rgb(0, 0, 255);">return</span> dinar;<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">12</span>    }<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">13</span><br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">14</span>    <span style="color: rgb(0, 130, 0);">//Convert from IQD to USD using the exchange rate in the parameter.</span><br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">15</span>    <span style="color: rgb(0, 130, 0);">//Exchange rate is USD -&gt; IQD.</span><br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">16</span>    <span style="color: rgb(0, 0, 255);">public</span> <span style="color: rgb(0, 0, 255);">object</span> ConvertBack(<span style="color: rgb(0, 0, 255);">object</span> value, Type targetType, <span style="color: rgb(0, 0, 255);">object</span> parameter, System.Globalization.CultureInfo culture)<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">17</span>    {<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">18</span>        <span style="color: rgb(0, 0, 255);">if</span> ((<span style="color: rgb(0, 0, 255);">string</span>)value == <span style="color: rgb(132, 130, 132);">""</span>) <span style="color: rgb(0, 0, 255);">return</span> 0.0;<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">19</span>        <span style="color: rgb(0, 0, 255);">double</span> dinar = System.Convert.ToDouble(value);<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">20</span>        <span style="color: rgb(0, 0, 255);">double</span> rate = System.Convert.ToDouble(parameter);<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">21</span>        rate = 1 / rate; <span style="color: rgb(0, 130, 0);">//Account for the reverse conversion.</span><br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">22</span>        <span style="color: rgb(0, 0, 255);">double</span> dollars = dinar * rate;<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">23</span>        <span style="color: rgb(0, 0, 255);">return</span> dollars;<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">24</span>    }<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">25</span>}<br><span style="border-right: 1px solid rgb(153, 153, 153); width: 40px; color: rgb(0, 130, 132); margin-right: 10px;">26</span></pre></div><br><br><strong>Data Binding with Parameters:</strong><br><br>This
+part is easy. The framework is simply the same stuff you have been
+doing. I'm not going to go through the basics on Data binding with a
+Value Converter, you can see my <a href="http://ascendedguard.com/2007/08/data-binding-with-value-converters.html">other post</a>
+for help doing that. The only thing we need to do, is add a parameter
+to the Binding statement. That parameter is named 'ConverterParameter'
+(How fitting). The below code demonstrates. Note, that the parameter we
+pass is a static value, making this good only for USD &lt;-&gt; IQD,
+however, this value can be obtained from anywhere (databound from
+another text box, database, file, internet).<br><br><div style="overflow: auto;"><pre><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(128, 0, 0);">TextBox</span><span style="color: rgb(255, 0, 0);"> x:Name<span style="color: rgb(0, 0, 255);">="txtTo"</span><br>  Text<span style="color: rgb(0, 0, 255);">="{Binding ElementName=txtFrom,<br>  Path=Text, ConverterParameter=1238.50,<br>  Converter={StaticResource Converter}}"</span> </span><span style="color: rgb(0, 0, 255);">/&gt;</span></pre></div><br><br>That's
+it! Its not that hard at all. Now, if you actually want to implement a
+currency converter, you would want to obtain rates from somewhere other
+than this hard coded value... But you see how it works. Pretty easy! <div style="clear: both;"></div> 
+    </div>
+    <div class="post-footer">
+    <p class="post-footer-line post-footer-line-1"><span class="post-author vcard">
+        
+          Posted by
+          <span class="fn">Mike Christiansen</span>
+        
+      </span> <span class="post-timestamp">
+        
+          at
+        
+          <a class="timestamp-link" href="http://ascendedguard.com/2007/08/data-bound-currency-converter.html" rel="bookmark" title="permanent link"><abbr class="published" title="2007-08-13T10:26:00-07:00">10:26 AM</abbr></a>
+        
+        
+      </span> <span class="post-comment-link">
+        
+      </span> <span class="post-icons">
+        
+        
+
+        
+        
+  
+    <span class="item-control blog-admin pid-1708672116">
+      <a href="http://www.blogger.com/post-edit.g?blogID=7691677196452729636&amp;postID=2136676961492174260" title="Edit Post">
+        <span class="quick-edit-icon">&nbsp;</span>
+      </a>
+    </span>
+  
+
+      </span> </p>
+
+      <p class="post-footer-line post-footer-line-2"><span class="post-labels">
+        
+          Labels:
+          
+            <a href="http://ascendedguard.com/search/label/C%23" rel="tag">C#</a>,
+          
+            <a href="http://ascendedguard.com/search/label/Currency" rel="tag">Currency</a>,
+          
+            <a href="http://ascendedguard.com/search/label/Data%20Binding" rel="tag">Data Binding</a>,
+          
+            <a href="http://ascendedguard.com/search/label/DataBind" rel="tag">DataBind</a>,
+          
+            <a href="http://ascendedguard.com/search/label/DataBinding" rel="tag">DataBinding</a>,
+          
+            <a href="http://ascendedguard.com/search/label/IValueConverter" rel="tag">IValueConverter</a>,
+          
+            <a href="http://ascendedguard.com/search/label/Value%20Converter" rel="tag">Value Converter</a>,
+          
+            <a href="http://ascendedguard.com/search/label/ValueConverter" rel="tag">ValueConverter</a>,
+          
+            <a href="http://ascendedguard.com/search/label/wpf" rel="tag">wpf</a>,
+          
+            <a href="http://ascendedguard.com/search/label/XAML" rel="tag">XAML</a>
+          
+        
+      </span> </p>
+
+      <p class="post-footer-line post-footer-line-3"></p>
+    </div>
+  </div>
+
+      
+        
+  <div class="comments" id="comments">
+    <a name="comments"></a>
+    
+      <h4>
+        
+          0 comments:
+        
+      </h4>
+
+      <dl id="comments-block">
+        
+      </dl>
+
+      <p class="comment-footer">
+        <a href="http://www.blogger.com/comment.g?blogID=7691677196452729636&amp;postID=2136676961492174260" onclick="">Post a Comment</a>
+      </p>
+    
+
+    <div id="backlinks-container">
+    <div id="Blog1_backlinks-container">
+       
+    </div>
+    </div>
+  </div>
+
+      
+      
+    
+    <!-- google_ad_section_end -->
+  </div>
+
+  
+  
+  <div class="blog-pager" id="blog-pager">
+    
+      <span id="blog-pager-newer-link">
+      <a class="blog-pager-newer-link" href="http://ascendedguard.com/2007/08/example-message-window.html" id="Blog1_blog-pager-newer-link" title="Newer Post">Newer Post</a>
+      </span>
+    
+
+    
+      <span id="blog-pager-older-link">
+      <a class="blog-pager-older-link" href="http://ascendedguard.com/2007/08/data-binding-with-value-converters.html" id="Blog1_blog-pager-older-link" title="Older Post">Older Post</a>
+      </span>
+    
+
+    
+      <a class="home-link" href="http://ascendedguard.com/">Home</a>
+      
+
+  </div>
+  <div class="clear"></div>
+
+
+  
+  
+   
+    <div class="post-feeds">
+      
+        
+          
+            
+  <div class="feed-links">
+  Subscribe to:
+  
+     <a class="feed-link" href="http://ascendedguard.com/feeds/2136676961492174260/comments/default" target="_blank" type="application/atom+xml">Post Comments (Atom)</a>
+  
+  </div>
+
+          
+        
+      
+    </div>
+  
+
+</div></div>
+      </div>
+
+      <div id="sidebar-wrapper">
+        <div class="sidebar section" id="sidebar"><div class="widget BlogArchive" id="BlogArchive1">
+  
+    <h2>Blog Archive</h2>
+  
+  <div class="widget-content">
+  <div id="ArchiveList">
+  <div id="BlogArchive1_ArchiveList">
+    
+     
+  
+      <ul>
+        <li class="archivedate expanded">
+          
+  
+  
+    <a class="toggle" href="http://ascendedguard.com/2007/08/data-bound-currency-converter.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=close&amp;toggle=YEARLY-1167638400000&amp;toggleopen=MONTHLY-1188630000000">
+        <span class="zippy toggle-open">▼ </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://ascendedguard.com/search?updated-min=2007-01-01T00%3A00%3A00-08%3A00&amp;updated-max=2008-01-01T00%3A00%3A00-08%3A00&amp;max-results=14">2007</a>
+            (<span class="post-count">14</span>)
+          
+            
+  
+      <ul>
+        <li class="archivedate expanded">
+          
+  
+  
+    <a class="toggle" href="http://ascendedguard.com/2007/08/data-bound-currency-converter.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=close&amp;toggle=MONTHLY-1188630000000&amp;toggleopen=MONTHLY-1188630000000">
+        <span class="zippy toggle-open">▼ </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://ascendedguard.com/2007_09_01_archive.html">September</a>
+            (<span class="post-count">1</span>)
+          
+          
+            
+  <ul class="posts">
+    
+      <li><a href="http://ascendedguard.com/2007/09/objectclass-objectcategory-and-schema_08.html">objectClass, objectCategory and the schema</a></li>
+    
+  </ul>
+
+          
+        </li>
+      </ul>
+  
+      <ul>
+        <li class="archivedate collapsed">
+          
+  
+  
+    <a class="toggle" href="http://ascendedguard.com/2007/08/data-bound-currency-converter.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1185951600000&amp;toggleopen=MONTHLY-1188630000000">
+          <span class="zippy">► </span>
+    </a>
+  
+ 
+
+          <a class="post-count-link" href="http://ascendedguard.com/2007_08_01_archive.html">August</a>
+            (<span class="post-count">13</span>)
+          
+          
+            
+  <ul class="posts">
+    
+      <li><a href="http://ascendedguard.com/2007/08/cas-and-strong-names.html">CAS and Strong Names</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/friends-dont-let-friends-program-as.html">Friends don't let friends program as administrator...</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/converting-persisted-data-using.html">Converting persisted data using XMLSerializer and ...</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/code-blog-formatter-update.html">Code Blog Formatter Update</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/easier-managing-of-inotifypropertychang.html">Easier managing of INotifyPropertyChanged</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/example-message-window.html">Example: Message Window</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/data-bound-currency-converter.html">Data Bound Currency Converter</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/data-binding-with-value-converters.html">Data Binding with Value Converters</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/code-blog-formatter.html">Code Blog Formatter</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/one-of-nice-features-about-wpf-is-how.html">Switching Resource Dictionaries in Code</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/anonymous-functions-and-invoking-in-wpf.html">Anonymous Functions and Invoking in WPF</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/08/wpf-virtual-keyboard.html">WPF: Virtual Keyboard</a></li>
+    
+      <li><a href="http://ascendedguard.com/2007/07/code-snippet-test.html">Posting code to a blog</a></li>
+    
+  </ul>
+
+          
+        </li>
+      </ul>
+  
+
+          
+          
+        </li>
+      </ul>
+  
+
+    
+    
+    
+  </div>
+  </div>
+  
+  <div class="clear"></div>
+  <span class="widget-item-control">
+  <span class="item-control blog-admin">
+    <a class="quickedit" href="http://www.blogger.com/rearrange?blogID=7691677196452729636&amp;widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=editWidget" onclick='return _WidgetManager._PopupConfig(document.getElementById("BlogArchive1"));' target="configBlogArchive1" title="Edit">
+      <span class="quick-edit-icon">&nbsp;</span>
+    </a>
+  </span>
+  </span>
+  <div class="clear"></div>
+
+  </div>
+</div><div class="widget AdSense" id="AdSense1">
+  <div class="widget-content">
+    <script type="text/javascript"><!--
+google_ad_client="pub-0745252409082158";
+google_ad_host="pub-1556223355139109";
+google_ad_width=160;
+google_ad_height=600;
+google_ad_format="160x600_as";
+google_ad_type="text";
+google_color_border="DFEAF6";
+google_color_bg="DFEAF6";
+google_color_link="204063";
+google_color_url="8FACC8";
+google_color_text="477FBA";
+//--></script>
+<script type="text/javascript" src="data-bound-currency-converter_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="data-bound-currency-converter_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="600" scrolling="no" width="160"></iframe>
+
+  </div>
+</div><div class="widget Profile" id="Profile1">
+    
+      <h2>Contributors</h2>
+    
+    <div class="widget-content">
+     
+      <ul>
+        
+          <li><a href="http://www.blogger.com/profile/16989212900280455199">Mike Christiansen</a></li>
+        
+          <li><a href="http://www.blogger.com/profile/11466574069980811633">Guard</a></li>
+        
+      </ul>
+
+      
+
+     
+  <div class="clear"></div>
+  <span class="widget-item-control">
+  <span class="item-control blog-admin">
+    <a class="quickedit" href="http://www.blogger.com/rearrange?blogID=7691677196452729636&amp;widgetType=Profile&amp;widgetId=Profile1&amp;action=editWidget" onclick='return _WidgetManager._PopupConfig(document.getElementById("Profile1"));' target="configProfile1" title="Edit">
+      <span class="quick-edit-icon">&nbsp;</span>
+    </a>
+  </span>
+  </span>
+  <div class="clear"></div>
+
+    </div>
+  </div></div>
+      </div>
+
+      <!-- spacer for skins that want sidebar and main to be the same height-->
+      <div class="clear">&nbsp;</div>
+
+    </div> <!-- end content-wrapper -->
+
+    <div id="footer-wrapper">
+      <div class="footer section" id="footer"><div class="widget AdSense" id="AdSense2">
+  <div class="widget-content">
+    <script type="text/javascript"><!--
+google_ad_client="pub-0745252409082158";
+google_ad_host="pub-1556223355139109";
+google_ad_width=234;
+google_ad_height=60;
+google_ad_format="234x60_as";
+google_ad_type="text";
+google_color_border="204063";
+google_color_bg="152E49";
+google_color_link="809FBD";
+google_color_url="8FACC8";
+google_color_text="EEF6FE";
+//--></script>
+<script type="text/javascript" src="data-bound-currency-converter_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="data-bound-currency-converter_files/ads_002.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="60" scrolling="no" width="234"></iframe>
+
+  </div>
+</div></div>
+    </div>
+
+  </div></div> <!-- end outer-wrapper -->
+<script type="text/javascript">
+_WidgetManager._Init('http://www.blogger.com/rearrange?blogID=7691677196452729636', 'http://ascendedguard.com/2007/08/data-bound-currency-converter.html','7691677196452729636');
+_WidgetManager._SetPageActionUrl('http://www.blogger.com/display?blogID=7691677196452729636', 'toOtiJlMOZPBXYFXQXynymi4EUo=:1193957722075');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'title': 'WPF and C#: Tip a Day', 'pageType': 'item', 'url': 'http://ascendedguard.com/2007/08/data-bound-currency-converter.html', 'homepageUrl': 'http://ascendedguard.com/', 'pageTitle': 'WPF and C#: Tip a Day: Data Bound Currency Converter', 'encoding': 'UTF-8', 'isPrivate': false, 'languageDirection': 'ltr', 'feedLinks': '\u003clink rel\u003d\"alternate\" type\u003d\"application/atom+xml\" title\u003d\"WPF and C#: Tip a Day - Atom\" href\u003d\"http://ascendedguard.com/feeds/posts/default\" /\>\n\u003clink rel\u003d\"alternate\" type\u003d\"application/rss+xml\" title\u003d\"WPF and C#: Tip a Day - RSS\" href\u003d\"http://ascendedguard.com/feeds/posts/default?alt\u003drss\" /\>\n\u003clink rel\u003d\"service.post\" type\u003d\"application/atom+xml\" title\u003d\"WPF and C#: Tip a Day - Atom\" href\u003d\"http://www.blogger.com/feeds/7691677196452729636/posts/default\" /\>\n\u003clink rel\u003d\"EditURI\" type\u003d\"application/rsd+xml\" title\u003d\"RSD\" href\u003d\"http://www.blogger.com/rsd.g?blogID\u003d7691677196452729636\" /\>\n\u003clink rel\u003d\"alternate\" type\u003d\"application/atom+xml\" title\u003d\"WPF and C#: Tip a Day - Atom\" href\u003d\"http://ascendedguard.com/feeds/2136676961492174260/comments/default\" /\>\n'}}]);
+_WidgetManager._SetSystemMarkup({'layout': {'varName': '', 'template': '\u003cdiv class\u003d\'widget-wrap1\'\>  \u003cdiv class\u003d\'widget-wrap2\'\> \u003cdiv class\u003d\'widget-wrap3\'\> \u003cdiv class\u003d\'widget-content\'\> \u003cdiv class\u003d\'layout-title\'\>\u003cdata:layout-title\>\u003c/data:layout-title\>\u003c/div\> \u003ca class\u003d\'editlink\' expr:href\u003d\'data:widget.quickEditUrl\' expr:onclick\u003d\'\"return _WidgetManager._PopupConfig(document.getElementById(\\\"\" +       data:widget.instanceId + \"\\\"));\"\' target\u003d\'chooseWidget\'\>\u003cdata:edit-link\>\u003c/data:edit-link\>\u003c/a\> \u003c/div\> \u003c/div\> \u003c/div\> \u003c/div\>'}, 'quickedit': {'varName': '', 'template': '\u003cdiv class\u003d\'clear\'\>\u003c/div\> \u003cspan class\u003d\'widget-item-control\'\> \u003cspan class\u003d\'item-control blog-admin\'\> \u003ca class\u003d\'quickedit\' expr:href\u003d\'data:widget.quickEditUrl\' expr:onclick\u003d\'\"return _WidgetManager._PopupConfig(document.getElementById(\\\"\" +       data:widget.instanceId + \"\\\"));\"\' expr:target\u003d\'\"config\" + data:widget.instanceId\' expr:title\u003d\'data:edit-link\'\> \u003cspan class\u003d\'quick-edit-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\> \u003c/span\> \u003cdiv class\u003d\'clear\'\>\u003c/div\>'}, 'all-head-content': {'varName': 'page', 'template': '\u003cmeta expr:content\u003d\'\"text/html; charset\u003d\" + data:page.encoding\' http-equiv\u003d\'Content-Type\'/\> \u003cmeta content\u003d\'true\' name\u003d\'MSSmartTagsPreventParsing\'/\> \u003cmeta content\u003d\'blogger\' name\u003d\'generator\'/\> \u003cdata:blog.feedLinks\>\u003c/data:blog.feedLinks\> \u003cb:if cond\u003d\'data:page.isPrivate\'\> \u003cmeta content\u003d\'NOINDEX,NOFOLLOW\' name\u003d\'robots\'/\> \u003c/b:if\>'}});
+_WidgetManager._RegisterWidget('_AdSenseView', new _WidgetInfo('AdSense2',  'footer',{'main': {'varName': '', 'template': '\u003cdiv class\u003d\'widget-content\'\> \u003cdata:adCode\>\u003c/data:adCode\> \u003c/div\>'}}, document.getElementById('AdSense2'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogArchiveView', new _WidgetInfo('BlogArchive1',  'sidebar',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:title\'\> \u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\> \u003c/b:if\> \u003cdiv class\u003d\'widget-content\'\> \u003cdiv id\u003d\'ArchiveList\'\> \u003cdiv expr:id\u003d\'data:widget.instanceId + \"_ArchiveList\"\'\> \u003cb:if cond\u003d\'data:style \u003d\u003d \"HIERARCHY\"\'\> \u003cb:include data\u003d\'data\' name\u003d\'interval\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:style \u003d\u003d \"FLAT\"\'\> \u003cb:include data\u003d\'data\' name\u003d\'flat\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:style \u003d\u003d \"MENU\"\'\> \u003cb:include data\u003d\'data\' name\u003d\'menu\'\>\u003c/b:include\> \u003c/b:if\> \u003c/div\> \u003c/div\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}, 'flat': {'varName': 'data', 'template': '\u003cul\> \u003cb:loop values\u003d\'data:data\' var\u003d\'i\'\> \u003cli class\u003d\'archivedate\'\> \u003ca expr:href\u003d\'data:i.url\'\>\u003cdata:i.name\>\u003c/data:i.name\>\u003c/a\> (\u003cdata:i.post-count\>\u003c/data:i.post-count\>) \u003c/li\> \u003c/b:loop\> \u003c/ul\>'}, 'menu': {'varName': 'data', 'template': '\u003cselect expr:id\u003d\'data:widget.instanceId + \"_ArchiveMenu\"\'\> \u003coption value\u003d\'\'\>\u003cdata:title\>\u003c/data:title\>\u003c/option\> \u003cb:loop values\u003d\'data:data\' var\u003d\'i\'\> \u003coption expr:value\u003d\'data:i.url\'\>\u003cdata:i.name\>\u003c/data:i.name\> (\u003cdata:i.post-count\>\u003c/data:i.post-count\>)\u003c/option\> \u003c/b:loop\> \u003c/select\>'}, 'interval': {'varName': 'intervalData', 'template': '\u003cb:loop values\u003d\'data:intervalData\' var\u003d\'i\'\> \u003cul\> \u003cli expr:class\u003d\'\"archivedate \" + data:i.expclass\'\> \u003cb:include data\u003d\'i\' name\u003d\'toggle\'\>\u003c/b:include\> \u003ca class\u003d\'post-count-link\' expr:href\u003d\'data:i.url\'\>\u003cdata:i.name\>\u003c/data:i.name\>\u003c/a\> (\u003cspan class\u003d\'post-count\'\>\u003cdata:i.post-count\>\u003c/data:i.post-count\>\u003c/span\>) \u003cb:if cond\u003d\'data:i.data\'\> \u003cb:include data\u003d\'i.data\' name\u003d\'interval\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:i.posts\'\> \u003cb:include data\u003d\'i.posts\' name\u003d\'posts\'\>\u003c/b:include\> \u003c/b:if\> \u003c/li\> \u003c/ul\> \u003c/b:loop\>'}, 'toggle': {'varName': 'interval', 'template': '\u003cb:if cond\u003d\'data:interval.toggleId\'\> \u003cb:if cond\u003d\'data:interval.expclass \u003d\u003d \"expanded\"\'\> \u003ca class\u003d\'toggle\' expr:href\u003d\'data:widget.actionUrl + \"&amp;action\u003dtoggle\" +       \"&amp;dir\u003dclose&amp;toggle\u003d\" + data:interval.toggleId +       \"&amp;toggleopen\u003d\" + data:toggleopen\'\> \u003cspan class\u003d\'zippy toggle-open\'\>&#9660; \u003c/span\> \u003c/a\> \u003cb:else\>\u003c/b:else\> \u003ca class\u003d\'toggle\' expr:href\u003d\'data:widget.actionUrl + \"&amp;action\u003dtoggle\" +         \"&amp;dir\u003dopen&amp;toggle\u003d\" + data:interval.toggleId +         \"&amp;toggleopen\u003d\" + data:toggleopen\'\> \u003cspan class\u003d\'zippy\'\>&#9658; \u003c/span\> \u003c/a\> \u003c/b:if\> \u003c/b:if\>'}, 'posts': {'varName': 'posts', 'template': '\u003cul class\u003d\'posts\'\> \u003cb:loop values\u003d\'data:posts\' var\u003d\'i\'\> \u003cli\>\u003ca expr:href\u003d\'data:i.url\'\>\u003cdata:i.title\>\u003c/data:i.title\>\u003c/a\>\u003c/li\> \u003c/b:loop\> \u003c/ul\>'}}, document.getElementById('BlogArchive1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_AdSenseView', new _WidgetInfo('AdSense1',  'sidebar',{'main': {'varName': '', 'template': '\u003cdiv class\u003d\'widget-content\'\> \u003cdata:adCode\>\u003c/data:adCode\> \u003c/div\>'}}, document.getElementById('AdSense1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_ProfileView', new _WidgetInfo('Profile1',  'sidebar',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:title !\u003d \"\"\'\> \u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\> \u003c/b:if\> \u003cdiv class\u003d\'widget-content\'\> \u003cb:if cond\u003d\'data:team \u003d\u003d \"true\"\'\>  \u003cul\> \u003cb:loop values\u003d\'data:authors\' var\u003d\'i\'\> \u003cli\>\u003ca expr:href\u003d\'data:i.userUrl\'\>\u003cdata:i.display-name\>\u003c/data:i.display-name\>\u003c/a\>\u003c/li\> \u003c/b:loop\> \u003c/ul\> \u003cb:else\>\u003c/b:else\>  \u003cb:if cond\u003d\'data:photo.url !\u003d \"\"\'\> \u003ca expr:href\u003d\'data:userUrl\'\>\u003cimg class\u003d\'profile-img\' expr:alt\u003d\'data:photo.alt\' expr:height\u003d\'data:photo.height\' expr:src\u003d\'data:photo.url\' expr:width\u003d\'data:photo.width\'/\>\u003c/a\> \u003c/b:if\> \u003cdl class\u003d\'profile-datablock\'\> \u003cdt class\u003d\'profile-data\'\>\u003cdata:displayname\>\u003c/data:displayname\>\u003c/dt\> \u003cb:if cond\u003d\'data:showlocation \u003d\u003d \"true\"\'\> \u003cdd class\u003d\'profile-data\'\>\u003cdata:location\>\u003c/data:location\>\u003c/dd\> \u003c/b:if\> \u003cb:if cond\u003d\'data:aboutme !\u003d \"\"\'\>\u003cdd class\u003d\'profile-textblock\'\>\u003cdata:aboutme\>\u003c/data:aboutme\>\u003c/dd\>\u003c/b:if\> \u003c/dl\> \u003ca class\u003d\'profile-link\' expr:href\u003d\'data:userUrl\'\>\u003cdata:viewProfileMsg\>\u003c/data:viewProfileMsg\>\u003c/a\> \u003c/b:if\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}}, document.getElementById('Profile1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1',  'header',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:useImage\'\> \u003cb:if cond\u003d\'data:imagePlacement \u003d\u003d \"REPLACE\"\'\>  \u003cdiv id\u003d\'header-inner\'\> \u003ca expr:href\u003d\'data:blog.homepageUrl\' style\u003d\'display: block\'\> \u003cimg expr:alt\u003d\'data:title\' expr:height\u003d\'data:height\' expr:id\u003d\'data:widget.instanceId + \"_headerimg\"\' expr:src\u003d\'data:sourceUrl\' expr:width\u003d\'data:width\' style\u003d\'display: block\'/\> \u003c/a\> \u003c/div\> \u003cb:else\>\u003c/b:else\>  \u003cdiv expr:style\u003d\'\"background-image: url(\\\"\" + data:sourceUrl + \"\\\"); \"                      + \"background-repeat: no-repeat; \"                      + \"width: \" + data:width + \"px; \"                      + \"height: \" + data:height + \"px;\"\' id\u003d\'header-inner\'\> \u003cdiv class\u003d\'titlewrapper\' style\u003d\'background: transparent\'\> \u003ch1 class\u003d\'title\' style\u003d\'background: transparent; border-width: 0px\'\> \u003cb:if cond\u003d\'data:blog.url \u003d\u003d data:blog.homepageUrl\'\> \u003cdata:title\>\u003c/data:title\> \u003cb:else\>\u003c/b:else\> \u003ca expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:title\>\u003c/data:title\>\u003c/a\> \u003c/b:if\> \u003c/h1\> \u003c/div\> \u003cdiv class\u003d\'descriptionwrapper\'\> \u003cp class\u003d\'description\'\>\u003cspan\>\u003cdata:description\>\u003c/data:description\>\u003c/span\>\u003c/p\> \u003c/div\> \u003c/div\> \u003c/b:if\> \u003cb:else\>\u003c/b:else\>  \u003cdiv id\u003d\'header-inner\'\> \u003cdiv class\u003d\'titlewrapper\'\> \u003ch1 class\u003d\'title\'\> \u003cb:if cond\u003d\'data:blog.url \u003d\u003d data:blog.homepageUrl\'\> \u003cdata:title\>\u003c/data:title\> \u003cb:else\>\u003c/b:else\> \u003ca expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:title\>\u003c/data:title\>\u003c/a\> \u003c/b:if\> \u003c/h1\> \u003c/div\> \u003cdiv class\u003d\'descriptionwrapper\'\> \u003cp class\u003d\'description\'\>\u003cspan\>\u003cdata:description\>\u003c/data:description\>\u003c/span\>\u003c/p\> \u003c/div\> \u003c/div\> \u003c/b:if\>'}}, document.getElementById('Header1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_NavbarView', new _WidgetInfo('Navbar1',  'navbar',{'main': {'varName': '', 'template': '&lt;iframe src\u003d&quot;http://www.blogger.com/navbar.g?targetBlogID\u003d7691677196452729636&amp;amp;blogName\u003dWPF+and+C%23%3A+Tip+a+Day&amp;amp;publishMode\u003dPUBLISH_MODE_HOSTED&amp;amp;navbarType\u003dBLUE&amp;amp;layoutType\u003dLAYOUTS&amp;amp;homepageUrl\u003dhttp%3A%2F%2Fascendedguard.com%2F&amp;amp;searchRoot\u003dhttp%3A%2F%2Fascendedguard.com%2Fsearch&quot; marginwidth\u003d&quot;0&quot; marginheight\u003d&quot;0&quot; scrolling\u003d&quot;no&quot; frameborder\u003d&quot;0&quot; height\u003d&quot;30px&quot; width\u003d&quot;100%&quot; id\u003d&quot;navbar-iframe&quot;&gt;&lt;/iframe&gt; &lt;div id\u003d&quot;space-for-ie&quot;&gt;&lt;/div&gt;'}}, document.getElementById('Navbar1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1',  'main',{'main': {'varName': 'top', 'template': '\u003cdiv class\u003d\'blog-posts hfeed\'\> \u003cb:include data\u003d\'top\' name\u003d\'status-message\'\>\u003c/b:include\> \u003cdata:adStart\>\u003c/data:adStart\> \u003cb:loop values\u003d\'data:posts\' var\u003d\'post\'\> \u003cb:if cond\u003d\'data:post.dateHeader\'\> \u003ch2 class\u003d\'date-header\'\>\u003cdata:post.dateHeader\>\u003c/data:post.dateHeader\>\u003c/h2\> \u003c/b:if\> \u003cb:include data\u003d\'post\' name\u003d\'post\'\>\u003c/b:include\> \u003cb:if cond\u003d\'data:blog.pageType \u003d\u003d \"item\"\'\> \u003cb:include data\u003d\'post\' name\u003d\'comments\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:post.includeAd\'\> \u003cdata:adEnd\>\u003c/data:adEnd\> \u003cdata:adCode\>\u003c/data:adCode\> \u003cdata:adStart\>\u003c/data:adStart\> \u003c/b:if\> \u003c/b:loop\> \u003cdata:adEnd\>\u003c/data:adEnd\> \u003c/div\>  \u003cb:include name\u003d\'nextprev\'\>\u003c/b:include\>  \u003cb:include name\u003d\'feedLinks\'\>\u003c/b:include\>'}, 'nextprev': {'varName': '', 'template': '\u003cdiv class\u003d\'blog-pager\' id\u003d\'blog-pager\'\> \u003cb:if cond\u003d\'data:newerPageUrl\'\> \u003cspan id\u003d\'blog-pager-newer-link\'\> \u003ca class\u003d\'blog-pager-newer-link\' expr:href\u003d\'data:newerPageUrl\' expr:id\u003d\'data:widget.instanceId + \"_blog-pager-newer-link\"\' expr:title\u003d\'data:newerPageTitle\'\>\u003cdata:newerPageTitle\>\u003c/data:newerPageTitle\>\u003c/a\> \u003c/span\> \u003c/b:if\> \u003cb:if cond\u003d\'data:olderPageUrl\'\> \u003cspan id\u003d\'blog-pager-older-link\'\> \u003ca class\u003d\'blog-pager-older-link\' expr:href\u003d\'data:olderPageUrl\' expr:id\u003d\'data:widget.instanceId + \"_blog-pager-older-link\"\' expr:title\u003d\'data:olderPageTitle\'\>\u003cdata:olderPageTitle\>\u003c/data:olderPageTitle\>\u003c/a\> \u003c/span\> \u003c/b:if\> \u003cb:if cond\u003d\'data:blog.homepageUrl !\u003d data:blog.url\'\> \u003ca class\u003d\'home-link\' expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:homeMsg\>\u003c/data:homeMsg\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cb:if cond\u003d\'data:newerPageUrl\'\> \u003ca class\u003d\'home-link\' expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:homeMsg\>\u003c/data:homeMsg\>\u003c/a\> \u003c/b:if\> \u003c/b:if\> \u003c/div\> \u003cdiv class\u003d\'clear\'\>\u003c/div\>'}, 'post': {'varName': 'post', 'template': '\u003cdiv class\u003d\'post hentry\'\> \u003ca expr:name\u003d\'data:post.id\'\>\u003c/a\> \u003cb:if cond\u003d\'data:post.title\'\> \u003ch3 class\u003d\'post-title entry-title\'\> \u003cb:if cond\u003d\'data:post.link\'\> \u003ca expr:href\u003d\'data:post.link\'\>\u003cdata:post.title\>\u003c/data:post.title\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cb:if cond\u003d\'data:post.url\'\> \u003ca expr:href\u003d\'data:post.url\'\>\u003cdata:post.title\>\u003c/data:post.title\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cdata:post.title\>\u003c/data:post.title\> \u003c/b:if\> \u003c/b:if\> \u003c/h3\> \u003c/b:if\> \u003cdiv class\u003d\'post-header-line-1\'\>\u003c/div\> \u003cdiv class\u003d\'post-body entry-content\'\> \u003cp\>\u003cdata:post.body\>\u003c/data:post.body\>\u003c/p\> \u003cdiv style\u003d\'clear: both;\'\>\u003c/div\>  \u003c/div\> \u003cdiv class\u003d\'post-footer\'\> \u003cp class\u003d\'post-footer-line post-footer-line-1\'\>\u003cspan class\u003d\'post-author vcard\'\> \u003cb:if cond\u003d\'data:top.showAuthor\'\> \u003cdata:top.authorLabel\>\u003c/data:top.authorLabel\> \u003cspan class\u003d\'fn\'\>\u003cdata:post.author\>\u003c/data:post.author\>\u003c/span\> \u003c/b:if\> \u003c/span\> \u003cspan class\u003d\'post-timestamp\'\> \u003cb:if cond\u003d\'data:top.showTimestamp\'\> \u003cdata:top.timestampLabel\>\u003c/data:top.timestampLabel\> \u003cb:if cond\u003d\'data:post.url\'\> \u003ca class\u003d\'timestamp-link\' expr:href\u003d\'data:post.url\' rel\u003d\'bookmark\' title\u003d\'permanent link\'\>\u003cabbr class\u003d\'published\' expr:title\u003d\'data:post.timestampISO8601\'\>\u003cdata:post.timestamp\>\u003c/data:post.timestamp\>\u003c/abbr\>\u003c/a\> \u003c/b:if\> \u003c/b:if\> \u003c/span\> \u003cspan class\u003d\'post-comment-link\'\> \u003cb:if cond\u003d\'data:blog.pageType !\u003d \"item\"\'\> \u003cb:if cond\u003d\'data:post.allowComments\'\> \u003ca class\u003d\'comment-link\' expr:href\u003d\'data:post.addCommentUrl\' expr:onclick\u003d\'data:post.addCommentOnclick\'\>\u003cb:if cond\u003d\'data:post.numComments \u003d\u003d 1\'\>1 \u003cdata:top.commentLabel\>\u003c/data:top.commentLabel\>\u003cb:else\>\u003c/b:else\>\u003cdata:post.numComments\>\u003c/data:post.numComments\> \u003cdata:top.commentLabelPlural\>\u003c/data:top.commentLabelPlural\>\u003c/b:if\>\u003c/a\> \u003c/b:if\> \u003c/b:if\> \u003c/span\> \u003cspan class\u003d\'post-icons\'\>  \u003cb:if cond\u003d\'data:post.emailPostUrl\'\> \u003cspan class\u003d\'item-action\'\> \u003ca expr:href\u003d\'data:post.emailPostUrl\' expr:title\u003d\'data:top.emailPostMsg\'\> \u003cspan class\u003d\'email-post-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\> \u003c/b:if\>  \u003cb:include data\u003d\'post\' name\u003d\'postQuickEdit\'\>\u003c/b:include\> \u003c/span\> \u003c/p\> \u003cp class\u003d\'post-footer-line post-footer-line-2\'\>\u003cspan class\u003d\'post-labels\'\> \u003cb:if cond\u003d\'data:post.labels\'\> \u003cdata:postLabelsLabel\>\u003c/data:postLabelsLabel\> \u003cb:loop values\u003d\'data:post.labels\' var\u003d\'label\'\> \u003ca expr:href\u003d\'data:label.url\' rel\u003d\'tag\'\>\u003cdata:label.name\>\u003c/data:label.name\>\u003c/a\>\u003cb:if cond\u003d\'data:label.isLast !\u003d \"true\"\'\>,\u003c/b:if\> \u003c/b:loop\> \u003c/b:if\> \u003c/span\> \u003c/p\> \u003cp class\u003d\'post-footer-line post-footer-line-3\'\>\u003c/p\> \u003c/div\> \u003c/div\>'}, 'postQuickEdit': {'varName': 'post', 'template': '\u003cb:if cond\u003d\'data:post.editUrl\'\> \u003cspan expr:class\u003d\'\"item-control \" + data:post.adminClass\'\> \u003ca expr:href\u003d\'data:post.editUrl\' expr:title\u003d\'data:top.editPostMsg\'\> \u003cspan class\u003d\'quick-edit-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\> \u003c/b:if\>'}, 'commentDeleteIcon': {'varName': 'comment', 'template': '\u003cspan expr:class\u003d\'\"item-control \" + data:comment.adminClass\'\> \u003ca expr:href\u003d\'data:comment.deleteUrl\' expr:title\u003d\'data:top.deleteCommentMsg\'\> \u003cspan class\u003d\'delete-comment-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\>'}, 'backlinkDeleteIcon': {'varName': 'backlink', 'template': '\u003cspan expr:class\u003d\'\"item-control \" + data:backlink.adminClass\'\> \u003ca expr:href\u003d\'data:backlink.deleteUrl\' expr:title\u003d\'data:top.deleteBacklinkMsg\'\> \u003cspan class\u003d\'delete-comment-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\>'}, 'comments': {'varName': 'post', 'template': '\u003cdiv class\u003d\'comments\' id\u003d\'comments\'\> \u003ca name\u003d\'comments\'\>\u003c/a\> \u003cb:if cond\u003d\'data:post.allowComments\'\> \u003ch4\> \u003cb:if cond\u003d\'data:post.numComments \u003d\u003d 1\'\> 1 \u003cdata:commentLabel\>\u003c/data:commentLabel\>: \u003cb:else\>\u003c/b:else\> \u003cdata:post.numComments\>\u003c/data:post.numComments\> \u003cdata:commentLabelPlural\>\u003c/data:commentLabelPlural\>: \u003c/b:if\> \u003c/h4\> \u003cdl id\u003d\'comments-block\'\> \u003cb:loop values\u003d\'data:post.comments\' var\u003d\'comment\'\> \u003cdt class\u003d\'comment-author\' expr:id\u003d\'data:comment.anchorName\'\> \u003ca expr:name\u003d\'data:comment.anchorName\'\>\u003c/a\> \u003cb:if cond\u003d\'data:comment.authorUrl\'\> \u003ca expr:href\u003d\'data:comment.authorUrl\' rel\u003d\'nofollow\'\>\u003cdata:comment.author\>\u003c/data:comment.author\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cdata:comment.author\>\u003c/data:comment.author\> \u003c/b:if\> \u003cdata:commentPostedByMsg\>\u003c/data:commentPostedByMsg\> \u003c/dt\> \u003cdd class\u003d\'comment-body\'\> \u003cb:if cond\u003d\'data:comment.isDeleted\'\> \u003cspan class\u003d\'deleted-comment\'\>\u003cdata:comment.body\>\u003c/data:comment.body\>\u003c/span\> \u003cb:else\>\u003c/b:else\> \u003cp\>\u003cdata:comment.body\>\u003c/data:comment.body\>\u003c/p\> \u003c/b:if\> \u003c/dd\> \u003cdd class\u003d\'comment-footer\'\> \u003cspan class\u003d\'comment-timestamp\'\> \u003ca expr:href\u003d\'data:comment.url\' title\u003d\'comment permalink\'\> \u003cdata:comment.timestamp\>\u003c/data:comment.timestamp\> \u003c/a\> \u003cb:include data\u003d\'comment\' name\u003d\'commentDeleteIcon\'\>\u003c/b:include\> \u003c/span\> \u003c/dd\> \u003c/b:loop\> \u003c/dl\> \u003cp class\u003d\'comment-footer\'\> \u003ca expr:href\u003d\'data:post.addCommentUrl\' expr:onclick\u003d\'data:post.addCommentOnclick\'\>\u003cdata:postCommentMsg\>\u003c/data:postCommentMsg\>\u003c/a\> \u003c/p\> \u003c/b:if\> \u003cdiv id\u003d\'backlinks-container\'\> \u003cdiv expr:id\u003d\'data:widget.instanceId + \"_backlinks-container\"\'\> \u003cb:if cond\u003d\'data:post.showBacklinks\'\> \u003cb:include data\u003d\'post\' name\u003d\'backlinks\'\>\u003c/b:include\> \u003c/b:if\> \u003c/div\> \u003c/div\> \u003c/div\>'}, 'backlinks': {'varName': 'post', 'template': '\u003ca name\u003d\'links\'\>\u003c/a\>\u003ch4\>\u003cdata:post.backlinksLabel\>\u003c/data:post.backlinksLabel\>\u003c/h4\> \u003cb:if cond\u003d\'data:post.numBacklinks !\u003d 0\'\> \u003cdl class\u003d\'comments-block\' id\u003d\'comments-block\'\> \u003cb:loop values\u003d\'data:post.backlinks\' var\u003d\'backlink\'\> \u003cdiv class\u003d\'collapsed-backlink backlink-control\'\> \u003cdt class\u003d\'comment-title\'\> \u003cspan class\u003d\'backlink-toggle-zippy\'\>&#160;\u003c/span\> \u003ca expr:href\u003d\'data:backlink.url\' rel\u003d\'nofollow\'\>\u003cdata:backlink.title\>\u003c/data:backlink.title\>\u003c/a\> \u003cb:include data\u003d\'backlink\' name\u003d\'backlinkDeleteIcon\'\>\u003c/b:include\> \u003c/dt\> \u003cdd class\u003d\'comment-body collapseable\'\> \u003cdata:backlink.snippet\>\u003c/data:backlink.snippet\> \u003c/dd\> \u003cdd class\u003d\'comment-footer collapseable\'\> \u003cspan class\u003d\'comment-author\'\>\u003cdata:post.authorLabel\>\u003c/data:post.authorLabel\> \u003cdata:backlink.author\>\u003c/data:backlink.author\>\u003c/span\> \u003cspan class\u003d\'comment-timestamp\'\>\u003cdata:post.timestampLabel\>\u003c/data:post.timestampLabel\> \u003cdata:backlink.timestamp\>\u003c/data:backlink.timestamp\>\u003c/span\> \u003c/dd\> \u003c/div\> \u003c/b:loop\> \u003c/dl\> \u003c/b:if\> \u003cp class\u003d\'comment-footer\'\> \u003ca class\u003d\'comment-link\' expr:href\u003d\'data:post.createLinkUrl\' expr:id\u003d\'data:widget.instanceId + \"_backlinks-create-link\"\' target\u003d\'_blank\'\>\u003cdata:post.createLinkLabel\>\u003c/data:post.createLinkLabel\>\u003c/a\> \u003c/p\>'}, 'feedLinks': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:blog.pageType !\u003d \"item\"\'\>  \u003cb:if cond\u003d\'data:feedLinks\'\> \u003cdiv class\u003d\'blog-feeds\'\> \u003cb:include data\u003d\'feedLinks\' name\u003d\'feedLinksBody\'\>\u003c/b:include\> \u003c/div\> \u003c/b:if\> \u003cb:else\>\u003c/b:else\>  \u003cdiv class\u003d\'post-feeds\'\> \u003cb:loop values\u003d\'data:posts\' var\u003d\'post\'\> \u003cb:if cond\u003d\'data:post.allowComments\'\> \u003cb:if cond\u003d\'data:post.feedLinks\'\> \u003cb:include data\u003d\'post.feedLinks\' name\u003d\'feedLinksBody\'\>\u003c/b:include\> \u003c/b:if\> \u003c/b:if\> \u003c/b:loop\> \u003c/div\> \u003c/b:if\>'}, 'feedLinksBody': {'varName': 'links', 'template': '\u003cdiv class\u003d\'feed-links\'\> \u003cdata:feedLinksMsg\>\u003c/data:feedLinksMsg\> \u003cb:loop values\u003d\'data:links\' var\u003d\'f\'\> \u003ca class\u003d\'feed-link\' expr:href\u003d\'data:f.url\' expr:type\u003d\'data:f.mimeType\' target\u003d\'_blank\'\>\u003cdata:f.name\>\u003c/data:f.name\> (\u003cdata:f.feedType\>\u003c/data:f.feedType\>)\u003c/a\> \u003c/b:loop\> \u003c/div\>'}, 'status-message': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:navMessage\'\> \u003cdiv class\u003d\'status-msg-wrap\'\> \u003cdiv class\u003d\'status-msg-body\'\> \u003cdata:navMessage\>\u003c/data:navMessage\> \u003c/div\> \u003cdiv class\u003d\'status-msg-border\'\> \u003cdiv class\u003d\'status-msg-bg\'\> \u003cdiv class\u003d\'status-msg-hidden\'\>\u003cdata:navMessage\>\u003c/data:navMessage\>\u003c/div\> \u003c/div\> \u003c/div\> \u003c/div\> \u003cdiv style\u003d\'clear: both;\'\>\u003c/div\> \u003c/b:if\>'}}, document.getElementById('Blog1'), {}, 'displayModeFull'));
+</script>
+</body></html>

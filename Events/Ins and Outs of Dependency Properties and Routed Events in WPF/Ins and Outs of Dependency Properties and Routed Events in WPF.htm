@@ -1,0 +1,921 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml2/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><title>CodeGuru: The Ins and Outs of Dependency Properties and Routed Events in WPF</title>
+
+
+
+<meta name="description" content="Get an introduction to dependency properties and routed events in Windows Presentation Foundation (WPF), two extremely important topics in WPF—especially if you want to write custom elements. By Sahil Malik.">
+<meta name="Author" content="Sahil Malik">
+<meta name="keywords" content="">
+<meta name="date" content="20070316">
+<meta name="MS.LOCALE" content="en-US">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+
+<meta name="Search.TopicType" content="kbArticle">
+<meta name="Search.PublishDate" content="Fri, 16 Mar 2007 00:00:00 -0400">
+<meta name="Search.ReviseDate" content="Fri, 16 Mar 2007 00:00:00 -0400">
+<meta name="Search.UserRating" content="100">
+
+<link rel="stylesheet" media="all" type="text/css" href="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/flyout.css"><!--[if lte IE 6]>
+<link rel="stylesheet" media="all" type="text/css" href="/css/flyout_ie.css" />
+<![endif]-->
+
+
+
+<link rel="stylesheet" href="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/newstyle.css" type="text/css">
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function show(object) {
+if (document.getElementById) {
+document.getElementById(object).style.visibility = 'visible';
+}
+else if (document.layers && document.layers[object]) {
+document.layers[object].visibility = 'visible';
+}
+else if (document.all) {
+document.all[object].style.visibility = 'visible';
+}
+}
+
+function hide(object) {
+if (document.getElementById) {
+document.getElementById(object).style.visibility = 'hidden';
+}
+else if (document.layers && document.layers[object]) {
+document.layers[object].visibility = 'hidden';
+}
+else if (document.all) {
+document.all[object].style.visibility = 'hidden';
+}
+}
+
+//-->
+</script><link rel="stylesheet" href="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/epfs.css" type="text/css"><link rel="stylesheet" href="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/security.css" type="text/css"><link rel="stylesheet" href="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/security.css" type="text/css"><link rel="stylesheet" href="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/security.css" type="text/css"><link rel="stylesheet" href="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/security.css" type="text/css"><link rel="stylesheet" href="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/security.css" type="text/css"><link rel="stylesheet" type="text/css" href="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/footer-new-v2.css"></head><body leftmargin="0" topmargin="4" bgcolor="#ffffff" marginheight="4" marginwidth="0">
+<table border="0" cellpadding="4" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td align="center"><iframe src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/search.htm" marginheight="0" marginwidth="0" frameborder="0" height="100" scrolling="no" width="750"></iframe>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/34323037663935323437323637366430_003.gif" height="1" width="1"></td>
+  </tr>
+</tbody></table>
+
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr>
+    
+    <td background="" bgcolor="#ffffff" valign="top" width="99%">
+    <img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/sp.gif" alt="" border="0" height="1" width="629">
+    <table border="0" cellpadding="4" cellspacing="0" width="100%">
+      <tbody><tr>
+	<td class="bodycopy">
+www.codeguru.com/csharp/.net/net_general/netframeworkclasses/article.php/c13449/<br><br>
+<a href="http://www.codeguru.com/csharp/.net/net_general/netframeworkclasses/article.php/c13449/">Back to Article</a>
+<br><br>
+
+
+
+<span class="bodycopy"><b><a href="http://www.codeguru.com/">Home</a></b> &gt;&gt; <b><a href="http://www.codeguru.com/csharp/">.NET / C#</a></b> &gt;&gt; <b><a href="http://www.codeguru.com/csharp/.net/">.NET</a></b> &gt;&gt; <b><a href="http://www.codeguru.com/csharp/.net/net_general/">General</a></b> &gt;&gt; <b><a href="http://www.codeguru.com/csharp/.net/net_general/netframeworkclasses/">.NET Framework Classes</a></b><br><br>
+
+
+<!--content_start-->
+<table bgcolor="#000000" border="0" cellpadding="1" cellspacing="0">
+        <tbody><tr>
+          <td>
+            <table bgcolor="#cccccc" border="0" cellpadding="1" cellspacing="0">
+              <tbody><tr> 
+                <td><font face="Verdana, Arial, Helvetica, sans-serif" size="-2"><a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/1024985973/ciu/OasDefault/Elementools_GEMS_1ac/CIU_FreeTrialWeb.html/34323037663935323437323637366430">
+<b>Free Trial: Web-based Bug Tracking Helps Ensure Issues Get Resolved, Not Lost.</b> Need a feature-rich, easy-to-use, web-based tool for documenting, tracking, &amp; reporting software? Download it now! 
+</a>
+
+</font></td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+      </tbody></table><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/34323037663935323437323637366430_009.gif" height="1" width="1"><br>
+<font class="sectionhead">The Ins and Outs of Dependency Properties and Routed Events in WPF</font><br>
+<b>Rating:</b> <font color="#990000"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/star.gif" height="12" width="13"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/star.gif" height="12" width="13"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/star.gif" height="12" width="13"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/star.gif" height="12" width="13"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/star.gif" height="12" width="13"></font><br>
+<br>
+
+<table border="0" cellpadding="5" cellspacing="0">
+  <tbody><tr>
+    <td align="right">
+    </td>
+    <td class="bodycopy">
+    <b>Sahil Malik</b> (<a href="http://www.codeguru.com/member.php/294633/">view profile</a>)<br>
+    March 16, 2007    </td>
+  </tr>
+</tbody></table>	 
+
+
+
+<p>
+<span class="bodycopy">
+<b>Go to page:</b> 
+1&nbsp;&nbsp;<a href="http://www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print.php/c13449__2/">2</a>&nbsp;&nbsp;<a href="http://www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print.php/c13449__2/">Next</a> <p>
+
+</p><p></p><p>XAML, one of the most important pieces in the Windows
+Presentation Foundation (WPF) puzzle, is merely another way to describe
+your intent to the computer. In fact, the XAML you write can almost
+always be written in VB.NET or C#. For instance, you could create a
+button using the following XAML code:</p>
+
+<pre>&lt;Grid Name="myGrid"&gt;
+   &lt;Button Width="200" Height="50"&gt;Sample Button&lt;/Button&gt;
+&lt;/Grid&gt;
+</pre>
+
+<br><a href="#more">(continued)</a><p></p><center><script language="JavaScript1.1" src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/B2505734.js">
+</script><!-- Template Id = 1 Template Name = Banner Creative (Flash) -->
+<!-- Copyright 2002 DoubleClick Inc., All rights reserved. --><script src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/flashwrite_1_2.js"></script>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="FLASH_AD" height="850" width="336"><param name="movie" value="http://m1.2mdn.net/1365243/Ph207_DTA_CDE_336x850.swf?clickTag=http%3A//ad.doubleclick.net/click%253Bh%3Dv8/35fb/3/0/%252a/g%253B142513310%253B0-0%253B0%253B20724823%253B10408-336/850%253B22885767/22903650/1%253B%253B%257Esscs%253D%253fhttp%3A//ibm.com/software/info/takebackcontrol/r/Ph2DTA%3Forgid%3D2211%26p_creative%3DGlobe%26re%3Dearthweb%26s_tact%3D107A788W"><param name="quality" value="high"><param name="bgcolor" value="#"><param name="wmode" value="opaque"><param name="AllowScriptAccess" value="always"><embed src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/Ph207_DTA_CDE_336x850.swf" quality="high" wmode="opaque" swliveconnect="TRUE" bgcolor="#" type="application/x-shockwave-flash" allowscriptaccess="always" height="850" width="336"></object><noscript><A
+TARGET="_blank"
+HREF="http://ad.doubleclick.net/click%3Bh=v8/35fb/3/0/%2a/g%3B142513310%3B0-0%3B0%3B20724823%3B10408-336/850%3B22885767/22903650/1%3B%3B%7Esscs%3D%3fhttp://ibm.com/software/info/takebackcontrol/r/Ph2DTA?orgid=2211&p_creative=Globe&re=earthweb&s_tact=107A788W"><IMG
+SRC="http://m1.2mdn.net/1365243/Ph207_DTA_CDE_336x850.gif" alt=""
+BORDER=0></A></noscript>
+<noscript>
+<A
+HREF="http://ad.doubleclick.net/jump/N815.ibmjupitermedia/B2505734.12;sz=336x850;ord=495459292?">
+<IMG
+SRC="http://ad.doubleclick.net/ad/N815.ibmjupitermedia/B2505734.12;sz=336x850;ord=495459292?"
+BORDER=0 WIDTH=336 HEIGHT=850 ALT="Click Here"></A>
+</noscript><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/34323037663935323437323637366430_007.gif" height="1" width="1">
+
+<br><br><table style="border: 1px solid rgb(6, 45, 76); background-color: rgb(255, 255, 255);" border="0" cellpadding="0" cellspacing="0" width="358">
+	<tbody><tr>
+		<td><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/20690.gif" border="0"><br>
+		<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/20691.gif" border="0"></td>
+	</tr><tr>
+		<td style="padding: 10px; text-align: left; background-color: rgb(248, 247, 242);"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 11px; line-height: 14px;">
+
+ <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/243028144/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/Usabilityand%20Design.gif/34323037663935323437323637366430?IBM/Link/35587" style="color: rgb(95, 47, 11); font-size: 12px; text-decoration: none;"><b>Usability and Design</b></a><br>The
+Usability and design space brings together the latest information,
+research, tools, podcasts, and conference information related to
+usability and design. Content is pulled from IBM and non-IBM sites. <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/243028144/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/UsabilityandDesign.gif/34323037663935323437323637366430?IBM/Link/35587" style="color: rgb(95, 47, 11); text-decoration: none; font-size: 14px; font-weight: bold;">»</a><br>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/20692.gif" border="0">
+<div style="line-height: 4px;">&nbsp;</div> 
+
+ <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/243028144/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/AjaxResourceCenter.gif/34323037663935323437323637366430?IBM/Link/35588" style="color: rgb(95, 47, 11); font-size: 12px; text-decoration: none;"><b>Ajax Resource Center</b></a><br>
+This space is your one-stop shop for information on the Ajax
+programming model, including articles and tutorials, discussion forums,
+blogs, wikis, events, and news. If it's happening, it's covered here. <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/243028144/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/AjaxResourceCenter.gif/34323037663935323437323637366430?IBM/Link/35588" style="color: rgb(95, 47, 11); text-decoration: none; font-size: 14px; font-weight: bold;">»</a><br> 
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/20692.gif" border="0">
+
+
+<div style="line-height: 4px;">&nbsp;</div> 
+
+ <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/243028144/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/LinuxSecurity.gif/34323037663935323437323637366430?IBM/Link/35589" style="color: rgb(95, 47, 11); font-size: 12px; text-decoration: none;"><b>Linux Security</b></a><br>
+The Linux security space gives an overview of security issues related
+to Linux and covers all aspects of securing a Linux distribution. It
+also links to Linux security-related news and articles. <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/243028144/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/LinuxSecurity.gif/34323037663935323437323637366430?IBM/Link/35589" style="color: rgb(95, 47, 11); text-decoration: none; font-size: 14px; font-weight: bold;">»</a><br>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/20692.gif" border="0">
+
+
+<div style="line-height: 4px;">&nbsp;</div> 
+
+ <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/243028144/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/RubyProgramming.gif/34323037663935323437323637366430?IBM/Link/35590" style="color: rgb(95, 47, 11); font-size: 12px; text-decoration: none;"><b>Ruby Programming</b></a><br>
+Take a closer look at Ruby, a dynamic programming language that is
+growing rapidly in popularity. Explore its intriguing features and
+learn what programmers are doing with it. <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/243028144/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/RubyProgramming.gif/34323037663935323437323637366430?IBM/Link/35590" style="color: rgb(95, 47, 11); text-decoration: none; font-size: 14px; font-weight: bold;">»</a><br>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/20692.gif" border="0">
+
+
+<div style="line-height: 4px;">&nbsp;</div> 
+
+ <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/243028144/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/WikiWebSphere.gif/34323037663935323437323637366430?IBM/Link/35591" style="color: rgb(95, 47, 11); font-size: 12px; text-decoration: none;"><b>Wiki: WebSphere, SOA, J2EE in Practice</b></a><br>
+This wiki discusses how to use J2EE and related technologies to develop
+business applications, including how to make best use of IBM J2EE
+products like WebSphere Application Server and Rational Application
+Developer, and IBM SOA products like WebSphere Process Server and
+WebSphere Integration Developer. While it occasionally delves into
+tangential topics and future trends, the primary focus is on how to
+make use of the products and technologies that we have today. <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/243028144/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/WikiWebSphere.gif/34323037663935323437323637366430?IBM/Link/35591" style="color: rgb(95, 47, 11); text-decoration: none; font-size: 14px; font-weight: bold;">»</a>
+	</span></td>
+ </tr><tr>
+		<td><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/20693.gif" border="0"><br><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/20694.gif" border="0"></td>
+	</tr>
+</tbody></table><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/34323037663935323437323637366430_004.gif" height="1" width="1"></center><a name="more"></a><p><a name="more">Alternatively, you could achieve the same effect using the following C# code:</a></p>
+
+<pre><a name="more">Button btn  = <span class="codeKeyword">new</span> Button();
+btn.Content = "Sample Button";
+btn.Width   = 200;
+btn.Height  = 50;
+
+myGrid.Children.Add(btn);
+</a></pre>
+
+<p><a name="more">Either of the above will produce an output similar to Figure 1.</a></p>
+
+<p><a name="more"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/get_image.jpg" height="216" width="339"></a></p><p>
+</p><p><a name="more"><b>Figure 1.</b> Output from XAML and C# Code for Creating a Button</a></p>
+
+<p><a name="more">As you can see, the C# code seems to equate XAML's
+element names to classes, and its attributes to properties of those
+classes. Anywhere it encounters nested elements, some mechanism in C#
+adds them either as children or as content of the outer element. This
+seems like a very linear transformation of the code from XAML to C#.</a></p>
+
+<p><a name="more">Now, to complicate this a little bit. Suppose you have some nesting of elements. Consider the following XAML:</a></p>
+
+<pre><a name="more">&lt;Grid Name="myGrid" Margin="20"&gt;
+   &lt;TextBlock&gt;
+      Sample Text outside the ItemsControl block
+   &lt;/TextBlock&gt;
+   &lt;ItemsControl Foreground="Red" VerticalAlignment="Center"&gt;
+      &lt;TextBlock&gt;Sample Text without foreground&lt;/TextBlock&gt;
+      &lt;TextBlock Foreground="Blue"&gt;
+         Sample Text with foreground
+      &lt;/TextBlock&gt;
+   &lt;/ItemsControl&gt;
+&lt;/Grid&gt;
+</a></pre>
+
+<p><a name="more">As you can see, there are three TextBlocks. Two of
+them have no ForeGround specified, but one of those two is nested
+inside an ItemsControl element that does have a ForeGround specified.
+If you run this application, it produces the output in Figure 2.</a></p>
+
+<p><a name="more"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/get_image_002.jpg" height="224" width="332"></a></p>
+<p><a name="more"><b>Figure 2.</b> Application with Nested<b> </b>Elements</a></p>
+
+<p><a name="more">The first TextBlock is black because it has no
+ForeGround set on it. But by that argument, the second TextBlock should
+also be black. Curiously enough, it is getting its ForeGround from the
+element in which it is nested. There is something behind the scenes
+that is setting the second TextBlock's ForeGround to red. That same
+mechanism is probably also trying to set the ForeGround of the third
+TextBlock to red, but the third TextBlock has chosen to ignore that and
+instead specify its own ForeGround to blue. Clearly, this isn't a
+simple linear transformation to C#.</a></p>
+
+<p><a name="more">However, before you accept that conclusion, try
+writing this code in C#. If you had to write a simple linear
+transformation of the XAML to C#, the code would look a bit like this:</a></p>
+
+<pre><a name="more">TextBlock firstTextBlock = <span class="codeKeyword">new</span> TextBlock();
+firstTextBlock.Text      = "Sample Text outside the ItemsControl
+                            block";
+
+ItemsControl itc      = <span class="codeKeyword">new</span> ItemsControl();
+itc.Foreground        = Brushes.Red;
+itc.VerticalAlignment = VerticalAlignment.Center;
+
+TextBlock secondTextBlock = <span class="codeKeyword">new</span> TextBlock();
+secondTextBlock.Text      = "Sample text without foreground";
+itc.Items.Add(secondTextBlock);
+
+TextBlock thirdTextBlock  = <span class="codeKeyword">new</span> TextBlock();
+thirdTextBlock.Foreground = Brushes.Blue;
+thirdTextBlock.Text       = "Sample Text with foreground";
+itc.Items.Add(thirdTextBlock);
+
+myGrid.Children.Add(firstTextBlock);
+myGrid.Children.Add(itc);
+</a></pre>
+
+<p><a name="more">Now, when you run the application, you'd probably be shocked to see that the output looks like Figure 3.</a></p>
+
+<p><a name="more"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/get_image_003.jpg" height="224" width="332"></a></p>
+<p><a name="more"><b>Figure 3.</b> Linear Transformation of the XAML to C#</a></p>
+
+<p><a name="more">So the linear transformation of XAML to C# seems to
+produce the same results? Not one line of code above seems to set
+secondTextBlock.ForeGround to its parent's ForeGround. Yet the
+ForeGround of the second TextBlock is red, not the default black. Who
+is setting the ForeGround of the second TextBlock? The answer is the
+WPF runtime is setting ForeGround, because ForeGround is a <i>dependency property</i>.</a></p>
+
+<p><a name="more">In fact, the above example is just one of the
+ramifications of not fully understanding dependency properties (in this
+case, an attached property).</a></p>
+
+<h3><a name="more">Dependency Properties Explained</a></h3>
+
+<p><a name="more">A dependency property is a property of an element
+that depends on a number of things outside the element. In WPF, if you
+want properties on your custom elements (visual or otherwise) to
+support things such as value expressions, property invalidation,
+per-type default values, inheritance, data binding, animation, and
+styling, you need to use dependency properties. Thus, dependency
+properties are one of the most important concepts within WPF.</a></p>
+
+<p><a name="more">So, how can you author your own dependency property?
+When writing a Windows or ASP.NET control, you would typically write a
+property to represent ForeGround, in a manner similar to the following:</a></p>
+
+<pre><span class="codeKeyword"><a name="more">public</a></span><a name="more"> <span class="codeKeyword">class</span> MyCustomControl : {..some <span class="codeKeyword">base</span> <span class="codeKeyword">class</span>..}
+{
+   <span class="codeKeyword">private</span> Brush _foreGround;
+
+   <span class="codeKeyword">public</span> Brush ForeGround
+   {
+      get { <span class="codeKeyword">return</span> _foreGround; }
+      set { _foreGround = value; }
+   }
+}
+</a></pre>
+
+<p><a name="more">Writing a dependency property for a WPF element is a
+bit different. If you had to author a dependency property to represent
+foreground color on a custom element, it would look like this:</a></p>
+
+<pre><span class="codeKeyword"><a name="more">public</a></span><a name="more"> <span class="codeKeyword">class</span> MyCustomElement : Control
+{
+   <span class="codeKeyword">public</span> MyCustomElement() : <span class="codeKeyword">base</span>() { }
+   <span class="codeKeyword">public</span> Brush ForeGround
+   {
+      get { <span class="codeKeyword">return</span> (Brush)<span class="codeKeyword">this</span>.GetValue(ForeGroundProperty); }
+      set { <span class="codeKeyword">this</span>.SetValue(ForeGroundProperty, value); }
+   }
+   <span class="codeKeyword">public</span> <span class="codeKeyword">static</span> <span class="codeKeyword">readonly</span> DependencyProperty ForeGroundProperty =
+      DependencyProperty.Register(
+         "ForeGround", <span class="codeKeyword">typeof</span>(Brush), <span class="codeKeyword">typeof</span>(MyCustomElement));
+}
+</a></pre>
+
+<p><a name="more">As you can see, there are two main steps involved in creating a dependency property:</a></p>
+
+<ol>
+<li><a name="more">Create a property called ForeGround, just as you would in a Windows or ASP.NET control.</a></li>
+<li><a name="more">Call two curious methods, SetValue and GetValue, in
+which you pass in a public static readonly variable called
+ForeGroundProperty. This public variable is of type DependencyProperty,
+and the base class Control inherits from DependencyObject, which
+includes the methods SetValue and GetValue.</a></li>
+</ol>
+<p>
+
+<a name="more"><b>Go to page:</b> 
+1&nbsp;&nbsp;</a><a href="http://www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print.php/c13449__2/">2</a>&nbsp;&nbsp;<a href="http://www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print.php/c13449__2/">Next</a> </p><p>
+
+
+
+</p></span>
+<!--content_stop-->
+<!-- print box -->
+
+</p><table border="0" cellpadding="0" cellspacing="7">
+<tbody><tr><td>
+    <div id="tools_inews">
+
+		<b>Tools:</b>
+		<a href="http://www.codeguru.com/csharp/.net/net_general/netframeworkclasses/email.php/c13449"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/badge_email.gif" alt="" align="absmiddle" border="0" height="17" hspace="2" vspace="2" width="71"></a>
+		<a href="http://www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print.php/c13449"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/badge_print.gif" alt="" align="absmiddle" border="0" height="17" hspace="2" vspace="2" width="71"></a>
+
+		<a href="http://digg.com/submit?phase=2&amp;url=www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print.php/c13449&amp;title=&amp;bodytext=&amp;topic=" onclick="window.open('http://digg.com/submit?phase=2&url=www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print.php/c13449&title=&bodytext=&topic=','digg','toolbar=no,width=900,height=600,scrollbars=yes'); return false;"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/badge_digg.gif" alt="" align="absmiddle" border="0" height="17" hspace="2" vspace="2" width="91"></a>
+
+		<a href="http://del.icio.us/post" onclick="window.open('http://del.icio.us/post?v=4&noui&jump=close&url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title), 'delicious','toolbar=no,width=700,height=400'); return false;"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/badge_delicious.gif" alt="" align="absmiddle" border="0" height="17" hspace="2" vspace="2" width="91"></a>    </div>
+</td></tr>
+
+<tr><td>
+    <div id="tools_inews">
+<!-- search box -->
+<script type="text/javascript">
+function addFireFox() {
+	if ((typeof window.sidebar == "object") && (typeof window.sidebar.addSearchEngine == "function")) {
+		window.sidebar.addSearchEngine('http://www.codeguru.com/search/ffsearch.src', 'http://www.codeguru.com/search/ffsearch.png', 'CodeGuru', 'CodeGuru');
+	}
+	else {
+		alert(' x ');
+	}
+}
+
+function addIE() {
+	window.external.AddSearchProvider('/search/iesearch.xml');
+}
+</script>
+		<b>Add www.codeguru.com</b> to your favorites<br>
+
+		<a href="http://add.my.yahoo.com/rss?url=http://www.codeguru.com/icom_includes/feeds/codeguru/rss-all.xml"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/badge_myyahoo.gif" alt="" border="0" height="17" hspace="2" vspace="2" width="91"></a>
+
+		<a href="javascript:window.external.AddFavorite('http://www.codeguru.com', 'www.codeguru.com')"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/badge_windowsfav.gif" alt="" border="0" height="17" hspace="2" vspace="2" width="118"></a>
+		<div class="dotrule"></div>
+		<b>Add www.codeguru.com</b> to your browser search box<br>
+		<a href="javascript:addIE();"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/ie_icon.gif" alt="" align="absmiddle" border="0" hspace="2" vspace="2">IE 7</a> | <a href="javascript:addFireFox();"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/ff_icon.gif" alt="" align="absmiddle" border="0" hspace="2" vspace="2">Firefox 2.0</a> | <a href="javascript:addFireFox();"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/ff_icon.gif" alt="" align="absmiddle" border="0" hspace="2" vspace="2">Firefox 1.5.x</a> 
+<!-- search box -->
+<div class="dotrule"></div>
+		<b>Receive news</b> via our XML/RSS <a href="http://www.codeguru.com/icom_includes/feeds/codeguru/rss-all.xml">feed</a> <a href="http://www.codeguru.com/icom_includes/feeds/codeguru/rss-all.xml"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/xml.gif" alt="" align="absmiddle" border="0" height="14" hspace="0" width="36"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/rss.png" alt="" align="absmiddle" border="0" height="14" hspace="0" width="36"></a>    </div>
+</td></tr>
+</tbody></table>
+<p>
+<!-- end print box -->
+
+
+</p><p><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/jw_devsol.gif"></p>
+<p>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/arrow_003.gif" align="bottom"> 
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/2049575204/fl1/OasDefault/Devx_InterSystems_OctNov07_1h/devxintersysdevclicklink.html/34323037663935323437323637366430" class="ss">Cache', the world's fastest object database, does away with mapping. Free download.</a>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/34323037663935323437323637366430_010.gif" height="1" width="1"><br>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/arrow_004.gif" align="bottom"> 
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/2060337228/fl2/OasDefault/Sun_SDN_GEMS_2j/FeaturedLink_DownloadSunJava.html/34323037663935323437323637366430" class="ss"><b>Download: Sun Java Studio Creator.</b> Build apps visually with minimal code creation, automatic page navigation &amp; more.
+</a>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/34323037663935323437323637366430_008.gif" height="1" width="1"><br>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/arrow_005.gif" align="bottom"> 
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/1630744023/fl3/OasDefault/HP_SBP_eBook_GEMS_1e/FeaturedLink_eBookStorageBasics.html/34323037663935323437323637366430" class="ss">eBook: Storage Basics--A Guide to the World of Storage Technology (PDF download). Sponsored by HP. 
+</a>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/34323037663935323437323637366430_006.gif" height="1" width="1"><br>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/arrow.gif" align="bottom"> 
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/781034601/fl4/OasDefault/Intel_GoParallel_GEMS_4f/FeaturedLink_Isittime.html/34323037663935323437323637366430" class="ss">Is it time to make your move to the multi-threaded and parallel processing world? Find out! 
+</a>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/34323037663935323437323637366430.gif" height="1" width="1"><br>
+<img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/arrow_002.gif" align="bottom"> 
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/csharp/.net/net_general/netframeworkclasses/print/c13449i/1551834841/fl5/OasDefault/Elementools_GEMS_1d/FeaturedLink_WhitepaperElementool.html/34323037663935323437323637366430" class="ss"><b>Whitepaper: Elementool Bug Tracking--Keep Software Fixes On Course.
+</b></a>
+<b><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/34323037663935323437323637366430_005.gif" height="1" width="1"></b></p>
+
+
+<b>        </b></span></td>
+      </tr>
+    </tbody></table>
+    </td>
+  </tr>
+</tbody></table>
+
+<table bgcolor="#ffffff" border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td align="center"><iframe src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/B2528503.htm" marginwidth="0" marginheight="0" hspace="0" vspace="0" bordercolor="#000000" frameborder="0" height="90" scrolling="no" width="728">
+&lt;script language="JavaScript" type="text/javascript"
+src="http://ad.doubleclick.net/adj/N3271.internet.com/B2528503.3;dcadv=1386947;sz=728x90;abr=!ie;ord=1703898237?"&gt;&lt;/script&gt;
+&lt;noscript&gt;
+&lt;a
+href="http://ad.doubleclick.net/jump/N3271.internet.com/B2528503.3;dcadv=1386947;sz=728x90;abr=!ie4;abr=!ie5;ord=1703898237?"&gt;
+&lt;img
+src="http://ad.doubleclick.net/ad/N3271.internet.com/B2528503.3;dcadv=1386947;sz=728x90;abr=!ie4;abr=!ie5;ord=1703898237?"
+width="728" height="90" border="0" alt="" /&gt;&lt;/a&gt;
+&lt;/noscript&gt;
+</iframe><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/34323037663935323437323637366430_002.gif" height="1" width="1"></td>
+  </tr>
+  <tr>
+    <td class="bodycopy" align="center">
+      <center>
+
+
+
+
+<script src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/decorators.js" type="text/javascript"></script>
+<script src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/prototype.js" type="text/javascript"></script>
+
+<script src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/pngadapt.js" type="text/javascript"></script>
+
+
+		<!-- start foot links -->
+<div class="setimageload"></div>
+<div style="margin: 0pt auto; padding-top: 10px; padding-left: 5px; padding-right: 5px; width: 730px;">				
+	
+	<div style="margin-bottom: 15px;">			
+					
+		<!-- start icom links section -->			  
+								
+		<div id="div1" class="smsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">Internet.com Sitemap</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+			
+			<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+
+				<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">	
+					<table cellpadding="1" cellspacing="1" width="680">
+						<tbody><tr>
+							<td class="smheader" align="right">IT Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://alllinuxdevices.com/">All Linux Devices</a> | 
+								<a class="sitemaplink" href="http://www.antionline.com/index.php/">AntiOnline</a> |
+								<a class="sitemaplink" href="http://apachetoday.com/">Apache Today</a> |
+								<a class="sitemaplink" href="http://www.aspnews.com/">ASPNews</a> | 
+								<a class="sitemaplink" href="http://www.cpu-planet.com/">CPU Planet</a> |
+ 								<a class="sitemaplink" href="http://www.databasejournal.com/">DatabaseJournal</a> |
+								<a class="sitemaplink" href="http://www.dbasupport.com/">DBASupport.com</a> |
+ 								<a class="sitemaplink" href="http://www.enterpriseitplanet.com/">Enterprise IT Planet</a> |
+								<a class="sitemaplink" href="http://www.hardwarecentral.com/">HardwareCentral</a> |       
+								<a class="sitemaplink" href="http://isp.webopedia.com/">ISP Glossary</a> |
+								<a class="sitemaplink" href="http://www.internetnews.com/xSP/">ISP News</a> |
+								<a class="sitemaplink" href="http://www.isp-planet.com/">ISP Planet</a> |
+								<a class="sitemaplink" href="http://www.justlinux.com/">Just Linux</a> |
+								<a class="sitemaplink" href="http://www.linuxplanet.com/">Linux Planet</a> |
+								<a class="sitemaplink" href="http://www.serverwatch.com/stypes/compare/">ServerCompare</a> |
+								<a class="sitemaplink" href="http://serverwatch.internet.com/">ServerWatch</a> |
+								<a class="sitemaplink" href="http://solarisguide.com/">Solaris Guide</a> |
+								<a class="sitemaplink" href="http://www.sqlcourse.com/">SQLCourse.com</a> |
+								<a class="sitemaplink" href="http://sqlcourse2.com/">SQLCourse2.com</a> | 
+								<a class="sitemaplink" href="http://www.sysopt.com/">SysOpt</a> |
+								<a class="sitemaplink" href="http://asp.thelist.com/">The List: ASPs</a> |
+								<a class="sitemaplink" href="http://broadband.thelist.com/">The List: Broadband</a> |
+								<a class="sitemaplink" href="http://thelist.internet.com/">The List: ISPs</a> |
+								<a class="sitemaplink" href="http://webhosts.thelist.com/">The List: WebHosts</a> |
+								<a class="sitemaplink" href="http://webdesign.thelist.com/">The List: WebDesigners</a> |
+								
+<a class="sitemaplink" href="http://www.ultrawidebandplanet.com/">Ultrawideband Planet</a> |
+   								<a class="sitemaplink" href="http://www.voipplanet.com/">VoIPPlanet</a> |       
+								<a class="sitemaplink" href="http://www.webvideouniverse.com/">WebVideoUniverse</a> |           
+								<a class="sitemaplink" href="http://www.wi-fihotspotlist.com/">Wi-FIHotSpotList</a> |
+								<a class="sitemaplink" href="http://www.wi-fiplanet.com/">Wi-FiPlanet</a> |
+								<a class="sitemaplink" href="http://www.windrivers.com/">WinDrivers</a> |
+								<a class="sitemaplink" href="http://www.internetnews.com/asp-news/">xSP News</a>        
+ 							</td>
+
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Developer Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.4guysfromrolla.com/">4GuysFromRolla.com</a> | 
+								<a class="sitemaplink" href="http://www.15seconds.com/">15 Seconds</a> | 
+								<a class="sitemaplink" href="http://www.asp101.com/">ASP101</a> | 
+								<a class="sitemaplink" href="http://www.aspwire.com/">ASP Wire</a> | 
+								<a class="sitemaplink" href="http://www.flashkit.com/">FlashKit.com</a> | 
+								<a class="sitemaplink" href="http://www.hiermenuscentral.com/">HierMenusCentral.com</a> | 
+								<a class="sitemaplink" href="http://www.javascript.com/">JavaScript.com</a> | 
+								<a class="sitemaplink" href="http://javascriptsource.com/">JavaScriptSource</a> |
+								<a class="sitemaplink" href="http://www.phpbuilder.com/">PHPBuilder.com</a> |
+								<a class="sitemaplink" href="http://www.scriptsearch.com/">ScriptSearch</a> | 
+								<a class="sitemaplink" href="http://www.streamingmediaworld.com/">StreamingMediaWorld</a> | 
+								<a class="sitemaplink" href="http://www.thecounter.com/">The Counter</a> | 
+								<a class="sitemaplink" href="http://www.theguestbook.com/">The Guestbook</a> | 
+								<a class="sitemaplink" href="http://www.vbforums.com/">VB Forums</a> | 
+								<a class="sitemaplink" href="http://www.vbwire.com/">VB Wire</a> | 
+								<a class="sitemaplink" href="http://www.webdevelopersjournal.com/">Web Developer's Journal</a> | 
+								<a class="sitemaplink" href="http://www.wdvl.com/">Web Developer's Virtual Library</a> | 
+								<a class="sitemaplink" href="http://www.webdeveloper.com/">WebDeveloper.com</a> | 
+								<a class="sitemaplink" href="http://www.webreference.com/">Webreference</a> | 
+								<a class="sitemaplink" href="http://www.xmlfiles.com/">XMLfiles.com</a>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="smheader" align="right">International Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://asia.internet.com/">asia.internet.com</a> | 
+								<a class="sitemaplink" href="http://germany.internet.com/">germany.internet.com</a> | 
+								<a class="sitemaplink" href="http://japan.internet.com/">japan.internet.com</a> | 
+								<a class="sitemaplink" href="http://korea.internet.com/">korea.internet.com</a> | 
+								<a class="sitemaplink" href="http://turkey.internet.com/">turkey.internet.com</a>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="smheader" align="right">InternetNews Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://eltoday.com/">Enterprise Linux Today</a> | 
+								<a class="sitemaplink" href="http://www.internetnews.com/">Internetnews.com</a> | 
+								<a class="sitemaplink" href="http://www.linuxtoday.com/">Linux Today</a> | 
+								<a class="sitemaplink" href="http://www.newslinx.com/">NewsLinx</a>													
+							</td>
+
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Personal Technology Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.blackberrytoday.com/">BlackBerryToday</a> | 
+								<a class="sitemaplink" href="http://www.jumbo.com/">Jumbo</a> | 
+								<a class="sitemaplink" href="http://www.megapixel.net/">Megapixel.net</a> | 
+								<a class="sitemaplink" href="http://www.pocketpcwire.com/">PocketPCWire</a> | 
+								<a class="sitemaplink" href="http://www.palmblvd.com/">Palm Boulevard</a> | 
+								<a class="sitemaplink" href="http://www.pdastreet.com/">PDAStreet</a> | 
+								<a class="sitemaplink" href="http://sharkyextreme.com/">SharkyExtreme.com</a> | 
+								<a class="sitemaplink" href="http://www.smartphonetoday.com/">Smart Phone Today</a> | 
+								<a class="sitemaplink" href="http://www.windowsmobiletoday.com/">WindowsMobileToday</a>													
+							</td>
+
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Small Business Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.ecommerce-guide.com/">ECommerce-Guide</a> | 
+								<a class="sitemaplink" href="http://www.internetnews.com/ec-news/">ECommerce News</a> | 
+								<a class="sitemaplink" href="http://www.refer-it.com/">Refer-It</a> |
+								<a class="sitemaplink" href="http://www.smallbusinesscomputing.com/">SmallBusinessComputing</a> | 
+								<a class="sitemaplink" href="http://www.webopedia.com/">Webopedia</a> | 
+								<a class="sitemaplink" href="http://www.winplanet.com/">WinPlanet</a>													
+							</td>
+
+						</tr>
+					</tbody></table>										
+				 </li>
+			 </ul>
+		 </div></div>
+		<!-- end icom links section -->			  
+
+		<!-- start eweb links section -->			  
+		<div id="div1" class="smsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">EarthWeb Sitemap</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+			
+			<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+
+				<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">			
+					<table cellpadding="1" cellspacing="1" width="680">
+						<tbody><tr>
+							<td class="smheader" align="right">IT Management Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.bitaplanet.com/">bITa Planet</a> | 
+								<a class="sitemaplink" href="http://www.cioupdate.com/">CIO Update</a> | 
+								<a class="sitemaplink" href="http://www.datamation.com/">Datamation</a> | 
+								
+								<a class="sitemaplink" href="http://www.drmwatch.com/">DRM Watch</a> | 
+								<a class="sitemaplink" href="http://www.ecrmguide.com/">eCRM Guide</a> | 
+								<a class="sitemaplink" href="http://www.esecurityplanet.com/">eSecurityPlanet.com</a> | 
+								<a class="sitemaplink" href="http://www.gridcomputingplanet.com/">GridComputingPlanet</a> | 
+								<a class="sitemaplink" href="http://www.insideid.com/">Inside ID</a> | 
+								<a class="sitemaplink" href="http://www.intranetjournal.com/">Intranet Journal</a> | 
+								<a class="sitemaplink" href="http://www.itcareerplanet.com/">IT Career Planet</a> | 
+								<a class="sitemaplink" href="http://www.itsmwatch.com/">ITSMWatch.com</a> | 
+<a class="sitemaplink" href="http://www.projectmanagerplanet.com/">Project Manager Planet</a> | <a class="sitemaplink" href="http://www.semanticweb.com/">Semantic Web</a>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Networking &amp; Communications Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.enterprisenetworkingplanet.com/">EnterpriseNetworkingPlanet</a> | 
+								<a class="sitemaplink" href="http://www.enterprisestorageforum.com/">EnterpriseStorageForum</a> | 
+								<a class="sitemaplink" href="http://www.instantmessagingplanet.com/">Instantmessagingplanet</a> | 
+								<a class="sitemaplink" href="http://www.opennetworkstoday.com/">OpenNetworksToday</a> | 
+								<a class="sitemaplink" href="http://www.opticallynetworked.com/">Optically Networked</a> | 
+								<a class="sitemaplink" href="http://www.practicallynetworked.com/">Practically Networked</a>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Web Development Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.htmlgoodies.com/">HTML Goodies</a> | 
+								<a class="sitemaplink" href="http://www.javascripts.com/">Javascripts.com</a>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Hardware &amp; Systems Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.earthwebhardware.com/">EarthWeb Hardware</a> | 
+								<a class="sitemaplink" href="http://www.sysopt.com/">SysOpt.com</a> | 
+								<a class="sitemaplink" href="http://www.virtualdr.com/">Virtual Dr.</a> | 
+								<a class="sitemaplink" href="http://www.workstationplanet.com/">WorkstationPlanet</a>													
+							</td>
+
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Software Development Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.codeguru.com/">CodeGuru.com</a> | 
+								<a class="sitemaplink" href="http://www.developer.com/">Developer.com</a> | 
+								<a class="sitemaplink" href="http://www.jguru.com/">jGuru.com</a> | 
+								<a class="sitemaplink" href="http://www.jars.com/">JARS.com</a> | 
+								<a class="sitemaplink" href="http://www.developer.com/java/">Gamelan.com</a>												
+							</td>
+
+						</tr>
+						<tr>
+							<td class="smheader" align="right">IT News Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.earthweb.com/">EarthWeb.com</a> | 
+								<a class="sitemaplink" href="http://news.earthweb.com/">Earthweb News</a>													
+							</td>
+						</tr>
+
+					</tbody></table>											
+				</li>
+			</ul>
+		</div></div>
+		<!-- end eweb links section -->			  
+
+		<!-- start devx links section -->			  
+		<div id="div1" class="smsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">DevX Sitemap</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+			
+			<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+				<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">	
+					<table cellpadding="1" cellspacing="1" width="680">
+
+						<tbody><tr>
+							<td class="smheader" align="right">DevX Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+							    <a class="sitemaplink" href="http://www.apifinder.com/">APIFinder</a> |
+							    <a class="sitemaplink" href="http://www.devx.com/architect/Door/7046">Architecture Zone</a> |
+								<a class="sitemaplink" href="http://www.devx.com/asp/">ASP.NET Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/cplus/">C++ Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/dbzone/">Database Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/">DevX.com</a> | 
+								<a class="sitemaplink" href="http://www.devxnews.com/">DevXNews</a> |
+								<a class="sitemaplink" href="http://www.devx.com/enterprise/Door/7043">Enterprise Zone</a> |
+								<a class="sitemaplink" href="http://www.freevbcode.com/">FreeVBCode</a> | 
+								<a class="sitemaplink" href="http://javaboutique.internet.com/">JavaBoutique</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/Java/">Java Zone</a> |
+								<a class="sitemaplink" href="http://www.devx.com/wireless/">Mobile Zone</a> |
+								<a class="sitemaplink" href="http://www.devx.com/dotnet/">.NET Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/opensource/">Open Source Zone</a> |
+								<a class="sitemaplink" href="http://www.devx.com/semantic/Door/34578">Semantic Web</a> |
+																<a class="sitemaplink" href="http://www.devx.com/vb/">Visual Basic Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/webdev/">Web Dev Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/xml/">XML Zone</a>
+
+							</td>
+						</tr>
+					</tbody></table>								
+				 </li>
+			 </ul>
+		 </div></div>
+		<!-- end devx links section -->
+        
+        <!-- start mediabistro links section -->			  
+		<div id="div1" class="smsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">MediaBistro Sitemap</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+			
+
+			<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+				<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">				
+					<table cellpadding="1" cellspacing="1" width="680">
+						<tbody><tr>
+							<td class="smheader" align="right" height="35">Jobs Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.mediabistro.com/Ad-Agency-jobs.html" title="The best jobs in Advertising">Ad Agency Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Book-Publishing-jobs.html" title="The best jobs in Book Publishing">Book Publishing Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Communications-jobs.html" title="The best jobs in Corporate Communications">Corporate Communications Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/DesignArtPhoto-jobs.html" title="The best jobs in Design, Art Direction, and Photography">Design/Art/Photo Jobs </a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Edit-jobs.html" title="The best Editing jobs">Editing Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Journalism-jobs.html" title="The best jobs in Journalism">Journalism Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Magazine-Publishing-jobs.html" title="The best jobs in Magazine Publishing">Magazine Publishing Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Sales-jobs.html" title="The best jobs in Media Sales">Media Sales Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Newspapers-jobs.html" title="The best jobs in Newspaper Publishing">Newspaper Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/OnlineNew-Media-jobs.html" title="The best jobs in Online and New Media">Online/New Media Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/PRMarketing-jobs.html" title="The best jobs in PR and Marketing">PR/Marketing Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Radio-jobs.html" title="The best jobs in Radio">Radio Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/TeachingAcademia-jobs.html" title="The best media jobs in Academia">Teaching/Academia Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Television-jobs.html" title="The best jobs in Television">Television Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Write-jobs.html" title="The best Writing jobs">Writing Jobs</a>
+
+							</td>
+						</tr>
+                        <tr>
+                        	<td class="smheader" align="right" height="35">Education Channel</td>
+                        	<td class="sitemappad" bgcolor="#e0e0e0">
+                            	<a class="sitemaplink" href="http://www.mediabistro.com/courses/inhouse" title="In-House Training programs">Corporate Training</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/courses" title="Career-building courses to launch you to the top of your field">Courses</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/ondemand" title="Video crash courses, audio toolkits, and a look inside our panel discussions and speakers series">Mediabistro On Demand</a>
+
+                            </td>
+                        </tr>
+                        <tr>
+                        	<td class="smheader" align="right" height="35">News Channel</td>
+                        	<td class="sitemappad" bgcolor="#e0e0e0">
+                            	<a class="sitemaplink" href="http://www.mediabistro.com/content/archives" title="">Features</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/fishbowldc" title="DC media, from the inside">FishbowlDC</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/fishbowlla" title="The LA media news you wish you knew">FishbowlLA</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/fishbowlny" title="NY media news, insight &amp; gossip">FishbowlNY</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/galleycat" title="The first word on the book publishing industry">GalleyCat</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/news" title="Media news">Media News Feed</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/tvnewser" title="The inside scoop on TV news">TVNewser</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/unbeige" title="Where designers read design">Unbeige</a>
+
+                            </td>
+                        </tr>
+                        <tr>
+                        	<td class="smheader" align="right" height="35">Other Channel</td>
+                        	<td class="sitemappad" bgcolor="#e0e0e0">
+                            	<a class="sitemaplink" href="http://www.mediabistro.com/events" title="Cocktail parties and other events for media professionals">Events</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/bbs" title="">Forums</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/fm" title="A forum for talented freelancers to showcase their work">Freelance Marketplace</a>
+
+                            </td>
+                        </tr>
+					</tbody></table>												
+				</li>
+			</ul>
+		</div></div>
+		<!-- end mediabistro links section -->		  
+
+		<!-- start graphics links section -->			  
+		<div id="div1" class="smsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">Graphics Sitemap</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+			
+
+			<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+				<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">				
+					<table cellpadding="1" cellspacing="1" width="680">
+						<tbody><tr>
+							<td class="smheader" align="right" height="35">Graphics Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.adsoftheworld.com/">AdsOfTheWorld.com</a> | 
+								<a class="sitemaplink" href="http://www.creativebits.org/">CreativeBits.org</a> | 
+								<a class="sitemaplink" href="http://www.dynamicgraphics.com/">Dynamic Graphics</a> | 
+								<a class="sitemaplink" href="http://www.graphicdesignforum.com/">Graphic Design Forum</a> | 
+								<a class="sitemaplink" href="http://graphics.com/">Graphics.com</a> | 
+								<a class="sitemaplink" href="http://www.liquidtreat.com/">Liquid Treat</a> | 
+								<a class="sitemaplink" href="http://www.stepinsidedesign.com/">STEP inside design</a>
+
+							</td>
+						</tr>
+					</tbody></table>												
+				</li>
+			</ul>
+		</div></div>
+		<!-- end graphics links section -->
+
+
+		<!-- start solutions links section -->
+									<div id="div1" class="smsolutionsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">Solutions</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+						
+						<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+							<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+
+								<table cellpadding="1" cellspacing="1" width="680">
+																		<tbody><tr>
+
+										<td class="smsolutionsheader" align="right">Whitepapers and eBooks</td>
+										<td class="sitemappad" bgcolor="#e1e2dc">
+																						<a class="sitemaplink" href="http://www.devx.com/OracleSC/Door/35610" target="_blank">Oracle eBook: Migrating to Orace Database 11g</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ipswitchVS/Door/34969" target="_blank">Ipswitch Whitepaper: The Changing Role of the Network Administrator</a> | 																						<a class="sitemaplink" href="http://www.devx.com/QuestSoftware/Door/35578" target="_blank">Quest Software: Adaptive Management to Drive .NET Service Levels </a> | 																						<a class="sitemaplink" href="http://www.devx.com/SymantecVS/Door/33490" target="_blank">Symantec: Disk-Based Data Protection--Achieve Faster Backups and Restores While Reducing Your Backup Windows</a> | 																						<a class="sitemaplink" href="http://www.devx.com/OpSourceVS/Door/35473%20" target="_blank">OpSource PDF: A Step-by-Step Guide to Starting Up Your SaaS Operations </a> | 																						<a class="sitemaplink" href="http://www.devx.com/go-parallel/Article/33121" target="_blank">Intel Article Series: Managing Multi-Core Projects, Part 1: HPC on the Parallelism Frontier </a> | 																						<a class="sitemaplink" href="http://www.devx.com/HPSC/Door/34388" target="_blank">HP Whitepaper: Benefits to the ITIL Approach to Service Management</a> | 																						<a class="sitemaplink" href="http://www.devx.com/symantec/Link/35321" target="_blank">Symantec Whitepaper: Emerging Trends in Fighting Spam</a> | 																						<a class="sitemaplink" href="http://www.devx.com/SwsoftVS/Door/34472" target="_blank">Swsoft Whitepaper: Top Ten Server Virtualization Technology Considerations </a> | 																						<a class="sitemaplink" href="http://www.devx.com/SwsoftVS/Door/34472" target="_blank">SWsoft Whitepaper: An Introduction to OS Virtualization and Virtuozzo</a> | 																						<a class="sitemaplink" href="http://www.devx.com/go-parallel/Article/33534" target="_blank">Intel Paper: Best Practices for Developing and Optimizing Threaded Applications</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ipswitchVS/Door/34969" target="_blank">Ipswitch Whitepaper: Secure File Transfer In the Era of Regulatory Compliance </a> | 																						<a class="sitemaplink" href="http://www.devx.com/avaya/Link/34813" target="_blank">Avaya Whitepaper: SIP--Creating Next-Generation Telecom Applications</a> | 																						<a class="sitemaplink" href="http://www.devx.com/symantec/Link/34673" target="_blank">Symantec Whitepaper: Advantages of Integrated Messaging Security</a>																					</td>
+									</tr>
+																		<tr>
+
+										<td class="smsolutionsheader" align="right">Webcasts</td>
+										<td class="sitemappad" bgcolor="#e1e2dc">
+																						<a class="sitemaplink" href="http://www.devx.com/OracleVS/Door/35618" target="_blank">Oracle Podcast: Focus on Embedded Technologies - Embedded Oracle </a> | 																						<a class="sitemaplink" href="http://www.devx.com/go-parallel/Link/33898" target="_blank">Intel Webcast Series: Multi-Threading Tools and Techniques for Software Developers </a> | 																						<a class="sitemaplink" href="http://www.devx.com/HPSC/Door/34388" target="_blank">HP: ITIL v3--Driving Continual Service Improvement</a> | 																						<a class="sitemaplink" href="http://solutions.internet.com/index.php/3771_default" target="_blank">Finisar: Cure Fabric Blindness and Optimize SAN Performance for Application Availability</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/35005" target="_blank"> Rational Asset Manager: Succeed with Asset-based Development</a> | 																						<a class="sitemaplink" href="http://solutions.internet.com/index.php/4296_default" target="_blank">Nortel Webcast: Next Generation Services--The Ethernet and MPLS Debate</a>																					</td>
+									</tr>
+																		<tr>
+
+										<td class="smsolutionsheader" align="right">Downloads and eKits</td>
+										<td class="sitemappad" bgcolor="#e1e2dc">
+																						<a class="sitemaplink" href="http://www.devx.com/CrystalDecisionsVS/Link/35631" target="_blank">Business Objects: Access Crystal Reports for Eclipse Basic Edition, Free</a> | 																						<a class="sitemaplink" href="http://www.devx.com/SunSC/Link/35379" target="_blank">Sun Java Studio Creator</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/34625" target="_blank">IBM Rational Systems Development Solution e-Kit</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/29378%20" target="_blank">IBM  SOA Development Survival Guide eKit</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/33330" target="_blank">IBM Enterprise Architect eKit for SOA </a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/34424" target="_blank">Evaluate Rational Application Developer Online </a> | 																						<a class="sitemaplink" href="http://www.devx.com/IronSpeedVS/Door/17479" target="_blank">Iron Speed Designer Application Generator</a> | 																						<a class="sitemaplink" href="http://www.devx.com/symantec/Link/34286" target="_blank">Symantec IM Detection Utility </a>																					</td>
+									</tr>
+																		<tr>
+
+										<td class="smsolutionsheader" align="right">Tutorials and Demos</td>
+										<td class="sitemappad" bgcolor="#e1e2dc">
+																						<a class="sitemaplink" href="http://www.devx.com/CrystalDecisionsVS/Link/35629" target="_blank">Business Objects: Crystal Reports 2008 Announced</a> | 																						<a class="sitemaplink" href="http://www.devx.com/OnDemandDemos/Link/35340" target="_blank">Demo: Unify Your System i Test Efforts with IBM Rational Software</a> | 																						<a class="sitemaplink" href="http://www.devx.com/SunSC/Link/35382" target="_blank">JavaOne Online Technical Sessions and Labs</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/33034" target="_blank">Rational Functional Tester Tutorial: Create Robust, Reusable Automated Functional Tests </a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/31606" target="_blank">Rational Software Modeler Tutorial: UML 2.0 Modeling</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/33060" target="_blank">DB2 9 Tutorial: Shrink Your Database Using  Row Compression </a> | 																						<a class="sitemaplink" href="http://www.devx.com/ipswitchVS/Link/34972" target="_blank">WhatsUp Gold v11 Demo:  Discovery, Mapping, Reporting, &amp; Monitoring </a>																					</td>
+									</tr>
+																	</tbody></table>
+
+							 </li>
+						 </ul>
+					 </div></div>
+					<!-- end solutions links section -->
+			  </div>		<!-- end foot links -->
+
+
+
+
+	</div>
+				
+		<!-- end foot links -->
+
+			
+		<div style="height: 20px;"></div>
+	
+<!-- footer stops here -->
+		
+
+
+
+
+
+<div style="margin: 0pt auto; width: 730px;" align="center">
+<br clear="all"><center><table border="0" cellpadding="5" cellspacing="0">
+                <tbody><tr> 
+                  <form method="post" action="http://search.internet.com/www.jupiterweb.com" target="_top"></form>
+                    <td align="center">
+<table class="mgfoot" border="0">
+  <tbody><tr><td class="foot_alt" style="vertical-align: middle;" align="center">
+					 <img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/onlinemedia_footer.png" alt="JupiterOnlineMedia" border="0" height="17" hspace="0" width="175"> 
+                      <p align="center"> 
+                      <a href="http://www.internet.com/" class="foot" target="_top"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/icom_foot.png" alt="internet.com" style="" align="absmiddle" border="0" height="15" hspace="0" width="97"></a><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/ruledivide_foot.gif" alt="" align="absmiddle" border="0" height="25" hspace="10" width="1"><a href="http://www.earthweb.com/" target="_top"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/earthweb_foot.png" alt="earthweb.com" style="" align="absmiddle" border="0" height="10" hspace="5" width="93"></a><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/ruledivide_foot.gif" alt="" align="absmiddle" border="0" height="25" hspace="10" width="1"><a href="http://www.devx.com/" target="_top"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/devx_foot.png" alt="Devx.com" align="absmiddle" border="0" height="30" hspace="0" width="34"></a><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/ruledivide_foot.gif" alt="" align="absmiddle" border="0" height="25" hspace="10" width="1"><a href="http://www.mediabistro.com/" target="_top"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/mediabistro_foot.png" alt="mediabistro.com" align="absmiddle" border="0" height="35" hspace="0" width="100"></a><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/ruledivide_foot.gif" alt="" align="absmiddle" border="0" height="25" hspace="10" width="1"><a href="http://www.graphics.com/" target="_top"><img src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/grcom_foot.png" alt="Graphics.com" style="" align="absmiddle" border="0" height="16" hspace="0" width="97"></a></p></td></tr></tbody></table>
+                      <p> 
+                      <font face="verdana, arial, helvetica" size="-2"><b>Search:</b> 
+                      <input name="IC_Summary" value="1" type="hidden">
+                      <input name="IC_StartNumber" value="0" type="hidden">
+                      <input name="IC_BatchSize" value="10" type="hidden">
+                      <input name="IC_RelevanceThreshold" value="50" type="hidden">
+                      <input name="IC_QueryDatabase" value="all" type="hidden">
+                      <input name="IC_QueryText" size="45" type="text">
+                      <input value="Find" name="SUBMIT" src="Ins%20and%20Outs%20of%20Dependency%20Properties%20and%20Routed%20Events%20in%20WPF_files/but_find.gif" align="absmiddle" border="0" height="20" type="image" width="41">
+                      </font>
+                      </p><p>
+                      <font face="verdana, arial, helvetica" size="-2">
+                     <a href="http://www.jupitermedia.com/" class="foot"> Jupitermedia Corporation</a> has two divisions: <a href="http://www.jupiterimages.com/" class="foot">Jupiterimages</a> and <a href="http://www.jupitermedia.com/onlinemedia.html" class="foot">JupiterOnlineMedia</a></font></p><p><font face="verdana, arial, helvetica" size="-2"> <font face="verdana, arial, helvetica" size="-2"><a href="http://www.jupitermedia.com/corporate/" class="foot" target="_top">Jupitermedia Corporate Info</a>                      </font></font></p><p>
+<font face="verdana, arial, helvetica" size="-2"><font face="verdana, arial, helvetica" size="-2">                      </font></font></p><div class="foot"><!--Copyright 2005-2007-->
+
+<font face="verdana, arial, helvetica" size="-2"><font face="verdana, arial, helvetica" size="-2"><script type="text/javascript">
+document.write(' Copyright ');
+var now = new Date();
+document.write(  + now.getFullYear());
+document.write(' Jupitermedia Corporation All Rights Reserved.');
+</script> Copyright 2007 Jupitermedia Corporation All Rights Reserved.
+<noscript> Copyright 2007 Jupitermedia Corporation All Rights Reserved.</noscript>
+<br>
+                        <a href="http://www.jupitermedia.com/corporate/legal.html" class="foot" target="_top">Legal 
+                        Notices</a>, <a href="http://www.jupitermedia.com/corporate/reprints.html#Licensing1" class="foot" target="_top">Licensing</a>, 
+                        <a href="http://www.jupitermedia.com/corporate/reprints.html#Reprints1" class="foot" target="_top">Reprints</a>, 
+                        &amp; <a href="http://www.jupitermedia.com/corporate/reprints.html#Permissions" class="foot" target="_top">Permissions</a>, 
+                        <a href="http://www.jupitermedia.com/corporate/privacy/privacypolicy.html" class="foot" target="_top">Privacy 
+                        Policy</a>. </font>
+                      </font><p><font face="verdana, arial, helvetica" size="-2"> <font face="verdana, arial, helvetica" size="-2"><a href="http://www.jupitermedia.com/onlinemedia.html" class="foot" target="_top">Advertise</a> | <a href="http://e-newsletters.internet.com/" class="foot">Newsletters</a> 
+                       | <a href="http://jobs.internet.com/" class="foot" target="_top">Tech 
+                        Jobs</a> | <a href="http://www.internetshopper.com/" class="foot" target="_top">Shopping</a> | <a href="http://e-newsletters.internet.com/announcement_list.html" class="foot" target="_top">E-mail 
+                        Offers</a></font></font></p></div>
+
+<font face="verdana, arial, helvetica" size="-2">                    </font></td>
+                  
+                </tr>
+              </tbody></table></center>
+
+
+
+</div>
+<script type="text/javascript" class="footinsetlink_sm">
+	// Must be contained in the footer for each page
+	applyDecorators();
+</script>
+</center>
+
+    </td>
+  </tr>
+  
+</tbody></table>     </body></html>

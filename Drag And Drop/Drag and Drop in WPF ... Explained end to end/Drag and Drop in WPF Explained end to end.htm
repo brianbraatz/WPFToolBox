@@ -1,0 +1,835 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Jaime Rodriguez : Drag &amp;amp; Drop in WPF ... Explained end to end ..</title>
+ 
+
+
+
+
+<meta name="keywords" content="Windows Presentation Foundation">
+<meta name="description" content=".table { BACKGROUND-COLOR: #dbdbdb } How to do Drag&amp;amp; Drop in WPF is a question I hear often... I have seen some great samples out there, but most focus on either a big code sample or a niche scenario... a couple of times I have ended up having to">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/jaimer/pingback.aspx">
+<link rel="stylesheet" href="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/print.css" type="text/css" media="print">
+<link rel="stylesheet" href="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/blue%2520right%2520sidebar.css" type="text/css" media="screen">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Jaime Rodriguez  (RSS 2.0)" href="http://blogs.msdn.com/jaimer/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Jaime Rodriguez  (Atom 1.0)" href="http://blogs.msdn.com/jaimer/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Drag &amp;amp; Drop in WPF ... Explained end to end .. Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/jaimer/commentrss.aspx?PostID=3835318">
+
+	<script src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/global.js" type="text/javascript"></script>
+<style type="text/css">.table {
+	BACKGROUND-COLOR: #dbdbdb
+}
+</style></head><body>
+<form name="aspnetForm" method="post" action="/jaimer/archive/2007/07/12/drag-drop-in-wpf-explained-end-to-end.aspx" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFI2N0bDAwJF8kY3RsMDAkXyRicyRfJHdzJF8kU2VhcmNoQm94rkRXbV1z5ohWybmugg6l5bfTy3M=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script language="javascript" type="text/javascript" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script language="javascript" type="text/javascript">
+var RatingControlAJAX = {
+"SaveRating":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Blogs.Controls.BlogRatePost',id,'SaveRating',[p0],cb,0,0,0,1);}};
+</script><script language="javascript" type="text/javascript">
+var ThreadSubscribeLinkButton = {
+"ToggleEmailReplies":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Controls.ThreadSubscribeLinkButton',id,'ToggleEmailReplies',[p0],cb,0,0,0,0);}};
+</script><script type="text/javascript" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/ratingcontrol.js"></script>
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Signed in as <a href="http://blogs.msdn.com/user/EditProfile.aspx?ReturnUrl=/blogs/post.aspx?App=jaimer&amp;y=2007&amp;m=07&amp;d=12&amp;PostName=drag-drop-in-wpf-explained-end-to-end">bbraatz</a>
+ | <a id="ctl00___ctl00___duw1_rc1___logout" href="http://blogs.msdn.com/logout.aspx">Sign out</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="wrapper">
+	<div id="container">
+		<div id="header">
+			
+<div id="title">
+<h1><a id="ctl00___ctl00___bth___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/jaimer/default.aspx">Jaime Rodriguez </a></h1>
+<p id="tagline">On .net client stuff..  </p></div>
+
+		</div>
+		<div id="contentwrapper">
+			<div id="sidebar-a">
+				
+<div id="BlogLinksSideBar">
+	
+<div id="WeblogLinks">
+<h3>This Blog</h3>
+<ul>
+    <li><a id="ctl00___ctl00___bs___wl___email" href="http://blogs.msdn.com/jaimer/emailsubscriptions.aspx">Email alerts</a></li>
+	
+	<li><a id="ctl00___ctl00___bs___wl___Contactlink1" href="http://blogs.msdn.com/jaimer/contact.aspx">Email</a></li>
+</ul>
+</div>
+</div>
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="SubscriptionsSideBar">
+	
+<div id="Subscriptions">
+ <h3>Syndication</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___bs___rss" href="http://blogs.msdn.com/jaimer/rss.xml">RSS 2.0</a></li>
+        <li><a id="ctl00___ctl00___bs___bs___atom" href="http://blogs.msdn.com/jaimer/atom.xml">Atom 1.0</a></li>
+    </ul>
+ </div>
+</div>
+
+<div id="SearchSideBar">
+	
+<h3>Search</h3>	
+<div id="Search">
+<ul><li>
+<input name="ctl00$_$ctl00$_$bs$_$ws$_$SearchBox" id="ctl00___ctl00___bs___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event);" type="text"> <a id="ctl00___ctl00___bs___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')">Go</a>
+</li></ul>
+</div>
+
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul>
+	<ul class="SidebarTagCloud">
+<li class="Tag6"><a href="http://blogs.msdn.com/jaimer/archive/tags/acropolis/default.aspx" rel="tag">acropolis</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/jaimer/archive/tags/blend/default.aspx" rel="tag">blend</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/jaimer/archive/tags/cider+designer/default.aspx" rel="tag">cider designer</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/jaimer/archive/tags/Client+in+general+/default.aspx" rel="tag">Client in general </a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/jaimer/archive/tags/expression/default.aspx" rel="tag">expression</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/jaimer/archive/tags/Personal/default.aspx" rel="tag">Personal</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/jaimer/archive/tags/silverlight/default.aspx" rel="tag">silverlight</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/jaimer/archive/tags/Vista+Sidebar+Gadgets/default.aspx" rel="tag">Vista Sidebar Gadgets</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/jaimer/archive/tags/vs2008/default.aspx" rel="tag">vs2008</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/jaimer/archive/tags/Windows+Presentation+Foundation/default.aspx" rel="tag">Windows Presentation Foundation</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/jaimer/archive/tags/wpfe/default.aspx" rel="tag">wpfe</a></li>
+</ul>
+
+	</ul>
+</div>
+
+<div id="NewsSideBar">
+	
+<h3>News</h3>
+<div id="news">The information in this weblog is provided "AS IS" with
+no warranties, and confers no rights. This weblog does not represent
+the thoughts, intentions, plans or strategies of my employer. It is
+solely my opinion. </div>
+</div>
+
+<div id="ArchiveSideBar">
+	
+	
+<h3>Archives</h3>
+<ul>
+
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/09.aspx">September 2007 (3)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/08.aspx">August 2007 (8)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/07.aspx">July 2007 (7)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/06.aspx">June 2007 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/05.aspx">May 2007 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/04.aspx">April 2007 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/03.aspx">March 2007 (4)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/02.aspx">February 2007 (3)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/01.aspx">January 2007 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/12.aspx">December 2006 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/10.aspx">October 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/09.aspx">September 2006 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/08.aspx">August 2006 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/07.aspx">July 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/06.aspx">June 2006 (7)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/05.aspx">May 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/04.aspx">April 2006 (4)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/03.aspx">March 2006 (4)</a>
+        </li>
+    
+</ul>
+	
+</div>
+
+<div id="LinkSideBar">
+	
+        <h3>Stuff I Subscribe to</h3>
+        <ul>
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl01_Link" href="http://blogs.msdn.com/saraford/rss.xml">VS Tip of the day</a></li>
+            </ul>
+    
+
+	
+</div>
+			</div>
+			<div id="content"><div id="content2">
+				
+        
+
+<div class="post">
+	<div class="postview">			
+		<h2>Drag &amp;amp; Drop in WPF ... Explained end to end ..</h2>
+		
+
+
+<p>How to do Drag&amp; Drop in WPF is a question&nbsp;I hear often...&nbsp; <br>I
+have seen some great samples out there, but most focus on either a big
+code sample or a niche scenario... &nbsp;a couple of times I have ended
+up having to help some one who got stuck. <br>I hope the below write
+up is useful to explain the steps and decisions to get drag &amp; drop
+done.. and it comes with sample snippets ... </p>
+<p>-- ----&nbsp;-------------------<br>From&nbsp; [<a title="http://msdn2.microsoft.com/en-us/library/aa289508(vs.71).aspx" href="http://msdn2.microsoft.com/en-us/library/aa289508%28vs.71%29.aspx" mce_href="http://msdn2.microsoft.com/en-us/library/aa289508(vs.71).aspx">http://msdn2.microsoft.com/en-us/library/aa289508(vs.71).aspx</a>]&nbsp; Here is the sequence of events in a typical drag-and-drop operation: </p>
+<ol>
+<li>Dragging is initiated by calling the <b>DoDragDrop</b> method for the source control. 
+<p>The <b>DoDragDrop</b> method takes two parameters: 
+</p><ul>
+<li><b>data</b>, specifying the data to pass 
+</li><li><b>allowedEffects</b>, specifying which operations (copying and/or moving) are allowed </li></ul>
+<p>A new <b>DataObject</b> object is automatically created. </p>
+</li><li>This in turn raises the <b>GiveFeedback</b> event. In most cases you do not need to worry about the <b>GiveFeedback</b> event, but if you wanted to display a custom mouse pointer during the drag, this is where you would add your code. 
+</li><li>Any control with its <b>AllowDrop</b> property set to <b>True</b> is a potential drop target. The <b>AllowDrop</b> property can be set in the Properties window at design time, or programmatically in the <b>Form_Load</b> event. 
+</li><li>As the mouse passes over each control, the <b>DragEnter</b> event for that control is raised. The <b>GetDataPresent</b> method is used to make sure that the format of the data is appropriate to the target control, and the <b>Effect</b> property is used to display the appropriate mouse pointer. 
+</li><li>If the user releases the mouse button over a valid drop target, the <b>DragDrop</b> event is raised. Code in the <b>DragDrop</b> event handler extracts the data from the <b>DataObject</b> object and displays it in the target control. </li></ol>
+<p>------------</p>
+<h1>Let's walk through it in WPF... </h1>
+<h2>Detecting Drag &amp; Drop. </h2>
+<p>Before the DoDragDrop is called, we must detect a mouse Drag
+operation on the source...&nbsp; A mouse drag is usually a
+MouseLeftButtonDown + a MouseMove (before MouseLeftButton goes up) ... </p>
+<p>So, our drag &amp; drop source control needs to subscribe to these two&nbsp;events: </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0" width="909">
+<tbody>
+<tr>
+<td class="" valign="top" width="907">
+<p>void Window1_Loaded(object sender, RoutedEventArgs e)<br>&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.DragSource.PreviewMouseLeftButtonDown += new
+MouseButtonEventHandler(DragSource_PreviewMouseLeftButtonDown);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.DragSource.PreviewMouseMove += new
+MouseEventHandler(DragSource_PreviewMouseMove);<br>&nbsp;&nbsp;&nbsp;&nbsp; } </p></td></tr></tbody></table>
+<p>To prevent from starting a false drag &amp; drop operation where the
+user accidentally drags, you can use
+SystemParameters.MinimumHorizontalDragDistance&nbsp; and
+SystemParameters.MinimumVerticalDragDistance </p>
+<p>One way to do this is on MouseLeftButtonDown, record the starting
+position&nbsp; and&nbsp; onMouseMove check if the mouse has moved far
+enough.. </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0">
+<tbody>
+<tr>
+<td class="" valign="top"><pre class="code">        <span style="color: rgb(0, 0, 255);">void</span> DragSource_PreviewMouseMove(<span style="color: rgb(0, 0, 255);">object</span> sender, <span style="color: rgb(0, 128, 128);">MouseEventArgs</span> e)
+        {
+            <span style="color: rgb(0, 0, 255);">if</span> (e.LeftButton == <span style="color: rgb(0, 128, 128);">MouseButtonState</span>.Pressed &amp;&amp; !IsDragging)
+            {
+                <span style="color: rgb(0, 128, 128);">Point</span> position = e.GetPosition(<span style="color: rgb(0, 0, 255);">null</span>);
+
+                <span style="color: rgb(0, 0, 255);">if</span> (<span style="color: rgb(0, 128, 128);">Math</span>.Abs(position.X - _startPoint.X) &gt; <span style="color: rgb(0, 128, 128);">SystemParameters</span>.MinimumHorizontalDragDistance ||
+                    <span style="color: rgb(0, 128, 128);">Math</span>.Abs(position.Y - _startPoint.Y) &gt; <span style="color: rgb(0, 128, 128);">SystemParameters</span>.MinimumVerticalDragDistance)
+                {<span style="color: rgb(0, 128, 0);">
+</span>                  StartDrag(e); 
+
+                }
+            }   
+        }
+
+        <span style="color: rgb(0, 0, 255);">void</span> DragSource_PreviewMouseLeftButtonDown(<span style="color: rgb(0, 0, 255);">object</span> sender, <span style="color: rgb(0, 128, 128);">MouseButtonEventArgs</span> e)
+        {
+            _startPoint = e.GetPosition(<span style="color: rgb(0, 0, 255);">null</span>);
+        }
+</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a></td></tr>
+<tr>
+<td class="" valign="top">&nbsp;</td></tr></tbody></table>
+<p mce_keep="true">&nbsp;</p>
+<h2>Its a Drag .. now what? </h2>
+<p>The data!&nbsp; You&nbsp;need to find out what is under the mouse when dragging. <br>I
+will omit take the easy way out and assume that whoever is triggering
+the MouseMove is what I want to drag .. so look at
+MouseEventArgs.OriginalSource..&nbsp;&nbsp; [or you could do some 2D
+HitTesting using VisualTreeHelper ..&nbsp;In Part3 of this write up
+will try to walk you through&nbsp;hit testing the listbox -which is the
+other common scenario I encounter-. <br></p>
+<p>Once you have the object to drag, you will need to package what you
+are a sending into a DataObject&nbsp;that describes the data you
+are&nbsp;passing around.&nbsp; <br>DataObject is a wrapper to push
+generic data (identified with extensible formats) into
+drag/drop..&nbsp; As long as both the source and destination understand
+the format, you will be set.&nbsp; As such, DataObject has a
+couple&nbsp;interesting methods:</p>
+<ul>
+<li>SetData (&nbsp; Type&nbsp;format, object data )&nbsp;&nbsp;&nbsp;
+/// format is the "format"&nbsp;of the day you are passing ( e.g.
+Formats.Text,&nbsp;&nbsp;Formats.Image, etc.. ) you can pass any custom
+types. </li><li>GetDataPresent (&nbsp; Type format )&nbsp; /// is what the
+drop target will use to inquire and extract the data .. if it is a type
+it can handle, it will call GetData () and handle it .. </li></ul>
+<p>Not much interesting stuff here..&nbsp; In the sample I just
+hard-coded my data to be of type string... this makes it easier to
+paste into external containers (for example Word, which you can use to
+test this part of the write-up).&nbsp;&nbsp; I do have to stress that
+drag &amp; dropping should be about the data ...&nbsp; <br></p>
+<h2>Providing visual feedback during the drag &amp; drop operation.. </h2>
+<p>Before we call DoDragDrop () we have a few 'choices' to make around
+the feedback we want to provide and the 'scope' of the
+d&amp;d.&nbsp;&nbsp;</p>
+<ul>
+<li>Do we want a custom cursor to display while we are doing the Drag operation ?&nbsp; If we want a cursor, what should it be?? 
+</li><li>How far do we want to drag?? within the app or across windows apps? </li></ul>
+<p mce_keep="true">&nbsp;</p>
+<h3><font color="#0080ff">Simplest scenario:&nbsp; No custom cursor and we want it to drag across apps:</font>&nbsp; <br></h3>
+<p>If you don't want a fancy cursor, you are done!!&nbsp; You can call DoDragDrop directly ... </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0">
+<tbody>
+<tr>
+<td class="" valign="top"><pre class="code"> <span style="color: rgb(0, 0, 255);">private</span> <span style="color: rgb(0, 0, 255);">void</span> StartDrag(<span style="color: rgb(0, 128, 128);">MouseEventArgs</span> e)
+        {
+            IsDragging = <span style="color: rgb(0, 0, 255);">true</span>;
+            <span style="color: rgb(0, 128, 128);">DataObject</span> data = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DataObject</span>(System.Windows.<span style="color: rgb(0, 128, 128);">DataFormats</span>.Text.ToString(), <span style="color: rgb(128, 0, 0);">"abcd"</span>);
+            <span style="color: rgb(0, 128, 128);">DragDropEffects</span> de = <span style="color: rgb(0, 128, 128);">DragDrop</span>.DoDragDrop(<span style="color: rgb(0, 0, 255);">this</span>.DragSource, data, <span style="color: rgb(0, 128, 128);">DragDropEffects</span>.Move);
+            IsDragging = <span style="color: rgb(0, 0, 255);">false</span>;
+        }</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a></td></tr></tbody></table>
+<p>Note: this code allows you to drag &amp; drop across processes, it
+uses the default operating system feedback ( e.g. + for copy)..&nbsp; </p>
+<p mce_keep="true">&nbsp;</p>
+<h3><font color="#0080c0">Next scenario: We want a pre-defined custom cursor...&nbsp;&nbsp;&nbsp;&nbsp; <br></font></h3>
+<p>Say we had a .cur file and embedded it on to our application as a
+resource ( see sample code).&nbsp;&nbsp; We can subscribe to
+GiveFeedback () and wire our cursor there.. </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0">
+<tbody>
+<tr>
+<td class="" valign="top"><pre class="code"><span style="color: rgb(0, 0, 255);">private</span> <span style="color: rgb(0, 0, 255);">void</span> StartDragCustomCursor(<span style="color: rgb(0, 128, 128);">MouseEventArgs</span> e)
+        {
+
+            <span style="color: rgb(0, 128, 128);">GiveFeedbackEventHandler</span> handler = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">GiveFeedbackEventHandler</span>(DragSource_GiveFeedback);
+            <span style="color: rgb(0, 0, 255);">this</span>.DragSource.GiveFeedback += handler; 
+            IsDragging = <span style="color: rgb(0, 0, 255);">true</span>;
+            <span style="color: rgb(0, 128, 128);">DataObject</span> data = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DataObject</span>(System.Windows.<span style="color: rgb(0, 128, 128);">DataFormats</span>.Text.ToString(), <span style="color: rgb(128, 0, 0);">"abcd"</span>);
+            <span style="color: rgb(0, 128, 128);">DragDropEffects</span> de = <span style="color: rgb(0, 128, 128);">DragDrop</span>.DoDragDrop(<span style="color: rgb(0, 0, 255);">this</span>.DragSource, data, <span style="color: rgb(0, 128, 128);">DragDropEffects</span>.Move);
+            <span style="color: rgb(0, 0, 255);">this</span>.DragSource.GiveFeedback -= handler; 
+            IsDragging = <span style="color: rgb(0, 0, 255);">false</span>;
+        }</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a></td></tr></tbody></table>
+<p>Our handler for feedback looks like this: </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0">
+<tbody>
+<tr>
+<td class="" valign="top"><pre class="code"><span style="color: rgb(0, 0, 255);">void</span> DragSource_GiveFeedback(<span style="color: rgb(0, 0, 255);">object</span> sender, <span style="color: rgb(0, 128, 128);">GiveFeedbackEventArgs</span> e)
+        {
+                <span style="color: rgb(0, 0, 255);">try
+</span>                {
+                    <span style="color: rgb(0, 128, 0);">//This loads the cursor from a stream .. 
+</span>                    <span style="color: rgb(0, 0, 255);">if</span> (_allOpsCursor == <span style="color: rgb(0, 0, 255);">null</span>)
+                    {
+                        <span style="color: rgb(0, 0, 255);">using</span> (<span style="color: rgb(0, 128, 128);">Stream</span> cursorStream = System.Reflection.<span style="color: rgb(0, 128, 128);">Assembly</span>.GetExecutingAssembly().GetManifestResourceStream(<br>			<span style="color: rgb(128, 0, 0);">"SimplestDragDrop.DDIcon.cur"</span>))
+                        {
+                            _allOpsCursor = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">Cursor</span>(cursorStream);
+                        } 
+                    }
+                    <span style="color: rgb(0, 128, 128);">Mouse</span>.SetCursor(_allOpsCursor);
+
+                    e.UseDefaultCursors = <span style="color: rgb(0, 0, 255);">false</span>;
+                    e.Handled = <span style="color: rgb(0, 0, 255);">true</span>;
+                }
+                <span style="color: rgb(0, 0, 255);">finally</span> { }
+        }</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a></td></tr></tbody></table>
+<p>Two things to notice:&nbsp; <br>1) I cached the cursor...&nbsp; GiveFeedback will be called many times&nbsp; as the mousemoves so I cached it..&nbsp; and </p>
+<p>2) though I did not handle it, I called it "_allOpsCursor" because
+GiveFeedbackEventArgs will tell you the possible operation for the
+cursor (e.Effects)...&nbsp; I could have used multiple cursors, one for
+each effect. </p>
+<h3>&nbsp;</h3>
+<h3><font color="#0080c0">Next scenario: Getting fancy and using the Visual we are dragging for feedback&nbsp;[instead of a cursor]</font></h3>
+<h3></h3>
+<p>The first thing you will need is to an Adorner; in my case I chose
+and adorner that contains a VisualBrush of the Element being
+dragged...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; you can go with
+RenderTargetBitmap, or possibly reparent the object directly ... but I
+like VisualBrush&nbsp;in case the drag is cancelled.. &nbsp; </p><p>The constructor for the adorner class is where most of the action happens: </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0">
+<tbody>
+<tr>
+<td class="" valign="top"><pre class="code"><span style="color: rgb(0, 0, 255);">public</span> DragAdorner(<span style="color: rgb(0, 128, 128);">UIElement</span> owner, <span style="color: rgb(0, 128, 128);">UIElement</span> adornElement, <span style="color: rgb(0, 0, 255);">bool</span> useVisualBrush, <span style="color: rgb(0, 0, 255);">double</span> opacity)
+            : <span style="color: rgb(0, 0, 255);">base</span>(owner)
+        {
+            _owner = owner;
+            <span style="color: rgb(0, 0, 255);">if</span> (useVisualBrush)
+            {
+                <span style="color: rgb(0, 128, 128);">VisualBrush</span> _brush = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">VisualBrush</span>(adornElement);
+                _brush.Opacity = opacity;
+                <span style="color: rgb(0, 128, 128);">Rectangle</span> r = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">Rectangle</span>();
+                r.RadiusX = 3;
+                r.RadiusY = 3;
+                r.Width = adornElement.DesiredSize.Width;
+                r.Height = adornElement.DesiredSize.Height;
+
+                XCenter = adornElement.DesiredSize.Width / 2;
+                YCenter = adornElement.DesiredSize.Height / 2;
+
+                r.Fill = _brush;
+                _child = r;
+
+            }
+            <span style="color: rgb(0, 0, 255);">else
+</span>                _child = adornElement;
+
+        }</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a></td></tr></tbody></table>
+<p>&nbsp;//There is more code in DragAdorner, but mostly used for
+positioning the adorner as the drag is happening... please refer to the
+sample... </p>
+<p mce_keep="true">&nbsp;</p>
+<p>Now, that we have our custom adorner ready, the tricky part is
+wiring it so it follows the cursor position.&nbsp; There are two
+options here: </p>
+<ul>
+<li>If we want drag &amp; drop across apps, we are going to have to
+call Win32's GetCursorPos () ...&nbsp;&nbsp; This is trivial to write
+but requires full-trust ...&nbsp; (which you likely had if you needed
+to drag &amp; drop with other apps anyway )... </li><li>If we want to drag &amp; drop inside our app only or inside
+a specific 'scope' with in the app, there is a hucky workaround that I
+often use to avoid the interop code.. </li></ul>
+<p mce_keep="true">&nbsp;</p>
+<h3><font color="#0080c0">Using Visual for Feedback.1&nbsp;: D&amp;D across apps using GetCursorPos () ...</font>&nbsp; </h3>
+<p>First we have to import Win32's code using DllImport ....&nbsp; [trivial stuff, refer to sample code in Win32.cs ] </p>
+<p>Next we create an instance of a Window, which will contain a visual brush of the element we are dragging ...&nbsp; </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0">
+<tbody>
+<tr>
+<td class="" valign="top"><pre class="code"><span style="color: rgb(0, 0, 255);">private</span> <span style="color: rgb(0, 128, 128);">Window</span> _dragdropWindow = <span style="color: rgb(0, 0, 255);">null</span>;
+        <span style="color: rgb(0, 0, 255);">private</span> <span style="color: rgb(0, 0, 255);">void</span> CreateDragDropWindow(<span style="color: rgb(0, 128, 128);">Visual</span> dragElement)
+        {
+            System.Diagnostics.<span style="color: rgb(0, 128, 128);">Debug</span>.Assert(<span style="color: rgb(0, 0, 255);">this</span>._dragdropWindow == <span style="color: rgb(0, 0, 255);">null</span>);
+            System.Diagnostics.<span style="color: rgb(0, 128, 128);">Debug</span>.Assert(dragElement != <span style="color: rgb(0, 0, 255);">null</span>);
+            <span style="color: rgb(0, 128, 0);">// TODO: FE? or UIE??   FE cause I am lazy on size . 
+</span>            System.Diagnostics.<span style="color: rgb(0, 128, 128);">Debug</span>.Assert(dragElement <span style="color: rgb(0, 0, 255);">is</span> <span style="color: rgb(0, 128, 128);">FrameworkElement</span>); 
+
+            <span style="color: rgb(0, 0, 255);">this</span>._dragdropWindow = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">Window</span>();
+            _dragdropWindow.WindowStyle = <span style="color: rgb(0, 128, 128);">WindowStyle</span>.None;
+            _dragdropWindow.AllowsTransparency = <span style="color: rgb(0, 0, 255);">true</span>;
+            _dragdropWindow.AllowDrop = <span style="color: rgb(0, 0, 255);">false</span>;
+            _dragdropWindow.Background = <span style="color: rgb(0, 0, 255);">null</span>;
+            _dragdropWindow.IsHitTestVisible = <span style="color: rgb(0, 0, 255);">false</span>;
+            _dragdropWindow.SizeToContent = <span style="color: rgb(0, 128, 128);">SizeToContent</span>.WidthAndHeight;
+            _dragdropWindow.Topmost = <span style="color: rgb(0, 0, 255);">true</span>;
+            _dragdropWindow.ShowInTaskbar = <span style="color: rgb(0, 0, 255);">false</span>;
+
+            _dragdropWindow.SourceInitialized += <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">EventHandler</span>(
+            <span style="color: rgb(0, 0, 255);">delegate</span>(<span style="color: rgb(0, 0, 255);">object</span> sender, <span style="color: rgb(0, 128, 128);">EventArgs</span> args)
+            {
+
+                <span style="color: rgb(0, 128, 0);">//TODO assert that we can do this.. 
+</span>                <span style="color: rgb(0, 128, 128);">PresentationSource</span> windowSource = <span style="color: rgb(0, 128, 128);">PresentationSource</span>.FromVisual(<span style="color: rgb(0, 0, 255);">this</span>._dragdropWindow);
+                <span style="color: rgb(0, 128, 128);">IntPtr</span> handle = ((System.Windows.Interop.<span style="color: rgb(0, 128, 128);">HwndSource</span>)windowSource).Handle;
+
+                <span style="color: rgb(0, 128, 128);">Int32</span> styles = <span style="color: rgb(0, 128, 128);">Win32</span>.GetWindowLong(handle, <span style="color: rgb(0, 128, 128);">Win32</span>.GWL_EXSTYLE);
+                <span style="color: rgb(0, 128, 128);">Win32</span>.SetWindowLong(handle, <span style="color: rgb(0, 128, 128);">Win32</span>.GWL_EXSTYLE, <br>			styles | <span style="color: rgb(0, 128, 128);">Win32</span>.WS_EX_LAYERED | <span style="color: rgb(0, 128, 128);">Win32</span>.WS_EX_TRANSPARENT);
+
+            });
+
+            <span style="color: rgb(0, 128, 128);">Rectangle</span> r = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">Rectangle</span>();
+            r.Width = ((<span style="color: rgb(0, 128, 128);">FrameworkElement</span>)dragElement).ActualWidth;
+            r.Height = ((<span style="color: rgb(0, 128, 128);">FrameworkElement</span>)dragElement).ActualHeight;
+            r.Fill = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">VisualBrush</span>(dragElement);
+            <span style="color: rgb(0, 0, 255);">this</span>._dragdropWindow.Content = r;
+
+
+            <span style="color: rgb(0, 128, 0);">// put the window in the right place to start
+</span>            UpdateWindowLocation();
+
+
+        }</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a></td></tr></tbody></table>
+<p>Notice: </p>
+<p>1) I set the style to Transparent, layered window (this is ok since
+the window is small and it is only used for drag&nbsp;&amp; drop
+)..&nbsp; and&nbsp;</p>
+<p>2) the call to UpdateWindowLocation () this is the code that positions the Window wherever the cursor is now.. </p>
+<p>3) I likely need more error&nbsp;checking &nbsp;</p>
+<p>The code in UpdateWindowLocation is straight forward:</p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0">
+<tbody>
+<tr>
+<td class="" valign="top"><pre class="code"> <span style="color: rgb(0, 0, 255);">void</span> UpdateWindowLocation()
+        {
+            <span style="color: rgb(0, 0, 255);">if</span> (<span style="color: rgb(0, 0, 255);">this</span>._dragdropWindow != <span style="color: rgb(0, 0, 255);">null</span>)
+            {
+                <span style="color: rgb(0, 128, 128);">Win32</span>.<span style="color: rgb(0, 128, 128);">POINT</span> p;
+                <span style="color: rgb(0, 0, 255);">if</span> (!<span style="color: rgb(0, 128, 128);">Win32</span>.GetCursorPos(<span style="color: rgb(0, 0, 255);">out</span> p))
+                {
+                    <span style="color: rgb(0, 0, 255);">return</span>;
+                }
+                <span style="color: rgb(0, 0, 255);">this</span>._dragdropWindow.Left = (<span style="color: rgb(0, 0, 255);">double</span>)p.X;
+                <span style="color: rgb(0, 0, 255);">this</span>._dragdropWindow.Top = (<span style="color: rgb(0, 0, 255);">double</span>)p.Y;
+            }
+        }</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a></td></tr></tbody></table>
+<p>This UpdateLocation code of course needs to be called whenever the
+cursor moves...&nbsp; so we need some kind of callback during the drag
+operation.. We will use QueryContinueDrag for that.. </p><p>So, I go back to&nbsp; the code in StartDrag ()&nbsp; and wire
+up the event, as well as some code to show the window and destroy it
+after drag &amp; drop:</p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0">
+<tbody>
+<tr>
+<td class="" valign="top"><pre class="code"> <span style="color: rgb(0, 0, 255);">private</span> <span style="color: rgb(0, 0, 255);">void</span> StartDragWindow(<span style="color: rgb(0, 128, 128);">MouseEventArgs</span> e)
+        {
+
+            <span style="color: rgb(0, 128, 128);">GiveFeedbackEventHandler</span> feedbackhandler = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">GiveFeedbackEventHandler</span>(DragSource_GiveFeedback); ;
+            <span style="color: rgb(0, 0, 255);">this</span>.DragSource.GiveFeedback += feedbackhandler; 
+            <span style="color: rgb(0, 128, 128);">QueryContinueDragEventHandler</span> queryhandler = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">QueryContinueDragEventHandler</span>(DragSource_QueryContinueDrag);
+            <span style="color: rgb(0, 0, 255);">this</span>.DragSource.QueryContinueDrag += queryhandler; 
+            IsDragging = <span style="color: rgb(0, 0, 255);">true</span>;
+            CreateDragDropWindow(<span style="color: rgb(0, 0, 255);">this</span>.dragElement); 
+            <span style="color: rgb(0, 128, 128);">DataObject</span> data = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DataObject</span>(System.Windows.<span style="color: rgb(0, 128, 128);">DataFormats</span>.Text.ToString(), <span style="color: rgb(128, 0, 0);">"abcd"</span>);
+            <span style="color: rgb(0, 0, 255);">this</span>._dragdropWindow.Show(); 
+            <span style="color: rgb(0, 128, 128);">DragDropEffects</span> de = <span style="color: rgb(0, 128, 128);">DragDrop</span>.DoDragDrop(<span style="color: rgb(0, 0, 255);">this</span>.DragSource, data, <span style="color: rgb(0, 128, 128);">DragDropEffects</span>.Move);
+            DestroyDragDropWindow(); 
+            IsDragging = <span style="color: rgb(0, 0, 255);">false</span>;
+            <span style="color: rgb(0, 0, 255);">this</span>.DragSource.GiveFeedback -= feedbackhandler;
+            <span style="color: rgb(0, 0, 255);">this</span>.DragSource.QueryContinueDrag -= queryhandler; 
+        }</pre></td></tr></tbody></table>
+<p>The one thing to notice is that I still have GiveFeedbackHandler
+wired.. Why ?? We are no longer using the cursor...&nbsp; but we still
+have to tell Drag &amp; Drop not to use the default cursors.. </p>
+<h3><font color="#0080c0"></font>&nbsp;</h3>
+<h3><font color="#0080c0">Using Visual for Feedback.2: </font><font color="#0080ff">Using DragOver to avoid the interop code and/or to limit dragging scope to my app..&nbsp; </font></h3>
+<p>There is a slightly different approach you can use if you are drag
+&amp; dropping just inside your app or have a smaller scope ...&nbsp;I
+some times use this approach because it allows me to avoid interop,
+avoid creating extra windows, and better control the scope of the
+drag...&nbsp;&nbsp; </p>
+<p><br>Here is the full explanation of how it works and why it feels like hackalicious. </p>
+<p>When you call DoDragDrop, there is no Mouse or Cursor Events being
+fired in your WPF app...&nbsp; OLE does the work for you and it moves
+cursor directly :(...&nbsp; however, all of the Drag events are being
+fired...&nbsp; </p><p>We already know of the two events we can tap into from the
+source: GiveFeedback and QueryContinueDrag...&nbsp;&nbsp;&nbsp; however
+neither of these events gives us access to the mouse or cursor position
+during the drag operation :( ...&nbsp;&nbsp; We can however tap
+into&nbsp;the &nbsp;Dragover&nbsp; event; DragOverEventArgs has a
+GetPosition ( ) method that does the trick...&nbsp;&nbsp;&nbsp;
+DragOver however is fired in the target, not the source. </p><p>So, how would we do it??&nbsp; Well&nbsp;, DragEvents are
+routed events.. they bubble up.. if we define a "Drag Scope"&nbsp;
+within our app that we know is guaranteed to bubble the DragOver, then
+we can listen for it ...&nbsp;&nbsp; the obvious choice for that scope
+is our Application's Window; this gives us access to any thing in our
+app; the scope could be smaller of course...&nbsp; </p><p><br>Here is how we wire that:&nbsp; </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0">
+<tbody>
+<tr>
+<td class="" valign="top"><pre class="code"><span style="color: rgb(0, 0, 255);">private</span> <span style="color: rgb(0, 0, 255);">void</span> StartDragInProcAdorner(<span style="color: rgb(0, 128, 128);">MouseEventArgs</span> e)
+        {
+
+            <span style="color: rgb(0, 128, 0);">// Let's define our DragScope .. In this case it is every thing inside our main window .. 
+</span>            DragScope = <span style="color: rgb(0, 128, 128);">Application</span>.Current.MainWindow.Content <span style="color: rgb(0, 0, 255);">as</span> <span style="color: rgb(0, 128, 128);">FrameworkElement</span>;
+            System.Diagnostics.<span style="color: rgb(0, 128, 128);">Debug</span>.Assert(DragScope != <span style="color: rgb(0, 0, 255);">null</span>);
+
+            <span style="color: rgb(0, 128, 0);">// We enable Drag &amp; Drop in our scope ...  We are not implementing Drop, so it is OK, but this allows us to get DragOver 
+</span>            <span style="color: rgb(0, 0, 255);">bool</span> previousDrop = DragScope.AllowDrop;
+            DragScope.AllowDrop = <span style="color: rgb(0, 0, 255);">true</span>;            
+
+            <span style="color: rgb(0, 128, 0);">// Let's wire our usual events.. 
+</span>            <span style="color: rgb(0, 128, 0);">// GiveFeedback just tells it to use no standard cursors..  
+
+</span>            <span style="color: rgb(0, 128, 128);">GiveFeedbackEventHandler</span> feedbackhandler = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">GiveFeedbackEventHandler</span>(DragSource_GiveFeedback);
+            <span style="color: rgb(0, 0, 255);">this</span>.DragSource.GiveFeedback += feedbackhandler;
+
+            <span style="color: rgb(0, 128, 0);">// The DragOver event ... 
+</span>            <span style="color: rgb(0, 128, 128);">DragEventHandler</span> draghandler = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DragEventHandler</span>(Window1_DragOver);
+            DragScope.PreviewDragOver += draghandler; 
+
+            <span style="color: rgb(0, 128, 0);">// Drag Leave is optional, but write up explains why I like it .. 
+</span>            <span style="color: rgb(0, 128, 128);">DragEventHandler</span> dragleavehandler = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DragEventHandler</span>(DragScope_DragLeave);
+            DragScope.DragLeave += dragleavehandler; 
+
+            <span style="color: rgb(0, 128, 0);">// QueryContinue Drag goes with drag leave... 
+</span>            <span style="color: rgb(0, 128, 128);">QueryContinueDragEventHandler</span> queryhandler = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">QueryContinueDragEventHandler</span>(DragScope_QueryContinueDrag);
+            DragScope.QueryContinueDrag += queryhandler; 
+
+            <span style="color: rgb(0, 128, 0);">//Here we create our adorner.. 
+</span>            _adorner = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DragAdorner</span>(DragScope, (<span style="color: rgb(0, 128, 128);">UIElement</span>)<span style="color: rgb(0, 0, 255);">this</span>.dragElement, <span style="color: rgb(0, 0, 255);">true</span>, 0.5);
+            _layer = <span style="color: rgb(0, 128, 128);">AdornerLayer</span>.GetAdornerLayer(DragScope <span style="color: rgb(0, 0, 255);">as</span> <span style="color: rgb(0, 128, 128);">Visual</span>);
+            _layer.Add(_adorner);
+
+
+            IsDragging = <span style="color: rgb(0, 0, 255);">true</span>;
+            _dragHasLeftScope = <span style="color: rgb(0, 0, 255);">false</span>; 
+            <span style="color: rgb(0, 128, 0);">//Finally lets drag drop 
+</span>            <span style="color: rgb(0, 128, 128);">DataObject</span> data = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DataObject</span>(System.Windows.<span style="color: rgb(0, 128, 128);">DataFormats</span>.Text.ToString(), <span style="color: rgb(128, 0, 0);">"abcd"</span>);
+            <span style="color: rgb(0, 128, 128);">DragDropEffects</span> de = <span style="color: rgb(0, 128, 128);">DragDrop</span>.DoDragDrop(<span style="color: rgb(0, 0, 255);">this</span>.DragSource, data, <span style="color: rgb(0, 128, 128);">DragDropEffects</span>.Move);
+
+             <span style="color: rgb(0, 128, 0);">// Clean up our mess :) 
+</span>            DragScope.AllowDrop = previousDrop;
+            <span style="color: rgb(0, 128, 128);">AdornerLayer</span>.GetAdornerLayer(DragScope).Remove(_adorner);
+            _adorner = <span style="color: rgb(0, 0, 255);">null</span>;
+
+            DragSource.GiveFeedback -= feedbackhandler;
+            DragScope.DragLeave -= dragleavehandler;
+            DragScope.QueryContinueDrag -= queryhandler;
+            DragScope.PreviewDragOver -= draghandler;  
+
+            IsDragging = <span style="color: rgb(0, 0, 255);">false</span>;
+        }</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a></td></tr></tbody></table><pre class="code">&nbsp; </pre>
+<p>Explanations: 
+</p><ul>
+<li>GiveFeedback is the same than before we use it to set no default cursor .. 
+</li><li>Dragover on our DragScope&nbsp; is what will let us move the
+cursor around..&nbsp; These events are wired in the Drop target, not in
+the source control.. </li><li>DragLeave is optional; the reason I wired it is because when
+the mouse leaves the scope, I want to cancel the Drag operation
+altogether, nix it!&nbsp; So I subscribe to DragLeave to know when
+mouse left.. Unfortunately, I can't cancel the drag in DragLeave, so I
+set a flag to be read in QueryContinueHandler. QCH reads this flag and
+when set to true,&nbsp; it sets the Action to Cancel in the drag to nix
+it.. </li><li>The rest is creating our adorner, and the drag drop ..&nbsp; plus all the clean up ...&nbsp; </li></ul>
+<p>There is a common gotcha with the DragLeave part of this scenario.
+The scope tends to always be a panel,grid, etc.. ( a container) and if
+the container has background to null, it is not hittesting, so you
+won't get the dragleave...&nbsp;&nbsp; You have to explicitly set the
+Background="Transparent" to make sure you get it...&nbsp;&nbsp; (you
+can see it in my sample with the Grid).. </p><p>That is it for Drag ...&nbsp;&nbsp; I hope I explained how to
+do the Drag part&nbsp; of a drag&nbsp; &amp;
+drop.&nbsp;&nbsp;&nbsp;&nbsp; I want to cut part 1 here so that you
+have a pretty clean sample of the "drag" ..&nbsp; </p>
+<p>The <a href="http://jaimersamples.members.winisp.net/samples/dragdrop/drag.zip" mce_href="http://jaimersamples.members.winisp.net/samples/dragdrop/drag.zip">source for every thing above is here</a>.&nbsp;&nbsp;&nbsp; </p>
+<p mce_keep="true">&nbsp;</p>
+<p>You will have to tweak the MouseMove function to&nbsp;select which
+drag approach to use.. Just make sure you have at most one of these
+functions uncommented at any time.. </p>
+<blockquote>
+<p>// StartDrag(e);<br>//&nbsp; StartDragCustomCursor(e);<br>// StartDragWindow(e);<br>StartDragInProcAdorner(e); </p></blockquote>
+<p mce_keep="true">&nbsp;</p>
+<p>Since I did not wire a Drop handler, for testing this, just "Drop" into some thing that handles Text like Microsoft Word.. </p>
+<p>In <a class="" href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part2.aspx" mce_href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part2.aspx">part 2</a>,
+I will cover the drop .. and in part 3 I will share the complete code
+with a couple of extra things that I omitted here to try to keep it
+clean&nbsp; (some of them might be in the code sample) </p>
+		<div class="postfoot">
+			Published Thursday, July 12, 2007 1:30 PM
+			by
+			<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=4419">jaimer</a>
+			
+			<span class="CommonRateControl" id="ctl00___ctl00___ctl01___Entry___Ratings" title="Rated Excellent [5 out of 5 / rated 1 time(s)]."><img title="Poor" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/star-left-on.gif" align="absmiddle" border="0"><img title="Poor" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/star-right-on.gif" align="absmiddle" border="0"><img title="Fair" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/star-left-on.gif" align="absmiddle" border="0"><img title="Fair" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/star-right-on.gif" align="absmiddle" border="0"><img title="Average" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/star-left-on.gif" align="absmiddle" border="0"><img title="Average" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/star-right-on.gif" align="absmiddle" border="0"><img title="Good" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/star-left-on.gif" align="absmiddle" border="0"><img title="Good" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/star-right-on.gif" align="absmiddle" border="0"><img title="Excellent" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/star-left-on.gif" align="absmiddle" border="0"><img title="Excellent" src="Drag%20and%20Drop%20in%20WPF%20Explained%20end%20to%20end_files/star-right-on.gif" align="absmiddle" border="0"></span><input value="5" id="ctl00___ctl00___ctl01___Entry___Ratings_Value" type="hidden">
+			<div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/jaimer/archive/tags/Windows+Presentation+Foundation/default.aspx" rel="tag">Windows Presentation Foundation</a></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+										
+		</div>
+	</div>
+</div>
+
+
+<h3>
+	Comments
+</h3>	
+<div id="comments">
+
+		<div class="comment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl00_PermaLink" title="permalink" href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-explained-end-to-end.aspx#3841728">#</a>
+				<span>Link Listing - July 12, 2007<a name="3841728"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Cookieless Session with ASP.NET Ajax and Web Services [Via: derek ] Displaying Extended Details in a...</p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Friday, July 13, 2007 1:23 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl00_NameLink" rel="nofollow" title="TrackBack" href="http://dotnetjunkies.com/WebLog/csteen/archive/2007/07/13/263101.aspx" target="_blank">Christopher Steen</a>
+			</div>
+		</div>
+	
+		<div class="altcomment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_PermaLink" title="permalink" href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-explained-end-to-end.aspx#3868328">#</a>
+				<span>re: Drag &amp;amp; Drop in WPF ... Explained end to end ..<a name="3868328"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Great
+stuff. I found the Using Visual for Feedback.1 : D&amp;D across apps
+using GetCursorPos() section helpful. To achieve the same goal as you
+did with your helper classes, I've created custom controls that wrap
+others and encapsulate the drag and drop functionality so you can
+implement it declaratively. If you're interested I can send you the
+code and a sample -- maybe you could give me some feedback.</p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Saturday, July 14, 2007 1:10 PM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_NameLink" title="Robert.Altland" href="http://blogs.msdn.com/user/Profile.aspx?UserID=91074" target="_blank">Robert.Altland</a>
+			</div>
+		</div>
+	
+		<div class="comment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_PermaLink" title="permalink" href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-explained-end-to-end.aspx#3971063">#</a>
+				<span>re: Drag &amp;amp; Drop in WPF ... Explained end to end ..<a name="3971063"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Wow, that's really a complete explanation. I wish I'd had that back then :) But we had some code... :)</p>
+<p>On the D&amp;D across apps... would you think it could work with
+Popup-Controls? That might help get around interop... not sure if
+there's a caveat or not.</p>
+<p>cheers</p>
+<p>Florian</p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Friday, July 20, 2007 4:04 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_NameLink" title="FKruesch" href="http://www.planet-xaml.net/" target="_blank">FKruesch</a>
+			</div>
+		</div>
+	
+		<div class="altcomment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_PermaLink" title="permalink" href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-explained-end-to-end.aspx#4118116">#</a>
+				<span>WPF Articles<a name="4118116"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Dr Tim Sneath gives a overview of what is new in WPF 3.5 <a rel="nofollow" target="_new" href="http://blogs.msdn.com/tims/archive/2007/07/27">http://blogs.msdn.com/tims/archive/2007/07/27</a></p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Sunday, July 29, 2007 10:28 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_NameLink" rel="nofollow" title="TrackBack" href="http://dotnet.org.za/rudi/archive/2007/07/29/wpf-articles.aspx" target="_blank">Rudi Grobler</a>
+			</div>
+		</div>
+	
+		<div class="commentowner">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_PermaLink" title="permalink" href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-explained-end-to-end.aspx#4125660">#</a>
+				<span>re: Drag &amp;amp; Drop in WPF ... Explained end to end ..<a name="4125660"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Apologies for belated reply.. I was on vacation.. </p>
+<p>Florian, I have not tried Popup; technically it is same than window, in terms of it requiring FullTrust.. &nbsp; </p>
+<p>Another possible disadvantage of Popup is the slightly less control
+you will have when creating the window (or Popup) itself.. I doubt you
+can set the right style.. you could doing interop(SetWindowx) &nbsp;of
+course.. </p>
+<p>Let me know how it goes if you try Popup. </p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Monday, July 30, 2007 1:16 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_NameLink" title="jaimer" href="http://blogs.msdn.com/user/Profile.aspx?UserID=4419" target="_blank">jaimer</a>
+			</div>
+		</div>
+	
+
+</div>
+
+	
+
+
+
+<em>New Comments to this post are disabled</em>	
+   
+    
+			</div></div>
+			<div id="contentfooter">&nbsp;</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+<script language="javascript">var ctl00___ctl00___ctl01___Entry___Ratings=new RateControl('ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings_Value', 5, '/Themes/default/images/common/', false, 'CommonRateControl','CommonRateControlActive','CommonRateControlReadOnly',['Terrible','Poor','Fair','Average','Good','Excellent'],false,true);</script>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-explained-end-to-end.aspx"
+dc:identifier="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-explained-end-to-end.aspx"
+dc:title="Drag &amp;amp; Drop in WPF ... Explained end to end .."
+trackback:ping="http://blogs.msdn.com/jaimer/trackback.aspx?PostID=3835318" />
+</rdf:RDF>
+-->
+</form>
+</body></html>

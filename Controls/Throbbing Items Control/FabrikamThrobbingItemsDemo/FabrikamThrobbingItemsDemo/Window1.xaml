@@ -1,0 +1,90 @@
+<?Mapping XmlNamespace="FabrikamThrobbingItemsDemo" ClrNamespace="FabrikamThrobbingItemsDemo"?>
+<Window 
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	MinWidth="300" MinHeight="300"
+	x:Name="RootWindow" 
+	x:Class="UntitledProject1.Window1" 
+	Title="Widget Visualizer" 
+	SizeToContent="WidthAndHeight" xmlns:FabrikamThrobbingItemsDemo="FabrikamThrobbingItemsDemo" ResizeMode="NoResize">
+
+	<Window.Resources>
+		<Storyboard x:Key="OnLoaded"/>
+		<XmlDataProvider x:Key="WidgetsDS"  Source="data.xml"/>
+		<DataTemplate x:Key="WidgetTemplate">
+			<DataTemplate.Resources>
+				<Storyboard x:Key="itemAnimation" x:StoryboardName="itemAnimation">
+					<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Grid" Storyboard.TargetProperty="(UIElement.Opacity)">
+						<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0" KeyTime="00:00:00"/>
+						<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:01"/>
+						<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:04"/>
+						<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0" KeyTime="00:00:05"/>
+					</DoubleAnimationUsingKeyFrames>
+				</Storyboard>
+			</DataTemplate.Resources>
+			<Grid Width="290" Height="275" Opacity="0" x:Name="Grid">
+				<ColumnDefinition/>
+				<RowDefinition/>
+				<Image Width="291" Height="132.431137724551" Source="{Binding Mode=OneWay, XPath=Image}"/>
+			</Grid>
+			<DataTemplate.Triggers>
+				<EventTrigger RoutedEvent="FrameworkElement.Loaded" SourceName="Grid">
+					<EventTrigger.Actions>
+						<BeginStoryboard Storyboard="{StaticResource itemAnimation}" x:Name="itemAnimation_BeginStoryboard"/>
+					</EventTrigger.Actions>
+				</EventTrigger>
+			</DataTemplate.Triggers>
+		</DataTemplate>
+	</Window.Resources>
+
+	<Window.Triggers>
+		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+			<EventTrigger.Actions>
+				<BeginStoryboard x:Name="_OnLoaded" Storyboard="{DynamicResource OnLoaded}"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+	</Window.Triggers>
+
+	<Grid x:Name="DocumentRoot" Width="640" Height="480">
+		<Grid.Background>
+			<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+				<LinearGradientBrush.RelativeTransform>
+					<TransformGroup>
+						<TranslateTransform X="0" Y="0"/>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="90"/>
+						<TranslateTransform X="0" Y="0"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</LinearGradientBrush.RelativeTransform>
+				<LinearGradientBrush.GradientStops>
+					<GradientStopCollection>
+						<GradientStop Color="sc#1, 0.30279085, 0.319364935, 0.3885955" Offset="0"/>
+						<GradientStop Color="#FFFFFFFF" Offset="0.78603056355073841"/>
+					</GradientStopCollection>
+				</LinearGradientBrush.GradientStops>
+			</LinearGradientBrush>
+		</Grid.Background>
+		<Grid.ColumnDefinitions>	
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="0.833333333333333*"/>
+			<RowDefinition Height="0.166666666666667*"/>
+		</Grid.RowDefinitions>
+		<FabrikamThrobbingItemsDemo:ThrobbingItemsControl Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="0" MinHeight="0" Margin="179.5,71.5,170.5,53.5" x:Name="ThrobbingItemsControl" RenderTransformOrigin="0.5,0.5" ItemTemplate="{DynamicResource WidgetTemplate}" ItemsPerRefresh="1" IsThrobbing="True">
+			<FabrikamThrobbingItemsDemo:ThrobbingItemsControl.ItemsSource>
+				<Binding Mode="Default" Source="{StaticResource WidgetsDS}" XPath="/Widgets/Widget"/>
+			</FabrikamThrobbingItemsDemo:ThrobbingItemsControl.ItemsSource>
+		</FabrikamThrobbingItemsDemo:ThrobbingItemsControl>
+		<Image Width="269.814814814815" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Stretch" Grid.Row="1" MinHeight="0" Margin="0,17,13.5925925925928,14.5946843853821" x:Name="logo_png" RenderTransformOrigin="0.5,0.5" IsEnabled="True">
+			<Image.Source>
+				<BitmapImage UriSource="pack://application:,,,/logo.png"/>
+			</Image.Source>
+		</Image>
+		<TextBlock Width="288" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Stretch" Grid.Row="1" Grid.RowSpan="1" MinHeight="0" Margin="15,13.0000000000001,0,14.0000000000003" x:Name="TextBlock" RenderTransformOrigin="0.5,0.5" TextWrapping="Wrap">
+			<Run FontSize="14">Custom control that loops thru all items in the collection and displays them one (or more) at a time.</Run>
+		</TextBlock>
+	</Grid>
+</Window>

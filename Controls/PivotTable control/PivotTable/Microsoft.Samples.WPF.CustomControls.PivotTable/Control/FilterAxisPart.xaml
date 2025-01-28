@@ -1,0 +1,55 @@
+<UserControl x:Class="Microsoft.Samples.WPF.CustomControls.FilterAxisPart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Microsoft.Samples.WPF.CustomControls"
+	AllowDrop="true"
+	Background="Transparent">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Resources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			
+			<Style TargetType="{x:Type ListBoxItem}">
+				<Setter Property="Padding" Value="0"/>
+				<Setter Property="Margin" Value="0"/>
+			</Style>
+
+			<Style TargetType="{x:Type TextBlock}" x:Key="DescriptionTextBoxStyle">
+				<Setter Property="Visibility" Value="Collapsed"/>
+				<Setter Property="HorizontalAlignment" Value="Center"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
+				<Setter Property="Margin" Value="4"/>
+				<Style.Triggers>
+					<DataTrigger Binding="{Binding Path=Hierarchies.Count}" Value="0">
+						
+					</DataTrigger>
+					<DataTrigger Binding="{Binding Path=Hierarchies.Count}" Value="0">
+						<Setter Property="Visibility" Value="Visible"/>						
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+			
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<Grid Name="HierarchiesGrid">
+		<TextBlock Style="{StaticResource DescriptionTextBoxStyle}">
+			Drop filter hierarchies here.
+		</TextBlock>
+		<ItemsControl 				 
+				 HorizontalContentAlignment="Stretch"
+				 ItemsSource="{Binding Path=Hierarchies}"
+				 Padding="0">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Border BorderThickness="1" BorderBrush="Black">
+						<Grid Background="{StaticResource VerticalAxisElementsBrush}">
+							<local:MembersFilterTreeView Hierarchy="{Binding}" SelectionMode="ParentControlsChildren"/>
+						</Grid>
+					</Border>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		
+	</Grid>
+</UserControl>

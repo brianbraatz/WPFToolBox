@@ -1,0 +1,58 @@
+<UserControl x:Class="Microsoft.Samples.WPF.CustomControls.PivotTable"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Microsoft.Samples.WPF.CustomControls"
+	Background="Transparent">
+
+	<UserControl.Resources>
+		<local:SharedSizeScope x:Key="SizeScope"/>
+		<local:TuplesPositionRepository x:Key="RowTuplesPosition"/>
+		<local:TuplesPositionRepository x:Key="ColumnTuplesPosition"/>
+	</UserControl.Resources>
+	
+	<DockPanel LastChildFill="true" local:SharedSizeScope.SharedSizeScope="{StaticResource SizeScope}">
+		
+		<local:DimensionsAndMeasuresPart DockPanel.Dock="Left" x:Name="DimensionsAndMeasures"/>
+		<ScrollViewer
+			HorizontalScrollBarVisibility="Auto"
+			VerticalScrollBarVisibility="Auto">
+			<Grid SnapsToDevicePixels="true">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" MinHeight="20"/>
+					<RowDefinition Height="Auto" MinHeight="20"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+
+				<local:FilterAxisPart Grid.Row="0" Grid.Column="0" x:Name="FilterAxisControl" 
+						MinHeight="20" MinWidth="20"/>
+				
+				<local:ColumnsHierarchiesPart Grid.Row="0" Grid.Column="1" x:Name="ColumnsHierarchies" 
+						MinHeight="20" MinWidth="20"/>
+				
+				<local:ColumnsMembersPart Grid.Row="1" Grid.Column="1" x:Name="ColumnsMembers" 
+						MinHeight="20" MinWidth="20" TuplesPosition="{StaticResource ColumnTuplesPosition}"/>
+				
+				<local:RowsHierarchiesPart Grid.Row="1" Grid.Column="0" x:Name="RowsHierarchies" 
+						MinHeight="20" MinWidth="20"/>
+				
+				<local:RowsMembersPart Grid.Row="2" Grid.Column="0" x:Name="RowsMembers" 
+						MinHeight="20" MinWidth="20" TuplesPosition="{StaticResource RowTuplesPosition}"/>
+				
+				<local:CellsPart Grid.Row="2" Grid.Column="1" x:Name="Cells" 
+						RowTuplesPosition="{StaticResource RowTuplesPosition}" 
+						ColumnTuplesPosition="{StaticResource ColumnTuplesPosition}"/>
+				
+				<Border BorderThickness="1" BorderBrush="Black" Grid.Row="0" Grid.Column="0"/>
+				<Border BorderThickness="1" BorderBrush="Black" Grid.Row="0" Grid.Column="1"/>
+				<Border BorderThickness="1" BorderBrush="Black" Grid.Row="0" Grid.Column="2"/>
+				<Border BorderThickness="1" BorderBrush="Black" Grid.Row="1" Grid.Column="0"/>
+				<Border BorderThickness="1" BorderBrush="Black" Grid.Row="1" Grid.Column="1"/>
+				<Border BorderThickness="1" BorderBrush="Black" Grid.Row="1" Grid.Column="2"/>
+			</Grid>
+		</ScrollViewer>
+	</DockPanel>
+</UserControl>

@@ -1,0 +1,559 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>knom's developer corner : Vista Command Link Control with C# / Windows Forms</title>
+ 
+
+
+
+
+<meta name="keywords" content="Development,Windows Vista">
+<meta name="description" content="How to write a wrapper control for Windows Vista command links in Windows Forms / C#.">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/knom/pingback.aspx">
+<link rel="stylesheet" href="command_5F00_link.aspx_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="command_5F00_link.aspx_files/print.htm" type="text/css" media="print">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="knom's developer corner (RSS 2.0)" href="http://blogs.msdn.com/knom/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="knom's developer corner (Atom 1.0)" href="http://blogs.msdn.com/knom/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Vista Command Link Control with C# / Windows Forms Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/knom/commentrss.aspx?PostID=1860481">
+
+	<script src="command_5F00_link.aspx_files/global.js" type="text/javascript"></script>
+<style>
+.DoNotDisplay { display: none; }
+</style><style type="text/css">.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }
+</style><style type="text/css">.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }
+</style><style type="text/css">.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }
+</style><style type="text/css">.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }
+</style><style type="text/css">.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }
+</style><style type="text/css">.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }
+</style></head><body>
+<form name="aspnetForm" method="post" action="/knom/archive/2007/03/12/command_5F00_link.aspx" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFI2N0bDAwJF8kY3RsMDAkXyRidCRfJHdzJF8kU2VhcmNoQm94OF9SPxZcTrUZtH+KlInBIuHdXL8=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script language="javascript" type="text/javascript" src="command_5F00_link.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script language="javascript" type="text/javascript">
+var RatingControlAJAX = {
+"SaveRating":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Blogs.Controls.BlogRatePost',id,'SaveRating',[p0],cb,0,0,0,1);}};
+</script><script language="javascript" type="text/javascript">
+var ThreadSubscribeLinkButton = {
+"ToggleEmailReplies":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Controls.ThreadSubscribeLinkButton',id,'ToggleEmailReplies',[p0],cb,0,0,0,0);}};
+</script><script type="text/javascript" src="command_5F00_link.aspx_files/ratingcontrol.js"></script>
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Signed in as <a href="http://blogs.msdn.com/user/EditProfile.aspx?ReturnUrl=/blogs/post.aspx?App=knom&amp;y=2007&amp;m=03&amp;d=12&amp;PostName=command_5F00_link">bbraatz</a>
+ | <a id="ctl00___ctl00___duw1_rc1___logout" href="http://blogs.msdn.com/logout.aspx">Sign out</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="wrapper">
+	<div id="container">
+		<div id="header">
+			
+<div id="title">
+	<div id="SearchSideBar">
+		
+<div id="search">
+	<input name="ctl00$_$ctl00$_$bt$_$ws$_$SearchBox" id="ctl00___ctl00___bt___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bt___ws___SearchButton(event);" type="text">
+	<a id="ctl00___ctl00___bt___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bt$_$ws$_$SearchButton','')">Search</a>
+</div>	
+	</div>
+	<h1><a id="ctl00___ctl00___bt___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/knom/default.aspx">knom's developer corner</a></h1>
+	<p id="tagline"></p>
+</div>
+<div id="nav">
+	<div id="SubscriptionsSideBar">
+		
+<div id="subscriptions">
+<ul>
+	<li><a id="ctl00___ctl00___bt___s___rss" href="http://blogs.msdn.com/knom/rss.xml">RSS 2.0</a></li>
+	<li><a id="ctl00___ctl00___bt___s___atom" href="http://blogs.msdn.com/knom/atom.xml">Atom 1.0</a></li>
+	<li><a id="ctl00___ctl00___bt___s___email" href="http://blogs.msdn.com/knom/emailsubscriptions.aspx">Email alerts</a></li>
+</ul></div>
+	</div>
+	<ul>
+		<li><a id="ctl00___ctl00___bt___home" href="http://blogs.msdn.com/knom/default.aspx">Home</a></li>
+		
+		<li><a id="ctl00___ctl00___bt___Contactlink1" href="http://blogs.msdn.com/knom/contact.aspx">Email</a></li>
+	</ul>
+</div></div>
+		<div id="contentmargin"></div>
+		<div id="contentwrapper">
+			<div id="sidebar-a">
+				
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul>
+	<ul class="SidebarTagCloud">
+<li class="Tag1"><a href="http://blogs.msdn.com/knom/archive/tags/Development/default.aspx" rel="tag">Development</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/knom/archive/tags/Events/default.aspx" rel="tag">Events</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/knom/archive/tags/Mobility/default.aspx" rel="tag">Mobility</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/knom/archive/tags/MVPs/default.aspx" rel="tag">MVPs</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/knom/archive/tags/Personal/default.aspx" rel="tag">Personal</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/knom/archive/tags/Popfly/default.aspx" rel="tag">Popfly</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/knom/archive/tags/Silverlight/default.aspx" rel="tag">Silverlight</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/knom/archive/tags/Visual+Studio+2008/default.aspx" rel="tag">Visual Studio 2008</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/knom/archive/tags/Windows+Vista/default.aspx" rel="tag">Windows Vista</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/knom/archive/tags/Work/default.aspx" rel="tag">Work</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/knom/archive/tags/WPF/default.aspx" rel="tag">WPF</a></li>
+</ul>
+
+	</ul>
+</div>
+
+<div id="NewsSideBar">
+	
+<h3>News</h3>
+<div id="news">
+	<iframe style="width: 100%; height: 100%;" src="command_5F00_link.aspx_files/IPImage.htm" frameborder="no"></iframe>
+</div>
+</div>
+
+<div id="ArchiveSideBar">
+	
+
+<h3>Archives</h3>
+<ul>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2007/10.aspx">October 2007 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2007/08.aspx">August 2007 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2007/07.aspx">July 2007 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2007/06.aspx">June 2007 (6)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2007/05.aspx">May 2007 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2007/04.aspx">April 2007 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2007/03.aspx">March 2007 (5)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2007/02.aspx">February 2007 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2007/01.aspx">January 2007 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2006/12.aspx">December 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2006/11.aspx">November 2006 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/knom/archive/2006/10.aspx">October 2006 (5)</a></li>
+
+</ul>
+</div>
+
+<div id="LinkSideBar">
+	
+
+</div>
+			</div>
+			<div id="content"><div id="content2">
+				
+			
+
+
+
+
+<div class="post">
+	<div class="posthead">
+		<div class="postviewhead">
+			Monday, March 12, 2007 9:44 AM
+			by
+			<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=14708">knom</a> 
+			<span class="CommonRateControl" id="ctl00___ctl00___ctl01___Entry___Ratings" title="Not yet rated"><img title="Poor" src="command_5F00_link.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Poor" src="command_5F00_link.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Fair" src="command_5F00_link.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Fair" src="command_5F00_link.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Average" src="command_5F00_link.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Average" src="command_5F00_link.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Good" src="command_5F00_link.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Good" src="command_5F00_link.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Excellent" src="command_5F00_link.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Excellent" src="command_5F00_link.aspx_files/star-right-off.gif" align="absmiddle" border="0"></span><input value="0" id="ctl00___ctl00___ctl01___Entry___Ratings_Value" type="hidden">
+		</div>
+		<h2>Vista Command Link Control with C# / Windows Forms</h2>
+	</div>
+	<div class="postcontent">
+		<p>I'm pretty sure all of you, who are using Windows Vista, have come along this new control:</p>
+<p><a href="http://blogs.msdn.com/blogfiles/knom/WindowsLiveWriter/VistaCommandLinkControlwithCWindowsForms_123AC/image%5B13%5D.png" atomicselection="true" mce_href="http://blogs.msdn.com/blogfiles/knom/WindowsLiveWriter/VistaCommandLinkControlwithCWindowsForms_123AC/image%5B13%5D.png"><img style="width: 408px; height: 106px;" src="command_5F00_link.aspx_files/image_thumb13.png" mce_src="http://blogs.msdn.com/blogfiles/knom/WindowsLiveWriter/VistaCommandLinkControlwithCWindowsForms_123AC/image_thumb%5B13%5D.png" border="0" height="106" width="408"></a> </p>
+<p>It's called "Command Link" and it is used across many of the new
+wizards and dialogs included for Windows Vista. I was wondering how to
+include such controls in an own Windows Forms application (as for WPF I
+could just simply template a button).</p>
+<p>While researching, I found out, that this command-link-button is a
+simple Win32 button restyled with a new button style (BS_COMMANDLINK).
+As Windows Forms buttons also wrap classic Win32 buttons, it is
+possible to restyle one of these for a command link button. </p>
+<p>All you have to do is set the <em>FlatStyle</em> of the button to <em>System</em> and apply the BS_COMMANDLINK style to the <em>Style</em> property of the <em>CreateParams</em> of the button.</p><pre class="csharpcode">    <span class="kwrd">public</span> <span class="kwrd">class</span> CommandLink:Button
+    {
+        <span class="kwrd">const</span> <span class="kwrd">int</span> BS_COMMANDLINK = 0x0000000E;
+
+        <span class="kwrd">public</span> CommandLink()
+        {
+            <span class="kwrd">this</span>.FlatStyle = FlatStyle.System;
+        }
+
+
+        <span class="kwrd">protected</span> <span class="kwrd">override</span> CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cParams = <span class="kwrd">base</span>.CreateParams;
+                cParams.Style |= BS_COMMANDLINK;
+                <span class="kwrd">return</span> cParams;
+            }
+        }
+    }</pre>
+
+
+
+
+<p>This will produce a basic command link, as shown above, including a
+text, but now description. To set a description text, you've got to
+send a special button WindowMessage BCM_SETNOTE:</p><pre class="csharpcode">  SendMessage(<span class="kwrd">new</span> HandleRef(<span class="kwrd">this</span>, <span class="kwrd">this</span>.Handle),
+    BCM_SETNOTE,
+    IntPtr.Zero, <span class="str">"Note text"</span>);</pre>
+
+
+<p>Getting the content of the note text requires to messages
+BCM_GETNOTELENGTH, returning the length of the note, and BCM_GETNOTE,
+querying n+1 characters of the note text.</p><pre class="csharpcode">  <span class="kwrd">int</span> length = SendMessage(<span class="kwrd">new</span> HandleRef(<span class="kwrd">this</span>, <span class="kwrd">this</span>.Handle),
+    BCM_GETNOTELENGTH,
+    IntPtr.Zero, IntPtr.Zero) + 1;
+
+  StringBuilder sb = <span class="kwrd">new</span> StringBuilder(length);
+
+  SendMessage(<span class="kwrd">new</span> HandleRef(<span class="kwrd">this</span>, <span class="kwrd">this</span>.Handle),
+    BCM_GETNOTE,
+    <span class="kwrd">ref</span> length, sb);
+
+  <span class="kwrd">return</span> sb.ToString();</pre>
+
+
+<p>Finally you can also switch the default icon of the command link to a shield, to indicate an administrative operation.</p>
+<p>To establish this, you can also use a message, BCM_SETSHIELD (but
+you have to remember the current value of it, as there is no
+BCM_GETSHIELD,..)</p><pre class="csharpcode">  SendMessage(<span class="kwrd">new</span> HandleRef(<span class="kwrd">this</span>, <span class="kwrd">this</span>.Handle), BCM_SETSHIELD, 
+    IntPtr.Zero, <span class="kwrd">true</span>);</pre>
+
+
+<p>I created properties to wrap these two messages, and packed it all
+up into a custom WinForms control! With this, all you need to do is
+drop a CommandLink into your form and set the properties to create
+forms like this:</p>
+<p><a href="http://blogs.msdn.com/blogfiles/knom/WindowsLiveWriter/VistaCommandLinkControlwithCWindowsForms_123AC/image%5B18%5D.png" atomicselection="true" mce_href="http://blogs.msdn.com/blogfiles/knom/WindowsLiveWriter/VistaCommandLinkControlwithCWindowsForms_123AC/image%5B18%5D.png"><img style="width: 240px; height: 150px;" src="command_5F00_link.aspx_files/image_thumb18.png" mce_src="http://blogs.msdn.com/blogfiles/knom/WindowsLiveWriter/VistaCommandLinkControlwithCWindowsForms_123AC/image_thumb%5B18%5D.png" border="0" height="150" width="240"></a> </p>
+<p>Feel free to download the CommandLink control source included as attachment!</p>
+
+	</div>
+	<div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/knom/archive/tags/Development/default.aspx" rel="tag">Development</a>, <a href="http://blogs.msdn.com/knom/archive/tags/Windows+Vista/default.aspx" rel="tag">Windows Vista</a></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+	
+	
+<br>
+<b>Attachment(s): </b><a id="ctl00___ctl00___ctl01___Entry___Attachment___DownLoadLink" href="http://blogs.msdn.com/knom/attachment/1860481.ashx">CommandLink.cs</a>						
+</div>            
+
+
+
+	<h3>
+	Comments
+</h3>
+	<div id="comments">
+
+	<div class="comment">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_PermaLink" title="permalink" href="http://blogs.msdn.com/knom/archive/2007/03/12/command_5F00_link.aspx#1863280">#</a>
+		re: Vista Command Link Control with C# / Windows Forms<a name="1863280"></a>
+	</h4>
+	<div class="commentssubhead">
+		Monday, March 12, 2007 4:44 AM 
+		by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_NameLink" title="DanielMoth" href="http://www.danielmoth.com/Blog/2006/07/vista-commandlink-button_115284955084671241.html" target="_blank">DanielMoth</a>
+		<span class="commentspan"></span>
+	</div>
+	<div class="commentsbody">
+		<p>The Winforms wrapper is "old" :)</p>
+<p>I keep getting questions about a WPF version. If you do create a
+publicly shareable one, let me know so I can link to it from my blog.</p>
+
+	</div>
+	</div>
+
+	<div class="commentowner">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_PermaLink" title="permalink" href="http://blogs.msdn.com/knom/archive/2007/03/12/command_5F00_link.aspx#1864419">#</a>
+		re: Vista Command Link Control with C# / Windows Forms<a name="1864419"></a>
+	</h4>
+	<div class="commentssubhead">
+		Monday, March 12, 2007 8:50 AM 
+		by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_NameLink" title="knom" href="http://blogs.msdn.com/user/Profile.aspx?UserID=14708" target="_blank">knom</a>
+		<span class="commentspan"></span>
+	</div>
+	<div class="commentsbody">
+		<p>There IS a shareable WPF version of the Command Link:</p>
+<p>You just need to leverage the "Vista Bridge" Library, which is part of the Windows SDK!</p>
+
+	</div>
+	</div>
+
+	<div class="comment">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_PermaLink" title="permalink" href="http://blogs.msdn.com/knom/archive/2007/03/12/command_5F00_link.aspx#1864972">#</a>
+		re: Vista Command Link Control with C# / Windows Forms<a name="1864972"></a>
+	</h4>
+	<div class="commentssubhead">
+		Monday, March 12, 2007 10:00 AM 
+		by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_NameLink" title="Kevin Daly" href="http://www.dotnetjunkies.com/weblog/kevdaly" target="_blank">Kevin Daly</a>
+		<span class="commentspan"></span>
+	</div>
+	<div class="commentsbody">
+		<p>Re.
+the WPF issue: It's disappointing that this (along with other new
+system UI elements in Vista) wasn't implemented as WPF to start with
+(or didn't at least get some direct Windows Forms support...but WPF
+would have been my preference anyway).</p>
+<p>After PDC 2003 one thing we definitely *weren't* led to expect was a
+truckload of new COM libraries and native code APIs, and once again
+having to write managed wrappers for them (I even seem to recall, with
+intense if rueful mirth, something about how it would be native code
+that had to have wrappers for managed elements...).</p>
+<p>I love Vista and especially WPF, but Microsoft do have some serious
+sucking up to do among those of us who've thrown ourselves into managed
+code, confident that it was the way of the future...'cos right now
+we're feeling a bit stupid while it looks like the status of .NET under
+Vista isn't that much different from the status of VB under say Windows
+2000.</p>
+<p>Sorry about the rant but I just had to get that off my chest.</p>
+
+	</div>
+	</div>
+
+	<div class="commentowner">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_PermaLink" title="permalink" href="http://blogs.msdn.com/knom/archive/2007/03/12/command_5F00_link.aspx#1875737">#</a>
+		re: Vista Command Link Control with C# / Windows Forms<a name="1875737"></a>
+	</h4>
+	<div class="commentssubhead">
+		Tuesday, March 13, 2007 5:11 PM 
+		by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_NameLink" title="knom" href="http://blogs.msdn.com/user/Profile.aspx?UserID=14708" target="_blank">knom</a>
+		<span class="commentspan"></span>
+	</div>
+	<div class="commentsbody">
+		<p>I agree with you, I'd also expected more managed integration!</p>
+<p>But anyway the .NET 3.0 is a BIG new MANAGED part in Windows Vista
+("unfortunately" it is also available on XP, win2k3 so that doesn't
+count full).</p>
+<p>And to be honest, Command Links for instance (although unmanaged) aren't that hard to implement!</p>
+
+	</div>
+	</div>
+
+	</div>
+
+
+
+
+
+<em>New Comments to this post are disabled</em>
+
+   
+    
+			</div></div>
+			<div id="contentfooter">&nbsp;</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bt___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bt$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+<script language="javascript">var ctl00___ctl00___ctl01___Entry___Ratings=new RateControl('ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings_Value', 5, '/Themes/default/images/common/', false, 'CommonRateControl','CommonRateControlActive','CommonRateControlReadOnly',['Terrible','Poor','Fair','Average','Good','Excellent'],false,true);</script>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/knom/archive/2007/03/12/command_5F00_link.aspx"
+dc:identifier="http://blogs.msdn.com/knom/archive/2007/03/12/command_5F00_link.aspx"
+dc:title="Vista Command Link Control with C# / Windows Forms"
+trackback:ping="http://blogs.msdn.com/knom/trackback.aspx?PostID=1860481" />
+</rdf:RDF>
+-->
+</form>
+</body></html>

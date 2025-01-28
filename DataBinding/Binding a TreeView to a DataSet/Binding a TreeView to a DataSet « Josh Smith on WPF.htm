@@ -1,0 +1,615 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0079)http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/ -->
+<HTML lang=en dir=ltr xmlns="http://www.w3.org/1999/xhtml"><HEAD 
+profile=http://gmpg.org/xfn/11><TITLE>Binding a TreeView to a DataSet « Josh Smith on WPF</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><LINK media=screen 
+href="Binding a TreeView to a DataSet « Josh Smith on WPF_files/style.css" 
+type=text/css rel=stylesheet><LINK title="RSS 2.0" 
+href="http://joshsmithonwpf.wordpress.com/feed/" type=application/rss+xml 
+rel=alternate><LINK href="http://joshsmithonwpf.wordpress.com/xmlrpc.php" 
+rel=pingback><LINK 
+href="Binding a TreeView to a DataSet « Josh Smith on WPF_files/global.css" 
+type=text/css rel=stylesheet><LINK title=RSD 
+href="http://joshsmithonwpf.wordpress.com/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT type=text/javascript>
+
+function addLoadEvent(func) {
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      oldonload();
+      func();
+    }
+  }
+}
+</SCRIPT>
+
+<SCRIPT 
+src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/urchin.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+_uacct = "UA-52447-2";
+
+_udn = "wordpress.com";
+urchinTracker();
+</SCRIPT>
+<LINK title="Atom API" href="http://joshsmithonwpf.wordpress.com/wp-app.php" 
+type=application/atomserv+xml rel=introspection><LINK 
+href="http://joshsmithonwpf.wordpress.com/?openidserver=1" rel=openid.server>
+<STYLE type=text/css>#headerimg {
+	BACKGROUND: url(http://joshsmithonwpf.files.wordpress.com/2007/01/joshsmithonwpf_banner1.JPG) no-repeat
+}
+#header H1 {
+	DISPLAY: none
+}
+#header .description {
+	DISPLAY: none
+}
+</STYLE>
+<LINK 
+href="Binding a TreeView to a DataSet « Josh Smith on WPF_files/SyntaxHighlighter.css" 
+type=text/css rel=stylesheet></LINK></HEAD>
+<BODY 
+style="BACKGROUND-POSITION: center top; BACKGROUND-ATTACHMENT: fixed; BACKGROUND-IMAGE: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/bg.jpg); BACKGROUND-REPEAT: repeat-y">
+<DIV id=page>
+<DIV id=header>
+<DIV id=headerimg style="CURSOR: pointer" 
+onclick="location.href='http://joshsmithonwpf.wordpress.com';">
+<H1><A href="http://joshsmithonwpf.wordpress.com/">Josh Smith on WPF</A></H1>
+<DIV class=description>Thoughts about the Windows Presentation 
+Foundation</DIV></DIV></DIV>
+<UL id=pagebar 
+style="BACKGROUND: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/pagebar.jpg)">
+  <LI class="page_item "><A href="http://joshsmithonwpf.wordpress.com/">Home</A> 
+
+  <LI class="page_item page-item-73"><A title="A Guided Tour of&nbsp;WPF" 
+  href="http://joshsmithonwpf.wordpress.com/a-guided-tour-of-wpf/">A Guided Tour 
+  of&nbsp;WPF</A> 
+  <LI class="page_item page-item-2"><A title=About 
+  href="http://joshsmithonwpf.wordpress.com/about/">About</A> 
+  <LI class="page_item page-item-255"><A title=Presentation&nbsp;App 
+  href="http://joshsmithonwpf.wordpress.com/presentation-app/">Presentation&nbsp;App</A> 
+
+  <LI class="page_item page-item-19"><A title="WPF Challenge&nbsp;Submissions" 
+  href="http://joshsmithonwpf.wordpress.com/xbap-submissions/">WPF 
+  Challenge&nbsp;Submissions</A> </LI></UL>
+<DIV id=grad 
+style="BACKGROUND: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/topgrad.jpg); WIDTH: 100%; HEIGHT: 65px"></DIV>
+<DIV class=widecolumn id=content>
+<DIV class=post id=post-93>
+<H2><A title="Permanent Link: Binding a TreeView to a&nbsp;DataSet" 
+href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/" 
+rel=bookmark>Binding a TreeView to a&nbsp;DataSet</A></H2>
+<DIV class=entry>
+<DIV class=snap_preview>
+<P>This blog entry demonstrates the fundamentals of binding a WPF TreeView to a 
+DataSet with two related DataTables. The technique presented herein could easily 
+be extended to fit more sophisticated requirements, such as binding to more than 
+two tables.</P>
+<P>Many applications need to display hierarchical data in a TreeView, and often 
+that data is retrieved from a database. In many situations the developer just 
+needs to bind the TreeView directly to the DataSet which was populated with 
+database data; creating custom domain objects and collections of those objects 
+can be overkill sometimes. If you are currently in that situation, rest assured 
+that it is actually fairly trivial to do this in WPF. <IMG class=wp-smiley 
+alt=:) 
+src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/icon_smile.gif"> 
+</P>
+<P>The basic gist of the solution is to bind the top level of TreeViewItems 
+against the master DataTable, and then bind against DataRelations for any 
+descendants of the root nodes. You need to use a HierarchicalDataTemplate for 
+every non-leaf level of nodes, in other words, only the very lowest DataTable in 
+the hierarchy is displayed with a non-hierarchical DataTemplate.</P>
+<P>Let’s just get right into an example. Here is a method in a class called 
+DataSetCreator which creates a DataSet with two related DataTables:</P>
+<P><IMG alt="Creating a hierarchical&nbsp;DataSet" 
+src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/bindingtreeviewtodataset_createds.png"></P>
+<P>The resultant DataSet has two DataTables (‘Master’ and ‘Detail’) and one 
+DataRelation (‘Master2Detail’). We want a TreeView to display the Master rows as 
+top-level nodes and the Detail rows as children of their respective parent node. 
+Here is the XAML for a Window which contains a TreeView configured to load and 
+display that data:</P>
+<P><IMG alt="Binding a TreeView to a&nbsp;DataSet" 
+src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/bindingtreeviewtodataset_xaml.png"></P>
+<P>If you had, say, three related tables (Master –&gt; Detail –&gt; DetailInfo) 
+then you could have the ‘DetailTemplate’ be a HierarchicalDataTemplate whose 
+ItemsSource was bound to the DataRelation between ‘Detail’ and ‘DetailInfo,’ and 
+the ItemTemplate a DataTemplate which displays the pertinent information in that 
+table.</P>
+<P>When you run the demo application and expand the root nodes, the TreeView 
+looks like this:</P>
+<P><IMG alt="The bound&nbsp;TreeView" 
+src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/bindingtreeviewtodataset_screenshot.png"></P>
+<P>&nbsp;<A title="Binding a TreeView to a DataSet - source&nbsp;code" 
+href="http://joshsmithonwpf.files.wordpress.com/2007/05/bindingtreeviewtodatasetzip.doc">Click 
+here</A> to download the demo project.&nbsp; Be sure to change the file 
+extension from DOC to ZIP and then unzip it.</P></DIV>
+<P class="postmetadata alt"><SMALL>This entry was posted on Saturday, May 5th, 
+2007 at 11:10 am and is filed under <A title="View all posts in Praxis" 
+href="http://wordpress.com/tag/praxis/" rel="category tag">Praxis</A>. You can 
+follow any responses to this entry through the <A 
+href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/feed/">RSS 
+2.0</A> feed. You can <A 
+href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#respond">leave 
+a response</A>, or <A 
+href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/trackback/" 
+rel=trackback>trackback</A> from your own site. </SMALL></P></DIV></DIV><!-- You can start editing here. -->
+<H3 id=comments>19 Responses to “Binding a TreeView to a&nbsp;DataSet”</H3>
+<OL class=commentlist>
+  <LI class=alt id=comment-906><CITE><A 
+  href="http://blog.developpez.com/?blog=121" rel="external nofollow">Matthieu 
+  MEZIL</A></CITE> Says: <BR><SMALL class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-906">May 
+  5th, 2007 at 1:31 pm</A> </SMALL>
+  <P>It is really easier than with “classic” WinForms !</P>
+  <LI id=comment-907><IMG class="avatar avatar-joshsmith avatar-32" height=32 
+  alt="" 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-907">May 
+  5th, 2007 at 2:51 pm</A> </SMALL>
+  <P>Matthieu,</P>
+  <P>It certainly is. The WinForms TreeView does not provide any way to 
+  automatically generate its nodes based on a data source. The WPF TreeView 
+  makes this very easy. WPF rocks!</P>
+  <P>Josh</P>
+  <LI class=alt id=comment-1035><CITE><A 
+  href="http://xamlcoder.com/cs/blogs/joe/archive/2007/05/11/adventures-in-wpf-presentation-demos-and-links.aspx" 
+  rel="external nofollow">Joe's Blog : "Adventures in WPF" Presentation Demos 
+  and Links</A></CITE> Says: <BR><SMALL class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-1035">May 
+  11th, 2007 at 2:36 am</A> </SMALL>
+  <P>[…] Josh Smith on WPF - Hierarchal Data Binding […]</P>
+  <LI id=comment-1208><CITE>Michael</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-1208">May 
+  16th, 2007 at 8:39 pm</A> </SMALL>
+  <P>I am a complete noob at this so bear with me.</P>
+  <P>When I open the Window1.xaml, I get an error:</P>
+  <P>Assembly ” was not found. The ‘clr-namespace’ URI refers to an assembly 
+  that is not referenced by the project.</P>
+  <P>Am I missing something?</P>
+  <LI class=alt id=comment-1209><CITE>Michael</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-1209">May 
+  16th, 2007 at 8:51 pm</A> </SMALL>
+  <P>I had a look through the WPF Forums and consensus was that this is a 
+  bug.</P>
+  <LI id=comment-1210><IMG class="avatar avatar-joshsmith avatar-32" height=32 
+  alt="" 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-1210">May 
+  16th, 2007 at 10:14 pm</A> </SMALL>
+  <P>Michael,</P>
+  <P>Visual Studio’s XAML support is not quite “there yet.” It gives warnings 
+  for perfectly valid XAML constructs, which you can safely ignore.</P>
+  <P>Josh</P>
+  <LI class=alt id=comment-1394><CITE>Govind</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-1394">May 
+  22nd, 2007 at 9:45 am</A> </SMALL>
+  <P>Is there any way to select a treeview node (arbitrary child object) by 
+  passing a key, like we used to do in Windows common control library. ?<BR>When 
+  we want to select a Node, we could write this in VB6:</P>
+  <P>Set tvw.SelectedItem = tvw.Nodes.Items(”KEY1″)</P>
+  <P>“KEY1″ is a unique key for every node, Unique key was assigned while 
+  populating the treeview.</P>
+  <P>Additionally how to use tvw.Items.Contains method ?<BR>I think contains 
+  method only work at own level (not nested). Because Items collection is a new 
+  object for each child treeviewitem, this is very bad and consuming lots of 
+  memory, anyways, please help me.<BR>Thanks.<BR>Govind</P>
+  <LI id=comment-1395><IMG class="avatar avatar-joshsmith avatar-32" height=32 
+  alt="" 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-1395">May 
+  22nd, 2007 at 9:52 am</A> </SMALL>
+  <P>Govind,</P>
+  <P>No, TreeViewItems in WPF do not have a Key property.</P>
+  <P>The Items collection of TreeView only contains the data objects represented 
+  by the root-level nodes. You must use a recursive technique to walk through 
+  the items and set the IsSelected property to true on the TreeViewItem which 
+  you want to select.</P>
+  <P>Josh</P>
+  <LI class=alt id=comment-1396><CITE>Govind</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-1396">May 
+  22nd, 2007 at 10:19 am</A> </SMALL>
+  <P>Thanks Josh, But IsSelected is a read-only property, I remebered<BR>I tried 
+  the recursive technique for checking the desired object existance, But I think 
+  ICompare interface can help me for nodes comparsion this will also help me in 
+  sorting the tree, I will try this.</P>
+  <P>Additionally, I saw a method in Items property called MoveToCurrent (not 
+  exactly sure the name) as per doc it will select given node or will return 
+  false upon failure. But this method is also doesn’t work for me and always 
+  returns fails even I passed a true object. I will submit my code tomorrow. 
+  Many many thanks for replying.<BR>Govind</P>
+  <LI id=comment-1397><IMG class="avatar avatar-joshsmith avatar-32" height=32 
+  alt="" 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-1397">May 
+  22nd, 2007 at 10:44 am</A> </SMALL>
+  <P>Govind,</P>
+  <P>You should post further questions/code on the WPF Forum: <A 
+  href="http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=119&amp;SiteID=1" 
+  rel=nofollow>http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=119&amp;SiteID=1</A></P>
+  <P>Josh</P>
+  <LI class=alt id=comment-1973><CITE>George</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-1973">June 
+  13th, 2007 at 9:47 am</A> </SMALL>
+  <P>Hi,<BR>What about the case where you have a single table with a self 
+  reference?<BR>I’ve tried to modify the code but no luck <IMG class=wp-smiley 
+  alt=:( 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/icon_sad.gif"></P>
+  <LI id=comment-1976><IMG class="avatar avatar-joshsmith avatar-32" height=32 
+  alt="" 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-1976">June 
+  13th, 2007 at 10:04 am</A> </SMALL>
+  <P>George,</P>
+  <P>Hmmm, that’s an interesting question. You might want to search the WPF 
+  Forum, or post a question about it if you can’t find an answer. I’ve never 
+  tried to do that in WPF before.</P>
+  <P>Josh</P>
+  <LI class=alt id=comment-3926><CITE>LE Marek</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-3926">August 
+  12th, 2007 at 8:16 am</A> </SMALL>
+  <P>I used this binding(solution1), works good, but some thing works else then 
+  if I fill TreeView by treeview.Items.Add() (solution2). </P>
+  <P>For example:<BR>1) change Foreground of selected node. I get from 
+  treeview.SelectedItem<BR>Sol 2: TreeViewItem<BR>Sol 1: DataRowView<BR>&gt; So 
+  how can I access to treeviewitem.Foreground, if I get DataRowItem, 
+  respectively, how to change color of text of selected node?</P>
+  <P>2) using treeview.FindName(registeredName)<BR>&gt;What is registered name 
+  in sol 1? So how can I find node if I know ID of row from table to be able for 
+  example change text color?</P>
+  <P>Any help welcome.<BR>Thanks,</P>
+  <P>Marek</P>
+  <LI id=comment-4897><CITE>Abhinav</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-4897">September 
+  6th, 2007 at 11:59 pm</A> </SMALL>
+  <P>Hi,<BR>i have bound the TreeView to the Dataset and geet the Item. But they 
+  not TreeView Item . Neither I can TypeCast them to Treeview. Actually i want 
+  to write a Event Handleron the click of the Items. How can I do this?</P>
+  <P>Bye</P>
+  <LI class=alt id=comment-4901><IMG class="avatar avatar-joshsmith avatar-32" 
+  height=32 alt="" 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-4901">September 
+  7th, 2007 at 6:37 am</A> </SMALL>
+  <P>For general purpose questions about WPF, you should ask them on the WPF 
+  Forum: <A 
+  href="http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=119&amp;SiteID=1" 
+  rel=nofollow>http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=119&amp;SiteID=1</A> 
+  First search the forum to see if the question has already been answered.</P>
+  <P>If you have a question which relates to the topic of a blog post, then 
+  leave it as a comment on that post. </P>
+  <P>Thanks,<BR>Josh</P>
+  <LI id=comment-5008><CITE>Abhinav</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-5008">September 
+  11th, 2007 at 11:15 pm</A> </SMALL>
+  <P>Hi,</P>
+  <P>Can we do this when there are more than a DataRelation and I Want multiple 
+  levels i.e Nested Nodes.</P>
+  <P>Thanks<BR>Abhinav</P>
+  <LI class=alt id=comment-5021><CITE>Radek</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-5021">September 
+  12th, 2007 at 9:53 am</A> </SMALL>
+  <P>Hi.</P>
+  <P>Help me please. A need more as two tables bind to a treeview. Between 
+  tables in dataset I have relations. But this work onlly between two 
+tables.</P>
+  <P>Can we write any examle me.</P>
+  <P>I have Visual C# 2008 Express.</P>
+  <P>Radek</P>
+  <LI id=comment-5022><IMG class="avatar avatar-joshsmith avatar-32" height=32 
+  alt="" 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/joshsmith-32.jpg" 
+  width=32> <CITE><A href="http://joshsmithonwpf.wordpress.com/" 
+  rel="external nofollow">Josh Smith</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-5022">September 
+  12th, 2007 at 10:03 am</A> </SMALL>
+  <P>Abihav,<BR>This post mentions that situation, under the xaml snippet.</P>
+  <P>Radek,<BR>I’m not going to write an example for you. If you have a question 
+  which needs to be answered with any urgency, don’t post it here. Post it to 
+  the WPF Forum: <A 
+  href="http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=119&amp;SiteID=1" 
+  rel=nofollow>http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=119&amp;SiteID=1</A></P>
+  <P>Josh</P>
+  <LI class=alt id=comment-5279><CITE><A href="http://www.cosky.com/" 
+  rel="external nofollow">Eric Cosky</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/#comment-5279">September 
+  22nd, 2007 at 12:18 pm</A> </SMALL>
+  <P>Very informative example. Thanks for the write up!</P></LI></OL>
+<H3 id=respond>Leave a Reply</H3>
+<FORM id=commentform 
+action=http://joshsmithonwpf.wordpress.com/wp-comments-post.php method=post>
+<P><INPUT id=author tabIndex=1 size=22 name=author> <LABEL 
+for=author><SMALL>Name (required)</SMALL></LABEL></P>
+<P><INPUT id=email tabIndex=2 size=22 name=email> <LABEL for=email><SMALL>Mail 
+(will not be published) (required)</SMALL></LABEL></P>
+<P><INPUT id=url tabIndex=3 size=22 name=url> <LABEL 
+for=url><SMALL>Website</SMALL></LABEL></P><!--<p><small><strong>XHTML:</strong> You can use these tags: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p>-->
+<P><TEXTAREA id=comment tabIndex=4 name=comment rows=10 cols=100></TEXTAREA></P>
+<P><INPUT id=submit tabIndex=5 type=submit value="Submit Comment" name=submit> 
+<INPUT type=hidden value=93 name=comment_post_ID> </P></FORM></DIV>
+<DIV id=sidebar>
+<UL>
+  <LI>
+  <LI class="widget widget_text" id=text-1>
+  <H2 class=widgettitle>RSS Feed</H2>
+  <DIV class=textwidget><A href="http://joshsmithonwpf.wordpress.com/feed"><IMG 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/u14.png"></A> 
+  Feed the hungry with WPF</DIV>
+  <LI class="widget widget_text" id=text-5>
+  <H2 class=widgettitle>MY MVP PROFILE</H2>
+  <DIV class=textwidget>
+  <P align=center><A href="http://mvp.support.microsoft.com/default.aspx"><IMG 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/mvp_fullcolor_forscreen_small.thumbnail.png"></A></P><BR>My 
+  Microsoft MVP profile can be viewed <A 
+  href="https://mvp.support.microsoft.com/profile=5F7EC527-FEBC-4A5D-A11F-EEF73467D3D5">here</A>.</DIV>
+  <LI class="widget widget_text" id=text-3>
+  <H2 class=widgettitle>Sponsor</H2>
+  <DIV class=textwidget>
+  <P><SPAN style="FONT-SIZE: 8pt">Infragistics <B>NetAdvantage for WPF</B> is 
+  the world's first business-grade developer components for WPF, including 
+  datagrids, carousels, and editors, with built-in visual themes including 
+  Windows Vista Aero and Office 2007.&nbsp; Take advantage of our pure WPF 
+  platform features; including exciting high resolution graphics, rich styling 
+  and animation capabilities, and integrated UI virtualization technology. 
+  </SPAN><B><SPAN style="FONT-SIZE: 8pt; COLOR: black">Everything is all 
+  NEW!!</SPAN></B><SPAN style="FONT-SIZE: 8pt; COLOR: black"> This release gives 
+  developers the first opportunity to experience the next generation in 
+  NetAdvantage controls, designed and developed specifically for the WPF 
+  platform. </SPAN><SPAN style="FONT-SIZE: 8pt"></SPAN></P>
+  <P><SPAN style="FONT-SIZE: 8pt; COLOR: #1f497d"><A 
+  href="http://www.infragistics.com/adcounter/webads.aspx?adid=JSWPFBLOG&amp;utm_source=WPFBlog&amp;utm_date=Apr07&amp;utm_type=WPF&amp;utm_size=textandlogo">TRY 
+  IT NOW!</A></SPAN></P></DIV>
+  <LI class="widget widget_search" id=search>
+  <FORM id=searchform action=http://joshsmithonwpf.wordpress.com method=get>
+  <DIV><INPUT id=s size=15 name=s><BR><INPUT type=submit value=Search> 
+  </DIV></FORM>
+  <LI class="widget widget_text" id=text-4>
+  <H2 class=widgettitle>The WPF Challenge Winners</H2>
+  <DIV class=textwidget><A 
+  href="http://joshsmithonwpf.wordpress.com/2007/03/22/the-wpf-challenge-winners/">Check 
+  out who won the grandest competition in human history...</A></DIV>
+  <LI class="widget widget_recent_entries" id=recent-posts>
+  <H2 class=widgettitle>Recent Harangues</H2>
+  <UL>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/16/the-danger-of-assigning-event-handlers-in-xaml/">The 
+    Danger of Assigning Event Handlers in&nbsp;XAML </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/13/an-article-about-the-wpf-thought-process/">An 
+    article about the WPF thought&nbsp;process </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/07/binding-to-the-file-system/">Binding 
+    to the file&nbsp;system </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/01/data-binding-the-splitbuttonâs-contextmenu/">Data 
+    binding the SplitButton’s&nbsp;ContextMenu </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/30/upcoming-wpf-presentations/">Upcoming 
+    WPF&nbsp;Presentations </A></LI></UL>
+  <LI class="widget widget_categories" id=categories-1>
+  <H2 class=widgettitle>Divide and Conquer</H2>
+  <UL>
+    <LI class="cat-item cat-item-217"><A 
+    title="View all posts filed under Announcements" 
+    href="http://joshsmithonwpf.wordpress.com/category/announcements/">Announcements</A> 
+    (36) 
+    <LI class="cat-item cat-item-1002883"><A 
+    title="View all posts filed under Data Grids" 
+    href="http://joshsmithonwpf.wordpress.com/category/data-grids/">Data 
+    Grids</A> (2) 
+    <LI class="cat-item cat-item-70886"><A 
+    title="View all posts filed under Debugging" 
+    href="http://joshsmithonwpf.wordpress.com/category/debugging/">Debugging</A> 
+    (5) 
+    <LI class="cat-item cat-item-5264"><A 
+    title="View all posts filed under General Info" 
+    href="http://joshsmithonwpf.wordpress.com/category/general-info/">General 
+    Info</A> (11) 
+    <LI class="cat-item cat-item-731906"><A 
+    title="View all posts filed under Gotchas" 
+    href="http://joshsmithonwpf.wordpress.com/category/gotchas/">Gotchas</A> (1) 
+
+    <LI class="cat-item cat-item-17966"><A 
+    title="View all posts filed under Intermezzo" 
+    href="http://joshsmithonwpf.wordpress.com/category/intermezzo/">Intermezzo</A> 
+    (7) 
+    <LI class="cat-item cat-item-116238"><A 
+    title="View all posts filed under Orcas" 
+    href="http://joshsmithonwpf.wordpress.com/category/orcas/">Orcas</A> (1) 
+    <LI class="cat-item cat-item-30585"><A 
+    title="View all posts filed under Praxis" 
+    href="http://joshsmithonwpf.wordpress.com/category/praxis/">Praxis</A> (40) 
+    <LI class="cat-item cat-item-1548"><A 
+    title="View all posts filed under Public Speaking" 
+    href="http://joshsmithonwpf.wordpress.com/category/public-speaking/">Public 
+    Speaking</A> (6) 
+    <LI class="cat-item cat-item-287"><A title="View all posts filed under Rant" 
+    href="http://joshsmithonwpf.wordpress.com/category/rant/">Rant</A> (2) 
+    <LI class="cat-item cat-item-66841"><A 
+    title="View all posts filed under Reading Material" 
+    href="http://joshsmithonwpf.wordpress.com/category/reading-material/">Reading 
+    Material</A> (24) 
+    <LI class="cat-item cat-item-984139"><A 
+    title="View all posts filed under Silverlight" 
+    href="http://joshsmithonwpf.wordpress.com/category/silverlight/">Silverlight</A> 
+    (1) 
+    <LI class="cat-item cat-item-96136"><A 
+    title="View all posts filed under Snooping" 
+    href="http://joshsmithonwpf.wordpress.com/category/snooping/">Snooping</A> 
+    (3) 
+    <LI class="cat-item cat-item-714521"><A 
+    title="View all posts filed under The WPF Challenge" 
+    href="http://joshsmithonwpf.wordpress.com/category/the-wpf-challenge/">The 
+    WPF Challenge</A> (13) 
+    <LI class="cat-item cat-item-893962"><A 
+    title="View all posts filed under Theoria" 
+    href="http://joshsmithonwpf.wordpress.com/category/theoria/">Theoria</A> 
+    (13) 
+    <LI class="cat-item cat-item-3882"><A 
+    title="View all posts filed under Unit Testing" 
+    href="http://joshsmithonwpf.wordpress.com/category/unit-testing/">Unit 
+    Testing</A> (2) 
+    <LI class="cat-item cat-item-772681"><A 
+    title="View all posts filed under WPF.JoshSmith" 
+    href="http://joshsmithonwpf.wordpress.com/category/wpfjoshsmith/">WPF.JoshSmith</A> 
+    (1) 
+    <LI class="cat-item cat-item-814915"><A 
+    title="View all posts filed under XAML Madness" 
+    href="http://joshsmithonwpf.wordpress.com/category/xaml-madness/">XAML 
+    Madness</A> (11) </LI></UL>
+  <LI class="widget widget_archives" id=archives>
+  <H2 class=widgettitle>Blog Log</H2>
+  <UL>
+    <LI><A title="October 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/">October 
+    2007</A>&nbsp;(4) 
+    <LI><A title="September 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/">September 
+    2007</A>&nbsp;(5) 
+    <LI><A title="August 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/08/">August 2007</A>&nbsp;(9) 
+
+    <LI><A title="July 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/07/">July 2007</A>&nbsp;(10) 
+    <LI><A title="June 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/06/">June 2007</A>&nbsp;(14) 
+    <LI><A title="May 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/05/">May 2007</A>&nbsp;(15) 
+    <LI><A title="April 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/04/">April 2007</A>&nbsp;(15) 
+
+    <LI><A title="March 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/03/">March 2007</A>&nbsp;(14) 
+
+    <LI><A title="February 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/">February 
+    2007</A>&nbsp;(19) </LI></UL>
+  <LI class="widget widget_text" id=text-2>
+  <H2 class=widgettitle>The WPF.JoshSmith Library</H2>
+  <DIV class=textwidget>
+  <P align=center><A 
+  href="http://www.codeproject.com/useritems/WPFJoshSmith.asp"><IMG 
+  src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/cpbob.png"></A> 
+  </P>
+  <P>Download my free WPF library from the CodeProject.</P></DIV>
+  <LI class="widget widget_links" id=links>
+  <H2 class=widgettitle>Blogroll</H2>
+  <UL>
+    <LI><A title="Great practical advice on databinding in WPF." 
+    href="http://www.beacosta.com/">Beatriz Costa</A> 
+    <LI><A 
+    title="A great series of blog posts about a design pattern tailored to WPF, by Dan Crevier." 
+    href="http://blogs.msdn.com/dancre/archive/2006/10/11/datamodel-view-viewmodel-pattern-series.aspx">DM-V-VM 
+    Pattern Series</A> 
+    <LI><A title="Insights from a member of the WPF team at Microsoft." 
+    href="http://blogs.msdn.com/mikehillberg/default.aspx">Mike Hillberg on 
+    WPF</A> 
+    <LI><A title="The rants and raves of The WPF Hickster." 
+    href="http://www.nickthuesen.com/">Nick Thuesen</A> 
+    <LI><A title="Interesting and useful information about WPF." 
+    href="http://pavanpodila.spaces.live.com/blog/">Pavan Podila</A> 
+    <LI><A title="Words from a WPF Program Manager at Microsoft." 
+    href="http://rrelyea.spaces.live.com/">Rob Relyea</A> 
+    <LI><A 
+    title="Lee Brimelow’s excellent blog about WPF, with a focus on graphical design." 
+    href="http://www.thewpfblog.com/">The WPF Blog</A> 
+    <LI><A title="Great content by the folks who write the WPF docs." 
+    href="http://blogs.msdn.com/wpfsdk/">The WPF SDK Blog</A> 
+    <LI><A title="A comprehensive list of WPF blogs." 
+    href="http://blogs.msdn.com/tims/articles/475132.aspx">Tim Sneath’s WPF Blog 
+    Roll</A> </LI></UL>
+  <LI class="widget widget_stats_topposts" id=top-posts>
+  <H2 class=widgettitle>The posts people really like</H2>
+  <UL>
+    <LI><A href="http://joshsmithonwpf.wordpress.com/a-guided-tour-of-wpf/">A 
+    Guided Tour of WPF</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/24/stretching-content-in-an-expander-header/">Stretching 
+    Content in an Expander Header</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/presentation-app/">Presentation 
+    App</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/">Binding 
+    a TreeView to a DataSet</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/10/the-wpf-challenge/">The 
+    WPF Challenge</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/05/wpf-vs-windows-forms/">WPF 
+    vs. Windows Forms</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/03/29/tips-on-how-to-debug-and-learn-about-wpf/">Tips 
+    on how to debug and learn about WPF</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/16/the-danger-of-assigning-event-handlers-in-xaml/">The 
+    Danger of Assigning Event Handlers in XAML</A>
+    <LI><A href="http://joshsmithonwpf.wordpress.com/xbap-submissions/">WPF 
+    Challenge Submissions</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/06/12/searching-for-items-in-a-listbox/">Searching 
+    for items in a ListBox</A></LI></UL></LI></UL></DIV>
+<DIV id=footer>
+<P>Theme: Contempt by <A href="http://www.vault9.net/" 
+rel=designer>Vault9</A>.<BR><A href="http://wordpress.com/" rel=generator>Blog 
+at WordPress.com</A>. </P></DIV></DIV>
+<SCRIPT src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/quant.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>_qmeta="qc:adt=0;bti=Josh+Smith+on+WPF;lan=en;dat=20070505;pti=Binding+a+TreeView+to+a+DataSet;own=joshsmith";_qacct="p-18-mFEk4J448M";quantserve();</SCRIPT>
+<NOSCRIPT>
+<P><IMG style="DISPLAY: none" height=1 alt="" 
+src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/p-18-mFEk4J448M.gif" 
+width=1></P></NOSCRIPT>
+<SCRIPT src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/w.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+st_go({blog:'737883',v:'wpcom',post:'93',subd:'joshsmithonwpf'});
+ex_go({x_theme:'contempt',x_lang:'en',x_dc:'sat',x_adt:'0',x_public:'1',x_mapped:'0',x_loggedin:'0',x_noads:'seen,notsearch',x_ads:'no',x_pagetype:'permalink',x_postage:'30to365'});
+addLoadEvent(function(){linktracker_init(737883,93);});
+</SCRIPT>
+<!-- SyntaxHighlighter Stuff -->
+<SCRIPT 
+src="Binding a TreeView to a DataSet « Josh Smith on WPF_files/shCore.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+	dp.SyntaxHighlighter.ClipboardSwf = 'http://s.wordpress.com/wp-content/plugins/highlight/clipboard.swf';
+	dp.SyntaxHighlighter.HighlightAll('code');
+</SCRIPT>
+</BODY></HTML>

@@ -1,0 +1,24 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2006" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:MyAdvancedListbox="clr-namespace:MyAdvancedListbox"
+    x:Class="MyAdvancedListbox.Window1"
+    Title="Window1" Height="600" Width="800" Background="{DynamicResource MyWhite}">
+	<Window.Resources>
+		
+		<ObjectDataProvider x:Key="ResultListDS" d:IsDataSource="True" ObjectType="{x:Type MyAdvancedListbox:ResultList}"/>
+		<DataTemplate x:Key="ResultListTemplate">
+			<StackPanel Orientation="Horizontal" Margin="0,0,0,12" Tag="{Binding Mode=OneWay}">
+				<Image Margin="0,0,16,0" VerticalAlignment="Center" Width="40" Height="40" Source="{Binding Path=Picture}"/>
+				<TextBlock Margin="0,0,16,0" VerticalAlignment="Center" Width="200" Text="{Binding Path=Name}" Foreground="{DynamicResource MyGreen}"/>
+				<TextBox Margin="0,0,16,0" VerticalAlignment="Center" Width="26.14" Text="{Binding Path=Result}" x:Name="TextBox" GotFocus="Result_GotFocus"/>
+				<TextBox Margin="0,0,16,0" VerticalAlignment="Center" Width="200" Text="{Binding Path=Comment}" Height="Auto" GotFocus="Comment_GotFocus" KeyDown="Comment_KeyDown"/>
+				<ProgressBar Margin="0,0,16,0" Width="193.091" Height="12" Maximum="20" Value="{Binding Path=Text, ElementName=TextBox, Mode=Default}" VerticalAlignment="Center" Foreground="{DynamicResource MyGray}" Style="{DynamicResource ProgressBarStyle}"/>
+			</StackPanel>
+		</DataTemplate>
+		
+	</Window.Resources>
+	<Grid>
+		<ListBox IsSynchronizedWithCurrentItem="True" Background="{x:Null}" BorderBrush="{DynamicResource MyYellow}" BorderThickness="8,8,8,8" HorizontalAlignment="Stretch" Margin="8,8,8,8" VerticalAlignment="Stretch" Width="Auto" Height="Auto" ItemTemplate="{DynamicResource ResultListTemplate}" ItemsSource="{Binding Mode=OneWay, Source={StaticResource ResultListDS}}" ItemContainerStyle="{DynamicResource ListBoxItemStyle}" x:Name="lstResults"/>
+	</Grid>
+</Window>

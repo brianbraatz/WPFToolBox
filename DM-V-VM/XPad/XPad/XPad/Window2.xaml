@@ -1,0 +1,156 @@
+﻿<Window x:Class="XPad.Window2"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="XPad" Height="800" Width="1024" xmlns:local="clr-namespace:XPad"
+    WindowStartupLocation="CenterScreen"
+    >
+  <Window.Resources>
+    <ResourceDictionary  >
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Resources/Simple Styles.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      <ObjectDataProvider x:Key="UndoTitles" MethodName="get_UndoStackInfo" ObjectType="{x:Type local:UndoManager}"/>
+      <DataTemplate x:Key="ListBoxTemplate">
+        <TextBlock FontSize="22" Foreground="Red" Text="{Binding}"/>
+      </DataTemplate>
+    </ResourceDictionary>
+
+
+  </Window.Resources>
+
+  <Window.InputBindings>
+    <KeyBinding Command="ApplicationCommands.New" Modifiers="Control" Key="N"/>
+    <KeyBinding Command="ApplicationCommands.Open" Modifiers="Control" Key="O"/>
+    <KeyBinding Command="ApplicationCommands.Save" Modifiers="Control" Key="S"/>
+    <KeyBinding Command="ApplicationCommands.Close" Modifiers="Control" Key="Q"/>
+  </Window.InputBindings>
+  <DockPanel LastChildFill="True" >
+
+    <Menu DockPanel.Dock="Top" IsEnabled="True" Style="{DynamicResource MyMenu}">
+      <MenuItem Header="_File">
+        <MenuItem Style="{DynamicResource MenuItem}" Header="_New" local:UICommands.NewFileCommand="{Binding RelativeSource={x:Static RelativeSource.Self}}"/>
+        <MenuItem Style="{DynamicResource MenuItem}" Header="_Open" local:UICommands.OpenFileCommand="{Binding RelativeSource={x:Static RelativeSource.Self}}"/>
+        <MenuItem Style="{DynamicResource MenuItem}" Header="_Save" local:UICommands.SaveFileCommand="{Binding RelativeSource={x:Static RelativeSource.Self}}"/>
+        <Separator/>
+        <MenuItem Style="{DynamicResource MenuItem}" Header="E_xit" local:UICommands.ExitCommand="{Binding RelativeSource={x:Static RelativeSource.Self}}" />
+      </MenuItem>
+      <MenuItem Name="_editMenu">
+        <MenuItem.Header>_Edit</MenuItem.Header>
+        <MenuItem  IsEnabled="True" Name="_undo" Command="Undo">
+          <MenuItem.Header>_Undo</MenuItem.Header>
+        </MenuItem>
+        <MenuItem  IsEnabled="False" Name="_redo" Command="Redo">
+          <MenuItem.Header>_Redo</MenuItem.Header>
+        </MenuItem>
+        <Separator  />
+        <MenuItem Name="_cut" Command="Cut">
+          <MenuItem.Header>Cu_t</MenuItem.Header>
+        </MenuItem>
+        <MenuItem Name="_copy" Command="Copy">
+          <MenuItem.Header>_Copy</MenuItem.Header>
+        </MenuItem>
+        <MenuItem Name="_paste" Command="Paste">
+          <MenuItem.Header>_Paste</MenuItem.Header>
+        </MenuItem>
+        <MenuItem  Name="_delete" Command="Delete">
+          <MenuItem.Header>De_lete</MenuItem.Header>
+        </MenuItem>
+        <Separator />
+        <MenuItem  Name="_find"  InputGestureText="Ctrl+F">
+          <MenuItem.Header>_Find...</MenuItem.Header>
+        </MenuItem>
+        <MenuItem Name="_findNext" InputGestureText="F3">
+          <MenuItem.Header>Find _Next</MenuItem.Header>
+        </MenuItem>
+        <MenuItem Name="_replace"  InputGestureText="Ctrl+H">
+          <MenuItem.Header>_Replace...</MenuItem.Header>
+        </MenuItem>
+        <MenuItem Name="_goTo"  InputGestureText="Ctrl+G">
+          <MenuItem.Header>_Go To...</MenuItem.Header>
+        </MenuItem>
+        <Separator />
+        <MenuItem Command="SelectAll">
+          <MenuItem.Header>Select _All</MenuItem.Header>
+        </MenuItem>
+        <MenuItem InputGestureText="F5">
+          <MenuItem.Header>Time/_Date</MenuItem.Header>
+        </MenuItem>
+        <Separator />
+        <MenuItem >
+          <MenuItem.Header>_Escape To C</MenuItem.Header>
+        </MenuItem>
+        <MenuItem >
+          <MenuItem.Header>Escape To _XML</MenuItem.Header>
+        </MenuItem>
+      </MenuItem>
+      <MenuItem  Name="_helpMenu">
+        <MenuItem.Header>_Help</MenuItem.Header>
+        <MenuItem>
+          <MenuItem.Header>_Help Topics</MenuItem.Header>
+        </MenuItem>
+        <MenuItem  IsEnabled="False">
+          <MenuItem.Header>H_elp Home</MenuItem.Header>
+        </MenuItem>
+        <Separator />
+        <MenuItem >
+          <MenuItem.Header>_About XPad</MenuItem.Header>
+        </MenuItem>
+        <Separator/>
+        <MenuItem >
+          <MenuItem.Header>_Show Known Issues</MenuItem.Header>
+        </MenuItem>
+        <MenuItem >
+          <MenuItem.Header>Configure _File Associations...</MenuItem.Header>
+        </MenuItem>
+        <MenuItem  Name="reportIssue">
+          <MenuItem.Header>_Report an Issue</MenuItem.Header>
+        </MenuItem>
+      </MenuItem>
+    </Menu>
+
+    <ToolBar DockPanel.Dock="Top">
+      <Button Style="{DynamicResource Button}" Content="New file" local:UICommands.NewFileCommand="{Binding RelativeSource={x:Static RelativeSource.Self}}"/>
+      <Button Style="{DynamicResource Button}" Content="Open file" local:UICommands.OpenFileCommand="{Binding RelativeSource={x:Static RelativeSource.Self}}"/>
+      <Button Style="{DynamicResource Button}" Content="Save file" local:UICommands.SaveFileCommand="{Binding RelativeSource={x:Static RelativeSource.Self}}"/>
+      <Button Name="TestButton" Content="Test" Click="TestIt"/>
+    </ToolBar>
+   
+    <StatusBar Name="thestatusbar" DockPanel.Dock="Bottom" Height="22" >
+      <StatusBarItem Padding="0">
+        <Grid >
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock              
+              Margin="0,5,0,0"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Left"
+              Grid.Column="1"
+              Name="_statusBarText">
+            Ln 1 Col 1
+          </TextBlock>
+        </Grid>
+      </StatusBarItem>
+    </StatusBar>
+    <ListBox Width="350" ItemsSource="{Binding Source={StaticResource UndoTitles}}" ItemTemplate="{StaticResource ListBoxTemplate}"  />
+    <TextBox ScrollViewer.CanContentScroll="True" 
+               ScrollViewer.VerticalScrollBarVisibility="Auto" 
+               ScrollViewer.HorizontalScrollBarVisibility="Auto"
+    Name="secondBox" AcceptsReturn="True" IsReadOnly="True" 
+    DockPanel.Dock="Top" Width="Auto" Height="Auto" 
+    local:UICommands.TextCommand="{Binding RelativeSource={x:Static RelativeSource.Self}}"
+    Background="Aqua" TextBlock.Foreground="Gray"  
+    >
+    </TextBox>
+    <TextBox ScrollViewer.CanContentScroll="True" 
+               ScrollViewer.VerticalScrollBarVisibility="Auto" 
+               ScrollViewer.HorizontalScrollBarVisibility="Auto"
+    Name="contentBox" AcceptsReturn="True" 
+    DockPanel.Dock="Top" Width="Auto" Height="Auto" 
+    local:UICommands.TextCommand="{Binding RelativeSource={x:Static RelativeSource.Self}}"
+      >
+    </TextBox>
+    
+  </DockPanel>
+</Window>

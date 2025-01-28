@@ -1,0 +1,232 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0034)http://www.xamlformorons.com/?p=37 -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD 
+profile=http://gmpg.org/xfn/11><TITLE>Xaml for Morons (Like Me) » Expanders, DataTemplates, and Binding to the Header</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats please -->
+<STYLE type=text/css media=screen>@import url( http://www.xamlformorons.com/wp-content/themes/connections/style.css );
+</STYLE>
+<LINK title="RSS 2.0" href="http://www.xamlformorons.com/?feed=rss2" 
+type=application/rss+xml rel=alternate><LINK title="Atom 0.3" 
+href="http://www.xamlformorons.com/?feed=atom" type=application/atom+xml 
+rel=alternate><LINK href="http://www.xamlformorons.com/xmlrpc.php" 
+rel=pingback><LINK title="September 2007" 
+href="http://www.xamlformorons.com/?m=200709" rel=archives><LINK 
+title="August 2007" href="http://www.xamlformorons.com/?m=200708" 
+rel=archives><LINK title="July 2007" 
+href="http://www.xamlformorons.com/?m=200707" rel=archives><LINK 
+title="June 2007" href="http://www.xamlformorons.com/?m=200706" 
+rel=archives><LINK title="May 2007" 
+href="http://www.xamlformorons.com/?m=200705" rel=archives><LINK 
+title="April 2007" href="http://www.xamlformorons.com/?m=200704" 
+rel=archives><LINK title="March 2007" 
+href="http://www.xamlformorons.com/?m=200703" rel=archives><LINK 
+title="February 2007" href="http://www.xamlformorons.com/?m=200702" 
+rel=archives><LINK title=RSD href="http://www.xamlformorons.com/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI></HEAD>
+<BODY>
+<DIV id=rap>
+<DIV id=header>
+<UL id=topnav>
+  <LI><A id=navHome title="Posted Recently" accessKey=h 
+  href="http://www.xamlformorons.com/">Home |</A> 
+  <LI><A id=navAbout title="About the Author" accessKey=a 
+  href="http://www.xamlformorons.com/?p=37#">About |</A> 
+  <LI><A id=navArchives title="Posted Previously" accessKey=r 
+  href="http://www.xamlformorons.com/?p=37#">Archives |</A> 
+  <LI><A id=navLinks title="Recommended Links" accessKey=l 
+  href="http://www.xamlformorons.com/?p=37#">Links |</A> 
+  <LI><A id=navContact title="Contact the Author" accessKey=c 
+  href="http://www.xamlformorons.com/?p=37#">Contact </A></LI></UL>
+<H1><A title="Xaml for Morons (Like Me)" 
+href="http://www.xamlformorons.com/"></A></H1>
+<DIV id=desc></DIV></DIV>
+<DIV id=main>
+<DIV id=content>
+<DIV class=post>
+<P class=post-date>Thu 17 May 2007</P>
+<DIV class=post-info>
+<H2 class=post-title><A 
+title="Permanent Link: Expanders, DataTemplates, and Binding to the Header" 
+href="http://www.xamlformorons.com/?p=37" rel=bookmark>Expanders, DataTemplates, 
+and Binding to the Header</A></H2>Posted by Matthias Shapiro under <A 
+title="View all posts in WPF Sample" href="http://www.xamlformorons.com/?cat=3" 
+rel="category tag">WPF Sample</A> , <A title="View all posts in XAML Sample" 
+href="http://www.xamlformorons.com/?cat=4" rel="category tag">XAML Sample</A> , 
+<A title="View all posts in data binding" 
+href="http://www.xamlformorons.com/?cat=14" rel="category tag">data binding</A> 
+, <A title="View all posts in expander" 
+href="http://www.xamlformorons.com/?cat=19" 
+rel="category tag">expander</A><BR>&nbsp;</DIV>
+<DIV class=post-content>
+<STYLE type=text/css>.style1 {
+	COLOR: #ff0000
+}
+.style2 {
+	COLOR: #8b0000
+}
+.style3 {
+	COLOR: #b8860a
+}
+.style6 {
+	COLOR: #0000ff
+}
+</STYLE>
+
+<P>Data binding in XAML is one of those things that wanders in and out of my 
+head in such a way that one day I am able to fly through my work without 
+thinking and other days I spend a half hour trying to figure out how to do the 
+stupidest things. </P>
+<P>This is one of those stupid things: In the project I’m on, we’ve been using 
+Expanders in a huge number of places. Fortunately, each project has its own 
+special needs, so I’ve been modifying the default expander functionality every 
+13 minutes. </P>
+<P>I’ve found that creating custom DataTemplates for my Expanders is a 
+wonderfully useful thing to do, so I thought I’d share. Let’s assume that we 
+want to create an expansive worksheet and that we organize the various UI 
+elements into categories easily grouped into Expanders. But we want the user to 
+be able to make a note when they’ve finished a section and be able to save 
+sections independantly. </P>
+<P><B>Note:</B> This does not deal at all with the back-end database aspects of 
+such functionality, only with the front end UI creation via XAML.</P>
+<P>1. Create a new project and draw an Expander and a Grid into it.</P>
+<P><IMG alt=expander.png 
+src="Xaml for Morons (Like Me) » Expanders, DataTemplates, and Binding to the Header_files/expander.png"></P>
+<P>2. The first step in creating our custom template is to design the Grid 
+exactly the way we want our Expander header to look. In this case, that will 
+mean throwing a TextBlock, a CheckBox, and a Button into it. </P>
+<P><IMG alt=expheader.png 
+src="Xaml for Morons (Like Me) » Expanders, DataTemplates, and Binding to the Header_files/expheader.png"></P>
+<P>3. We go into the XAML and type the following just below the “Window” 
+tag:<BR>
+<BLOCKQUOTE><SPAN class=style6>&lt;</SPAN><SPAN 
+  class=style2>Window.Resources</SPAN><SPAN class=style6>&gt;</SPAN><BR>&nbsp; 
+  &nbsp; <SPAN class=style6>&lt;</SPAN><SPAN class=style2>DataTemplate</SPAN> 
+  <SPAN class=style1>x:Key</SPAN>="<SPAN 
+  class=style6>MyExpanderHeader</SPAN>"<SPAN class=style6>&gt;</SPAN><BR>&nbsp; 
+  &nbsp; <SPAN class=style6>&lt;/</SPAN><SPAN 
+  class=style2>DataTemplate</SPAN><SPAN class=style6>&gt;</SPAN><BR><SPAN 
+  class=style6>&lt;/</SPAN><SPAN class=style2>Window.Resources</SPAN><SPAN 
+  class=style6>&gt;</SPAN>
+  <P></P></BLOCKQUOTE>
+<P>4. Now, let’s go find the XAML for the Grid we just created and cut it and 
+paste it inside the DataTemplate. (This is not terribly kosher, but its a very 
+easy and non-code intensive visual way of creating a custom header.) So the 
+DataTemplate now looks like this:<BR>
+<BLOCKQUOTE><SPAN class=style6>&lt;</SPAN><SPAN 
+  class=style2>Window.Resources</SPAN><SPAN class=style6>&gt;</SPAN><BR>&nbsp; 
+  &nbsp; <SPAN class=style6>&lt;</SPAN><SPAN class=style2>DataTemplate</SPAN> 
+  <SPAN class=style1>x:Key</SPAN>="<SPAN 
+  class=style6>MyExpanderHeader</SPAN>"<SPAN class=style6>&gt;</SPAN><BR>&nbsp; 
+  &nbsp; &nbsp; &nbsp; <SPAN class=style6>&lt;</SPAN><SPAN 
+  class=style2>Grid</SPAN> <SPAN class=style1>Margin</SPAN>="<SPAN 
+  class=style6>0,0,0,0</SPAN>" <SPAN class=style6>&gt;</SPAN><BR>&nbsp; &nbsp; 
+  &nbsp; &nbsp; &nbsp; &nbsp; <SPAN class=style6>&lt;</SPAN><SPAN 
+  class=style2>Grid.ColumnDefinitions</SPAN>&gt;<BR>&nbsp; &nbsp; &nbsp; &nbsp; 
+  &nbsp; &nbsp; &nbsp; &nbsp; <SPAN class=style6>&lt;</SPAN><SPAN 
+  class=style2>ColumnDefinition</SPAN> <SPAN class=style1>Width</SPAN>="<SPAN 
+  class=style6>*</SPAN>"<SPAN class=style6>/&gt;</SPAN><BR>&nbsp; &nbsp; &nbsp; 
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <SPAN class=style6>&lt;</SPAN><SPAN 
+  class=style2>ColumnDefinition</SPAN> <SPAN class=style1>Width</SPAN>="<SPAN 
+  class=style6>84</SPAN>"<SPAN class=style6>/&gt;</SPAN><BR>&nbsp; &nbsp; &nbsp; 
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <SPAN class=style6>&lt;</SPAN><SPAN 
+  class=style2>ColumnDefinition</SPAN> <SPAN class=style1>Width</SPAN>="<SPAN 
+  class=style6>77</SPAN>"<SPAN class=style6>/&gt;</SPAN><BR>&nbsp; &nbsp; &nbsp; 
+  &nbsp; &nbsp; &nbsp; <SPAN class=style6>&lt;/</SPAN><SPAN 
+  class=style2>Grid.ColumnDefinitions</SPAN><SPAN 
+  class=style6>&gt;</SPAN><BR>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <SPAN 
+  class=style6>&lt;</SPAN><SPAN class=style2>TextBlock</SPAN> <SPAN 
+  class=style1>HorizontalAlignment</SPAN>="<SPAN class=style6>Left</SPAN>" <SPAN 
+  class=style1>Margin</SPAN>="<SPAN class=style6>2,0,0,0</SPAN>" <SPAN 
+  class=style1>VerticalAlignment</SPAN>="<SPAN class=style6>Center</SPAN>" <SPAN 
+  class=style1>Height</SPAN>="<SPAN class=style6>Auto</SPAN>" <SPAN 
+  class=style1>Text</SPAN>="<SPAN class=style6>TextBlock</SPAN>" <SPAN 
+  class=style1>TextWrapping</SPAN>="<SPAN class=style6>Wrap</SPAN>"<SPAN 
+  class=style6>/&gt;</SPAN><BR>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <SPAN 
+  class=style6>&lt;</SPAN><SPAN class=style2>CheckBox</SPAN> <SPAN 
+  class=style1>HorizontalAlignment</SPAN>="<SPAN class=style6>Center</SPAN>" 
+  <SPAN class=style1>Margin</SPAN>="<SPAN class=style6>1,1,1,1</SPAN>" <SPAN 
+  class=style1>VerticalAlignment</SPAN>="<SPAN class=style6>Center</SPAN>" <SPAN 
+  class=style1>Height</SPAN>="<SPAN class=style6>Auto</SPAN>" <SPAN 
+  class=style1>Content</SPAN>="<SPAN class=style6>Section Done</SPAN>" <SPAN 
+  class=style1>Grid.Column</SPAN>="<SPAN class=style6>1</SPAN>"<SPAN 
+  class=style6>/&gt;</SPAN><BR>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <SPAN 
+  class=style6>&lt;</SPAN><SPAN class=style2>Button</SPAN> <SPAN 
+  class=style1>HorizontalAlignment</SPAN>="<SPAN class=style6>Stretch</SPAN>" 
+  <SPAN class=style1>Margin</SPAN>="<SPAN class=style6>2,2,2,2</SPAN>" <SPAN 
+  class=style1>VerticalAlignment</SPAN>="<SPAN class=style6>Stretch</SPAN>" 
+  <SPAN class=style1>Width</SPAN>="<SPAN class=style6>Auto</SPAN>" <SPAN 
+  class=style1>Height</SPAN>="<SPAN class=style6>Auto</SPAN>" <SPAN 
+  class=style1>Content</SPAN>="<SPAN class=style6>Save Section</SPAN>" <SPAN 
+  class=style1>Grid.Column</SPAN>="<SPAN class=style6>2</SPAN>"<SPAN 
+  class=style6>/&gt;</SPAN><BR>&nbsp; &nbsp; &nbsp; &nbsp; <SPAN 
+  class=style6>&lt;/</SPAN><SPAN class=style2>Grid</SPAN><SPAN 
+  class=style6>&gt;</SPAN><BR>&nbsp; &nbsp; <SPAN class=style6>&lt;/</SPAN><SPAN 
+  class=style2>DataTemplate</SPAN><SPAN class=style6>&gt;</SPAN><BR><SPAN 
+  class=style6>&lt;/</SPAN><SPAN class=style2>Window.Resources</SPAN><SPAN 
+  class=style6>&gt;</SPAN>
+  <P></P></BLOCKQUOTE>
+<P>5. At this point, we wander over to our poor neglected Expander and give it a 
+pointer to our new DataTemplate. Inside the Expander tag, type the 
+following:<BR>
+<BLOCKQUOTE><SPAN class=style1>HeaderTemplate</SPAN>="<SPAN 
+  class=style3>{StaticResource MyExpanderHeader}</SPAN>"
+  <P></P></BLOCKQUOTE>
+<P>We should now have an expander like the one below:</P>
+<P><IMG alt=pic3.png 
+src="Xaml for Morons (Like Me) » Expanders, DataTemplates, and Binding to the Header_files/pic3.png"></P>
+<P>6. The last thing we need to do is make it so that the “Header” field in the 
+Expander is bound to the TextBlock in the Template. </P>
+<P>Go to the TextBlock section in the DataTemplate and make the “Text” field 
+read as follows:<BR>
+<BLOCKQUOTE><SPAN class=style1>Text</SPAN>="<SPAN 
+  class=style3>{Binding}</SPAN>"
+  <P></P></BLOCKQUOTE>
+<P>We can now create our new custom Expanders to our hearts content. </P>
+<P>As always, the entirety of this project <A title=expanderdatatemplates.zip 
+href="http://www.xamlformorons.com/wp-content/uploads/2007/05/expanderdatatemplates.zip">can 
+be downloaded here.</A></P>
+<DIV class=post-info></DIV>
+<DIV class=post-footer>&nbsp;</DIV></DIV><!-- You can start editing here. -->
+<H3 id=comments>One Response to “Expanders, DataTemplates, and Binding to the 
+Header”</H3>
+<OL class=commentlist>
+  <LI class=alt id=comment-9><CITE>Jode</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://www.xamlformorons.com/?p=37#comment-9">August 3rd, 2007 at 12:50 
+  pm</A> </SMALL>
+  <P>Thanks again Matthias. I love this little piece of wisdom.</P></LI></OL>
+<H3 id=respond>Leave a Reply</H3>
+<FORM id=commentform action=http://www.xamlformorons.com/wp-comments-post.php 
+method=post>
+<P><INPUT id=author tabIndex=1 size=22 name=author> <LABEL 
+for=author><SMALL>Name (required)</SMALL></LABEL></P>
+<P><INPUT id=email tabIndex=2 size=22 name=email> <LABEL for=email><SMALL>Mail 
+(will not be published) (required)</SMALL></LABEL></P>
+<P><INPUT id=url tabIndex=3 size=22 name=url> <LABEL 
+for=url><SMALL>Website</SMALL></LABEL></P><!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+<P><TEXTAREA id=comment tabIndex=4 name=comment rows=10 cols=100></TEXTAREA></P>
+<P><INPUT id=submit tabIndex=5 type=submit value="Submit Comment" name=submit> 
+<INPUT type=hidden value=37 name=comment_post_ID> </P></FORM></DIV>
+<P align=center></P></DIV>
+<DIV id=sidebar>
+<H2>Archived Entry</H2>
+<UL>
+  <LI><STRONG>Post Date :</STRONG> 
+  <LI>Thursday, May 17th, 2007 at 2:01 pm 
+  <LI><STRONG>Category :</STRONG> 
+  <LI><A title="View all posts in WPF Sample" 
+  href="http://www.xamlformorons.com/?cat=3" rel="category tag">WPF Sample</A> 
+  and <A title="View all posts in XAML Sample" 
+  href="http://www.xamlformorons.com/?cat=4" rel="category tag">XAML Sample</A> 
+  and <A title="View all posts in data binding" 
+  href="http://www.xamlformorons.com/?cat=14" rel="category tag">data 
+  binding</A> and <A title="View all posts in expander" 
+  href="http://www.xamlformorons.com/?cat=19" rel="category tag">expander</A> 
+  <LI><STRONG>Do More :</STRONG> 
+  <LI>You can <A href="http://www.xamlformorons.com/?p=37#respond">leave a 
+  response</A>, or <A 
+  href="http://www.xamlformorons.com/wp-trackback.php?p=37">trackback</A> from 
+  your own site. </LI></UL></DIV>
+<P id=footer>Design Downloaded from <A title="Vanilla Mist" 
+href="http://www.vanillamist.com/">http://www.vanillamist.com/</A></P></DIV></DIV></BODY></HTML>

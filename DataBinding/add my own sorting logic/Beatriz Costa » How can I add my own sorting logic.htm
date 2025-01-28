@@ -1,0 +1,801 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How can I add my own sorting logic?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20can%20I%20add%20my%20own%20sorting%20logic_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20can%20I%20add%20my%20own%20sorting%20logic_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">April 9, 2006</div>
+					<h2 id="post-24"><a id="postTitle" href="http://www.beacosta.com/blog/?p=24" rel="bookmark" title="How can I add my own sorting logic?">How can I add my own sorting logic?</a></h2>
+					<p><span id="text">I showed in <a href="http://www.beacosta.com/2006/01/how-do-i-sort-groups-of-data-items.html">an earlier post</a>
+how we can use CollectionViewSource to sort items in markup. This way
+of sorting allows us to pick Ascending or Descending sorting, but it
+doesn’t provide any flexibility beyond that. Today I will show you how
+you can write your own sorting logic that enables full control over the
+order of items in a view.</span></p>
+<p><span id="text">When I write a new blog sample, I create a directory
+named with a number followed by a short description of the scenario.
+For example, for today’s post, the name of the directory is
+21CustomSorting. Windows Explorer knows how to do the right thing to
+order all those directories: the first one is 1DataContext, and all the
+others are displayed in increasing numeric order until 21CustomSorting.
+This is not a simple ascending string sort, though. A traditional
+string sort would display 10MasterDetail - 19ObjectDataProviderSample,
+1DataContext, 20InsertingSeparators, 21CustomSorting, 2EmptyBinding -
+9CollectionViewSourceSample, which is obviously not what I want. I will
+show you today how you can order strings that start with numbers the
+same way as Explorer. I will also give you a quick overview of Avalon’s
+view classes.</span></p>
+<p><span id="text">A view is a layer on top of a collection that allows
+us to sort, filter and group the collection. Views also remember the
+current item of a collection, which is useful for the master-detail
+scenario. The base class for all views is CollectionView, which is
+where we keep the API for sorting, filtering, grouping and current
+item. There are currently two classes that derive from CollectionView:
+BindingListCollectionView and ListCollectionView. The view type we
+create internally depends on the type of your source collection:</span></p>
+<p><span id="text">- A CollectionView is created if your source
+implements IEnumerable. If the source implements IEnumerable *only*,
+you will not be able to sort or group the collection (you can only
+filter it). Also, perf will not be the best if the source has a large
+number of items or if you perform dynamic operations such as insertions
+and deletions. If this is your scenario, you should consider having
+your source implement a stronger interface. ICollection is slightly
+better because it provides a Count property. </span></p>
+<p><span id="text">- ListCollectionView is the view type created when
+the source implements IList. Compared to IEnumerable and ICollection,
+IList performs much better for large or dynamic lists because it
+provides an indexer, allowing us quick random access. In addition,
+IList allows sorting, grouping and filtering. But ideally your source
+collection derives from ObservableCollection&lt;T&gt;, the mother of
+all collections in the eyes of data binding, since it provides several
+extra goodies such as property and collection change notifications.</span></p>
+<p><span id="text">- BindingListCollectionView is the type of view
+created by Avalon when the source collection implements IBindingList.
+This is the view we deal with in the ADO.NET scenario. It supports
+sorting and grouping, but not traditional filtering. Instead, it has an
+additional CustomFilter property that delegates filtering to the
+DataView (see <a href="http://www.beacosta.com/2006/03/how-do-i-bind-to-adonet.html">my post on ADO.NET</a> for more details).</span></p>
+<p><span id="text">Note that if your source collection implements both
+IBindingList and IList, IBindingList has priority, and a
+BindingListCollectionView is created.</span></p>
+<p><span id="text">ListCollectionView has an extra CustomSort property
+that allows us to provide our own sorting logic, which is what I will
+show you next. The source collection for this sample is an
+ObservableCollection&lt;string&gt; of the directory names that I use
+for my blog posts. The UI of this sample contains a ListBox of blog
+post directory names, initially in random order, and a “Sort” Button:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:BlogPosts x:Key=”posts”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{StaticResource posts}” (…) Name=”lb”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Click=”Sort” Content=”Sort” Margin=”0,10,0,0″/&gt;</span></p>
+<p><span id="text">When the user clicks the “Sort” button, we get the
+default view for the source collection, cast it to ListCollectionView,
+and give it some custom sort logic. The GetDefaultView method returns a
+CollectionView, but we can cast it to ListCollectionView because we
+know that the BlogPosts source collection implements IList.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;private void Sort(object sender, RoutedEventArgs args)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BlogPosts posts = (BlogPosts)(this.Resources[”posts”]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ListCollectionView lcv
+= (ListCollectionView)(CollectionViewSource.GetDefaultView(posts));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lcv.CustomSort = new SortPosts();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">The CustomSort property is of type IComparer. We
+need to create a new class that implements IComparer, and add our
+sorting logic to its Compare method. This method should return a
+negative number if x comes before y, a positive number if x comes after
+y, and zero if they are equivalent.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;public class SortPosts : IComparer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public int Compare(object x, object y)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">Here is a screenshot of the completed sample:</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20How%20can%20I%20add%20my%20own%20sorting%20logic_files/21CustomSorting.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/21CustomSorting.zip">Here</a> you can find the VS project with this sample code. This works with February CTP WPF bits. </span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=13" title="View all posts in Sorting, filtering, grouping" rel="category">Sorting, filtering, grouping</a>, <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=24"
+    dc:identifier="http://www.beacosta.com/blog/?p=24"
+    dc:title="How can I add my own sorting logic?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=24" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=24"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=24">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">6 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-148" class="comment">
+				<a name="comment-148" id="comment-148"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20add%20my%20own%20sorting%20logic_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-148")'>
+					<cite>Comment by andy tarpey<a href="#comment-148"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-04-10 07:21:31 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>I am finding that ListCollectionView is not being created as the
+view type when the list item source implements the generics IList(T),
+although it is when the source implements IList.</p>
+<p>Can you confirm if this is what you would expect?</p>
+<p>Thanks,<br>
+Andy.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-148", 148, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-149" class="comment odd">
+				<a name="comment-149" id="comment-149"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20add%20my%20own%20sorting%20logic_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-149")'>
+					<cite>Comment by Bea<a href="#comment-149"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-04-11 15:45:25 						
+					</div>					
+					<div class="content">
+						<p>Hi Andy,</p>
+<p>Yes, that is expected, and a very good point that I should have made clear in the blog post.</p>
+<p>IList(T) does not implement IList, it only implements IEnumerable.
+This causes a CollectionView to be created, and NOT a
+ListCollectionView. So if your collection implements IList(T), make
+sure it also implements IList to improve the performance of your app.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-149", 149, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-150" class="comment">
+				<a name="comment-150" id="comment-150"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20add%20my%20own%20sorting%20logic_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-150")'>
+					<cite>Comment by William<a href="#comment-150"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-07-24 10:32:09 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>I have been going nuts trying to get binding to an IBindingList
+working with sorting. I have implemented all of my sorting properties
+and methods on my custom class, but, other than SupportsSortingCore,
+none of them ever get called…I can see by setting breakpoints on all of
+them. What do you have to do to get data binding work with sorting when
+you have a BindingListCollectionView? Here is my collection class:</p>
+<p>using System;<br>
+using System.Collections.Generic;<br>
+using System.Text;<br>
+using System.ComponentModel;</p>
+<p>namespace CollectionViewSourceStuff<br>
+{<br>
+public class Persons : BindingList(lt)Person(gt)<br>
+{<br>
+private bool _isSorted = false;<br>
+private ListSortDirection _sortDirection;<br>
+private PropertyDescriptor _sortProperty;</p>
+<p>protected override bool SupportsChangeNotificationCore<br>
+{<br>
+get { return true; }<br>
+}</p>
+<p>protected override bool SupportsSortingCore<br>
+{<br>
+get { return true; }<br>
+}</p>
+<p>protected override bool IsSortedCore<br>
+{<br>
+get { return _isSorted; }<br>
+}</p>
+<p>protected override ListSortDirection SortDirectionCore<br>
+{<br>
+get<br>
+{<br>
+return _sortDirection;<br>
+}<br>
+}</p>
+<p>protected override PropertyDescriptor SortPropertyCore<br>
+{<br>
+get { return _sortProperty; }<br>
+}</p>
+<p>public Persons()<br>
+{<br>
+this.Add(new Person(”Fred”));<br>
+this.Add(new Person(”Adam”));<br>
+this.Add(new Person(”Jane”));<br>
+this.Add(new Person(”Beth”));</p>
+<p>//Type type = typeof(Person);<br>
+//PropertyDescriptor firstNameProp = TypeDescriptor.GetProperties(type).Find(”FirstName”, false);<br>
+//this.ApplySortCore(firstNameProp, ListSortDirection.Ascending);<br>
+}</p>
+<p>protected override void ApplySortCore(PropertyDescriptor prop, ListSortDirection direction)<br>
+{<br>
+_sortProperty = prop;<br>
+_sortDirection = direction;</p>
+<p>List(lt)Person(gt) items = this.Items as List(lt)Person(gt);</p>
+<p>if (items != null)<br>
+{<br>
+PropertyComparer(lt)Person(gt) pc = new PropertyComparer(lt)Person(gt)(prop, direction);<br>
+items.Sort(pc);<br>
+_isSorted = true;<br>
+}<br>
+else<br>
+{<br>
+_isSorted = false;<br>
+}</p>
+<p>OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));<br>
+}</p>
+<p>protected override void RemoveSortCore()<br>
+{<br>
+_isSorted = false;<br>
+_sortProperty = null;<br>
+}<br>
+}<br>
+}</p>
+<p>Thanks! I am about to go mad over this one…I just watched your Mix
+presentation to review data binding, but still no go. Argh. (Had to
+switch the generic tag syntax to (lt) and (gt) to post this…)</p>
+<p>William</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-150", 150, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-393" class="comment odd">
+				<a name="comment-393" id="comment-393"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20add%20my%20own%20sorting%20logic_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-393")'>
+					<cite>Comment by Bea<a href="#comment-393"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-20 16:18:47 						
+					</div>					
+					<div class="content">
+						<p>Hi William,</p>
+<p>Unfortunately you’re hitting a bug in WPF data binding. We don’t
+support sorting on a custom implementation of IBindingList unless you
+also implement ITypedList. The fact that this was found by a customer
+bumped up the priority of this bug, so hopefully we’ll get a chance to
+fix it for our next version.</p>
+<p>As a workaround, try implementing ITypedList. That should work, but if it doesn’t, let me know.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-393", 393, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-151" class="comment">
+				<a name="comment-151" id="comment-151"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20add%20my%20own%20sorting%20logic_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-151")'>
+					<cite>Comment by Anonymous<a href="#comment-151"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-08-03 04:13:43 						
+					</div>					
+					<div class="content">
+						<p>Is it possible to use this method for multicolumn sorting?</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-151", 151, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-362" class="comment odd">
+				<a name="comment-362" id="comment-362"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20add%20my%20own%20sorting%20logic_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-362")'>
+					<cite>Comment by Bea<a href="#comment-362"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-18 11:02:44 						
+					</div>					
+					<div class="content">
+						<p>Can you explain better what you mean by multicolumn sorting? </p>
+<p>If you’re talking about a ListView scenario, where you first sort by
+one column, and have a secondary sort by another column, there is a
+simpler syntax to do that. You can simply add several SortDescription
+instances to the SortDescriptions collection. The first one is the
+primary sort, the second one is the secondary sort, and so on.</p>
+<p>But as a general rule, you should be able to use custom sorting to
+do any type of sorting. For some more common scenarios we have a
+simpler syntax, but custom sorting would still work.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-362", 362, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1445" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1445" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20can%20I%20add%20my%20own%20sorting%20logic_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="24" type="hidden">
+		<input name="redirect_to" value="/blog/?p=24" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="ea4b83dab35bdb8007f3b8731eb9cc87" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>7582</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 7582;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

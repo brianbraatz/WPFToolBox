@@ -1,0 +1,82 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Three-Way Switch Demo in XAML</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/140115.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/180722.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/09/151044.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Three-Way Switch Demo in XAML</h2></a><p style="text-align: right;">September 15, 2007<br>Roscoe, N.Y.</p><p>
+We drove up to the house in Roscoe for the weekend and discovered that
+the ceiling light in the kitchen no longer worked. We quickly
+established that the circuit breaker hadn't tripped (other stuff on the
+same line still worked) and the three bulbs hadn't burned out at the
+same time. The next items to check would be the fixture itself and the
+wall switches.
+</p>
+<p>What made this troubleshooting job just a little bit more
+challenging is that the ceiling light in the kitchen is controlled by
+two "three-way" wall switches, one at each entrance to the kitchen.
+These switches don't have on and off positions: If the light is off,
+flipping either switch turns it on, and then flipping either switch
+turns it off. (The kitchen isn't that large — the switches are only
+about 9-feet apart — but one of the entrances to the kitchen is from
+the basement stairs, so the switch there is really convenient.)
+</p>
+<p>I wondered if one broken three-way switch would affect the whole
+system, and then much to my shock, I realized that I didn't know how
+three-way switches worked! This ignorance was particularly shameful
+because I had once written an entire <a href="http://www.charlespetzold.com/code">book</a>
+about how logic gates could be built from electrical relays, and how
+these logic gates could be combined into adders, flip-flops, and an
+entire computer. But I knew the three-way switch didn't rely on relays.
+It had to be simpler than that!
+</p>
+<p>Three-way switches are called that because they have three
+connections, a common and two lines. From my childhood immersion in
+things electrical, I knew this configuration as a single-pole
+double-throw (SPDT) switch. Apparently in British electrical circles,
+it's known as a two-way switch. The line connectors of the two switches
+are connected in parallel as this little XAML file demonstrates:
+</p>
+<p align="center">
+<img src="Three-Way%20Switch%20Demo%20in%20XAML_files/ThreeWaySwitch.png" alt="Three-Way Switch screenshot">
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/09/ThreeWaySwitch.xaml">ThreeWaySwitch.xaml</a>
+</p>
+<p>When you run the XAML file, click either switch to flip it. Red
+means that electricity is flowing (the same convention used in that <a href="http://www.charlespetzold.com/code">book</a> I alluded to earlier).
+</p>
+<p>
+The XAML file is built around two templates defined within styles: one to turn a <i>CheckBox</i> into a three-way switch, and the other to turn a <i>Control</i>
+into an entire wiring diagram. Once these styles and templates are
+defined in the Resources section, the entire thing is rendered with a
+simple (and unusual):
+</p>
+<ul style="font-family: monospace;">
+&lt;Control /&gt;
+</ul>
+<p>
+Turning some sub-elements from black to red required two <i>MultiTrigger</i> elements. I was particularly pleased how simple they turned out to be, mostly because I appropriated the <i>Foreground</i> property of <i>Control</i> for this purpose, and used <i>TemplateBinding</i> markup extensions to bind the <i>Foreground</i> property of the two switches, and the <i>Stroke</i> property of many of the <i>Path</i> elements used for the wiring.
+</p>
+<p>
+The problem in the kitchen turned out to be the fixture. When we took it down and reconnected the twist connectors, it worked. 
+</p>
+<div id="comments"><hr><p><b>Comments:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>
+Shouldn't the light bulb turn off too? yellow to gray or something :)
+</p>
+<p>The whole idea of monitor and control from a website has been around
+for awhile, but it is surely easier with xml event driven graphics like
+xaml. Just hook the xbap to a service using a webrequest and you have a
+closed loop to a sensor network.
+</p>
+<p>
+— <a href="http://www.cadmaps.com/gisblog">Randy George</a>, Sat, 15 Sep 2007 11:26:06 -0400 (EDT)
+</p>
+</div><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>
+Yes, you're right.  This version has a gray light bulb that turns to yellow when it goes on:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/09/ThreeWaySwitch2.xaml">ThreeWaySwitch2.xaml</a>
+</p>
+<p>
+The enhancement required one new <i>Name</i> attribute and two new <i>Setter</i> elements:
+</p>
+<p>
+— <a href="http://www.charlespetzold.com/">Charles Petzold</a>, Sat, 15 Sep 2007 11:34:14 -0400 (EDT)
+</p></div><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="Three-Way Switch Demo in XAML" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/140115.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/180722.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

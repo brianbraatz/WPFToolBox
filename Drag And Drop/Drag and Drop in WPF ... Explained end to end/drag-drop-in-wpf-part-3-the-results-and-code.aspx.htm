@@ -1,0 +1,529 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Jaime Rodriguez : Drag &amp; Drop in WPF.. part 3 .. the results and code...</title>
+ 
+
+
+
+
+<meta name="keywords" content="Windows Presentation Foundation">
+<meta name="description" content="Here is where we take every thing learned in Part1 (the drag) and Part2 (the drop) and package it into more realistic scenarios... Let's first begin by walking through a few items we skipped in earlier parts for brevity: Detecting DragDropEffects... When">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/jaimer/pingback.aspx">
+<link rel="stylesheet" href="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/print.css" type="text/css" media="print">
+<link rel="stylesheet" href="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/blue%2520right%2520sidebar.css" type="text/css" media="screen">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Jaime Rodriguez  (RSS 2.0)" href="http://blogs.msdn.com/jaimer/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Jaime Rodriguez  (Atom 1.0)" href="http://blogs.msdn.com/jaimer/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Drag &amp; Drop in WPF.. part 3 .. the results and code... Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/jaimer/commentrss.aspx?PostID=3835332">
+
+	<script src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/global.js" type="text/javascript"></script></head><body>
+<form name="aspnetForm" method="post" action="/jaimer/archive/2007/07/12/drag-drop-in-wpf-part-3-the-results-and-code.aspx" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFI2N0bDAwJF8kY3RsMDAkXyRicyRfJHdzJF8kU2VhcmNoQm94rkRXbV1z5ohWybmugg6l5bfTy3M=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script language="javascript" type="text/javascript" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script language="javascript" type="text/javascript">
+var RatingControlAJAX = {
+"SaveRating":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Blogs.Controls.BlogRatePost',id,'SaveRating',[p0],cb,0,0,0,1);}};
+</script><script language="javascript" type="text/javascript">
+var ThreadSubscribeLinkButton = {
+"ToggleEmailReplies":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Controls.ThreadSubscribeLinkButton',id,'ToggleEmailReplies',[p0],cb,0,0,0,0);}};
+</script><script type="text/javascript" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/ratingcontrol.js"></script>
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Signed in as <a href="http://blogs.msdn.com/user/EditProfile.aspx?ReturnUrl=/blogs/post.aspx?App=jaimer&amp;y=2007&amp;m=07&amp;d=12&amp;PostName=drag-drop-in-wpf-part-3-the-results-and-code">bbraatz</a>
+ | <a id="ctl00___ctl00___duw1_rc1___logout" href="http://blogs.msdn.com/logout.aspx">Sign out</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="wrapper">
+	<div id="container">
+		<div id="header">
+			
+<div id="title">
+<h1><a id="ctl00___ctl00___bth___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/jaimer/default.aspx">Jaime Rodriguez </a></h1>
+<p id="tagline">On .net client stuff..  </p></div>
+
+		</div>
+		<div id="contentwrapper">
+			<div id="sidebar-a">
+				
+<div id="BlogLinksSideBar">
+	
+<div id="WeblogLinks">
+<h3>This Blog</h3>
+<ul>
+    <li><a id="ctl00___ctl00___bs___wl___email" href="http://blogs.msdn.com/jaimer/emailsubscriptions.aspx">Email alerts</a></li>
+	
+	<li><a id="ctl00___ctl00___bs___wl___Contactlink1" href="http://blogs.msdn.com/jaimer/contact.aspx">Email</a></li>
+</ul>
+</div>
+</div>
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="SubscriptionsSideBar">
+	
+<div id="Subscriptions">
+ <h3>Syndication</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___bs___rss" href="http://blogs.msdn.com/jaimer/rss.xml">RSS 2.0</a></li>
+        <li><a id="ctl00___ctl00___bs___bs___atom" href="http://blogs.msdn.com/jaimer/atom.xml">Atom 1.0</a></li>
+    </ul>
+ </div>
+</div>
+
+<div id="SearchSideBar">
+	
+<h3>Search</h3>	
+<div id="Search">
+<ul><li>
+<input name="ctl00$_$ctl00$_$bs$_$ws$_$SearchBox" id="ctl00___ctl00___bs___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event);" type="text"> <a id="ctl00___ctl00___bs___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')">Go</a>
+</li></ul>
+</div>
+
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul>
+	<ul class="SidebarTagCloud">
+<li class="Tag6"><a href="http://blogs.msdn.com/jaimer/archive/tags/acropolis/default.aspx" rel="tag">acropolis</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/jaimer/archive/tags/blend/default.aspx" rel="tag">blend</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/jaimer/archive/tags/cider+designer/default.aspx" rel="tag">cider designer</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/jaimer/archive/tags/Client+in+general+/default.aspx" rel="tag">Client in general </a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/jaimer/archive/tags/expression/default.aspx" rel="tag">expression</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/jaimer/archive/tags/Personal/default.aspx" rel="tag">Personal</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/jaimer/archive/tags/silverlight/default.aspx" rel="tag">silverlight</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/jaimer/archive/tags/Vista+Sidebar+Gadgets/default.aspx" rel="tag">Vista Sidebar Gadgets</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/jaimer/archive/tags/vs2008/default.aspx" rel="tag">vs2008</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/jaimer/archive/tags/Windows+Presentation+Foundation/default.aspx" rel="tag">Windows Presentation Foundation</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/jaimer/archive/tags/wpfe/default.aspx" rel="tag">wpfe</a></li>
+</ul>
+
+	</ul>
+</div>
+
+<div id="NewsSideBar">
+	
+<h3>News</h3>
+<div id="news">The information in this weblog is provided "AS IS" with
+no warranties, and confers no rights. This weblog does not represent
+the thoughts, intentions, plans or strategies of my employer. It is
+solely my opinion. </div>
+</div>
+
+<div id="ArchiveSideBar">
+	
+	
+<h3>Archives</h3>
+<ul>
+
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/09.aspx">September 2007 (3)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/08.aspx">August 2007 (8)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/07.aspx">July 2007 (7)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/06.aspx">June 2007 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/05.aspx">May 2007 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/04.aspx">April 2007 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/03.aspx">March 2007 (4)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/02.aspx">February 2007 (3)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2007/01.aspx">January 2007 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/12.aspx">December 2006 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/10.aspx">October 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/09.aspx">September 2006 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/08.aspx">August 2006 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/07.aspx">July 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/06.aspx">June 2006 (7)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/05.aspx">May 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/04.aspx">April 2006 (4)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/jaimer/archive/2006/03.aspx">March 2006 (4)</a>
+        </li>
+    
+</ul>
+	
+</div>
+
+<div id="LinkSideBar">
+	
+        <h3>Stuff I Subscribe to</h3>
+        <ul>
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl01_Link" href="http://blogs.msdn.com/saraford/rss.xml">VS Tip of the day</a></li>
+            </ul>
+    
+
+	
+</div>
+			</div>
+			<div id="content"><div id="content2">
+				
+        
+
+<div class="post">
+	<div class="postview">			
+		<h2>Drag &amp; Drop in WPF.. part 3 .. the results and code...</h2>
+		<p>Here
+is where we take every thing learned in Part1 (the drag) and
+Part2&nbsp; (the drop)&nbsp; and package it into more realistic
+scenarios...&nbsp;&nbsp;</p>
+<p>Let's first begin by walking through a few items we skipped in earlier parts for brevity: </p>
+<h3><font color="#0080ff">Detecting DragDropEffects...</font> </h3>
+<p>When you start a drag, you should check if Ctrl&nbsp; or Shift&nbsp;
+are pressed...&nbsp;&nbsp;&nbsp; Each one of these being pressed
+implies a different action for our drag operation... </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0" width="800">
+<tbody>
+<tr>
+<td class="" valign="top" width="800"><pre class="code"> <span style="color: rgb(0, 128, 128);">DragDropEffects</span> effects = <span style="color: rgb(0, 128, 128);">DragDropEffects</span>.None;
+<span style="color: rgb(0, 0, 255);">bool</span> ctrl = <span style="color: rgb(0, 128, 128);">Keyboard</span>.IsKeyDown(<span style="color: rgb(0, 128, 128);">Key</span>.LeftCtrl) || <span style="color: rgb(0, 128, 128);">Keyboard</span>.IsKeyDown(<span style="color: rgb(0, 128, 128);">Key</span>.RightCtrl);
+<span style="color: rgb(0, 0, 255);">bool</span> shift = <span style="color: rgb(0, 128, 128);">Keyboard</span>.IsKeyDown(<span style="color: rgb(0, 128, 128);">Key</span>.LeftShift) || <span style="color: rgb(0, 128, 128);">Keyboard</span>.IsKeyDown(<span style="color: rgb(0, 128, 128);">Key</span>.RightShift);
+
+<span style="color: rgb(0, 0, 255);">if</span> (ctrl &amp;&amp; shift &amp;&amp; AllowsLink)
+        effects |= <span style="color: rgb(0, 128, 128);">DragDropEffects</span>.Link;
+<span style="color: rgb(0, 0, 255);">else</span> <span style="color: rgb(0, 0, 255);">if</span> (ctrl &amp;&amp; AllowsCopy)
+       effects |= <span style="color: rgb(0, 128, 128);">DragDropEffects</span>.Copy;
+<span style="color: rgb(0, 0, 255);">else</span> <span style="color: rgb(0, 0, 255);">if</span> (AllowsMove)  // the default is to move in my sample .. 
+       effects |= <span style="color: rgb(0, 128, 128);">DragDropEffects</span>.Move;</pre></td></tr></tbody></table>
+<p mce_keep="true">&nbsp;</p>
+<h3><font color="#0080c0">Detecting what needs to be dragged: </font></h3>
+<p>Deciding what needs to be dragged is sucky because you almost always
+have to put app knowledge into your drag &amp; drop code..&nbsp;&nbsp;
+There is not a one size fits all.. </p>
+<p>For example:&nbsp; &lt;Button Content="Test" /&gt;&nbsp;&nbsp;&nbsp;
+will generate a tree that looks like:&nbsp;&nbsp;&nbsp;&nbsp; Button -
+&gt; Chrome - &gt; Content Presenter - &gt; TextBlock&nbsp;&nbsp; ... <br>So, if you hitTest on what is visible, you might get the&nbsp; TextBlock&nbsp; when what you wanted was the button .... </p>
+<p><br>I don't have a great answer for this. As I mentioned, my
+approach is to lazily shoot for the OriginalSource element in the
+MouseMove event handler..&nbsp;&nbsp; This seems to work slightly
+better than doing HitTesting (where I could get an item lower in the
+tree like the TextBlock .. </p>
+<p>For those that do want to do hittesting, the code is trivial: </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0" width="800">
+<tbody>
+<tr>
+<td class="" valign="top" width="800"><pre class="code"> <span style="color: rgb(0, 128, 128);">UIElement</span> GetDragElementFromHitTest(<span style="color: rgb(0, 128, 128);">UIElement</span> dragSourceContainer, <span style="color: rgb(0, 128, 128);">MouseEventArgs</span> args)
+        {
+            <span style="color: rgb(0, 128, 128);">HitTestResult</span> hr = <span style="color: rgb(0, 128, 128);">VisualTreeHelper</span>.HitTest( dragSourceContainer, args.GetPosition((<span style="color: rgb(0, 128, 128);">IInputElement</span>) dragSourceContainer));
+            <span style="color: rgb(0, 0, 255);">return</span> hr.VisualHit <span style="color: rgb(0, 0, 255);">as</span> <span style="color: rgb(0, 128, 128);">UIElement</span>;
+        }</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a></td></tr></tbody></table>
+<p mce_keep="true">&nbsp;</p>
+<h3><font color="#0080c0">Doing Drag &amp; drop should be about data: </font></h3>
+<p>I have to emphasize d&amp;d was meant for data..&nbsp;&nbsp; In the
+demo below I make the mistake of letting you drag UIElements and the
+like.. This is for illustration purposes... imho if you find yourself
+trying to drag any thing other than data, you&nbsp;should evaluate
+decoupling presentation and data..&nbsp; </p>
+<p mce_keep="true">&nbsp;</p>
+<h3><font color="#0080c0">Now onto a real sample...&nbsp;&nbsp; </font></h3>
+<p>What I have done for my demos is create a library with: </p>
+<ul>
+<li>DragHelper class:&nbsp; given a source&nbsp; (any UIElement) will
+subscribe to handle the required events to initiate a Drag&amp; Drop
+operation. </li><li>DropHelper class: given a target ( any UIElement) will set
+properties needed &nbsp;&amp; subscribe to required events to complete
+a Drop operation... </li><li>DragAdorner -- same as previous examples, the class to draw the Adorner while element drags.. </li></ul>
+<p mce_keep="true">&nbsp;</p>
+<p>I have also defined an interface that a class can implement to aid in the dragOperation...&nbsp;&nbsp; </p><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0" width="800">
+<tbody>
+<tr>
+<td class="" valign="top" width="800"><pre class="code"></pre><pre class="code">    <span style="color: rgb(0, 0, 255);">public</span> <span style="color: rgb(0, 0, 255);">interface</span> <span style="color: rgb(0, 128, 128);">IDataDropObjectProvider
+</span>    {
+        <span style="color: rgb(0, 128, 0);">//Flag of actions sypported by implementation of  IDataDropObjectProvider
+</span>        <span style="color: rgb(0, 128, 128);">DragDropProviderActions</span> SupportedActions { <span style="color: rgb(0, 0, 255);">get</span>; }
+
+        <span style="color: rgb(0, 128, 0);">// Called before StartDrag () to get the Data () to be used in the DataObject 
+</span>        <span style="color: rgb(0, 0, 255);">object</span> GetData(<span style="color: rgb(0, 128, 128);">MouseEventArgs</span> e);
+        <span style="color: rgb(0, 128, 0);">// Called to get the visual ( UIElement visual brush of the object being dragged.. 
+</span>        <span style="color: rgb(0, 128, 128);">UIElement</span> GetVisual(<span style="color: rgb(0, 128, 128);">MouseEventArgs</span> e);
+        <span style="color: rgb(0, 128, 0);">// Gives feedback during Drag 
+</span>        <span style="color: rgb(0, 0, 255);">void</span> GiveFeedback(<span style="color: rgb(0, 128, 128);">GiveFeedbackEventArgs</span> args);
+        <span style="color: rgb(0, 128, 0);">// implements ContinueDrag -- to canceld the D&amp;D.. 
+</span>        <span style="color: rgb(0, 0, 255);">void</span> ContinueDrag(<span style="color: rgb(0, 128, 128);">QueryContinueDragEventArgs</span> args);
+        <span style="color: rgb(0, 128, 0);">// called by the TARGET object .. this will attempt to "unparent" the current child so we can add it a child some where else.. 
+</span>        <span style="color: rgb(0, 0, 255);">bool</span> UnParent();
+
+    } </pre></td></tr></tbody></table><pre class="code">This interface gets called back from either DragHelper or Drophelper  (whenever needed)</pre><pre class="code">A few things to notice: </pre>
+<ul>
+<li><pre class="code">the interface is not necessarily implemented by either the source or the target. it is de-coupled from both.  Any other class can implement it and it can be generic. </pre>
+</li><li><pre class="code">The interface is optional, if you do not implement it, the helpers classes will do their best to help..  My advise is always implement the GetData ( ) part of the interface. </pre>
+</li><li><pre class="code">You can implement just part of the interface.  DragDropProviderActions is a flag that says what actions the interface supports.. </pre></li></ul><pre class="code">&nbsp;</pre>
+<h3><font color="#0080c0">Wiring the 'helpers' </font></h3>
+<p>Is pretty trivial ...&nbsp;&nbsp; the constructor for DragHelper looks like this: </p>
+<table class="" style="background-color: rgb(219, 219, 219);" unselectable="on" border="0" cellpadding="2" cellspacing="0" width="912">
+<tbody>
+<tr>
+<td class="" valign="top" width="910"><pre class="code">  <span style="color: rgb(0, 0, 255);">public</span> DragHelper(<span style="color: rgb(0, 128, 128);">UIElement</span> source, <span style="color: rgb(0, 128, 128);">IDataDropObjectProvider</span> callback, <span style="color: rgb(0, 128, 128);">UIElement</span> dragScope)</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a>&nbsp;&nbsp; // source is the drag source control ...&nbsp; <br>&nbsp;&nbsp;
+//&nbsp;callback is the interface&nbsp; optional, pass null if you
+don't want to implement for call backs to GetData () , GetVisual(),
+etc. <br>&nbsp; /*&nbsp; dragScope is the hack we use if we are going
+to use DragOver...&nbsp;&nbsp;&nbsp; Even though DragOver is a drop
+target event, we need to know about it in the drag ... because we have
+to wire up for it before calling DoDragDrop () ....&nbsp;&nbsp; */ <br></td></tr></tbody></table>
+<p mce_keep="true">&nbsp;</p>
+<p>Here are examples of using the constructors...&nbsp;&nbsp;&nbsp; (
+DropHelper I did not explain above beccuse the only parameter in is the
+drop target control itself.. </p>
+<table class="" unselectable="on" border="0" cellpadding="2" cellspacing="0" width="800">
+<tbody>
+<tr>
+<td class="" valign="top" width="800"><pre class="code">dragHelper = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DragHelper</span>(<span style="color: rgb(0, 0, 255);">this</span>.canvas, <span style="color: rgb(0, 0, 255);">null</span>, <span style="color: rgb(0, 0, 255);">null</span>);
+dropHelper = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DropHelper</span>(<span style="color: rgb(0, 0, 255);">this</span>.dropTargetPanel1 );
+
+dragHelperWScope = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DragHelper</span>(<span style="color: rgb(0, 0, 255);">this</span>.canvas1,  <span style="color: rgb(0, 0, 255);">null</span>, (<span style="color: rgb(0, 128, 128);">UIElement</span>)<span style="color: rgb(0, 0, 255);">this</span>.BorderForScope);
+dropHelperWScope = <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(0, 128, 128);">DropHelper</span>(<span style="color: rgb(0, 0, 255);">this</span>.dropTargetPanel2);</pre><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a><a href="http://11011.net/software/vspaste" mce_href="http://11011.net/software/vspaste"></a></td></tr></tbody></table>
+<p>For the most part, these classes do what we discussed .. the exception is the drop.. </p>
+<h3><font color="#0080c0">Common drop issues: </font></h3>
+<p>Drop of data is straight forward...&nbsp;&nbsp; there is no generic
+recipe for all scenarios but two that I use often are:&nbsp; dropping
+to ContentControl or dropping to ItemsControl..&nbsp; in which case I
+set appropriate property or add the data to the items collection .. </p>
+<p>Drop of UIElements is slightly trickier mostly because you need to
+re-parent your element to the target.. .&nbsp; The sample classes use
+the IDataDropObjectProvider to Unparent () the UIElement before
+dropping it.. </p>
+<p>Note that this assumes every thing is in process, the interface
+passes UIElements and other stuff around ...&nbsp;&nbsp;&nbsp;&nbsp; To
+implement an Out of process handler for passing UI, you can make COM
+objects and pass that around.. </p>
+<p mce_keep="true">&nbsp;</p>
+<h3><font color="#0080c0">The sample </font></h3>
+<p>Is not pretty ...&nbsp; but quite functional. .. Here is the first half ..&nbsp;&nbsp;</p>
+<table class="" unselectable="on" border="0" cellpadding="2" cellspacing="0" width="932">
+<tbody>
+<tr>
+<td class="" valign="top" width="399"><a href="http://blogs.msdn.com/blogfiles/jaimer/WindowsLiveWriter/DragDropinWPF..part3.theresults_CADA/image_1.png" mce_href="http://blogs.msdn.com/blogfiles/jaimer/WindowsLiveWriter/DragDropinWPF..part3.theresults_CADA/image_1.png" atomicselection="true"><img style="border-width: 0px;" alt="image" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/image_thumb_1.png" mce_src="http://blogs.msdn.com/blogfiles/jaimer/WindowsLiveWriter/DragDropinWPF..part3.theresults_CADA/image_thumb_1.png" border="0" height="485" width="438"></a> </td>
+<td class="" valign="top" width="531">The app shows the two approaches: <br><br>The Top grid&nbsp; <br>allows you to drag the rectangle and button any where you want... <br>If you drag in the app to the TargetPanel, it will drag as UIElement <br>If you drag in the app to the RichTextBox, it will drag as Data (Text, hardcoded "abcd" ).. <br>You can also use that to drag out of process ( Word is that I used)... <br>You can drag Text from word into the RichTextbox&nbsp; (duh ) and into the Target Panel ( Creates a TextBlock for you ) ... <br><br>The
+bottom grid, does the same than top, but won't let you drag out of the
+Red border's scope...&nbsp; It how ever does not limit the drop, so you
+can drop from any where ( word, or top grid)... </td></tr></tbody></table>
+<p mce_keep="true">&nbsp;</p>
+<p>The second half of the app is even uglier, it is in Window2.xaml&nbsp; but it is a common scenario... </p>
+<table class="" unselectable="on" border="0" cellpadding="2" cellspacing="0" width="800">
+<tbody>
+<tr>
+<td class="" valign="top" width="400"><a href="http://blogs.msdn.com/blogfiles/jaimer/WindowsLiveWriter/DragDropinWPF..part3.theresults_CADA/image_3.png" mce_href="http://blogs.msdn.com/blogfiles/jaimer/WindowsLiveWriter/DragDropinWPF..part3.theresults_CADA/image_3.png" atomicselection="true"><img style="border-width: 0px;" alt="image" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/image_thumb_3.png" mce_src="http://blogs.msdn.com/blogfiles/jaimer/WindowsLiveWriter/DragDropinWPF..part3.theresults_CADA/image_thumb_3.png" border="0" height="236" width="336"></a> </td>
+<td class="" valign="top" width="400">
+<p>This does drag &amp; drop across listboxes.. <br>it uses Data, but provides a Visual Adorner for feedback... <br><br>The things to notice is that it implements the IDataDropObjectProvider interface ... so you can see how that works.. <br><br>You
+can click one of the planets and drag into Word or other external app
+that allows for text drops to get the XML representation of the
+planet.. </p>
+<p>The listbox that you are dropping into does not allow duplicates..
+so don't try dropping same thing twice..&nbsp; it will quietly smirk at
+you.. <br></p></td></tr></tbody></table>
+<p mce_keep="true">&nbsp;</p>
+<p>OK that covers my D&amp;D walk through ...&nbsp; The source for the sample in part 3 is <a class="" href="http://jaimersamples.members.winisp.net/samples/dragdrop/samples.zip" mce_href="http://jaimersamples.members.winisp.net/samples/dragdrop/samples.zip">here</a>.. </p>
+<p>{let me know if you find bugs or issues } </p>
+		<div class="postfoot">
+			Published Thursday, July 12, 2007 1:43 PM
+			by
+			<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=4419">jaimer</a>
+			
+			<span class="CommonRateControl" id="ctl00___ctl00___ctl01___Entry___Ratings" title="Not yet rated"><img title="Poor" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Poor" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Fair" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Fair" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Average" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Average" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Good" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Good" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Excellent" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Excellent" src="drag-drop-in-wpf-part-3-the-results-and-code.aspx_files/star-right-off.gif" align="absmiddle" border="0"></span><input value="0" id="ctl00___ctl00___ctl01___Entry___Ratings_Value" type="hidden">
+			<div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/jaimer/archive/tags/Windows+Presentation+Foundation/default.aspx" rel="tag">Windows Presentation Foundation</a></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+										
+		</div>
+	</div>
+</div>
+
+
+<h3>
+	Comments
+</h3>	
+<div id="comments">
+
+		<div class="comment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl00_PermaLink" title="permalink" href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part-3-the-results-and-code.aspx#3841730">#</a>
+				<span>Link Listing - July 12, 2007<a name="3841730"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Cookieless Session with ASP.NET Ajax and Web Services [Via: derek ] Displaying Extended Details in a...</p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Friday, July 13, 2007 1:23 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl00_NameLink" rel="nofollow" title="TrackBack" href="http://dotnetjunkies.com/WebLog/csteen/archive/2007/07/13/263101.aspx" target="_blank">Christopher Steen</a>
+			</div>
+		</div>
+	
+		<div class="altcomment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_PermaLink" title="permalink" href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part-3-the-results-and-code.aspx#3872485">#</a>
+				<span>it's like looking into a mirror!<a name="3872485"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>in
+reading your posts i swear you stole my code... it's literally the
+exact same stuff. &nbsp;even down to the "DragHelper" class name --
+mine is called PreviewDragHelper. &nbsp;but the constructs are all
+pretty much identical.</p>
+<p>i guess great minds think alike. &nbsp;either that, or we are both off our rockers. ;)</p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Saturday, July 14, 2007 9:03 PM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_NameLink" title="eburke" href="http://eric.burke.name/dotnetmania" target="_blank">eburke</a>
+			</div>
+		</div>
+	
+		<div class="commentowner">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_PermaLink" title="permalink" href="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part-3-the-results-and-code.aspx#4125725">#</a>
+				<span>re: Drag &amp; Drop in WPF.. part 3 .. the results and code...<a name="4125725"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Hey Eric, </p>
+<p>Sorry for belated reply.. as you know I was on vacation... </p>
+<p>The adding "Helper" to a class or namespace is a coincidence, I do it all the time .. </p>
+<p>That said, the code should look familiar; it is a compilation of
+many samples I have seen or helped on to our early adopters (every
+thing proprietary removed of course) &nbsp; </p>
+<p>To credit most people I can think of who have directly or indirectly
+contributed: &nbsp;Robby Ingebrestein (Pfizer project), Josh Smith (his
+articles on WPF).. &nbsp;Yourself and any other Yahoo folks (out of
+proc stuff ), &nbsp;Florian Kruesch (OTTO project), and other microsoft
+folks like Sang Il, LLobo, and Marcelon... </p>
+<p>Also, the "planets" images and XML file comes from a sample Bea used.. &nbsp;it is just easy databinding so I use that alot .. </p>
+<p>Why so many? The goal from this was to explain as many options as we
+could, so I went as broad as I could.. &nbsp; That said, the code is
+not complete.. I mostly took points to </p>
+<p>illustrate, so not designed to be reusable as a library.. </p>
+<p>Saludos, </p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Monday, July 30, 2007 1:25 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_NameLink" title="jaimer" href="http://blogs.msdn.com/user/Profile.aspx?UserID=4419" target="_blank">jaimer</a>
+			</div>
+		</div>
+	
+
+</div>
+
+	
+
+
+
+<em>New Comments to this post are disabled</em>	
+   
+    
+			</div></div>
+			<div id="contentfooter">&nbsp;</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+<script language="javascript">var ctl00___ctl00___ctl01___Entry___Ratings=new RateControl('ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings_Value', 5, '/Themes/default/images/common/', false, 'CommonRateControl','CommonRateControlActive','CommonRateControlReadOnly',['Terrible','Poor','Fair','Average','Good','Excellent'],false,true);</script>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part-3-the-results-and-code.aspx"
+dc:identifier="http://blogs.msdn.com/jaimer/archive/2007/07/12/drag-drop-in-wpf-part-3-the-results-and-code.aspx"
+dc:title="Drag &amp; Drop in WPF.. part 3 .. the results and code..."
+trackback:ping="http://blogs.msdn.com/jaimer/trackback.aspx?PostID=3835332" />
+</rdf:RDF>
+-->
+</form>
+</body></html>

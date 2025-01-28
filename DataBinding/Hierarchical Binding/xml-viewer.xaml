@@ -1,0 +1,63 @@
+<?Mapping XmlNamespace='clr-namespace:System.Xml;assembly=System.Xml' 
+    ClrNamespace='System.Xml' Assembly='System.Xml' ?>
+<Grid 
+    xmlns="http://schemas.microsoft.com/winfx/avalon/2005" 
+    xmlns:x="http://schemas.microsoft.com/winfx/xaml/2005" 
+    xmlns:sx="clr-namespace:System.Xml;assembly=System.Xml">
+  <Grid.Resources>
+    <XmlDataProvider x:Key="dataSource">
+      <Media xmlns="">
+        <Book Author="John" Title="Fish are my friends" />
+        <Book Author="Dave" Title="Fish are my enemies" />
+        <Book Author="Jane" Title="Fish are my food" />
+        <CD Artist="Jane" Title="Fish sign good" />
+        <DVD Director="John" Title="Fish: The movie">
+          <Actor>Jane</Actor>
+          <Actor>Dave</Actor>
+        </DVD>
+      </Media>
+    </XmlDataProvider>
+    <HierarchicalDataTemplate DataType="{x:Type sx:XmlNode}" ItemsSource="{Binding Path=ChildNodes}">
+      <WrapPanel>
+        <TextBlock Text="{Binding Path=Name}" />
+        <WrapPanel x:Name="ValueSection" Visibility="Collapsed">
+          <TextBlock Text=" ( " />
+          <TextBlock Text="{Binding Path=Value}" />
+          <TextBlock Text=" )" />
+        </WrapPanel>
+        <WrapPanel x:Name="AttributeSection" Visibility="Collapsed">
+          <TextBlock Text=" ( " />
+          <ItemsControl ItemsSource="{Binding Path=Attributes}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <WrapPanel>
+                  <TextBlock Text="{Binding Path=Name}" />
+                  <TextBlock Text="=&quot;" />
+                  <TextBlock Text="{Binding Path=Value}" />
+                  <TextBlock Text="&quot; " />
+                </WrapPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <TextBlock Text=")" />
+        </WrapPanel>
+      </WrapPanel>
+      <HierarchicalDataTemplate.Triggers>
+        <DataTrigger Binding="{Binding Path=HasAttributes}" Value="True">
+          <Setter Property="Visibility" Value="Visible" TargetName="AttributeSection" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding Path=NodeType}" Value="Text">
+          <Setter Property="Visibility" Value="Visible" TargetName="ValueSection" />
+        </DataTrigger>
+      </HierarchicalDataTemplate.Triggers>
+    </HierarchicalDataTemplate>
+  </Grid.Resources>
+  <TreeView 
+      ItemsSource="{Binding Source={StaticResource dataSource}}" 
+      ItemTemplate="{DynamicResource {DataTemplateKey {x:Type sx:XmlNode}}}" />
+</Grid>

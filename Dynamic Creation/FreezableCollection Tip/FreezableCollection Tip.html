@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - FreezableCollection Tip</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/190136.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/200129.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/03/191049.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>FreezableCollection Tip</h2></a><p style="text-align: right;">March 19, 2007<br>New York, N.Y.</p><p>
+Throughout the WPF graphics system are collection classes that derive from <i>Freezable</i> by way <i>Animatable</i>. These are generally collections of objects that also derive from <i>Freezable</i> or <i>Animatable</i>.
+These freezable collection classes fire change notifications whenever
+items are added to or removed from the collection, of course, but also
+when a dependency property of any item within the collection changes.
+This is an extremely powerful mechanism.
+</p>
+<p>
+<i>TransformCollection</i>, for example, derives from <i>Freezable</i> and <i>Animatable</i>.
+It fires notifications whenever one of the transforms in the collection
+changes (for example, though a data binding or animation), allowing the
+composite transform to be re-calculated and the graphics object to
+reflect that change.
+</p>
+<p>
+If you ever need a custom WPF collection class that derives from <i>Freezable</i> and <i>Animatable</i> you will be overjoyed to discover the generic <i>FreezableCollection&lt;T&gt;</i> class, where T derives from <i>DependencyObject</i>.  This class will save you a <i>lot</i> of work. 
+</p>
+<p>
+After discovering <i>FreezableCollection&lt;T&gt;</i> you might be tempted to define your custom freezable collection class as simply as this:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+public&nbsp;class&nbsp;MyCollection&nbsp;:&nbsp;FreezableCollection&lt;MyFooThings&gt;<br>{<br>
+}<br>
+</ul>
+ <p>
+But watch out!  The cardinal rule for classes that derive from <i>Freezable</i> is this: Override the <i>CreateInstanceCore</i>
+method! Normally you only need to call the default constructor and
+return the result, but there are cases in which failure to override <i>CreateInstanceCore</i>
+will cause problems that might leave you baffled for days! (Does that
+sound like the voice of experience or what?) Here's a much better
+custom freezable collection class: </p>
+<ul style="font-family: monospace; font-weight: bold;">
+public&nbsp;class&nbsp;MyCollection&nbsp;:&nbsp;FreezableCollection&lt;MyFooThings&gt;<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;override&nbsp;Freezable&nbsp;CreateInstanceCore()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;new&nbsp;MyCollection();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br>
+</ul>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/190136.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/200129.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

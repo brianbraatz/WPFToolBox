@@ -1,0 +1,53 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xml:lang="en-US"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:AWDataSource="clr-namespace:AWDataSource;assembly=AWDataSource"
+	x:Class="AWProductPhotos.Window1"
+	x:Name="Window"
+	Title="Window"
+	Width="640" Height="480">
+
+	<Window.Resources>
+		<ObjectDataProvider d:IsDataSource="True" ObjectType="{x:Type AWDataSource:ProductPhotosCollection}" x:Key="ProductPhotosCollectionDS"/>
+		<DataTemplate x:Key="ProductPhotosTemplate">
+			<StackPanel>
+				<TextBlock Text="{Binding Path=ID}" FontWeight="Bold"/>
+				<TextBlock Text="{Binding Path=ModifiedDate, Mode=Default}" TextWrapping="Wrap" FontWeight="Normal"/>
+				<Image Width="Auto" Height="Auto" Source="{Binding Path=ThumbNailPhoto, Mode=Default}"/>
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate x:Key="DataTemplate1">
+			<StackPanel>
+				<TextBlock Text="{Binding Path=ID}"/>
+				<StackPanel/>
+				<StackPanel/>
+				<StackPanel/>
+			</StackPanel>
+		</DataTemplate>
+	</Window.Resources>
+
+	<Grid x:Name="LayoutRoot">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="0.445*"/>
+			<ColumnDefinition Width="0.555*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="37.464"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid.Background>
+			<SolidColorBrush Color="#FFFFFFFF"/>
+		</Grid.Background>
+		<Image Margin="8,8,8,8" x:Name="Image" Grid.Column="1" Grid.Row="1" OpacityMask="{x:Null}" Source="{Binding Path=SelectedItem.LargePhoto, ElementName=ListBox, Mode=Default}"/>
+		<ListBox d:LayoutOverrides="Margin" Margin="8,8,8,8" x:Name="ListBox" Grid.Row="1" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Path=ProductPhotos, Mode=Default, Source={StaticResource ProductPhotosCollectionDS}}" ItemTemplate="{DynamicResource ProductPhotosTemplate}"/>
+		<Button HorizontalAlignment="Center" x:Name="Button" VerticalAlignment="Center" FontSize="12" FontWeight="Bold" Content="Get Product Photos" Command="{Binding Path=GetDataCommand, Mode=Default, Source={StaticResource ProductPhotosCollectionDS}}"/>
+		<RichTextBox x:Name="Sample_Information" Width="250" d:LayoutOverrides="Height" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="Auto" Grid.RowSpan="2" IsReadOnly="True" Grid.Column="0" Margin="-250,0,0,0">
+			<FlowDocument>
+				<Paragraph>The AWProductPhotos sample demonstrates how to bind to, and display, data from a CLR data source such as a SQL database.</Paragraph>
+				<Paragraph xml:space="preserve">In order for Expression Blend to use a CLR data source, the data must be converted to an ObservableCollection.  This conversion is implemented in the child project called AWDataSource, which is included with this sample.</Paragraph>
+				<Paragraph>For more information, please see the tutorial AWProductPhotos that comes with this sample.</Paragraph>
+			</FlowDocument>
+		</RichTextBox>
+	</Grid>
+</Window>

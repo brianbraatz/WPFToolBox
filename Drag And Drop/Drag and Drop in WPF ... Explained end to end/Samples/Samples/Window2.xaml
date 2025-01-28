@@ -1,0 +1,43 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2006" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+    x:Class="Samples.Window2"
+    Title="Samples" Height="369" Width="417"
+    >
+	<Window.Resources>
+		<XmlDataProvider x:Key="SolarSystemPlanetsDS" d:IsDataSource="True" Source="XMLFile1.xml"/>
+		<DataTemplate x:Key="PlanetTemplate">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<TextBlock Text="{Binding Mode=OneWay, XPath=@Name}" Grid.Row="0"/>
+				<Image Grid.Row="1" Source="{Binding Mode=OneWay, XPath=Image}"/>
+			</Grid>
+		</DataTemplate>
+
+		<DataTemplate x:Key="PlanetTemplateText">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<TextBlock Text="{Binding Mode=OneWay, XPath=@Name}" Grid.Row="0"/>
+				<TextBlock Text="{Binding Mode=OneWay, XPath=@Orbit}" Grid.Row="1"/>
+				<TextBlock Text="{Binding Mode=OneWay, XPath=@Diameter}" Grid.Row="2"/>
+			</Grid>
+		</DataTemplate>
+	</Window.Resources>
+	<Grid>
+
+		<ListBox x:Name="listSrc" HorizontalAlignment="Left" Margin="13,19,0,99" Width="168" 
+		ItemTemplate="{DynamicResource PlanetTemplate}" ItemsSource="{Binding Mode=Default, Source={StaticResource SolarSystemPlanetsDS}, XPath=/SolarSystemPlanets/Planet}"/>
+		<ListBox x:Name="listDest" Margin="196,27,9,104" ItemTemplate="{DynamicResource PlanetTemplate}">
+
+		</ListBox>
+		<!-- ItemsSource"{Binding Mode=Default, Source={StaticResource SolarSystemPlanetsDS}, XPath=/SolarSystemPlanets/Planet}"/ -->
+
+	</Grid>
+</Window>

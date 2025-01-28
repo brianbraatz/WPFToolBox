@@ -1,0 +1,109 @@
+<local:MembersDisplayControl x:Class="Microsoft.Samples.WPF.CustomControls.RowsMembersPart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Microsoft.Samples.WPF.CustomControls"
+	Background="Transparent">
+	<local:MembersDisplayControl.Resources>
+
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Resources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+
+			<local:CollectionViewGroupToSharedSizeNameConverter x:Key="SharedHeightConverter"/>
+
+			<Style x:Key="DescriptionTextBlockStyle" TargetType="{x:Type TextBlock}">
+				<Setter Property="HorizontalAlignment" Value="Center"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
+				<Setter Property="Visibility" Value="Collapsed"/>
+				<Setter Property="Margin" Value="4"/>
+				<Style.Triggers>
+					<DataTrigger Binding="{Binding Path=Count}" Value="0">
+						<Setter Property="Visibility" Value="Visible"/>
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+
+			<!-- Style for the whole TreeView -->
+			<Style TargetType="{x:Type TreeView}">
+				<Setter Property="Padding" Value="0"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<Border BorderThickness="0, 0, 0, 1" BorderBrush="Black" 
+									MinWidth="{TemplateBinding MinWidth}" MinHeight="{TemplateBinding MinHeight}">
+								<ItemsPresenter/>
+							</Border>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+
+			<!-- Style fot the single item in the TreeView -->
+			<Style TargetType="{x:Type TreeViewItem}">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type TreeViewItem}">
+							<local:SharedSizeDecorator SharedHeightGroup="{Binding Converter={StaticResource SharedHeightConverter}}">
+								<Grid x:Name="Grid" Background="{StaticResource VerticalAxisElementsBrush}">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition/>
+										<ColumnDefinition/>
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition/>
+									</Grid.RowDefinitions>
+									
+									<local:SharedSizeDecorator SharedWidthGroup="{Binding Path=Name.Level.UniqueName}" Grid.Row="0" Grid.Column="0">
+										<StackPanel VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+											<ToggleButton x:Name="Expander"
+													  Style="{StaticResource TreeViewToggleButtonStyle}"
+													  ClickMode="Press"											  
+													  Initialized="ToggleButtonInitialized"/>
+											<ContentPresenter Grid.Column="0" ContentSource="Header" Margin="5, 1"/>
+										</StackPanel>
+									</local:SharedSizeDecorator>
+									<ItemsPresenter Grid.Column="1" Grid.Row="0" x:Name="ItemsHost"/>
+									<Border x:Name="Border" Grid.ColumnSpan="2"  BorderBrush="Black" BorderThickness="1, 1, 0, 0"/>
+								</Grid>
+							</local:SharedSizeDecorator>
+							<ControlTemplate.Triggers>
+								<DataTrigger Binding="{Binding Path=Name.IsExpandable}" Value="false">
+									<Setter TargetName="Expander" Property="Visibility" Value="Hidden"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Path=Name.IsAggregateGroup}" Value="true">
+									<Setter TargetName="Border" Property="BorderThickness" Value="0"/>
+									<Setter TargetName="ItemsHost" Property="Visibility" Value="Visible"/>
+									<Setter TargetName="Grid" Property="Background" Value="Transparent"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Path=IsBottomLevel}" Value="true">
+									<Setter TargetName="Expander" Property="Visibility" Value="Collapsed"/>
+									<Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed"/>
+								</DataTrigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</ResourceDictionary>
+	</local:MembersDisplayControl.Resources>
+
+	<!-- Logical tree for the RowsMembers part -->
+	<Border BorderBrush="Black" BorderThickness="0, 0, 1, 1">
+		<Grid>
+			<TextBlock Style="{StaticResource DescriptionTextBlockStyle}">Drop row hierarchies here</TextBlock>
+			<DockPanel LastChildFill="false">
+				<TreeView DockPanel.Dock="Top" Name="RowsTreeView" ItemsSource="{Binding Path=Groups}">
+					<TreeView.Resources>
+						<HierarchicalDataTemplate
+							DataType="{x:Type CollectionViewGroup}"
+							ItemsSource="{Binding Path=Items}">
+							<TextBlock Text="{Binding Path=Name.Caption}"/>
+						</HierarchicalDataTemplate>
+					</TreeView.Resources>
+				</TreeView>
+			</DockPanel>
+		</Grid>
+	</Border>
+	
+</local:MembersDisplayControl>

@@ -1,0 +1,594 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional-dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head id="ctl00_ctl00">
+ 
+
+<meta name="description" content="Technology blog about new Microsoft technologies. E.g. WPF, crossbow, .NET framework 3, Live etc. It includes code sources and samples">
+<meta name="keywords" content=".NET Framework, Example, Internals, Microsoft, Programming, Source Code, technology, tutorial, wpf.">
+<meta name="GENERATOR" content="CommunityServer 2007 SP2 (Build: 20611.960)">
+<link rel="pingback" href="http://blogs.microsoft.co.il/blogs/tamir/pingback.aspx">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.microsoft.co.il/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Just code - Tamir Khason (RSS 2.0)" href="http://feeds.feedburner.com/microsft">
+<link rel="alternate" type="application/rss+xml" title="Just code - Tamir Khason - All Comments (RSS 2.0)" href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx">
+<link rel="alternate" type="application/rss+xml" title="RichTextBox syntax highlighting - Comments for this post (RSS 2.0)" href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx?PostID=5723">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="RichTextBox-syntax-highlighting.aspx_files/style.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="RichTextBox-syntax-highlighting.aspx_files/print.htm" type="text/css" media="print">
+	<link rel="stylesheet" href="RichTextBox-syntax-highlighting.aspx_files/light_sidebar_left_wide.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="RichTextBox-syntax-highlighting.aspx_files/DynamicStyle.css" type="text/css" media="screen">
+<script src="RichTextBox-syntax-highlighting.aspx_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-486526-1";
+urchinTracker();
+</script><title>RichTextBox syntax highlighting - Just code - Tamir Khason</title></head><body>
+    <form name="aspnetForm" method="post" action="/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTIwMjk4NDE1MzdkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBS5jdGwwMCRNYWluJGN0bDA4JGN0bDAyJGN0bDAyJGN0bDAyJGNoa1JlbWVtYmVyNnOa7G3ox0C7N39AE+DRj1GRFAw=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="RichTextBox-syntax-highlighting.aspx_files/WebResource.js" type="text/javascript"></script>
+
+
+<script src="RichTextBox-syntax-highlighting.aspx_files/WebResource_002.axd" type="text/javascript"></script>
+<script src="RichTextBox-syntax-highlighting.aspx_files/WebResource_004.axd" type="text/javascript"></script>
+<script src="RichTextBox-syntax-highlighting.aspx_files/WebResource_003.axd" type="text/javascript"></script>
+<script src="RichTextBox-syntax-highlighting.aspx_files/WebResource.axd" type="text/javascript"></script>
+        
+<script type="text/javascript">
+<!--   
+    function ValidateCaptcha(val, args) {
+      
+        var value = args.Value;
+        var nameEQ = "CAPTCHA=";
+        var captchaNumbers;        	
+        var ca = document.cookie.split(';');
+        
+        for(var i=0;i < ca.length;i++) {
+    	    var c = ca[i];
+    	    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    	    if (c.indexOf(nameEQ) == 0) captchaNumbers =  c.substring(nameEQ.length,c.length);
+	    }
+
+        args.IsValid = captchaNumbers == value;
+
+    }
+-->
+</script>
+
+<script src="RichTextBox-syntax-highlighting.aspx_files/WebResource_002.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+
+    			
+
+    <div id="masthead">
+        <div id="welcome" align="right">
+            
+        <a href="http://blogs.microsoft.co.il/login.aspx?ReturnUrl=%2fblogs%2ftamir%2farchive%2f2006%2f12%2f14%2fRichTextBox-syntax-highlighting.aspx">Sign in </a>
+         | <a href="http://blogs.microsoft.co.il/user/CreateUser.aspx?ReturnUrl=">Join</a>
+        | <a href="http://communityserver.org/r.ashx?K">Help</a>
+     
+
+
+        </div>
+    </div>
+    <div id="wrapper">
+	        <div id="container">
+		        <div id="header">
+		            <div id="title">	                    
+                        <h1 class="headermaintitle"><a href="http://blogs.microsoft.co.il/blogs/tamir/">Just code - Tamir Khason</a></h1>      
+                        <p id="tagline">Take care of the sense, and the sounds will take care of themselves.</p>
+                    </div>
+                    <div id="SubscriptionsSideBar">
+                        <div id="subscriptions"> 
+                            <ul>
+                                <li><a href="http://feeds.feedburner.com/microsft">RSS</a></li>
+	                            <li><a href="http://feeds.feedburner.com/microsft">Atom</a></li>
+						        <li id="RssComments"><a href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx">Comments RSS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="nav">                    
+                        <ul>
+                            <li><a href="http://blogs.microsoft.co.il/blogs/tamir/">Home</a></li>
+                            <li><a href="http://blogs.microsoft.co.il/blogs/tamir/contact.aspx">Contact</a></li>
+                            
+                            
+                        </ul>
+                    </div>
+                </div>
+                
+                    <div id="contentwrapper">
+		                <div id="sidebar-a">              
+                            <div id="TasksSideBar">                                
+                                
+                                
+                            </div>
+                            
+                            <div id="SearchSideBar">    
+                                <div id="Search">
+	                                        <h3>Search</h3>
+                                            <ul>
+                                                <li>
+                                                    <input name="ctl00$SideBar$ctl01$ctl00$SearchBox" id="ctl00_SideBar_ctl01_ctl00_SearchBox" class="searchBox" button="SearchButton" onclick="if(this.defaultValue==this.value) this.value='';" onblur="if(this.value=='') this.value=this.defaultValue;" type="text">
+                                                    <a id="ctl00_SideBar_ctl01_ctl00_SearchButton" class="SearchButton" href="javascript:__doPostBack('ctl00$SideBar$ctl01$ctl00$SearchButton','')">Go</a>
+                                                </li>
+                                            </ul>
+                                    </div>
+                            </div>  
+                                
+                                <div id="TagSideBar">
+                                        <h3>Tags</h3>
+                                    <ul class="SidebarTagCloud">
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Accessibility/default.aspx" rel="tag">Accessibility</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/blogging+general/default.aspx" rel="tag">blogging general</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Blogging+rules/default.aspx" rel="tag">Blogging rules</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/blogging+tools/default.aspx" rel="tag">blogging tools</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/C_2300_/default.aspx" rel="tag">C#</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/demos/default.aspx" rel="tag">demos</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/download/default.aspx" rel="tag">download</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/events/default.aspx" rel="tag">events</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/fun/default.aspx" rel="tag">fun</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/help/default.aspx" rel="tag">help</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/jobs/default.aspx" rel="tag">jobs</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Mobile/default.aspx" rel="tag">Mobile</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Performance/default.aspx" rel="tag">Performance</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/promo/default.aspx" rel="tag">promo</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Silverlight/default.aspx" rel="tag">Silverlight</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/SkyDrive/default.aspx" rel="tag">SkyDrive</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/soft/default.aspx" rel="tag">soft</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/source/default.aspx" rel="tag">source</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/thoughts/default.aspx" rel="tag">thoughts</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Tips+and+Tricks/default.aspx" rel="tag">Tips and Tricks</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tools/default.aspx" rel="tag">tools</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tutorial/default.aspx" rel="tag">tutorial</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Vista/default.aspx" rel="tag">Vista</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Vista+Battery+Saver/default.aspx" rel="tag">Vista Battery Saver</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Visual+Studio/default.aspx" rel="tag">Visual Studio</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/VSTS/default.aspx" rel="tag">VSTS</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WCF/default.aspx" rel="tag">WCF</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Web/default.aspx" rel="tag">Web</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Gadgets/default.aspx" rel="tag">Windows Gadgets</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Live/default.aspx" rel="tag">Windows Live</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Live+Writer/default.aspx" rel="tag">Windows Live Writer</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF/default.aspx" rel="tag">WPF</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF+crossbow/default.aspx" rel="tag">WPF crossbow</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF_2F00_E/default.aspx" rel="tag">WPF/E</a></li>
+</ul>
+</div>
+                              
+                                
+                                <div id="NewsSidebar">
+                                        <h3>News</h3>
+                                        <ul>
+                                    <a href="http://www.linkedin.com/in/tamirk"><img src="RichTextBox-syntax-highlighting.aspx_files/btn_profile_bluetxt_80x15.gif" alt="View Tamir Khason's profile on LinkedIn" border="0" height="15" width="80"></a>
+
+
+                                        </ul>
+                                    </div>                
+                                                
+                                
+                                <div id="NavSideBar"><h3>Navigation</h3>
+<ul>
+<li><a href="http://blogs.microsoft.co.il/">Home</a></li><li><a href="http://blogs.microsoft.co.il/blogs/">Blogs</a></li><li><a href="http://blogs.microsoft.co.il/blogs/MainFeed.aspx">RSS</a></li>
+</ul></div>
+                                
+                                
+                                
+                                
+                                <div id="ArchiveSideBar"><h3>Archives</h3>
+<ul>
+<li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/10.aspx">October 2007 (15)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/09.aspx">September 2007 (14)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/08.aspx">August 2007 (21)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/07.aspx">July 2007 (32)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/06.aspx">June 2007 (10)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/05.aspx">May 2007 (22)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/04.aspx">April 2007 (21)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/03.aspx">March 2007 (20)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/02.aspx">February 2007 (9)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/01.aspx">January 2007 (10)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12.aspx">December 2006 (11)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/11.aspx">November 2006 (4)</a></li>
+</ul></div> 
+                                
+                                
+                                
+	                    
+                    </div>
+                    <div id="content"><div id="content2">
+	                    
+    <div class="post">
+        <div class="posthead">
+            Thursday, December 14, 2006 12:15 PM
+            <a href="http://blogs.microsoft.co.il/members/tamir.aspx">Tamir Khason</a>
+            
+            <h2>
+                RichTextBox syntax highlighting
+                
+            </h2>
+        </div>        
+            <p>Today we'll learn how to create RichTextBox with syntax highlight ing. <b>Syntax highlighting</b> is a feature of some <a href="http://en.wikipedia.org/wiki/Text_editor">text editors</a> that displays text—especially <a href="http://en.wikipedia.org/wiki/Source_code">source code</a>—in different colors and <a href="http://en.wikipedia.org/wiki/Typeface">fonts</a> according to the category of terms. This feature eases writing in a structured language such as a <a href="http://en.wikipedia.org/wiki/Programming_language">programming language</a> or a <a href="http://en.wikipedia.org/wiki/Markup_language">markup language</a> as both structures and <a href="http://en.wikipedia.org/wiki/Syntax_error">syntax errors</a> are visually distinct. </p> <p><a href="http://blogs.microsoft.co.il/blogs/tamir/WindowsLiveWriter/RichTextBoxsyntaxhighlighting_AC2A/jssyntax%5B2%5D.jpg"><img style="border: 0px none ;" src="RichTextBox-syntax-highlighting.aspx_files/jssyntax_thumb.jpg" border="0" height="480" width="482"></a> </p> <p>The
+first thing we need is RichTextBox. So, do it. I did some trick on it
+in order to prevent from &lt;P&gt; (Paragraph)&nbsp;inserting on each
+enter (with is default behavior of RichTextBox). I want only one line
+down when I pressed my Enter key.</p> <div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: blue;">&lt;</span><span style="color: rgb(163, 21, 21);">RichTextBox</span><span style="color: blue;"> </span><span style="color: red;">ScrollViewer.CanContentScroll</span><span style="color: blue;">=</span>"<span style="color: blue;">True</span>"<span style="color: blue;"> </span><span style="color: red;">ScrollViewer.VerticalScrollBarVisibility</span><span style="color: blue;">=</span>"<span style="color: blue;">Visible</span>"<span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>"<span style="color: blue;">TextInput</span>"<span style="color: blue;"> </span><span style="color: red;">AcceptsReturn</span><span style="color: blue;">=</span>"<span style="color: blue;">True</span>"<span style="color: blue;"> </span><span style="color: red;">TextChanged</span><span style="color: blue;">=</span>"<span style="color: blue;">TextChangedEventHandler</span>"<span style="color: blue;">&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp; &lt;</span><span style="color: rgb(163, 21, 21);">RichTextBox.Resources</span><span style="color: blue;">&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;</span><span style="color: rgb(163, 21, 21);">Style</span><span style="color: blue;"> </span><span style="color: red;">TargetType</span><span style="color: blue;">=</span>"<span style="color: blue;">{x:Type Paragraph}</span>"<span style="color: blue;">&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &lt;</span><span style="color: rgb(163, 21, 21);">Setter</span><span style="color: blue;"> </span><span style="color: red;">Property</span><span style="color: blue;">=</span>"<span style="color: blue;">Margin</span>"<span style="color: blue;"> </span><span style="color: red;">Value</span><span style="color: blue;">=</span>"<span style="color: blue;">0</span>"<span style="color: blue;">/&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/</span><span style="color: rgb(163, 21, 21);">Style</span><span style="color: blue;">&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp; &lt;/</span><span style="color: rgb(163, 21, 21);">RichTextBox.Resources</span><span style="color: blue;">&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &lt;/</span><span style="color: rgb(163, 21, 21);">RichTextBox</span><span style="color: blue;">&gt;</span></pre></div>
+<p>Ok, not I want only plaintext in my TextBox TextChanged event 'cos I'm going to color it myself.</p><pre style="margin: 0px;"><span style="color: blue;">private</span> <span style="color: blue;">void</span> TextChangedEventHandler(<span style="color: blue;">object</span> sender, <span style="color: rgb(43, 145, 175);">TextChangedEventArgs</span> e)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (TextInput.Document == <span style="color: blue;">null</span>)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">return</span>;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">TextRange</span> documentRange = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">TextRange</span>(TextInput.Document.ContentStart, TextInput.Document.ContentEnd);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; documentRange.ClearAllProperties();</pre>
+<p>&nbsp;</p>
+<p>Now let's create navigator to go though the text and hightlight it</p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: rgb(43, 145, 175);">TextPointer</span> navigator = TextInput.Document.ContentStart;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">while</span> (navigator.CompareTo(TextInput.Document.ContentEnd) &lt; 0)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">TextPointerContext</span> context = navigator.GetPointerContext(<span style="color: rgb(43, 145, 175);">LogicalDirection</span>.Backward);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (context == <span style="color: rgb(43, 145, 175);">TextPointerContext</span>.ElementStart &amp;&amp; navigator.Parent <span style="color: blue;">is</span> <span style="color: rgb(43, 145, 175);">Run</span>)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; CheckWordsInRun((<span style="color: rgb(43, 145, 175);">Run</span>)navigator.Parent);</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; navigator = navigator.GetNextContextPosition(<span style="color: rgb(43, 145, 175);">LogicalDirection</span>.Forward);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre></div>
+<p>&nbsp;</p>
+<p>So the only thing we have to do is to check each word within my
+navigator, compare it to Highlighting dictionary and color it. Huh,
+where is my dictionary? Here it comes. I'll do it for ActionScript for
+my client.</p><pre style="margin: 0px;"><span style="color: blue;">class</span> <span style="color: rgb(43, 145, 175);">JSSyntaxProvider</span></pre><pre style="margin: 0px;">&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: blue;">static</span> <span style="color: rgb(43, 145, 175);">List</span>&lt;<span style="color: blue;">string</span>&gt; tags = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">List</span>&lt;<span style="color: blue;">string</span>&gt;();</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: blue;">static</span> <span style="color: rgb(43, 145, 175);">List</span>&lt;<span style="color: blue;">char</span>&gt; specials = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">List</span>&lt;<span style="color: blue;">char</span>&gt;();</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; #region</span> ctor</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: blue;">static</span> JSSyntaxProvider()</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: blue;">string</span>[] strs = {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">"Anchor"</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">"Applet"</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">"Area"</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">"Array"</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">"Boolean"</span>,.....<br>tags = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">List</span>&lt;<span style="color: blue;">string</span>&gt;(strs);</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">We also want to know all possible delimiters so adding this stuff.</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">char</span>[] chrs = {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">'.'</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">')'</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">'('</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">'['</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">']'</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">'&gt;'</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">'&lt;'</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">':'</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">';'</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">'\n'</span>,</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(163, 21, 21);">'\t'</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; };</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; specials = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">List</span>&lt;<span style="color: blue;">char</span>&gt;(chrs);</pre><pre style="margin: 0px;">&nbsp;</pre>
+<p>Now I should check statically if the string I passed is legal and constants in my dictionary</p><pre style="margin: 0px;"><span style="color: blue;">public</span> <span style="color: blue;">static</span> <span style="color: blue;">bool</span> IsKnownTag(<span style="color: blue;">string</span> tag)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">return</span> tags.Exists(<span style="color: blue;">delegate</span>(<span style="color: blue;">string</span> s) { <span style="color: blue;">return</span> s.ToLower().Equals(tag.ToLower()); });</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+<p>Also, I'll do kind of Intellisense later, so I want to check the beginnings of my tags as well</p><pre style="margin: 0px;"><span style="color: blue;">public</span> <span style="color: blue;">static</span> <span style="color: rgb(43, 145, 175);">List</span>&lt;<span style="color: blue;">string</span>&gt; GetJSProvider(<span style="color: blue;">string</span> tag)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">return</span> tags.FindAll(<span style="color: blue;">delegate</span>(<span style="color: blue;">string</span> s) { <span style="color: blue;">return</span> s.ToLower().StartsWith(tag.ToLower()); });</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+<p>Wow. Great. Now I should separate words, that equals to my tags. For
+this propose we'll create new internal&nbsp;structure named Tag. This
+will help us to save words and its' positions.</p><pre style="margin: 0px;"><span style="color: blue;">new</span> <span style="color: blue;">struct</span> <span style="color: rgb(43, 145, 175);">Tag</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: rgb(43, 145, 175);">TextPointer</span> StartPosition;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: rgb(43, 145, 175);">TextPointer</span> EndPosition;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">string</span> Word;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+<p>How, let's go through our text and save all tags we have to save.</p><pre style="margin: 0px;"><span style="color: blue;">int</span> sIndex = 0;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">int</span> eIndex = 0;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">for</span> (<span style="color: blue;">int</span> i = 0; i &lt; text.Length; i++)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (<span style="color: rgb(43, 145, 175);">Char</span>.IsWhiteSpace(text[i]) | <span style="color: rgb(43, 145, 175);">JSSyntaxProvider</span>.GetSpecials.Contains(text[i]))</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (i &gt; 0 &amp;&amp; !(<span style="color: rgb(43, 145, 175);">Char</span>.IsWhiteSpace(text[i - 1]) | <span style="color: rgb(43, 145, 175);">JSSyntaxProvider</span>.GetSpecials.Contains(text[i - 1])))</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; eIndex = i - 1;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">string</span> word = text.Substring(sIndex, eIndex - sIndex + 1);</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (<span style="color: rgb(43, 145, 175);">JSSyntaxProvider</span>.IsKnownTag(word))</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">Tag</span> t = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">Tag</span>();</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.StartPosition = run.ContentStart.GetPositionAtOffset(sIndex, <span style="color: rgb(43, 145, 175);">LogicalDirection</span>.Forward);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.EndPosition = run.ContentStart.GetPositionAtOffset(eIndex + 1, <span style="color: rgb(43, 145, 175);">LogicalDirection</span>.Backward);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.Word = word;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; m_tags.Add(t);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sIndex = i + 1;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+<p>How this works. But wait. If the word is last word in my text I'll
+never hightlight it, due I'm looking for separators. Let's add some fix
+for this case</p><pre style="margin: 0px;"><span style="color: blue;">string</span> lastWord = text.Substring(sIndex, text.Length - sIndex);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (<span style="color: rgb(43, 145, 175);">JSSyntaxProvider</span>.IsKnownTag(lastWord))</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">Tag</span> t = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">Tag</span>();</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.StartPosition = run.ContentStart.GetPositionAtOffset(sIndex, <span style="color: rgb(43, 145, 175);">LogicalDirection</span>.Forward);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.EndPosition = run.ContentStart.GetPositionAtOffset(eIndex + 1, <span style="color: rgb(43, 145, 175);">LogicalDirection</span>.Backward);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.Word = lastWord;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; m_tags.Add(t);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+<p>How I have all my words and its' positions in list. Let's color it!
+Dont forget to unsubscribe! text styling fires TextChanged event.</p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;">TextInput.TextChanged -= <span style="color: blue;">this</span>.TextChangedEventHandler;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">for</span>(<span style="color: blue;">int</span> i=0;i&lt;m_tags.Count;i++)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">TextRange</span> range = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">TextRange</span>(m_tags[i].StartPosition, m_tags[i].EndPosition);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; range.ApplyPropertyValue(<span style="color: rgb(43, 145, 175);">TextElement</span>.ForegroundProperty, <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">SolidColorBrush</span>(<span style="color: rgb(43, 145, 175);">Colors</span>.Blue));</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; range.ApplyPropertyValue(<span style="color: rgb(43, 145, 175);">TextElement</span>.FontWeightProperty, <span style="color: rgb(43, 145, 175);">FontWeights</span>.Bold);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; m_tags.Clear();</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; TextInput.TextChanged += <span style="color: blue;">this</span>.TextChangedEventHandler;</pre></div>
+<p>That's all. We have nice RichTextBox, that understands and color any syntax we want. Maybe later we'll add Intellisense for it.</p>
+<p><a href="http://blogs.microsoft.co.il/files/folders/tamir/entry5721.aspx">Source code of this article</a>.&nbsp;</p>  
+                  
+            <span id="ctl00_Main_ctl07_ctl01">Filed under: <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF/default.aspx" rel="tag">WPF</a>, <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tutorial/default.aspx" rel="tag">tutorial</a>, <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/source/default.aspx" rel="tag">source</a></span><input name="ctl00$Main$ctl07$ctl01" id="ctl00_Main_ctl07_ctl01_State" value="value:Filed%20under%3A%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2FWPF%2Fdefault.aspx%22%20rel%3D%22tag%22%3EWPF%3C%2Fa%3E%2C%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2Ftutorial%2Fdefault.aspx%22%20rel%3D%22tag%22%3Etutorial%3C%2Fa%3E%2C%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2Fsource%2Fdefault.aspx%22%20rel%3D%22tag%22%3Esource%3C%2Fa%3E" type="hidden">
+    </div>
+        <div class="postfoot">
+            	
+      </div>
+    
+            
+                    <a name="Comments">
+                    </a><h3><a name="Comments">Comments</a></h3>
+<a name="Comments">                    </a><div id="comments">
+<a name="Comments">                
+                    </a><div class="comment">
+<a name="Comments">			            </a><h4>
+<a name="Comments">				            </a><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#5732">#</a>
+				            <span>re: RichTextBox syntax highlighting</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Thursday, December 14, 2006 3:17 PM
+			                by <a title="DrorEngel" href="http://blogs.microsoft.co.il/user/Profile.aspx?UserID=2155">DrorEngel</a>
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p></p><p>please provide the direct link to the source</p>
+<p>thanks</p>
+
+                    </div>
+                
+                    <div class="commentowner">
+			            <h4>
+				            <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#5733">#</a>
+				            <span>re: RichTextBox syntax highlighting</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Thursday, December 14, 2006 3:19 PM
+			                by <a title="Tamir Khason" href="http://blogs.microsoft.co.il/user/Profile.aspx?UserID=2342">Tamir Khason</a>
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p></p><p><a rel="nofollow" target="_new" href="http://blogs.microsoft.co.il/files/folders/5721/download.aspx">http://blogs.microsoft.co.il/files/folders/5721/download.aspx</a></p>
+
+                    </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#5786">#</a>
+				            <span>re: RichTextBox syntax highlighting</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Friday, December 15, 2006 10:59 PM
+			                by <a title="dudub" href="http://blogs.microsoft.co.il/blogs/dudub">dudub</a>
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p></p><p>again you are doing it, taking some thing hard and making it very easy with a well understood implementation.</p>
+<p>Great job :-)</p>
+
+                    </div>
+                
+                    <div class="commentowner">
+			            <h4>
+				            <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#5790">#</a>
+				            <span>re: RichTextBox syntax highlighting</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Saturday, December 16, 2006 1:55 AM
+			                by <a title="Tamir Khason" href="http://blogs.microsoft.co.il/user/Profile.aspx?UserID=2342">Tamir Khason</a>
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p></p><p>Thank you, Dudu :)</p>
+
+                    </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#5898">#</a>
+				            <span>Running Action Script under WPF</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Tuesday, December 19, 2006 6:56 PM
+			                by <a title="TrackBack" rel="nofollow" href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/Running-Action-Script-under-WPF.aspx">Just code - Tamir Khason</a>
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p></p><p>Can we run Adobe ActionScript from WPF? YES! we can. Just look at this screenshot Nice, let's see how</p>
+
+                    </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#5899">#</a>
+				            <span>Running Action Script under WPF</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Tuesday, December 19, 2006 6:58 PM
+			                by <a title="TrackBack" rel="nofollow" href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/19/Running-Action-Script-under-WPF.aspx">Just code - Tamir Khason</a>
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p></p><p>Can we run Adobe ActionScript from WPF? YES! we can. Just look at this screenshot Nice, let's see how</p>
+
+                    </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#6738">#</a>
+				            <span>re: RichTextBox syntax highlighting</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, January 10, 2007 4:03 PM
+			                by softer
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p>It's very very low on bigger (regular)!!!
+WPF sometimes sucks!</p>
+                    </div>
+                
+                    <div class="commentowner">
+			            <h4>
+				            <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#6740">#</a>
+				            <span>re: RichTextBox syntax highlighting</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, January 10, 2007 5:51 PM
+			                by <a title="Tamir Khason" href="http://blogs.microsoft.co.il/user/Profile.aspx?UserID=2342">Tamir Khason</a>
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p></p><p>it's low what?</p>
+
+                    </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#12458">#</a>
+				            <span>re: RichTextBox syntax highlighting</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Tuesday, April 24, 2007 4:06 AM
+			                by bs
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p></p><p>great sample--just what i was looking for, thanks</p>
+
+                    </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#21696">#</a>
+				            <span>RichTextBox 语法高亮的一些links</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Monday, August 06, 2007 12:11 PM
+			                by <a title="TrackBack" rel="nofollow" href="http://blog.csdn.net/sukhoeing/archive/2007/08/06/1.aspx">陈锋</a>
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p></p><p>RichTextBox 中文字背景高亮方法的一些link</p>
+
+                    </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx#27250">#</a>
+				            <span>re: RichTextBox syntax highlighting</span>
+			            </h4>
+			            <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Friday, October 12, 2007 12:11 PM
+			                by Rajesh Kumar
+        			        
+                        </div>			
+		            <div class="commentsbody">
+		                <p></p><p>You don't need to define something called "Tag". You can use TextRange instead, which serves for the same.</p>
+<p>See this sample: <a rel="nofollow" target="_new" href="http://blogs.msdn.com/prajakta/archive/2006/11/01/navigate-words-in-richtextbox.aspx">blogs.msdn.com/.../navigate-words-in-richtextbox.aspx</a></p>
+
+                    </div>
+                
+                        </div>
+                    </div>
+                
+            
+            
+            
+            
+                    <div id="commentform">
+                    <h3>Leave a Comment</h3>
+	                    <dl>
+                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle">Title</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02" style="color: Red; visibility: hidden;">*</span></dt>
+	                        <dd><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbTitle" value="re: RichTextBox syntax highlighting" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle" class="smallbox" type="text"></dd>
+
+                            <dt id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_NameTitle"><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName">Name</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10" style="color: Red; visibility: hidden;">*</span></dt>
+                            <dd id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_NameDesc"><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbName" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName" class="smallbox" type="text"></dd>
+
+                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbUrl">Your URL</label> <em>(optional</em>)</dt>
+                            <dd><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbUrl" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbUrl" class="smallbox" type="text"></dd>
+
+                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment">Comments</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07" style="color: Red; visibility: hidden;">*</span></dt>
+                            <dd><textarea name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbComment" rows="5" cols="25" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment"></textarea></dd>
+
+                            <dt><input id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_chkRemember" name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$chkRemember" type="checkbox"><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_chkRemember">Remember Me?</label></dt>
+               
+                            <dt><div id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaPanel" class="Captcha_Div">
+	<img src="RichTextBox-syntax-highlighting.aspx_files/captcha.jpg" style="border-width: 0px;"><br><span>Enter the numbers above: </span><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$CaptchaTextBox" size="3" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaTextBox" type="text"><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13" style="color: Red; display: none;">*</span>
+</div><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$Main$ctl08$ctl02$ctl02$ctl02$btnSubmit", "", true, "CreateCommentForm", "", false, false))' id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_btnSubmit" type="submit"></dt>
+	                    </dl>
+                    </div>
+                    
+        
+        
+                    </div></div>
+                    <div id="contentfooter">&nbsp;</div>
+		        </div>
+                <div id="footer">
+                    
+					    <div class="Copyright"><div align="center">‎©2006 Microsoft Corporation. All rights reserved.‎  <span><a href="http://www.microsoft.com/israel/info/cpyright.asp">תנאי שימוש</a> |</span><span><a href="http://www.microsoft.com/library/toolbar/3.0/trademarks/he-il.mspx">סימנים מסחריים</a> |</span><span><a href="http://www.microsoft.com/info/iw/privacy.mspx">הצהרת פרטיות</a></span></div></div>
+					    
+					    
+
+                        
+					            <a href="http://communityserver.org/r.ashx?j" target="_blank"><img id="ctl00_BodyFooterRegion_ctl02_ctl03_ctl00" src="RichTextBox-syntax-highlighting.aspx_files/PoweredByCS_commercial.gif" alt="Powered by Community Server (Commercial Edition), by Telligent Systems " style="border-width: 0px;"></a>
+    						
+    					
+					
+                </div>
+            </div>        
+        </div>
+    
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaTextBox";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.display = "Dynamic";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.evaluationfunction = "CustomValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.clientvalidationfunction = "ValidateCaptcha";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.validateemptytext = "true";
+// -->
+</script>
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx"
+dc:identifier="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12/14/RichTextBox-syntax-highlighting.aspx"
+dc:title="RichTextBox syntax highlighting"
+trackback:ping="http://blogs.microsoft.co.il/blogs/tamir/trackback.ashx?PostID=5723" />
+</rdf:RDF>
+-->
+<script src="RichTextBox-syntax-highlighting.aspx_files/microsft.js" type="text/javascript" charset="utf-8"></script><script type="text/javascript" charset="utf-8" src="RichTextBox-syntax-highlighting.aspx_files/site-tracker.js"></script> <script type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_Main_ctl07_ctl01 = new Telligent_InlineEditorPanel('ctl00_Main_ctl07_ctl01','ctl00_Main_ctl07_ctl01','ctl00_Main_ctl07_ctl01_State','ctl00_Main_ctl07_ctl00',false,null,null,null);
+// ]]>
+</script>
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        
+</div></div></div></div></div></div></div></div></div></div></form></body></html>

@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Formatting Strings in XAML</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/180953.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/210946.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/03/200923.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Formatting Strings in XAML</h2></a><p style="text-align: right;">Spring Equinox 2006<br>New York City</p><p>
+Many .NET classes override <i>ToString</i> to provide a readable and reasonable text rendition of objects. Some also implement versions of <i>ToString</i> with formatting strings that can also be used to format objects in <i>Console.Write</i> and <i>String.Format</i>.
+</p>
+<p>
+I wanted a flexible way to use these handy formatting strings to
+display objects that are obtained through XAML bindings, and it dawned
+on me that what I was really looking for was a conversion of the object
+into a string that made use of these formatting strings. XAML bindings
+can include a <i>Converter</i> property to perform conversions on objects obtained through bindings. For this <i>Converter</i> property you need a class that implements the <i>IValueConverter</i> interface. The <i>Convert</i> method is called to convert objects transferred from binding sources to targets, and <i>ConvertBack</i> possibly handles the less-frequent transfer from target to source.
+</p>
+<p>
+A <i>Convert</i> method that converts an object into a string using a possible formatting string proved to be trivial. Here is 
+<a href="http://www.charlespetzold.com/blog/2006/03/FormattedTextConverter.cs" type="text/plain">FormattedTextConverter.cs</a>. The formatting string is expected as the <i>param</i> argument to <i>Convert</i>. In the binding definition, this is provided by the <i>ConvertParameter</i> property. 
+</p>
+<p>
+The next step was to come up with a binding source. A class that implements the <i>INotifyPropertyChanged</i>
+interface is good for this purpose because it includes a standard
+mechanism to notify the binding of changes to the property. The <a href="http://www.charlespetzold.com/blog/2006/03/ClockTicker.cs" type="text/plain">ClockTicker.cs</a> class has a bindable property named <i>DateTime</i> that it implements with a call to <i>DateTime.Now</i>. The class triggers the <i>PropertyChanged</i> event every second to signal the presence of a new <i>DateTime</i> object.
+</p>
+<p>
+With these two classes, we're ready to code a simple digital clock in XAML. The
+<a href="http://www.charlespetzold.com/blog/2006/03/DigitalClockWindow.xaml" type="text/plain">DigitalClockWindow.xaml</a> file defines a binding between the window <i>Content</i> property and the <i>DateTime</i> property of <i>ClockTicker</i> with a <i>Convert</i> property that references the <i>FormattedTextConverter</i> class and a <i>ConvertParameter</i> of "... {0:T} ..." which is a string you might use for a similar purpose in <i>Console.Write</i> or <i>String.Format</i>.
+</p>
+<p>
+<a href="http://www.charlespetzold.com/blog/2006/03/DigitalClockApp.xaml" type="text/plain">DigitalClockApp.xaml</a>  file and 
+<a href="http://www.charlespetzold.com/blog/2006/03/DigitalClock.csproj" type="text/plain">DigitalClock.csproj</a> project files round out the project.
+</p>
+<p>
+(It's quite annoying, but you can't actually view these XAML file in
+IE. I have things set up so that XAML files are executed, and that's
+what IE wants to do even though I've included a <i>type="text/plain"</i> attribute along with the <i>href</i>.
+But these are not standalone XAML files and cannot be executed. To look
+at them, you have to right-click the link and download them. Sorry for
+the inconvenience.)
+</p>
+<p>
+It is not necessary for the <i>Binding</i> definition to include <i>Convert</i>. If you leave it out, the window will still display the current <i>DateTime</i> but in the default <i>ToString</i> rendition. That's also what you get if you remove the <i>ConvertParameter</i> property. 
+</p>
+<p>
+Watch out: The formatting string in <i>Console.Write</i> and <i>String.Format</i> uses the same curly brackets that XAML uses for markup extension. If you assign <i>ConvertParameter</i>
+the formatting string of just "{0:T}" you'll have a problem because the
+XAML parser thinks that's a markup extension. Preface it with a pair of
+curly brackets: "{}{0:T}".
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/180953.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/210946.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

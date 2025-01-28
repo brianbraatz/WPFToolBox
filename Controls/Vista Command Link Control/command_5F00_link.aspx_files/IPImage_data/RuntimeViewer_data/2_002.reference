@@ -1,0 +1,164 @@
+﻿function LiveImageClass() 
+{
+    
+};
+
+LiveImageClass.prototype.search = function(query, count, first, lang, adult) 
+{
+    // Returns image search results from search.live.com
+    //
+    // query: The query term for the image search engine (default=Vincent van Gogh)
+    // count: The number of results returned from the search engine (default=10)
+    // first: The index of the first result returned from the search engine (default=0)
+    //  lang: The UI culture language (default=en-us)
+    // adult: The adult settings [off/strict/moderate] (default=off)
+
+    var trimQuery = this.__trimParamValue(query); 
+    var trimAdult = this.__trimParamValue(adult); 
+    var trimLang = this.__trimParamValue(lang); 
+
+    if (trimQuery == "")
+        throw "You must provide a query term!";
+        
+    if(trimAdult == "")
+        trimAdult == "Strict";
+        
+    if(trimLang == "")
+        trimLang = this.__getUserLanguage();
+        
+    if(isNaN(count) || count == 0)
+        count = 20;
+    else if (count == 0 || count > 50)
+        count = 20;
+        
+    if(isNaN(first))
+        first = 0;
+    else if (first < 0 || first > 250)
+        first = 0
+    
+    var jsonUrl = "http://search.live.com/json.aspx?q=" + escape(trimQuery);
+    jsonUrl += "&lang=" + trimLang + "&adlt=" + trimAdult + "&count=" + parseInt(count);
+    jsonUrl += "&first=" + parseInt(first) + "&sourcetype=image&form=popfly";
+
+    var jsonText = environment.getText(jsonUrl);
+
+    if (jsonText.length == 0)
+    {
+	throw "Sorry, the Windows Live Image block encountered a problem which it could not solve.";
+    }
+    else
+    {
+	    eval(jsonText);
+	    var res = LiveSearchGetResponse().image.results;
+	    var total = LiveSearchGetResponse().image.total;
+	    var resultNodeCount = res.length;
+	    var LiveImageResults = new Array(resultNodeCount);
+	    for(var i = 0; i < resultNodeCount; i++)
+	    {
+		    var thumbnailUrl = res[i].thumbnails[0].url;
+		    var thumbnailWidth = res[i].thumbnails[0].width;
+		    var thumbnailHeight = res[i].thumbnails[0].height;
+		    LiveImageResults[i] = new LiveImageResult(res[i].title, res[i].mediaUrl, res[i].url, res[i].displayUrl, res[i].width, res[i].height, res[i].fileSize, thumbnailUrl, thumbnailWidth, thumbnailHeight, total);
+        }
+        return LiveImageResults;
+    }
+};
+
+LiveImageClass.prototype.totalNumberOfImages = function(query, lang, adult) 
+{
+    // Returns total number of contextual advertisment results from search.live.com for a given keyword
+    //
+    //   query: The key word term for the search engine (default=Vincent van Gogh)
+    //   count: The number of results returned from the search engine (default=10)
+    //   first: The index of the first result returned from the search engine (default=0)
+    //    lang: The UI culture language (default=en-us)
+    //   adult: The adult settings [off/strict/moderate] (default=off)
+
+    var trimQuery = this.__trimParamValue(query); 
+    var trimAdult = this.__trimParamValue(adult); 
+    var trimLang = this.__trimParamValue(lang); 
+    var first;
+    var count;
+
+    if (trimQuery == "")
+        throw "You must provide a query term!";
+        
+    if(trimAdult == "")
+        trimAdult == "Moderate";
+        
+    if(trimLang == "")
+        trimLang = this.__getUserLanguage();
+        
+    if(isNaN(count) || count == 0)
+        count = 20;
+    else if (count == 0 || count > 50)
+        count = 20;
+        
+    if(isNaN(first))
+        first = 0;
+    else if (first < 0 || first > 250)
+        first = 0
+        
+    
+    var jsonUrl = "http://search.live.com/json.aspx?q=" + escape(trimQuery);
+    jsonUrl += "&lang=" + trimLang + "&adlt=" + trimAdult + "&count=" + parseInt(count);
+    jsonUrl += "&first=" + parseInt(first) + "&sourcetype=image&form=popfly";
+
+    var jsonText = environment.getText(jsonUrl);
+
+ 
+	eval(jsonText);
+	return LiveSearchGetResponse().image.total;
+};
+
+function LiveImageResult(title, mediaUrl, url, displayUrl, width, height, fileSize, thumbnailUrl, thumbnailWidth, thumbnailHeight, totalCount)
+{
+    this.title = title;
+    this.mediaUrl = mediaUrl;
+    this.url = url;
+    this.displayUrl = displayUrl;
+    this.width = width;
+    this.height = height; 
+    this.fileSize = fileSize;
+    this.thumbnailUrl = thumbnailUrl;
+    this.thumbnailWidth = thumbnailWidth;
+    this.thumbnailHeight = thumbnailHeight;
+    this.totalCount = totalCount;
+};
+
+// function to trim parameters
+LiveImageClass.prototype.__trimParamValue = function(paramValue)
+{   
+    if(!paramValue)
+    {
+        return "";
+    }
+    else if (!isNaN(paramValue))
+    {
+        return paramValue;
+    }
+    
+    return paramValue.trim();
+};
+
+LiveImageClass.prototype.__getUserLanguage = function()
+{   
+    var lang = "";
+    if (navigator.userAgent.indexOf("Firefox") != -1)
+        lang = navigator.language;
+    else if (navigator.userAgent.indexOf("MSIE") != -1)
+        lang = navigator.browserLanguage;
+    else
+        lang = "en-us";
+	
+    return lang;
+}
+
+LiveImageResult.prototype.toString = function()
+{
+        return "<a href='" + environment.escapeQuotes(this.mediaUrl) + "' target='_blank'><img src='" 
+            + environment.escapeQuotes(this.thumbnailUrl) + "' title='" 
+            + environment.escapeQuotes(this.title) + " " + this.width + "x" + this.height + " (" + Math.round((this.fileSize / 1024)*100)/100 + "KB)' /></a>";
+};
+;
+if(window.blockScriptLoaded) blockScriptLoaded('liveImage', '1191159266');

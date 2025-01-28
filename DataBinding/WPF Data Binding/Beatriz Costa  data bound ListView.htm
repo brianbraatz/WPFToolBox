@@ -1,0 +1,537 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0035)http://www.beacosta.com/blog/?cat=9 -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Beatriz Costa » ListView</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><!-- Editable Meta Tags -->
+<META content="" name=description>
+<META content="" name=keywords>
+<META content="Sreejith - GFXedit.com" name=author>
+<META content="Your Name" name=copyright>
+<META content="WordPress 2.2.2" name=generator>
+<META content=index,follow name=robots><!-- Meta Tags End--><!-- Style Sheet -->
+<STYLE type=text/css media=screen>@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</STYLE>
+<!-- Style Sheet End --><!-- Includes -->
+<SCRIPT src="" type=text/javascript></SCRIPT>
+
+<SCRIPT src="" type=text/javascript></SCRIPT>
+<!-- End Includes --><!-- Feed and Ping URLS--><LINK title="RSS 2.0" 
+href="http://www.beacosta.com/blog/?feed=rss2" type=application/rss+xml 
+rel=alternate><LINK title="RSS .92" 
+href="http://www.beacosta.com/blog/?feed=rss" type=text/xml rel=alternate><LINK 
+title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom" 
+type=application/atom+xml rel=alternate><LINK 
+href="http://www.beacosta.com/blog/xmlrpc.php" rel=pingback><!--?php wp_get_archives('type=monthly&format=link'); ?--><LINK 
+title=RSD href="http://www.beacosta.com/blog/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</SCRIPT>
+
+<STYLE type=text/css>.comment {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 8px; PADDING-BOTTOM: 4px; MARGIN: 6px 3px 3px; PADDING-TOP: 4px; POSITION: relative; BACKGROUND-COLOR: #fff
+}
+.odd {
+	BACKGROUND-COLOR: #f8f8f8
+}
+.comment DIV {
+	POSITION: relative
+}
+.comment .comment IMG {
+	MARGIN: 0px
+}
+.comment .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png); OVERFLOW: hidden; WIDTH: 13px; HEIGHT: 13px
+}
+.collapsed .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png)
+}
+.comment .reply {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 0px; FONT-SIZE: 80%; PADDING-BOTTOM: 6px; PADDING-TOP: 0px; TEXT-ALIGN: right
+}
+.comment {
+	BORDER-RIGHT: #ddd 1px solid; BORDER-TOP: #ddd 1px solid; MARGIN-TOP: 10px; BORDER-LEFT: #ddd 1px solid; BORDER-BOTTOM: #ddd 1px solid
+}
+INPUT#subscribe {
+	WIDTH: auto
+}
+.comment .body .content {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; OVERFLOW: auto; WIDTH: 100%; PADDING-TOP: 0px
+}
+.comment .title abbr {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.collapsed .body {
+	DISPLAY: none
+}
+.collapsed .comment {
+	DISPLAY: none
+}
+#commentform TEXTAREA {
+	WIDTH: 97%
+}
+</STYLE>
+<!-- End Feed and Ping URLS--></HEAD>
+<BODY>
+<DIV id=container>
+<DIV id=banner>
+<H1><A title="Beatriz Costa" accessKey=1 
+href="http://www.beacosta.com/blog">Beatriz Costa</A></H1>
+<H2 title="WPF Data Binding">WPF Data Binding</H2></DIV>
+<DIV id=center>
+<DIV class=content>
+<DIV class=post>
+<DIV class=date>February 25, 2006</DIV>
+<H2 id=post-20><A id=postTitle title="How do I implement a data bound ListView?" 
+href="http://www.beacosta.com/blog/?p=20" rel=bookmark>How do I implement a data 
+bound ListView?</A></H2>
+<P><SPAN id=text>The ListView control allows us to display data in a tabular 
+form. In this post, I will show you how easy it is to data bind a ListView to 
+XML data. I will also show you how to style the ListViewItems such that they 
+alternate background colors, even when data items are added and removed. Someone 
+left a comment in one of my previous posts asking for a sample with GridView and 
+GridViewRowPresenter. I will include those in this sample and explain their 
+behavior.</SPAN></P>
+<P><SPAN id=text>I used an XML data source of the solar system planets in this 
+sample. This data is added to the Window’s Resources in the following 
+form:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;XmlDataProvider 
+XPath=”/SolarSystemPlanets/Planet” 
+x:Key=”planets”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;x:XData&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;SolarSystemPlanets 
+xmlns=”"&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Planet 
+Name=”Mercury”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Orbit&gt;57,910,000 
+km (0.38 
+AU)&lt;/Orbit&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Diameter&gt;4,880 
+km&lt;/Diameter&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Mass&gt;3.30e23 
+kg&lt;/Mass&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image&gt;merglobe.gif&lt;/Image&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Details&gt;The 
+small and rocky planet Mercury is the closest planet to the 
+Sun.&lt;/Details&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Planet&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/SolarSystemPlanets&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/x:XData&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/XmlDataProvider&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=text>In particular, notice the addition of the x:XData element, new 
+in Feb CTP, and the empty XML namespace (xmlns=”") on the SolarSystemPlanets 
+element.</SPAN></P>
+<P><SPAN id=text>ListView has a View property of type ViewBase. Currently, the 
+only class that derives from ViewBase is GridView, which can be used as in the 
+following markup to display each of the data fields:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”ImageTemplate”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image 
+Source=”{Binding XPath=Image, Converter={StaticResource stringToImageSource}}” 
+(…) 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”NameTemplate”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding XPath=@Name}” FontWeight=”Bold” (…) 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListView 
+ItemsSource=”{Binding Source={StaticResource planets}}” 
+(…)&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListView.View&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridView&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridView.Columns&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewColumn 
+Header=”Name” CellTemplate=”{StaticResource NameTemplate}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewColumn 
+Header=”Orbit” DisplayMemberBinding=”{Binding XPath=Orbit}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewColumn 
+Header=”Diameter” DisplayMemberBinding=”{Binding XPath=Diameter}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewColumn 
+Header=”Mass” DisplayMemberBinding=”{Binding XPath=Mass}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewColumn 
+Header=”Image” CellTemplate=”{StaticResource ImageTemplate}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GridView.Columns&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GridView&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ListView.View&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ListView&gt;</SPAN></P>
+<P><SPAN id=text>You can use one of two GridViewColumn properties to control the 
+way each planet data item is displayed: CellTemplate or DisplayMemberBinding. 
+CellTemplate takes a DataTemplate, allowing maximum flexibility in how we 
+visualize the data. In this particular sample, I used it for the “Name” column 
+because I wanted it to be bold and for the “Image” column because I wanted to 
+display the actual image (and not the name of the image, which is what is stored 
+in the data source). DisplayMemberBinding (notice this was renamed from 
+DisplayMemberPath in Jan CTP) should be used when we want to display the data we 
+are binding to directly in a TextBlock.</SPAN></P>
+<P><SPAN id=text>This is all it takes to display data in a ListView — it’s 
+really simple. This is great, but we want to make the data more readable by 
+alternating the background color from one row to the next. We need the help of a 
+StyleSelector to accomplish this. I talked in my <A 
+href="http://www.beacosta.com/Archive/2006_01_01_bcosta_archive.html">Jan 13 
+post</A> about using a DataTemplateSelector to display some data items 
+differently from others, based on custom logic. A StyleSelector does the same 
+thing, but instead allows us to pick a different Style for each ListViewItem, 
+which is what we want in this scenario. In case you are not familiar with the 
+very important difference between styles and templates: styles allow you to set 
+properties on any FrameworkElement; templates completely override the look of a 
+particular Control (ControlTemplate) or its data portion 
+(DataTemplate).</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style 
+TargetType=”{x:Type ListViewItem}” BasedOn=”{StaticResource 
+ListViewItemStyleBase}” 
+x:Key=”ListViewItemStyle1″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Background” Value=”White” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style 
+TargetType=”{x:Type ListViewItem}” BasedOn=”{StaticResource 
+ListViewItemStyleBase}” 
+x:Key=”ListViewItemStyle2″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Background” Value=”AliceBlue” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:ListViewItemStyleSelector 
+x:Key=”ListViewItemStyleSelector” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListView 
+ItemContainerStyleSelector=”{StaticResource ListViewItemStyleSelector}” 
+(…)&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;public class 
+ListViewItemStyleSelector : 
+StyleSelector<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+int i = 0;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public override 
+Style SelectStyle(object item, DependencyObject 
+container)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+makes sure the first item always gets the first style, even when 
+restyling<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemsControl 
+ic = 
+ItemsControl.ItemsControlFromItemContainer(container);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(item == 
+ic.Items[0])<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i 
+= 
+0;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string 
+styleKey;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(i % 2 == 
+0)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styleKey 
+= 
+“ListViewItemStyle1″;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styleKey 
+= 
+“ListViewItemStyle2″;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+(Style)(ic.FindResource(styleKey));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>I added to the Window’s Resources the two Styles I want to 
+alternate. I want ListViewItems with an even index to be white, and the odd ones 
+to be AliceBlue. As you can see above, the StyleSelector contains simple logic 
+to return the correct Style for each item.</SPAN></P>
+<P><SPAN id=text>Notice that these Styles have a BasedOn property set to some 
+other Style. The BasedOn property behaves similarly to object inheritance. I 
+will show you the base Style shortly.</SPAN></P>
+<P><SPAN id=text>This works great as long as you never add a new item to the 
+source. If a new item is added, this code will calculate the Style for the newly 
+added item but it will not redo the work for the other items. You will end up 
+with two consecutive items of the same color, which is not what you 
+want.</SPAN></P>
+<P><SPAN id=text>There are probably many ways to cause the StyleSelector to 
+reassign the Styles for all items. In this sample, I attached a handler to the 
+CollectionChanged event of the data source, and there I set the ListView’s 
+ItemContainerStyleSelector property to null and back to the same StyleSelector. 
+If I don’t set it to null first, Avalon is smart enough to not redo the Style 
+assignment.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;protected override void 
+OnInitialized(EventArgs 
+e)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base.OnInitialized(e);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((INotifyCollectionChanged)lv.Items).CollectionChanged 
++= new 
+NotifyCollectionChangedEventHandler(Restyle);<BR>&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;private 
+void Restyle(object sender, NotifyCollectionChangedEventArgs 
+args)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StyleSelector 
+selector = 
+lv.ItemContainerStyleSelector;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv.ItemContainerStyleSelector 
+= 
+null;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv.ItemContainerStyleSelector 
+= selector;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Finally, I want the selected items to behave similarly to the 
+ones in Add/Remove Programs. When I click on a planet, I want its details to 
+appear in a single line, below the rest of the data, and spanning across all 
+columns. </SPAN></P>
+<P><SPAN id=text>The default template for ListViewItem contains a Border 
+wrapping a GridViewRowPresenter. The GridViewRowPresenter is the one that does 
+all the actual work of displaying each individual data item in tabular form. You 
+can think of the GridView simply as a common container for the GridViewColumns, 
+styles and templates and a few other things. </SPAN></P>
+<P><SPAN id=text>When GridViewRowPresenter is used in the template for a 
+ListViewItem and its Columns property is not set, it uses the collection of 
+GridViewColumns set in the GridView automatically. All the information it needs 
+to display the data is in the collection of GridViewColumns. The use of 
+GridViewRowPresenter is not exclusive to ListView/GridView, though. If you set 
+its Columns property directly, you can use it to template anything you can think 
+of. I could go into more detail on this, but instead I will highly recommend you 
+keep an eye on our <A 
+href="http://blogs.msdn.com/atc_avalon_team/default.aspx">ATC’s team blog</A>; 
+they have some really cool stuff coming up.</SPAN></P>
+<P><SPAN id=text>(By the way, you can find the default templates for all our 
+controls by using Sparkle — I mean, <A 
+href="http://blogs.msdn.com/expression/archive/category/11753.aspx">Expression 
+Interactive Designer</A>.)</SPAN></P>
+<P><SPAN id=text>Once you see the default template for ListViewItem and 
+understand the role of GridViewRowPresenter, it is easy to get the details line 
+to span across the columns: you simply need to add a TextBlock below the 
+GridViewRowPresenter, as you can see in the markup below. (This is the base 
+Style for the alternating Styles I mentioned before.)</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style TargetType=”{x:Type 
+ListViewItem}” 
+x:Key=”ListViewItemStyleBase”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Template”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate 
+TargetType=”{x:Type 
+ListViewItem}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Border 
+Background=”{TemplateBinding 
+Background}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BorderBrush=”{TemplateBinding 
+BorderBrush}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BorderThickness=”{TemplateBinding 
+BorderThickness}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Padding=”{TemplateBinding 
+Padding}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewRowPresenter 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding XPath=Details}” Visibility=”Collapsed” Name=”tb” 
+TextWrapping=”Wrap” 
+Margin=”2,0,0,4″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Border&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”IsSelected” 
+Value=”true”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger.Setters&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Visibility” Value=”Visible” 
+TargetName=”tb”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger.Setters&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</SPAN></P>
+<P><SPAN id=text>I don’t want the details to be visible all the time, though. I 
+only want them to show for the selected item. To accomplish this, I first set 
+the visibility of the TextBlock to collapsed (meaning that it takes no space in 
+the layout, in addition to being invisible). I then added a Trigger that changes 
+the TextBlock to be visible only when the ListViewItem is selected.</SPAN></P>
+<P><SPAN id=text>Here is a screenshot of the completed sample:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa  data bound ListView_files/17BoundListView.png" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/17BoundListView.zip">Here</A> you can find 
+the VS project with this sample code. This works with February CTP WPF bits. 
+</SPAN></P>
+<P><SPAN id=text>Update September 17, 2007: <A 
+href="http://www.beacosta.com/Zips/17BoundListViewOrcasBeta2.zip">Here</A> you 
+can find this project running in Orcas Beta 2 bits.</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in ListView" href="http://www.beacosta.com/blog/?cat=9" 
+rel=category>ListView</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on How do I implement a data bound ListView?" 
+href="http://www.beacosta.com/blog/?p=20#comments">Comments (34)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=20"
+    dc:identifier="http://www.beacosta.com/blog/?p=20"
+    dc:title="How do I implement a data bound ListView?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=20" />
+</rdf:RDF>	-->
+<P>
+<DIV align=center></DIV>
+<P></P></DIV></DIV>
+<DIV id=right>
+<DIV class=sidebar><!-- Meta -->
+<H2>Meta:</H2>
+<UL class=noli>
+  <LI><A title="Syndicate this site using RSS" 
+  href="http://feeds.feedburner.com/BeatrizCosta"><ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> 
+  <LI><A title="The latest comments to all posts in RSS" 
+  href="http://feeds.feedburner.com/CommentsForBeatrizCosta">Comments <ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> </LI></UL><!-- Search -->
+<H2>Search</H2><BR>
+<FORM id=searchform action="" method=get><INPUT id=s size=15 name=s> <INPUT type=submit value=Search name=submit> </FORM><!-- Categories -->
+<H2>Categories</H2>
+<UL class=menu>
+  <LI><A title="View all posts filed under General" 
+  href="http://www.beacosta.com/blog/?cat=3">General</A> 
+  <LI class=current-cat-parent><A 
+  title="View all posts filed under WPF Data Binding" 
+  href="http://www.beacosta.com/blog/?cat=2">WPF Data Binding</A> 
+  <UL class=children>
+    <LI><A title="View all posts filed under Binding to ADO.NET" 
+    href="http://www.beacosta.com/blog/?cat=12">Binding to ADO.NET</A> 
+    <LI><A title="View all posts filed under ListBox" 
+    href="http://www.beacosta.com/blog/?cat=14">ListBox</A> 
+    <LI class=current-cat><A title="View all posts filed under ListView" 
+    href="http://www.beacosta.com/blog/?cat=9">ListView</A> 
+    <LI><A title="View all posts filed under Master-detail" 
+    href="http://www.beacosta.com/blog/?cat=10">Master-detail</A> 
+    <LI><A title="View all posts filed under Sorting, filtering, grouping" 
+    href="http://www.beacosta.com/blog/?cat=13">Sorting, filtering, grouping</A> 
+
+    <LI><A title="View all posts filed under Styles and Templates" 
+    href="http://www.beacosta.com/blog/?cat=11">Styles and Templates</A> 
+    <LI><A title="View all posts filed under TreeView" 
+    href="http://www.beacosta.com/blog/?cat=7">TreeView</A> </LI></UL></LI></UL><!-- Archives -->
+<H2>Archives</H2>
+<UL>
+  <LI><A title="September 2007" 
+  href="http://www.beacosta.com/blog/?m=200709">September 2007</A> 
+  <LI><A title="August 2007" 
+  href="http://www.beacosta.com/blog/?m=200708">August 2007</A> 
+  <LI><A title="May 2007" href="http://www.beacosta.com/blog/?m=200705">May 
+  2007</A> 
+  <LI><A title="April 2007" href="http://www.beacosta.com/blog/?m=200704">April 
+  2007</A> 
+  <LI><A title="January 2007" 
+  href="http://www.beacosta.com/blog/?m=200701">January 2007</A> 
+  <LI><A title="November 2006" 
+  href="http://www.beacosta.com/blog/?m=200611">November 2006</A> 
+  <LI><A title="October 2006" 
+  href="http://www.beacosta.com/blog/?m=200610">October 2006</A> 
+  <LI><A title="September 2006" 
+  href="http://www.beacosta.com/blog/?m=200609">September 2006</A> 
+  <LI><A title="August 2006" 
+  href="http://www.beacosta.com/blog/?m=200608">August 2006</A> 
+  <LI><A title="July 2006" href="http://www.beacosta.com/blog/?m=200607">July 
+  2006</A> 
+  <LI><A title="June 2006" href="http://www.beacosta.com/blog/?m=200606">June 
+  2006</A> 
+  <LI><A title="May 2006" href="http://www.beacosta.com/blog/?m=200605">May 
+  2006</A> 
+  <LI><A title="April 2006" href="http://www.beacosta.com/blog/?m=200604">April 
+  2006</A> 
+  <LI><A title="March 2006" href="http://www.beacosta.com/blog/?m=200603">March 
+  2006</A> 
+  <LI><A title="February 2006" 
+  href="http://www.beacosta.com/blog/?m=200602">February 2006</A> 
+  <LI><A title="January 2006" 
+  href="http://www.beacosta.com/blog/?m=200601">January 2006</A> 
+  <LI><A title="December 2005" 
+  href="http://www.beacosta.com/blog/?m=200512">December 2005</A> 
+  <LI><A title="November 2005" 
+  href="http://www.beacosta.com/blog/?m=200511">November 2005</A> 
+  <LI><A title="October 2005" 
+  href="http://www.beacosta.com/blog/?m=200510">October 2005</A> 
+  <LI><A title="September 2005" 
+  href="http://www.beacosta.com/blog/?m=200509">September 2005</A> 
+  <LI><A title="August 2005" 
+  href="http://www.beacosta.com/blog/?m=200508">August 2005</A> </LI></UL></DIV>
+<DIV id=footer>
+<DIV class=copyright><SMALL><SPAN class=copy>Copyright © 2007 <STRONG><A 
+title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</A> 
+</STRONG></SPAN><BR><BR></SMALL></DIV></DIV></DIV></DIV></BODY></HTML>

@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><title>Value Conversion and Validation - Douglas Stockwell's Weblog</title>
+
+
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="ICBM" content="35.7227416666667, 139.577563888889">
+	<meta name="DC.title" content="11011.net">
+	<link rel="stylesheet" href="Value%20Conversion%20and%20Validation_files/styles-site.css" type="text/css">
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://11011.net/index.xml">
+	<link rel="search" type="application/opensearchdescription+xml" title="Search 11011.net" href="http://11011.net/search.osd">
+	<script src="Value%20Conversion%20and%20Validation_files/utils.js" type="text/javascript"></script></head><body>
+
+<div class="frame">
+<div class="header" onclick="document.location = 'http://11011.net'">
+	<div class="headerframe"></div>
+</div>
+<div class="blog">
+<div style="text-align: center;">
+<script type="text/javascript"><!--
+google_ad_client = "pub-0530347160823896";
+google_alternate_color = "FFFFFF";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text";
+google_ad_channel = "";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "4A7DA5";
+google_color_text = "000000";
+google_color_url = "4A7DA5";
+//--></script>
+<script type="text/javascript" src="Value%20Conversion%20and%20Validation_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="Value%20Conversion%20and%20Validation_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="60" scrolling="no" width="468"></iframe>
+</div>
+	<div class="day">April 16, 2007</div>
+	<a name="000695"></a>
+	<div class="time">10:54 AM</div>
+	<div class="entry">
+		<div class="category">
+			<a href="http://11011.net/archives/cat_windows_presentation_foundataion.html">Windows Presentation Foundataion</a>
+
+		</div>
+		<div class="title"><a href="http://11011.net/archives/000695.html">Value Conversion and Validation</a></div>
+		<div class="text nomargin">
+			<p>I hadn't really experimented with <em>ValidationRules</em>
+in WPF before, but I ran into a couple of cases lately where they seem
+useful. In one case&nbsp;I have a custom converter which converts a
+simple grammar for hours and minutes into a <em>TimeSpan</em>. There are many inputs which are invalid, in those cases my converter simply throws an&nbsp;<em>ArgumentException</em>.&nbsp;In order to show the validation status in the UI, I tried to use <em>ExceptionValidationRule</em> like this:</p><pre class="code"><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(163, 21, 21);">TextBox.Text</span><span style="color: rgb(0, 0, 255);">&gt;
+  &lt;</span><span style="color: rgb(163, 21, 21);">Binding</span><span style="color: rgb(0, 0, 255);">&gt;
+    &lt;</span><span style="color: rgb(163, 21, 21);">Binding.Converter</span><span style="color: rgb(0, 0, 255);">&gt;
+      &lt;</span><span style="color: rgb(163, 21, 21);">local:MyConverter</span><span style="color: rgb(0, 0, 255);"> /&gt;
+    &lt;/</span><span style="color: rgb(163, 21, 21);">Binding.Converter</span><span style="color: rgb(0, 0, 255);">&gt;
+    &lt;</span><span style="color: rgb(163, 21, 21);">Binding.ValidationRules</span><span style="color: rgb(0, 0, 255);">&gt;
+      &lt;</span><span style="color: rgb(163, 21, 21);">ExceptionValidationRule</span><span style="color: rgb(0, 0, 255);"> /&gt;
+    &lt;/</span><span style="color: rgb(163, 21, 21);">Binding.ValidationRules</span><span style="color: rgb(0, 0, 255);">&gt;
+  &lt;/</span><span style="color: rgb(163, 21, 21);">Binding</span><span style="color: rgb(0, 0, 255);">&gt;
+&lt;/</span><span style="color: rgb(163, 21, 21);">TextBox.Text</span><span style="color: rgb(0, 0, 255);">&gt;</span></pre><a href="http://11011.net/software/vspaste"></a>
+<p>Having read the following in the "Data Binding Overview" i assumed this would work.</p>
+<blockquote>
+<p><em>If the binding has an <b>ExceptionValidationRule</b> associated with it and an exception is thrown during step 3 or 4, the binding engine checks to see if there is a </em><a href="http://msdn2.microsoft.com/system.windows.data.binding.updatesourceexceptionfilter.aspx"><em>UpdateSourceExceptionFilter</em></a><em>. You have the option to use the <b>UpdateSourceExceptionFilter</b> callback to provide a custom handler for handling exceptions. If an <b>UpdateSourceExceptionFilter</b> is not specified on the <b>Binding</b>, the binding engine creates a <b>ValidationError</b> with the exception and adds it to the <b>Validation</b>.<b>Errors</b> collection of the bound element.</em></p></blockquote>
+<p>Step 3 involves calling the Converter (if one exists). While this
+would appear to indicate that an exception thrown by a
+converter&nbsp;would be caught if we apply an ExceptionValidationRule,
+what actually happens is described by the documentation for <em>IValueConverter</em>:</p>
+<blockquote>
+<p><em>The data binding engine does not catch exceptions that are
+thrown by a user-supplied converter. Any exception that is thrown by
+the <b>Convert</b> method, or any uncaught exceptions that are thrown by methods that the <b>Convert</b> method calls, are treated as run-time errors. Handle anticipated problems by returning <b>DependencyProperty</b>.<b>UnsetValue</b>.</em></p></blockquote>
+<p>I have a <em>GenericConverter</em> abstract base class that I use to implement my converters, this gives me some type <em>sanity</em> at implementation time:</p><pre class="code"><span style="color: rgb(0, 0, 255);">public</span> <span style="color: rgb(0, 0, 255);">abstract</span> <span style="color: rgb(0, 0, 255);">class</span> <span style="color: rgb(43, 145, 175);">GenericConverter</span>&lt;<span style="color: rgb(0, 0, 128);">TIn</span>, <span style="color: rgb(0, 0, 128);">TOut</span>, <span style="color: rgb(0, 0, 128);">TParam</span>&gt; : <span style="color: rgb(255, 0, 0);">IValueConverter</span></pre><a href="http://11011.net/software/vspaste"></a>
+<p>In light of the fact that converters should never throw exceptions I have reshaped Convert and ConvertBack into the <em>Try</em> pattern. <em>GenericConverter</em>'s <em>Convert</em> implementation looks like this:</p><pre class="code"><span style="color: rgb(0, 0, 255);">public</span> <span style="color: rgb(0, 0, 255);">object</span> <span style="color: rgb(0, 0, 128);">Convert</span>(<span style="color: rgb(0, 0, 255);">object</span> <span style="color: rgb(0, 0, 128);">value</span>, <span style="color: rgb(43, 145, 175);">Type</span> <span style="color: rgb(0, 0, 128);">targetType</span>, <span style="color: rgb(0, 0, 255);">object</span> <span style="color: rgb(0, 0, 128);">parameter</span>, <span style="color: rgb(43, 145, 175);">CultureInfo</span> <span style="color: rgb(0, 0, 128);">culture</span>)
+{
+    <span style="color: rgb(0, 0, 128);">TOut</span> <span style="color: rgb(0, 0, 128);">result</span>;
+
+    <span style="color: rgb(0, 0, 255);">if</span> (<span style="color: rgb(0, 0, 128);">TryConvert</span>((<span style="color: rgb(0, 0, 128);">TIn</span>)<span style="color: rgb(0, 0, 128);">value</span>, <span style="color: rgb(0, 0, 255);">out</span> <span style="color: rgb(0, 0, 128);">result</span>, (<span style="color: rgb(0, 0, 128);">TParam</span>)<span style="color: rgb(0, 0, 128);">parameter</span>, <span style="color: rgb(0, 0, 128);">culture</span>))
+        <span style="color: rgb(0, 0, 255);">return</span> <span style="color: rgb(0, 0, 128);">result</span>;
+    <span style="color: rgb(0, 0, 255);">else
+</span>        <span style="background: yellow none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="color: rgb(0, 0, 255);">return</span> <span style="color: rgb(0, 0, 128);">value</span></span>;
+}
+</pre><a href="http://11011.net/software/vspaste"></a>
+<p><em>TryConvert</em> would then be overridden by a converter which supports conversion in this direction.</p><pre class="code"><span style="color: rgb(0, 0, 255);">public</span> <span style="color: rgb(0, 0, 255);">virtual</span> <span style="color: rgb(0, 0, 255);">bool</span> <span style="color: rgb(0, 0, 128);">TryConvert</span>(<span style="color: rgb(0, 0, 128);">TIn</span> <span style="color: rgb(0, 0, 128);">value</span>, <span style="color: rgb(0, 0, 255);">out</span> <span style="color: rgb(0, 0, 128);">TOut</span> <span style="color: rgb(0, 0, 128);">result</span>, <span style="color: rgb(0, 0, 128);">TParam</span> <span style="color: rgb(0, 0, 128);">parameter</span>, <span style="color: rgb(43, 145, 175);">CultureInfo</span> <span style="color: rgb(0, 0, 128);">culture</span>)</pre><a href="http://11011.net/software/vspaste"></a>
+<p>The problem, as highlighted in yellow, is that I'm still unsure what
+to do when the conversion fails. In the implementation above, I return
+the original value. The <em>IValueConverter</em> documentation doesn't say to do this but&nbsp;it <strong>is</strong>
+done by the sample implementation. In some trivial cases including the
+sample given in the documentation, this is enough to alert the <em>ExceptionValidationRule</em> that the conversion has failed. The answer to why this only works in some cases is in the <em>IValueConverter</em> documentation:</p>
+<blockquote>
+<p><em>The data binding engine does not catch exceptions that are thrown by a user-supplied converter</em></p></blockquote>
+<p>The translation is that exceptions thrown by built in conversions <strong>are </strong>caught.
+If a user-supplied converter returns an inappropriate type (something
+for which the source or target in question is not assignable from) the
+binding system will attempt to locate and use a built in conversion, if
+that fails, the <em>ExceptionValidationRule</em> will be applied. If
+there is no built-in conversion the result of our custom converter is
+thrown away and the default value is set. That is a problem, what if we
+don't want a default value?</p>
+<p>Instead of returning the original value, the best&nbsp;I can think to do for now is&nbsp;what the documentation says: return <em>DependencyProperty.UnsetValue. </em>This<em> </em>will
+prevent an invalid value from being assigned to the source or target,
+but it&nbsp;will&nbsp;not&nbsp;raise any validation errors. The best
+validation solution I can come up with for now is to implement a custom
+<em>ValidationRule</em> and run the conversion twice.</p>
+<p>This is easy to add to the <em>GenericConverter,</em> but running the conversion twice just feels wrong! I'd also <em>love</em> to know why <em>ValidationRule</em> is an abstract class rather than an interface.</p><pre class="code"><span style="color: rgb(0, 0, 255);">public</span> <span style="color: rgb(0, 0, 255);">abstract</span> <span style="color: rgb(0, 0, 255);">class</span> <span style="color: rgb(43, 145, 175);">GenericConverter</span>&lt;<span style="color: rgb(0, 0, 128);">TIn</span>, <span style="color: rgb(0, 0, 128);">TOut</span>, <span style="color: rgb(0, 0, 128);">TParam</span>&gt; : <span style="color: rgb(43, 145, 175);">ValidationRule</span>, <span style="color: rgb(255, 0, 0);">IValueConverter
+</span>{
+    <span style="color: rgb(0, 0, 255);">public</span> <span style="color: rgb(0, 0, 255);">override</span> <span style="color: rgb(43, 145, 175);">ValidationResult</span> <span style="color: rgb(0, 0, 128);">Validate</span>(<span style="color: rgb(0, 0, 255);">object</span> <span style="color: rgb(0, 0, 128);">value</span>, <span style="color: rgb(43, 145, 175);">CultureInfo</span> <span style="color: rgb(0, 0, 128);">cultureInfo</span>)
+    {
+        <span style="color: rgb(0, 0, 255);">return</span> <span style="color: rgb(0, 0, 255);">new</span> <span style="color: rgb(43, 145, 175);">ValidationResult</span>(
+            <span style="color: rgb(0, 0, 128);">ConvertBack</span>(<span style="color: rgb(0, 0, 128);">value</span>, <span style="color: rgb(0, 0, 255);">typeof</span>(<span style="color: rgb(0, 0, 128);">TIn</span>), <span style="color: rgb(0, 0, 255);">null</span>, <span style="color: rgb(0, 0, 128);">cultureInfo</span>)
+                != <span style="color: rgb(43, 145, 175);">DependencyProperty</span>.<span style="color: rgb(0, 0, 128);">UnsetValue</span>,
+            <span style="color: rgb(163, 21, 21);"><span style="background: rgb(255, 255, 0) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">"[generic error message]"</span></span>);
+    }
+}</pre><a href="http://11011.net/software/vspaste"></a>
+<p>I would be perfectly happy if exceptions from user-supplied
+converters were treated in the same way as built in conversions, but
+for now it's yet another WPF design decision that I don't fully
+understand.</p>
+		</div>
+		<div class="comments">
+			<iframe id="comment695" frameborder="0"></iframe>
+			<a href="http://11011.net/spamproof/695" onclick="javascript:ToggleComments(695); return false">0 Co<span>mm</span>ents</a>
+		</div>
+
+	</div>
+</div>
+<table style="margin-left: 20px; margin-right: 20px;">
+<tbody><tr><td colspan="2">© Douglas Stockwell 2007</td></tr>
+<tr>
+<td style="vertical-align: top;"><a href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width: 0pt;" src="Value%20Conversion%20and%20Validation_files/88x31.png"></a></td>
+<td style="vertical-align: top;">Unless otherwise specified all "source code" examples are available for use under the <a href="http://creativecommons.org/licenses/by-nc/3.0/"><i>Creative Commons Attribution-Noncommercial 3.0 License</i></a>. Please <a href="mailto:doug@thisdomain">contact me</a> if you would like more flexible licensing terms.</td></tr>
+</tbody></table>
+
+<div class="footerframe">
+</div>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+	<rdf:Description
+		rdf:about="http://11011.net/archives/000695.html"
+		dc:identifier="http://11011.net/archives/000695.html"
+		dc:title="Value Conversion and Validation"
+		trackback:ping="http://mt.11011.net/mt-tb.cgi/252" />
+</rdf:RDF>
+-->
+<script src="Value%20Conversion%20and%20Validation_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-844345-1";
+urchinTracker();
+</script>
+
+</div></body></html>

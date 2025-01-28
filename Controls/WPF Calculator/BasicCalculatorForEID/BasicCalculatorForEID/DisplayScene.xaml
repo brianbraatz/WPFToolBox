@@ -1,0 +1,1582 @@
+<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	mc:Ignorable="d"
+	x:Name="RootWindow"
+	x:Class="RabidCalc.DisplayCalcScene"
+	WindowStyle="None"
+	Padding="0,0,0,0">
+
+	<Window.Resources>
+
+
+	<Style x:Key="TitleHighlightStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Fill">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Offset="0" Color="#A8FFFFFF"/>
+							<GradientStop Offset="0.45" Color="#4CA8A8A8"/>
+							<GradientStop Offset="0.65" Color="#00A8A8A8"/>
+							<GradientStop Offset="1" Color="#00A8A8A8"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="OpacityMask">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Offset="0" Color="#CCFFFFFF"/>
+							<GradientStop Offset="0.5" Color="#FFFFFFFF"/>
+							<GradientStop Offset="1" Color="#CCFFFFFF"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="FrameHighlightStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Fill">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Offset="0" Color="#BBFFFFFF"/>
+							<GradientStop Offset="0.4" Color="#4CA8A8A8"/>
+							<GradientStop Offset="0.45" Color="#11A8A8A8"/>
+							<GradientStop Offset="1" Color="#00A8A8A8"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="OpacityMask">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Offset="0" Color="#CCFFFFFF"/>
+							<GradientStop Offset="0.5" Color="#FFFFFFFF"/>
+							<GradientStop Offset="1" Color="#CCFFFFFF"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="Framebase" TargetType="{x:Type Shape}">
+		<Setter Property="Fill">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#FF080008" Offset="0"/>
+							<GradientStop Color="#FF110022" Offset="0.2"/>
+							<GradientStop Color="#FF331144" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="ButtonBox" TargetType="{x:Type Viewbox}">
+		<Setter Property="Grid.RowSpan" Value="1"/>
+		<Setter Property="Grid.ColumnSpan" Value="1"/>
+		<Setter Property="Width" Value="Auto"/>
+		<Setter Property="Height" Value="Auto"/>
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
+		<Setter Property="Stretch" Value="Uniform"/>
+		<Setter Property="Margin" Value="0,0,0,0"/>
+		<Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+	</Style>
+
+	<Style x:Key="DisplayTextBoxStyle" TargetType="{x:Type TextBox}">
+		<Setter Property="FontFamily" Value="Trebuchet MS" />
+		<Setter Property="FontWeight" Value="Bold" />
+		<Setter Property="FontSize" Value="13.5" />
+		<Setter Property="MaxLines" Value="1" />
+		<Setter Property="TextAlignment" Value="Right" />
+		<Setter Property="HorizontalContentAlignment" Value="Right" />
+		<Setter Property="Padding" Value="0,1,2,0" />
+		<Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+		<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="ForceCursor" Value="True" />
+			<Setter Property="Cursor" Value="Arrow" />
+		<Setter Property="Foreground">
+		<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#EEEEAAAA" Offset="0"/>
+							<GradientStop Color="#EEFFBBBB" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+				</Setter.Value>
+				</Setter>
+	</Style>
+
+	<Style x:Key="WindowBtnStyle" TargetType="{x:Type Button}">
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="Cursor" Value="Hand" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="FontFamily" Value="Trebuchet MS" />
+		<Setter Property="FontSize" Value="8pt" />
+		<Setter Property="FontStyle" Value="Normal" />
+		<Setter Property="FontWeight" Value="Bold" />
+		<Setter Property="Foreground">
+		<Setter.Value>
+			<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+				<LinearGradientBrush.GradientStops>
+					<GradientStopCollection>
+						<GradientStop Color="#EEEEAAAA" Offset="0"/>
+						<GradientStop Color="#EEFFBBBB" Offset="1"/>
+					</GradientStopCollection>
+				</LinearGradientBrush.GradientStops>
+			</LinearGradientBrush>
+		</Setter.Value>
+		</Setter>
+		<Setter Property="Focusable" Value="False" />
+	</Style>
+
+	<Style x:Key="FuncBtnStyle" TargetType="{x:Type Button}">
+		<Setter Property="OverridesDefaultStyle" Value="True" />
+		<Setter Property="Cursor" Value="Hand" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Margin" Value="4,4,4,4" />
+		<Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+		<Setter Property="FontFamily" Value="Trebuchet MS" />
+		<Setter Property="FontSize" Value="8pt" />
+		<Setter Property="FontStyle" Value="Normal" />
+		<Setter Property="FontWeight" Value="Bold" />
+		<Setter Property="Foreground">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#CCCC8888" Offset="0"/>
+							<GradientStop Color="#CCEEBBBB" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Focusable" Value="False" />
+	</Style>
+
+	<Style x:Key="SquareBtnStyle" TargetType="{x:Type Button}">
+		<Setter Property="Cursor" Value="Hand" />
+		<Setter Property="OverridesDefaultStyle" Value="True" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Margin" Value="2,2,2,2" />
+		<Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+		<Setter Property="FontFamily" Value="Trebuchet MS" />
+		<Setter Property="FontSize" Value="8pt" />
+		<Setter Property="FontStyle" Value="Normal" />
+		<Setter Property="FontWeight" Value="Bold" />
+		<Setter Property="Foreground">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#CC8888CC" Offset="0"/>
+							<GradientStop Color="#CCBBBBEE" Offset="1"/>
+
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Focusable" Value="False" />
+	</Style>
+
+	<ControlTemplate x:Key="CloseBtnTemplate" TargetType="{x:Type Button}">
+		<Canvas Name="BtnCanvas" Width="32" Height="12">
+
+			<Rectangle Name="BaseRect" RadiusX="0" RadiusY="0" Width="32" Height="12" Canvas.Left="0" Canvas.Top="0">
+				<Rectangle.Fill>
+					<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStopCollection>
+
+								<GradientStop Color="#FF000000" Offset="0"/>
+								<GradientStop Color="#FFFF0000" Offset="1"/>
+							</GradientStopCollection>
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Rectangle.Fill>
+			</Rectangle>
+
+			<Rectangle Name="CausticRect" RadiusX="0" RadiusY="0" Width="32" Height="12" Canvas.Left="0" Canvas.Top="0">
+				<Rectangle.Fill>
+					<RadialGradientBrush RadiusX="0.5" RadiusY="0.55" GradientOrigin="0.5, 0.15">
+						<RadialGradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop Color="#00FFFFFF" Offset="0"/>
+								<GradientStop Color="#00FFFFFF" Offset="0.66"/>
+								<GradientStop Color="#44444444" Offset="0.70"/>
+								<GradientStop Color="#D8181818" Offset="1"/>
+							</GradientStopCollection>
+						</RadialGradientBrush.GradientStops>
+					</RadialGradientBrush>
+				</Rectangle.Fill>
+				<Rectangle.OpacityMask>
+					<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop Color="#00000000" Offset="0"/>
+								<GradientStop Color="#44000000" Offset="0.5"/>
+								<GradientStop Color="#FFFFFFFF" Offset="1"/>
+							</GradientStopCollection>
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Rectangle.OpacityMask>
+			</Rectangle>
+
+			<Viewbox Name="ContentViewbox" Width="26" Height="10" Stretch="Uniform" Canvas.Left="3" Canvas.Top="1">
+				<ContentPresenter Name="Content"/>
+			</Viewbox>
+
+			<Rectangle Name="HighlightRect" RadiusX="0" RadiusY="0" Width="30" Height="11" Canvas.Left="1" Canvas.Top="0.5" >
+				<Rectangle.Fill>
+					<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop Color="#A8FFFFFF" Offset="0"/>
+								<GradientStop Color="#4CA8A8A8" Offset="0.45"/>
+								<GradientStop Color="#00A8A8A8" Offset="0.65"/>
+								<GradientStop Color="#00A8A8A8" Offset="1"/>
+							</GradientStopCollection>
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Rectangle.Fill>
+				<Rectangle.OpacityMask>
+					<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+						<LinearGradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop Color="#CCFFFFFF" Offset="0"/>
+								<GradientStop Color="#FFFFFFFF" Offset="0.5"/>
+								<GradientStop Color="#CCFFFFFF" Offset="1"/>
+							</GradientStopCollection>
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Rectangle.OpacityMask>
+			</Rectangle>
+
+		</Canvas>
+		<ControlTemplate.Triggers>
+
+			<Trigger Property="IsMouseOver" Value="true">
+				<Setter TargetName="CausticRect" Property="Fill">
+					<Setter.Value>
+						<RadialGradientBrush RadiusX="0.5" RadiusY="0.55" GradientOrigin="0.5, 0.15">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00FFFFFF" Offset="0.7"/>
+									<GradientStop Color="#44444444" Offset="0.8"/>
+									<GradientStop Color="#A8222222" Offset="1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter TargetName="CausticRect" Property="OpacityMask">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00000000" Offset="0"/>
+									<GradientStop Color="#44666666" Offset="0.5"/>
+									<GradientStop Color="#FFFFFFFF" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter TargetName="BaseRect" Property="Fill">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF4C0000" Offset="0"/>
+									<GradientStop Color="#FFFF0000" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Foreground">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#EEAAAAEE" Offset="0"/>
+									<GradientStop Color="#EECCCCFF" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<ControlTemplate x:Key="WideBtnTemplate" TargetType="{x:Type Button}">
+
+		<Viewbox Stretch="Fill" Name="WideBtnViewbox" RenderTransformOrigin="0.5,0.5">
+			<Canvas Width="41" Height="26" Name="WideBtnCanvas">
+				<Rectangle Name="BevelRect" RadiusX="4" RadiusY="4" StrokeThickness="4" Width="41" Height="26" Canvas.Left="0" Canvas.Top="0">
+					<Rectangle.Stroke>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF000000" Offset="0"/>
+									<GradientStop Color="#FFFFFFFF" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Stroke>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#22888888" Offset="0"/>
+									<GradientStop Color="#44888888" Offset="0.5"/>
+									<GradientStop Color="#22888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+
+				<Rectangle Name="BaseRect" RadiusX="4" RadiusY="4" Width="39" Height="24.5" Canvas.Left="1" Canvas.Top="0.5">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF000000" Offset="0"/>
+									<GradientStop Color="#FF0000FF" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+
+				<Viewbox Name="ContentViewbox" Width="18" Height="18" Stretch="Uniform" Canvas.Left="11.5" Canvas.Top="4.5">
+					<ContentPresenter x:Name="Content"/>
+				</Viewbox>
+
+				<Rectangle Name="SideShadow" RadiusX="4" RadiusY="4" Width="39" Height="24.5" Canvas.Left="1" Canvas.Top="0.5">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#CC222222" Offset="0"/>
+									<GradientStop Color="#11000000" Offset="0.33"/>
+									<GradientStop Color="#11000000" Offset="0.66"/>
+									<GradientStop Color="#CC222222" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#77888888" Offset="0.2"/>
+									<GradientStop Color="#FF888888" Offset="0.5"/>
+									<GradientStop Color="#77888888" Offset="0.8"/>
+									<GradientStop Color="#00888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+
+				<Rectangle Name="ShadowEllipse" RadiusX="4" RadiusY="4" Width="39" Height="24.5" Canvas.Left="1" Canvas.Top="0.5">
+					<Rectangle.Fill>
+						<RadialGradientBrush RadiusX="0.7" RadiusY="0.7" GradientOrigin="0.5,0">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00000000" Offset="0.66"/>
+									<GradientStop Color="#99000000" Offset="0.9"/>
+									<GradientStop Color="#FF000000" Offset="0.1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Rectangle.Fill>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#00888888" Offset="0.33"/>
+									<GradientStop Color="#4C888888" Offset="0.5"/>
+									<GradientStop Color="#EE888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+
+				<Rectangle Name="HighlightRect" Opacity="1" RadiusX="4" RadiusY="4" Width="38" Height="23.5" Canvas.Left="1.5" Canvas.Top="1.5">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#22888888" Offset="0"/>
+									<GradientStop Color="#BBEEEEEE" Offset="0.05"/>
+									<GradientStop Color="#88EEEEEE" Offset="0.30"/>
+									<GradientStop Color="#66EEEEEE" Offset="0.60"/>
+									<GradientStop Color="#22888888" Offset="0.95"/>
+									<GradientStop Color="#00888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+							<LinearGradientBrush.RelativeTransform>
+								<RotateTransform Angle="1"/>
+							</LinearGradientBrush.RelativeTransform>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#22888888" Offset="0"/>
+									<GradientStop Color="#AA888888" Offset="0.05"/>
+									<GradientStop Color="#EE888888" Offset="0.5"/>
+									<GradientStop Color="#AA888888" Offset="0.95"/>
+									<GradientStop Color="#22888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+			</Canvas>
+		</Viewbox>
+
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsPressed" Value="true">
+				<Setter Property="Opacity" TargetName="HighlightRect" Value="0" />
+			</Trigger>
+			<Trigger Property="IsMouseOver" Value="true">
+
+				<Setter Property="Fill" TargetName="SideShadow">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#99222222" Offset="0"/>
+									<GradientStop Color="#11000000" Offset="0.33"/>
+									<GradientStop Color="#11000000" Offset="0.66"/>
+									<GradientStop Color="#99222222" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Fill" TargetName="BaseRect">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF000099" Offset="0"/>
+									<GradientStop Color="#FF000066" Offset="0"/>
+									<GradientStop Color="#FF0000FF" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Foreground">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#EEAAAAEE" Offset="0"/>
+									<GradientStop Color="#EECCCCFF" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<ControlTemplate x:Key="SquareBtnTemplate" TargetType="{x:Type Button}">
+
+		<Viewbox Stretch="Fill" Name="SquareBtnViewbox" RenderTransformOrigin="0.5,0.5">
+			<Canvas Width="26" Height="26" Name="SquareBtnCanvas">
+				<Rectangle Name="BevelRect" RadiusX="4" RadiusY="4" StrokeThickness="4" Width="26" Height="26" Canvas.Left="0" Canvas.Top="0">
+					<Rectangle.Stroke>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF000000" Offset="0"/>
+									<GradientStop Color="#FFFFFFFF" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Stroke>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#22888888" Offset="0"/>
+									<GradientStop Color="#44888888" Offset="0.5"/>
+									<GradientStop Color="#22888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+
+				<Rectangle Name="BaseRect" RadiusX="4" RadiusY="4" Width="22" Height="22.5" Canvas.Left="2" Canvas.Top="2.5">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF000000" Offset="0"/>
+									<GradientStop Color="#FF0000FF" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+
+				<Viewbox Name="ContentViewbox" Width="18" Height="18" Stretch="Uniform" Canvas.Left="4" Canvas.Top="4.5">
+					<ContentPresenter x:Name="Content"/>
+				</Viewbox>
+
+				<Rectangle Name="SideShadow" RadiusX="4" RadiusY="4" Width="22" Height="22.5" Canvas.Left="2" Canvas.Top="2.5">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#CC222222" Offset="0"/>
+									<GradientStop Color="#11000000" Offset="0.33"/>
+									<GradientStop Color="#11000000" Offset="0.66"/>
+									<GradientStop Color="#CC222222" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#77888888" Offset="0.2"/>
+									<GradientStop Color="#FF888888" Offset="0.5"/>
+									<GradientStop Color="#77888888" Offset="0.8"/>
+									<GradientStop Color="#00888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+
+				<Rectangle Name="ShadowEllipse" RadiusX="4" RadiusY="4" Width="22" Height="22.5" Canvas.Left="2" Canvas.Top="2.5">
+					<Rectangle.Fill>
+						<RadialGradientBrush RadiusX="0.7" RadiusY="0.7" GradientOrigin="0.5,0">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00000000" Offset="0.66"/>
+									<GradientStop Color="#99000000" Offset="0.9"/>
+									<GradientStop Color="#FF000000" Offset="0.1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Rectangle.Fill>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#00888888" Offset="0.33"/>
+									<GradientStop Color="#4C888888" Offset="0.5"/>
+									<GradientStop Color="#EE888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+
+				<Rectangle Name="HighlightRect" Opacity="1" RadiusX="4" RadiusY="4" Width="20" Height="21.5" Canvas.Left="3" Canvas.Top="3.5">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#22888888" Offset="0"/>
+									<GradientStop Color="#BBEEEEEE" Offset="0.05"/>
+									<GradientStop Color="#88EEEEEE" Offset="0.30"/>
+									<GradientStop Color="#66EEEEEE" Offset="0.60"/>
+									<GradientStop Color="#22888888" Offset="0.95"/>
+									<GradientStop Color="#00888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+							<LinearGradientBrush.RelativeTransform>
+								<RotateTransform Angle="1"/>
+							</LinearGradientBrush.RelativeTransform>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#22888888" Offset="0"/>
+									<GradientStop Color="#AA888888" Offset="0.05"/>
+									<GradientStop Color="#EE888888" Offset="0.5"/>
+									<GradientStop Color="#AA888888" Offset="0.95"/>
+									<GradientStop Color="#22888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+			</Canvas>
+		</Viewbox>
+
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsPressed" Value="true">
+				<Setter Property="Opacity" TargetName="HighlightRect" Value="0" />
+			</Trigger>
+			<Trigger Property="IsMouseOver" Value="true">
+
+
+
+				<Setter Property="Fill" TargetName="SideShadow">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#99222222" Offset="0"/>
+									<GradientStop Color="#11000000" Offset="0.33"/>
+									<GradientStop Color="#11000000" Offset="0.66"/>
+									<GradientStop Color="#99222222" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Fill" TargetName="BaseRect">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF000099" Offset="0"/>
+									<GradientStop Color="#FF000066" Offset="0"/>
+									<GradientStop Color="#FF0000FF" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Foreground">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#EEAAAAEE" Offset="0"/>
+									<GradientStop Color="#EECCCCFF" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<ControlTemplate x:Key="RoundBtnTemplate" TargetType="{x:Type Button}">
+
+		<Viewbox Stretch="Fill" Name="RoundBtnViewbox" RenderTransformOrigin="0.5,0.5">
+			<Canvas Width="22" Height="22" Name="RoundBtnCanvas">
+				<Rectangle Name="BevelRect" RadiusX="11" RadiusY="11" StrokeThickness="4" Width="22" Height="22" Canvas.Left="0" Canvas.Top="0">
+					<Rectangle.Stroke>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#11DDDDDD" Offset="0"/>
+									<GradientStop Color="#DD000000" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Stroke>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#99888888" Offset="0"/>
+									<GradientStop Color="#EE888888" Offset="0.5"/>
+									<GradientStop Color="#99888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+
+				<Rectangle Name="BaseRect" RadiusX="10" RadiusY="10" Width="20" Height="20.5" Canvas.Left="1" Canvas.Top="0.5">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF000000" Offset="0"/>
+									<GradientStop Color="#FFFF0000" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+
+				<Viewbox Name="ContentViewbox" Width="16" Height="16" Stretch="Uniform" Canvas.Left="3" Canvas.Top="3">
+					<ContentPresenter x:Name="Content"/>
+				</Viewbox>
+
+				<Rectangle Name="SideShadow" RadiusX="10" RadiusY="10" Width="20" Height="20.5" Canvas.Left="1" Canvas.Top="0.5">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#CC222222" Offset="0"/>
+									<GradientStop Color="#11000000" Offset="0.33"/>
+									<GradientStop Color="#11000000" Offset="0.66"/>
+									<GradientStop Color="#CC222222" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#77888888" Offset="0.2"/>
+									<GradientStop Color="#FF888888" Offset="0.5"/>
+									<GradientStop Color="#77888888" Offset="0.8"/>
+									<GradientStop Color="#00888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+
+				<Ellipse Name="ShadowEllipse" Width="20" Height="20.5" Canvas.Left="1" Canvas.Top="0.5" RenderTransformOrigin="0.5,0.5">
+					<Ellipse.Fill>
+						<RadialGradientBrush RadiusX="0.7" RadiusY="0.5" GradientOrigin="0.5,0">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00000000" Offset="0.66"/>
+									<GradientStop Color="#99000000" Offset="0.9"/>
+									<GradientStop Color="#FF000000" Offset="0.1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Ellipse.Fill>
+					<Ellipse.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#00888888" Offset="0.33"/>
+									<GradientStop Color="#4C888888" Offset="0.5"/>
+									<GradientStop Color="#EE888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Ellipse.OpacityMask>
+				</Ellipse>
+
+				<Ellipse Name="HighlightEllipse" Opacity="1" Width="20" Height="20.5" Canvas.Left="1" Canvas.Top="0.5" RenderTransformOrigin="0.5,0.5">
+					<Ellipse.Fill>
+						<RadialGradientBrush RadiusX="0.7" RadiusY="0.5" GradientOrigin="0.5,1">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00FFFFFF" Offset="0.33"/>
+									<GradientStop Color="#CCFFFFFF" Offset="0.9"/>
+									<GradientStop Color="#EEFFFFFF" Offset="0.1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Ellipse.Fill>
+					<Ellipse.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#00888888" Offset="0.33"/>
+									<GradientStop Color="#4C888888" Offset="0.5"/>
+									<GradientStop Color="#EE888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Ellipse.OpacityMask>
+				</Ellipse>
+			</Canvas>
+		</Viewbox>
+
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsPressed" Value="true">
+				<Setter Property="Opacity" TargetName="HighlightEllipse" Value="0" />
+			</Trigger>
+			<Trigger Property="IsMouseOver" Value="true">
+
+				<Setter Property="Fill" TargetName="SideShadow">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#99222222" Offset="0"/>
+									<GradientStop Color="#11000000" Offset="0.33"/>
+									<GradientStop Color="#11000000" Offset="0.66"/>
+									<GradientStop Color="#99222222" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Fill" TargetName="BaseRect">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF990000" Offset="0"/>
+									<GradientStop Color="#FF330000" Offset="0"/>
+									<GradientStop Color="#FFFF0000" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Foreground">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#EEEEAAAA" Offset="0"/>
+									<GradientStop Color="#EEFFCCCC" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<ControlTemplate x:Key="TallBtnTemplate" TargetType="{x:Type Button}">
+
+		<Viewbox Stretch="Fill" Name="DblTallViewbox" RenderTransformOrigin="0.5,0.5">
+			<Canvas Width="22" Height="52" Name="DblTallCanvas">
+				<Rectangle Name="BevelRect" RadiusX="11" RadiusY="11" StrokeThickness="4" Width="22" Height="52" Canvas.Left="0" Canvas.Top="0">
+					<Rectangle.Stroke>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00DDDDDD" Offset="0"/>
+									<GradientStop Color="#DD000000" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Stroke>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#99888888" Offset="0"/>
+									<GradientStop Color="#EE888888" Offset="0.5"/>
+									<GradientStop Color="#99888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+
+				<Rectangle Name="BaseRect" RadiusX="10" RadiusY="10" Width="20" Height="50.5" Canvas.Left="1" Canvas.Top="0.5">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF000000" Offset="0"/>
+									<GradientStop Color="#FFFF0000" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+
+				<Viewbox Name="ContentViewbox" Width="18" Height="18" Stretch="Uniform" Canvas.Left="2" Canvas.Top="18">
+					<ContentPresenter x:Name="Content"/>
+				</Viewbox>
+
+				<Rectangle Name="SideShadow" RadiusX="10" RadiusY="10" Width="20" Height="50.5" Canvas.Left="1" Canvas.Top="0.5">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#CC222222" Offset="0"/>
+									<GradientStop Color="#11000000" Offset="0.33"/>
+									<GradientStop Color="#11000000" Offset="0.66"/>
+									<GradientStop Color="#CC222222" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#77888888" Offset="0.2"/>
+									<GradientStop Color="#FF888888" Offset="0.2"/>
+									<GradientStop Color="#77888888" Offset="0.8"/>
+									<GradientStop Color="#00888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+
+				<Ellipse Name="ShadowEllipse" Width="20" Height="20" Canvas.Left="1" Canvas.Top="31" RenderTransformOrigin="0.5,0.5">
+					<Ellipse.Fill>
+						<RadialGradientBrush RadiusX="0.7" RadiusY="0.5" GradientOrigin="0.5,0">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00000000" Offset="0.66"/>
+									<GradientStop Color="#99000000" Offset="0.9"/>
+									<GradientStop Color="#FF000000" Offset="0.1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Ellipse.Fill>
+					<Ellipse.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#00888888" Offset="0.33"/>
+									<GradientStop Color="#4C888888" Offset="0.5"/>
+									<GradientStop Color="#EE888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Ellipse.OpacityMask>
+				</Ellipse>
+
+				<Ellipse Name="HighlightEllipse" Width="20" Height="20" Canvas.Left="1" Canvas.Top="0.5" RenderTransformOrigin="0.5,0.5">
+					<Ellipse.Fill>
+						<RadialGradientBrush RadiusX="0.7" RadiusY="0.5" GradientOrigin="0.5,1">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00FFFFFF" Offset="0.33"/>
+									<GradientStop Color="#CCFFFFFF" Offset="0.9"/>
+									<GradientStop Color="#EEFFFFFF" Offset="0.1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Ellipse.Fill>
+					<Ellipse.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#00888888" Offset="0.33"/>
+									<GradientStop Color="#4C888888" Offset="0.5"/>
+									<GradientStop Color="#EE888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Ellipse.OpacityMask>
+				</Ellipse>
+			</Canvas>
+		</Viewbox>
+
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsPressed" Value="true">
+				<Setter Property="Opacity" TargetName="HighlightEllipse" Value="0" />
+
+				<Setter Property="Fill" TargetName="SideShadow">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#CC222222" Offset="0"/>
+									<GradientStop Color="#11000000" Offset="0.33"/>
+									<GradientStop Color="#11000000" Offset="0.66"/>
+									<GradientStop Color="#CC222222" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+			<Trigger Property="IsMouseOver" Value="true">
+
+				<Setter Property="Fill" TargetName="SideShadow">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#99222222" Offset="0"/>
+									<GradientStop Color="#11000000" Offset="0.33"/>
+									<GradientStop Color="#11000000" Offset="0.66"/>
+									<GradientStop Color="#99222222" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Fill" TargetName="BaseRect">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF990000" Offset="0"/>
+									<GradientStop Color="#FF330000" Offset="0"/>
+									<GradientStop Color="#FFFF0000" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Foreground">
+					<Setter.Value>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#EEEEAAAA" Offset="0"/>
+									<GradientStop Color="#EEFFCCCC" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<VisualBrush x:Key="DblTallIndentVisBrush">
+		<VisualBrush.Visual>
+			<Canvas Width="30" Height="60">
+				<Rectangle RadiusX="15" RadiusY="15" Width="30" Height="60" Canvas.Left="0" Canvas.Top="0">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#88888888" Offset="0"/>
+									<GradientStop Color="#11000000" Offset="0.33"/>
+									<GradientStop Color="#11000000" Offset="0.66"/>
+									<GradientStop Color="#88888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#77888888" Offset="0.2"/>
+									<GradientStop Color="#FF888888" Offset="0.5"/>
+									<GradientStop Color="#77888888" Offset="0.8"/>
+									<GradientStop Color="#00888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+				
+				<Ellipse Width="30" Height="30" Canvas.Left="0" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
+					<Ellipse.Fill>
+						<RadialGradientBrush RadiusX="0.7" RadiusY="0.5" GradientOrigin="0.5,1">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00000000" Offset="0.33"/>
+									<GradientStop Color="#99000000" Offset="0.66"/>
+									<GradientStop Color="#FF000000" Offset="0.1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Ellipse.Fill>
+					<Ellipse.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#00888888" Offset="0.33"/>
+									<GradientStop Color="#4C888888" Offset="0.66"/>
+									<GradientStop Color="#EE888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Ellipse.OpacityMask>
+				</Ellipse>
+
+				<Ellipse Width="30" Height="30" Canvas.Left="0" Canvas.Top="30" RenderTransformOrigin="0.5,0.5">
+					<Ellipse.Fill>
+						<RadialGradientBrush RadiusX="0.7" RadiusY="0.5" GradientOrigin="0.5,0">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00FFFFFF" Offset="0.33"/>
+									<GradientStop Color="#CCFFFFFF" Offset="0.66"/>
+									<GradientStop Color="#FFDDDDDD" Offset="0.1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Ellipse.Fill>
+					<Ellipse.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#00888888" Offset="0.33"/>
+									<GradientStop Color="#4C888888" Offset="0.66"/>
+									<GradientStop Color="#EE888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Ellipse.OpacityMask>
+				</Ellipse>
+			</Canvas>
+		</VisualBrush.Visual>
+	</VisualBrush>
+
+	<VisualBrush x:Key="RoundIndentVisBrush">
+		<VisualBrush.Visual>
+			<Canvas Width="30" Height="30">
+				<Ellipse Width="30" Height="30" Canvas.Left="0" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
+					<Ellipse.Fill>
+						<RadialGradientBrush RadiusX="0.7" RadiusY="0.5" GradientOrigin="0.5,1">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00000000" Offset="0.33"/>
+									<GradientStop Color="#99000000" Offset="0.66"/>
+									<GradientStop Color="#FF000000" Offset="0.1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Ellipse.Fill>
+					<Ellipse.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#00888888" Offset="0.33"/>
+									<GradientStop Color="#4C888888" Offset="0.66"/>
+									<GradientStop Color="#EE888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Ellipse.OpacityMask>
+				</Ellipse>
+
+				<Ellipse Width="30" Height="30" Canvas.Left="0" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
+					<Ellipse.Fill>
+						<RadialGradientBrush RadiusX="0.7" RadiusY="0.5" GradientOrigin="0.5,0">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00FFFFFF" Offset="0"/>
+									<GradientStop Color="#00FFFFFF" Offset="0.33"/>
+									<GradientStop Color="#CCFFFFFF" Offset="0.66"/>
+									<GradientStop Color="#FFDDDDDD" Offset="0.1"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Ellipse.Fill>
+					<Ellipse.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#00888888" Offset="0"/>
+									<GradientStop Color="#00888888" Offset="0.33"/>
+									<GradientStop Color="#4C888888" Offset="0.66"/>
+									<GradientStop Color="#EE888888" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Ellipse.OpacityMask>
+				</Ellipse>
+			</Canvas>
+		</VisualBrush.Visual>
+	</VisualBrush>
+	
+	<VisualBrush x:Key="DisplayVisBrush">
+		<VisualBrush.Visual>
+			<Canvas Height="18" Width="150">
+
+				<Rectangle RadiusX="9" RadiusY="9" Width="150" Height="18" Canvas.Left="0" Canvas.Top="0">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Offset="0" Color="#FF000000"/>
+									<GradientStop Offset="1" Color="#FFFF0000"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+				<Rectangle RadiusX="9" RadiusY="9" Width="150" Height="18" Canvas.Left="0" Canvas.Top="0">
+					<Rectangle.Fill>
+						<RadialGradientBrush RadiusX="0.5" RadiusY="0.55" GradientOrigin="0.5, 0.15">
+							<RadialGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Offset="0" Color="#00FFFFFF"/>
+									<GradientStop Offset="0.66" Color="#00FFFFFF"/>
+									<GradientStop Offset="0.70" Color="#44444444"/>
+									<GradientStop Offset="1" Color="#D8181818"/>
+								</GradientStopCollection>
+							</RadialGradientBrush.GradientStops>
+						</RadialGradientBrush>
+					</Rectangle.Fill>
+					<Rectangle.OpacityMask>
+						<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Offset="0" Color="#00000000"/>
+									<GradientStop Offset="0.5" Color="#44000000"/>
+									<GradientStop Offset="1" Color="#FFFFFFFF"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.OpacityMask>
+				</Rectangle>
+				<Rectangle RadiusX="9" RadiusY="9" Width="150" Height="18" Canvas.Left="0" Canvas.Top="1">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Offset="0" Color="#A8FFFFFF"/>
+									<GradientStop Offset="0.45" Color="#4CA8A8A8"/>
+									<GradientStop Offset="0.65" Color="#00A8A8A8"/>
+									<GradientStop Offset="1" Color="#00A8A8A8"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+			</Canvas>
+		</VisualBrush.Visual>
+	</VisualBrush>
+
+	<VisualBrush x:Key="ChromeVisBrush">
+		<VisualBrush.Visual>
+			<Canvas Height="32" Width="32">
+				<Rectangle RadiusX="0" RadiusY="0" Width="32" Height="32" StrokeThickness="2" Canvas.Left="0" Canvas.Top="0">
+					<Rectangle.Stroke>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#A8110000" Offset="0"/>
+									<GradientStop Color="#A8886666" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Stroke>
+				</Rectangle>
+				<Rectangle RadiusX="0" RadiusY="0" Width="30" Height="30" Canvas.Left="1" Canvas.Top="1">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Offset="0" Color="#FF000000"/>
+									<GradientStop Offset="1" Color="#FFFF0000"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+				<Rectangle RadiusX="0" RadiusY="0" Width="30" Height="30" Canvas.Left="1" Canvas.Top="1">
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Offset="0" Color="#A8FFFFFF"/>
+									<GradientStop Offset="0.45" Color="#4CA8A8A8"/>
+									<GradientStop Offset="0.65" Color="#00A8A8A8"/>
+									<GradientStop Offset="1" Color="#00A8A8A8"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+			</Canvas>
+		</VisualBrush.Visual>
+	</VisualBrush>
+	
+
+
+	</Window.Resources>
+
+<Grid x:Name="RootGrid" HorizontalAlignment="Center" VerticalAlignment="Center" ShowGridLines="False">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition MaxWidth="12" />
+			<ColumnDefinition />
+			<ColumnDefinition MaxWidth="12"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition MaxHeight="16" MinHeight="16"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition />
+			<RowDefinition MaxHeight="8" MinHeight="8"/>
+		</Grid.RowDefinitions>
+
+		<Viewbox x:Name="FrameViewBox" MouseLeftButtonDown="DragAttempt" Width="Auto" Height="Auto" Stretch="Fill" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3" RenderTransformOrigin="0.5,0.5">
+			<Canvas Width="64" Height="64" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="CalcFrameCanvas" RenderTransformOrigin="0.5,0.5">
+				<Rectangle Style="{DynamicResource Framebase}" Width="64" Height="64" Canvas.Left="0" Canvas.Top="0" x:Name="FrameBaseRect" RenderTransformOrigin="0.5,0.5"/>
+				<Rectangle Style="{DynamicResource FrameHighlightStyle}" Width="64" Height="64" Canvas.Left="0" Canvas.Top="0" x:Name="FrameHLRect" RenderTransformOrigin="0.5,0.5"/>
+			</Canvas>
+		</Viewbox>
+		<Viewbox x:Name="TitleBarViewBox" MouseLeftButtonDown="DragAttempt" Width="Auto" Height="16" VerticalAlignment="Top" Stretch="Fill" Grid.Column="0" Grid.Row="0" Grid.RowSpan="1" Grid.ColumnSpan="3" RenderTransformOrigin="0.5,0.5">
+			<Canvas Width="16" Height="16" x:Name="TitleBarCanvas" RenderTransformOrigin="0.5,0.5">
+				<Rectangle Style="{DynamicResource TitleHighlightStyle}" Width="16" Height="16" Canvas.Left="0" Canvas.Top="0" x:Name="TitleBarHLRect" RenderTransformOrigin="0.5,0.5"/>
+			</Canvas>
+		</Viewbox>
+		<Viewbox x:Name="LeftEdgeViewbox" MouseLeftButtonDown="DragAttempt" Width="8" Margin="0,0,4,0" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Stretch" Stretch="Fill" Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="1" MinWidth="8" MaxWidth="8" RenderTransformOrigin="0.5,0.5">
+			<Rectangle x:Name="LeftEdgeRect" Fill="{DynamicResource ChromeVisBrush}" Width="32" Height="32" RenderTransformOrigin="0.5,0.5">
+				<Rectangle.RenderTransform>
+					<RotateTransform Angle="-90"/>
+				</Rectangle.RenderTransform>
+				<Rectangle.OpacityMask>
+					<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+						<LinearGradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop Color="#00FFFFFF" Offset="0"/>
+								<GradientStop Color="#FFFFFFFF" Offset="0.5"/>
+								<GradientStop Color="#00FFFFFF" Offset="1"/>
+							</GradientStopCollection>
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Rectangle.OpacityMask>
+			</Rectangle>
+		</Viewbox>
+		<Viewbox x:Name="RightEdgeViewbox" MouseLeftButtonDown="DragAttempt" Width="8" Margin="4,0,0,0" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Stretch" Stretch="Fill" Grid.Row="0" Grid.Column="3" Grid.RowSpan="4" Grid.ColumnSpan="1" MinWidth="8" MaxWidth="8" RenderTransformOrigin="0.5,0.5">
+			<Rectangle x:Name="RightEdgeRect" Fill="{DynamicResource ChromeVisBrush}" Width="32" Height="32" RenderTransformOrigin="0.5,0.5">
+				<Rectangle.RenderTransform>
+					<RotateTransform Angle="90"/>
+				</Rectangle.RenderTransform>
+				<Rectangle.OpacityMask>
+					<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+						<LinearGradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop Color="#00FFFFFF" Offset="0"/>
+								<GradientStop Color="#FFFFFFFF" Offset="0.5"/>
+								<GradientStop Color="#00FFFFFF" Offset="1"/>
+							</GradientStopCollection>
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Rectangle.OpacityMask>
+			</Rectangle>
+		</Viewbox>
+		<Viewbox x:Name="BottomEdgeViewbox" MouseLeftButtonDown="DragAttempt" Width="Auto" Height="8" VerticalAlignment="Center" Stretch="Fill" Grid.Row="3" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" MinWidth="0" Margin="0,4,0,0" RenderTransformOrigin="0.5,0.5">
+			<Rectangle x:Name="BottomEdgeRect" Fill="{DynamicResource ChromeVisBrush}" Width="32" Height="32" RenderTransformOrigin="0.5,0.5">
+				<Rectangle.RenderTransform>
+					<RotateTransform Angle="180"/>
+				</Rectangle.RenderTransform>
+				<Rectangle.OpacityMask>
+					<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+						<LinearGradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop Color="#11FFFFFF" Offset="0"/>
+								<GradientStop Color="#FFFFFFFF" Offset="0.5"/>
+								<GradientStop Color="#11FFFFFF" Offset="1"/>
+							</GradientStopCollection>
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Rectangle.OpacityMask>
+			</Rectangle>
+		</Viewbox>
+		<StackPanel x:Name="WindowBtnsPanel" HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
+			<Button x:Name="CloseBtn" Style="{DynamicResource WindowBtnStyle}" Template="{DynamicResource CloseBtnTemplate}" RenderTransformOrigin="0.5,0.5" Click="CloseClick" Content="X"/>
+		</StackPanel>
+
+		<!-- Begin Main Button Grid -->
+		<Grid x:Name="CalButtonsGrid" Grid.Row="2" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="0" MinHeight="0" RenderTransformOrigin="0.5,0.5" ShowGridLines="False">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+
+			<Viewbox x:Name="IndentA0VB" Grid.Row="0" Grid.Column="0" Style="{DynamicResource ButtonBox}">
+				<Rectangle Width="30" Height="30" x:Name="IndentA0Rect" Fill="{DynamicResource RoundIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+			<Viewbox x:Name="IndentA1VB" Grid.Row="0" Grid.Column="1" Style="{DynamicResource ButtonBox}">
+				<Rectangle Width="30" Height="30" x:Name="IndentA1Rect" Fill="{DynamicResource RoundIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+			<Viewbox x:Name="IndentA2VB" Grid.Row="0" Grid.Column="2" Style="{DynamicResource ButtonBox}">
+				<Rectangle Width="30" Height="30" x:Name="IndentA2Rect" Fill="{DynamicResource RoundIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+			<Viewbox x:Name="IndentA3VB" Grid.Row="0" Grid.Column="3" Style="{DynamicResource ButtonBox}">
+				<Rectangle Width="30" Height="30" x:Name="IndentA3Rect" Fill="{DynamicResource RoundIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+			<Viewbox x:Name="IndentA4VB" Grid.Row="0" Grid.Column="4" Style="{DynamicResource ButtonBox}">
+				<Rectangle Width="30" Height="30" x:Name="IndentA4Rect" Fill="{DynamicResource RoundIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+			<Viewbox x:Name="IndentB0VB" Grid.Row="1" Grid.Column="0" Style="{DynamicResource ButtonBox}">
+				<Rectangle Width="30" Height="30" x:Name="IndentB0Rect" Fill="{DynamicResource RoundIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+			<Viewbox x:Name="IndentC0VB" Grid.Row="2" Grid.Column="0" Style="{DynamicResource ButtonBox}">
+				<Rectangle Width="30" Height="30" x:Name="IndentC0Rect" Fill="{DynamicResource RoundIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+			<Viewbox x:Name="IndentD0VB" Grid.Row="3" Grid.Column="0" Style="{DynamicResource ButtonBox}">
+				<Rectangle Width="30" Height="30" x:Name="IndentD0Rect" Fill="{DynamicResource RoundIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+			<Viewbox x:Name="IndentE0VB" Grid.Row="4" Grid.Column="0" Style="{DynamicResource ButtonBox}">
+				<Rectangle Width="30" Height="30" x:Name="IndentE0Rect" Fill="{DynamicResource RoundIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+			<Viewbox x:Name="IndentB4VB" Grid.Row="1" Grid.Column="4" Style="{DynamicResource ButtonBox}" Grid.RowSpan="2">
+				<Rectangle Width="30" Height="60" x:Name="IndentB4Rect" Fill="{DynamicResource DblTallIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+			<Viewbox x:Name="IndentD4VB" Grid.Row="3" Grid.Column="4" Style="{DynamicResource ButtonBox}" Grid.RowSpan="2">
+				<Rectangle Width="30" Height="60" x:Name="IndentD4Rect" Fill="{DynamicResource DblTallIndentVisBrush}" RenderTransformOrigin="0.5,0.5"/>
+			</Viewbox>
+
+
+			<Viewbox x:Name="BtnA0VB" Grid.Row="0" Grid.Column="0" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="ClearBtn" Content="C" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource RoundBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnA1VB" Grid.Row="0" Grid.Column="1" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="ClearEntryBtn" Content="CE" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource RoundBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnA2VB" Grid.Row="0" Grid.Column="2" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="DivideBtn" Content="÷" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource RoundBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnA3VB" Grid.Row="0" Grid.Column="3" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="MultiplyBtn" Content="x" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource RoundBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnA4VB" Grid.Row="0" Grid.Column="4" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="SubtractBtn" Content="-" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource RoundBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnB0VB" Grid.Row="1" Grid.Column="0" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="MemoryClearBtn" Content="MC" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource RoundBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnB1VB" Grid.Row="1" Grid.Column="1" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="BtnB1" Content="7" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource SquareBtnTemplate}" Cursor="Hand"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnB2VB" Grid.Row="1" Grid.Column="2" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="BtnB2" Content="8" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource SquareBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnB3VB" Grid.Row="1" Grid.Column="3" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="BtnB3" Content="9" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource SquareBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnB4VB" Grid.Row="1" Grid.Column="4" Style="{DynamicResource ButtonBox}" Grid.RowSpan="2">
+				<Button x:Name="AddBtn" Content="+" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource TallBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnC0VB" Grid.Row="2" Grid.Column="0" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="MemoryPlusBtn" Content="M+" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource RoundBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnC1VB" Grid.Row="2" Grid.Column="1" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="BtnC1" Content="4" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource SquareBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnC2VB" Grid.Row="2" Grid.Column="2" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="BtnC2" Content="5" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource SquareBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnC3VB" Grid.Row="2" Grid.Column="3" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="BtnC3" Content="6" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource SquareBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnD0VB" Grid.Row="3" Grid.Column="0" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="MemoryStoreBtn" Content="MS" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource RoundBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnD1VB" Grid.Row="3" Grid.Column="1" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="BtnD1" Content="1" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource SquareBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnD2VB" Grid.Row="3" Grid.Column="2" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="BtnD2" Content="2" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource SquareBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnD3VB" Grid.Row="3" Grid.Column="3" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="BtnD3" Content="3" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource SquareBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnD4VB" Grid.Row="3" Grid.Column="4" Style="{DynamicResource ButtonBox}" Grid.RowSpan="2">
+				<Button x:Name="EqualsBtn" Content="=" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource TallBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="BtnE0VB" Grid.Row="4" Grid.Column="0" Style="{DynamicResource ButtonBox}">
+				<Button x:Name="MemoryRecallBtn" Content="MR" Click="FunctionBtnClick" Style="{DynamicResource FuncBtnStyle}" Template="{DynamicResource RoundBtnTemplate}"/>
+			</Viewbox>
+
+			<Viewbox x:Name="WideBtnsVB" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Style="{DynamicResource ButtonBox}">
+				<StackPanel x:Name="WideBtnsStackPanel" Width="90" Height="30" Orientation="Horizontal" RenderTransformOrigin="0.5,0.5">
+					<Button x:Name="ZeroBtn" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource WideBtnTemplate}" Content="0"/>
+					<Button x:Name="DecimalBtn" Click="DigitBtnClick" Style="{DynamicResource SquareBtnStyle}" Template="{DynamicResource WideBtnTemplate}" Content="."/>
+				</StackPanel>
+			</Viewbox>
+
+		</Grid>
+		<!-- End Main Button Grid -->
+
+		<Viewbox x:Name="DisplayViewbox" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" MinWidth="0" MinHeight="0" ClipToBounds="True" Margin="3,0,3,4" RenderTransformOrigin="0.5,0.5">
+			<StackPanel x:Name="DisplayStackPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" RenderTransformOrigin="0.5,0.5">
+				<Viewbox Height="Auto" x:Name="DisplayTextViewbox" RenderTransformOrigin="0.5,0.5">
+					<TextBox MouseLeftButtonDown="DragAttempt" x:Name="DisplayTextBox" Focusable="False" FontSize="13" Style="{DynamicResource DisplayTextBoxStyle}" Text="Temp" Width="150" Height="18" ClipToBounds="True" Padding="10,1,10,0" Background="{DynamicResource DisplayVisBrush}" BorderThickness="0,0,0,0"/>
+				</Viewbox>
+			</StackPanel>
+		</Viewbox>
+
+	</Grid>
+
+</Window>

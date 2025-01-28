@@ -1,0 +1,1858 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How do I bind to ADO.NET?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">March 5, 2006</div>
+					<h2 id="post-21"><a id="postTitle" href="http://www.beacosta.com/blog/?p=21" rel="bookmark" title="How do I bind to ADO.NET?">How do I bind to ADO.NET?</a></h2>
+					<p><span id="text">Binding
+to ADO.NET data is for the most part similar to binding to objects or
+XML, but there are enough small differences to fill up a blog post.
+Designing Avalon support for ADO.NET was a little bit of a challenge:
+on one hand, it was important for us to maintain consistency across the
+different data sources; on the other, we felt it made sense to delegate
+as much work as we could to the ADO.NET classes (which at times broke
+that consistency). </span></p>
+<p><span id="text">In this post I will:<br>
+- Show how to make a 3 level master-detail scenario with ADO.NET.<br>
+- Explain how (and why) change notifications work.<br>
+- Explain how to filter ADO.NET data.</span></p>
+<p><span id="text"><strong>- How to make a 3 level master-detail scenario with ADO.NET</strong></span></p>
+<p><span id="text">In the VS project linked below, you’ll find a very
+simple Access “mdb” database file with a hierarchical data source I
+used in previous posts. There are three tables in this database:
+Mountains, Lifts, and Runs. There is a one-to-many relationship between
+Mountains and Lifts and another one-to-many relationship between Lifts
+and Runs. In the GetData() method in the Window code behind you can
+find the ADO.NET code I use to read the Access data into a DataSet. I
+won’t go into much detail about that, since there are plenty of
+resources out there to learn ADO.NET. The only part worth showing here
+is the creation of the relations between the tables because we will
+need their names later. The MountainsLifts relation links the Moutains
+and Lifts tables through the Mountain_ID column. Similarly, the
+LiftsRuns relation links the Lifts and Runs tables through the Lift_ID
+column.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;dataSet.Relations.Add(”MountainsLifts”,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tables[”Mountains”].Columns[”Mountain_ID”],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tables[”Lifts”].Columns[”Mountain_ID”]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dataSet.Relations.Add(”LiftsRuns”,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tables[”Lifts”].Columns[”Lift_ID”],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tables[”Runs”].Columns[”Lift_ID”]);</span></p>
+<p><span id="text">Once you have your data in place, making a
+three-level master-detail application is very simple, as shown in the
+following markup. Notice that the DataContext is set somewhere up in
+the tree to the “Mountains” DataTable.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox
+ItemsSource=”{Binding}” DisplayMemberPath=”Mountain_Name”
+IsSynchronizedWithCurrentItem=”true” Name=”lbMountains”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding
+Path=MountainsLifts}” DisplayMemberPath=”Lift_Name”
+IsSynchronizedWithCurrentItem=”true” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding
+Path=MountainsLifts/LiftsRuns}” DisplayMemberPath=”Run_Name”
+IsSynchronizedWithCurrentItem=”true” /&gt;</span></p>
+<p><span id="text">You might be wondering how the second binding could possibly work, when there is no property MountainsLifts in DataTable.</span></p>
+<p><span id="text">When the data binding engine sees that the source of
+a binding implements IListSource (as DataTable does), it automatically
+calls the GetList() method, which in this case gives us the DataView.
+Rows in a DataView are of type DataRowView, which implements <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpref/html/frlrfsystemcomponentmodelicustomtypedescriptorclasstopic.asp">ICustomTypeDescriptor</a>.
+Data binding honors this interface and will call the GetProperties()
+method on DataView, which will give us a few more properties. If you
+are curious about what those properties are, you can insert the
+following code somewhere in your code behind and add a breakpoint to
+inspect the collection:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;IList dataView = ((IListSource)ds.Tables[”Mountains”]).GetList();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;PropertyDescriptorCollection coll = ((ICustomTypeDescriptor)dataView[0]).GetProperties();</span></p>
+<p><span id="text">You will see that coll provides three new properties
+to the DataRowView: the data value for each column (named Mountain_ID
+and Mountain_Name) and the relation we added earlier (named
+MountainsLifts). In the markup above, we are binding to the property
+MountainsLifts of the first table, which returns a DataView containing
+just those data items in the second table that are related to the
+currently selected row.</span></p>
+<p><span id="text"><strong>- How (and why) change notifications work</strong></span></p>
+<p><span id="text">If you are using an object data source and you want
+the UI to be notified of changes in the source, your source object
+should implement INotifyCollectionChanged and/or
+INotifyPropertyChanged. INotifyCollectionChanged is used to tell the
+data binding engine that items have been added, removed, or moved
+within a collection. INotifyPropertyChanged is used to indicate that a
+property value has changed. Note that INotifyCollectionChanged does not
+cover changes to properties of items within a collection — the items
+should implement INotifyPropertyChanged themselves. I won’t show an
+example of this here, since we have samples in the Avalon SDK for this.
+ADO.NET works differently.</span></p>
+<p><span id="text">The sample application includes a Button that adds a new Mountain to the Mountains table:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;private void AddItem(object sender, RoutedEventArgs args)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DataRow row = ds.Tables[”Mountains”].NewRow();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row[”Mountain_ID”] = 4;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row[”Mountain_Name”] = “Big White”;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ds.Tables[”Mountains”].Rows.Add(row);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">It comes as a surprise to some people that with this
+code, the item is also added to the UI, even though none of the ADO.NET
+objects implement our INotifyCollectionChanged interface. It turns out
+that ADO.NET’s DataView already implements its own form of notification
+using the IBindingList interface, and Avalon’s data binding engine
+understands that interface in addition to the usual ones. In
+particular, Avalon listens for the ListChanged event, whose
+ListChangedEventArgs contain a ListChangedType enum with values such as
+“ItemAdded”, “ItemDeleted”, and “ItemChanged”.</span></p>
+<p><span id="text"><strong>- How to filter ADO.NET data</strong></span></p>
+<p><span id="text">You can filter the items in XML and CLR collections
+by writing some custom code in the form of a delegate that gets called
+for each item. This delegate returns true or false depending on whether
+we want that particular item to be filtered out. You apply the filter
+by getting the CollectionView associated with your collection, and
+setting its Filter property to your delegate.</span></p>
+<p><span id="text">Filtering in ADO.NET is a little different, though.
+It is done by assigning an expression (written as a string) to the
+DataView’s Filter property. When using a DataView as your source,
+Avalon allows you to use ADO.NET filtering directly (which is very
+efficient):</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;private void FilterItems(object sender, RoutedEventArgs args)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BindingListCollectionView
+view =
+(BindingListCollectionView)CollectionViewSource.GetDefaultView(ds.Tables[”Mountains”]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//bool canFilter = view.CanFilter; // false<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//bool canCustomFilter = view.CanCustomFilter; // true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;view.CustomFilter = “Mountain_Name &lt;&gt; ‘Crystal Mountain’”;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">In this sample, I am binding directly to the
+DataTable, and not to a CollectionViewSource that wraps the DataTable
+(as I did in a few previous blog posts). In this case, the data binding
+engine generates a default view of type BindingListCollectionView and
+binds to it. The static GetDefaultView method on CollectionViewSource
+returns a handle to the default view we generated internally. Notice
+that in this case the view type is BindingListCollectionView (and not
+ListCollectionView as in my previous posts with other data types)
+because DataView implements IBindingList. BindingListCollectionView has
+a new property CustomFilter of type string that allows us to set the
+filter expression to be passed to the DataView’s Filter property. Its
+CanFilter property will return false because you can’t filter it with
+the delegate you would use for other source types, but its
+CanCustomFilter property will return true.</span></p>
+<p><span id="text">Delegating all our filtering (and sorting) to the
+underlying DataView has one consequence that you should be aware of. If
+you have two different CollectionViewSources that refer to the same
+object or XML collection, and you filter one of them, the other one
+remains unfiltered. However, if the source is a DataTable or DataView,
+filtering the first CollectionViewSource causes the second one to be
+filtered as well. Because filtering is done at the source level and not
+at the view level, it affects both views.</span></p>
+<p><span id="text">The data binding team has been discussing whether or
+not we should change this behavior for ADO.NET. Maintaining consistency
+is very important for us because it helps people use their intuition to
+learn our features. Some of us claim that the platform would be more
+consistent if filtering affected ADO.NET sources in the same way as
+other sources, meaning that a filter applied to one
+CollectionViewSource should have no effect on another. Others argue
+that our implementation is consistent in the sense that we delegate all
+operations to the DataView.</span></p>
+<p><span id="text">If you want an opportunity to help shape Avalon, I
+would love to hear your opinions on this issue (note that if the
+current behavior changes, it will be in the Avalon V2 timeframe only).</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/18ThreeLevelMasterDetailADO.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/18ThreeLevelMasterDetailADO.zip">Here</a> you can find the VS project with this sample code. This works with February CTP WPF bits. </span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=12" title="View all posts in Binding to ADO.NET" rel="category">Binding to ADO.NET</a>, <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=21"
+    dc:identifier="http://www.beacosta.com/blog/?p=21"
+    dc:title="How do I bind to ADO.NET?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=21" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=21"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=21">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">36 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-174" class="comment">
+				<a name="comment-174" id="comment-174"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-174")'>
+					<cite>Comment by Anonymous<a href="#comment-174"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-06 07:36:22 						
+					</div>					
+					<div class="content">
+						<p>If you need a vote, I think that delegating of operations to DataView is as how it should be.</p>
+<p>Speaking of the “use of intuition to learn WPF” - one must be a mind
+reader plus have Reflector (or WPF source code) open at all times to
+figure out how to make even the smallest step.</p>
+<p>Reference to Avalon SDK samples is also very promising provided that some of them are still May or Sep CTP samples.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-174", 174, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-175" class="comment">
+				<a name="comment-175" id="comment-175"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-175")'>
+					<cite>Comment by Marc<a href="#comment-175"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-07 00:26:06 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>1.- In my opinion, filtering and sorting (F&amp;S) in the
+presentation (P) and business (B) layers imply different semantics. It
+is not because the DataView tends to amalgamate both of them that we
+should carry the same design principles into the WPF architecture.</p>
+<p>2.- As a reminder, the semantics of ObservableCollection(T) (WPF’s
+view on the business layer) and DataView are different. IList(T) is an
+ordered collection that contractually supports indexing together with
+Find* and Sort operations within the business layer (.NET
+documentation: Ilist(T) represents a strongly typed list of objects
+that can be accessed by index. Provides methods to search, sort, and
+manipulate lists; ObservableCollection(T) implements IList(T)). On the
+other hand, the DataView is a reflection of the relational world
+(unordered collections) that can be subject of ordering and filtering.</p>
+<p>3.- IList(T) operations meet business layer requirements, e.g. when
+I invoice orderLines stored in that layer. In this layer, I might wish
+to manipulate only non-invoiced orderLines (a B filter excludes the
+invoiced orderLines). I also might wish to organize the list in such a
+manner that the items are indexed in decreasing money-value order (a B
+indexing). On the other hand, I might wish to have one view on the
+orderLines sorted by date (P sort) in addition to that one sorted by
+money value. I might also wish to have different P filters in order to
+be able to delegate the invoicing decision to different departments. In
+this case, a B filter would probably be less appropriate because I want
+to keep the order itself consistent (hence do not want to split it up
+within the B layer) (see point 4.- hereafter).</p>
+<p>4.- Let us also not forget the potential consequences of future
+object/relational mappings (LINQ, etc.) with respect to the present
+question. That would indeed imply a tighter integration of the business
+layer with data storage. In this case, the capability to push the
+F&amp;S operations into the P layer without impact on the B layer seems
+imperative (think about the ADO.Net alternative where multiple filtered
+views would be needed within the ‘business layer’) (see last example in
+3.- above).</p>
+<p>5.- Summarizing, I feel that F&amp;S operations have their place in
+both layers be it with different design intentions. Thanks to WPF, a
+clearer separation (than was the case with ADO.NET) between P and B
+layers tends to exist and we should take this opportunity to clarify
+the design options in this respect. In my experience, most people are
+comfortable with the intuition that F&amp;S can occur within different
+application layers with different consequences on the meaning of the
+data being shown.</p>
+<p>Kind regards,</p>
+<p>Marc</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-175", 175, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-176" class="comment">
+				<a name="comment-176" id="comment-176"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-176")'>
+					<cite>Comment by massimo<a href="#comment-176"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-11 08:58:58 						
+					</div>					
+					<div class="content">
+						<p>Some comments about the sample:</p>
+<p>- I noticed that filtering can also be done using the ‘DefaultView’ Property of the ‘DataTable’ class:</p>
+<p>DataView view = ds.Tables[”Mountains”].DefaultView;<br>
+view.RowFilter= “Mountain_Name &lt;&gt; ‘Crystal Mountain’”;</p>
+<p>- I rebuilt the sample using a typed DataSet (a DataSet subclass
+generated with Visual Studio 2005) named ‘SkiMountainsDataSet’, in this
+way it is possible to add an instance of SkiMountainsDataSet to the
+Window Resources and then assign it to the DataContext of the
+StackPanel, all in XAML (the Binding Paths of the ListBoxes must be
+changed to ‘Mountains’, ‘Mountains/MountainsLifts’ and
+‘Mountains/MountainsLifts/LiftsRuns’). The only thing that still needs
+to be done in code is loading data into the SkiMountainsDataSet
+DataTables (very easy with the Table Adapters generated by Visual
+Studio 2005)</p>
+<p>- In any case, the sample stops working if you click ‘Add mountain’,
+select ‘Crystal Mountain’ in the first ListBox and then click ‘Filter
+mountains’</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-176", 176, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-177" class="comment odd">
+				<a name="comment-177" id="comment-177"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-177")'>
+					<cite>Comment by Bea<a href="#comment-177"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-12 15:40:40 						
+					</div>					
+					<div class="content">
+						<p>Massimo,</p>
+<p>- When you use BindingListCollectionView’s CustomFilter, all we do
+is delegate the work to the DataView’s RowFilter. You can think of BLCV
+as an Avalon wrapper around the ADO.NET objects that delegates as much
+work as it can to ADO.NET’s DataView. So yes, filtering the data using
+DataView’s RowFilter is essentially the same thing.</p>
+<p>- Thanks for the details on typed DataSets. I like to hear when people do cool integration experiments with data binbing.</p>
+<p>- That is a bug. Thanks for finding it and letting me know about it. I will follow up on that.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-177", 177, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-178" class="comment">
+				<a name="comment-178" id="comment-178"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-178")'>
+					<cite>Comment by Anonymous<a href="#comment-178"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-15 18:58:17 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>Is it possible to benefits from the master-details relations within a single ListView ?</p>
+<p>Suppose i have a BowlerScores table and a Bowlers table, both linked with a bowler Id key.</p>
+<p>When i display the scores list for a specific team, i would like to
+display the full name of the player in the listview and his 3 game
+scores.</p>
+<p>I’ve set my relations about like you but i can’t seem to get that to work for a single ListView.</p>
+<p>As show in your Other samples, i’ve set the listview’s view with a
+series of GridViewColumns. The source for the ListView is the
+BowlerScores table of the dataset. I just need 1 column to hold the
+Bowler’s name that is in the Bowlers table in the dataset.</p>
+<p>I tried figuring playing with Path. Then i tried setting a
+CellTemplate. I just can’t get to figure it out. Yet, i am almost
+certain that this is possible without having to create a different
+dataset.</p>
+<p>Or are things working the Other way around with WPF ????<br>
+I mean, do i have to select the Player so that all the player’s scores will become ‘filtered’ ?</p>
+<p>Your help will be very appreciated.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-178", 178, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-180" class="comment odd">
+				<a name="comment-180" id="comment-180"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-180")'>
+					<cite>Comment by Bea<a href="#comment-180"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-16 18:01:18 						
+					</div>					
+					<div class="content">
+						<p>Replying to your question about using master-detail in a single ListView:</p>
+<p>I believe you are confusing two concepts:<br>
+- “ADO.NET relationship”, which builds up a relation between two DataTables.<br>
+- “Master-detail scenario”, which is a way to keep the data displayed
+in two controls in sync through the notion of currency. Typically, one
+of your controls displays a list of items and the other one displays
+more details about the selected (and current) item. But you can also do
+master-detail to keep selection of two ListBoxes in sync (although this
+is not as common). </p>
+<p>If you want to display data in one control only (ListView) that
+comes from two tables linked by a relationship, I wouldn’t call that
+master-detail. Naming aside, how would you do that scenario? I would
+suggest combining the data of the two tables you are interested in in
+an ADO.NET DataView and use that as the source of the ListView.</p>
+<p>Let me know if this helped.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-180", 180, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-179" class="comment">
+				<a name="comment-179" id="comment-179"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-179")'>
+					<cite>Comment by Tobias<a href="#comment-179"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-16 08:53:06 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>I was just trying to throw two of your posts together to get an
+ADO.NET data bound treeview (most simple hierarchical data in one table
+with columns like ID / ParentID / Name and a relation to itself). I
+tried to use a combination of HierarchicalDataTemplate and ADO.NET
+binding but did not succeed. Any thoughts how this would work best?</p>
+<p>Kind Regards,<br>
+Tobias</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-179", 179, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-181" class="comment odd">
+				<a name="comment-181" id="comment-181"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-181")'>
+					<cite>Comment by Tobias<a href="#comment-181"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-17 12:01:16 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>I finally figured out how to setup the treeview to bind to
+relational typed dataset (table with columns CategoryId /
+ParentCategoryId / Name).</p>
+<p>What I finally did:</p>
+<p>1. enhanced the CategoryRow class by wrapping the GetCategoryRows() function in a ChildCategories property</p>
+<p>2. enhanced the CategoryDataTable by adding a property RootCategories returning all categories with ParentId NULL</p>
+<p>3. instantiated the dataset and assigned the Categories table to the underlying DockPanel</p>
+<p>4. assigned the new RootCategories property to the TreeView
+ItemsSource and assigned the new ChildCategories property to the
+HierarchicalDataTemplate ItemSource used by the treeview</p>
+<p>This is working perfectly fine. Nevertheless I would bet you know a
+way to accomlish the same (steps 1 and 2) in XAML without code behind <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/icon_smile.gif" alt=":-)" class="wp-smiley"> </p>
+<p>Have a nice weekend!<br>
+Tobias</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-181", 181, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-182" class="comment">
+				<a name="comment-182" id="comment-182"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-182")'>
+					<cite>Comment by Bea<a href="#comment-182"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-18 16:29:57 						
+					</div>					
+					<div class="content">
+						<p>Hi Tobias,</p>
+<p>Thank you for the vote of confidence. <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/icon_smile.gif" alt=":)" class="wp-smiley"> Indeed, I was able to get your scenario to work all in XAML. Let me know if <a href="http://www.beacosta.com/BlogComments/6TreeViewADO.zip" rel="nofollow">this </a>is what you wanted.</p>
+<p>Bea</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-184" class="comment odd">
+				<a name="comment-184" id="comment-184"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-184")'>
+					<cite>Comment by Tobias<a href="#comment-184"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-20 13:13:18 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>thanks a lot for the sample code. Unfortunately it does not show how
+to fill the treeview with hierarchical data stored in one table: trying
+to adapt this example to my scenario, where all tree nodes are defined
+in one table with a relation (Parent-Child) defined between two fields
+of the same table (virtually unlimited depth of the tree branches), the
+data binding seems to take the “wrong direction”: Child to Parent
+instead of Parent to Child. I can’t figure out how to set this up
+correctly without defining an additional property in code.</p>
+<p>Regards,<br>
+Tobias</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-185" class="comment odd">
+				<a name="comment-185" id="comment-185"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-185")'>
+					<cite>Comment by Bea<a href="#comment-185"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-23 09:15:05 						
+					</div>					
+					<div class="content">
+						<p>Hi Tobias,</p>
+<p>Ok, second try <a href="http://www.beacosta.com/BlogComments/8RecurringRelations.zip" rel="nofollow">here</a>.</p>
+<p>Let me know if this works out for you.</p>
+<p>Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-187" class="comment odd">
+				<a name="comment-187" id="comment-187"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-187")'>
+					<cite>Comment by Bea<a href="#comment-187"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-25 02:31:38 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,</p>
+<p>this is exactly what I was looking for. The setup of the BindingListCollectionView finally did the trick. Thanks a lot!</p>
+<p>Tobias</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-182", 182, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-183" class="comment">
+				<a name="comment-183" id="comment-183"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-183")'>
+					<cite>Comment by Anonymous<a href="#comment-183"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-19 12:32:28 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>I try to understand WPF databinding.</p>
+<p>I have a custom component for WinForms applications that abstracts<br>
+DataBinding issues in WinForms.</p>
+<p>To get notified when the UI changes a DataView (I bind to) (ComboBox<br>
+chnanges position) I use the BindingContext of my form in my component. This<br>
+works, of course.</p>
+<p>Now, in WPF I see that there is no BindingContext anymore.</p>
+<p>My question:<br>
+Is it possible to get notifed when the UI changes position of an Item outside my Window,<br>
+is there something like BindingContext?</p>
+<p>I see there is a ItemChanged event in BindingListCollectionView but I want<br>
+to bind against System.Data.DataSet.</p>
+<p>If I bind to DataSet.Tables[”name”] this event will fire, but if i bind to DataSet this event won´t fire anymore ?!</p>
+<p>Thanks!</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-183", 183, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-186" class="comment odd">
+				<a name="comment-186" id="comment-186"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-186")'>
+					<cite>Comment by Bea<a href="#comment-186"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-24 19:34:39 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>About your BindingContext question: what are you trying to do? Were
+you using the CurrencyManager from WinForms, and want to track currency
+the same way in Avalon? This has been replaced with
+BindingListCollectionView as you mentioned. This view tracks currency
+(or position as you called it) for the ADO.NET scenario.</p>
+<p>You said the ItemChanged event doesn’t fire when you bind something
+to a DataSet. What is your target Control? An ItemsControl can only be
+bound to a DataTable or DataView. How did you get your source to be a
+whole DataSet? If your source is a DataSet, you would have to specify
+the Path of the binding to be, for example, Path=Tables[0] to get the
+first table. </p>
+<p>If you explain your scenario better (and share some code that will help me re-implement it) I will give it a shot.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-186", 186, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-188" class="comment">
+				<a name="comment-188" id="comment-188"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-188")'>
+					<cite>Comment by Anonymous<a href="#comment-188"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-26 10:01:25 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea, I have one question. How do i filter the datatable if im using a objectdataprovider to utilize asynchrounous loading?</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-188", 188, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-189" class="comment odd">
+				<a name="comment-189" id="comment-189"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-189")'>
+					<cite>Comment by Bea<a href="#comment-189"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-27 11:11:04 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>Regarding your question on filtering an aynchronous DataTable: </p>
+<p>There is a DataChanged event on ObjectDataProvider that fires when
+the data is ready. So I would add the code that does the custom
+filtering to the DataChanged event handler. I made a sample application
+with this, which you can find <a href="http://www.beacosta.com/BlogComments/9FilterAsynchronousADO.zip" rel="nofollow">here</a>.</p>
+<p>Let me know if this works for you.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-189", 189, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-190" class="comment">
+				<a name="comment-190" id="comment-190"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-190")'>
+					<cite>Comment by Setiono<a href="#comment-190"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-04-15 16:54:27 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>I’m trying to add to your sample the ability to do a new Query and
+re-populate the DataSet with a new set of Data. So I added this method
+in the code behind which is called from a Button in the XAML file:</p>
+<p>private void Query(object sender, RoutedEventArgs args)<br>
+{<br>
+ds.Clear();<br>
+ds.ReadXml(”c:\\example.xml”);<br>
+}</p>
+<p>For testing purpose, the example.xml” is a dump of the original
+DataSet. So what I expect to happen after this Query is called, is for
+the ListView to show the original set of data in the UI.</p>
+<p>After Query is called, the data seems to show up correctly, but when
+I start to click around in the ListView, the selection and parent-child
+relationship is no longer maintained. As a matter of fact, after a few
+clicks, I get the following exception:</p>
+<p>An item with the same key has already been added.</p>
+<p>It seems like the DataSet.Clear() does not send a proper
+notification to the bounded ListView that the Collection underneath has
+changed. </p>
+<p>Is this a bug in the DataBinding engine? I’m still using May CTP.</p>
+<p>Thanks,<br>
+Setiono</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-190", 190, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-191" class="comment odd">
+				<a name="comment-191" id="comment-191"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-191")'>
+					<cite>Comment by Bea<a href="#comment-191"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-04-16 11:32:18 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>Yes, I believe this is a bug that we’ve fixed recently. Can you
+please let me know when you have a chance to verify this with July CTP?
+I’m pretty sure you’re describing the bug we fixed, but I would like to
+be 100% positive.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-191", 191, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-192" class="comment">
+				<a name="comment-192" id="comment-192"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-192")'>
+					<cite>Comment by Matti<a href="#comment-192"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-05-05 07:24:07 						
+					</div>					
+					<div class="content">
+						<p>My problem is similar to Setiono’s. I’m using RC1. </p>
+<p>I have a TextBox bound to a dataset’s Table/Field and it shows fine.
+If I clear the dataset and re-populate it, the UI will be cleared but
+the new data is not shown.</p>
+<p>I tried
+CollectionViewSource.GetDefaultView(this.DataContext).MoveCurrentToFirst();
+after clearing and re-populating but it didn’t help. (this fixed a
+similar problem with ObservableCollection).</p>
+<p>Regards, Matti</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-193" class="comment odd">
+				<a name="comment-193" id="comment-193"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-193")'>
+					<cite>Comment by Bea<a href="#comment-193"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-05-06 09:35:05 						
+					</div>					
+					<div class="content">
+						<p>Hi Matti,</p>
+<p>First let me explain why moving currency to first worked for you
+with ObservableCollection. You were probably binding the TextBox to the
+current item of the collection. When the collection is cleared,
+currency moves to before first. Then, when you repopulate the
+collection currency doesn’t change, it remains in before first, so your
+TextBox does not display anything. Once you move currency to first,
+your TextBox displays the first item as itended.</p>
+<p>I tried to repro your bug with a DataTable but I was not able to.
+Moving currency to the first item after clearing the table displays the
+item correctly. You can find my repro <a href="http://www.beacosta.com/BlogComments/13ClearTable.zip" rel="nofollow">here</a>.</p>
+<p>Let me know what you’re doing different. It may still be a bug that comes up when this scenario is coded in a different way.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-194" class="comment odd">
+				<a name="comment-194" id="comment-194"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-194")'>
+					<cite>Comment by Matti<a href="#comment-194"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-05-07 23:46:49 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz and thanks for the answer.</p>
+<p>The problem arises when DataContext is set to a DataSet. </p>
+<p>I modified your sample this way:<br>
+XAML: {Binding Path=Places/Name}</p>
+<p>Then added a class:</p>
+<p>public class MyDataSet : DataSet {<br>
+public MyDataSet() {<br>
+this.Tables.Add(new PlacesDataTable());<br>
+}<br>
+}<br>
+In the Window1 ctor set the DataContex to new MyDataSet();</p>
+<p>and in ClearRepopulate method<br>
+changed the type of the src obj to MyDataSet.</p>
+<p>Seems that I’m not handling the currency correctly with DataSet. I
+would like to set the current item to be the DataSet.Tables[0].Rows[0]
+as it is by default when the DataContext is set for the first time.</p>
+<p>Regards, Matti</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-195" class="comment odd">
+				<a name="comment-195" id="comment-195"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-195")'>
+					<cite>Comment by Bea<a href="#comment-195"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-05-08 17:52:27 						
+					</div>					
+					<div class="content">
+						<p>Hi Matti,</p>
+<p>I was able to repro what you describe easily. We looked into it and
+unfortunately you’re hitting an ADO.NET bug. Hopefully it will be fixed
+soon…</p>
+<p>Sorry about any inconvenience this may cause <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/icon_sad.gif" alt=":(" class="wp-smiley"> and thanks for letting us know!! We really appreciate feedback!</p>
+<p>Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-192", 192, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-196" class="comment">
+				<a name="comment-196" id="comment-196"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-196")'>
+					<cite>Comment by Wayne<a href="#comment-196"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-06-11 11:44:06 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,</p>
+<p>Your one-to-many relationship description helped with my understanding of the way binding works with ADO.NET. Thank you.</p>
+<p>However, it only gets me half way there. I am working with a
+many-to-many relationship through a join table. I can get from the one
+parent to the child using the method outlined in the blog, however, I
+can’t figure out how to get from the child table to the second parent.
+Do you have any tips?</p>
+<p>Thanks,<br>
+Wayne.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-196", 196, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-197" class="comment odd">
+				<a name="comment-197" id="comment-197"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-197")'>
+					<cite>Comment by Bea<a href="#comment-197"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-05-12 18:40:50 						
+					</div>					
+					<div class="content">
+						<p>Hi Wayne,</p>
+<p>We don’t have any support for Many to Many relationships and we have
+no plans to add any. I made an attempt to implement master-detail for a
+Many to Many relationship, but I am unclear of the behavior you expect.
+You can find my attempt <a href="http://www.beacosta.com/BlogComments/16ManyToMany.zip" rel="nofollow">here</a>. </p>
+<p>If you explain the exact behavior you would expect us to support, I
+can add it to the list of scenarios to consider for the next version.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-197", 197, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-207" class="comment">
+				<a name="comment-207" id="comment-207"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-207")'>
+					<cite>Comment by Anonymous<a href="#comment-207"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-06-14 18:13:18 						
+					</div>					
+					<div class="content">
+						<p>tell
+me how you know the internals of binding? How did you peak in? What
+tools you used? I wasted many hours trying to bing DataRow.</p>
+<p>Loved your blog, thanks please keep it coming.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-207", 207, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-351" class="comment odd">
+				<a name="comment-351" id="comment-351"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-351")'>
+					<cite>Comment by Bea<a href="#comment-351"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-17 19:34:20 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>Well, I know the internals of binding because I’ve worked for the
+WPF Data Binding team for several years. I helped create this API.<br>
+If you’re interested in learning about the internals of binding (or any managed technology) I recommend <a href="http://www.aisto.com/roeder/dotnet/" rel="nofollow">Dot Net Reflector</a> from Lutz Roeder. In his own words, here’s what this tool does:</p>
+<p>“Reflector is the class browser, explorer, analyzer and
+documentation viewer for .NET. Reflector allows to easily view,
+navigate, search, decompile and analyze .NET assemblies in C#, Visual
+Basic and IL.”</p>
+<p>I find myself using this tool every time I need to write code. </p>
+<p>And of course, reading blogs and asking questions is a great way to learn any technology.</p>
+<p>I hope you’re making progress with WPF!</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-351", 351, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-198" class="comment">
+				<a name="comment-198" id="comment-198"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-198")'>
+					<cite>Comment by sam<a href="#comment-198"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-20 03:59:45 						
+					</div>					
+					<div class="content">
+						<p>Bea, you wrote:</p>
+<p>“Rows in a DataView are of type DataRowView, which implements
+ICustomTypeDescriptor. Data binding honors this interface and will call
+the GetProperties() method on DataView, which will give us a few more
+properties.”</p>
+<p>Yes, it is called, but it is not enough for a class to be an
+ICustomTypeDescriptor. There must be something more to a class so
+databinding will see the content.</p>
+<p>How do I know? I wrote a simple wrapper around DataTable/DataView. My wrapper around the DataView contains this source:</p>
+<p>public object this[int index]<br>
+{<br>
+get<br>
+{<br>
+ICustomTypeDescriptor rc = (ICustomTypeDescriptor)m_wrappedDataView[index];<br>
+return new MyDataRowViewWrapper(rc);<br>
+}<br>
+}</p>
+<p>MyDataRowViewWrapper implements ICustomTypeDescriptor (and
+IDataErrorInfo for good measure), so it should work as an replacement
+for the DataRowView. But it does not work.<br>
+If I replace “return new MyDataRowViewWrapper(rc);” with just “return
+rc;” everything works fine, but when I use the wrapper everything falls
+apart.</p>
+<p>So the Binding does use something more than just ICustomTypeDescriptor here, but I can’t find what it is?</p>
+<p>Why do I need this? I’m trying to bind to a runtime datastructure
+like dataset, only mine does load the content on demand. And I found no
+other way to bind to a runtime data structure.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-198", 198, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-199" class="comment odd">
+				<a name="comment-199" id="comment-199"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-199")'>
+					<cite>Comment by sam<a href="#comment-199"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-20 06:25:02 						
+					</div>					
+					<div class="content">
+						<p>Uhm, stupid me, I didn’t see the binding error message in the debugger output window:</p>
+<p>System.Windows.Data Error: 12 : Cannot get ‘Nr’ value (type
+‘String’) from ” (type ‘DataRowViewWrapper’).
+BindingExpression:Path=Nr; DataItem=’DataRowViewWrapper’
+(HashCode=65429669); target element is ‘TextBlock’ (Name=”); target
+property is ‘Text’ (type ‘String’)
+InvalidCastException:’System.InvalidCastException: Das Objekt des Typs
+Bsoft.Berta.DataRowViewWrapper kann nicht in Typ
+System.Data.DataRowView umgewandelt werden.</p>
+<p>I made the jump, scrapped my wrapper and wrote an IListSource,
+IList, ICustomTypeDescriptor and PropertyDescriptor from scratch, and
+it works.</p>
+<p>Source is ugly as hell right now, need to clean that stuff up until I understand why it works <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/icon_wink.gif" alt=";)" class="wp-smiley"></p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-199", 199, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-202" class="comment">
+				<a name="comment-202" id="comment-202"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-202")'>
+					<cite>Comment by Bea<a href="#comment-202"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-26 23:32:33 						
+					</div>					
+					<div class="content">
+						<p>Sam,<br>
+Glad you got it to work <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/icon_smile.gif" alt=":)" class="wp-smiley"><br>
+Bea</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-202", 202, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-200" class="comment">
+				<a name="comment-200" id="comment-200"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-200")'>
+					<cite>Comment by Anonymous<a href="#comment-200"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-25 14:06:58 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>Thank you for providing very good posts on data binding. It has helped me a lot in getting started.<br>
+To understand this topic further I’m using Northwind Database and
+trying to populate a ListView with Employee data. Now I have a Dataset
+with table “EmployeeData” which has EmployeeID, FirstName and LastName.
+I’m binding the ListView with Dataset’s table EmployeeData (I’m also
+using data templates for displaying the data) and the page works fine.
+My question is If I add a record to the Northwind.Employee table, how
+can that get updated in the UI. I tried using the
+INotifyPropertyChanged interface but an not sure on what property
+should I implement onPropertyChanged event. I tried on the Dataset and
+that did not work. Every sample that I see on the internet does
+databinding on simple datatypes. Is it possible to do two way binding
+on objects.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-200", 200, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-201" class="comment odd">
+				<a name="comment-201" id="comment-201"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-201")'>
+					<cite>Comment by Bea<a href="#comment-201"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-26 10:53:14 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>Regarding your question on change notifications and ADO. You should
+not need to do anything special to notify WPF of changes in the
+DataTable. It’s strange that you’re seeing something different in your
+application.</p>
+<p>I made a simple sample that shows how adding an item to a DataTable gets reflected automatically in the UI. You can find it <a href="http://www.beacosta.com/BlogComments/17AddItemADO.zip" rel="nofollow">here</a>.</p>
+<p>Hopefully this will help you find the problem in your app.</p>
+<p>Thanks!<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-201", 201, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-203" class="comment">
+				<a name="comment-203" id="comment-203"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-203")'>
+					<cite>Comment by Mike<a href="#comment-203"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-03 14:10:24 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,</p>
+<p>Thanks for your tips. I find data binding extremely hard to
+understand, so seeing your examples if very nice. I feel kind of silly
+asking this question because it seems like it should be very simple,
+but I can’t seem to get it right.</p>
+<p>If I want to build a tree hierarchy from the Lifts table where
+Mountain_ID designates the parent node and Lift_Name is the child, then
+how would I do that?</p>
+<p>The output would look like this:</p>
+<p>1<br>
+Big Red Express<br>
+Garbanzo Express<br>
+Orange chair<br>
+2<br>
+Tye Mill<br>
+Jupiter chair<br>
+Southern cross chair<br>
+3<br>
+Rainier Express<br>
+Green Valley</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-203", 203, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-204" class="comment odd">
+				<a name="comment-204" id="comment-204"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-204")'>
+					<cite>Comment by Mike<a href="#comment-204"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-03 15:41:10 						
+					</div>					
+					<div class="content">
+						<p>Sorry,
+that output didn’t format as I expected. Basically, the numbers are the
+tree item parent headers (Mountain_ID) and the lift names are the child
+items.</p>
+<p>Thanks for the help,<br>
+Mike</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-204", 204, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-205" class="comment">
+				<a name="comment-205" id="comment-205"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-205")'>
+					<cite>Comment by Bea<a href="#comment-205"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-04 11:09:44 						
+					</div>					
+					<div class="content">
+						<p>Hi Mike,</p>
+<p>I’m assuming you would like to display that hierarchy in a TreeView,
+right? I’m also assuming the data on the first level of the TreeView is
+stored in a table in a database, and the second level is stored on some
+other table.</p>
+<p>If that’s the case, I would build a middle data layer that reads the
+information from the database and creates a hierarchical data structure
+in the format you want. Then you can bind your TreeView directly to
+that data structure.</p>
+<p>The ideal data structure for this scenario would be a collection of
+MyMountain objects. MyMountain would contain an int MountainID property
+and a ObservableCollection<mylift> Lifts property. MyLift would simply
+contain a string property with the lift name. Once you have this
+structure, you can use HierarchicalDataTemplates to help the TreeView
+display the data.</mylift></p>
+<p>Let me know if this helps.<br>
+Bea</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-205", 205, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-206" class="comment">
+				<a name="comment-206" id="comment-206"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-206")'>
+					<cite>Comment by Reiner<a href="#comment-206"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-05-23 06:06:29 						
+					</div>					
+					<div class="content">
+						<p>Hi:</p>
+<p>I am new in XAML and WPF. I am trying to use a SQL-SERVER connection
+in a XBAP I can do it inside a WPF Windows application, but when I try
+to do the same like Load_Page() ASP.NET I get an error </p>
+<p>void mainPage_Loaded(object sender, RoutedEventArgs e)</p>
+<p>{</p>
+<p>// Connection Fail </p>
+<p>}</p>
+<p>I have download many good books like:</p>
+<p>Applications = Code + Markup: A Guide to the Microsoft® Windows® Presentation Foundation</p>
+<p>By Charles Petzold</p>
+<p>Programming WCF Services</p>
+<p>By Juval Lowy</p>
+<p>But no body speak about access data from SQL-SERVER database</p>
+<p>may be you can help me.</p>
+<p>Excuse my English I speak Spanish .</p>
+<p>Thank you</p>
+<p>Reiner </p>
+<p><a href="mailto:reinerra@hotmail.com">reinerra@hotmail.com</a></p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-206", 206, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-387" class="comment odd">
+				<a name="comment-387" id="comment-387"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-387")'>
+					<cite>Comment by Bea<a href="#comment-387"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-19 16:53:15 						
+					</div>					
+					<div class="content">
+						<p>Hi Reiner,</p>
+<p>My guess is that you should not be able to connect directly to a SQL
+server from a partial trust application, for security reasons. I am not
+an expert in partial trust apps or WCF, so it’s hard for me to guide
+you. Maybe someone reading this post will have better insight.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-387", 387, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1432" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1432" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20bind%20to%20ADO.NET_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="21" type="hidden">
+		<input name="redirect_to" value="/blog/?p=21" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="5a2a73d67a61558b068f55377931ff93" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>9952</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 9952;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

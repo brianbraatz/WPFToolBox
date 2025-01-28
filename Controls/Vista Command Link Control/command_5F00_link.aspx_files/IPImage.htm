@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" style="overflow: auto;"><head><title>IPImage - Microsoft Popfly</title>
+
+
+
+
+<link id="mainTheme" rel="stylesheet" type="text/css">
+<style type="text/css">
+body, tbody, td
+{
+    margin:0;
+    padding:0;
+    font-family: 'Segoe UI', 'Lucida Grande', Tahoma, Verdana, Helvetica, Arial, sans-serif;
+    color: Transparent;
+    font-size: 11px;
+}
+h1
+{
+    font-size: 16px;
+    margin:0;
+    padding:0;
+    text-align: center;
+}
+a, a:visited
+{
+    color:#003399;
+    text-decoration:none;
+}
+
+img
+{
+    border:0;
+}
+.innerFrame
+{
+    width: 100%;
+    height: 100%;
+    border:0;
+}
+.outerFrame
+{
+    position:absolute;
+    top:0px;
+    right:0px;
+}
+
+.expanded
+{
+    width: 200px;
+    height: 100px;
+    background-image: url(/Images/Smallshell/largebackground.png);
+}
+.collapsed
+{
+    width: 45px;
+    height: 40px;
+    background-image: url(/Images/Smallshell/smallbackground.png);
+
+}
+.smallLogo
+{
+   cursor:pointer;         
+}
+.expandoLogo
+{
+   cursor:pointer;
+}
+#divExpandedArea 
+{
+	padding:0 5px 2px 5px;
+}
+.menunavigation, .menunavigation ul {
+	float: left;
+	list-style: none;
+	line-height: 1;
+	font-weight: bold;
+	padding: 5px 0 0 0;
+	margin: 0 0 .5em 0;
+}
+
+.menunavigation ul 
+{
+	border: solid #a9b7c9;
+	border-width: 1px 0;	
+}
+
+.menunavigation a {
+	display: block;
+	color:black;
+	text-decoration: none;
+	padding: 0.25em 2em;
+	font-size:1.1em;
+}
+
+.menunavigation a:visited
+{
+	color:black;
+}
+
+.menunavigation li {
+	float: left;
+	padding: 0;
+}
+
+.menunavigation li ul {
+	background-color:white;
+	position: absolute;
+	left: -999em;
+	height: auto;
+	width: 14.4em;
+	w\idth: 13.9em;
+	font-weight: normal;
+	border-width: 0.25em;
+	margin: 0;
+}
+
+.menunavigation li li {
+	padding-right: 1em;
+	width: 13em
+}
+
+.menunavigation li ul a
+{
+	width: 13em;
+	w\idth: 9em;
+	color:Black;
+}
+
+.menunavigation li ul ul
+{
+	margin: -1.75em 0 0 14em;
+}
+
+.menunavigation li:hover ul ul, .menunavigation li:hover ul ul ul, .menunavigation li.navhover ul ul, .menunavigation li.navhover ul ul ul
+{
+	left: -999em;
+}
+
+.menunavigation li:hover ul, .menunavigation li li:hover ul, .menunavigation li li li:hover ul, .menunavigation li.navhover ul, .menunavigation li li.navhover ul, .menunavigation li li li.navhover ul
+{
+	left: auto;
+}
+
+.menunavigation li:hover, .menunavigation li.navhover
+{
+	background: #a9b7c9;
+}
+
+.menunavigation a:hover
+{
+	color:black;
+}
+
+.plist .menunavigation li ul {
+	background-color:white;
+}
+
+#col-center .plist ul, #col-center .plist li
+{
+	padding-left:0;
+}
+
+.plist .menunavigation a {
+	color:Blue;
+	padding: 0.25em 1em;
+	font-weight:normal;
+	font-size:1.0em;
+}
+
+.plist .menunavigation li ul a {
+	color:Black;
+}
+
+.plist .menunavigation li:hover, .plist .menunavigation li.navhover {
+	background-color:#a9b7c9;
+}
+
+</style></head><body>
+    <script language="javascript" type="text/javascript">
+        var _expanded = false;
+        function expandOrCollapse()
+        {
+            var divArea = document.getElementById('divArea');
+            var divExpandedArea = document.getElementById('divExpandedArea');
+            var imgExpando = document.getElementById('imgExpando');
+            var logotype = document.getElementById('logotype-url');
+            
+            if(_expanded)
+            {
+                divArea.className = "collapsed";
+                divExpandedArea.style.display = "none";
+                logotype.style.display = "none";
+                imgExpando.src = "/Images/Smallshell/expand.png";
+                _expanded = false;
+            }
+            else
+            {
+                divArea.className = "expanded";
+                divExpandedArea.style.display = "block"; 
+                logotype.style.display = "inline";
+                imgExpando.src = "/Images/Smallshell/collapse.png";
+                _expanded = true;           
+            }
+        }
+        
+        window.onresize = resizeContent;
+        document.body.onload = resizeContent;
+        function resizeContent()
+        {
+            var h;
+            if (document.documentElement && document.documentElement.clientHeight)
+            {
+                h = document.documentElement.clientHeight;
+            }
+            else
+            {
+                h = document.body.clientHeight;
+            }    
+
+            if (h > 100)
+                document.getElementById("content").style.height = h + "px";
+        }
+        
+        function embedIt()
+        {
+            var divEmbedIt = document.getElementById('divEmbedIt');
+            var embedVisible = (divEmbedIt.style.display == "block");
+            var embedItLink = document.getElementById("embedItLink");
+
+            if(embedVisible)
+            {//hide
+                divEmbedIt.style.display = "none";
+                embedVisible = false;
+                embedItLink.innerHTML = "Add it elsewhere";
+            }
+            else
+            {//show
+                divEmbedIt.style.display = "block";
+                embedVisible = true;
+                embedItLink.innerHTML = "Hide the HTML";
+            }
+        }
+
+        function facebookEmbed(url, cookieValue)
+        {
+            document.cookie = "fbProjectDetails=" + escape(cookieValue);
+            window.open(url);
+        }
+        
+        function attachDropdowns()
+        {
+            if(document.all&&document.getElementById)
+            {
+                var uls = document.getElementsByTagName("UL");
+	            for (var ulIndex = 0; ulIndex < uls.length; ulIndex++)
+	            {
+	                if(uls[ulIndex].className == "menunavigation")
+	                {
+	                    var elts = uls[ulIndex].getElementsByTagName("LI");
+	                    for (var i=0; i<elts.length; i++) {
+		                    elts[i].onmouseover=function() {
+			                    this.className += " navhover";
+		                    }
+		                    elts[i].onmouseout=function() {
+			                    this.className = this.className.replace(new RegExp(" navhover\\b"), "");
+		                    }
+	                    }
+	                }
+	            }
+	        }
+        }
+
+        if (window.attachEvent) window.attachEvent("onload", attachDropdowns);
+    </script>
+    <form name="form1" method="post" action="../../SmallShell.aspx?name=IPImage&amp;owner=knom" id="form1">
+<div>
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE4ODM1NzU3NDQPZBYCAgMPZBYGAgEPFgIeCWlubmVyaHRtbAWDASZsdDtpZnJhbWUgc3R5bGU9J3dpZHRoOjEwMCU7IGhlaWdodDoxMDAlOycgc3JjPSdodHRwOi8vd3d3LnBvcGZseS5tcy91c2Vycy9rbm9tL0lQSW1hZ2Uuc21hbGwnIGZyYW1lYm9yZGVyPSdubycmZ3Q7Jmx0Oy9pZnJhbWUmZ3Q7ZAIDD2QWDGYPDxYCHgRUZXh0BQdJUEltYWdlZGQCAQ8WAh8ABQ9DcmVhdGVkIGJ5IGtub21kAgIPDxYCHgtOYXZpZ2F0ZVVybAUZL3VzZXJzL2tub20vSVBJbWFnZS50d2Vha2RkAgMPDxYCHwIFGi91c2Vycy9rbm9tL0lQSW1hZ2UuZ2FkZ2V0ZGQCBA8PFgIfAgXUAWh0dHA6Ly9zcGFjZXMubGl2ZS5jb20vYXBpLmFzcHg/d3hfYWN0aW9uPWFkZEdhZGdldCZ3eHBfdXJsPWh0dHAlM2ElMmYlMmZkb3dubG9hZC5nYWxsZXJ5LnN0YXJ0LmNvbSUyZmQuZGxsJTJmMSU3ZTElN2U5ODYlN2UzNTM4NiUyZmdhZGdldC54bWwmd3hwX2luaT0lN2IlMjd1c2VyJTI3JTNhJTI3a25vbSUyNyUyYyUyN3Byb2plY3QlMjclM2ElMjdJUEltYWdlJTI3JTdkZGQCBQ8WAh8ABc0CPGltZyBzcmM9J2h0dHA6Ly93d3cucG9wZmx5Lm1zL2ltYWdlcy9yYXRpbmdzdGFycy9maWxsZWRzdGFyLmdpZicvPjxpbWcgc3JjPSdodHRwOi8vd3d3LnBvcGZseS5tcy9pbWFnZXMvcmF0aW5nc3RhcnMvZmlsbGVkc3Rhci5naWYnLz48aW1nIHNyYz0naHR0cDovL3d3dy5wb3BmbHkubXMvaW1hZ2VzL3JhdGluZ3N0YXJzL2ZpbGxlZHN0YXIuZ2lmJy8+PGltZyBzcmM9J2h0dHA6Ly93d3cucG9wZmx5Lm1zL2ltYWdlcy9yYXRpbmdzdGFycy9lbXB0eXN0YXIuZ2lmJy8+PGltZyBzcmM9J2h0dHA6Ly93d3cucG9wZmx5Lm1zL2ltYWdlcy9yYXRpbmdzdGFycy9lbXB0eXN0YXIuZ2lmJy8+ZAIFDxYCHgNzcmMFWWh0dHA6Ly9wb3BmbHljcmVhdG9yLm1zL1ZpZXdlcnMvUnVudGltZVZpZXdlci5hc3B4P2Rpc3BsYXk9c21hbGwmb3duZXI9a25vbSZuYW1lPUlQSW1hZ2UmZGSsv0yW4henPPPF0YrFJ237OxSLSQ==" type="hidden">
+</div>
+
+
+<script type="text/javascript">
+<!--
+__version = '1.0.21008.5';// -->
+</script>
+
+        <div id="divEmbedIt" style="position: absolute; display: none; left: 0px; top: 0px; width: 170px; background-color: White;">
+            <span>
+                Copy and paste this HTML:<br>
+                <textarea name="embedItHtmlText" id="embedItHtmlText" cols="22" rows="5" readonly="readonly" style="">&lt;iframe
+style='width:100%; height:100%;'
+src='http://www.popfly.ms/users/knom/IPImage.small'
+frameborder='no'&gt;&lt;/iframe&gt;</textarea>
+            </span>
+        </div>
+        <div id="divShell" class="outerFrame">
+            <div id="divArea" class="collapsed">
+                <table style="border: 0px none ; width: 100%;">
+                    <tbody><tr>
+                        <td onclick="expandOrCollapse();" valign="top">
+                            <img id="imgExpando" src="IPImage_data/expand.png" alt="Learn more about this mashup" class="expandoLogo">
+                        </td>
+                        <td align="right">
+                            <a id="logotype-url" style="display: none;" href="http://www.popfly.ms/" target="_blank">
+                                <img id="logotype" src="IPImage_data/logotype.png" alt="Microsoft Popfly">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody></table>
+                <div id="divExpandedArea" style="display: none;">
+                    <div style="overflow: hidden; width: 190px; text-align: center;">
+                        <h1><span id="lblProjectName">IPImage</span></h1>
+                    </div>
+                    <table style="border: 0px none ; width: 100%;">
+                        <tbody><tr>
+                            <td colspan="2">
+                            <div style="overflow: hidden; width: 190px;">
+                                <div id="divOwner" style="overflow: hidden; text-align: center; width: 190px;">Created by knom</div>
+                            </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="plist">
+                            <ul class="menunavigation">
+                            <li class="menu"><a href="#" onclick="return false;">MashOut <img src="IPImage_data/DropdownBig-Dark.gif" alt="MashOut"></a>
+                            <ul style="width: 16em;">
+                                <li style="width: 15em;"><a id="lnkEdit" href="http://www.popfly.ms/users/knom/IPImage.tweak" target="_blank" style="width: 14em;">Tweak this</a></li>
+                                <li style="width: 15em;"><a id="lnkDownload" href="http://www.popfly.ms/users/knom/IPImage.gadget" style="width: 14em;">Download as Sidebar Gadget</a></li>
+                                <li style="width: 15em;"><a href="#" style="width: 14em;" onclick="facebookEmbed('http\x3a\x2f\x2fapps.facebook.com\x2fpopflymashups\x2fedit.aspx','ownername\x3dknom\x3bprojectname\x3dIPImage\x3btitle\x3dIPImage\x3bdescription\x3d');return false;">Add to your Facebook page</a></li>
+                                <li style="width: 15em;"><a id="lnkSpaces" href="http://spaces.live.com/api.aspx?wx_action=addGadget&amp;wxp_url=http%3a%2f%2fdownload.gallery.start.com%2fd.dll%2f1%7e1%7e986%7e35386%2fgadget.xml&amp;wxp_ini=%7b%27user%27%3a%27knom%27%2c%27project%27%3a%27IPImage%27%7d" target="_blank" style="width: 14em;">Add to Windows Live Spaces</a></li>
+                                <li style="width: 15em;"><a href="#" id="embedItLink" style="width: 14em;" onclick="embedIt();return false;">Add it elsewhere</a></li>
+                                <li style="width: 15em;"><a href="#" style="width: 14em;" onclick="window.open('\x2fusers\x2fknom\x2fIPImage.email','_blank','status=0,toolbar=0,location=0,scrollbars=1,,resizable=0,height=590px,width=345px');return false;">Email to a friend</a></li>
+                            </ul>
+                            </li>
+                            </ul>
+                            </td>
+                            <td style="text-align: center; width: 50%;"><span id="divStars"><img src="IPImage_data/filledstar.gif"><img src="IPImage_data/filledstar.gif"><img src="IPImage_data/filledstar.gif"><img src="IPImage_data/emptystar.gif"><img src="IPImage_data/emptystar.gif"></span></td>
+                        </tr>
+                    </tbody></table>                 
+                </div> 
+            </div>
+        </div>    
+        <iframe style="height: 150px;" id="content" name="content" class="innerFrame" allowtransparency="true" src="IPImage_data/RuntimeViewer.htm" frameborder="no" width="100%"></iframe>
+    
+<div>
+
+	<input name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWAgLymf72CAKc86GvAR9qpuZpFVjw68Jt2COjWHy2uQnp" type="hidden">
+</div></form>
+    <script type="text/javascript">
+        resizeContent();
+    </script>
+</body></html>

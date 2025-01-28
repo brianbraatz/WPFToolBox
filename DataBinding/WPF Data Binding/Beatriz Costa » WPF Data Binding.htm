@@ -1,0 +1,2390 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0035)http://www.beacosta.com/blog/?cat=2 -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Beatriz Costa » WPF Data Binding</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><!-- Editable Meta Tags -->
+<META content="" name=description>
+<META content="" name=keywords>
+<META content="Sreejith - GFXedit.com" name=author>
+<META content="Your Name" name=copyright>
+<META content="WordPress 2.2.2" name=generator>
+<META content=index,follow name=robots><!-- Meta Tags End--><!-- Style Sheet -->
+<STYLE type=text/css media=screen>@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</STYLE>
+<!-- Style Sheet End --><!-- Includes -->
+<SCRIPT src="" type=text/javascript></SCRIPT>
+
+<SCRIPT src="" type=text/javascript></SCRIPT>
+<!-- End Includes --><!-- Feed and Ping URLS--><LINK title="RSS 2.0" 
+href="http://www.beacosta.com/blog/?feed=rss2" type=application/rss+xml 
+rel=alternate><LINK title="RSS .92" 
+href="http://www.beacosta.com/blog/?feed=rss" type=text/xml rel=alternate><LINK 
+title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom" 
+type=application/atom+xml rel=alternate><LINK 
+href="http://www.beacosta.com/blog/xmlrpc.php" rel=pingback><!--?php wp_get_archives('type=monthly&format=link'); ?--><LINK 
+title=RSD href="http://www.beacosta.com/blog/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</SCRIPT>
+
+<STYLE type=text/css>.comment {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 8px; PADDING-BOTTOM: 4px; MARGIN: 6px 3px 3px; PADDING-TOP: 4px; POSITION: relative; BACKGROUND-COLOR: #fff
+}
+.odd {
+	BACKGROUND-COLOR: #f8f8f8
+}
+.comment DIV {
+	POSITION: relative
+}
+.comment .comment IMG {
+	MARGIN: 0px
+}
+.comment .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png); OVERFLOW: hidden; WIDTH: 13px; HEIGHT: 13px
+}
+.collapsed .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png)
+}
+.comment .reply {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 0px; FONT-SIZE: 80%; PADDING-BOTTOM: 6px; PADDING-TOP: 0px; TEXT-ALIGN: right
+}
+.comment {
+	BORDER-RIGHT: #ddd 1px solid; BORDER-TOP: #ddd 1px solid; MARGIN-TOP: 10px; BORDER-LEFT: #ddd 1px solid; BORDER-BOTTOM: #ddd 1px solid
+}
+INPUT#subscribe {
+	WIDTH: auto
+}
+.comment .body .content {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; OVERFLOW: auto; WIDTH: 100%; PADDING-TOP: 0px
+}
+.comment .title abbr {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.collapsed .body {
+	DISPLAY: none
+}
+.collapsed .comment {
+	DISPLAY: none
+}
+#commentform TEXTAREA {
+	WIDTH: 97%
+}
+</STYLE>
+<!-- End Feed and Ping URLS--></HEAD>
+<BODY>
+<DIV id=container>
+<DIV id=banner>
+<H1><A title="Beatriz Costa" accessKey=1 
+href="http://www.beacosta.com/blog">Beatriz Costa</A></H1>
+<H2 title="WPF Data Binding">WPF Data Binding</H2></DIV>
+<DIV id=center>
+<DIV class=content>
+<DIV class=post>
+<DIV class=date>September 22, 2007</DIV>
+<H2 id=post-45><A id=postTitle 
+title="Are there any tricks that will help me improve TreeView’s performance? - Part III" 
+href="http://www.beacosta.com/blog/?p=45" rel=bookmark>Are there any tricks that 
+will help me improve TreeView’s performance? - Part III</A></H2>
+<P id=text>In <A href="http://www.beacosta.com/blog/?p=42">part I</A> of my 
+discussions on TreeView performance, I presented the three main limitations in 
+the current implementation of TreeView that may lead to slower performance:</P>
+<P id=text>- UI elements stay in memory even when collapsed.<BR>- There is no UI 
+virtualization.<BR>- There is no data virtualization.</P>
+<P id=text>In <A href="http://www.beacosta.com/blog/?p=43">part II</A>, I talked 
+about a solution where I introduced a middle tier between the UI and the data 
+layer, that discards the data when a TreeViewItem is collapsed, and brings the 
+data back into memory when a TreeViewItem is expanded. This solution completely 
+fixes the first limitation of TreeView - the UI elements no longer stay in 
+memory after expanding and collapsing a TreeViewItem. It also partially fixes 
+the lack of data virtualization in TreeView because we only keep a small portion 
+of the data in memory. I say “partially” because it virtualizes data on 
+expand/collapse, but it does not take scrolling into account.</P>
+<P id=text>Today I will discuss a solution that builds on top of the previous 
+one by providing UI virtualization.</P>
+<P id=text>With the current version of WPF, only two Controls offer UI 
+virtualization: ListBox and ListView (actually, ListView gets it for free 
+because it derives from ListBox). The work to make virtualization happen is done 
+by VirtualizingStackPanel, which is the panel used by default in ListBox. It 
+would be nice if we could simply tell TreeView to use a VirtualizingStackPanel 
+to lay out its items, but unfortunately it’s not that simple. 
+VirtualizingStackPanel understands only flat lists of items, so it is not 
+capable of laying out the hierarchical data required for a TreeView.</P>
+<P id=text>On the other hand, styles and templates are among the most powerful 
+features of WPF because they allow you to completely change the look of a 
+control while retaining its behavior. For example, <A 
+href="http://www.beacosta.com/blog/?p=40">this post</A> shows how a ListBox can 
+easily be customized to look like a diagram of our solar system. With this in 
+mind, Ben Carter (an awesome dev on the WPF team) had the brilliant idea of 
+simply making a ListBox look like a TreeView. <IMG class=wp-smiley alt=:) 
+src="Beatriz Costa » WPF Data Binding_files/icon_smile.gif"> This allows us to 
+use VirtualizingStackPanel for free, which offers UI virtualization. And you 
+will see how easy it is to make a ListBox look like a TreeView, thanks to the 
+power of styles and templates in WPF. We’ll need to make a few changes to the 
+data side, but I will explain what they are.</P>
+<P id=text>I started by thinking about the theming portion of this scenario. To 
+make my ListBox look like a TreeView, I need the toggle button that expands and 
+collapses TreeViewItems. I used Blend, once again, to dig into the default style 
+for the ToggleButton in TreeViewItem (which in the Aero theme looks like a 
+triangle), and copied it to the window’s resources. This style contains triggers 
+to change its look when the mouse is over it, and to rotate it when a user 
+clicks on it. Then I added the following DataTemplate to the ItemTemplate 
+property of my ListBox:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; …<BR>&nbsp;&nbsp;&nbsp; 
+&lt;ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;StackPanel 
+Orientation=”Horizontal”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;ToggleButton x:Name=”tb” ClickMode=”Press” Style=”{StaticResource 
+ExpandCollapseToggleStyle}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;TextBlock Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; 
+&lt;/ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; …</P>
+<P id=text>I tested it with a rudimentary data source - a simple 
+(non-hierarchical) ObservableCollection of RegistryKey items that contain a 
+ShortName property. This helped me understand how I need my data to be presented 
+to the ListBox.</P>
+<P id=text>&nbsp;</P>
+<P id=text><STRONG>Adding and removing items in the 
+ObservableCollection</STRONG></P>
+<P id=text>My first realization was that my data source can not be hierarchical 
+this time, because ListBox only understands flat lists of data. So I will need 
+to have a single ObservableCollection with the data for all the visible items, 
+regardless of their depth in the original hierarchy. I will have to update this 
+list of visible items any time the user expands or collapses an item. When the 
+user expands an item, I will insert the item’s children just after it in the 
+ObservableCollection. When the user collapses an item, I will remove its 
+children from the ObservableCollection. Here is the code I wrote to make this 
+happen:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; public class RegistryData3 : 
+INotifyPropertyChanged<BR>&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; private 
+ObservableCollection&lt;RegistryKeyHolder3&gt; 
+allKeys;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; …</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public 
+ObservableCollection&lt;RegistryKeyHolder3&gt; 
+AllKeys<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get { 
+return allKeys; }<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public 
+RegistryData3()<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.allKeys = new 
+ObservableCollection&lt;RegistryKeyHolder3&gt;();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.AddNewKeyHolder(Registry.CurrentUser);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.AddNewKeyHolder(Registry.CurrentConfig);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; private void 
+AddNewKeyHolder(RegistryKey 
+registryKey)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+RegistryKeyHolder3 newKeyHolder = new RegistryKeyHolder3(registryKey, 
+0);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+newKeyHolder.PropertyChanged += new 
+PropertyChangedEventHandler(KeyHolder_PropertyChanged);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.allKeys.Add(newKeyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public void 
+PopulateSubKeys(RegistryKeyHolder3 
+parentKeyHolder)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int 
+indexParentKey = 
+this.allKeys.IndexOf(parentKeyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if (indexParentKey == this.allKeys.Count - 1 || this.allKeys[indexParentKey + 
+1].Level &lt;= 
+parentKeyHolder.Level)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+string[] subKeyNames = 
+parentKeyHolder.Key.GetSubKeyNames();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+for (int i = 0; i &lt; subKeyNames.Length; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+RegistryKeyHolder3 childKeyHolder = new 
+RegistryKeyHolder3(parentKeyHolder.Key.OpenSubKey(subKeyNames[i]), 
+parentKeyHolder.Level + 
+1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+childKeyHolder.PropertyChanged += new 
+PropertyChangedEventHandler(KeyHolder_PropertyChanged);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+allKeys.Insert(indexParentKey + i + 1, 
+childKeyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; …</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public void 
+ClearSubKeys(RegistryKeyHolder3 
+parentKeyHolder)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int 
+indexToRemove = this.allKeys.IndexOf(parentKeyHolder) + 
+1;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while 
+((indexToRemove &lt; this.allKeys.Count) &amp;&amp; 
+(this.allKeys[indexToRemove].Level &gt; 
+parentKeyHolder.Level))<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.allKeys.RemoveAt(indexToRemove);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; …<BR>&nbsp;&nbsp;&nbsp; 
+}</P>
+<P id=text>The PopulateSubKeys method is responsible for adding an item’s 
+children to the ObservableCollection when the user expands that item. This 
+method retrieves the children of the parent item, creates a RegistryKeyHolder3 
+instance for each item and inserts those instances starting at the index just 
+after the parent. Don’t worry about the Level concept you see in this code; I 
+will explain it in the next section. I will also explain and show the code for 
+the property changed event handler later in this post.</P>
+<P id=text>The ClearSubKeys method removes an item’s children from the list, and 
+is called when the user collapses the parent. It starts removing items from the 
+list in the index after the parent’s and continues until the expected number of 
+items has been removed.</P>
+<P id=text>These two methods allow us to keep a flat list with the items in the 
+order we want the ListBox to display them. Adding items to and removing items 
+from the flat list achieves partial data virtualization, just like the solution 
+in my previous post.</P>
+<P id=text><STRONG>Indentation</STRONG></P>
+<P id=text>I also realized that I need to tag each RegistryKeyHolder3 data item 
+with the level they belong to, which will help me figure out how much they have 
+to be indented in the ListBox. I decided to add a property called “Level” to the 
+RegistryKeyHolder3 class for that purpose. For the root keys the Level property 
+will be set to 0, for the next level it will be set to 1, and so on. Notice that 
+while constructing the children key holders, the code in PopulateSubKeys 
+specifies that the level of the children is the parent’s level incremented by 1. 
+Also, in the ClearSubKeys method, one of the conditions to stop removing 
+children is encountering an item that has the same level as the one being 
+collapsed.</P>
+<P id=text>To indent the items in the UI based on the Level value, I added a 
+Border to the left of the expander and text and bound its Width property to the 
+Level property in the source:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; …<BR>&nbsp;&nbsp;&nbsp; 
+&lt;ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;StackPanel 
+Orientation=”Horizontal”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Border Width=”{Binding Path=Level, Converter={StaticResource 
+ConvertLevelToIndent}}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;ToggleButton x:Name=”tb” ClickMode=”Press” … Style=”{StaticResource 
+ExpandCollapseToggleStyle}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;TextBlock Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; 
+&lt;/ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; …</P>
+<P id=text>In order to convert a Level value to the Border’s Width, I defined 
+the following converter:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; public class ConvertLevelToIndent : 
+IValueConverter<BR>&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public object Convert(object 
+value, Type targetType, object parameter, System.Globalization.CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 
+(int)value * 16;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public object 
+ConvertBack(object value, Type targetType, object parameter, 
+System.Globalization.CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw 
+new NotSupportedException(”Not supported - ConvertBack should never be called in 
+a OneWay Binding.”);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp; }</P>
+<P id=text><STRONG>Parent item expansion</STRONG></P>
+<P id=text>I decided to add an “IsExpanded” property to the RegistryKeyHolder3 
+class that will help me tie the children expansion on the data side with the 
+visual rotation of the toggle button in the UI.</P>
+<P id=code>&nbsp;&nbsp;&nbsp; …<BR>&nbsp;&nbsp;&nbsp; 
+&lt;ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;StackPanel 
+Orientation=”Horizontal”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Border Width=”{Binding Path=Level, Converter={StaticResource 
+ConvertLevelToIndent}}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;ToggleButton x:Name=”tb” ClickMode=”Press” IsChecked=”{Binding 
+Path=IsExpanded}” Style=”{StaticResource 
+ExpandCollapseToggleStyle}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;TextBlock Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; 
+&lt;/ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; …</P>
+<P id=text>If you take a look at the ToggleButton’s XAML, you will notice that 
+its IsChecked property is bound to the IsExpanded property. The Mode of this 
+binding is TwoWay - no Mode is defined explicitly, but I know that’s the default 
+Mode for the IsChecked DP.</P>
+<P id=text>Also, if you look at the code that adds items to the list in the 
+PopulateSubKeys method, you will notice that I added KeyHolder_PropertyChanged 
+as the handler for the PropertyChanged event on RegistryKeyHolder3. Here is the 
+code for that event handler:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; void KeyHolder_PropertyChanged(object sender, 
+PropertyChangedEventArgs e)<BR>&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (e.PropertyName == 
+“IsExpanded”)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+RegistryKeyHolder3 keyHolder = 
+(RegistryKeyHolder3)sender;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if 
+(keyHolder.IsExpanded)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.PopulateSubKeys(keyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.ClearSubKeys(keyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<BR>&nbsp;&nbsp;&nbsp; }</P>
+<P id=text>When the application starts, all the items appear collapsed because 
+the IsExpanded property of each data item is initialized to false, and the 
+IsChecked property is bound to IsExpanded. Here is what happens when the user 
+expands an item:</P>
+<P id=text>1) When the user clicks on the ToggleButton to expand an item, 
+IsChecked becomes true, and because of the TwoWay binding, the IsExpanded 
+property for the corresponding data item is set to true.<BR>2) 
+RegistryKeyHolder3 raises a PropertyChanged event when its IsExpanded property 
+changes, causing the code in the handler (the KeyHolder_PropertyChanged method 
+in RegistryData3) to be executed.<BR>3) Because IsExpanded is true for this data 
+item, the PopulateSubKeys method on RegistryData3 is called, causing the 
+children of this item to be added to the list and displayed in the ListBox.</P>
+<P id=text>You can imagine a similar sequence of events when the user clicks to 
+collapse an item.</P>
+<P id=text><STRONG>Visibility of the expander</STRONG></P>
+<P id=text>Lastly, I wanted to make the expander for a particular item hidden 
+whenever that item has no children. I was able to do this by adding a simple 
+DataTrigger that causes the ToggleButton to be hidden whenever the Key’s 
+SubKeyCount property is zero, and visible otherwise. You can see the complete 
+XAML for the ItemTemplate’s DataTemplate here:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; …<BR>&nbsp;&nbsp;&nbsp; 
+&lt;ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;StackPanel 
+Orientation=”Horizontal”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Border Width=”{Binding Path=Level, Converter={StaticResource 
+ConvertLevelToIndent}}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;ToggleButton x:Name=”tb” ClickMode=”Press” IsChecked=”{Binding 
+Path=IsExpanded}” Style=”{StaticResource 
+ExpandCollapseToggleStyle}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;TextBlock Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTrigger Binding=”{Binding Path=Key.SubKeyCount}” 
+Value=”0″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Setter Property=”Visibility” TargetName=”tb” 
+Value=”Hidden”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTrigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; 
+&lt;/ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; …</P>
+<P id=text><STRONG>Conclusion </STRONG></P>
+<P id=text>This solution provides true UI virtualization, as you can see in the 
+screenshot below, where I expanded the three first items (in depth first order). 
+If you scroll the third TreeView (or should I say ListBox?), you will see that 
+for a little while the number of UI elements in memory increases, but it quickly 
+settles on a number much lower than the other two TreeViews. This delay happens 
+because we queue in the dispatcher the operation to clean up those items with a 
+low priority so that it doesn’t make the UI unresponsive.</P>
+<P id=text>And just like the solution in my previous post, this solution 
+discards children elements on collapse and provides a partial data 
+virtualization solution.</P>
+<P id=text>So, should you all switch your TreeViews to ListBoxes? Well, as with 
+almost everything in life, there is a price to pay for the benefits of this 
+solution: the programming model is more cumbersome than if you were using a 
+TreeView. You will not be able to use HierarchicalDataTemplates to style your 
+items, you’ll miss the convenience properties and methods of TreeView, you’ll 
+have to introduce a slightly complex intermediate layer between your UI and your 
+data, and you will have to work hard to minimize the inconsistencies in the UI. 
+In short, you can make a ListBox look like a TreeView, but you can’t make a 
+ListBox become a TreeView.</P>
+<P id=text>Whether this solution is right for you depends on how much you value 
+the performance gain over the disadvantages it brings.</P>
+<P id=text>&nbsp;</P>
+<P id=text><IMG 
+style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/41TreeViewPerformance3.png" 
+border=0></P>
+<P id=text>&nbsp;</P>
+<P id=text><A 
+href="http://www.beacosta.com/Zips/41TreeViewPerformance3.zip">Here</A> you can 
+find the project with this code built with Orcas Beta 2 bits.</P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in TreeView" href="http://www.beacosta.com/blog/?cat=7" 
+rel=category>TreeView</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on Are there any tricks that will help me improve TreeView’s performance? - Part III" 
+href="http://www.beacosta.com/blog/?p=45#comments">Comments (23)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=45"
+    dc:identifier="http://www.beacosta.com/blog/?p=45"
+    dc:title="Are there any tricks that will help me improve TreeView&#8217;s performance? - Part III"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=45" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>September 10, 2007</DIV>
+<H2 id=post-43><A id=postTitle 
+title="Are there any tricks that will help me improve TreeView’s performance? - Part II" 
+href="http://www.beacosta.com/blog/?p=43" rel=bookmark>Are there any tricks that 
+will help me improve TreeView’s performance? - Part II</A></H2>
+<P><SPAN id=text>In my <A 
+href="http://www.beacosta.com/Archive/2007_08_01_bcosta_archive.html">previous 
+post</A>, I discussed some of the performance limitations of TreeView. In 
+particular, I mentioned the three facts about our current implementation that 
+may lead to performance issues, depending on your scenario:</SPAN></P>
+<P><SPAN id=text>- UI elements stay in memory even when collapsed.<BR>- There is 
+no UI virtualization.<BR>- There is no data virtualization.</SPAN></P>
+<P><SPAN id=text>Today I will talk about a trick that avoids the first problem 
+and partially fixes the third. In my previous post, I always kept the data for 
+all levels of the TreeView in memory. In this project, I only load subkey data 
+items when their parent key node is expanded, and I discard those data items 
+when their parent node is collapsed. You can think of the class that manages 
+which portions of the data source stay in memory as an intermediate custom 
+source, which sits between your UI and the complete source of your items. In 
+this case, the complete source for the registry keys consists of the APIs used 
+to load them into memory, but you can easily imagine how this could be a SQL 
+database or a webservice. If you’ve read <A 
+href="http://blogs.msdn.com/johngossman/archive/2006/04/13/576163.aspx">John 
+Gossman’s thoughts</A> on the Model-View-ViewModel pattern, you can think of 
+this intermediate class as the “ViewModel” section.</SPAN></P>
+<P><SPAN id=text>Let’s start by looking at the custom data source. Similarly to 
+my previous post, I have a RegistryKeyHolder2 class that contains a ShortName 
+property and another property that holds the SubKeys collection of type 
+ObservableCollection&lt;RegistryKeyHolder2&gt;. I also have a PopulateSubKeys() 
+method that fills the SubKeys collection with instances of the children keys, 
+which I showed in my previous post. The only new method I added to this class is 
+ClearSubKeys(), which I will use to discard items from memory when I collapse a 
+TreeViewItem:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public int 
+ClearSubKeys()<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 
+subKeyCount = 
+CountSubKeys(this);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.subKeys.Clear();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+subKeyCount;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Just like last week’s sample, I have a RegistryData2 class that 
+contains a RootKeys property of type 
+ObservableCollection&lt;RegistryKeyHolder2&gt;. This will hold the first level 
+of keys displayed in the TreeView, as well as the whole hierarchy of keys that 
+is displayed underneath it. However, unlike my previous post, this class has 
+methods that will populate and clear the keys of just one level, and not the 
+whole hierarchy. I implemented it this way because I will populate or clear 
+items only when the TreeViewItems are expanded and collapsed, and that will 
+only ever affect one level at a time.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public void 
+PopulateSubKeys(RegistryKeyHolder2 
+keyHolder)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 
+itemsAddedCount = 
+keyHolder.PopulateSubKeys();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;public 
+void ClearSubKeys(RegistryKeyHolder2 
+keyHolder)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 
+itemsClearedCount = 
+keyHolder.ClearSubKeys();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>The next step is to cause these methods to be called when 
+TreeViewItems are expanded and collapsed. This can be done easily with the 
+following code and XAML:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TreeViewItem.Collapsed=”ItemCollapsedOrExpanded2″<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TreeViewItem.Expanded=”ItemCollapsedOrExpanded2″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;private 
+void ItemCollapsedOrExpanded2(object sender, RoutedEventArgs 
+e)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TreeViewItem 
+tvi = 
+(TreeViewItem)e.OriginalSource;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RegistryKeyHolder2 
+keyHolder = 
+(RegistryKeyHolder2)tvi.Header;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RegistryData2 
+registryData = 
+(RegistryData2)this.grid2.DataContext;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(e.RoutedEvent == 
+TreeViewItem.ExpandedEvent)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registryData.PopulateSubKeys(keyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else 
+if (e.RoutedEvent == 
+TreeViewItem.CollapsedEvent)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registryData.ClearSubKeys(keyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.InvokeUpdateVisualCount(this.treeView2);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.Handled 
+= true;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>This is basically all that needs to be done at the data level. 
+If you use this source with the default style for TreeViewItem, however, you 
+will see that you will not be provided with the UI to expand the first level of 
+TreeViewItems. This happens because the expander arrow (or plus sign, depending 
+on your theme) is only visible when the HasItems property of TreeViewItem is 
+true. How did I figure this out? Easy, I used <A 
+href="http://www.microsoft.com/expression/products/overview.aspx?key=blend">Blend</A> 
+to look at the default template for TreeViewItem. I started by creating a new 
+project and adding a TreeView to it. Then I went to the “Object” menu, clicked 
+on “Edit other styles”, “Edit ItemContainerStyle”, “Edit a Copy”, gave it a name 
+and clicked OK. And that’s it, you can look at the default style for 
+TreeViewItem in the XAML tab. Here is the part of the XAML that causes the 
+undesired behavior:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate TargetType=”{x:Type 
+TreeViewItem}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”HasItems” 
+Value=”false”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Visibility” TargetName=”Expander” 
+Value=”Hidden”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;</SPAN></P>
+<P><SPAN id=text>The solution for this problem is to have the visibility of the 
+expander of a particular key be controlled by the count of its subkeys. Since 
+the subkeys are not loaded in memory when the parent key is created, you can not 
+use the “Count” property of the “SubKeys” collection to retrieve this 
+information (it is always 0). Fortunately, the “RegistryKey” class in the CLR 
+contains a “SubKeyCount” property that we can use for this purpose. Here is the 
+replacement for the XAML above:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate TargetType=”{x:Type 
+TreeViewItem}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTrigger 
+Binding=”{Binding Path=Key.SubKeyCount}” 
+Value=”0″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Visibility” TargetName=”Expander” 
+Value=”Hidden”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTrigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;</SPAN></P>
+<P><SPAN id=text>And finally, here is the XAML I used to declare the 
+TreeView:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView ItemsSource=”{Binding 
+Path=RootKeys}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TreeViewItem.Collapsed=”ItemCollapsedOrExpanded2″<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TreeViewItem.Expanded=”ItemCollapsedOrExpanded2″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;HierarchicalDataTemplate 
+DataType=”{x:Type local:RegistryKeyHolder2}” ItemsSource=”{Binding 
+Path=SubKeys}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/HierarchicalDataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;… 
+Here I added the default styles and templates for TreeView that I copied from 
+Blend,<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modified 
+with the DataTrigger 
+above…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView.ItemContainerStyle&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StaticResourceExtension 
+ResourceKey=”tvStyle1″ 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView.ItemContainerStyle&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P>
+<P><SPAN id=text>At the beginning of this post, I mentioned that the solution I 
+presented here avoids keeping elements in memory after they’ve been collapsed 
+and partially fixes data virtualization. Is this really the case?</SPAN></P>
+<P><SPAN id=text><STRONG>Visuals no longer stay in memory when 
+collapsed</STRONG></SPAN></P>
+<P><SPAN id=text>The fact that I’m discarding the data items when a TreeViewItem 
+is collapsed causes the UIElement associated with those items to also be 
+discarded. You can confirm this by looking at the visual count that I added to 
+the sample, after expanding and collapsing the first item:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/40TreeViewPerformance21.png" 
+border=0></P>
+<P><SPAN id=text>The visual count of the TreeView starts out as 49. After 
+expanding the first item, the count increases to 169, and after collapsing it, 
+the count becomes 52. There’s a difference in the number of visuals before and 
+after for two reasons: </SPAN></P>
+<P><SPAN id=text>- The StackPanel that wraps the subkey items stays in 
+memory.<BR>- After the vertical scroll bar becomes interactive and then disabled 
+again, two visuals are left behind. I tried to minimize the difference of 
+visuals caused by the scroll bar by making it present (but disabled) from the 
+beginning.</SPAN></P>
+<P><SPAN id=text>I would like you to focus on the big numbers, and not the 
+details. With this solution, after collapsing a TreeViewItem, almost all of the 
+visuals created when the TreeViewItem was expanded are not kept in memory any 
+longer.</SPAN></P>
+<P><SPAN id=text><STRONG>Some of the data is virtualized</STRONG></SPAN></P>
+<P><SPAN id=text>The initial count of data items for this TreeView scenario is 
+2. Once the first item is expanded that number goes up to 15, but when you 
+collapse that item, the number of data items goes back down to 2.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/40TreeViewPerformance22.png" 
+border=0></P>
+<P><SPAN id=text>Note that I am by no means claiming to provide a full solution 
+to data virtualization. My solution only listens to expand and collapse events. 
+True data virtualization for TreeView would take into account not only expanding 
+and collapsing, but also scrolling events. Imagine a scenario where you have 
+many TreeViewItems expanded so that the total number of items expanded in the 
+TreeView is a thousand (not all of them visible, of course). In this case, my 
+solution will keep those thousand items in memory, while a true data 
+virtualization solution would only keep in memory the few items displayed on the 
+screen. As the user scrolls the TreeView, data virtualization would figure out 
+which items should be swapped in and out of memory.</SPAN></P>
+<P><SPAN id=text>However, I believe that the solution here offers the biggest 
+bang for the buck. It’s extremely simple to implement and it helps with a very 
+common usage scenario for TreeViews: TreeViews can be bound to extremely large 
+data sets, but users typically only have a small subset of that data expanded at 
+a particular time.</SPAN></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/40TreeViewPerformance2.zip">Here</A> you can 
+find the VS project with this sample code. This works with Orcas Beta2 bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in TreeView" href="http://www.beacosta.com/blog/?cat=7" 
+rel=category>TreeView</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on Are there any tricks that will help me improve TreeView’s performance? - Part II" 
+href="http://www.beacosta.com/blog/?p=43#comments">Comments (2)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=43"
+    dc:identifier="http://www.beacosta.com/blog/?p=43"
+    dc:title="Are there any tricks that will help me improve TreeView&#8217;s performance? - Part II"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=43" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>August 31, 2007</DIV>
+<H2 id=post-42><A id=postTitle 
+title="Are there any tricks that will help me improve TreeView’s performance? - Part I" 
+href="http://www.beacosta.com/blog/?p=42" rel=bookmark>Are there any tricks that 
+will help me improve TreeView’s performance? - Part I</A></H2>
+<P><SPAN id=text>This is the first of three blog posts where I will discuss 
+TreeView performance. This post will cover the problems with our current 
+implementation of TreeView; the next post will show a solution that will enable 
+binding to a large data set; and the third post will discuss a simple idea that 
+adds UI virtualization to a hierarchical data representation. </SPAN></P>
+<P><SPAN id=text>There are currently three aspects of TreeView’s implementation 
+that affect performance when binding to large data sets:</SPAN></P>
+<P><SPAN id=text>- UI elements stay in memory after collapsed.<BR>- There is no 
+UI virtualization.<BR>- There is no data virtualization.</SPAN></P>
+<P><SPAN id=text>I will discuss each of these problems after describing a 
+typical scenario.</SPAN></P>
+<P><SPAN id=text>Suppose I want to display my registry keys in a TreeView. To do 
+so, I first need to create a hierarchical data structure that is able to hold 
+the registry key data in memory. I defined a “RegistryKeyHolder1″ class 
+containing a property called Key that holds the actual RegistryKey, and a 
+property called SubKeys of type 
+ObservableCollection<REGISTRYKEYHOLDER1></REGISTRYKEYHOLDER1>. The class has a 
+“PopulateSubKeys” method that knows how to fill the SubKeys collection with the 
+appropriate data from the registry. To populate the entire data structure, I 
+start with a collection of RootKeys and use the following recursive 
+method:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class 
+RegistryData1<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+void PopulateSubKeys(ObservableCollection&lt;RegistryKeyHolder1&gt; 
+keys)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach 
+(RegistryKeyHolder1 keyHolder in 
+keys)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyHolder.PopulateSubKeys();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dataItemsCount 
++= 
+keyHolder.SubKeys.Count;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+It will take forever if I get all registry 
+keys<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(this.dataItemsCount &gt;= 
+5000)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PopulateSubKeys(keyHolder.SubKeys);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>With this data structure in place, I am now able to bind the 
+TreeView to the RootKeys property directly.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public 
+Window1()<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitializeComponent();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.grid1.DataContext 
+= new 
+RegistryData1();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView 
+ItemsSource=”{Binding Path=RootKeys}” Name=”treeView1″ … 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;HierarchicalDataTemplate 
+DataType=”{x:Type local:RegistryKeyHolder1}” ItemsSource=”{Binding 
+Path=SubKeys}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/HierarchicalDataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;</SPAN></P>
+<P><SPAN id=text>This data structure makes it really easy to provide a default 
+look for all levels of the hierarchy by using a HierarchicalDataTemplate. Notice 
+the TextBlock in the template, bound to the ShortName property. Since tha Name 
+property of RegistryKey returns the whole path of that key, I added a ShortName 
+property to RegistryKeyHolder1 that returns only the interesting part of the 
+key. I use the ItemsSource property of the HierarchicalDataTemplate to specify 
+the items that should be displayed in the next level of the hierarchy - in this 
+case, the subkeys.</SPAN></P>
+<P><SPAN id=text><STRONG>UI elements stay in memory after 
+collapsed</STRONG></SPAN></P>
+<P><SPAN id=text>If you run this post’s project, you will see that the initial 
+number of visuals of this TreeView is 49. You can use <A 
+href="http://www.blois.us/Snoop/">Snoop</A> to see exactly which elements are in 
+the visual tree (although Snoop includes GridColumns in its count and I don’t, 
+so you may see some differences in the results). Now expand the first node and 
+collapse it again. This time the number of visuals is 169, even after you 
+collapsed the node. In our current implementation of TreeView, we let the 
+children items stay around in memory, even after they are collapsed. If your 
+TreeView has a usage pattern where the same few nodes are often expanded and 
+collapsed, then you will get better perf with our current design because the 
+children items don’t have to be garbage collected and re-created every time. 
+However, we realize that in most situations, customers would rather have their 
+items be garbage collected when a node is collapsed. So, overall, I consider 
+this a limitation of our current design of TreeView.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/39TreeViewPerformance11.png" 
+border=0></P>
+<P><SPAN id=text><STRONG>There is no UI virtualization</STRONG></SPAN></P>
+<P><SPAN id=text>There are two WPF controls that support UI virtualization 
+currently: ListBox and ListView. This happens because their default panel is a 
+VirtualizingStackPanel, which behaves like a StackPanel but provides UI 
+virtualization. </SPAN></P>
+<P><SPAN id=text>By UI virtualization, I mean that when you bind a ListBox to a 
+large collection of data, we only create UI containers for the items that are 
+visually displayed (plus a few more before and after, to improve the speed of 
+scrolling). When you scroll, we create new containers for the items that are 
+newly visible, and dispose of the ones that are no longer visible. This greatly 
+improves the performance of binding a ListBox to a large collection.</SPAN></P>
+<P><SPAN id=text>What about the other Controls in WPF? ComboBox has StackPanel 
+as its default panel, but a user can easily change that to be a 
+VirtualizingStackPanel. TreeView, however, can not use VirtualizingStackPanel to 
+display its items because this panel doesn’t know how to display a hierarchy. 
+The same applies to a ListBox with grouping enabled - a ListBox without grouping 
+has UI virtualization by default, but once you group the data, the UI 
+virtualization is lost.</SPAN></P>
+<P><SPAN id=text>If you run this post’s code sample, you can easily tell that 
+TreeView does not support UI virtualization. If you expand several nodes so that 
+the scroll bar on the right is enabled, you will see that the number of visuals 
+keeps increasing. Even though many of the items that you expanded are outside of 
+the visible portion of the scroll viewer, WPF still creates all of the visuals 
+necessary to display them.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/39TreeViewPerformance12.png" 
+border=0></P>
+<P><SPAN id=text><STRONG>There is no data virtualization</STRONG></SPAN></P>
+<P><SPAN id=text>None of the WPF controls supports data virtualization at the 
+moment. Providing a generic data virtualization solution is a hard problem that 
+everyone on the team is eager to solve, but it hasn’t been our highest 
+priority.</SPAN></P>
+<P><SPAN id=text>If we had data virtualization for ListBox, that would mean that 
+only the data items displayed are kept in memory. As the user scrolls through 
+the ListBox, new items are brought into memory, and the old ones are discarded. 
+For TreeView, in addition to swapping items in and out of memory due to 
+scrolling, we would also want to load and unload items from memory when their 
+parent item is expanded and collapsed.</SPAN></P>
+<P><SPAN id=text>So, what is the difference between UI and data virtualization? 
+With UI virtualization we keep in memory only the UI elements (e.g. 
+ListBoxItems) that are displayed visually, but we may still have the whole data 
+structure in memory. Data virtualization goes one step further: we only keep in 
+memory the data items that are being displayed on the screen.</SPAN></P>
+<P><SPAN id=text>By running this post’s code sample, you can easily tell that 
+there is no data virtualization. You will see, even right after you run it the 
+first time, that the number of data items in memory is over 5000. Since 
+initially only two items are displayed, it’s easy to see that we’re keeping in 
+memory many more items than the ones we need to build up that UI.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/39TreeViewPerformance13.png" 
+border=0></P>
+<P><SPAN id=text>That’s all for today’s post. I’ve explained some of the current 
+limitations of TreeView, and in the next two posts I will provide some solutions 
+to these problems. So stay tuned.</SPAN></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/39TreeViewPerformance1.zip">Here</A> you can 
+find the VS project with this sample code. This works with Orcas Beta2 bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in TreeView" href="http://www.beacosta.com/blog/?cat=7" 
+rel=category>TreeView</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on Are there any tricks that will help me improve TreeView’s performance? - Part I" 
+href="http://www.beacosta.com/blog/?p=42#comments">Comments (8)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=42"
+    dc:identifier="http://www.beacosta.com/blog/?p=42"
+    dc:title="Are there any tricks that will help me improve TreeView&#8217;s performance? - Part I"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=42" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>May 8, 2007</DIV>
+<H2 id=post-41><A id=postTitle 
+title="How can I update an explicit binding within a template?" 
+href="http://www.beacosta.com/blog/?p=41" rel=bookmark>How can I update an 
+explicit binding within a template?</A></H2>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/38mix.bmp" border=0></P>
+<P><SPAN id=text>Mix07 in Vegas was awesome! I always get pumped up when I meet 
+new customers that are using WPF and loving it! It gives me fuel to come back to 
+rainy Seattle with a smile and extra energized to do my absolute best for 
+WPF!</SPAN></P>
+<P><SPAN id=text>In today’s sample, I have a ListBox with editable data. When I 
+change the data of one of the items, I want that to be reflected in the source, 
+as usual. However, this time I set my Binding’s UpdateSourceTrigger to Explicit, 
+which means I need to make that update by calling the UpdateSource() method on 
+BindingExpression through code. Unfortunately, getting a handle to the 
+BindingExpression in a ListBox scenario is a little tricky with the current bits 
+of WPF, which is why I decided to write this post.</SPAN></P>
+<P><SPAN id=text>I will start with a quick explanation of two basic concepts, 
+which are core to the understanding of this problem: Binding Mode and 
+UpdateSourceTrigger. If this is too basic for you, you can skip the next couple 
+of sections and safely jump to “<A 
+href="http://www.beacosta.com/blog/?cat=2#UpdatingExplicitBindings">Updating 
+Explicit Bindings</A>.”</SPAN></P>
+<P><SPAN id=text><STRONG>Binding Mode</STRONG></SPAN></P>
+<P><SPAN id=text>WPF Data Binding supports five binding modes (which you can set 
+by using the Mode property of Binding):</SPAN></P>
+<P><SPAN id=text>- One way - The data flows from the source to the target only. 
+If you add a Binding to a TextBlock’s Text property and don’t specify the Mode, 
+it will be one way by default.</SPAN></P>
+<P><SPAN id=text>- Two way - The data flows from the source data to the target 
+UI, and the other way around. A Binding on a TextBox’s Text property without the 
+Mode specified is two way by default: changes in the source are reflected in the 
+TextBox, and changes typed into the TextBox are also propagated back to the 
+source.</SPAN></P>
+<P><SPAN id=text>- One time - Like one way, but the UI doesn’t listen to change 
+notifications in the source. You may want to consider using this mode if your 
+source doesn’t support property change notifications. If you don’t care about 
+changes in the source, setting your binding to one time will make it a little 
+more performant.</SPAN></P>
+<P><SPAN id=text>- One way to source - The opposite of one way: the data flows 
+only from the target UI to the source. I have yet to see a good use of this 
+binding mode - the scenarios that require it are quite rare.</SPAN></P>
+<P><SPAN id=text>- Default - This is the same as not setting the Mode property 
+at all. The Binding engine will look at the default mode specified at the time 
+the DependencyProperty was registered, and will use that. Therefore, setting the 
+Mode to Default will not mean the same thing for all DependencyProperties. For 
+example, as I mentioned before, TextBlock’s Text has a default mode of one way, 
+while the TextBox’s Text has a default of two way.</SPAN></P>
+<P><SPAN id=text>But how do we know the default Binding Mode of a 
+DependencyProperty? How can we set a default Binding Mode when we define a new 
+DependencyProperty?</SPAN></P>
+<P><SPAN id=text><A href="http://www.aisto.com/roeder/dotnet/">.NET 
+Reflector</A> is your friend. With reflector, search for TextBox and look at the 
+source for the static constructor (.cctor()). Here, you will be able to find the 
+code used for registering the TextProperty DP:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;TextProperty = 
+DependencyProperty.Register(”Text”, typeof(string), typeof(TextBox), new 
+FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.Journal 
+| FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new 
+PropertyChangedCallback(TextBox.OnTextPropertyChanged), new 
+CoerceValueCallback(TextBox.CoerceText), true, 
+UpdateSourceTrigger.LostFocus));</SPAN></P>
+<P><SPAN id=text>Notice that a parameter is passed to the Register method 
+indicating the default Binding Mode: 
+FrameworkPropertyMetadataOptions.BindsTwoWayByDefault. If you use reflector to 
+look at the registration for TextBlock’s Text DP, you will see that no such 
+value is passed, in which case we assume the binding is one way by 
+default.</SPAN></P>
+<P><SPAN id=text>It is not possible to make the binding one way to source or one 
+time by default (we couldn’t think of any compelling user scenarios that would 
+justify increasing the complixity of the API). However, it is possible to say 
+that you don’t want the DP to support data binding at all - to do this, simply 
+pass FrameworkPropertyMetadataOptions.NotDataBindable as a parameter.</SPAN></P>
+<P><SPAN id=text><STRONG>Binding UpdateSourceTrigger</STRONG></SPAN></P>
+<P><SPAN id=text>In the case of a binding that propagates values from the target 
+to the source (Mode = TwoWay or OneWayToSource), we allow you to specify how you 
+want that update to be triggered. There are three ways to cause the changes to 
+propagate to the source (which you can set by using the UpdateSourceTrigger 
+property of Binding):</SPAN></P>
+<P><SPAN id=text>- LostFocus - The value will be updated when the element loses 
+focus. This is the default behavior for TextBox (notice that 
+UpdateSourceTrigger.LostFocus is specified when the Text dependency property was 
+registered). When you type something in a TextBox, that value will be updated to 
+the source when you change focus to some other element.</SPAN></P>
+<P><SPAN id=text>- PropertyChanged - The value is updated every time it changes. 
+In the TextBox scenario, the value will be updated every time you type a new 
+character.</SPAN></P>
+<P><SPAN id=text>- Explicit - The target value if not updated until you 
+explicitly call “UpdateSource()” on the BindingExpression.</SPAN></P>
+<P><SPAN id=text><STRONG>Updating Explicit Bindings</STRONG></SPAN></P>
+<P><SPAN id=text>In today’s sample, I started by defining a source object 
+(MySource) with a property Employees of type 
+ObservableCollection&lt;Employee&gt;. Employee is a class that contains two 
+properties: Name and Title, both of type string. The code for defining this 
+source is straight forward, so I won’t show it here.</SPAN></P>
+<P><SPAN id=text>Then I added a ListBox to my XAML file that is bound to the 
+Employees collection, and I added a Style for its items:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”nonEditableEmployee”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Margin=”2″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+FontWeight=”Bold” Text=”{Binding 
+Path=Name}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Title}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”editableEmployee”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Margin=”2″ 
+&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+FontWeight=”Bold” Text=”{Binding Path=Name}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBox 
+Text=”{Binding Path=Title, UpdateSourceTrigger=Explicit}” Width=”130″ 
+x:Name=”tb”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style 
+TargetType=”ListBoxItem” 
+x:Key=”lbiStyle”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Height” Value=”40″ 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”ContentTemplate” Value=”{StaticResource nonEditableEmployee}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”IsSelected” 
+Value=”True”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”ContentTemplate” Value=”{StaticResource editableEmployee}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{Binding Path=Employees}” ItemContainerStyle=”{StaticResource 
+lbiStyle}” IsSynchronizedWithCurrentItem=”True” (…) 
+Name=”lb”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Content=”Submit” 
+Click=”Submit” (…) /&gt;</SPAN></P>
+<P><SPAN id=text>In the Style for ListBoxItems, I am specifying that I want the 
+DataTemplate applied to each of the items to be “nonEditableEmployee” except 
+when the item is selected, in which case I want to use “editableEmployee”. Both 
+DataTemplates display the Name and Title of the Employee, the only difference is 
+that “editableEmployee” displays the Title using a TextBox instead of a 
+TextBlock. So, when the user selects an employee in the ListBox, that employee’s 
+Title becomes editable. </SPAN></P>
+<P><SPAN id=text>Below the ListBox I have a Submit Button. If I click on this 
+Button after editing some data in the ListBox, I want that data to be submitted 
+to the source. However, if I change the data in the ListBox and don’t click on 
+the Button, I don’t want the source to be modified. Notice that I set the 
+UpdateSourceTrigger of editable Title’s Binding to Explicit.</SPAN></P>
+<P><SPAN id=text>To achieve this behavior, I need to call the UpdateSource() on 
+the BindingExpression’s instance. Getting this instance is a little tricky, so 
+let’s think about it for a minute. The best way to think about this is by 
+starting from the end, and walking backwards. Utimately, this is the code I want 
+to write (assuming “be” is the BindingExpression instance, and “tb” is the 
+TextBox’s instance):</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;BindingExpression be = 
+tb.GetBindingExpression(TextBox.TextProperty);<BR>&nbsp;&nbsp;&nbsp;&nbsp;be.UpdateSource();</SPAN></P>
+<P><SPAN id=text>As you can see, in order to get the BindingExpression for the 
+Binding in the TextBox’s Text property, I need to have a handle to that TextBox. 
+Traversing the DataTemplate to get to the TextBox won’t give me the actual 
+instance, it will only give me the FrameworkElementFactory used to create the 
+TextBox instance. Fortunately, DataTemplate has a FindName method that, given 
+the instance of the object the template is applied to, will give you a 
+particular named part within its visual tree. So, assuming “cp” is the object 
+the DataTemplate is applied to, this is the code I would like to write to get 
+the actual TextBox:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;DataTemplate dt = 
+(DataTemplate)(this.Resources[”editableEmployee”]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;TextBox 
+tb = (TextBox)(dt.FindName(”tb”, cp));</SPAN></P>
+<P><SPAN id=text>We’re getting close. The next step is to figure out how to get 
+to the element the DataTemplate is applied to. A DataTemplate is always applied 
+to a ContentPresenter, which is an element present in the visual tree of every 
+ContentControl. Since every item in the ListBox is wrapped with a ListBoxItem 
+(which is a ContentControl), I simply have to get to the ContentPresenter 
+instance in the ControlTemplate for the currently selected ListBoxItem. Here is 
+what I did:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;Employee currentEmployee = 
+(Employee)(lb.Items.CurrentItem);<BR>&nbsp;&nbsp;&nbsp;&nbsp;ListBoxItem lbi = 
+(ListBoxItem)(lb.ItemContainerGenerator.ContainerFromItem(currentEmployee));<BR>&nbsp;&nbsp;&nbsp;&nbsp;ContentPresenter 
+cp = GetObjectOfTypeInVisualTree&lt;ContentPresenter&gt;(lbi);</SPAN></P>
+<P><SPAN id=text>“GetObjectOfTypeInVisualTree” is a simple recursive method that 
+walks the visual tree of an object (in this case, the current ListBoxItem) and 
+returns the first element matching the type specified by the generic parameter 
+(in this case ContentPresenter). Here is the complete code:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;private void Submit(object sender, 
+RoutedEventArgs 
+e)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employee 
+currentEmployee = 
+(Employee)(lb.Items.CurrentItem);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ListBoxItem 
+lbi = 
+(ListBoxItem)(lb.ItemContainerGenerator.ContainerFromItem(currentEmployee));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ContentPresenter 
+cp = 
+GetObjectOfTypeInVisualTree&lt;ContentPresenter&gt;(lbi);<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DataTemplate 
+dt = 
+(DataTemplate)(this.Resources[”editableEmployee”]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TextBox 
+tb = (TextBox)(dt.FindName(”tb”, 
+cp));<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BindingExpression 
+be = 
+tb.GetBindingExpression(TextBox.TextProperty);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be.UpdateSource();<BR>&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;private 
+T GetObjectOfTypeInVisualTree&lt;T&gt;(DependencyObject dpob) where T : 
+DependencyObject<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 
+count = 
+VisualTreeHelper.GetChildrenCount(dpob);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DependencyObject 
+child = VisualTreeHelper.GetChild(dpob, 
+i);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T 
+childAsT = child as 
+T;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(childAsT != 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+childAsT;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;childAsT&nbsp;= 
+&nbsp;GetObjectOfTypeInVisualTree&lt;T&gt;(child);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp; if(childAsT != 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+return 
+childAsT;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+null;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>This code is not only useful for submitting explicit bindings; 
+it is useful for any scenario where you need to get to the instance of some 
+element in your DataTemplate. It should be pretty easy to tweak this sample to 
+suit your needs.</SPAN></P>
+<P><SPAN id=text>We do realize that this scenario is quite hard to implement, 
+and we know it’s not that uncommon. We would like to make it easier, but 
+unfortunately we will not be able to make that happen in the next release. At 
+least for now you have a sample solution that should help you solve most 
+scenarios. Hopefully we will have a chance to fix this in the platform in the 
+near future.</SPAN></P>
+<P><SPAN id=text>Below is a screenshot of the final application. The ListBox on 
+the right is bound to the same source. I added it to this sample so you can see 
+when the source changes.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/38UpdateExplicit.png" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/38UpdateExplicit.zip">Here</A> you can find 
+the VS project with this sample code. This works with RTM WPF bits. </SPAN></P>
+<P><SPAN id=text>Update September 18, 2007: <A 
+href="http://www.beacosta.com/Zips/38UpdateExplicitOrcasBeta2.zip">Here</A> you 
+can find this project working with Orcast Beta 2 bits</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in Styles and Templates" 
+href="http://www.beacosta.com/blog/?cat=11" rel=category>Styles and 
+Templates</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on How can I update an explicit binding within a template?" 
+href="http://www.beacosta.com/blog/?p=41#comments">Comments (23)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=41"
+    dc:identifier="http://www.beacosta.com/blog/?p=41"
+    dc:title="How can I update an explicit binding within a template?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=41" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>April 1, 2007</DIV>
+<H2 id=post-40><A id=postTitle title="The power of Styles and Templates in WPF" 
+href="http://www.beacosta.com/blog/?p=40" rel=bookmark>The power of Styles and 
+Templates in WPF</A></H2>
+<P><SPAN id=text>In WPF, there is a very clean separation between the behavior 
+of a Control and the look of a Control. For example, a Button’s behavior 
+consists only of listening to Click events, but its look can be anything - you 
+can make a Button look like an arrow, a fish, or whatever else suits your 
+application. Redefining the look of a Control is very easy to do in VS with 
+Styles and Templates, and even easier if you have Blend. In this sample, I will 
+show you how I redefined the look of a ListBox representing a list of 
+planets.</SPAN></P>
+<P><SPAN id=text>I started out by implementing a data source with planets and 
+the sun. I defined a class called “SolarSystemObject” with several properties 
+(Name, Orbit, Diameter, Image and Details). I overrode the ToString(…) method in 
+this class to return the name of the solar system object. Then I added a class 
+called “SolarSystem” with a property called “SolarSystemObjects” of type 
+ObservableCollection&lt;SolarSystemObject&gt;. In the constructor for the 
+“SolarSystem” class, I added the sun and the nine planets to the 
+“SolarSystemObjects” collection.</SPAN></P>
+<P><SPAN id=text>Once I had my source defined, I was ready to add a ListBox to 
+the Window, bound to this collection:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:SolarSystem 
+x:Key=”solarSystem” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{Binding Source={StaticResource solarSystem}, 
+Path=SolarSystemObjects}” /&gt;</SPAN></P>
+<P><SPAN id=text>The ListBox displays the planets, but visually this is still a 
+little plain:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/37PlanetsListBox1.png" border=0></P>
+<P><SPAN id=text>At this point, I started brainstorming ways to display the 
+planets in a more realistic way - my goal was to achieve a look similar to the 
+solar system diagrams in school books. The first step was to change the layout 
+of the ListBoxItems. The default layout for a ListBox is a StackPanel, which 
+causes the ListBoxItems to be displayed one above another (to be more precise, 
+it’s a VirtualizingStackPanel, which adds virtualization to the traditional 
+StackPanel). In order to display the planets the way I wanted, I needed a 
+Canvas, which allows me to position the items within it by specifying the number 
+of pixels to the Top and Left of that Canvas. There is an ItemsPanel property on 
+ListBox of type ItemsPanelTemplate that can be used to change the layout of the 
+ListBox, which is what I used in my sample. Here is how I did that:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style 
+TargetType=”ListBox”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”ItemsPanel”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ItemsPanelTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Canvas 
+Width=”590″ Height=”590″ Background=”Black” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ItemsPanelTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</SPAN></P>
+<P><SPAN id=text>My next step was to define the look of each planet, which I did 
+by using a DataTemplate. I decided to represent each planet by its image, with a 
+white ellipse simulating its orbit around the sun. I also added a tooltip with 
+more information about the planet, which appears when you hover over the 
+image.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate DataType=”{x:Type 
+local:SolarSystemObject}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Canvas 
+Width=”20″ Height=”20″ 
+&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Ellipse<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Canvas.Left=”{Binding 
+Path=Orbit, Converter={StaticResource convertOrbit}, 
+ConverterParameter=-1.707}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Canvas.Top=”{Binding 
+Path=Orbit, Converter={StaticResource convertOrbit}, 
+ConverterParameter=-0.293}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width=”{Binding 
+Path=Orbit, Converter={StaticResource convertOrbit}, 
+ConverterParameter=2}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Height=”{Binding 
+Path=Orbit, Converter={StaticResource convertOrbit}, 
+ConverterParameter=2}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stroke=”White”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StrokeThickness=”1″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image 
+Source=”{Binding Path=Image}” Width=”20″ 
+Height=”20″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image.ToolTip&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Width=”250″ 
+TextBlock.FontSize=”12″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+FontWeight=”Bold” Text=”{Binding Path=Name}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Orientation=”Horizontal”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”Orbit: ” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Orbit}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=” AU” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Details}” 
+TextWrapping=”Wrap”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Image.ToolTip&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Image&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Canvas&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style 
+TargetType=”ListBoxItem”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Canvas.Left” Value=”{Binding Path=Orbit, Converter={StaticResource 
+convertOrbit}, 
+ConverterParameter=0.707}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Canvas.Bottom” Value=”{Binding Path=Orbit, Converter={StaticResource 
+convertOrbit}, 
+ConverterParameter=0.707}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</SPAN></P>
+<P><SPAN id=text>As you can see in the template and style above, the properties 
+that specify the position of the ListBoxItem and the position and size of the 
+Ellipse depend on the orbit of the planet, and all use the same converter with 
+different parameters. The converter’s job is to transform distances between 
+solar system objects to distances in device independent pixels within the 
+canvas. My original implementation of this converter simply multiplied the orbit 
+value by a constant, but I found that the inner planets were too crowded 
+together, so I changed the math a little to make it non-linear. I also decided 
+to have the converter take a parameter that scales the result by a factor, so I 
+could reuse this logic.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class ConvertOrbit : 
+IValueConverter<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object Convert(object value, Type targetType, object parameter, CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double 
+orbit = 
+(double)value;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double 
+factor = 
+System.Convert.ToDouble(parameter);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+Math.Pow(orbit / 40, 0.4) * 770 * 
+factor;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object ConvertBack(object value, Type targetType, object parameter, CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new NotSupportedException(”This method should never be 
+called”);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>If you run the application now, you will see that the planets 
+are all correctly positioned in relation to the sun. If you hover over them, you 
+will get more detailed information about the planet. If you click on a planet, 
+the default ListBoxItem template assigns a blue background to the selected item, 
+which shows a little bit around the image. This is not the effect I was looking 
+for, so I decided to change the look of the selected item.</SPAN></P>
+<P><SPAN id=text>In order to change that style, I figured it would be easier to 
+use Expression Blend to look at the default template, and then tweak it to the 
+look I had in mind. I started by selecting the ListBox in Blend, then I went to 
+the “Object” menu, selected “Edit Other Styles”, “Edit ItemContainerStyle”, and 
+“Edit a Copy”. Then I gave the style a name, and clicked “OK”. If you go to the 
+XAML tab at this point, you will see the full default Style for the 
+ListBoxItems, which includes the following template:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Template”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate 
+TargetType=”{x:Type 
+ListBoxItem}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Border 
+SnapsToDevicePixels=”true” x:Name=”Bd” Background=”{TemplateBinding Background}” 
+BorderBrush=”{TemplateBinding BorderBrush}” BorderThickness=”{TemplateBinding 
+BorderThickness}” Padding=”{TemplateBinding 
+Padding}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentPresenter 
+SnapsToDevicePixels=”{TemplateBinding SnapsToDevicePixels}” 
+HorizontalAlignment=”{TemplateBinding HorizontalContentAlignment}” 
+VerticalAlignment=”{TemplateBinding 
+VerticalContentAlignment}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Border&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”IsSelected” 
+Value=”true”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Background” TargetName=”Bd” Value=”{DynamicResource {x:Static 
+SystemColors.HighlightBrushKey}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Foreground” Value=”{DynamicResource {x:Static 
+SystemColors.HighlightTextBrushKey}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MultiTrigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MultiTrigger.Conditions&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Condition 
+Property=”IsSelected” 
+Value=”true”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Condition 
+Property=”Selector.IsSelectionActive” 
+Value=”false”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/MultiTrigger.Conditions&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Background” TargetName=”Bd” Value=”{DynamicResource {x:Static 
+SystemColors.ControlBrushKey}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Foreground” Value=”{DynamicResource {x:Static 
+SystemColors.ControlTextBrushKey}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/MultiTrigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”IsEnabled” 
+Value=”false”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Foreground” Value=”{DynamicResource {x:Static 
+SystemColors.GrayTextBrushKey}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;</SPAN></P>
+<P><SPAN id=text>Using this as a base, I came up with a simpler template that 
+adds a yellow ellipse around a planet when selected:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style 
+TargetType=”ListBoxItem”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Template”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate 
+TargetType=”{x:Type 
+ListBoxItem}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Grid&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Ellipse 
+x:Name=”selectedPlanet” Margin=”-10″ 
+StrokeThickness=”2″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentPresenter 
+SnapsToDevicePixels=”{TemplateBinding SnapsToDevicePixels}” 
+HorizontalAlignment=”{TemplateBinding HorizontalContentAlignment}” 
+VerticalAlignment=”{TemplateBinding 
+VerticalContentAlignment}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Grid&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”IsSelected” 
+Value=”true”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Stroke” TargetName=”selectedPlanet” 
+Value=”Yellow”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</SPAN></P>
+<P><SPAN id=text>Below is a screenshot of the final application. If you hover 
+over the images of the planets, you will get more information about them. If you 
+click on a planet, a yellow ellipse will encircle it.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/37PlanetsListBox2.png" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/37PlanetsListBox.zip">Here</A> you can find 
+the VS project with this sample code. This works with RTM WPF bits. </SPAN></P>
+<P><SPAN id=text>This sample is part of a talk I presented last Tuesday, in an 
+event here at Microsoft in Redmond where several customers came to learn more 
+about WPF. It was a lot of fun to talk directly to customers and reply to their 
+questions. <A 
+href="http://www.beacosta.com/Zips/37DataBindingPresenter.zip">Here</A> you can 
+find my slides for this talk (all done in WPF).</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in ListBox" href="http://www.beacosta.com/blog/?cat=14" 
+rel=category>ListBox</A>, <A title="View all posts in Styles and Templates" 
+href="http://www.beacosta.com/blog/?cat=11" rel=category>Styles and 
+Templates</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on The power of Styles and Templates in WPF" 
+href="http://www.beacosta.com/blog/?p=40#comments">Comments (16)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=40"
+    dc:identifier="http://www.beacosta.com/blog/?p=40"
+    dc:title="The power of Styles and Templates in WPF"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=40" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>January 11, 2007</DIV>
+<H2 id=post-39><A id=postTitle 
+title="How can I have an independent view when my source is ADO.NET?" 
+href="http://www.beacosta.com/blog/?p=39" rel=bookmark>How can I have an 
+independent view when my source is ADO.NET?</A></H2>
+<P><SPAN id=text>I talked about binding to ADO.NET in an <A 
+href="http://www.beacosta.com/2006/03/how-do-i-bind-to-adonet.html">earlier blog 
+post</A>. In that post, I explained briefly how binding to ADO.NET behaves 
+differently from other data sources when there are 2 or more views over the 
+source. Today I will explain this scenario in more detail and will show a 
+workaround that makes the binding to ADO.NET behave consistently with binding to 
+other sources.</SPAN></P>
+<P><SPAN id=text>Consider the scenario where we bind an ItemsControl to a 
+CollectionViewSource whose Source property is set to some collection of objects. 
+In this scenario, a CollectionView is created internally and the ItemsControl is 
+in fact bound to this view (which the CollectionViewSource exposes through its 
+View property). Remember that views are used to sort, filter, and group the 
+items of a collection, as well as track the current item. Let’s assume we sort 
+this view. Now imagine we have a second ItemsControl bound to a second 
+CollectionViewSource whose Source property is set to the same collection as 
+previously. As you probably expect, a second view is created, independent from 
+the first one. This means that we can sort this second view differently, without 
+affecting the order of the items in the first view. </SPAN></P>
+<P><SPAN id=text>This is the current behavior when the CollectionViewSource’s 
+Source is a collection of objects or XML, but not when it’s an ADO.NET DataTable 
+or DataView. When the source comes from ADO.NET, the view does not handle 
+sorting and filtering itself; instead it delegates those operations to the 
+DataView (if the source is a DataTable we get the corresponding DataView, if the 
+source is a DataView we use it directly). This has the advantage of greatly 
+increasing the performance of these operations. However, it has an important 
+side effect in the behavior of views: they are not independent from each other. 
+Let’s consider the scenario I described above, but this time the Source property 
+of both CollectionViewSources is set to the same DataTable. When we add a 
+SortDescription to the CollectionViewSource, internally we get the DataView that 
+corresponds to the DataTable and use that to sort it. Because both 
+CollectionViewSources use the same DataTable, they will end up sorting by using 
+the same DataView. Consequently, sorting one CollectionViewSource will affect 
+the items displayed in both ItemsControls. </SPAN></P>
+<P><SPAN id=text>Let’s look at the come that illustrates this scenario. I 
+started by defining an Access data source that happens to contain the names of 
+the sacred rivers of India. I wrote a simple method that uses ADO.NET to fill a 
+DataTable with that data, which you can see below:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;private DataTable 
+GetData()<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string 
+mdbFile = 
+“IndiaSacredRivers.mdb”;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string 
+connString 
+=<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string.Format(”Provider=Microsoft.Jet.OLEDB.4.0; 
+Data Source={0}”, 
+mdbFile);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OleDbConnection 
+conn = new 
+OleDbConnection(connString);<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DataTable 
+sacredRiversTable = new 
+DataTable();<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OleDbDataAdapter 
+sacredRiversAdapter = new 
+OleDbDataAdapter();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sacredRiversAdapter.SelectCommand 
+= new OleDbCommand(”SELECT * FROM SacredRivers;”, 
+conn);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sacredRiversAdapter.Fill(sacredRiversTable);<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+sacredRiversTable;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Then, I added the DataTable to the Window’s resources, in the 
+Window’s constructor.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public 
+Window1()<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.Resources.Add(”sacredRiversTable”, 
+this.GetData());<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitializeComponent();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>In XAML, I added two CollectionViewSources to the Window’s 
+resources and pointed their Source property to the DataTable I added to the 
+resources before. I then added two ListBoxes and bound each of them to a 
+CollectionViewSource:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource 
+Source=”{StaticResource sacredRiversTable}” 
+x:Key=”cvs1″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource 
+Source=”{StaticResource sacredRiversTable}” 
+x:Key=”cvs2″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{Binding Source={StaticResource cvs1}}” 
+DisplayMemberPath=”RiverName” (…) /&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{Binding Source={StaticResource cvs2}}” 
+DisplayMemberPath=”RiverName” (…) /&gt;</SPAN></P>
+<P><SPAN id=text>Finally, I added a Button that, when pressed, adds a 
+SortDescription to the first CollectionViewSource.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Content=”Sort first view 
+descending” Click=”SortCvs1DescendingHandler” (…) 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;private void 
+SortCvs1DescendingHandler(object sender, RoutedEventArgs 
+args)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs1.SortDescriptions.Clear();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs1.SortDescriptions.Add(new 
+SortDescription(”RiverName”, 
+ListSortDirection.Descending));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((Button)sender).IsEnabled 
+= false;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>When you press this Button, you will notice that both ListBoxes 
+become sorted. This is not the desired behavior — it’s an unfortunate tradeoff 
+we had to make to maximize the performance of these operations. The good news is 
+that there is an easy workaround that will produce a behavior consistent with 
+the other sources. If you need independent sorting, you can simply create two 
+different DataViews, by passing the DataTable as a parameter to the constructor, 
+and use those as your sources. This can all be done in XAML, with the help of 
+ObjectDataProvider:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider 
+x:Key=”independentView1″ ObjectType=”{x:Type 
+data:DataView}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider.ConstructorParameters&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StaticResource 
+ResourceKey=”sacredRiversTable” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider.ConstructorParameters&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider 
+x:Key=”independentView2″ ObjectType=”{x:Type 
+data:DataView}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider.ConstructorParameters&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StaticResource 
+ResourceKey=”sacredRiversTable” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider.ConstructorParameters&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource 
+Source=”{StaticResource independentView1}” 
+x:Key=”cvs3″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource 
+Source=”{StaticResource independentView2}” 
+x:Key=”cvs4″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{Binding Source={StaticResource cvs3}}” 
+DisplayMemberPath=”RiverName” (…) /&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{Binding Source={StaticResource cvs4}}” 
+DisplayMemberPath=”RiverName” (…) /&gt;</SPAN></P>
+<P><SPAN id=text>This time, clicking the Button to sort the first view will have 
+no effect in the order of the items of the second ListBox, as 
+desired.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Content=”Sort first view 
+descending” Click=”SortCvs3DescendingHandler” (…) 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;private void 
+SortCvs3DescendingHandler(object sender, RoutedEventArgs 
+args)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs3.SortDescriptions.Clear();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvs3.SortDescriptions.Add(new 
+SortDescription(”RiverName”, 
+ListSortDirection.Descending));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((Button)sender).IsEnabled 
+= false;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Here is a screenshot of this application:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/36ADOIndependentView.png" 
+border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/36ADOIndependentView.zip">Here</A> you can 
+find the VS project with this sample code. This works with RTM WPF bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in Binding to ADO.NET" 
+href="http://www.beacosta.com/blog/?cat=12" rel=category>Binding to ADO.NET</A>, 
+<A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on How can I have an independent view when my source is ADO.NET?" 
+href="http://www.beacosta.com/blog/?p=39#comments">Comments (12)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=39"
+    dc:identifier="http://www.beacosta.com/blog/?p=39"
+    dc:title="How can I have an independent view when my source is ADO.NET?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=39" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>November 22, 2006</DIV>
+<H2 id=post-38><A id=postTitle title="What is the difference between… ?" 
+href="http://www.beacosta.com/blog/?p=38" rel=bookmark>What is the difference 
+between… ?</A></H2>
+<P><SPAN id=text>I had a blast at TechEd. After a few years working on WPF, it’s 
+very rewarding to see people’s excitement when they discover all the features we 
+offer. The high point of the conference for me (apart from several detours to 
+the Belgian chocolate fountain, yum….) was <A 
+href="http://www.interact-sw.co.uk/iangblog/">Ian Griffiths</A>‘ presentation on 
+data binding. If you haven’t seen Ian speak, you’re missing out! His 
+presentation was well prepared, well delivered and technically accurate. I was 
+also very excited to see that the WPF’s labs were incredibly popular, so popular 
+in fact that half way through the conference the number of machines assigned to 
+WPF was doubled. <IMG class=wp-smiley alt=:) 
+src="Beatriz Costa » WPF Data Binding_files/icon_smile.gif"> </SPAN></P>
+<P><SPAN id=text>Now, back to the rainy weather… sigh…</SPAN></P>
+<P><SPAN id=text>Today I will answer a few simple questions that I get asked 
+repeatedly. There are some concepts in WPF data binding that are similar enough 
+that users become easily confused. If there are other concepts that you think 
+should have made this list, please leave a comment and I’ll cover them in my 
+next post.</SPAN></P>
+<P><SPAN id=text><B>What is the difference between CollectionView and 
+CollectionViewSource?</B></SPAN></P>
+<P><SPAN id=text>The short answer is that CollectionView is a view and 
+CollectionViewSource is not. </SPAN></P>
+<P><SPAN id=text>Every time you bind an ItemsControl directly to a collection, 
+we create a view on top of that collection and bind to the view instead. You can 
+think of a view as a list of pointers to the source collection. Views make it 
+possible to perform four operations on bound collections: sorting, filtering, 
+grouping and tracking the current item. Creating an intermediate object to 
+handle these operations may seem like unnecessary overhead, but it’s important 
+to guarantee that the original data remains intact. Imagine the problems that 
+could occur without view objects if two different parts of the UI were bound to 
+the same collection but with different sorting and filtering.</SPAN></P>
+<P><SPAN id=text>So, what is the type of that view object? At the very minimum, 
+it needs to implement ICollectionView. CollectionView is the base implementation 
+we provide for this interface, and it’s also the view type we create when the 
+source collection implements IEnumerable and nothing else. CollectionView is the 
+base class for two other interesting view classes: BindingListCollectionView, 
+which we create when the source collection implements IBindingList, and 
+ListCollectionView, which is created when the source collection implements 
+IList. I talked about views in a bit more detail <A 
+href="http://www.beacosta.com/2006/04/how-can-i-add-my-own-sorting-logic.html">in 
+an earlier post</A>.</SPAN></P>
+<P><SPAN id=text>CollectionViewSource is *not* a view. We designed this class 
+for three reasons:</SPAN></P>
+<P><SPAN id=text>- We wanted to allow users to create a custom view and be able 
+to tell us to use that view without the use of code (all in markup). I may show 
+how this can be done in a future post (is this a topic of interest?).</SPAN></P>
+<P><SPAN id=text>- We wanted to allow users to do simple sorting and grouping 
+without using code. You can see a sample with this scenario <A 
+href="http://www.beacosta.com/2006/01/how-do-i-sort-groups-of-data-items.html">in 
+this earlier post</A>.</SPAN.< p> 
+<P><SPAN id=text>- We wanted to have a container for all methods and properties 
+related to view operations. I’m not sure where they lived before we had this 
+class — possibly in BindingOperations — but I do remember realizing that users 
+had a hard time finding them.</SPAN></P>
+<P><SPAN id=text>CollectionViewSource has a Source property that should be set 
+to the source collection and a read-only View property that returns a handle to 
+the view we create over that collection. If we set the Source property of a 
+Binding to a CollectionViewSource, the binding engine is smart enough to 
+understand that most of the time we really want to bind to the view, so it binds 
+to its View property instead. (If this is not what you want, you can set the 
+BindsDirectlyToSource property of Binding to true.) I believe this is the reason 
+why people tend to think that CollectionViewSource is a view. Also, the name is 
+probably a bit misleading.</SPAN></P>
+<P><SPAN id=text>In summary, you can think of CollectionViewSource as an 
+intermediate class that has a pointer to the source collection and another one 
+to the corresponding view, and that offers the advantages I mentioned above. A 
+CollectionView is simply the base class for all view types we ship in 
+WPF.</SPAN></P>
+<P><SPAN id=text><B>What is the difference between Binding and 
+TemplateBinding?</B></SPAN></P>
+<P><SPAN id=text>Binding provides much more flexibility than TemplateBinding, 
+but it’s more costly. TemplateBinding is limited to one scenario but very 
+efficient in what it does. </SPAN></P>
+<P><SPAN id=text>Everytime you want to bind to a property of an element from 
+within its template, you should consider using a TemplateBinding. For example, 
+consider the following scenario:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window 
+x:Class="CommonQuestions.Window1"<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+Title="CommonQuestions" Height="300" Width="300"<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate 
+TargetType="{x:Type Button}" 
+x:Key="buttonTemplate"&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Border 
+BorderBrush="{TemplateBinding Property=Background}" BorderThickness="3" 
+&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentPresenter 
+Margin="10"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Border&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Margin="20"&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button 
+Template="{StaticResource buttonTemplate}" HorizontalAlignment="Center" 
+Background="SteelBlue"&gt;Hello&lt;/Button&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window&gt;</SPAN></P>
+<P><SPAN id=text>In this case, I want the BorderBrush property of Border to be 
+whatever color is specified in the Button’s Background. This is exactly the 
+scenario that TemplateBinding is optimized for. Instead of the TemplateBinding 
+in this snippet, you could use the following Binding: {Binding 
+RelativeSource={RelativeSource TemplatedParent}, Path=Background}. The resulting 
+behavior would be the same, but this is not as efficient, and it’s quite a bit 
+more complex to write, so TemplateBinding is the preferred approach. 
+TemplateBinding also allows you to specify a Converter and a ConverterParameter, 
+which increases the scope of the supported scenarios quite a bit. However, a 
+TemplateBinding can only transfer data in one direction: from the templated 
+parent to the element with the TemplateBinding. If you need to transfer data in 
+the opposite direction or both ways, a Binding with RelativeSource of 
+TemplatedParent is your only option. For example, interaction with a TextBox or 
+Slider within a template will only change a property on the templated parent if 
+you use a two-way Binding.</SPAN></P>
+<P><SPAN id=text>In summary: if you want a one-way binding from within a 
+template to a property of its templated parent, use TemplateBinding. For all 
+other scenarios, or for extra flexibility in this last scenario, use 
+Binding.</SPAN></P>
+<P><SPAN id=text><B>What is the difference between ContentPresenter and 
+ContentControl?</B></SPAN></P>
+<P><SPAN id=text>If you look at these two classes in <A 
+href="http://www.aisto.com/roeder/dotnet/">reflector</A>, you will notice the 
+main difference between them: ContentControl derives from Control, and 
+ContentPresenter doesn’t. </SPAN></P>
+<P><SPAN id=text>ContentControl is a control that knows how to display content. 
+If you’ve been reading my blog, you’re probably familiar with ItemsControl by 
+now, which is a control that knows how to display a collection of data. 
+ContentControl is the equivalent to ItemsControl, but it is used to display 
+non-collections instead. Some classic examples of controls that derive from 
+ContentControl are Button and Label. Its most important property is the Content 
+DependencyProperty, of type object.</SPAN></P>
+<P><SPAN id=text>ContentPresenter is an element that is useful inside the 
+template of a ContentControl, and is used to specify where you want its content 
+to be placed. For example, in the markup above I placed a ContentPresenter 
+inside the Border because I want the Content of the Button (”Hello”) to appear 
+inside the Border. If you remove the ContentPresenter, you will notice that 
+“Hello” is no longer displayed. If you add elements before or after, you will 
+notice that “Hello” will show up in the location where the ContentPresenter is 
+placed in the layout pass.</SPAN></P>
+<P><SPAN id=text>The ContentPresenter tag in the markup above is equivalent to 
+the following:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentPresenter 
+Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding 
+ContentTemplate}" ContentTemplateSelector="{TemplateBinding 
+ContentTemplateSelector}" Margin="10"/&gt;</SPAN></P>
+<P><SPAN id=text>A long time ago, you had to be explicit about where the 
+Content, ContentTemplate and ContentTemplateSelector properties came from. We 
+decided to make this implicit because we realized this is what people want most 
+of the time. If, for some reason, you don’t want to use the Content of your 
+ContentControl in its template, and want to use some other data instead, you can 
+set the Content property of the ContentPresenter explicitly. For example, try 
+replacing the ContentPresenter in the markup above with the 
+following:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentPresenter 
+Content="{TemplateBinding Background}" Margin="10"/&gt;</SPAN></P>
+<P><SPAN id=text>You will notice that the Button will display “#FF4682B4″ 
+instead of “Hello”, even though we set its Content property to 
+“Hello”.</SPAN></P>
+<P><SPAN id=text>In summary: ContentControl is a control that uses a template to 
+display a single piece of content, and ContentPresenter is used to specify where 
+the content should go in the ContentControl’s template.</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on What is the difference between… ?" 
+href="http://www.beacosta.com/blog/?p=38#comments">Comments (11)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=38"
+    dc:identifier="http://www.beacosta.com/blog/?p=38"
+    dc:title="What is the difference between&#8230; ?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=38" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>October 29, 2006</DIV>
+<H2 id=post-37><A id=postTitle 
+title="How should I data bind a Polygon’s Points to a data source? - Part III" 
+href="http://www.beacosta.com/blog/?p=37" rel=bookmark>How should I data bind a 
+Polygon’s Points to a data source? - Part III</A></H2>
+<P><SPAN id=text>TechEd Barcelona is coming up next week, between Tuesday the 
+7th and Friday the 10th. Some members of the Avalon team will be there, and I’m 
+very fortunate to be part of that group. If you read my blog and are attending 
+this conference, come by and introduce yourself (don’t be shy!!). I will spend 
+most of my time helping with the Avalon labs, but you may also find me in the 
+Avalon booth. I can’t wait to meet some of you, hear about the applications 
+you’ve been developing with Avalon, brainstorm with you about your data binding 
+scenarios, and hear all the feedback (good and bad) you have about this 
+platform. </SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" alt="" 
+src="Beatriz Costa » WPF Data Binding_files/34TechEdBarcelona.gif" border=0></P>
+<P><SPAN id=text>In my <A 
+href="http://www.beacosta.com/2006/10/how-should-i-data-bind-polygons-points_17.html">last 
+post</A>, I talked about a way to bind a Polygon’s Points to a data source that 
+had the following advantages:<BR>- Changes in the source are propagated to the 
+UI.<BR>- There is a clean separation between the UI and data layers.<BR>- It 
+scales well for scenarios where you’re making small frequent changes to the 
+source collection.</SPAN></P>
+<P><SPAN id=text>However, this solution had one drawback: it can not be used in 
+Styles. Today I will show you a third solution to the same problem with all the 
+advantages above, plus it can be used in Styles. I will be using the same data 
+source I used in my previous post.</SPAN></P>
+<P><SPAN id=text>This time I decided to use a Converter. The code in the Convert 
+method is very similar to the code in the ProvideValue method of the 
+MarkupExtension from my previous post. In both implementations, we need to 
+return the PointCollection that the Polygon’s Points property will be set to. 
+Also, in both scenarios, we need to hook up an event handler to listen for 
+collection changes in the source and replicate those changes in the 
+PointCollection. </SPAN></P>
+<P><SPAN id=text>There are some differences, too. Of course, this time we don’t 
+have to use reflection to get the source collection, since that gets passed as 
+the first parameter of the Convert method. Another difference is that it is 
+possible that one instance of the Converter will be used by several Bindings, 
+which requires a little bit of coordination on our part. Here is the complete 
+implementation of the Converter:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class PointCollectionConverter : 
+IValueConverter<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+Dictionary&lt;IEnumerable&lt;Point&gt;, PointCollection&gt; 
+collectionAssociations;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object Convert(object value, Type targetType, object parameter, CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IEnumerable&lt;Point&gt; 
+enumerable = value as 
+IEnumerable&lt;Point&gt;;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(enumerable == 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new InvalidOperationException("Source collection must be of type 
+IEnumerable&lt;Point&gt;");<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+Construct a dictionary with source and target collection associations if that 
+was not already 
+done.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(this.collectionAssociations == 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.collectionAssociations 
+= new Dictionary&lt;IEnumerable&lt;Point&gt;, 
+PointCollection&gt;();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+If the source is already in the dictionary, return the existing 
+PointCollection<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PointCollection 
+points;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(this.collectionAssociations.TryGetValue(enumerable, out 
+points))<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+points;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+The source is not in the dictionary, so create a new point collection and add it 
+to the 
+dictionary.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points 
+= new 
+PointCollection(enumerable);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.collectionAssociations.Add(enumerable, 
+points);<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+Start listening to collection change events in the new source, if 
+possible.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INotifyCollectionChanged 
+notifyCollectionChanged = enumerable as 
+INotifyCollectionChanged;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(notifyCollectionChanged != 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;notifyCollectionChanged.CollectionChanged 
++= 
+this.Source_CollectionChanged;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+points;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object ConvertBack(object value, Type targetType, object parameter, CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new NotSupportedException("ConvertBack should never be 
+called");<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+void Source_CollectionChanged(object sender, NotifyCollectionChangedEventArgs 
+e)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IEnumerable&lt;Point&gt; 
+enumerable = sender as 
+IEnumerable&lt;Point&gt;;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PointCollection 
+points = 
+this.collectionAssociations[enumerable];<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch 
+(e.Action)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 
+NotifyCollectionChangedAction.Add:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; e.NewItems.Count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Insert(e.NewStartingIndex 
++ i, 
+(Point)e.NewItems[i]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 
+NotifyCollectionChangedAction.Move:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; e.NewItems.Count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.RemoveAt(e.OldStartingIndex);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Insert(e.NewStartingIndex 
++ i, 
+(Point)e.NewItems[i]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 
+NotifyCollectionChangedAction.Remove:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; e.OldItems.Count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.RemoveAt(e.OldStartingIndex);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 
+NotifyCollectionChangedAction.Replace:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; e.NewItems.Count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points[e.NewStartingIndex 
++ i] = 
+(Point)e.NewItems[i];<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 
+NotifyCollectionChangedAction.Reset:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Clear();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>You probably noticed that the main difference between this code 
+and the one in the MarkupExtension solution is the Dictionary. This is the 
+coordination bit I talked about earlier. Let’s imagine for a while that, instead 
+of this dictionary, we have two private members that hold the source collection 
+and the PointCollection, just like in the MarkupExtension solution. Now imagine 
+we have two Bindings that use this same Converter with different source 
+collections. Here are the results of a common sequence of events:</SPAN></P>
+<P><SPAN id=text>- The source collection of the second Binding changes. The 
+private variables hold the source collection and PointCollection for the second 
+Binding.</SPAN></P>
+<P><SPAN id=text>- Now the source collection of the first Binding changes. 
+Remember that the same event handler is used to handle changes to both source 
+collections. The event handler is called, but makes the changes to the second 
+PointCollection because that’s what the private variable holds.</SPAN></P>
+<P><SPAN id=text>As a general rule, holding state in a Converter is bad practice 
+because it can cause trouble when shared. </SPAN></P>
+<P><SPAN id=text>I solved this problem by introducing a Dictionary that keeps an 
+association between a source collection and the corresponding PointCollection. 
+This way, the collection change handler is able to retrieve the PointCollection 
+it needs to change at any point in time. Also, notice that if the same instance 
+of the Converter is used twice with the same source collection, the second time 
+it is used we return the PointCollection we already have. </SPAN></P>
+<P><SPAN id=text>Here is the XAML used in this solution:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:PolygonItem 
+x:Key="src"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:PointCollectionConverter 
+x:Key="converter"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button 
+Click="ChangeSource" Margin="10" HorizontalAlignment="Center"&gt;Change data 
+source&lt;/Button&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Polygon 
+Name="polygonElement" Width="500" Height="500" Margin="25" Fill="#CD5C5C" 
+Points="{Binding Source={StaticResource src}, Path=Points, 
+Converter={StaticResource 
+converter}}"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;</SPAN></P>
+<P><SPAN id=text>The event handler for the Button is the same as in my previous 
+post, so I won’t show it again.</SPAN></P>
+<P><SPAN id=text>Once again, the solution I explained sounds pretty good. So, 
+what is the drawback this time? <IMG class=wp-smiley alt=:) 
+src="Beatriz Costa » WPF Data Binding_files/icon_smile.gif"> The one drawback I 
+can think of is that we’re still holding state in the Converter - we are keeping 
+an instance of the Dictionary. Sure, we are holding state so we don’t get in 
+trouble by holding state some other way. In general, I would like to discourage 
+people from keeping state in a Converter. In this case we put quite a bit of 
+thought into the state we’re keeping around, so it’s not all that bad, but 
+please use this technique with reservations.</SPAN></P>
+<P><SPAN id=text>I won’t bother showing a screenshot here, since the application 
+for this post looks identical to the one in my previous post.</SPAN></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/34PolygonBinding3.zip">Here</A> you can find 
+the VS project with this sample code. This works with Beta2 WPF bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on How should I data bind a Polygon’s Points to a data source? - Part III" 
+href="http://www.beacosta.com/blog/?p=37#comments">Comments (11)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=37"
+    dc:identifier="http://www.beacosta.com/blog/?p=37"
+    dc:title="How should I data bind a Polygon&#8217;s Points to a data source? - Part III"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=37" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>October 17, 2006</DIV>
+<H2 id=post-36><A id=postTitle 
+title="How should I data bind a Polygon’s Points to a data source? - Part II" 
+href="http://www.beacosta.com/blog/?p=36" rel=bookmark>How should I data bind a 
+Polygon’s Points to a data source? - Part II</A></H2>
+<P><SPAN id=text>In my <A 
+href="http://www.beacosta.com/2006/10/how-should-i-data-bind-polygons-points.html">last 
+blog post</A>, I talked about one solution to data bind a Polygon’s Points to a 
+collection such that:<BR>- Changes in the source are propagated to the UI.<BR>- 
+There is a clean separation between the UI and data layers.</SPAN></P>
+<P><SPAN id=text>This solution is good for scenarios where big changes to the 
+collection happen each time we want to refresh the UI, but not so good when we 
+need to frequently add or remove one point only. The reason for this is that 
+every time we raise a collection change notification, a new PointCollection 
+instance is created. </SPAN></P>
+<P><SPAN id=text>Today I will explain to you my thought process of coming up 
+with a solution with the advantages of the previous one but without the 
+drawback. </SPAN></P>
+<P><SPAN id=text>I will start by showing you the data source I use in this blog 
+post:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class 
+PolygonItem<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+double angleIncrement = Math.PI / 
+Math.Sqrt(2);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private int 
+initialCount = 
+249;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+ObservableCollection&lt;Point&gt; points = new 
+ObservableCollection&lt;Point&gt;();<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+ReadOnlyObservableCollection&lt;Point&gt; 
+Points<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get 
+{ return new ReadOnlyObservableCollection&lt;Point&gt;(this.points); 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+void 
+AddPoint()<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double 
+angle = this.points.Count * 
+this.angleIncrement;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double 
+x = 250 + 250 * 
+Math.Cos(angle);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double 
+y = 250 + 250 * 
+Math.Sin(angle);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.points.Add(new 
+Point(x, 
+y));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+PolygonItem()<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while 
+(this.points.Count &lt; 
+this.initialCount)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.AddPoint();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>As you can see, every time the AddPoint method is called, a 
+single point is added to the source collection (unlike the sample in the 
+previous post, where every time you click on a button, the whole source 
+collection is redone.) The fact that a very small change happens to the 
+collection each time provides the motivation we need to find a solution 
+different from the one in my last post.</SPAN></P>
+<P><SPAN id=text>In this post, I will explain how we can write a custom 
+MarkupExtension that changes the target PointCollection when the source 
+collection changes. My idea was that if Binding (which is a MarkupExtension too) 
+doesn’t provide this functionality, I could write my own simple specialized 
+Binding that does what I want. </SPAN></P>
+<P><SPAN id=text>To create the MarkupExtension, I started by thinking about 
+which properties are needed to allow the user to specify the source collection. 
+I got some inspiration from the Binding object and decided to pick two 
+properties: “Source” and “PropertyName”. “Source” holds a source object, of any 
+type, and “PropertyName” holds the name of a property of that object, of type 
+IEnumerable&lt;Point&gt;. This is basically a very trimmed down version of 
+Binding.</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;[MarkupExtensionReturnType(typeof(PointCollection))]<BR>&nbsp;&nbsp;&nbsp;&nbsp;public 
+class PointCollectionConnectorExtension : 
+MarkupExtension<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+object source;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private string 
+propertyName;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+PointCollection 
+pointCollection;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object 
+Source<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get 
+{ return this.source; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(value == 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new 
+ArgumentNullException("value");<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.source 
+= 
+value;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+string 
+PropertyName<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get 
+{ return this.propertyName; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(value == 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new 
+ArgumentNullException("value");<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.propertyName 
+= 
+value;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Next I had to override the ProvideValue abstract method from 
+MarkupExtension. This method is where you can find all the logic necessary to 
+calculate the value provided by a MarkupExtension. In this particular scenario, 
+I want to start listening to source collection change notifications and to 
+modify the provided PointCollection everytime the source changes. Here is what 
+my ProvideValue method looks like:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public override object 
+ProvideValue(IServiceProvider 
+serviceProvider)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(this.source == null || this.propertyName == 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new InvalidOperationException("Cannot use PointCollectionConnector extension 
+without setting Source and 
+PropertyName.");<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+Get the value of the property with name PropertyName from the source 
+object.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type sourceType = 
+this.source.GetType();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PropertyInfo 
+propertyInfo = 
+sourceType.GetProperty(propertyName);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(propertyInfo == 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new InvalidOperationException(String.Format("Source object of type {0} does not 
+have a property named {1}.", sourceType.Name, 
+propertyName));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;object 
+propertyValue = propertyInfo.GetValue(this.source, 
+null);<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+See if the value is an enumerable collection of 
+points.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IEnumerable&lt;Point&gt; 
+enumerable = propertyValue as 
+IEnumerable&lt;Point&gt;;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(enumerable == 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new InvalidOperationException(String.Format("Source object of type {0} has a 
+property named {1}, but its value (of type {2}) doesn’t implement 
+IEnumerable&lt;Point&gt;.", sourceType.Name, propertyName, 
+propertyValue.GetType().Name));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+Construct the initial point collection by copying points from the enumerable 
+collection.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.pointCollection 
+= new 
+PointCollection(enumerable);<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+Listen for collection changed events coming from the source, if 
+possible.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INotifyCollectionChanged 
+notifyCollectionChanged = propertyValue as 
+INotifyCollectionChanged;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(notifyCollectionChanged != 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;notifyCollectionChanged.CollectionChanged 
++= 
+this.Source_CollectionChanged;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+this.pointCollection;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>As you can see, I use the Source and PropertyName properties to 
+grab the source collection through reflection. The value provided by the 
+MarkupExtension to the target DP is a new PointCollection created here, which 
+contains the same points as the source collection. The most important part of 
+this code, however, is where I hook up a listener for collection change 
+notifications in the source collection. In that event handler, I have some code 
+that replicates in the PointCollection any changes made to the source 
+collection:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;private void 
+Source_CollectionChanged(object sender, NotifyCollectionChangedEventArgs 
+e)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch 
+(e.Action)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 
+NotifyCollectionChangedAction.Add:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; e.NewItems.Count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.pointCollection.Insert(e.NewStartingIndex 
++ i, 
+(Point)e.NewItems[i]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 
+NotifyCollectionChangedAction.Move:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; e.NewItems.Count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.pointCollection.RemoveAt(e.OldStartingIndex);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.pointCollection.Insert(e.NewStartingIndex 
++ i, 
+(Point)e.NewItems[i]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 
+NotifyCollectionChangedAction.Remove:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; e.OldItems.Count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.pointCollection.RemoveAt(e.OldStartingIndex);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 
+NotifyCollectionChangedAction.Replace:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; e.NewItems.Count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.pointCollection[e.NewStartingIndex 
++ i] = 
+(Point)e.NewItems[i];<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 
+NotifyCollectionChangedAction.Reset:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.pointCollection.Clear();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Here is the XAML that uses this MarkupExtension:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:PolygonItem 
+x:Key="src"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Polygon 
+Name="polygonElement" Width="500" Height="500" Margin="10" 
+Fill="#CD5C5C"&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Polygon.Points&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:PointCollectionConnector 
+Source="{StaticResource src}" 
+PropertyName="Points"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Polygon.Points&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Polygon&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P>
+<P><SPAN id=text>I am using property-element syntax to add the MarkupExtension 
+in this case. Unfortunately there is a bug that prevents me from using attribute 
+syntax with a custom MarkupExtension:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Polygon 
+Points="{PointCollectionConnector Source={StaticResource src}, 
+PropertyName=Points}" /&gt;</SPAN></P>
+<P><SPAN id=text>Next I supplied a Button with an event handler that adds a 
+point to the source collection each time the Button is pressed.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Click="ChangeSource" 
+Margin="10" HorizontalAlignment="Center"&gt;Change data 
+source&lt;/Button&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;private 
+void ChangeSource(object sender, RoutedEventArgs 
+e)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PolygonItem 
+polygonItem = this.Resources["src"] as 
+PolygonItem;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;polygonItem.AddPoint();<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+Unfortunately, the Polygon element won’t update unless we call InvalidateMeasure 
+and 
+InvalidateVisual.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.polygonElement.InvalidateMeasure();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.polygonElement.InvalidateVisual();<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Unfortunately there is a bug here too: the UI will not reflect 
+changes in the PointCollection. To work around it, we need to call 
+InvalidateMeasure followed by InvalidateVisual, as shown above.</SPAN></P>
+<P><SPAN id=text>If you now click on the Button, you will see that a new Point 
+is added to the collection, and the pattern in the UI changes. This solution 
+sounds pretty good, but it has a drawback: you can not use this MarkupExtension 
+in a Style because the PointCollection, which is a Freezable, freezes (meaning, 
+it can not be changed). Freezables become frozen when used in Styles because 
+it’s the only way they can be used across threads. It’s very common for Styles 
+(particularly those in the theme files) to be used in multiple 
+threads.</SPAN></P>
+<P><SPAN id=text>I like this solution, but of course I couldn’t stop thinking 
+about this until I was able to find a solution with all the advantages of this 
+one, and without the drawback. I will talk about a third solution in my next 
+blog post, so stay tuned.</SPAN></P>
+<P><SPAN id=text>Here is a screenshot of this application:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" alt="" 
+src="Beatriz Costa » WPF Data Binding_files/33PolygonBinding2.png" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/33PolygonBinding2.zip">Here</A> you can find 
+the VS project with this sample code. This works with Beta2 WPF bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on How should I data bind a Polygon’s Points to a data source? - Part II" 
+href="http://www.beacosta.com/blog/?p=36#comments">Comments (6)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=36"
+    dc:identifier="http://www.beacosta.com/blog/?p=36"
+    dc:title="How should I data bind a Polygon&#8217;s Points to a data source? - Part II"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=36" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>October 5, 2006</DIV>
+<H2 id=post-35><A id=postTitle 
+title="How should I data bind a Polygon’s Points to a data source?" 
+href="http://www.beacosta.com/blog/?p=35" rel=bookmark>How should I data bind a 
+Polygon’s Points to a data source?</A></H2>
+<P><SPAN id=text>Today I will talk about one solution for data binding the 
+Points property of a Polygon to a source collection. </SPAN></P>
+<P><SPAN id=text>The Polygon’s Points property is of type 
+System.Windows.Media.PointCollection, which can be found in Avalon’s 
+PresentationCore.dll. The first approach I’ve seen most people take when they 
+want to bind the Points property to some data is to add a property of type 
+PointCollection to their source, and bind to it. This works in the sense that 
+the Polygon will display the Points it is binding to, but there are a couple of 
+problems with this approach:</SPAN></P>
+<P><SPAN id=text>- If we change the collection of points in the data source, the 
+change will not be reflected in the UI. This can be fixed by making the 
+collection of points in the source a DependencyProperty.</SPAN></P>
+<P><SPAN id=text>- Adding a PointCollection to the data source introduces a 
+dependence on an Avalon type that brings in several UI concepts (dependency 
+properties and freezable objects). Ideally, we should strive for no coupling 
+between the presentation technology and the data source. I’m sure those of you 
+who are porting applications from WinForms to Avalon understand the reasons why 
+this is good practice: If your data layer is independent from the presentation 
+layer, it will be easier to migrate to the next UI technology, or, more 
+commonly, to present the same data in multiple ways within the same 
+application.</SPAN></P>
+<P><SPAN id=text>With these issues in mind, the first step is to figure out how 
+to store the collection of points in a way that is independent of 
+presentation-related Avalon code. Every time I need to data bind to a 
+collection, I think of ObservableCollection&lt;T&gt; because it provides 
+collection change notifications. This would be my collection of choice if I were 
+binding an ItemsControl to the points, but this scenario is a little different. 
+</SPAN></P>
+<P><SPAN id=text>Before I go any further, let me explain the two types of change 
+notifications we support in data binding:</SPAN></P>
+<P><SPAN id=text>
+<DL>
+  <DT><STRONG>Property change notifications</STRONG> 
+  <P></SPAN><SPAN id=text></P>
+  <DD>Your data source needs to implement INotifyPropertyChanged and raise the 
+  PropertyChanged event, passing the appropriate property name in the event 
+  arguments, whenever a property changes. If you pass null or the empty string 
+  as the property name, the binding engine assumes that all properties of the 
+  source have changed. If you have a property in your source that is a 
+  collection, you can still benefit from property change notifications: you may 
+  need to notify the binding engine when the whole collection is being replaced 
+  by a different one. In other words, you may need to notify that the property 
+  that holds the collection has changed. 
+  <P></SPAN></P>
+  <P><SPAN id=text></P>
+  <DT><STRONG>Collection change notifications</STRONG> 
+  <P></SPAN><SPAN id=text></SPAN><SPAN id=text></P>
+  <DD>Your data source needs to implement INotifyCollectionChanged. Typically, 
+  when you need collection change notifications, you can simply use an 
+  ObservableCollection&lt;T&gt; which does all the hard work of implementing 
+  this interface for you. I haven’t encountered a scenario where a customer 
+  needed collection change notifications but couldn’t use 
+  ObservableCollection&lt;T&gt; for some reason.This interface notifies the UI 
+  when there is some change in the collection, such as when an item is added or 
+  removed. If your data source is a business object, the binding engine is smart 
+  enough to add or remove only the UI items that are needed, rather than 
+  regenerating the entire collection of UI items. If your source is XML or an 
+  IBindingList, we are as clever as we can be with the information that we are 
+  given by those APIs.<SPAN id=text>The item generator associated with an 
+  ItemsControl listens to these collection change notifications and is 
+  responsible for determining the corresponding changes that will be done to 
+  elements in the UI.</SPAN><SPAN id=text></SPAN><SPAN id=text>In this scenario, 
+  I am binding a single DP (Polygon’s Points) to a collection. Since there is no 
+  ItemsControl involved, even if I provide collection change notifications in 
+  the data source, there is no item generator listening to those notifications. 
+  Now that I’ve determined that I don’t need all the complexity of 
+  ObservableCollection&lt;T&gt;, I can go ahead and pick a simpler collection. I 
+  decided to pick List&lt;T&gt;.</SPAN>
+  <P></P>
+  <P></SPAN></P></DD></DL>
+<P></SPAN><SPAN id=text>But now I have a problem: if there is no one listening 
+to collection changes in the UI, how can I automatically update my UI when I 
+make a change to the source collection? The solution to this problem is to raise 
+a property change notification when the collection changes. This may seem a 
+little strange at first: there is a collection in the scenario, but there is no 
+item generation in the UI, which makes this scenario somewhat unusual. But if 
+you think about it, raising a property changed notification invalidates the 
+Points property and causes the Polygon to re-render, which is what we want. This 
+is how I implemented my data source:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class PolygonItem : 
+INotifyPropertyChanged<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+event PropertyChangedEventHandler 
+PropertyChanged;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+void OnPropertyChanged(string 
+propertyName)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(this.PropertyChanged != 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.PropertyChanged(this, 
+new 
+PropertyChangedEventArgs(propertyName));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+List&lt;Point&gt; points = new 
+List&lt;Point&gt;();<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+ReadOnlyCollection&lt;Point&gt; 
+Points<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get 
+{ return new ReadOnlyCollection&lt;Point&gt;(points); 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points 
+= new 
+List&lt;Point&gt;(value);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OnPropertyChanged(”Points”);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+void 
+Subdivide()<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 
+count = 
+this.points.Count;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&lt;Point&gt; 
+newPoints = new List&lt;Point&gt;(count * 
+2);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Point 
+previousPoint = 
+this.points[i];<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Point 
+nextPoint = this.points[(i + 1) % 
+count];<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newPoints.Add(previousPoint);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vector 
+offset = nextPoint - 
+previousPoint;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vector 
+normal = new Vector(offset.Y, 
+-offset.X);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newPoints.Add(previousPoint 
++ 0.5 * offset + 0.4 * 
+normal);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.points 
+= 
+newPoints;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OnPropertyChanged(”Points”);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+PolygonItem()<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Add(new 
+Point(275, 
+100));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Add(new 
+Point(375, 
+200));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Add(new 
+Point(275, 
+300));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points.Add(new 
+Point(175, 
+200));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>I decided to change the type of the public Points property to a 
+ReadOnlyCollection&lt;T&gt; to prevent the user from making changes directly to 
+the collection returned by the Points property, which would bypass change 
+notifications.</SPAN></P>
+<P><SPAN id=text>At this point I have a source collection of type 
+ReadOnlyCollection&lt;T&gt; and a target collection of type PointCollection. 
+Because I have incompatible types and there is no default Converter between the 
+two, I need to implement my own. Here is my code:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class Converter : 
+IValueConverter<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object Convert(object value, Type targetType, object parameter, 
+System.Globalization.CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IEnumerable&lt;Point&gt; 
+enumerable = value as 
+IEnumerable&lt;Point&gt;;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PointCollection 
+points = 
+null;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(enumerable != 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points 
+= new 
+PointCollection(enumerable);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+points;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object ConvertBack(object value, Type targetType, object parameter, 
+System.Globalization.CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new NotSupportedException(”ConvertBack should never be 
+called”);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>The UI is pretty straightforward:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:PolygonItem 
+x:Key=”src”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:Converter 
+x:Key=”converter”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button 
+Click=”ChangeSource” Width=”150″ Margin=”20″&gt;Change data 
+source&lt;/Button&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Polygon 
+Fill=”#CD5C5C” Points=”{Binding Source={StaticResource src}, Path=Points, 
+Converter={StaticResource 
+converter}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;</SPAN></P>
+<P><SPAN id=text>When the Window is loaded, a Polygon is displayed with the 
+points from the source collection. I also included a Button in the UI that 
+modifies the source collection and raises a property changed notification, which 
+causes the UI to be updated.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;private void ChangeSource(object 
+sender, RoutedEventArgs 
+e)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PolygonItem 
+polygon = this.Resources[”src”] as 
+PolygonItem;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;polygon.Subdivide();<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>This is a good solution when you make big changes to the source 
+collection of points, like the scenario I have here. If you’re simply adding or 
+removing an item at a time from the existing collection, this solution may not 
+scale well with very frequent changes to the source. Keep in mind that every 
+time a property change notification is raised, we are creating a whole new 
+PointCollection in the Converter. If you can, it’s best to batch those 
+operations and provide only one property change notification for a group of 
+changes. </SPAN></P>
+<P><SPAN id=text>We’ve been discussing possible solutions that would make this 
+scenario easier and more efficient for V2. Hopefully one of those solutions will 
+make it to our final wish list. </SPAN></P>
+<P><SPAN id=text>Here is a screenshot of this application:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » WPF Data Binding_files/32PolygonBinding.png" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/32PolygonBinding.zip">Here</A> you can find 
+the VS project with this sample code. This works with Beta2 WPF bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on How should I data bind a Polygon’s Points to a data source?" 
+href="http://www.beacosta.com/blog/?p=35#comments">Comments (4)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=35"
+    dc:identifier="http://www.beacosta.com/blog/?p=35"
+    dc:title="How should I data bind a Polygon&#8217;s Points to a data source?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=35" />
+</rdf:RDF>	-->
+<P>
+<DIV align=center><A 
+href="http://www.beacosta.com/blog/?cat=2&amp;paged=2"><STRONG>Next Page 
+»</STRONG></A></DIV>
+<P></P></DIV></DIV>
+<DIV id=right>
+<DIV class=sidebar><!-- Meta -->
+<H2>Meta:</H2>
+<UL class=noli>
+  <LI><A title="Syndicate this site using RSS" 
+  href="http://feeds.feedburner.com/BeatrizCosta"><ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> 
+  <LI><A title="The latest comments to all posts in RSS" 
+  href="http://feeds.feedburner.com/CommentsForBeatrizCosta">Comments <ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> </LI></UL><!-- Search -->
+<H2>Search</H2><BR>
+<FORM id=searchform action="" method=get><INPUT id=s size=15 name=s> <INPUT type=submit value=Search name=submit> </FORM><!-- Categories -->
+<H2>Categories</H2>
+<UL class=menu>
+  <LI><A title="View all posts filed under General" 
+  href="http://www.beacosta.com/blog/?cat=3">General</A> 
+  <LI class=current-cat><A title="View all posts filed under WPF Data Binding" 
+  href="http://www.beacosta.com/blog/?cat=2">WPF Data Binding</A> 
+  <UL class=children>
+    <LI><A title="View all posts filed under Binding to ADO.NET" 
+    href="http://www.beacosta.com/blog/?cat=12">Binding to ADO.NET</A> 
+    <LI><A title="View all posts filed under ListBox" 
+    href="http://www.beacosta.com/blog/?cat=14">ListBox</A> 
+    <LI><A title="View all posts filed under ListView" 
+    href="http://www.beacosta.com/blog/?cat=9">ListView</A> 
+    <LI><A title="View all posts filed under Master-detail" 
+    href="http://www.beacosta.com/blog/?cat=10">Master-detail</A> 
+    <LI><A title="View all posts filed under Sorting, filtering, grouping" 
+    href="http://www.beacosta.com/blog/?cat=13">Sorting, filtering, grouping</A> 
+
+    <LI><A title="View all posts filed under Styles and Templates" 
+    href="http://www.beacosta.com/blog/?cat=11">Styles and Templates</A> 
+    <LI><A title="View all posts filed under TreeView" 
+    href="http://www.beacosta.com/blog/?cat=7">TreeView</A> </LI></UL></LI></UL><!-- Archives -->
+<H2>Archives</H2>
+<UL>
+  <LI><A title="September 2007" 
+  href="http://www.beacosta.com/blog/?m=200709">September 2007</A> 
+  <LI><A title="August 2007" 
+  href="http://www.beacosta.com/blog/?m=200708">August 2007</A> 
+  <LI><A title="May 2007" href="http://www.beacosta.com/blog/?m=200705">May 
+  2007</A> 
+  <LI><A title="April 2007" href="http://www.beacosta.com/blog/?m=200704">April 
+  2007</A> 
+  <LI><A title="January 2007" 
+  href="http://www.beacosta.com/blog/?m=200701">January 2007</A> 
+  <LI><A title="November 2006" 
+  href="http://www.beacosta.com/blog/?m=200611">November 2006</A> 
+  <LI><A title="October 2006" 
+  href="http://www.beacosta.com/blog/?m=200610">October 2006</A> 
+  <LI><A title="September 2006" 
+  href="http://www.beacosta.com/blog/?m=200609">September 2006</A> 
+  <LI><A title="August 2006" 
+  href="http://www.beacosta.com/blog/?m=200608">August 2006</A> 
+  <LI><A title="July 2006" href="http://www.beacosta.com/blog/?m=200607">July 
+  2006</A> 
+  <LI><A title="June 2006" href="http://www.beacosta.com/blog/?m=200606">June 
+  2006</A> 
+  <LI><A title="May 2006" href="http://www.beacosta.com/blog/?m=200605">May 
+  2006</A> 
+  <LI><A title="April 2006" href="http://www.beacosta.com/blog/?m=200604">April 
+  2006</A> 
+  <LI><A title="March 2006" href="http://www.beacosta.com/blog/?m=200603">March 
+  2006</A> 
+  <LI><A title="February 2006" 
+  href="http://www.beacosta.com/blog/?m=200602">February 2006</A> 
+  <LI><A title="January 2006" 
+  href="http://www.beacosta.com/blog/?m=200601">January 2006</A> 
+  <LI><A title="December 2005" 
+  href="http://www.beacosta.com/blog/?m=200512">December 2005</A> 
+  <LI><A title="November 2005" 
+  href="http://www.beacosta.com/blog/?m=200511">November 2005</A> 
+  <LI><A title="October 2005" 
+  href="http://www.beacosta.com/blog/?m=200510">October 2005</A> 
+  <LI><A title="September 2005" 
+  href="http://www.beacosta.com/blog/?m=200509">September 2005</A> 
+  <LI><A title="August 2005" 
+  href="http://www.beacosta.com/blog/?m=200508">August 2005</A> </LI></UL></DIV>
+<DIV id=footer>
+<DIV class=copyright><SMALL><SPAN class=copy>Copyright © 2007 <STRONG><A 
+title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</A> 
+</STRONG></SPAN><BR><BR></SMALL></DIV></DIV></DIV></DIV></BODY></HTML>

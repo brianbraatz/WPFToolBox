@@ -1,0 +1,442 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0080)http://joshsmithonwpf.wordpress.com/2007/06/22/overview-of-routed-events-in-wpf/ -->
+<HTML lang=en dir=ltr xmlns="http://www.w3.org/1999/xhtml"><HEAD 
+profile=http://gmpg.org/xfn/11><TITLE>Overview of routed events in WPF « Josh Smith on WPF</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><LINK media=screen 
+href="Overview of routed events in WPF « Josh Smith on WPF_files/style.css" 
+type=text/css rel=stylesheet><LINK title="RSS 2.0" 
+href="http://joshsmithonwpf.wordpress.com/feed/" type=application/rss+xml 
+rel=alternate><LINK href="http://joshsmithonwpf.wordpress.com/xmlrpc.php" 
+rel=pingback><LINK 
+href="Overview of routed events in WPF « Josh Smith on WPF_files/global.css" 
+type=text/css rel=stylesheet><LINK title=RSD 
+href="http://joshsmithonwpf.wordpress.com/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT type=text/javascript>
+
+function addLoadEvent(func) {
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      oldonload();
+      func();
+    }
+  }
+}
+</SCRIPT>
+
+<SCRIPT 
+src="Overview of routed events in WPF « Josh Smith on WPF_files/urchin.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+_uacct = "UA-52447-2";
+
+_udn = "wordpress.com";
+urchinTracker();
+</SCRIPT>
+<LINK title="Atom API" href="http://joshsmithonwpf.wordpress.com/wp-app.php" 
+type=application/atomserv+xml rel=introspection><LINK 
+href="http://joshsmithonwpf.wordpress.com/?openidserver=1" rel=openid.server>
+<STYLE type=text/css>#headerimg {
+	BACKGROUND: url(http://joshsmithonwpf.files.wordpress.com/2007/01/joshsmithonwpf_banner1.JPG) no-repeat
+}
+#header H1 {
+	DISPLAY: none
+}
+#header .description {
+	DISPLAY: none
+}
+</STYLE>
+<LINK 
+href="Overview of routed events in WPF « Josh Smith on WPF_files/SyntaxHighlighter.css" 
+type=text/css rel=stylesheet></LINK></HEAD>
+<BODY 
+style="BACKGROUND-POSITION: center top; BACKGROUND-ATTACHMENT: fixed; BACKGROUND-IMAGE: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/bg.jpg); BACKGROUND-REPEAT: repeat-y">
+<DIV id=page>
+<DIV id=header>
+<DIV id=headerimg style="CURSOR: pointer" 
+onclick="location.href='http://joshsmithonwpf.wordpress.com';">
+<H1><A href="http://joshsmithonwpf.wordpress.com/">Josh Smith on WPF</A></H1>
+<DIV class=description>Thoughts about the Windows Presentation 
+Foundation</DIV></DIV></DIV>
+<UL id=pagebar 
+style="BACKGROUND: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/pagebar.jpg)">
+  <LI class="page_item "><A href="http://joshsmithonwpf.wordpress.com/">Home</A> 
+
+  <LI class="page_item page-item-73"><A title="A Guided Tour of&nbsp;WPF" 
+  href="http://joshsmithonwpf.wordpress.com/a-guided-tour-of-wpf/">A Guided Tour 
+  of&nbsp;WPF</A> 
+  <LI class="page_item page-item-2"><A title=About 
+  href="http://joshsmithonwpf.wordpress.com/about/">About</A> 
+  <LI class="page_item page-item-255"><A title=Presentation&nbsp;App 
+  href="http://joshsmithonwpf.wordpress.com/presentation-app/">Presentation&nbsp;App</A> 
+
+  <LI class="page_item page-item-19"><A title="WPF Challenge&nbsp;Submissions" 
+  href="http://joshsmithonwpf.wordpress.com/xbap-submissions/">WPF 
+  Challenge&nbsp;Submissions</A> </LI></UL>
+<DIV id=grad 
+style="BACKGROUND: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/topgrad.jpg); WIDTH: 100%; HEIGHT: 65px"></DIV>
+<DIV class=widecolumn id=content>
+<DIV class=post id=post-152>
+<H2><A title="Permanent Link: Overview of routed events in&nbsp;WPF" 
+href="http://joshsmithonwpf.wordpress.com/2007/06/22/overview-of-routed-events-in-wpf/" 
+rel=bookmark>Overview of routed events in&nbsp;WPF</A></H2>
+<DIV class=entry>
+<DIV class=snap_preview>
+<P>WPF introduces an augmentation to the standard .NET event-driven programming 
+model.&nbsp; A new type of event, called the <EM>routed event</EM>, allows for 
+much greater flexibility in event-driven programming scenarios.&nbsp; 
+Subscribing to a routed event can be achieved with the same syntax as a “normal” 
+event (referred to as a <EM>CLR event</EM>), because it is typical that routed 
+events are exposed via CLR events.</P>
+<P>Before discussing routed events any further, it is important to mention the 
+concept of the <EM>visual tree</EM>.&nbsp;&nbsp;A WPF user interface is 
+constructed in a layered approach, where one visual element can have zero or 
+more child elements.&nbsp; The hierarchy of visible layers in a user interface 
+constitutes what is known as its visual tree.&nbsp;</P>
+<P>Routed events are a new infrastructure provided by WPF which allows events to 
+<EM>tunnel</EM> down the visual tree to the target element, or <EM>bubble</EM> 
+up to the root element.&nbsp; When an event is raised, it “travels” up or down 
+the visual tree invoking handlers for that event on any element subscribed to 
+that event it encounters en route.&nbsp; Note that this tree traversal does not 
+cover the entire visual tree, only the ancestral element chain between the root 
+element and the element which is the target of the event.</P>
+<P><IMG alt="Routed event diagram" 
+src="Overview of routed events in WPF « Josh Smith on WPF_files/ms742806.Local_11663551_wcsdkcoreinputevents(en-us,VS.85).gif"></P>
+<H6>Figure 1 - Routed events in the visual tree (image borrowed from <A 
+href="http://msdn2.microsoft.com/en-us/library/ms742806.aspx" 
+target=_blank>Routed Events Overview</A> article in the SDK.)</H6>
+<P>It is common that one logical routed event is represented by two actual 
+events, one tunneling and one bubbling.&nbsp; The naming convention for 
+tunneling events is PreviewXYZ, where XYZ is the name of the bubbling 
+event.&nbsp; For example, PreviewMouseLeftButtonDown and MouseLeftButtonDown are 
+a pair of routed events used to notify elements in the visual tree that the user 
+has depressed the left mouse button.&nbsp; Not all routed events have a 
+tunneling event, and some events do not tunnel or bubble at all.&nbsp; Those are 
+referred to as <EM>direct</EM> events, and they are essentially the same as 
+standard CLR events.</P>
+<P>The routed&nbsp;notification pattern has many benefits.&nbsp; One very 
+important benefit of routed events is that a high-level visual element in a UI 
+need not explicitly hook the same event on all of its descendants, such as 
+MouseMove.&nbsp; Instead it can hook the event on itself, and when the mouse 
+moves over one of its descendants, the high level element will be notified 
+appropriately.</P>
+<P>Another important advantage of routed events is that elements at all levels 
+of the visual tree can execute code in response to events of their descendants, 
+without expecting the descendant to notify them when the event 
+fires.&nbsp;&nbsp; An ancestor element which hooks a tunneling event can even 
+prevent its descendants from ever receiving both the tunneling and bubbling 
+events at all (although it is possible for an element to demand that it is 
+notified of the event, regardless of it is handled or not).</P>
+<P>For more information about routed events, including how to create custom 
+routed events, read <A 
+href="http://msdn2.microsoft.com/en-us/library/ms742806.aspx">Routed Events 
+Overview</A> from the SDK.</P></DIV>
+<P class="postmetadata alt"><SMALL>This entry was posted on Friday, June 22nd, 
+2007 at 7:47 am and is filed under <A title="View all posts in Theoria" 
+href="http://wordpress.com/tag/theoria/" rel="category tag">Theoria</A>. You can 
+follow any responses to this entry through the <A 
+href="http://joshsmithonwpf.wordpress.com/2007/06/22/overview-of-routed-events-in-wpf/feed/">RSS 
+2.0</A> feed. You can <A 
+href="http://joshsmithonwpf.wordpress.com/2007/06/22/overview-of-routed-events-in-wpf/#respond">leave 
+a response</A>, or <A 
+href="http://joshsmithonwpf.wordpress.com/2007/06/22/overview-of-routed-events-in-wpf/trackback/" 
+rel=trackback>trackback</A> from your own site. </SMALL></P></DIV></DIV><!-- You can start editing here. -->
+<H3 id=comments>3 Responses to “Overview of routed events in&nbsp;WPF”</H3>
+<OL class=commentlist>
+  <LI class=alt id=comment-2248><CITE><A 
+  href="http://joshsmithonwpf.wordpress.com/2007/06/22/overview-of-dependency-properties-in-wpf/" 
+  rel="external nofollow">Overview of dependency properties in WPF « Josh Smith 
+  on WPF</A></CITE> Says: <BR><SMALL class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/06/22/overview-of-routed-events-in-wpf/#comment-2248">June 
+  22nd, 2007 at 8:02 am</A> </SMALL>
+  <P>[…] of dependency properties in&nbsp;WPF In my previous blog entry we 
+  examined the routed event system used by WPF.&nbsp; Similar to how routed 
+  events augment the […]</P>
+  <LI id=comment-4946><IMG class="avatar avatar-marlongrech avatar-32" height=32 
+  alt="" 
+  src="Overview of routed events in WPF « Josh Smith on WPF_files/marlongrech-32.jpg" 
+  width=32> <CITE><A href="http://marlongrech.wordpress.com/" 
+  rel="external nofollow">marlongrech</A></CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/06/22/overview-of-routed-events-in-wpf/#comment-4946">September 
+  9th, 2007 at 6:27 am</A> </SMALL>
+  <P>good job Josh……</P>
+  <LI class=alt id=comment-5599><CITE><A 
+  href="http://blogs.oosterkamp.nl/blogs/jowen/archive/2007/10/03/problemen-met-mouseleftbuttondown.aspx" 
+  rel="external nofollow">problemen met MouseLeftButtonDown in WPF - 
+  Jowen</A></CITE> Says: <BR><SMALL class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/06/22/overview-of-routed-events-in-wpf/#comment-5599">October 
+  4th, 2007 at 3:27 am</A> </SMALL>
+  <P>[…] in wpf een nieuw event programming model, dat onder andere gebruik 
+  maakt van routed events.&nbsp; Hier staat een beknopt overzicht.Het heeft veel 
+  voordelen, maar sommige dingen worden er iets […]</P></LI></OL>
+<H3 id=respond>Leave a Reply</H3>
+<FORM id=commentform 
+action=http://joshsmithonwpf.wordpress.com/wp-comments-post.php method=post>
+<P><INPUT id=author tabIndex=1 size=22 name=author> <LABEL 
+for=author><SMALL>Name (required)</SMALL></LABEL></P>
+<P><INPUT id=email tabIndex=2 size=22 name=email> <LABEL for=email><SMALL>Mail 
+(will not be published) (required)</SMALL></LABEL></P>
+<P><INPUT id=url tabIndex=3 size=22 name=url> <LABEL 
+for=url><SMALL>Website</SMALL></LABEL></P><!--<p><small><strong>XHTML:</strong> You can use these tags: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p>-->
+<P><TEXTAREA id=comment tabIndex=4 name=comment rows=10 cols=100></TEXTAREA></P>
+<P><INPUT id=submit tabIndex=5 type=submit value="Submit Comment" name=submit> 
+<INPUT type=hidden value=152 name=comment_post_ID> </P></FORM></DIV>
+<DIV id=sidebar>
+<UL>
+  <LI>
+  <LI class="widget widget_text" id=text-1>
+  <H2 class=widgettitle>RSS Feed</H2>
+  <DIV class=textwidget><A href="http://joshsmithonwpf.wordpress.com/feed"><IMG 
+  src="Overview of routed events in WPF « Josh Smith on WPF_files/u14.png"></A> 
+  Feed the hungry with WPF</DIV>
+  <LI class="widget widget_text" id=text-5>
+  <H2 class=widgettitle>MY MVP PROFILE</H2>
+  <DIV class=textwidget>
+  <P align=center><A href="http://mvp.support.microsoft.com/default.aspx"><IMG 
+  src="Overview of routed events in WPF « Josh Smith on WPF_files/mvp_fullcolor_forscreen_small.thumbnail.png"></A></P><BR>My 
+  Microsoft MVP profile can be viewed <A 
+  href="https://mvp.support.microsoft.com/profile=5F7EC527-FEBC-4A5D-A11F-EEF73467D3D5">here</A>.</DIV>
+  <LI class="widget widget_text" id=text-3>
+  <H2 class=widgettitle>Sponsor</H2>
+  <DIV class=textwidget>
+  <P><SPAN style="FONT-SIZE: 8pt">Infragistics <B>NetAdvantage for WPF</B> is 
+  the world's first business-grade developer components for WPF, including 
+  datagrids, carousels, and editors, with built-in visual themes including 
+  Windows Vista Aero and Office 2007.&nbsp; Take advantage of our pure WPF 
+  platform features; including exciting high resolution graphics, rich styling 
+  and animation capabilities, and integrated UI virtualization technology. 
+  </SPAN><B><SPAN style="FONT-SIZE: 8pt; COLOR: black">Everything is all 
+  NEW!!</SPAN></B><SPAN style="FONT-SIZE: 8pt; COLOR: black"> This release gives 
+  developers the first opportunity to experience the next generation in 
+  NetAdvantage controls, designed and developed specifically for the WPF 
+  platform. </SPAN><SPAN style="FONT-SIZE: 8pt"></SPAN></P>
+  <P><SPAN style="FONT-SIZE: 8pt; COLOR: #1f497d"><A 
+  href="http://www.infragistics.com/adcounter/webads.aspx?adid=JSWPFBLOG&amp;utm_source=WPFBlog&amp;utm_date=Apr07&amp;utm_type=WPF&amp;utm_size=textandlogo">TRY 
+  IT NOW!</A></SPAN></P></DIV>
+  <LI class="widget widget_search" id=search>
+  <FORM id=searchform action=http://joshsmithonwpf.wordpress.com method=get>
+  <DIV><INPUT id=s size=15 name=s><BR><INPUT type=submit value=Search> 
+  </DIV></FORM>
+  <LI class="widget widget_text" id=text-4>
+  <H2 class=widgettitle>The WPF Challenge Winners</H2>
+  <DIV class=textwidget><A 
+  href="http://joshsmithonwpf.wordpress.com/2007/03/22/the-wpf-challenge-winners/">Check 
+  out who won the grandest competition in human history...</A></DIV>
+  <LI class="widget widget_recent_entries" id=recent-posts>
+  <H2 class=widgettitle>Recent Harangues</H2>
+  <UL>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/16/the-danger-of-assigning-event-handlers-in-xaml/">The 
+    Danger of Assigning Event Handlers in&nbsp;XAML </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/13/an-article-about-the-wpf-thought-process/">An 
+    article about the WPF thought&nbsp;process </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/07/binding-to-the-file-system/">Binding 
+    to the file&nbsp;system </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/01/data-binding-the-splitbuttonâs-contextmenu/">Data 
+    binding the SplitButton’s&nbsp;ContextMenu </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/30/upcoming-wpf-presentations/">Upcoming 
+    WPF&nbsp;Presentations </A></LI></UL>
+  <LI class="widget widget_categories" id=categories-1>
+  <H2 class=widgettitle>Divide and Conquer</H2>
+  <UL>
+    <LI class="cat-item cat-item-217"><A 
+    title="View all posts filed under Announcements" 
+    href="http://joshsmithonwpf.wordpress.com/category/announcements/">Announcements</A> 
+    (36) 
+    <LI class="cat-item cat-item-1002883"><A 
+    title="View all posts filed under Data Grids" 
+    href="http://joshsmithonwpf.wordpress.com/category/data-grids/">Data 
+    Grids</A> (2) 
+    <LI class="cat-item cat-item-70886"><A 
+    title="View all posts filed under Debugging" 
+    href="http://joshsmithonwpf.wordpress.com/category/debugging/">Debugging</A> 
+    (5) 
+    <LI class="cat-item cat-item-5264"><A 
+    title="View all posts filed under General Info" 
+    href="http://joshsmithonwpf.wordpress.com/category/general-info/">General 
+    Info</A> (11) 
+    <LI class="cat-item cat-item-731906"><A 
+    title="View all posts filed under Gotchas" 
+    href="http://joshsmithonwpf.wordpress.com/category/gotchas/">Gotchas</A> (1) 
+
+    <LI class="cat-item cat-item-17966"><A 
+    title="View all posts filed under Intermezzo" 
+    href="http://joshsmithonwpf.wordpress.com/category/intermezzo/">Intermezzo</A> 
+    (7) 
+    <LI class="cat-item cat-item-116238"><A 
+    title="View all posts filed under Orcas" 
+    href="http://joshsmithonwpf.wordpress.com/category/orcas/">Orcas</A> (1) 
+    <LI class="cat-item cat-item-30585"><A 
+    title="View all posts filed under Praxis" 
+    href="http://joshsmithonwpf.wordpress.com/category/praxis/">Praxis</A> (40) 
+    <LI class="cat-item cat-item-1548"><A 
+    title="View all posts filed under Public Speaking" 
+    href="http://joshsmithonwpf.wordpress.com/category/public-speaking/">Public 
+    Speaking</A> (6) 
+    <LI class="cat-item cat-item-287"><A title="View all posts filed under Rant" 
+    href="http://joshsmithonwpf.wordpress.com/category/rant/">Rant</A> (2) 
+    <LI class="cat-item cat-item-66841"><A 
+    title="View all posts filed under Reading Material" 
+    href="http://joshsmithonwpf.wordpress.com/category/reading-material/">Reading 
+    Material</A> (24) 
+    <LI class="cat-item cat-item-984139"><A 
+    title="View all posts filed under Silverlight" 
+    href="http://joshsmithonwpf.wordpress.com/category/silverlight/">Silverlight</A> 
+    (1) 
+    <LI class="cat-item cat-item-96136"><A 
+    title="View all posts filed under Snooping" 
+    href="http://joshsmithonwpf.wordpress.com/category/snooping/">Snooping</A> 
+    (3) 
+    <LI class="cat-item cat-item-714521"><A 
+    title="View all posts filed under The WPF Challenge" 
+    href="http://joshsmithonwpf.wordpress.com/category/the-wpf-challenge/">The 
+    WPF Challenge</A> (13) 
+    <LI class="cat-item cat-item-893962"><A 
+    title="View all posts filed under Theoria" 
+    href="http://joshsmithonwpf.wordpress.com/category/theoria/">Theoria</A> 
+    (13) 
+    <LI class="cat-item cat-item-3882"><A 
+    title="View all posts filed under Unit Testing" 
+    href="http://joshsmithonwpf.wordpress.com/category/unit-testing/">Unit 
+    Testing</A> (2) 
+    <LI class="cat-item cat-item-772681"><A 
+    title="View all posts filed under WPF.JoshSmith" 
+    href="http://joshsmithonwpf.wordpress.com/category/wpfjoshsmith/">WPF.JoshSmith</A> 
+    (1) 
+    <LI class="cat-item cat-item-814915"><A 
+    title="View all posts filed under XAML Madness" 
+    href="http://joshsmithonwpf.wordpress.com/category/xaml-madness/">XAML 
+    Madness</A> (11) </LI></UL>
+  <LI class="widget widget_archives" id=archives>
+  <H2 class=widgettitle>Blog Log</H2>
+  <UL>
+    <LI><A title="October 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/">October 
+    2007</A>&nbsp;(4) 
+    <LI><A title="September 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/">September 
+    2007</A>&nbsp;(5) 
+    <LI><A title="August 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/08/">August 2007</A>&nbsp;(9) 
+
+    <LI><A title="July 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/07/">July 2007</A>&nbsp;(10) 
+    <LI><A title="June 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/06/">June 2007</A>&nbsp;(14) 
+    <LI><A title="May 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/05/">May 2007</A>&nbsp;(15) 
+    <LI><A title="April 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/04/">April 2007</A>&nbsp;(15) 
+
+    <LI><A title="March 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/03/">March 2007</A>&nbsp;(14) 
+
+    <LI><A title="February 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/">February 
+    2007</A>&nbsp;(19) </LI></UL>
+  <LI class="widget widget_text" id=text-2>
+  <H2 class=widgettitle>The WPF.JoshSmith Library</H2>
+  <DIV class=textwidget>
+  <P align=center><A 
+  href="http://www.codeproject.com/useritems/WPFJoshSmith.asp"><IMG 
+  src="Overview of routed events in WPF « Josh Smith on WPF_files/cpbob.png"></A> 
+  </P>
+  <P>Download my free WPF library from the CodeProject.</P></DIV>
+  <LI class="widget widget_links" id=links>
+  <H2 class=widgettitle>Blogroll</H2>
+  <UL>
+    <LI><A title="Great practical advice on databinding in WPF." 
+    href="http://www.beacosta.com/">Beatriz Costa</A> 
+    <LI><A 
+    title="A great series of blog posts about a design pattern tailored to WPF, by Dan Crevier." 
+    href="http://blogs.msdn.com/dancre/archive/2006/10/11/datamodel-view-viewmodel-pattern-series.aspx">DM-V-VM 
+    Pattern Series</A> 
+    <LI><A title="Insights from a member of the WPF team at Microsoft." 
+    href="http://blogs.msdn.com/mikehillberg/default.aspx">Mike Hillberg on 
+    WPF</A> 
+    <LI><A title="The rants and raves of The WPF Hickster." 
+    href="http://www.nickthuesen.com/">Nick Thuesen</A> 
+    <LI><A title="Interesting and useful information about WPF." 
+    href="http://pavanpodila.spaces.live.com/blog/">Pavan Podila</A> 
+    <LI><A title="Words from a WPF Program Manager at Microsoft." 
+    href="http://rrelyea.spaces.live.com/">Rob Relyea</A> 
+    <LI><A 
+    title="Lee Brimelow’s excellent blog about WPF, with a focus on graphical design." 
+    href="http://www.thewpfblog.com/">The WPF Blog</A> 
+    <LI><A title="Great content by the folks who write the WPF docs." 
+    href="http://blogs.msdn.com/wpfsdk/">The WPF SDK Blog</A> 
+    <LI><A title="A comprehensive list of WPF blogs." 
+    href="http://blogs.msdn.com/tims/articles/475132.aspx">Tim Sneath’s WPF Blog 
+    Roll</A> </LI></UL>
+  <LI class="widget widget_stats_topposts" id=top-posts>
+  <H2 class=widgettitle>The posts people really like</H2>
+  <UL>
+    <LI><A href="http://joshsmithonwpf.wordpress.com/a-guided-tour-of-wpf/">A 
+    Guided Tour of WPF</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/24/stretching-content-in-an-expander-header/">Stretching 
+    Content in an Expander Header</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/presentation-app/">Presentation 
+    App</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/">Binding 
+    a TreeView to a DataSet</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/10/the-wpf-challenge/">The 
+    WPF Challenge</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/05/wpf-vs-windows-forms/">WPF 
+    vs. Windows Forms</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/03/29/tips-on-how-to-debug-and-learn-about-wpf/">Tips 
+    on how to debug and learn about WPF</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/16/the-danger-of-assigning-event-handlers-in-xaml/">The 
+    Danger of Assigning Event Handlers in XAML</A>
+    <LI><A href="http://joshsmithonwpf.wordpress.com/xbap-submissions/">WPF 
+    Challenge Submissions</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/06/12/searching-for-items-in-a-listbox/">Searching 
+    for items in a ListBox</A></LI></UL></LI></UL></DIV>
+<DIV id=footer>
+<P>Theme: Contempt by <A href="http://www.vault9.net/" 
+rel=designer>Vault9</A>.<BR><A href="http://wordpress.com/" rel=generator>Blog 
+at WordPress.com</A>. </P></DIV></DIV>
+<SCRIPT 
+src="Overview of routed events in WPF « Josh Smith on WPF_files/quant.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>_qmeta="qc:adt=0;bti=Josh+Smith+on+WPF;lan=en;dat=20070622;pti=Overview+of+routed+events+in+WPF;own=joshsmith";_qacct="p-18-mFEk4J448M";quantserve();</SCRIPT>
+<NOSCRIPT>
+<P><IMG style="DISPLAY: none" height=1 alt="" 
+src="Overview of routed events in WPF « Josh Smith on WPF_files/p-18-mFEk4J448M.gif" 
+width=1></P></NOSCRIPT>
+<SCRIPT src="Overview of routed events in WPF « Josh Smith on WPF_files/w.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+st_go({blog:'737883',v:'wpcom',post:'152',subd:'joshsmithonwpf'});
+ex_go({x_theme:'contempt',x_lang:'en',x_dc:'dfw',x_adt:'0',x_public:'1',x_mapped:'0',x_loggedin:'0',x_noads:'seen,notsearch',x_ads:'no',x_pagetype:'permalink',x_postage:'30to365'});
+addLoadEvent(function(){linktracker_init(737883,152);});
+</SCRIPT>
+<!-- SyntaxHighlighter Stuff -->
+<SCRIPT 
+src="Overview of routed events in WPF « Josh Smith on WPF_files/shCore.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+	dp.SyntaxHighlighter.ClipboardSwf = 'http://s.wordpress.com/wp-content/plugins/highlight/clipboard.swf';
+	dp.SyntaxHighlighter.HighlightAll('code');
+</SCRIPT>
+</BODY></HTML>

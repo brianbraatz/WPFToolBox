@@ -1,0 +1,1210 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0035)http://www.beacosta.com/blog/?cat=7 -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Beatriz Costa » TreeView</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><!-- Editable Meta Tags -->
+<META content="" name=description>
+<META content="" name=keywords>
+<META content="Sreejith - GFXedit.com" name=author>
+<META content="Your Name" name=copyright>
+<META content="WordPress 2.2.2" name=generator>
+<META content=index,follow name=robots><!-- Meta Tags End--><!-- Style Sheet -->
+<STYLE type=text/css media=screen>@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</STYLE>
+<!-- Style Sheet End --><!-- Includes -->
+<SCRIPT src="" type=text/javascript></SCRIPT>
+
+<SCRIPT src="" type=text/javascript></SCRIPT>
+<!-- End Includes --><!-- Feed and Ping URLS--><LINK title="RSS 2.0" 
+href="http://www.beacosta.com/blog/?feed=rss2" type=application/rss+xml 
+rel=alternate><LINK title="RSS .92" 
+href="http://www.beacosta.com/blog/?feed=rss" type=text/xml rel=alternate><LINK 
+title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom" 
+type=application/atom+xml rel=alternate><LINK 
+href="http://www.beacosta.com/blog/xmlrpc.php" rel=pingback><!--?php wp_get_archives('type=monthly&format=link'); ?--><LINK 
+title=RSD href="http://www.beacosta.com/blog/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</SCRIPT>
+
+<STYLE type=text/css>.comment {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 8px; PADDING-BOTTOM: 4px; MARGIN: 6px 3px 3px; PADDING-TOP: 4px; POSITION: relative; BACKGROUND-COLOR: #fff
+}
+.odd {
+	BACKGROUND-COLOR: #f8f8f8
+}
+.comment DIV {
+	POSITION: relative
+}
+.comment .comment IMG {
+	MARGIN: 0px
+}
+.comment .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png); OVERFLOW: hidden; WIDTH: 13px; HEIGHT: 13px
+}
+.collapsed .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png)
+}
+.comment .reply {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 0px; FONT-SIZE: 80%; PADDING-BOTTOM: 6px; PADDING-TOP: 0px; TEXT-ALIGN: right
+}
+.comment {
+	BORDER-RIGHT: #ddd 1px solid; BORDER-TOP: #ddd 1px solid; MARGIN-TOP: 10px; BORDER-LEFT: #ddd 1px solid; BORDER-BOTTOM: #ddd 1px solid
+}
+INPUT#subscribe {
+	WIDTH: auto
+}
+.comment .body .content {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; OVERFLOW: auto; WIDTH: 100%; PADDING-TOP: 0px
+}
+.comment .title abbr {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.collapsed .body {
+	DISPLAY: none
+}
+.collapsed .comment {
+	DISPLAY: none
+}
+#commentform TEXTAREA {
+	WIDTH: 97%
+}
+</STYLE>
+<!-- End Feed and Ping URLS--></HEAD>
+<BODY>
+<DIV id=container>
+<DIV id=banner>
+<H1><A title="Beatriz Costa" accessKey=1 
+href="http://www.beacosta.com/blog">Beatriz Costa</A></H1>
+<H2 title="WPF Data Binding">WPF Data Binding</H2></DIV>
+<DIV id=center>
+<DIV class=content>
+<DIV class=post>
+<DIV class=date>September 22, 2007</DIV>
+<H2 id=post-45><A id=postTitle 
+title="Are there any tricks that will help me improve TreeView’s performance? - Part III" 
+href="http://www.beacosta.com/blog/?p=45" rel=bookmark>Are there any tricks that 
+will help me improve TreeView’s performance? - Part III</A></H2>
+<P id=text>In <A href="http://www.beacosta.com/blog/?p=42">part I</A> of my 
+discussions on TreeView performance, I presented the three main limitations in 
+the current implementation of TreeView that may lead to slower performance:</P>
+<P id=text>- UI elements stay in memory even when collapsed.<BR>- There is no UI 
+virtualization.<BR>- There is no data virtualization.</P>
+<P id=text>In <A href="http://www.beacosta.com/blog/?p=43">part II</A>, I talked 
+about a solution where I introduced a middle tier between the UI and the data 
+layer, that discards the data when a TreeViewItem is collapsed, and brings the 
+data back into memory when a TreeViewItem is expanded. This solution completely 
+fixes the first limitation of TreeView - the UI elements no longer stay in 
+memory after expanding and collapsing a TreeViewItem. It also partially fixes 
+the lack of data virtualization in TreeView because we only keep a small portion 
+of the data in memory. I say “partially” because it virtualizes data on 
+expand/collapse, but it does not take scrolling into account.</P>
+<P id=text>Today I will discuss a solution that builds on top of the previous 
+one by providing UI virtualization.</P>
+<P id=text>With the current version of WPF, only two Controls offer UI 
+virtualization: ListBox and ListView (actually, ListView gets it for free 
+because it derives from ListBox). The work to make virtualization happen is done 
+by VirtualizingStackPanel, which is the panel used by default in ListBox. It 
+would be nice if we could simply tell TreeView to use a VirtualizingStackPanel 
+to lay out its items, but unfortunately it’s not that simple. 
+VirtualizingStackPanel understands only flat lists of items, so it is not 
+capable of laying out the hierarchical data required for a TreeView.</P>
+<P id=text>On the other hand, styles and templates are among the most powerful 
+features of WPF because they allow you to completely change the look of a 
+control while retaining its behavior. For example, <A 
+href="http://www.beacosta.com/blog/?p=40">this post</A> shows how a ListBox can 
+easily be customized to look like a diagram of our solar system. With this in 
+mind, Ben Carter (an awesome dev on the WPF team) had the brilliant idea of 
+simply making a ListBox look like a TreeView. <IMG class=wp-smiley alt=:) 
+src="Beatriz Costa » TreeView_files/icon_smile.gif"> This allows us to use 
+VirtualizingStackPanel for free, which offers UI virtualization. And you will 
+see how easy it is to make a ListBox look like a TreeView, thanks to the power 
+of styles and templates in WPF. We’ll need to make a few changes to the data 
+side, but I will explain what they are.</P>
+<P id=text>I started by thinking about the theming portion of this scenario. To 
+make my ListBox look like a TreeView, I need the toggle button that expands and 
+collapses TreeViewItems. I used Blend, once again, to dig into the default style 
+for the ToggleButton in TreeViewItem (which in the Aero theme looks like a 
+triangle), and copied it to the window’s resources. This style contains triggers 
+to change its look when the mouse is over it, and to rotate it when a user 
+clicks on it. Then I added the following DataTemplate to the ItemTemplate 
+property of my ListBox:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; …<BR>&nbsp;&nbsp;&nbsp; 
+&lt;ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;StackPanel 
+Orientation=”Horizontal”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;ToggleButton x:Name=”tb” ClickMode=”Press” Style=”{StaticResource 
+ExpandCollapseToggleStyle}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;TextBlock Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; 
+&lt;/ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; …</P>
+<P id=text>I tested it with a rudimentary data source - a simple 
+(non-hierarchical) ObservableCollection of RegistryKey items that contain a 
+ShortName property. This helped me understand how I need my data to be presented 
+to the ListBox.</P>
+<P id=text>&nbsp;</P>
+<P id=text><STRONG>Adding and removing items in the 
+ObservableCollection</STRONG></P>
+<P id=text>My first realization was that my data source can not be hierarchical 
+this time, because ListBox only understands flat lists of data. So I will need 
+to have a single ObservableCollection with the data for all the visible items, 
+regardless of their depth in the original hierarchy. I will have to update this 
+list of visible items any time the user expands or collapses an item. When the 
+user expands an item, I will insert the item’s children just after it in the 
+ObservableCollection. When the user collapses an item, I will remove its 
+children from the ObservableCollection. Here is the code I wrote to make this 
+happen:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; public class RegistryData3 : 
+INotifyPropertyChanged<BR>&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; private 
+ObservableCollection&lt;RegistryKeyHolder3&gt; 
+allKeys;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; …</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public 
+ObservableCollection&lt;RegistryKeyHolder3&gt; 
+AllKeys<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get { 
+return allKeys; }<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public 
+RegistryData3()<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.allKeys = new 
+ObservableCollection&lt;RegistryKeyHolder3&gt;();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.AddNewKeyHolder(Registry.CurrentUser);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.AddNewKeyHolder(Registry.CurrentConfig);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; private void 
+AddNewKeyHolder(RegistryKey 
+registryKey)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+RegistryKeyHolder3 newKeyHolder = new RegistryKeyHolder3(registryKey, 
+0);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+newKeyHolder.PropertyChanged += new 
+PropertyChangedEventHandler(KeyHolder_PropertyChanged);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.allKeys.Add(newKeyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public void 
+PopulateSubKeys(RegistryKeyHolder3 
+parentKeyHolder)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int 
+indexParentKey = 
+this.allKeys.IndexOf(parentKeyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if (indexParentKey == this.allKeys.Count - 1 || this.allKeys[indexParentKey + 
+1].Level &lt;= 
+parentKeyHolder.Level)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+string[] subKeyNames = 
+parentKeyHolder.Key.GetSubKeyNames();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+for (int i = 0; i &lt; subKeyNames.Length; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+RegistryKeyHolder3 childKeyHolder = new 
+RegistryKeyHolder3(parentKeyHolder.Key.OpenSubKey(subKeyNames[i]), 
+parentKeyHolder.Level + 
+1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+childKeyHolder.PropertyChanged += new 
+PropertyChangedEventHandler(KeyHolder_PropertyChanged);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+allKeys.Insert(indexParentKey + i + 1, 
+childKeyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; …</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public void 
+ClearSubKeys(RegistryKeyHolder3 
+parentKeyHolder)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int 
+indexToRemove = this.allKeys.IndexOf(parentKeyHolder) + 
+1;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while 
+((indexToRemove &lt; this.allKeys.Count) &amp;&amp; 
+(this.allKeys[indexToRemove].Level &gt; 
+parentKeyHolder.Level))<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.allKeys.RemoveAt(indexToRemove);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; …<BR>&nbsp;&nbsp;&nbsp; 
+}</P>
+<P id=text>The PopulateSubKeys method is responsible for adding an item’s 
+children to the ObservableCollection when the user expands that item. This 
+method retrieves the children of the parent item, creates a RegistryKeyHolder3 
+instance for each item and inserts those instances starting at the index just 
+after the parent. Don’t worry about the Level concept you see in this code; I 
+will explain it in the next section. I will also explain and show the code for 
+the property changed event handler later in this post.</P>
+<P id=text>The ClearSubKeys method removes an item’s children from the list, and 
+is called when the user collapses the parent. It starts removing items from the 
+list in the index after the parent’s and continues until the expected number of 
+items has been removed.</P>
+<P id=text>These two methods allow us to keep a flat list with the items in the 
+order we want the ListBox to display them. Adding items to and removing items 
+from the flat list achieves partial data virtualization, just like the solution 
+in my previous post.</P>
+<P id=text><STRONG>Indentation</STRONG></P>
+<P id=text>I also realized that I need to tag each RegistryKeyHolder3 data item 
+with the level they belong to, which will help me figure out how much they have 
+to be indented in the ListBox. I decided to add a property called “Level” to the 
+RegistryKeyHolder3 class for that purpose. For the root keys the Level property 
+will be set to 0, for the next level it will be set to 1, and so on. Notice that 
+while constructing the children key holders, the code in PopulateSubKeys 
+specifies that the level of the children is the parent’s level incremented by 1. 
+Also, in the ClearSubKeys method, one of the conditions to stop removing 
+children is encountering an item that has the same level as the one being 
+collapsed.</P>
+<P id=text>To indent the items in the UI based on the Level value, I added a 
+Border to the left of the expander and text and bound its Width property to the 
+Level property in the source:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; …<BR>&nbsp;&nbsp;&nbsp; 
+&lt;ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;StackPanel 
+Orientation=”Horizontal”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Border Width=”{Binding Path=Level, Converter={StaticResource 
+ConvertLevelToIndent}}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;ToggleButton x:Name=”tb” ClickMode=”Press” … Style=”{StaticResource 
+ExpandCollapseToggleStyle}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;TextBlock Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; 
+&lt;/ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; …</P>
+<P id=text>In order to convert a Level value to the Border’s Width, I defined 
+the following converter:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; public class ConvertLevelToIndent : 
+IValueConverter<BR>&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public object Convert(object 
+value, Type targetType, object parameter, System.Globalization.CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 
+(int)value * 16;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</P>
+<P id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public object 
+ConvertBack(object value, Type targetType, object parameter, 
+System.Globalization.CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw 
+new NotSupportedException(”Not supported - ConvertBack should never be called in 
+a OneWay Binding.”);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp; }</P>
+<P id=text><STRONG>Parent item expansion</STRONG></P>
+<P id=text>I decided to add an “IsExpanded” property to the RegistryKeyHolder3 
+class that will help me tie the children expansion on the data side with the 
+visual rotation of the toggle button in the UI.</P>
+<P id=code>&nbsp;&nbsp;&nbsp; …<BR>&nbsp;&nbsp;&nbsp; 
+&lt;ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;StackPanel 
+Orientation=”Horizontal”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Border Width=”{Binding Path=Level, Converter={StaticResource 
+ConvertLevelToIndent}}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;ToggleButton x:Name=”tb” ClickMode=”Press” IsChecked=”{Binding 
+Path=IsExpanded}” Style=”{StaticResource 
+ExpandCollapseToggleStyle}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;TextBlock Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; 
+&lt;/ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; …</P>
+<P id=text>If you take a look at the ToggleButton’s XAML, you will notice that 
+its IsChecked property is bound to the IsExpanded property. The Mode of this 
+binding is TwoWay - no Mode is defined explicitly, but I know that’s the default 
+Mode for the IsChecked DP.</P>
+<P id=text>Also, if you look at the code that adds items to the list in the 
+PopulateSubKeys method, you will notice that I added KeyHolder_PropertyChanged 
+as the handler for the PropertyChanged event on RegistryKeyHolder3. Here is the 
+code for that event handler:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; void KeyHolder_PropertyChanged(object sender, 
+PropertyChangedEventArgs e)<BR>&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (e.PropertyName == 
+“IsExpanded”)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+RegistryKeyHolder3 keyHolder = 
+(RegistryKeyHolder3)sender;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if 
+(keyHolder.IsExpanded)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.PopulateSubKeys(keyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+this.ClearSubKeys(keyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<BR>&nbsp;&nbsp;&nbsp; }</P>
+<P id=text>When the application starts, all the items appear collapsed because 
+the IsExpanded property of each data item is initialized to false, and the 
+IsChecked property is bound to IsExpanded. Here is what happens when the user 
+expands an item:</P>
+<P id=text>1) When the user clicks on the ToggleButton to expand an item, 
+IsChecked becomes true, and because of the TwoWay binding, the IsExpanded 
+property for the corresponding data item is set to true.<BR>2) 
+RegistryKeyHolder3 raises a PropertyChanged event when its IsExpanded property 
+changes, causing the code in the handler (the KeyHolder_PropertyChanged method 
+in RegistryData3) to be executed.<BR>3) Because IsExpanded is true for this data 
+item, the PopulateSubKeys method on RegistryData3 is called, causing the 
+children of this item to be added to the list and displayed in the ListBox.</P>
+<P id=text>You can imagine a similar sequence of events when the user clicks to 
+collapse an item.</P>
+<P id=text><STRONG>Visibility of the expander</STRONG></P>
+<P id=text>Lastly, I wanted to make the expander for a particular item hidden 
+whenever that item has no children. I was able to do this by adding a simple 
+DataTrigger that causes the ToggleButton to be hidden whenever the Key’s 
+SubKeyCount property is zero, and visible otherwise. You can see the complete 
+XAML for the ItemTemplate’s DataTemplate here:</P>
+<P id=code>&nbsp;&nbsp;&nbsp; …<BR>&nbsp;&nbsp;&nbsp; 
+&lt;ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;StackPanel 
+Orientation=”Horizontal”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Border Width=”{Binding Path=Level, Converter={StaticResource 
+ConvertLevelToIndent}}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;ToggleButton x:Name=”tb” ClickMode=”Press” IsChecked=”{Binding 
+Path=IsExpanded}” Style=”{StaticResource 
+ExpandCollapseToggleStyle}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;TextBlock Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;DataTrigger Binding=”{Binding Path=Key.SubKeyCount}” 
+Value=”0″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Setter Property=”Visibility” TargetName=”tb” 
+Value=”Hidden”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTrigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; 
+&lt;/ListBox.ItemTemplate&gt;<BR>&nbsp;&nbsp;&nbsp; …</P>
+<P id=text><STRONG>Conclusion </STRONG></P>
+<P id=text>This solution provides true UI virtualization, as you can see in the 
+screenshot below, where I expanded the three first items (in depth first order). 
+If you scroll the third TreeView (or should I say ListBox?), you will see that 
+for a little while the number of UI elements in memory increases, but it quickly 
+settles on a number much lower than the other two TreeViews. This delay happens 
+because we queue in the dispatcher the operation to clean up those items with a 
+low priority so that it doesn’t make the UI unresponsive.</P>
+<P id=text>And just like the solution in my previous post, this solution 
+discards children elements on collapse and provides a partial data 
+virtualization solution.</P>
+<P id=text>So, should you all switch your TreeViews to ListBoxes? Well, as with 
+almost everything in life, there is a price to pay for the benefits of this 
+solution: the programming model is more cumbersome than if you were using a 
+TreeView. You will not be able to use HierarchicalDataTemplates to style your 
+items, you’ll miss the convenience properties and methods of TreeView, you’ll 
+have to introduce a slightly complex intermediate layer between your UI and your 
+data, and you will have to work hard to minimize the inconsistencies in the UI. 
+In short, you can make a ListBox look like a TreeView, but you can’t make a 
+ListBox become a TreeView.</P>
+<P id=text>Whether this solution is right for you depends on how much you value 
+the performance gain over the disadvantages it brings.</P>
+<P id=text>&nbsp;</P>
+<P id=text><IMG 
+style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » TreeView_files/41TreeViewPerformance3.png" border=0></P>
+<P id=text>&nbsp;</P>
+<P id=text><A 
+href="http://www.beacosta.com/Zips/41TreeViewPerformance3.zip">Here</A> you can 
+find the project with this code built with Orcas Beta 2 bits.</P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in TreeView" href="http://www.beacosta.com/blog/?cat=7" 
+rel=category>TreeView</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on Are there any tricks that will help me improve TreeView’s performance? - Part III" 
+href="http://www.beacosta.com/blog/?p=45#comments">Comments (23)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=45"
+    dc:identifier="http://www.beacosta.com/blog/?p=45"
+    dc:title="Are there any tricks that will help me improve TreeView&#8217;s performance? - Part III"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=45" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>September 10, 2007</DIV>
+<H2 id=post-43><A id=postTitle 
+title="Are there any tricks that will help me improve TreeView’s performance? - Part II" 
+href="http://www.beacosta.com/blog/?p=43" rel=bookmark>Are there any tricks that 
+will help me improve TreeView’s performance? - Part II</A></H2>
+<P><SPAN id=text>In my <A 
+href="http://www.beacosta.com/Archive/2007_08_01_bcosta_archive.html">previous 
+post</A>, I discussed some of the performance limitations of TreeView. In 
+particular, I mentioned the three facts about our current implementation that 
+may lead to performance issues, depending on your scenario:</SPAN></P>
+<P><SPAN id=text>- UI elements stay in memory even when collapsed.<BR>- There is 
+no UI virtualization.<BR>- There is no data virtualization.</SPAN></P>
+<P><SPAN id=text>Today I will talk about a trick that avoids the first problem 
+and partially fixes the third. In my previous post, I always kept the data for 
+all levels of the TreeView in memory. In this project, I only load subkey data 
+items when their parent key node is expanded, and I discard those data items 
+when their parent node is collapsed. You can think of the class that manages 
+which portions of the data source stay in memory as an intermediate custom 
+source, which sits between your UI and the complete source of your items. In 
+this case, the complete source for the registry keys consists of the APIs used 
+to load them into memory, but you can easily imagine how this could be a SQL 
+database or a webservice. If you’ve read <A 
+href="http://blogs.msdn.com/johngossman/archive/2006/04/13/576163.aspx">John 
+Gossman’s thoughts</A> on the Model-View-ViewModel pattern, you can think of 
+this intermediate class as the “ViewModel” section.</SPAN></P>
+<P><SPAN id=text>Let’s start by looking at the custom data source. Similarly to 
+my previous post, I have a RegistryKeyHolder2 class that contains a ShortName 
+property and another property that holds the SubKeys collection of type 
+ObservableCollection&lt;RegistryKeyHolder2&gt;. I also have a PopulateSubKeys() 
+method that fills the SubKeys collection with instances of the children keys, 
+which I showed in my previous post. The only new method I added to this class is 
+ClearSubKeys(), which I will use to discard items from memory when I collapse a 
+TreeViewItem:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public int 
+ClearSubKeys()<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 
+subKeyCount = 
+CountSubKeys(this);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.subKeys.Clear();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+subKeyCount;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Just like last week’s sample, I have a RegistryData2 class that 
+contains a RootKeys property of type 
+ObservableCollection&lt;RegistryKeyHolder2&gt;. This will hold the first level 
+of keys displayed in the TreeView, as well as the whole hierarchy of keys that 
+is displayed underneath it. However, unlike my previous post, this class has 
+methods that will populate and clear the keys of just one level, and not the 
+whole hierarchy. I implemented it this way because I will populate or clear 
+items only when the TreeViewItems are expanded and collapsed, and that will 
+only ever affect one level at a time.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public void 
+PopulateSubKeys(RegistryKeyHolder2 
+keyHolder)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 
+itemsAddedCount = 
+keyHolder.PopulateSubKeys();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;public 
+void ClearSubKeys(RegistryKeyHolder2 
+keyHolder)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 
+itemsClearedCount = 
+keyHolder.ClearSubKeys();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>The next step is to cause these methods to be called when 
+TreeViewItems are expanded and collapsed. This can be done easily with the 
+following code and XAML:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TreeViewItem.Collapsed=”ItemCollapsedOrExpanded2″<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TreeViewItem.Expanded=”ItemCollapsedOrExpanded2″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;private 
+void ItemCollapsedOrExpanded2(object sender, RoutedEventArgs 
+e)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TreeViewItem 
+tvi = 
+(TreeViewItem)e.OriginalSource;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RegistryKeyHolder2 
+keyHolder = 
+(RegistryKeyHolder2)tvi.Header;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RegistryData2 
+registryData = 
+(RegistryData2)this.grid2.DataContext;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(e.RoutedEvent == 
+TreeViewItem.ExpandedEvent)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registryData.PopulateSubKeys(keyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else 
+if (e.RoutedEvent == 
+TreeViewItem.CollapsedEvent)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registryData.ClearSubKeys(keyHolder);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.InvokeUpdateVisualCount(this.treeView2);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.Handled 
+= true;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>This is basically all that needs to be done at the data level. 
+If you use this source with the default style for TreeViewItem, however, you 
+will see that you will not be provided with the UI to expand the first level of 
+TreeViewItems. This happens because the expander arrow (or plus sign, depending 
+on your theme) is only visible when the HasItems property of TreeViewItem is 
+true. How did I figure this out? Easy, I used <A 
+href="http://www.microsoft.com/expression/products/overview.aspx?key=blend">Blend</A> 
+to look at the default template for TreeViewItem. I started by creating a new 
+project and adding a TreeView to it. Then I went to the “Object” menu, clicked 
+on “Edit other styles”, “Edit ItemContainerStyle”, “Edit a Copy”, gave it a name 
+and clicked OK. And that’s it, you can look at the default style for 
+TreeViewItem in the XAML tab. Here is the part of the XAML that causes the 
+undesired behavior:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate TargetType=”{x:Type 
+TreeViewItem}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”HasItems” 
+Value=”false”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Visibility” TargetName=”Expander” 
+Value=”Hidden”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;</SPAN></P>
+<P><SPAN id=text>The solution for this problem is to have the visibility of the 
+expander of a particular key be controlled by the count of its subkeys. Since 
+the subkeys are not loaded in memory when the parent key is created, you can not 
+use the “Count” property of the “SubKeys” collection to retrieve this 
+information (it is always 0). Fortunately, the “RegistryKey” class in the CLR 
+contains a “SubKeyCount” property that we can use for this purpose. Here is the 
+replacement for the XAML above:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate TargetType=”{x:Type 
+TreeViewItem}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTrigger 
+Binding=”{Binding Path=Key.SubKeyCount}” 
+Value=”0″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Visibility” TargetName=”Expander” 
+Value=”Hidden”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTrigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;</SPAN></P>
+<P><SPAN id=text>And finally, here is the XAML I used to declare the 
+TreeView:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView ItemsSource=”{Binding 
+Path=RootKeys}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TreeViewItem.Collapsed=”ItemCollapsedOrExpanded2″<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TreeViewItem.Expanded=”ItemCollapsedOrExpanded2″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;HierarchicalDataTemplate 
+DataType=”{x:Type local:RegistryKeyHolder2}” ItemsSource=”{Binding 
+Path=SubKeys}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/HierarchicalDataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;… 
+Here I added the default styles and templates for TreeView that I copied from 
+Blend,<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modified 
+with the DataTrigger 
+above…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView.ItemContainerStyle&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StaticResourceExtension 
+ResourceKey=”tvStyle1″ 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView.ItemContainerStyle&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P>
+<P><SPAN id=text>At the beginning of this post, I mentioned that the solution I 
+presented here avoids keeping elements in memory after they’ve been collapsed 
+and partially fixes data virtualization. Is this really the case?</SPAN></P>
+<P><SPAN id=text><STRONG>Visuals no longer stay in memory when 
+collapsed</STRONG></SPAN></P>
+<P><SPAN id=text>The fact that I’m discarding the data items when a TreeViewItem 
+is collapsed causes the UIElement associated with those items to also be 
+discarded. You can confirm this by looking at the visual count that I added to 
+the sample, after expanding and collapsing the first item:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » TreeView_files/40TreeViewPerformance21.png" border=0></P>
+<P><SPAN id=text>The visual count of the TreeView starts out as 49. After 
+expanding the first item, the count increases to 169, and after collapsing it, 
+the count becomes 52. There’s a difference in the number of visuals before and 
+after for two reasons: </SPAN></P>
+<P><SPAN id=text>- The StackPanel that wraps the subkey items stays in 
+memory.<BR>- After the vertical scroll bar becomes interactive and then disabled 
+again, two visuals are left behind. I tried to minimize the difference of 
+visuals caused by the scroll bar by making it present (but disabled) from the 
+beginning.</SPAN></P>
+<P><SPAN id=text>I would like you to focus on the big numbers, and not the 
+details. With this solution, after collapsing a TreeViewItem, almost all of the 
+visuals created when the TreeViewItem was expanded are not kept in memory any 
+longer.</SPAN></P>
+<P><SPAN id=text><STRONG>Some of the data is virtualized</STRONG></SPAN></P>
+<P><SPAN id=text>The initial count of data items for this TreeView scenario is 
+2. Once the first item is expanded that number goes up to 15, but when you 
+collapse that item, the number of data items goes back down to 2.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » TreeView_files/40TreeViewPerformance22.png" border=0></P>
+<P><SPAN id=text>Note that I am by no means claiming to provide a full solution 
+to data virtualization. My solution only listens to expand and collapse events. 
+True data virtualization for TreeView would take into account not only expanding 
+and collapsing, but also scrolling events. Imagine a scenario where you have 
+many TreeViewItems expanded so that the total number of items expanded in the 
+TreeView is a thousand (not all of them visible, of course). In this case, my 
+solution will keep those thousand items in memory, while a true data 
+virtualization solution would only keep in memory the few items displayed on the 
+screen. As the user scrolls the TreeView, data virtualization would figure out 
+which items should be swapped in and out of memory.</SPAN></P>
+<P><SPAN id=text>However, I believe that the solution here offers the biggest 
+bang for the buck. It’s extremely simple to implement and it helps with a very 
+common usage scenario for TreeViews: TreeViews can be bound to extremely large 
+data sets, but users typically only have a small subset of that data expanded at 
+a particular time.</SPAN></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/40TreeViewPerformance2.zip">Here</A> you can 
+find the VS project with this sample code. This works with Orcas Beta2 bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in TreeView" href="http://www.beacosta.com/blog/?cat=7" 
+rel=category>TreeView</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on Are there any tricks that will help me improve TreeView’s performance? - Part II" 
+href="http://www.beacosta.com/blog/?p=43#comments">Comments (2)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=43"
+    dc:identifier="http://www.beacosta.com/blog/?p=43"
+    dc:title="Are there any tricks that will help me improve TreeView&#8217;s performance? - Part II"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=43" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>August 31, 2007</DIV>
+<H2 id=post-42><A id=postTitle 
+title="Are there any tricks that will help me improve TreeView’s performance? - Part I" 
+href="http://www.beacosta.com/blog/?p=42" rel=bookmark>Are there any tricks that 
+will help me improve TreeView’s performance? - Part I</A></H2>
+<P><SPAN id=text>This is the first of three blog posts where I will discuss 
+TreeView performance. This post will cover the problems with our current 
+implementation of TreeView; the next post will show a solution that will enable 
+binding to a large data set; and the third post will discuss a simple idea that 
+adds UI virtualization to a hierarchical data representation. </SPAN></P>
+<P><SPAN id=text>There are currently three aspects of TreeView’s implementation 
+that affect performance when binding to large data sets:</SPAN></P>
+<P><SPAN id=text>- UI elements stay in memory after collapsed.<BR>- There is no 
+UI virtualization.<BR>- There is no data virtualization.</SPAN></P>
+<P><SPAN id=text>I will discuss each of these problems after describing a 
+typical scenario.</SPAN></P>
+<P><SPAN id=text>Suppose I want to display my registry keys in a TreeView. To do 
+so, I first need to create a hierarchical data structure that is able to hold 
+the registry key data in memory. I defined a “RegistryKeyHolder1″ class 
+containing a property called Key that holds the actual RegistryKey, and a 
+property called SubKeys of type 
+ObservableCollection<REGISTRYKEYHOLDER1></REGISTRYKEYHOLDER1>. The class has a 
+“PopulateSubKeys” method that knows how to fill the SubKeys collection with the 
+appropriate data from the registry. To populate the entire data structure, I 
+start with a collection of RootKeys and use the following recursive 
+method:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class 
+RegistryData1<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+void PopulateSubKeys(ObservableCollection&lt;RegistryKeyHolder1&gt; 
+keys)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach 
+(RegistryKeyHolder1 keyHolder in 
+keys)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyHolder.PopulateSubKeys();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dataItemsCount 
++= 
+keyHolder.SubKeys.Count;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 
+It will take forever if I get all registry 
+keys<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(this.dataItemsCount &gt;= 
+5000)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PopulateSubKeys(keyHolder.SubKeys);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>With this data structure in place, I am now able to bind the 
+TreeView to the RootKeys property directly.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public 
+Window1()<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitializeComponent();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.grid1.DataContext 
+= new 
+RegistryData1();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<BR>&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView 
+ItemsSource=”{Binding Path=RootKeys}” Name=”treeView1″ … 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;HierarchicalDataTemplate 
+DataType=”{x:Type local:RegistryKeyHolder1}” ItemsSource=”{Binding 
+Path=SubKeys}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=ShortName}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/HierarchicalDataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;</SPAN></P>
+<P><SPAN id=text>This data structure makes it really easy to provide a default 
+look for all levels of the hierarchy by using a HierarchicalDataTemplate. Notice 
+the TextBlock in the template, bound to the ShortName property. Since tha Name 
+property of RegistryKey returns the whole path of that key, I added a ShortName 
+property to RegistryKeyHolder1 that returns only the interesting part of the 
+key. I use the ItemsSource property of the HierarchicalDataTemplate to specify 
+the items that should be displayed in the next level of the hierarchy - in this 
+case, the subkeys.</SPAN></P>
+<P><SPAN id=text><STRONG>UI elements stay in memory after 
+collapsed</STRONG></SPAN></P>
+<P><SPAN id=text>If you run this post’s project, you will see that the initial 
+number of visuals of this TreeView is 49. You can use <A 
+href="http://www.blois.us/Snoop/">Snoop</A> to see exactly which elements are in 
+the visual tree (although Snoop includes GridColumns in its count and I don’t, 
+so you may see some differences in the results). Now expand the first node and 
+collapse it again. This time the number of visuals is 169, even after you 
+collapsed the node. In our current implementation of TreeView, we let the 
+children items stay around in memory, even after they are collapsed. If your 
+TreeView has a usage pattern where the same few nodes are often expanded and 
+collapsed, then you will get better perf with our current design because the 
+children items don’t have to be garbage collected and re-created every time. 
+However, we realize that in most situations, customers would rather have their 
+items be garbage collected when a node is collapsed. So, overall, I consider 
+this a limitation of our current design of TreeView.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » TreeView_files/39TreeViewPerformance11.png" border=0></P>
+<P><SPAN id=text><STRONG>There is no UI virtualization</STRONG></SPAN></P>
+<P><SPAN id=text>There are two WPF controls that support UI virtualization 
+currently: ListBox and ListView. This happens because their default panel is a 
+VirtualizingStackPanel, which behaves like a StackPanel but provides UI 
+virtualization. </SPAN></P>
+<P><SPAN id=text>By UI virtualization, I mean that when you bind a ListBox to a 
+large collection of data, we only create UI containers for the items that are 
+visually displayed (plus a few more before and after, to improve the speed of 
+scrolling). When you scroll, we create new containers for the items that are 
+newly visible, and dispose of the ones that are no longer visible. This greatly 
+improves the performance of binding a ListBox to a large collection.</SPAN></P>
+<P><SPAN id=text>What about the other Controls in WPF? ComboBox has StackPanel 
+as its default panel, but a user can easily change that to be a 
+VirtualizingStackPanel. TreeView, however, can not use VirtualizingStackPanel to 
+display its items because this panel doesn’t know how to display a hierarchy. 
+The same applies to a ListBox with grouping enabled - a ListBox without grouping 
+has UI virtualization by default, but once you group the data, the UI 
+virtualization is lost.</SPAN></P>
+<P><SPAN id=text>If you run this post’s code sample, you can easily tell that 
+TreeView does not support UI virtualization. If you expand several nodes so that 
+the scroll bar on the right is enabled, you will see that the number of visuals 
+keeps increasing. Even though many of the items that you expanded are outside of 
+the visible portion of the scroll viewer, WPF still creates all of the visuals 
+necessary to display them.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » TreeView_files/39TreeViewPerformance12.png" border=0></P>
+<P><SPAN id=text><STRONG>There is no data virtualization</STRONG></SPAN></P>
+<P><SPAN id=text>None of the WPF controls supports data virtualization at the 
+moment. Providing a generic data virtualization solution is a hard problem that 
+everyone on the team is eager to solve, but it hasn’t been our highest 
+priority.</SPAN></P>
+<P><SPAN id=text>If we had data virtualization for ListBox, that would mean that 
+only the data items displayed are kept in memory. As the user scrolls through 
+the ListBox, new items are brought into memory, and the old ones are discarded. 
+For TreeView, in addition to swapping items in and out of memory due to 
+scrolling, we would also want to load and unload items from memory when their 
+parent item is expanded and collapsed.</SPAN></P>
+<P><SPAN id=text>So, what is the difference between UI and data virtualization? 
+With UI virtualization we keep in memory only the UI elements (e.g. 
+ListBoxItems) that are displayed visually, but we may still have the whole data 
+structure in memory. Data virtualization goes one step further: we only keep in 
+memory the data items that are being displayed on the screen.</SPAN></P>
+<P><SPAN id=text>By running this post’s code sample, you can easily tell that 
+there is no data virtualization. You will see, even right after you run it the 
+first time, that the number of data items in memory is over 5000. Since 
+initially only two items are displayed, it’s easy to see that we’re keeping in 
+memory many more items than the ones we need to build up that UI.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » TreeView_files/39TreeViewPerformance13.png" border=0></P>
+<P><SPAN id=text>That’s all for today’s post. I’ve explained some of the current 
+limitations of TreeView, and in the next two posts I will provide some solutions 
+to these problems. So stay tuned.</SPAN></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/39TreeViewPerformance1.zip">Here</A> you can 
+find the VS project with this sample code. This works with Orcas Beta2 bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in TreeView" href="http://www.beacosta.com/blog/?cat=7" 
+rel=category>TreeView</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on Are there any tricks that will help me improve TreeView’s performance? - Part I" 
+href="http://www.beacosta.com/blog/?p=42#comments">Comments (8)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=42"
+    dc:identifier="http://www.beacosta.com/blog/?p=42"
+    dc:title="Are there any tricks that will help me improve TreeView&#8217;s performance? - Part I"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=42" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>February 12, 2006</DIV>
+<H2 id=post-19><A id=postTitle title="How can I do custom Grouping?" 
+href="http://www.beacosta.com/blog/?p=19" rel=bookmark>How can I do custom 
+Grouping?</A></H2>
+<P><SPAN id=text>My previous post shows how to group items based on the value of 
+a certain property. In a real-world scenario you may want to group your items 
+based on some other logic. With this in mind, Avalon Data Binding provides a way 
+for you to write custom code and specify how you want to group your items. This 
+allows maximum flexibility; you can group your items pretty much any way you can 
+think of.</SPAN></P>
+<P><SPAN id=text>Brett made a comment to my last blog post asking how to group 
+items based on their type. I will use this scenario to show you how to do custom 
+Grouping. </SPAN></P>
+<P><SPAN id=text>My data source in this sample is of type 
+ObservableCollection&lt;object&gt;, and contains some objects of type GreekGod 
+and others of type GreekHero. My goal is to group all the items of type GreekGod 
+in a group called “Greek Gods” and group all GreekHero items under the group 
+“Greek Heroes”. This is what the markup looks like:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGodsAndHeroes 
+x:Key=”GodsAndHeroes” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GroupByTypeConverter 
+x:Key=”GroupByTypeConverter”/&gt;</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource 
+x:Key=”cvs” Source=”{Binding Source={StaticResource 
+GodsAndHeroes}}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource.GroupDescriptions&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;PropertyGroupDescription 
+Converter=”{StaticResource 
+GroupByTypeConverter}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource.GroupDescriptions&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=text>Notice that this time, instead of setting PropertyName in 
+PropertyGroupDescription, I set the Converter property. This Converter is 
+defined in the code behind and contains the logic to divide the data items in 
+groups.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class GroupByTypeConverter : 
+IValueConverter<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object Convert(object value, Type targetType, object parameter, CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(value is 
+GreekGod)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+“Greek 
+Gods”;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else 
+if (value is 
+GreekHero)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+“Greek 
+Heroes”;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+null;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>All the items that return the same value in the Converter will 
+be grouped together. In this scenario I am grouping the items based on their 
+type and my groups are of type string. Remember that you can use a Converter to 
+group your items some other way. Notice also that the groups don’t have to be a 
+string, they can be any object you want.</SPAN></P>
+<P><SPAN id=text>Just like in the previous post, I want to display the groups 
+and items in a TreeView.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView ItemsSource=”{Binding 
+Source={StaticResource cvs}, 
+Path=Groups}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width=”200″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;</SPAN></P>
+<P><SPAN id=text>In this case, however, templating the items is not as obvious. 
+When the items are all of the same type this is really easy to achieve with a 
+chain of HierarchicalDataTemplates and a DataTemplate for the leaf nodes. In 
+this scenario we need a HierarchicalDataTemplate for the groups and one of two 
+DataTemplates for the leaf nodes, depending on their type. </SPAN></P>
+<P><SPAN id=text>My first approach to this was to have those 3 templates in the 
+resources and set their DataType property instead of giving them a key (with 
+x:Key). This does not work because when you use a HierarchicalDataTemplate to 
+template a group and do not set its ItemTemplate property, that same template is 
+used for the lower levels of the hierarchy. This behavior is useful when all the 
+levels have items of the same type (for example, when using a TreeView to 
+display a hierarchy of directories in a computer).</SPAN></P>
+<P><SPAN id=text>My second approach was to set the ItemTemplateSelector property 
+of the HierarchicalDataTemplate to a template selector that decides the correct 
+template to use based on the type of the leaf item. Unfortunately there is a bug 
+in the ItemTemplateSelector property of HierarchicalDataTemplate that prevents 
+this from working. Once the bug is fixed, this will be the correct way to 
+specify the templates.</SPAN></P>
+<P><SPAN id=text>My third and final approach was to move the template selector 
+to the TreeView and add one more “if” branch to deal with deciding what type to 
+return for the groups (which are of type CollectionViewGroup).</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public override DataTemplate 
+SelectTemplate(object item, DependencyObject 
+container)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string 
+templateKey;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (item is 
+CollectionViewGroup)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;templateKey 
+= 
+“GroupTemplate”;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else 
+if (item is 
+GreekGod)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;templateKey 
+= 
+“GreekGodTemplate”;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else 
+if (item is 
+GreekHero)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;templateKey 
+= 
+“GreekHeroTemplate”;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+null;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+(DataTemplate)((FrameworkElement)container).FindResource(templateKey);<BR>&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GodHeroTemplateSelector 
+x:Key=”GodHeroTemplateSelector” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(..)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView ItemsSource=”{Binding 
+Source={StaticResource cvs}, 
+Path=Groups}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemTemplateSelector=”{StaticResource 
+GodHeroTemplateSelector}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width=”200″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;</SPAN></P>
+<P><SPAN id=text>For each of the items displayed in the TreeView, this template 
+selector looks up the appropriate (Hierarchical)DataTemplate in the 
+resources.</SPAN></P>
+<P><SPAN id=text>Here is a screenshot of the completed sample:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » TreeView_files/16GroupByType.png" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/16GroupByType.zip">Here</A> you can find the 
+VS project with this sample code. This works with January CTP WPF bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in Sorting, filtering, grouping" 
+href="http://www.beacosta.com/blog/?cat=13" rel=category>Sorting, filtering, 
+grouping</A>, <A title="View all posts in TreeView" 
+href="http://www.beacosta.com/blog/?cat=7" rel=category>TreeView</A>, <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on How can I do custom Grouping?" 
+href="http://www.beacosta.com/blog/?p=19#comments">Comments (16)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=19"
+    dc:identifier="http://www.beacosta.com/blog/?p=19"
+    dc:title="How can I do custom Grouping?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=19" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>February 4, 2006</DIV>
+<H2 id=post-18><A id=postTitle 
+title="How do I display grouped data in a TreeView?" 
+href="http://www.beacosta.com/blog/?p=18" rel=bookmark>How do I display grouped 
+data in a TreeView?</A></H2>
+<P><SPAN id=text>The TreeView control is great at displaying structured data 
+using the HierarchicalDataTemplate (see <A 
+href="http://blogs.msdn.com/karstenj/archive/2005/11/02/488420.aspx">Karsten’s 
+blog post</A> on this topic). But what do you do if the data you’re given is not 
+structured hierarchically? In this post, I will show you how to create that 
+hierarachy from a flat list of data items, using the grouping feature of data 
+binding.</SPAN></P>
+<P><SPAN id=text>I am using the same Animal data source I used in my last post. 
+Grouping the Animals by Category is done the same way as in my last 
+sample:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:Animals 
+x:Key=”animals”/&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource x:Key=”cvs” 
+Source=”{Binding Source={StaticResource animals}, 
+Path=AnimalList}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource.GroupDescriptions&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;PropertyGroupDescription 
+PropertyName=”Category”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource.GroupDescriptions&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource&gt;</SPAN></P>
+<P><SPAN id=text>We now have the data in a hierarchical form. In this particular 
+case it has only one level of groups, and another level with the animals. You 
+can easily imagine that by adding more GroupDescriptions you would end up with a 
+deeper hierarchy.</SPAN></P>
+<P><SPAN id=text>When binding to a CollectionViewSource, the Binding object 
+knows to grab the CollectionViewSource’s View property. This property returns 
+the custom view (of type ICollectionView) that CollectionViewSource creates on 
+top of the data collection (where the grouping is applied). In our scenario, we 
+want to bind to the hierarchy we created with grouping, or in other words, we 
+want to bind to the groups. We can get to this data by binding to the Groups 
+property in ICollectionView:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView ItemsSource=”{Binding 
+Source={StaticResource cvs}, 
+Path=Groups}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemTemplate=”{StaticResource 
+categoryTemplate}” 
+Width=”200″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;</SPAN></P>
+<P><SPAN id=text>When using data binding’s grouping feature, each group of items 
+is wrapped in a CollectionViewGroup object. We can access the name of the group 
+(the property we’re grouping by) by using CollectionViewGroup’s Name property, 
+and we can get to the items that belong to the group through the Items property. 
+This is all the information we need in order to make a HierarchicalDataTemplate 
+that will display the Category of each animal and specify the animals that 
+belong to it:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;HierarchicalDataTemplate 
+x:Key=”categoryTemplate”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemsSource=”{Binding 
+Path=Items}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemTemplate=”{StaticResource 
+animalTemplate}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Name}” 
+FontWeight=”Bold”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/HierarchicalDataTemplate&gt;</SPAN></P>
+<P><SPAN id=text>Finally we need a DataTemplate for the leaf nodes, which 
+specifies how we want the Animal data to be displayed. In this case, we are 
+interested in displaying the Name property of each Animal. Notice that the 
+HierarchicalDataTemplate’s ItemTemplate property points to this 
+template.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”animalTemplate”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding 
+Path=Name}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</SPAN></P>
+<P><SPAN id=text>Here is the result of the completed sample:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » TreeView_files/15GroupingTreeView.png" border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/15GroupingTreeView.zip">Here</A> you can find 
+the VS project with this sample code. This works with January CTP WPF bits. 
+</SPAN></P>
+<P><SPAN id=text>Update September 18, 2007: <A 
+href="http://www.beacosta.com/Zips/15GroupingTreeViewOrcasBeta2.zip">Here you 
+can find this sample working with Orcas Beta 2 bits.</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in Sorting, filtering, grouping" 
+href="http://www.beacosta.com/blog/?cat=13" rel=category>Sorting, filtering, 
+grouping</A>, <A title="View all posts in TreeView" 
+href="http://www.beacosta.com/blog/?cat=7" rel=category>TreeView</A>, <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on How do I display grouped data in a TreeView?" 
+href="http://www.beacosta.com/blog/?p=18#comments">Comments (22)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=18"
+    dc:identifier="http://www.beacosta.com/blog/?p=18"
+    dc:title="How do I display grouped data in a TreeView?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=18" />
+</rdf:RDF>	-->
+<P>
+<DIV align=center></DIV>
+<P></P></DIV></DIV>
+<DIV id=right>
+<DIV class=sidebar><!-- Meta -->
+<H2>Meta:</H2>
+<UL class=noli>
+  <LI><A title="Syndicate this site using RSS" 
+  href="http://feeds.feedburner.com/BeatrizCosta"><ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> 
+  <LI><A title="The latest comments to all posts in RSS" 
+  href="http://feeds.feedburner.com/CommentsForBeatrizCosta">Comments <ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> </LI></UL><!-- Search -->
+<H2>Search</H2><BR>
+<FORM id=searchform action="" method=get><INPUT id=s size=15 name=s> <INPUT type=submit value=Search name=submit> </FORM><!-- Categories -->
+<H2>Categories</H2>
+<UL class=menu>
+  <LI><A title="View all posts filed under General" 
+  href="http://www.beacosta.com/blog/?cat=3">General</A> 
+  <LI class=current-cat-parent><A 
+  title="View all posts filed under WPF Data Binding" 
+  href="http://www.beacosta.com/blog/?cat=2">WPF Data Binding</A> 
+  <UL class=children>
+    <LI><A title="View all posts filed under Binding to ADO.NET" 
+    href="http://www.beacosta.com/blog/?cat=12">Binding to ADO.NET</A> 
+    <LI><A title="View all posts filed under ListBox" 
+    href="http://www.beacosta.com/blog/?cat=14">ListBox</A> 
+    <LI><A title="View all posts filed under ListView" 
+    href="http://www.beacosta.com/blog/?cat=9">ListView</A> 
+    <LI><A title="View all posts filed under Master-detail" 
+    href="http://www.beacosta.com/blog/?cat=10">Master-detail</A> 
+    <LI><A title="View all posts filed under Sorting, filtering, grouping" 
+    href="http://www.beacosta.com/blog/?cat=13">Sorting, filtering, grouping</A> 
+
+    <LI><A title="View all posts filed under Styles and Templates" 
+    href="http://www.beacosta.com/blog/?cat=11">Styles and Templates</A> 
+    <LI class=current-cat><A title="View all posts filed under TreeView" 
+    href="http://www.beacosta.com/blog/?cat=7">TreeView</A> </LI></UL></LI></UL><!-- Archives -->
+<H2>Archives</H2>
+<UL>
+  <LI><A title="September 2007" 
+  href="http://www.beacosta.com/blog/?m=200709">September 2007</A> 
+  <LI><A title="August 2007" 
+  href="http://www.beacosta.com/blog/?m=200708">August 2007</A> 
+  <LI><A title="May 2007" href="http://www.beacosta.com/blog/?m=200705">May 
+  2007</A> 
+  <LI><A title="April 2007" href="http://www.beacosta.com/blog/?m=200704">April 
+  2007</A> 
+  <LI><A title="January 2007" 
+  href="http://www.beacosta.com/blog/?m=200701">January 2007</A> 
+  <LI><A title="November 2006" 
+  href="http://www.beacosta.com/blog/?m=200611">November 2006</A> 
+  <LI><A title="October 2006" 
+  href="http://www.beacosta.com/blog/?m=200610">October 2006</A> 
+  <LI><A title="September 2006" 
+  href="http://www.beacosta.com/blog/?m=200609">September 2006</A> 
+  <LI><A title="August 2006" 
+  href="http://www.beacosta.com/blog/?m=200608">August 2006</A> 
+  <LI><A title="July 2006" href="http://www.beacosta.com/blog/?m=200607">July 
+  2006</A> 
+  <LI><A title="June 2006" href="http://www.beacosta.com/blog/?m=200606">June 
+  2006</A> 
+  <LI><A title="May 2006" href="http://www.beacosta.com/blog/?m=200605">May 
+  2006</A> 
+  <LI><A title="April 2006" href="http://www.beacosta.com/blog/?m=200604">April 
+  2006</A> 
+  <LI><A title="March 2006" href="http://www.beacosta.com/blog/?m=200603">March 
+  2006</A> 
+  <LI><A title="February 2006" 
+  href="http://www.beacosta.com/blog/?m=200602">February 2006</A> 
+  <LI><A title="January 2006" 
+  href="http://www.beacosta.com/blog/?m=200601">January 2006</A> 
+  <LI><A title="December 2005" 
+  href="http://www.beacosta.com/blog/?m=200512">December 2005</A> 
+  <LI><A title="November 2005" 
+  href="http://www.beacosta.com/blog/?m=200511">November 2005</A> 
+  <LI><A title="October 2005" 
+  href="http://www.beacosta.com/blog/?m=200510">October 2005</A> 
+  <LI><A title="September 2005" 
+  href="http://www.beacosta.com/blog/?m=200509">September 2005</A> 
+  <LI><A title="August 2005" 
+  href="http://www.beacosta.com/blog/?m=200508">August 2005</A> </LI></UL></DIV>
+<DIV id=footer>
+<DIV class=copyright><SMALL><SPAN class=copy>Copyright © 2007 <STRONG><A 
+title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</A> 
+</STRONG></SPAN><BR><BR></SMALL></DIV></DIV></DIV></DIV></BODY></HTML>

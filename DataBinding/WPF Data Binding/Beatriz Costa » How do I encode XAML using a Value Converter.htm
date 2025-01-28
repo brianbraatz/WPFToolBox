@@ -1,0 +1,600 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0034)http://www.beacosta.com/blog/?p=30 -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Beatriz Costa » How do I encode XAML using a Value Converter?</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><!-- Editable Meta Tags -->
+<META content="" name=description>
+<META content="" name=keywords>
+<META content="Sreejith - GFXedit.com" name=author>
+<META content="Your Name" name=copyright>
+<META content="WordPress 2.2.2" name=generator>
+<META content=index,follow name=robots><!-- Meta Tags End--><!-- Style Sheet -->
+<STYLE type=text/css media=screen>@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</STYLE>
+<!-- Style Sheet End --><!-- Includes -->
+<SCRIPT src="" type=text/javascript></SCRIPT>
+
+<SCRIPT src="" type=text/javascript></SCRIPT>
+<!-- End Includes --><!-- Feed and Ping URLS--><LINK title="RSS 2.0" 
+href="http://www.beacosta.com/blog/?feed=rss2" type=application/rss+xml 
+rel=alternate><LINK title="RSS .92" 
+href="http://www.beacosta.com/blog/?feed=rss" type=text/xml rel=alternate><LINK 
+title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom" 
+type=application/atom+xml rel=alternate><LINK 
+href="http://www.beacosta.com/blog/xmlrpc.php" rel=pingback><!--?php wp_get_archives('type=monthly&format=link'); ?--><LINK 
+title=RSD href="http://www.beacosta.com/blog/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</SCRIPT>
+
+<STYLE type=text/css>.comment {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 8px; PADDING-BOTTOM: 4px; MARGIN: 6px 3px 3px; PADDING-TOP: 4px; POSITION: relative; BACKGROUND-COLOR: #fff
+}
+.odd {
+	BACKGROUND-COLOR: #f8f8f8
+}
+.comment DIV {
+	POSITION: relative
+}
+.comment .comment IMG {
+	MARGIN: 0px
+}
+.comment .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png); OVERFLOW: hidden; WIDTH: 13px; HEIGHT: 13px
+}
+.collapsed .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png)
+}
+.comment .reply {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 0px; FONT-SIZE: 80%; PADDING-BOTTOM: 6px; PADDING-TOP: 0px; TEXT-ALIGN: right
+}
+.comment {
+	BORDER-RIGHT: #ddd 1px solid; BORDER-TOP: #ddd 1px solid; MARGIN-TOP: 10px; BORDER-LEFT: #ddd 1px solid; BORDER-BOTTOM: #ddd 1px solid
+}
+INPUT#subscribe {
+	WIDTH: auto
+}
+.comment .body .content {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; OVERFLOW: auto; WIDTH: 100%; PADDING-TOP: 0px
+}
+.comment .title abbr {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.collapsed .body {
+	DISPLAY: none
+}
+.collapsed .comment {
+	DISPLAY: none
+}
+#commentform TEXTAREA {
+	WIDTH: 97%
+}
+</STYLE>
+<!-- End Feed and Ping URLS--></HEAD>
+<BODY>
+<DIV id=container>
+<DIV id=banner>
+<H1><A title="Beatriz Costa" accessKey=1 
+href="http://www.beacosta.com/blog">Beatriz Costa</A></H1>
+<H2 title="WPF Data Binding">WPF Data Binding</H2></DIV>
+<DIV id=center>
+<DIV class=content>
+<DIV class=post>
+<DIV class=date>July 19, 2006</DIV>
+<H2 id=post-30><A id=postTitle 
+title="How do I encode XAML using a Value Converter?" 
+href="http://www.beacosta.com/blog/?p=30" rel=bookmark>How do I encode XAML 
+using a Value Converter?</A></H2>
+<P><SPAN id=text>This blog post is especially useful for those of you that have 
+your own blog. Several people have asked me about my solution for posting XAML 
+markup, given that the &lt; and &gt; characters have to be encoded. With the 
+amount of XAML I post, I certainly don’t replace them all by hand. As you 
+probably guessed, I came up with a geeky solution that uses Avalon and Data 
+Binding. </SPAN></P>
+<P><SPAN id=text>The UI of my solution is as simple as it could be. It contains 
+two TextBoxes, one where I paste the text and XAML I am writing, and another one 
+that shows the encoded version of this text.</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:XamlConverter 
+x:Key="xamlConverter"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBox 
+Name="source" AcceptsReturn="true" 
+AcceptsTab="true"/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBox Text="{Binding 
+ElementName=source, Path=Text, Converter={StaticResource xamlConverter}, 
+Mode=OneWay}" Grid.Row="1" Name="target"/&gt;</SPAN></P>
+<P><SPAN id=text>I only need one Binding in this sample. The TextBox where I 
+input the text is the source of the binding, and the TextBox with the encoded 
+text is the target. The Converter is where I add all the interesting logic. I am 
+not going to show that code here because it does all sorts of fancy things that 
+are not Avalon related, but feel free to download and reuse it. You may want to 
+modify the CSS styles to suit your blog, or you will end up with the same fonts 
+and colors I use.</SPAN></P>
+<P><SPAN id=text>Next I would like to discuss best practices on writing the 
+ConvertBack method of the Converter, when the Binding’s mode is OneWay. In this 
+case, you want to add your logic to the Convert method, which gets called when 
+the data is transfered from the target to the source. The ConvertBack method, 
+normally used when transfering data from source to target, should not be called. 
+There are 3 very common ways to deal with this scenario:</SPAN></P>
+<P><SPAN id=text><B>- Throw</B></SPAN></P>
+<P><SPAN id=text>If you let Visual Studio generate a basic implementation for 
+your interface (by hovering over the interface name), this is what you will 
+get:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public object ConvertBack(object value, 
+Type targetType, object parameter, System.Globalization.CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new Exception("The method or operation is not 
+implemented.");<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>I don’t recommend keeping this code. Throwing an exception is a 
+fine solution, but it’s good practice to be as specific as possible in the type 
+of Exception we pick. I typically use a NotImplementedException, and pass a nice 
+error message:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public object ConvertBack(object value, 
+Type targetType, object parameter, System.Globalization.CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new NotImplementedException("The ConvertBack method is not implemented because 
+this Converter should only be used in a one-way 
+Binding.");<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text><B>- Return Binding.DoNothing</B></SPAN></P>
+<P><SPAN id=text>If you return Binding.DoNothing, you are telling the Data 
+Binding engine to ignore the current data transfer. In this case, if you happen 
+to use the Converter in a two-way (or one-way-to-source) binding, the binding 
+will fail silently.</SPAN></P>
+<P><SPAN id=text>I don’t particularly like this solution. As a rule of thumb, I 
+avoid approaches that involve failing silently.</SPAN></P>
+<P><SPAN id=text>So why did we add Binding.DoNothing to the API? We added it to 
+handle scenarios where you want to cancel the binding based on the value being 
+transfered. For example, you may have a behavior requirement in your application 
+where you don’t want changes to be propagated to the source when the user enters 
+certain data in the UI. In this case, you would inspect the data entered by the 
+user in the Convert method, and if it has a certain value, you return 
+Binding.DoNothing. The application is not “failing” in this scenario, since it’s 
+part of the business logic to cancel the binding, so it’s OK to do that 
+silently.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public object ConvertBack(object value, 
+Type targetType, object parameter, System.Globalization.CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+Binding.DoNothing;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text><B>- Return null</B></SPAN></P>
+<P><SPAN id=text>It’s tempting to return null from ConvertBack when you don’t 
+expect it to ever be called. I don’t recommend this approach because you may 
+inadvertently end up setting your source property to null. One of two things can 
+happen: if null is a valid value for your source property, it will update the 
+source when you didn’t intend it to; if null is not a valid value for your 
+source property, a debug message will be printed in the Output Window of Visual 
+Studio. Data Binding typically informs the developer of errors through the 
+Output Window, so it’s good to keep an eye on it.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public object ConvertBack(object value, 
+Type targetType, object parameter, System.Globalization.CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+null;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>In summary, my favorite solution is throwing 
+NotImplementedException from the ConvertBack method of a one-way binding. If the 
+ConvertBack method is called by mistake, your application will crash, and you 
+will find the problem right away.</SPAN></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/27ConvertXaml.zip">Here</A> you can find the 
+VS project with this sample code. This works with Beta2 WPF bits. </SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+</P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=30"
+    dc:identifier="http://www.beacosta.com/blog/?p=30"
+    dc:title="How do I encode XAML using a Value Converter?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=30" />
+</rdf:RDF>	--><!-- You can start editing here. -->
+<P><A href="http://www.beacosta.com/blog/?feed=rss2&amp;p=30"><ABBR 
+title="Really Simple Syndication">RSS</ABBR> feed</A> | <A 
+href="http://www.beacosta.com/blog/wp-trackback.php?p=30">Trackback <ACRONYM 
+title='\"Uniform' Identifier\? Resource>URI</ACRONYM></A> </P>
+<H2 id=comments>7 Comments <A title="Leave a comment" 
+href="http://www.beacosta.com/blog/?p=30#postcomment">»</A> </H2>
+<DIV class=commentlist>
+<DIV class=comment id=div-comment-121 style="BACKGROUND: #404040"><A 
+id=comment-121 name=comment-121></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-121")' 
+src="Beatriz Costa » How do I encode XAML using a Value Converter_files/briansthreadedcomments.png"> 
+<CITE>Comment by Josh Smith<A 
+href="http://www.beacosta.com/blog/?p=30#comment-121"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-07-20 07:56:59 </DIV>
+<DIV class=content>
+<P>Thanks for the helpful tool, Bea. I have a question for you…</P>
+<P>What actually happens when you return Binding.DoNothing from 
+Convert/ConvertBack? Does the binding permanently stop? If not, when does the 
+binding resume? I’m confused about the fact that there is a disconnect between 
+the source and target.</P>
+<P>Thanks,<BR>Josh Smith</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-121", 121, true); return false;' 
+href="http://www.beacosta.com/blog/?p=30#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class="comment odd" id=div-comment-122 style="BACKGROUND: #404040"><A 
+id=comment-122 name=comment-122></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-122")' 
+src="Beatriz Costa » How do I encode XAML using a Value Converter_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=30#comment-122"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-07-21 10:19:48 </DIV>
+<DIV class=content>
+<P>Hi Josh,</P>
+<P>The binding is not permanently disabled. If there are more changes in the 
+source after returning Binding.DoNothing once, the binding will try to propagate 
+them to the target as usual. Binding.DoNothing simply cancels that one data 
+transfer where it gets returned from the ConvertBack. </P>
+<P>You can think of a Convert as a black box between the source and the target. 
+In a one-way binding, the data goes from Source -&gt; Converter -&gt; Target. If 
+you return Binding.DoNothing in the Convert method, the data transfer goes from 
+Source -&gt; Converter and stops there, it does not continue to the target. 
+Future changes in the Source will still trigger a data transfer, and if for 
+those changes some other value is returned from the Converter, they will make it 
+to the target.</P>
+<P>Bea</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-122", 122, true); return false;' 
+href="http://www.beacosta.com/blog/?p=30#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class=comment id=div-comment-123 style="BACKGROUND: #404040"><A 
+id=comment-123 name=comment-123></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-123")' 
+src="Beatriz Costa » How do I encode XAML using a Value Converter_files/briansthreadedcomments.png"> 
+<CITE>Comment by Josh Smith<A 
+href="http://www.beacosta.com/blog/?p=30#comment-123"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-07-22 10:49:23 </DIV>
+<DIV class=content>
+<P>Thanks Bea! That makes sense to me. <IMG class=wp-smiley alt=:) 
+src="Beatriz Costa » How do I encode XAML using a Value Converter_files/icon_smile.gif"> 
+</P>
+<P>Josh Smith</P></DIV><SMALL>(Comments wont nest below this level)</SMALL> 
+</DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-123", 123, false); return false;' 
+href="http://www.beacosta.com/blog/?p=30#">Reply here</A> </DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV>
+<DIV class=comment id=div-comment-124 style="BACKGROUND: #404040"><A 
+id=comment-124 name=comment-124></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-124")' 
+src="Beatriz Costa » How do I encode XAML using a Value Converter_files/briansthreadedcomments.png"> 
+<CITE>Comment by Anonymous<A 
+href="http://www.beacosta.com/blog/?p=30#comment-124"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-07-23 12:54:08 </DIV>
+<DIV class=content>
+<P>Wouldn’t NotSupportedException be more accurate than NotImplementedException? 
+The latter leads me to believe the logic just isn’t in place presently, and may 
+be in the future. The former tells me it is an operation that will never be 
+supported. Just my .02 cents.</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-124", 124, true); return false;' 
+href="http://www.beacosta.com/blog/?p=30#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class="comment odd" id=div-comment-125 style="BACKGROUND: #404040"><A 
+id=comment-125 name=comment-125></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-125")' 
+src="Beatriz Costa » How do I encode XAML using a Value Converter_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=30#comment-125"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2007-07-24 10:07:40 </DIV>
+<DIV class=content>
+<P>Those are some valuable 2 cents <IMG class=wp-smiley alt=:) 
+src="Beatriz Costa » How do I encode XAML using a Value Converter_files/icon_smile.gif"> 
+Yes, you bring up a good point and I tend to agree with you. </P>
+<P>Thanks for the comment.</P>
+<P>Bea</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-125", 125, true); return false;' 
+href="http://www.beacosta.com/blog/?p=30#">Reply to this comment</A> 
+</DIV></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV>
+<DIV class=comment id=div-comment-126 style="BACKGROUND: #404040"><A 
+id=comment-126 name=comment-126></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-126")' 
+src="Beatriz Costa » How do I encode XAML using a Value Converter_files/briansthreadedcomments.png"> 
+<CITE>Comment by Anonymous<A 
+href="http://www.beacosta.com/blog/?p=30#comment-126"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2007-07-25 11:17:15 </DIV>
+<DIV class=content>
+<P>softkeyboard example at Netfx3.com</P>
+<P>I tried that example. It works well in a XBAP application. But when I wanted 
+to use it the windows application, it kept failing. Any ideas?</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-126", 126, true); return false;' 
+href="http://www.beacosta.com/blog/?p=30#">Reply to this comment</A> 
+</DIV></DIV>
+<DIV class="comment odd" id=div-comment-127 style="BACKGROUND: #404040"><A 
+id=comment-127 name=comment-127></A>
+<DIV class=title><IMG class=collapseicon 
+onclick='collapseThread("div-comment-127")' 
+src="Beatriz Costa » How do I encode XAML using a Value Converter_files/briansthreadedcomments.png"> 
+<CITE>Comment by Bea<A 
+href="http://www.beacosta.com/blog/?p=30#comment-127"></A></CITE> </DIV>
+<DIV class=body>
+<DIV class=meta>2006-07-26 13:43:52 </DIV>
+<DIV class=content>
+<P>Hi,</P>
+<P>I am not familiar with the SoftKeyboard application. You may want to ask that 
+question in the <A 
+href="http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=119&amp;SiteID=1" 
+rel=nofollow>Avalon Forums</A>.</P></DIV>
+<DIV class=reply><A 
+onclick='moveAddCommentBelow("div-comment-127", 127, true); return false;' 
+href="http://www.beacosta.com/blog/?p=30#">Reply to this comment</A> 
+</DIV></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV><!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+<DIV style="OVERFLOW: hidden; HEIGHT: 1px"></DIV></DIV>
+<DIV class=comment id=addcomment style="BACKGROUND: #404040"><A 
+id=addcommentanchor name=addcommentanchor></A>
+<FORM id=commentform action=http://www.beacosta.com/blog/wp-comments-post.php 
+method=post>
+<DIV class=add>
+<DIV id=reroot style="DISPLAY: none"><SMALL><A onclick="reRoot(); return false;" 
+href="http://www.beacosta.com/blog/?p=30#">Click here to cancel "reply". 
+</A></SMALL></DIV><SMALL>Name (required) </SMALL>
+<DIV><INPUT class=textarea id=author tabIndex=1 size=28 name=author> 
+</DIV><SMALL>E-mail (required - never shown publicly) </SMALL>
+<DIV><INPUT id=email tabIndex=2 size=28 name=email> </DIV><SMALL><ACRONYM 
+title="Uniform Resource Identifier">URI</ACRONYM> </SMALL>
+<DIV><INPUT id=url tabIndex=3 size=28 name=url> </DIV><SMALL>Your Comment (<A 
+onclick="changeCommentSize(-80); return false;" 
+href="http://www.beacosta.com/blog/?p=30#">smaller size</A> | <A 
+onclick="changeCommentSize(80); return false;" 
+href="http://www.beacosta.com/blog/?p=30#">larger size</A>) </SMALL>
+<DIV style="WIDTH: 100%"><TEXTAREA id=comment tabIndex=4 name=comment rows=14 cols=60></TEXTAREA> 
+</DIV><SMALL>You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt; 
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;code&gt; 
+&lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your comment. </SMALL>
+<DIV><INPUT type=hidden value=30 name=comment_post_ID> <INPUT type=hidden 
+value=/blog/?p=30 name=redirect_to> <INPUT id=addcommentbutton onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" tabIndex=5 type=button value="Add comment" name=addcommentbutton> 
+</DIV></DIV><INPUT id=comment_reply_ID type=hidden value=0 
+name=comment_reply_ID></FORM></DIV>
+<P>
+<DIV align=center></DIV>
+<P></P></DIV></DIV>
+<DIV id=right>
+<DIV class=sidebar><!-- Meta -->
+<H2>Meta:</H2>
+<UL class=noli>
+  <LI><A title="Syndicate this site using RSS" 
+  href="http://feeds.feedburner.com/BeatrizCosta"><ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> 
+  <LI><A title="The latest comments to all posts in RSS" 
+  href="http://feeds.feedburner.com/CommentsForBeatrizCosta">Comments <ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> </LI></UL><!-- Search -->
+<H2>Search</H2><BR>
+<FORM id=searchform action="" method=get><INPUT id=s size=15 name=s> <INPUT type=submit value=Search name=submit> </FORM><!-- Categories -->
+<H2>Categories</H2>
+<UL class=menu>
+  <LI><A title="View all posts filed under General" 
+  href="http://www.beacosta.com/blog/?cat=3">General</A> 
+  <LI><A title="View all posts filed under WPF Data Binding" 
+  href="http://www.beacosta.com/blog/?cat=2">WPF Data Binding</A> 
+  <UL class=children>
+    <LI><A title="View all posts filed under Binding to ADO.NET" 
+    href="http://www.beacosta.com/blog/?cat=12">Binding to ADO.NET</A> 
+    <LI><A title="View all posts filed under ListBox" 
+    href="http://www.beacosta.com/blog/?cat=14">ListBox</A> 
+    <LI><A title="View all posts filed under ListView" 
+    href="http://www.beacosta.com/blog/?cat=9">ListView</A> 
+    <LI><A title="View all posts filed under Master-detail" 
+    href="http://www.beacosta.com/blog/?cat=10">Master-detail</A> 
+    <LI><A title="View all posts filed under Sorting, filtering, grouping" 
+    href="http://www.beacosta.com/blog/?cat=13">Sorting, filtering, grouping</A> 
+
+    <LI><A title="View all posts filed under Styles and Templates" 
+    href="http://www.beacosta.com/blog/?cat=11">Styles and Templates</A> 
+    <LI><A title="View all posts filed under TreeView" 
+    href="http://www.beacosta.com/blog/?cat=7">TreeView</A> </LI></UL></LI></UL><!-- Archives -->
+<H2>Archives</H2>
+<UL>
+  <LI><A title="September 2007" 
+  href="http://www.beacosta.com/blog/?m=200709">September 2007</A> 
+  <LI><A title="August 2007" 
+  href="http://www.beacosta.com/blog/?m=200708">August 2007</A> 
+  <LI><A title="May 2007" href="http://www.beacosta.com/blog/?m=200705">May 
+  2007</A> 
+  <LI><A title="April 2007" href="http://www.beacosta.com/blog/?m=200704">April 
+  2007</A> 
+  <LI><A title="January 2007" 
+  href="http://www.beacosta.com/blog/?m=200701">January 2007</A> 
+  <LI><A title="November 2006" 
+  href="http://www.beacosta.com/blog/?m=200611">November 2006</A> 
+  <LI><A title="October 2006" 
+  href="http://www.beacosta.com/blog/?m=200610">October 2006</A> 
+  <LI><A title="September 2006" 
+  href="http://www.beacosta.com/blog/?m=200609">September 2006</A> 
+  <LI><A title="August 2006" 
+  href="http://www.beacosta.com/blog/?m=200608">August 2006</A> 
+  <LI><A title="July 2006" href="http://www.beacosta.com/blog/?m=200607">July 
+  2006</A> 
+  <LI><A title="June 2006" href="http://www.beacosta.com/blog/?m=200606">June 
+  2006</A> 
+  <LI><A title="May 2006" href="http://www.beacosta.com/blog/?m=200605">May 
+  2006</A> 
+  <LI><A title="April 2006" href="http://www.beacosta.com/blog/?m=200604">April 
+  2006</A> 
+  <LI><A title="March 2006" href="http://www.beacosta.com/blog/?m=200603">March 
+  2006</A> 
+  <LI><A title="February 2006" 
+  href="http://www.beacosta.com/blog/?m=200602">February 2006</A> 
+  <LI><A title="January 2006" 
+  href="http://www.beacosta.com/blog/?m=200601">January 2006</A> 
+  <LI><A title="December 2005" 
+  href="http://www.beacosta.com/blog/?m=200512">December 2005</A> 
+  <LI><A title="November 2005" 
+  href="http://www.beacosta.com/blog/?m=200511">November 2005</A> 
+  <LI><A title="October 2005" 
+  href="http://www.beacosta.com/blog/?m=200510">October 2005</A> 
+  <LI><A title="September 2005" 
+  href="http://www.beacosta.com/blog/?m=200509">September 2005</A> 
+  <LI><A title="August 2005" 
+  href="http://www.beacosta.com/blog/?m=200508">August 2005</A> </LI></UL></DIV>
+<DIV id=footer>
+<DIV class=copyright><SMALL><SPAN class=copy>Copyright © 2007 <STRONG><A 
+title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</A> 
+</STRONG></SPAN><BR><BR></SMALL></DIV></DIV></DIV></DIV></BODY></HTML>

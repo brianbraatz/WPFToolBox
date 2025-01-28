@@ -1,0 +1,66 @@
+<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="clr-namespace:FileSysViewer"
+  >
+  <DataTemplate DataType="{x:Type local:ObservableFileInfo}">
+    <Expander Margin="2,4" Width="250">
+      <!-- Here is the Expander's content. -->
+      <Border 
+        Background="#220000FF" 
+        DataContext="{Binding FileInfo}" 
+        Margin="2,2"
+        >
+        <StackPanel>
+          <TextBlock>
+            <Run>Creation Time:</Run>
+            <TextBlock Text="{Binding CreationTime}" />
+          </TextBlock>
+          <TextBlock>
+            <Run>Last Access Time:</Run>
+            <TextBlock Text="{Binding LastAccessTime}" />
+          </TextBlock>
+          <TextBlock>
+            <Run>Last Write Time:</Run>
+            <TextBlock Text="{Binding LastWriteTime}" />
+          </TextBlock>
+          <TextBlock>
+            <Run>Length:</Run>
+            <TextBlock Text="{Binding Length}" />
+          </TextBlock>
+          <TextBlock>
+            <Hyperlink Command="Open">Open File</Hyperlink>
+          </TextBlock>
+        </StackPanel>
+      </Border>
+
+      <Expander.Header>
+        <TextBlock Text="{Binding FileInfo.Name}" TextTrimming="CharacterEllipsis" />
+      </Expander.Header>
+
+      <Expander.Style>
+        <Style TargetType="Expander">
+          <Style.Triggers>
+            <!-- This trigger flashes the Expander red when the file changes. -->
+            <DataTrigger Binding="{Binding Path=IsChanged}" Value="True">
+              <DataTrigger.EnterActions>
+                <BeginStoryboard>
+                  <Storyboard>
+                    <ColorAnimation 
+                      AccelerationRatio="0.2" DecelerationRatio="0.8"
+                      AutoReverse="True"                        
+                      Duration="0:0:3"
+                      FillBehavior="Stop"
+                      Storyboard.TargetProperty="Background.Color" 
+                      To="#88FF0000" 
+                      />
+                  </Storyboard>
+                </BeginStoryboard>
+              </DataTrigger.EnterActions>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Expander.Style>
+    </Expander>
+  </DataTemplate>
+</ResourceDictionary>

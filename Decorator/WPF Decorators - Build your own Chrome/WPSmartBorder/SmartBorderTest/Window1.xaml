@@ -1,0 +1,90 @@
+﻿<Window x:Class="SmartBorderTest.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:WPD="clr-namespace:WiredPrairie.Decorators;assembly=WiredPrairie.Decorators" 
+    Title="SmartBorderTest" Height="500" Width="600" Background="Black"
+    >
+
+  <Window.Resources>
+    <SolidColorBrush x:Key="OuterGlowBrush" Color="Yellow" Opacity=".8" />
+    <ControlTemplate TargetType="{x:Type Button}" x:Key="ShinyButtonTemplate">
+      <WPD:SmartBorder RenderIsPressed="{TemplateBinding IsPressed}" Background="{TemplateBinding Background}" RenderIsMouseOver="{TemplateBinding IsMouseOver}"
+                       CornerRadius="4"
+                       OuterGlowBrush="{DynamicResource OuterGlowBrush}">
+        <ContentPresenter 
+          x:Name="ContentPresenter" 
+          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+          Content="{TemplateBinding Content}" 
+          ContentTemplate="{TemplateBinding ContentTemplate}" 
+          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+          Margin="{TemplateBinding Padding}"
+          />
+      </WPD:SmartBorder>
+    </ControlTemplate>
+
+    <Style x:Key="ShinyButtonMiniLabelStyle" TargetType="{x:Type Label}">
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Margin" Value="10, 0, 0, 0" />
+      <Setter Property="FontWeight" Value="Normal" />
+      <Setter Property="Opacity" Value="0.8" />
+    </Style>
+
+    <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
+      <Style.Resources>
+        <Style TargetType="{x:Type Label}">
+          <Setter Property="Foreground" Value="White" />
+        </Style>
+      </Style.Resources>
+      <Setter Property="Template" Value="{DynamicResource ShinyButtonTemplate}" />
+      <Setter Property="Margin" Value="0, 10, 0, 10" />
+      <Setter Property="FontFamily" Value="Tahoma" />
+      <Setter Property="FontSize" Value="20" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="Background" Value="Orange" />
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+      <Setter Property="Padding" Value="10,0,0,0" />
+      <Style.Triggers>
+        <Trigger Property="Button.IsPressed" Value="True" >
+          <Setter Property="Padding" Value="11,1,-1,-1" />
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+  </Window.Resources>
+    <Grid>
+      <StackPanel Margin="10" >
+        <Button Background="Aqua">
+          <StackPanel HorizontalAlignment="Left">
+            <Label>Big Label</Label>
+            <Label Style="{DynamicResource ShinyButtonMiniLabelStyle}">Small Label</Label>
+          </StackPanel>
+        </Button>
+        <Button Background="DarkGreen">
+          <StackPanel HorizontalAlignment="Left">
+            <Label>Big Label</Label>
+            <Label Style="{DynamicResource ShinyButtonMiniLabelStyle}">Small Label</Label>
+          </StackPanel>
+        </Button>
+        <Button Background="Purple">
+          <StackPanel HorizontalAlignment="Left">
+            <Label>Big Label</Label>
+            <Label Style="{DynamicResource ShinyButtonMiniLabelStyle}">Small Label</Label>
+          </StackPanel>
+        </Button>
+        <Button Background="Crimson">
+          <StackPanel HorizontalAlignment="Left">
+            <Label>Big Label</Label>
+            <Label Style="{DynamicResource ShinyButtonMiniLabelStyle}">Small Label</Label>
+          </StackPanel>
+        </Button>
+        <Button Background="DarkOrchid">
+          <StackPanel HorizontalAlignment="Left">
+            <Label>Big Label</Label>
+            <Label Style="{DynamicResource ShinyButtonMiniLabelStyle}">Small Label</Label>
+          </StackPanel>
+        </Button>
+      </StackPanel>
+    </Grid>
+</Window>

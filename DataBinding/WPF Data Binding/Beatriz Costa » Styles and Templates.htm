@@ -1,0 +1,1161 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0036)http://www.beacosta.com/blog/?cat=11 -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Beatriz Costa » Styles and Templates</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><!-- Editable Meta Tags -->
+<META content="" name=description>
+<META content="" name=keywords>
+<META content="Sreejith - GFXedit.com" name=author>
+<META content="Your Name" name=copyright>
+<META content="WordPress 2.2.2" name=generator>
+<META content=index,follow name=robots><!-- Meta Tags End--><!-- Style Sheet -->
+<STYLE type=text/css media=screen>@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</STYLE>
+<!-- Style Sheet End --><!-- Includes -->
+<SCRIPT src="" type=text/javascript></SCRIPT>
+
+<SCRIPT src="" type=text/javascript></SCRIPT>
+<!-- End Includes --><!-- Feed and Ping URLS--><LINK title="RSS 2.0" 
+href="http://www.beacosta.com/blog/?feed=rss2" type=application/rss+xml 
+rel=alternate><LINK title="RSS .92" 
+href="http://www.beacosta.com/blog/?feed=rss" type=text/xml rel=alternate><LINK 
+title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom" 
+type=application/atom+xml rel=alternate><LINK 
+href="http://www.beacosta.com/blog/xmlrpc.php" rel=pingback><!--?php wp_get_archives('type=monthly&format=link'); ?--><LINK 
+title=RSD href="http://www.beacosta.com/blog/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</SCRIPT>
+
+<STYLE type=text/css>.comment {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 8px; PADDING-BOTTOM: 4px; MARGIN: 6px 3px 3px; PADDING-TOP: 4px; POSITION: relative; BACKGROUND-COLOR: #fff
+}
+.odd {
+	BACKGROUND-COLOR: #f8f8f8
+}
+.comment DIV {
+	POSITION: relative
+}
+.comment .comment IMG {
+	MARGIN: 0px
+}
+.comment .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png); OVERFLOW: hidden; WIDTH: 13px; HEIGHT: 13px
+}
+.collapsed .collapseicon {
+	BACKGROUND-IMAGE: url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png)
+}
+.comment .reply {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 0px; FONT-SIZE: 80%; PADDING-BOTTOM: 6px; PADDING-TOP: 0px; TEXT-ALIGN: right
+}
+.comment {
+	BORDER-RIGHT: #ddd 1px solid; BORDER-TOP: #ddd 1px solid; MARGIN-TOP: 10px; BORDER-LEFT: #ddd 1px solid; BORDER-BOTTOM: #ddd 1px solid
+}
+INPUT#subscribe {
+	WIDTH: auto
+}
+.comment .body .content {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; OVERFLOW: auto; WIDTH: 100%; PADDING-TOP: 0px
+}
+.comment .title abbr {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.collapsed .body {
+	DISPLAY: none
+}
+.collapsed .comment {
+	DISPLAY: none
+}
+#commentform TEXTAREA {
+	WIDTH: 97%
+}
+</STYLE>
+<!-- End Feed and Ping URLS--></HEAD>
+<BODY>
+<DIV id=container>
+<DIV id=banner>
+<H1><A title="Beatriz Costa" accessKey=1 
+href="http://www.beacosta.com/blog">Beatriz Costa</A></H1>
+<H2 title="WPF Data Binding">WPF Data Binding</H2></DIV>
+<DIV id=center>
+<DIV class=content>
+<DIV class=post>
+<DIV class=date>May 8, 2007</DIV>
+<H2 id=post-41><A id=postTitle 
+title="How can I update an explicit binding within a template?" 
+href="http://www.beacosta.com/blog/?p=41" rel=bookmark>How can I update an 
+explicit binding within a template?</A></H2>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » Styles and Templates_files/38mix.bmp" border=0></P>
+<P><SPAN id=text>Mix07 in Vegas was awesome! I always get pumped up when I meet 
+new customers that are using WPF and loving it! It gives me fuel to come back to 
+rainy Seattle with a smile and extra energized to do my absolute best for 
+WPF!</SPAN></P>
+<P><SPAN id=text>In today’s sample, I have a ListBox with editable data. When I 
+change the data of one of the items, I want that to be reflected in the source, 
+as usual. However, this time I set my Binding’s UpdateSourceTrigger to Explicit, 
+which means I need to make that update by calling the UpdateSource() method on 
+BindingExpression through code. Unfortunately, getting a handle to the 
+BindingExpression in a ListBox scenario is a little tricky with the current bits 
+of WPF, which is why I decided to write this post.</SPAN></P>
+<P><SPAN id=text>I will start with a quick explanation of two basic concepts, 
+which are core to the understanding of this problem: Binding Mode and 
+UpdateSourceTrigger. If this is too basic for you, you can skip the next couple 
+of sections and safely jump to “<A 
+href="http://www.beacosta.com/blog/?cat=11#UpdatingExplicitBindings">Updating 
+Explicit Bindings</A>.”</SPAN></P>
+<P><SPAN id=text><STRONG>Binding Mode</STRONG></SPAN></P>
+<P><SPAN id=text>WPF Data Binding supports five binding modes (which you can set 
+by using the Mode property of Binding):</SPAN></P>
+<P><SPAN id=text>- One way - The data flows from the source to the target only. 
+If you add a Binding to a TextBlock’s Text property and don’t specify the Mode, 
+it will be one way by default.</SPAN></P>
+<P><SPAN id=text>- Two way - The data flows from the source data to the target 
+UI, and the other way around. A Binding on a TextBox’s Text property without the 
+Mode specified is two way by default: changes in the source are reflected in the 
+TextBox, and changes typed into the TextBox are also propagated back to the 
+source.</SPAN></P>
+<P><SPAN id=text>- One time - Like one way, but the UI doesn’t listen to change 
+notifications in the source. You may want to consider using this mode if your 
+source doesn’t support property change notifications. If you don’t care about 
+changes in the source, setting your binding to one time will make it a little 
+more performant.</SPAN></P>
+<P><SPAN id=text>- One way to source - The opposite of one way: the data flows 
+only from the target UI to the source. I have yet to see a good use of this 
+binding mode - the scenarios that require it are quite rare.</SPAN></P>
+<P><SPAN id=text>- Default - This is the same as not setting the Mode property 
+at all. The Binding engine will look at the default mode specified at the time 
+the DependencyProperty was registered, and will use that. Therefore, setting the 
+Mode to Default will not mean the same thing for all DependencyProperties. For 
+example, as I mentioned before, TextBlock’s Text has a default mode of one way, 
+while the TextBox’s Text has a default of two way.</SPAN></P>
+<P><SPAN id=text>But how do we know the default Binding Mode of a 
+DependencyProperty? How can we set a default Binding Mode when we define a new 
+DependencyProperty?</SPAN></P>
+<P><SPAN id=text><A href="http://www.aisto.com/roeder/dotnet/">.NET 
+Reflector</A> is your friend. With reflector, search for TextBox and look at the 
+source for the static constructor (.cctor()). Here, you will be able to find the 
+code used for registering the TextProperty DP:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;TextProperty = 
+DependencyProperty.Register(”Text”, typeof(string), typeof(TextBox), new 
+FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.Journal 
+| FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new 
+PropertyChangedCallback(TextBox.OnTextPropertyChanged), new 
+CoerceValueCallback(TextBox.CoerceText), true, 
+UpdateSourceTrigger.LostFocus));</SPAN></P>
+<P><SPAN id=text>Notice that a parameter is passed to the Register method 
+indicating the default Binding Mode: 
+FrameworkPropertyMetadataOptions.BindsTwoWayByDefault. If you use reflector to 
+look at the registration for TextBlock’s Text DP, you will see that no such 
+value is passed, in which case we assume the binding is one way by 
+default.</SPAN></P>
+<P><SPAN id=text>It is not possible to make the binding one way to source or one 
+time by default (we couldn’t think of any compelling user scenarios that would 
+justify increasing the complixity of the API). However, it is possible to say 
+that you don’t want the DP to support data binding at all - to do this, simply 
+pass FrameworkPropertyMetadataOptions.NotDataBindable as a parameter.</SPAN></P>
+<P><SPAN id=text><STRONG>Binding UpdateSourceTrigger</STRONG></SPAN></P>
+<P><SPAN id=text>In the case of a binding that propagates values from the target 
+to the source (Mode = TwoWay or OneWayToSource), we allow you to specify how you 
+want that update to be triggered. There are three ways to cause the changes to 
+propagate to the source (which you can set by using the UpdateSourceTrigger 
+property of Binding):</SPAN></P>
+<P><SPAN id=text>- LostFocus - The value will be updated when the element loses 
+focus. This is the default behavior for TextBox (notice that 
+UpdateSourceTrigger.LostFocus is specified when the Text dependency property was 
+registered). When you type something in a TextBox, that value will be updated to 
+the source when you change focus to some other element.</SPAN></P>
+<P><SPAN id=text>- PropertyChanged - The value is updated every time it changes. 
+In the TextBox scenario, the value will be updated every time you type a new 
+character.</SPAN></P>
+<P><SPAN id=text>- Explicit - The target value if not updated until you 
+explicitly call “UpdateSource()” on the BindingExpression.</SPAN></P>
+<P><SPAN id=text><STRONG>Updating Explicit Bindings</STRONG></SPAN></P>
+<P><SPAN id=text>In today’s sample, I started by defining a source object 
+(MySource) with a property Employees of type 
+ObservableCollection&lt;Employee&gt;. Employee is a class that contains two 
+properties: Name and Title, both of type string. The code for defining this 
+source is straight forward, so I won’t show it here.</SPAN></P>
+<P><SPAN id=text>Then I added a ListBox to my XAML file that is bound to the 
+Employees collection, and I added a Style for its items:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”nonEditableEmployee”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Margin=”2″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+FontWeight=”Bold” Text=”{Binding 
+Path=Name}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Title}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”editableEmployee”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Margin=”2″ 
+&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+FontWeight=”Bold” Text=”{Binding Path=Name}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBox 
+Text=”{Binding Path=Title, UpdateSourceTrigger=Explicit}” Width=”130″ 
+x:Name=”tb”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style 
+TargetType=”ListBoxItem” 
+x:Key=”lbiStyle”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Height” Value=”40″ 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”ContentTemplate” Value=”{StaticResource nonEditableEmployee}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”IsSelected” 
+Value=”True”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”ContentTemplate” Value=”{StaticResource editableEmployee}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{Binding Path=Employees}” ItemContainerStyle=”{StaticResource 
+lbiStyle}” IsSynchronizedWithCurrentItem=”True” (…) 
+Name=”lb”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Content=”Submit” 
+Click=”Submit” (…) /&gt;</SPAN></P>
+<P><SPAN id=text>In the Style for ListBoxItems, I am specifying that I want the 
+DataTemplate applied to each of the items to be “nonEditableEmployee” except 
+when the item is selected, in which case I want to use “editableEmployee”. Both 
+DataTemplates display the Name and Title of the Employee, the only difference is 
+that “editableEmployee” displays the Title using a TextBox instead of a 
+TextBlock. So, when the user selects an employee in the ListBox, that employee’s 
+Title becomes editable. </SPAN></P>
+<P><SPAN id=text>Below the ListBox I have a Submit Button. If I click on this 
+Button after editing some data in the ListBox, I want that data to be submitted 
+to the source. However, if I change the data in the ListBox and don’t click on 
+the Button, I don’t want the source to be modified. Notice that I set the 
+UpdateSourceTrigger of editable Title’s Binding to Explicit.</SPAN></P>
+<P><SPAN id=text>To achieve this behavior, I need to call the UpdateSource() on 
+the BindingExpression’s instance. Getting this instance is a little tricky, so 
+let’s think about it for a minute. The best way to think about this is by 
+starting from the end, and walking backwards. Utimately, this is the code I want 
+to write (assuming “be” is the BindingExpression instance, and “tb” is the 
+TextBox’s instance):</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;BindingExpression be = 
+tb.GetBindingExpression(TextBox.TextProperty);<BR>&nbsp;&nbsp;&nbsp;&nbsp;be.UpdateSource();</SPAN></P>
+<P><SPAN id=text>As you can see, in order to get the BindingExpression for the 
+Binding in the TextBox’s Text property, I need to have a handle to that TextBox. 
+Traversing the DataTemplate to get to the TextBox won’t give me the actual 
+instance, it will only give me the FrameworkElementFactory used to create the 
+TextBox instance. Fortunately, DataTemplate has a FindName method that, given 
+the instance of the object the template is applied to, will give you a 
+particular named part within its visual tree. So, assuming “cp” is the object 
+the DataTemplate is applied to, this is the code I would like to write to get 
+the actual TextBox:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;DataTemplate dt = 
+(DataTemplate)(this.Resources[”editableEmployee”]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;TextBox 
+tb = (TextBox)(dt.FindName(”tb”, cp));</SPAN></P>
+<P><SPAN id=text>We’re getting close. The next step is to figure out how to get 
+to the element the DataTemplate is applied to. A DataTemplate is always applied 
+to a ContentPresenter, which is an element present in the visual tree of every 
+ContentControl. Since every item in the ListBox is wrapped with a ListBoxItem 
+(which is a ContentControl), I simply have to get to the ContentPresenter 
+instance in the ControlTemplate for the currently selected ListBoxItem. Here is 
+what I did:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;Employee currentEmployee = 
+(Employee)(lb.Items.CurrentItem);<BR>&nbsp;&nbsp;&nbsp;&nbsp;ListBoxItem lbi = 
+(ListBoxItem)(lb.ItemContainerGenerator.ContainerFromItem(currentEmployee));<BR>&nbsp;&nbsp;&nbsp;&nbsp;ContentPresenter 
+cp = GetObjectOfTypeInVisualTree&lt;ContentPresenter&gt;(lbi);</SPAN></P>
+<P><SPAN id=text>“GetObjectOfTypeInVisualTree” is a simple recursive method that 
+walks the visual tree of an object (in this case, the current ListBoxItem) and 
+returns the first element matching the type specified by the generic parameter 
+(in this case ContentPresenter). Here is the complete code:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;private void Submit(object sender, 
+RoutedEventArgs 
+e)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employee 
+currentEmployee = 
+(Employee)(lb.Items.CurrentItem);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ListBoxItem 
+lbi = 
+(ListBoxItem)(lb.ItemContainerGenerator.ContainerFromItem(currentEmployee));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ContentPresenter 
+cp = 
+GetObjectOfTypeInVisualTree&lt;ContentPresenter&gt;(lbi);<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DataTemplate 
+dt = 
+(DataTemplate)(this.Resources[”editableEmployee”]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TextBox 
+tb = (TextBox)(dt.FindName(”tb”, 
+cp));<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BindingExpression 
+be = 
+tb.GetBindingExpression(TextBox.TextProperty);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be.UpdateSource();<BR>&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;private 
+T GetObjectOfTypeInVisualTree&lt;T&gt;(DependencyObject dpob) where T : 
+DependencyObject<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 
+count = 
+VisualTreeHelper.GetChildrenCount(dpob);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for 
+(int i = 0; i &lt; count; 
+i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DependencyObject 
+child = VisualTreeHelper.GetChild(dpob, 
+i);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T 
+childAsT = child as 
+T;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(childAsT != 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+childAsT;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;childAsT&nbsp;= 
+&nbsp;GetObjectOfTypeInVisualTree&lt;T&gt;(child);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp; if(childAsT != 
+null)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+return 
+childAsT;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+null;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>This code is not only useful for submitting explicit bindings; 
+it is useful for any scenario where you need to get to the instance of some 
+element in your DataTemplate. It should be pretty easy to tweak this sample to 
+suit your needs.</SPAN></P>
+<P><SPAN id=text>We do realize that this scenario is quite hard to implement, 
+and we know it’s not that uncommon. We would like to make it easier, but 
+unfortunately we will not be able to make that happen in the next release. At 
+least for now you have a sample solution that should help you solve most 
+scenarios. Hopefully we will have a chance to fix this in the platform in the 
+near future.</SPAN></P>
+<P><SPAN id=text>Below is a screenshot of the final application. The ListBox on 
+the right is bound to the same source. I added it to this sample so you can see 
+when the source changes.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » Styles and Templates_files/38UpdateExplicit.png" 
+border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/38UpdateExplicit.zip">Here</A> you can find 
+the VS project with this sample code. This works with RTM WPF bits. </SPAN></P>
+<P><SPAN id=text>Update September 18, 2007: <A 
+href="http://www.beacosta.com/Zips/38UpdateExplicitOrcasBeta2.zip">Here</A> you 
+can find this project working with Orcast Beta 2 bits</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in Styles and Templates" 
+href="http://www.beacosta.com/blog/?cat=11" rel=category>Styles and 
+Templates</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on How can I update an explicit binding within a template?" 
+href="http://www.beacosta.com/blog/?p=41#comments">Comments (23)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=41"
+    dc:identifier="http://www.beacosta.com/blog/?p=41"
+    dc:title="How can I update an explicit binding within a template?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=41" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>April 1, 2007</DIV>
+<H2 id=post-40><A id=postTitle title="The power of Styles and Templates in WPF" 
+href="http://www.beacosta.com/blog/?p=40" rel=bookmark>The power of Styles and 
+Templates in WPF</A></H2>
+<P><SPAN id=text>In WPF, there is a very clean separation between the behavior 
+of a Control and the look of a Control. For example, a Button’s behavior 
+consists only of listening to Click events, but its look can be anything - you 
+can make a Button look like an arrow, a fish, or whatever else suits your 
+application. Redefining the look of a Control is very easy to do in VS with 
+Styles and Templates, and even easier if you have Blend. In this sample, I will 
+show you how I redefined the look of a ListBox representing a list of 
+planets.</SPAN></P>
+<P><SPAN id=text>I started out by implementing a data source with planets and 
+the sun. I defined a class called “SolarSystemObject” with several properties 
+(Name, Orbit, Diameter, Image and Details). I overrode the ToString(…) method in 
+this class to return the name of the solar system object. Then I added a class 
+called “SolarSystem” with a property called “SolarSystemObjects” of type 
+ObservableCollection&lt;SolarSystemObject&gt;. In the constructor for the 
+“SolarSystem” class, I added the sun and the nine planets to the 
+“SolarSystemObjects” collection.</SPAN></P>
+<P><SPAN id=text>Once I had my source defined, I was ready to add a ListBox to 
+the Window, bound to this collection:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:SolarSystem 
+x:Key=”solarSystem” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{Binding Source={StaticResource solarSystem}, 
+Path=SolarSystemObjects}” /&gt;</SPAN></P>
+<P><SPAN id=text>The ListBox displays the planets, but visually this is still a 
+little plain:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » Styles and Templates_files/37PlanetsListBox1.png" 
+border=0></P>
+<P><SPAN id=text>At this point, I started brainstorming ways to display the 
+planets in a more realistic way - my goal was to achieve a look similar to the 
+solar system diagrams in school books. The first step was to change the layout 
+of the ListBoxItems. The default layout for a ListBox is a StackPanel, which 
+causes the ListBoxItems to be displayed one above another (to be more precise, 
+it’s a VirtualizingStackPanel, which adds virtualization to the traditional 
+StackPanel). In order to display the planets the way I wanted, I needed a 
+Canvas, which allows me to position the items within it by specifying the number 
+of pixels to the Top and Left of that Canvas. There is an ItemsPanel property on 
+ListBox of type ItemsPanelTemplate that can be used to change the layout of the 
+ListBox, which is what I used in my sample. Here is how I did that:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style 
+TargetType=”ListBox”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”ItemsPanel”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ItemsPanelTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Canvas 
+Width=”590″ Height=”590″ Background=”Black” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ItemsPanelTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</SPAN></P>
+<P><SPAN id=text>My next step was to define the look of each planet, which I did 
+by using a DataTemplate. I decided to represent each planet by its image, with a 
+white ellipse simulating its orbit around the sun. I also added a tooltip with 
+more information about the planet, which appears when you hover over the 
+image.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate DataType=”{x:Type 
+local:SolarSystemObject}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Canvas 
+Width=”20″ Height=”20″ 
+&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Ellipse<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Canvas.Left=”{Binding 
+Path=Orbit, Converter={StaticResource convertOrbit}, 
+ConverterParameter=-1.707}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Canvas.Top=”{Binding 
+Path=Orbit, Converter={StaticResource convertOrbit}, 
+ConverterParameter=-0.293}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width=”{Binding 
+Path=Orbit, Converter={StaticResource convertOrbit}, 
+ConverterParameter=2}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Height=”{Binding 
+Path=Orbit, Converter={StaticResource convertOrbit}, 
+ConverterParameter=2}”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stroke=”White”<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StrokeThickness=”1″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image 
+Source=”{Binding Path=Image}” Width=”20″ 
+Height=”20″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image.ToolTip&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Width=”250″ 
+TextBlock.FontSize=”12″&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+FontWeight=”Bold” Text=”{Binding Path=Name}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Orientation=”Horizontal”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”Orbit: ” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Orbit}” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=” AU” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Details}” 
+TextWrapping=”Wrap”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Image.ToolTip&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Image&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Canvas&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style 
+TargetType=”ListBoxItem”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Canvas.Left” Value=”{Binding Path=Orbit, Converter={StaticResource 
+convertOrbit}, 
+ConverterParameter=0.707}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Canvas.Bottom” Value=”{Binding Path=Orbit, Converter={StaticResource 
+convertOrbit}, 
+ConverterParameter=0.707}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</SPAN></P>
+<P><SPAN id=text>As you can see in the template and style above, the properties 
+that specify the position of the ListBoxItem and the position and size of the 
+Ellipse depend on the orbit of the planet, and all use the same converter with 
+different parameters. The converter’s job is to transform distances between 
+solar system objects to distances in device independent pixels within the 
+canvas. My original implementation of this converter simply multiplied the orbit 
+value by a constant, but I found that the inner planets were too crowded 
+together, so I changed the math a little to make it non-linear. I also decided 
+to have the converter take a parameter that scales the result by a factor, so I 
+could reuse this logic.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class ConvertOrbit : 
+IValueConverter<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object Convert(object value, Type targetType, object parameter, CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double 
+orbit = 
+(double)value;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double 
+factor = 
+System.Convert.ToDouble(parameter);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+Math.Pow(orbit / 40, 0.4) * 770 * 
+factor;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object ConvertBack(object value, Type targetType, object parameter, CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw 
+new NotSupportedException(”This method should never be 
+called”);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>If you run the application now, you will see that the planets 
+are all correctly positioned in relation to the sun. If you hover over them, you 
+will get more detailed information about the planet. If you click on a planet, 
+the default ListBoxItem template assigns a blue background to the selected item, 
+which shows a little bit around the image. This is not the effect I was looking 
+for, so I decided to change the look of the selected item.</SPAN></P>
+<P><SPAN id=text>In order to change that style, I figured it would be easier to 
+use Expression Blend to look at the default template, and then tweak it to the 
+look I had in mind. I started by selecting the ListBox in Blend, then I went to 
+the “Object” menu, selected “Edit Other Styles”, “Edit ItemContainerStyle”, and 
+“Edit a Copy”. Then I gave the style a name, and clicked “OK”. If you go to the 
+XAML tab at this point, you will see the full default Style for the 
+ListBoxItems, which includes the following template:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Template”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate 
+TargetType=”{x:Type 
+ListBoxItem}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Border 
+SnapsToDevicePixels=”true” x:Name=”Bd” Background=”{TemplateBinding Background}” 
+BorderBrush=”{TemplateBinding BorderBrush}” BorderThickness=”{TemplateBinding 
+BorderThickness}” Padding=”{TemplateBinding 
+Padding}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentPresenter 
+SnapsToDevicePixels=”{TemplateBinding SnapsToDevicePixels}” 
+HorizontalAlignment=”{TemplateBinding HorizontalContentAlignment}” 
+VerticalAlignment=”{TemplateBinding 
+VerticalContentAlignment}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Border&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”IsSelected” 
+Value=”true”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Background” TargetName=”Bd” Value=”{DynamicResource {x:Static 
+SystemColors.HighlightBrushKey}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Foreground” Value=”{DynamicResource {x:Static 
+SystemColors.HighlightTextBrushKey}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MultiTrigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MultiTrigger.Conditions&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Condition 
+Property=”IsSelected” 
+Value=”true”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Condition 
+Property=”Selector.IsSelectionActive” 
+Value=”false”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/MultiTrigger.Conditions&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Background” TargetName=”Bd” Value=”{DynamicResource {x:Static 
+SystemColors.ControlBrushKey}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Foreground” Value=”{DynamicResource {x:Static 
+SystemColors.ControlTextBrushKey}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/MultiTrigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”IsEnabled” 
+Value=”false”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Foreground” Value=”{DynamicResource {x:Static 
+SystemColors.GrayTextBrushKey}}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;</SPAN></P>
+<P><SPAN id=text>Using this as a base, I came up with a simpler template that 
+adds a yellow ellipse around a planet when selected:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style 
+TargetType=”ListBoxItem”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Template”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate 
+TargetType=”{x:Type 
+ListBoxItem}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Grid&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Ellipse 
+x:Name=”selectedPlanet” Margin=”-10″ 
+StrokeThickness=”2″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentPresenter 
+SnapsToDevicePixels=”{TemplateBinding SnapsToDevicePixels}” 
+HorizontalAlignment=”{TemplateBinding HorizontalContentAlignment}” 
+VerticalAlignment=”{TemplateBinding 
+VerticalContentAlignment}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Grid&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”IsSelected” 
+Value=”true”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Stroke” TargetName=”selectedPlanet” 
+Value=”Yellow”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</SPAN></P>
+<P><SPAN id=text>Below is a screenshot of the final application. If you hover 
+over the images of the planets, you will get more information about them. If you 
+click on a planet, a yellow ellipse will encircle it.</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » Styles and Templates_files/37PlanetsListBox2.png" 
+border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/37PlanetsListBox.zip">Here</A> you can find 
+the VS project with this sample code. This works with RTM WPF bits. </SPAN></P>
+<P><SPAN id=text>This sample is part of a talk I presented last Tuesday, in an 
+event here at Microsoft in Redmond where several customers came to learn more 
+about WPF. It was a lot of fun to talk directly to customers and reply to their 
+questions. <A 
+href="http://www.beacosta.com/Zips/37DataBindingPresenter.zip">Here</A> you can 
+find my slides for this talk (all done in WPF).</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in ListBox" href="http://www.beacosta.com/blog/?cat=14" 
+rel=category>ListBox</A>, <A title="View all posts in Styles and Templates" 
+href="http://www.beacosta.com/blog/?cat=11" rel=category>Styles and 
+Templates</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A title="Comment on The power of Styles and Templates in WPF" 
+href="http://www.beacosta.com/blog/?p=40#comments">Comments (16)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=40"
+    dc:identifier="http://www.beacosta.com/blog/?p=40"
+    dc:title="The power of Styles and Templates in WPF"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=40" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>June 27, 2006</DIV>
+<H2 id=post-29><A id=postTitle 
+title="How do I display some items differently based on one of their properties?" 
+href="http://www.beacosta.com/blog/?p=29" rel=bookmark>How do I display some 
+items differently based on one of their properties?</A></H2>
+<P><SPAN id=text>I had a blast at TechEd. It was great to connect with our 
+customers face to face, hear what everyone had to say about Avalon, and bring 
+the praise and feedback to the team. I am very proud of the technology we are 
+building and I get really thrilled when I hear success stories from our 
+customers. </SPAN></P>
+<P><SPAN id=text>Our PMs are all amazing speakers and their talks were very well 
+received by the audience. <A href="http://blogs.msdn.com/okoboji/">Kevin</A> in 
+particular did a great job at explaining the ins and outs of data binding, with 
+a little humor between the lines (soooo like Kevin…). I was really pleased to 
+see the audience clapping after he showed off certain features, such as binding 
+to sub-properties and indexers.</SPAN></P>
+<P><SPAN id=text>The sample for this post displays a few pictures from TechEd 
+with the help of the master-detail data binding feature, which I already talked 
+about in a <A 
+href="http://www.beacosta.com/2005/11/master-detail-scenario.html">previous 
+post</A>. I will explain in this post how you can use a DataTrigger to change 
+the way data items are displayed based on their properties. In particular, I am 
+going to display a special visual tag with Kevin’s name for all pictures of him, 
+as you can see in the screenshot at the end of this post. </SPAN></P>
+<P><SPAN id=text>My first step was to tag all the pictures I wanted to display. 
+In order to do this, I right clicked on each of them, went to Properties - 
+Summary and filled out the Title and Keywords fields. I added different keywords 
+to the pictures, but the one I care about for this sample is “Kevin”, which I 
+added to all pictures of Kevin. </SPAN></P>
+<P><SPAN id=text>Since I added all the information to the picture’s metadata, my 
+data source is really simple:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class TechEdPictures : 
+ObservableCollection&lt;Uri&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+TechEdPictures()<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.Add(new 
+Uri(@”Pictures\TechEd 004.jpg”, 
+UriKind.Relative));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.Add(new 
+Uri(@”Pictures\TechEd 022.jpg”, 
+UriKind.Relative));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>I’m not going to explain master-detail again, but here is the 
+markup I used to get the ContentControl’s Content to change when the ListBox’s 
+selection (and current item) changes:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel Orientation=”Horizontal” 
+DataContext=”{StaticResource 
+source}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{Binding}” ItemTemplate=”{StaticResource picSmall}” Height=”400″ 
+IsSynchronizedWithCurrentItem=”True” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentControl 
+Content=”{Binding Path=/}” ContentTemplate=”{StaticResource 
+picBig}”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;</SPAN></P>
+<P><SPAN id=text>The template for the small images in the ListBox is also pretty 
+simple:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”picSmall”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image 
+Source=”{Binding}” Width=”100″ 
+Margin=”2″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</SPAN></P>
+<P><SPAN id=text>Next I want to display Kevin’s name everytime I bind to an 
+image that contains “Kevin” in the keywords. I started by creating a TextBlock 
+with the text “Kevin”, added a white background with an opacity, rotated it and 
+aligned it to the right of the image. Notice that both elements are inside a 
+Grid. Because I didn’t specify a row and column for the Image and the TextBlock, 
+they will by default appear in the first row and column, and overlap.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”picBig”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Margin=”10, 0, 0, 0″ Width=”300″ 
+&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Grid&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image 
+Source=”{Binding}” 
+x:Name=”img”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Background=”White” Opacity=”0.7″ Text=”** Kevin **” Margin=”5″ FontWeight=”Bold” 
+FontSize=”30″ TextAlignment=”Center” HorizontalAlignment=”Right” 
+Visibility=”Hidden” 
+x:Name=”tb”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock.LayoutTransform&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;RotateTransform 
+Angle=”90″ 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TextBlock.LayoutTransform&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TextBlock&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Grid&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding ElementName=img, Path=Source.Metadata.Title}” TextWrapping=”Wrap” 
+Margin=”10″ 
+Height=”100″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</SPAN></P>
+<P><SPAN id=text>And now comes the interesting part. Notice that I set the 
+Visibility of the TextBlock to Hidden. I need some logic that will set it to 
+Visible when the image contains “Kevin” in the keywords - some sort of trigger. 
+Avalon contains three types of triggers:</SPAN></P>
+<P><SPAN id=text>- EventTriggers - Used to control animations when a certain 
+event occurs.<BR>- Triggers - Used to set properties when a property of a UI 
+element has a certain value.<BR>- DataTriggers - Used to set properties when the 
+result of a binding has a particular value.</SPAN></P>
+<P><SPAN id=text>In this case, we want to trigger based on the Metadata of the 
+Image’s Source, which can be easily expressed with an ElementName binding, so we 
+should use a DataTrigger.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”picBig”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel 
+Margin=”10, 0, 0, 0″ Width=”300″ 
+&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTrigger 
+Binding=”{Binding ElementName=img, Path=Source.Metadata.Keywords, 
+Converter={StaticResource isInKeywords}, ConverterParameter=Kevin}” 
+Value=”True”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Visibility” Value=”Visible” TargetName=”tb” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTrigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</SPAN></P>
+<P><SPAN id=text>Keep in mind that Metadata.Keywords returns a 
+ReadOnlyCollection&lt;string&gt; and the keyword could be in any position in the 
+collection. This makes things a little more complicated, because DataTriggers 
+can only trigger when the result of the binding is exactly equal to the value 
+you specify. The trick to make DataTriggers support any logic you want is to add 
+a Converter containing that logic. In this case, my Converter returns True if 
+the string “Kevin” is part of the metadata keywords, and False otherwise. When 
+the result of this conversion equals the trigger’s Value (True), the trigger 
+will set the Visibility property of the TextBlock - which has the name “tb” - to 
+Visible.</SPAN></P>
+<P><SPAN id=text>I did not want to hardcode the string “Kevin” in the Converter 
+though; I wanted it to be generic enough to handle any string. I accomplished 
+this by setting the ConverterParameter property in the binding to “Kevin”, as 
+you can see in the markup above.</SPAN></P>
+<P><SPAN id=text>Here is the code for the Converter:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class IsInKeywords : 
+IValueConverter<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+object Convert(object value, Type targetType, object parameter, CultureInfo 
+culture)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ReadOnlyCollection&lt;string&gt; 
+keywords = value as 
+ReadOnlyCollection&lt;string&gt;;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+keywords.Contains(parameter.ToString());<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text>Customers frequently ask, “How can I trigger when the Binding 
+and Value are *not* equal?” Or, in case the binding is an integer, “How can I 
+trigger when the result of the binding is bigger than 10?” The trick I show here 
+with the Converter can be used for any of these scenarios.</SPAN></P>
+<P><SPAN id=text>Here is a screenshot of the complete application. And if you 
+don’t care about the technology, you should still download it to look at the 
+pictures. <IMG class=wp-smiley alt=:) 
+src="Beatriz Costa » Styles and Templates_files/icon_smile.gif"> </SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » Styles and Templates_files/26DataTriggerSample.png" 
+border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/26DataTriggerSample.zip">Here</A> you can 
+find the VS project with this sample code. This works with Beta2 WPF bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in ListBox" href="http://www.beacosta.com/blog/?cat=14" 
+rel=category>ListBox</A>, <A title="View all posts in Styles and Templates" 
+href="http://www.beacosta.com/blog/?cat=11" rel=category>Styles and 
+Templates</A>, <A title="View all posts in Master-detail" 
+href="http://www.beacosta.com/blog/?cat=10" rel=category>Master-detail</A>, <A 
+title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on How do I display some items differently based on one of their properties?" 
+href="http://www.beacosta.com/blog/?p=29#comments">Comments (4)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=29"
+    dc:identifier="http://www.beacosta.com/blog/?p=29"
+    dc:title="How do I display some items differently based on one of their properties?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=29" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>May 7, 2006</DIV>
+<H2 id=post-26><A id=postTitle 
+title="How can I change the way a data item is displayed when the user clicks on it?" 
+href="http://www.beacosta.com/blog/?p=26" rel=bookmark>How can I change the way 
+a data item is displayed when the user clicks on it?</A></H2>
+<P><SPAN id=text>Today I will explain how the RelativeSource FindAncestor works 
+(new in Feb CTP), and how you can use it to change the way a data item is 
+displayed when the user clicks on it.</SPAN></P>
+<P><SPAN id=text>You should use a FindAncestor binding when you want the source 
+of your binding to be an element somewhere up in the tree from the target 
+element. When binding using FindAncestor, the binding engine walks up first the 
+visual tree (when used inside a template), then the logical tree, until it finds 
+an element with the type specified in AncestorType. There is also an 
+AncestorLevel property that allows you to skip elements of that type. For 
+example, if you want to bind to the third element of type ListBoxItem when going 
+up the tree, you would set AncestorType={x:Type ListBoxItem} and 
+AncestorLevel=3, which skips the first two ListBoxItems.</SPAN></P>
+<P><SPAN id=text>But couldn’t we use an ElementName binding to achieve the same 
+result? Certainly, if we have control over the creation of the source item and 
+are able to set a Name on it. In many scenarios, however, Avalon is responsible 
+for creating elements automatically for us, and in this case we can not set 
+their Names. For example, if we data bind a ListBox to a list of data items, 
+Avalon generates the ListBoxItem elements that wrap those items behind the 
+scenes.</SPAN></P>
+<P><SPAN id=text>The following markup shows how to template a data item such 
+that when the corresponding ListBoxItem is selected, the text becomes bold. In 
+this case, I want to find the first ListBoxItem up in the tree from the 
+TextBlock displaying the current data item. I then want to set FontWeight=Bold 
+on the TextBlock if the ListBoxItem’s IsSelected property is true. The only way 
+to bind to that ListBoxItem from within the DataTemplate is by using a 
+FindAncestor binding, with the syntax below:</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGods 
+x:Key=”source” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”dataTemplate”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Name}” Margin=”5,2,5,2″ 
+x:Name=”tb”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTrigger 
+Binding=”{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}” 
+Value=”True”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”FontWeight” Value=”Bold” TargetName=”tb” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTrigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox 
+ItemsSource=”{StaticResource source}” ItemTemplate=”{StaticResource 
+dataTemplate}” Width=”100″/&gt;</SPAN></P>
+<P><SPAN id=text>Here is a screenshot of this application:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » Styles and Templates_files/23AncestorTypeSample.png" 
+border=0></P>
+<P><SPAN id=text>One common scenario is for people to want control over the 
+foreground and background color of the selected item, so I’ll go over some 
+thoughts on this. </SPAN></P>
+<P><SPAN id=text>- You can control the background color of the TextBlock with 
+this method, but this background only takes enough space to display the text. 
+The typical scenario is for people to want control over the ListBoxItem’s 
+background, which can not be changed from within the DataTemplate. If this is 
+your scenario, you have two options: </SPAN></P>
+<P><SPAN id=text>If you want to change the background of all selected items in 
+your window, you can add the following to the Window’s Resources:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;SolidColorBrush x:Key=”{x:Static 
+SystemColors.HighlightBrushKey}” Color=”IndianRed” /&gt;</SPAN></P>
+<P><SPAN id=text>If you want the change to have effect only for this particular 
+ListBox, consider using Sparkle to get the default ControlTemplate for the 
+ListBoxItem. You can then replace the background color in the trigger that’s 
+activated when ListBoxItem.IsSelected=true. Keep in mind that if you hard code 
+the color (instead of using SystemColors keys), it will be the same across all 
+themes, which is usually not what you want.</SPAN></P>
+<P><SPAN id=text>- You can control the TextBlock’s foreground color with this 
+method - simply add the following Setter to the DataTrigger:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter Property=”Foreground” 
+Value=”IndianRed” TargetName=”tb” /&gt;</SPAN></P>
+<P><SPAN id=text>If you already have a ControlTemplate for the ListBoxItem for 
+other reasons, however, you can control the Foreground property there instead. 
+This can be done because the Foreground color of the ListBoxItem is propagated 
+to the TextBlock (Foreground is an inherited DP).</SPAN></P>
+<P><SPAN id=text>Another alternative is to use a Style for the ListBoxItem in 
+the following way:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style TargetType=”{x:Type 
+ListBoxItem}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger 
+Property=”IsSelected” 
+Value=”True”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter 
+Property=”Foreground” Value=”IndianRed” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style.Triggers&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</SPAN></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/23AncestorTypeSample.zip">Here</A> you can 
+find the VS project with this sample code. This works with February CTP WPF 
+bits. </SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in ListBox" href="http://www.beacosta.com/blog/?cat=14" 
+rel=category>ListBox</A>, <A title="View all posts in Styles and Templates" 
+href="http://www.beacosta.com/blog/?cat=11" rel=category>Styles and 
+Templates</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on How can I change the way a data item is displayed when the user clicks on it?" 
+href="http://www.beacosta.com/blog/?p=26#comments">Comments (2)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=26"
+    dc:identifier="http://www.beacosta.com/blog/?p=26"
+    dc:title="How can I change the way a data item is displayed when the user clicks on it?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=26" />
+</rdf:RDF>	-->
+<DIV class=post>
+<DIV class=date>January 13, 2006</DIV>
+<H2 id=post-16><A id=postTitle 
+title="How do I display items in an ItemsControl using different templates?" 
+href="http://www.beacosta.com/blog/?p=16" rel=bookmark>How do I display items in 
+an ItemsControl using different templates?</A></H2>
+<P><SPAN id=text>I will show you two ways to display some items of a data bound 
+collection differently from others. The rule of thumb is straightforward: if you 
+want to differentiate items that are of the same type based on one of their 
+properties, you should use DataTemplateSelector; if your data items are of 
+different types and you want to use the types to differentiate them, then using 
+implicit data templating is a simpler way to do this. </SPAN></P>
+<P><SPAN id=text>Let us consider the scenario where the source collection has 
+elements that are all of the same type. In this case, the goal is to change the 
+way they are displayed based on some property in the data element, and using a 
+DataTemplateSelector is the way to go. In the sample code below, the ListBox is 
+bound to a collection of Places, where Place is an object with properties Name 
+and State. I want places in Washington state to be displayed differently from 
+other places, so I defined two DataTemplates in the resources. Then I wrote a 
+PlaceTemplateSelector that picks the correct DataTemplate based on the State 
+property of a Place. Finally, I instantiated a ListBox whose 
+ItemTemplateSelector DependencyProperty is set to the selector I 
+defined.</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:Places 
+x:Key=”places” /&gt;</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”washingtonTemplate”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Border 
+Background=”Lavender”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Name}” Foreground=”CornFlowerBlue” 
+FontWeight=”Bold”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Border&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate 
+x:Key=”notWashingtonTemplate”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=Name}” Foreground=”DarkSeaGreen” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:PlaceTemplateSelector 
+WashingtonTemplate=”{StaticResource washingtonTemplate}” 
+NotWashingtonTemplate=”{StaticResource notWashingtonTemplate}” 
+x:Key=”placeTemplateSelector” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding 
+Source={StaticResource places}}” ItemTemplateSelector=”{StaticResource 
+placeTemplateSelector}” Margin=”10″/&gt;</SPAN></P>
+<P><SPAN id=text>Here is the code for the PlaceTemplateSelector:</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;public class PlaceTemplateSelector : 
+DataTemplateSelector<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+DataTemplate washingtonTemplate;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+DataTemplate 
+WashingtonTemplate<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get 
+{ return washingtonTemplate; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set 
+{ washingtonTemplate = value; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private 
+DataTemplate notWashingtonTemplate;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+DataTemplate 
+NotWashingtonTemplate<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get 
+{ return notWashingtonTemplate; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set 
+{ notWashingtonTemplate = value; 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public override 
+DataTemplate SelectTemplate(object item, DependencyObject 
+container)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Place 
+place = (Place)item;</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 
+(place.State == 
+“WA”)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+washingtonTemplate;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+notWashingtonTemplate;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></P>
+<P><SPAN id=text><BR>Consider now the scenario where the collection has objects 
+with different types added to it. In this case, the goal is to template items 
+differently depending on their type. In the sample code below, the ListBox is 
+bound to a heterogeneous collection that contains both GreekGod and GreekHero 
+objects.</SPAN></P>
+<P><SPAN 
+id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:GreekGodsAndHeros 
+x:Key=”godsAndHeros” 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding 
+Source={StaticResource godsAndHeros}}” Margin=”10″/&gt;</SPAN></P>
+<P><SPAN id=text>Sure, a DataTemplateSelector could be used to template the 
+items by picking the correct DataTemplate depending on the type of the item 
+passed to the SelectTemplate method, as I have seen a few people do. However, 
+implicit data templating is a better way to do this because it accomplishes the 
+same thing all in xaml (no need for code behind). To use a DataTemplate 
+implicitly, instead of setting its key (with x:Key), I set the DataType property 
+to the type I want it to be applied to.</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate DataType=”{x:Type 
+local:GreekGod}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Grid&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ColumnDefinition 
+Width=”100″/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ColumnDefinition 
+Width=”*”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;RowDefinition 
+Height=”Auto”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=GodName}” Grid.Column=”0″ Grid.Row=”0″ 
+Foreground=”Brown”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=GodDescription}” Grid.Column=”1″ Grid.Row=”0″ 
+Foreground=”Brown”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Grid&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</SPAN></P>
+<P><SPAN id=code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate DataType=”{x:Type 
+local:GreekHero}”&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock 
+Text=”{Binding Path=HeroName}” FontWeight=”Bold” 
+Foreground=”Red”/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</SPAN></P>
+<P><SPAN id=text>Here is a screen shot of the completed sample:</SPAN></P>
+<P><IMG style="DISPLAY: block; MARGIN: 0px auto 10px; TEXT-ALIGN: center" 
+src="Beatriz Costa » Styles and Templates_files/13TemplatingItems.png" 
+border=0></P>
+<P><SPAN id=text><A 
+href="http://www.beacosta.com/Zips/13TemplatingItems.zip">Here</A> you can find 
+the VS project with this sample code. This works with December CTP WPF bits. 
+</SPAN></P>
+<P class=posted>Posted by <A title="Posts by Bea" 
+href="http://www.beacosta.com/blog/?author=1">Bea</A> under <A 
+title="View all posts in Styles and Templates" 
+href="http://www.beacosta.com/blog/?cat=11" rel=category>Styles and 
+Templates</A>, <A title="View all posts in WPF Data Binding" 
+href="http://www.beacosta.com/blog/?cat=2" rel=category>WPF Data Binding</A> | 
+<A 
+title="Comment on How do I display items in an ItemsControl using different templates?" 
+href="http://www.beacosta.com/blog/?p=16#comments">Comments (10)</A> </P></DIV><!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=16"
+    dc:identifier="http://www.beacosta.com/blog/?p=16"
+    dc:title="How do I display items in an ItemsControl using different templates?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=16" />
+</rdf:RDF>	-->
+<P>
+<DIV align=center></DIV>
+<P></P></DIV></DIV>
+<DIV id=right>
+<DIV class=sidebar><!-- Meta -->
+<H2>Meta:</H2>
+<UL class=noli>
+  <LI><A title="Syndicate this site using RSS" 
+  href="http://feeds.feedburner.com/BeatrizCosta"><ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> 
+  <LI><A title="The latest comments to all posts in RSS" 
+  href="http://feeds.feedburner.com/CommentsForBeatrizCosta">Comments <ABBR 
+  title="Really Simple Syndication">RSS</ABBR></A> </LI></UL><!-- Search -->
+<H2>Search</H2><BR>
+<FORM id=searchform action="" method=get><INPUT id=s size=15 name=s> <INPUT type=submit value=Search name=submit> </FORM><!-- Categories -->
+<H2>Categories</H2>
+<UL class=menu>
+  <LI><A title="View all posts filed under General" 
+  href="http://www.beacosta.com/blog/?cat=3">General</A> 
+  <LI class=current-cat-parent><A 
+  title="View all posts filed under WPF Data Binding" 
+  href="http://www.beacosta.com/blog/?cat=2">WPF Data Binding</A> 
+  <UL class=children>
+    <LI><A title="View all posts filed under Binding to ADO.NET" 
+    href="http://www.beacosta.com/blog/?cat=12">Binding to ADO.NET</A> 
+    <LI><A title="View all posts filed under ListBox" 
+    href="http://www.beacosta.com/blog/?cat=14">ListBox</A> 
+    <LI><A title="View all posts filed under ListView" 
+    href="http://www.beacosta.com/blog/?cat=9">ListView</A> 
+    <LI><A title="View all posts filed under Master-detail" 
+    href="http://www.beacosta.com/blog/?cat=10">Master-detail</A> 
+    <LI><A title="View all posts filed under Sorting, filtering, grouping" 
+    href="http://www.beacosta.com/blog/?cat=13">Sorting, filtering, grouping</A> 
+
+    <LI class=current-cat><A 
+    title="View all posts filed under Styles and Templates" 
+    href="http://www.beacosta.com/blog/?cat=11">Styles and Templates</A> 
+    <LI><A title="View all posts filed under TreeView" 
+    href="http://www.beacosta.com/blog/?cat=7">TreeView</A> </LI></UL></LI></UL><!-- Archives -->
+<H2>Archives</H2>
+<UL>
+  <LI><A title="September 2007" 
+  href="http://www.beacosta.com/blog/?m=200709">September 2007</A> 
+  <LI><A title="August 2007" 
+  href="http://www.beacosta.com/blog/?m=200708">August 2007</A> 
+  <LI><A title="May 2007" href="http://www.beacosta.com/blog/?m=200705">May 
+  2007</A> 
+  <LI><A title="April 2007" href="http://www.beacosta.com/blog/?m=200704">April 
+  2007</A> 
+  <LI><A title="January 2007" 
+  href="http://www.beacosta.com/blog/?m=200701">January 2007</A> 
+  <LI><A title="November 2006" 
+  href="http://www.beacosta.com/blog/?m=200611">November 2006</A> 
+  <LI><A title="October 2006" 
+  href="http://www.beacosta.com/blog/?m=200610">October 2006</A> 
+  <LI><A title="September 2006" 
+  href="http://www.beacosta.com/blog/?m=200609">September 2006</A> 
+  <LI><A title="August 2006" 
+  href="http://www.beacosta.com/blog/?m=200608">August 2006</A> 
+  <LI><A title="July 2006" href="http://www.beacosta.com/blog/?m=200607">July 
+  2006</A> 
+  <LI><A title="June 2006" href="http://www.beacosta.com/blog/?m=200606">June 
+  2006</A> 
+  <LI><A title="May 2006" href="http://www.beacosta.com/blog/?m=200605">May 
+  2006</A> 
+  <LI><A title="April 2006" href="http://www.beacosta.com/blog/?m=200604">April 
+  2006</A> 
+  <LI><A title="March 2006" href="http://www.beacosta.com/blog/?m=200603">March 
+  2006</A> 
+  <LI><A title="February 2006" 
+  href="http://www.beacosta.com/blog/?m=200602">February 2006</A> 
+  <LI><A title="January 2006" 
+  href="http://www.beacosta.com/blog/?m=200601">January 2006</A> 
+  <LI><A title="December 2005" 
+  href="http://www.beacosta.com/blog/?m=200512">December 2005</A> 
+  <LI><A title="November 2005" 
+  href="http://www.beacosta.com/blog/?m=200511">November 2005</A> 
+  <LI><A title="October 2005" 
+  href="http://www.beacosta.com/blog/?m=200510">October 2005</A> 
+  <LI><A title="September 2005" 
+  href="http://www.beacosta.com/blog/?m=200509">September 2005</A> 
+  <LI><A title="August 2005" 
+  href="http://www.beacosta.com/blog/?m=200508">August 2005</A> </LI></UL></DIV>
+<DIV id=footer>
+<DIV class=copyright><SMALL><SPAN class=copy>Copyright © 2007 <STRONG><A 
+title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</A> 
+</STRONG></SPAN><BR><BR></SMALL></DIV></DIV></DIV></DIV></BODY></HTML>

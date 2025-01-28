@@ -1,0 +1,248 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0077)http://www.wiredprairie.us/journal/2006/09/wpf_decorators_build_your_own.html -->
+<HTML id=sixapart-standard xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>WiredPrairie: WPF Decorators - Build your own "Chrome!"</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+href="WiredPrairie WPF Decorators - Build your own Chrome!_files/styles-site.css" 
+type=text/css rel=stylesheet><LINK title=Atom 
+href="http://www.wiredprairie.us/journal/atom.xml" type=application/atom+xml 
+rel=alternate><LINK title="RSS 2.0" 
+href="http://www.wiredprairie.us/journal/index.xml" type=application/rss+xml 
+rel=alternate><LINK title=Home href="http://www.wiredprairie.us/journal/" 
+rel=start><LINK title="Microsoft Max - The WPF Functional Demo" 
+href="http://www.wiredprairie.us/journal/2006/09/microsoft_max_the_wpf_function.html" 
+rel=prev><LINK title="WPF 3D Not ready?" 
+href="http://www.wiredprairie.us/journal/2006/09/wpf_3d_not_ready.html" 
+rel=next><!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.wiredprairie.us/journal/2006/09/wpf_decorators_build_your_own.html"
+    trackback:ping="http://www.wiredprairie.us/journal/mt/mt-tb.cgi/243"
+    dc:title="WPF Decorators - Build your own &amp;quot;Chrome!&amp;quot;"
+    dc:identifier="http://www.wiredprairie.us/journal/2006/09/wpf_decorators_build_your_own.html"
+    dc:subject="Coding"
+    dc:description="If you&apos;ve taken a deep look at how some of the base controls in WPF are constructed, you&apos;ll likely have encountered a mysterious element/UIElement at some point, &quot;Chrome.&quot; Chrome is a tad confusing when you first encounter it as it..."
+    dc:creator="Aaron"
+    dc:date="2006-09-13T21:10:05-06:00" />
+</rdf:RDF>
+-->
+<SCRIPT 
+src="WiredPrairie WPF Decorators - Build your own Chrome!_files/mt-site.js" 
+type=text/javascript></SCRIPT>
+</HEAD>
+<BODY class=layout-two-column-right 
+onload=individualArchivesOnLoad(commenter_name)>
+<DIV id=container>
+<DIV class=pkg id=container-inner>
+<DIV id=banner>
+<DIV class=pkg id=banner-inner>
+<FORM action=http://www.wiredprairie.us/journal/mt/mt-search.cgi 
+method=get><INPUT type=hidden value=1 name=IncludeBlogs> <IMG height=14 
+src="WiredPrairie WPF Decorators - Build your own Chrome!_files/Search.gif" 
+width=14 border=0> <INPUT id=Text2 name=search> <INPUT type=submit value=Search> 
+</FORM></DIV></DIV>
+<DIV id=navlistbar>
+<UL id=navlist>
+  <LI><A href="http://www.wiredprairie.us/journal/index.html">main</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/freeware.html">free</A> 
+  <LI><A href="http://www.wiredprairie.us/gallery/index.php">gallery</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/myfavorites.html">must 
+  install</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/about.html">about</A> 
+  <LI><A 
+  href="http://www.wiredprairie.us/journal/archivesbymonth.html">archives</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/index.xml"><IMG height=16 
+  alt=feed 
+  src="WiredPrairie WPF Decorators - Build your own Chrome!_files/rssfeed.png" 
+  width=16></A> 
+  <LI>
+  <FORM action=http://www.wiredprairie.us/journal/mt/mt-search.cgi 
+  method=get><INPUT type=hidden value=1 name=IncludeBlogs> <INPUT id=Text2 
+  name=search> <INPUT type=submit value=Search> </FORM></LI></UL></DIV>
+<DIV id=pagebody>
+<DIV class=pkg id=pagebody-inner>
+<DIV id=alpha>
+<DIV class=pkg id=alpha-inner>
+<P class=content-nav><A 
+href="http://www.wiredprairie.us/journal/2006/09/microsoft_max_the_wpf_function.html">« 
+Microsoft Max - The WPF Functional Demo</A> | <A 
+href="http://www.wiredprairie.us/journal/">Main</A> | <A 
+href="http://www.wiredprairie.us/journal/2006/09/wpf_3d_not_ready.html">WPF 3D 
+Not ready? »</A> </P><A id=a000246></A>
+<DIV class=entry id=entry-246>
+<H3 class=entry-header>WPF Decorators - Build your own "Chrome!"</H3>
+<DIV class=entry-content>
+<DIV class=entry-body>
+<P>If you've taken a deep look at how some of the base controls in WPF are 
+constructed, you'll likely have encountered a mysterious element/UIElement at 
+some point, "Chrome." Chrome is a tad confusing when you first encounter it as 
+it seems so magical. Many controls are rendered nearly entirely using these 
+"Chrome" elements (like a Button for example).</P>
+<P>One of the first "Chromes" I encountered was actually a Chrome designed for 
+the standard WPF Buttons (<STRONG>ChromeButton</STRONG>). The actual 
+implementation of the "Chrome" for a button may be found in the 
+Microsoft.Windows.Themes namespace. The somewhat interesting part about the 
+Chrome class is that depending on the current user interface style of Windows 
+that is running, a different and unique Chrome assembly is loaded. For example, 
+there's a Chrome library for the Luna (blue XP) theme named 
+PresentationFramework.Luna. There's another for the Vista Aero style named 
+PresentationFramework.Aero.</P>
+<P>On my system, the standard WPF button using the Silver XP theme looks like 
+this:</P>
+<P><IMG class=picture height=83 hspace=0 
+src="WiredPrairie WPF Decorators - Build your own Chrome!_files/WPFStandardButton_new.png" 
+width=171 border=0></P>
+<P>Plain and simple. The button though has some annoying features that make it 
+hard to style any further. </P>
+<P>Let's imagine that instead of the standard Silver button, I'd like to make it 
+Green to represent an OK button:</P>
+<P><IMG class=picture height=61 hspace=0 
+src="WiredPrairie WPF Decorators - Build your own Chrome!_files/WPFGreenButton_new.png" 
+width=159 border=0></P>
+<P>Not too bad so far. The button is green. What about when I actually try to 
+use it ...</P>
+<P><IMG class=picture height=43 hspace=0 
+src="WiredPrairie WPF Decorators - Build your own Chrome!_files/WPFGreenButtonNot_new.png" 
+width=117 border=0></P>
+<P><STRONG>Interesting</STRONG>. When I move my mouse over the Button, it 
+reverts back to the original colors. <STRONG>Bummer</STRONG>. What about if I 
+were to click the button ...</P>
+<P><IMG class=picture height=51 hspace=0 
+src="WiredPrairie WPF Decorators - Build your own Chrome!_files/WPFGreenButtonNot2_new.png" 
+width=125 border=0></P>
+<P>Still no <STRONG><FONT color=#009300>green</FONT></STRONG>! To say the least, 
+that's a bit annoying. Why Microsoft made the button work this way, I can't 
+answer. I can however provide you with some alternatives.</P>
+<P>One solution is to roll your own control template, use the right combination 
+of Borders, rectangles, etc. The sky's the limit. So is, unfortunately, the 
+number of UIElements more than likely. In the first version of WPF that is to be 
+released, UIElements represent an expensive and limited resource in the system, 
+worse in some ways than the old GDI limits, but different in others. Still, it 
+doesn't hurt to conserve, so Microsoft provided another way -- a way to custom 
+render a button like this in a nice reusable pattern. That's exactly what the 
+"Chrome" objects represent in WPF. A fast and lightweight method for rendering a 
+potentially complicated visual. Be warned though that this isn't something that 
+a non-developer would normally do. It's relatively straightforward but certainly 
+outside of the typical non-coder realm. The great thing though is that once 
+developed, it's easy to reference the control either using Expression 
+Interactive Designer or Visual Studio 2005 and use it without understanding how 
+it was built! </P>
+<P>My experience has been that it can be EXTREMELY challenging to make some 
+types of "looks" using strictly the UI elements and associated geometries that 
+exist in WPF. Sometimes it seems impossible. </P>
+<P>I had a need for a better button. One that would allow me to set different 
+colors AND respect the color in the various typical states (although I have 
+ignored disabled for right now as I had no need. Easy to add though...). The 
+standard button also doesn't provide for a method for changing the border 
+thickness, so I've also provided that functionality. </P>
+<P>Here's are the basic steps to creating the Decorator and using it ... (see 
+the attached C# solution with the SmartBorder control and a simple test project 
+that reproduces the screen shot below).</P>
+<P>I created a new class library assembly and referenced the 
+PresentationCore/Framework assemblies.</P>
+<P>Next, I added a class to the project, deriving from the <STRONG>Decorator 
+</STRONG>base class:</P>
+<P><STRONG>public class SmartBorder : Decorator</STRONG></P>
+<P>To the SmartBorder class, I added a series of DependencyProperty instances 
+for the various necessary properties. For example, here's the 
+CornerRadiusProperty.</P>
+<P><STRONG>public static readonly DependencyProperty CornerRadiusProperty 
+=</STRONG></P>
+<P><STRONG>DependencyProperty.Register("CornerRadius", typeof(double), 
+typeof(SmartBorder), new FrameworkPropertyMetadata(8.0, 
+FrameworkPropertyMetadataOptions.AffectsRender));</STRONG> 
+<P>There are two very important steps that must be done to make the new 
+decorator useful: 1) Draw the control, and 2) Measure the control. 
+<P>The first is accomplished by overriding the OnRender method of the Decorator. 
+Here you're given free access to the DrawingContext (think of this as the place 
+where you draw the series of commands that make up your user interface look). In 
+my decorator, I've used some basic things like the ability to draw a rounded 
+rectangle (see the source code for the other commands I used): 
+<P><STRONG>dc.DrawRoundedRectangle(backBrush, borderPen, rc, cornerRadiusCache, 
+cornerRadiusCache);</STRONG> 
+<P><STRONG>dc.DrawRoundedRectangle(gradientOverlay, borderPen, rc, 
+cornerRadiusCache, cornerRadiusCache);</STRONG> 
+<P>Additionally, I wanted to do some drawing which might have occasionally drawn 
+outside of the normal decorator bounds. I didn't want that to happen so I used 
+the clip functionality: 
+<P><STRONG>dc.PushClip(new RectangleGeometry(rc, cornerRadiusCache, 
+cornerRadiusCache));</STRONG> 
+<P>This (and the corresponding dc.Pop) will Clip any drawing commands to the 
+specified shape or rectangle. In this case, I specified a rounded rectangle 
+which mirrors the shape of the button based on the corner radius). 
+<P>In the override of MeasureOverride, it's the responsibility of the control to 
+respond with the overall desired size of the control. My code simply takes into 
+account the size of the border and adjusts based on the child and returns the 
+overal size. Nothing too complicated. 
+<P>Additionally, in order to actually use the new SmartBorder, I created a new 
+Control Template: 
+<P><STRONG>&lt;ControlTemplate TargetType="{x:Type Button}" 
+x:Key="ShinyButtonTemplate"&gt;<BR>&lt;<FONT 
+color=#a52a00>WPD:SmartBorder</FONT> RenderIsPressed="{TemplateBinding 
+IsPressed}" Background="{TemplateBinding Background}" 
+RenderIsMouseOver="{TemplateBinding 
+IsMouseOver}"<BR>CornerRadius="4"<BR>OuterGlowBrush="{DynamicResource 
+OuterGlowBrush}"&gt;<BR>&lt;ContentPresenter <BR>x:Name="ContentPresenter" 
+<BR>HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+<BR>VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+<BR>Content="{TemplateBinding Content}" <BR>ContentTemplate="{TemplateBinding 
+ContentTemplate}" <BR>ContentTemplateSelector="{TemplateBinding 
+ContentTemplateSelector}"<BR>Margin="{TemplateBinding 
+Padding}"<BR>/&gt;<BR>&lt;/WPD:SmartBorder&gt;<BR>&lt;/ControlTemplate&gt;</STRONG></P>
+<P>The SmartBorder is part of the WPD namespace which was declared in the root 
+element of the host:</P>
+<P><STRONG>xmlns:WPD="clr-namespace:WiredPrairie.Decorators;assembly=WiredPrairie.Decorators" 
+</STRONG></P>
+<P>Since my ControlTemplate specifies that all buttons should use the specified 
+control template, it's easy to see the results (actually, only those buttons 
+that don't override the default by using a new style or control template 
+combination):</P>
+<P><STRONG>&lt;Button Background="Aqua"&gt;<BR>&lt;StackPanel 
+HorizontalAlignment="Left"&gt;<BR>&lt;Label&gt;Big 
+Label&lt;/Label&gt;<BR>&lt;Label Style="{DynamicResource 
+ShinyButtonMiniLabelStyle}"&gt;Small 
+Label&lt;/Label&gt;<BR>&lt;/StackPanel&gt;<BR>&lt;/Button&gt;</STRONG></P>
+<P>If you have any questions please e-mail. The source code for the sample 
+project and the smart border control is attached (tested only with RC1 of .NET 
+3.0). If you happen to use the code somewhere / in something, I'd love to 
+know!</P>
+<P>
+<P></P><IMG class=picture height=500 hspace=0 
+src="WiredPrairie WPF Decorators - Build your own Chrome!_files/SmartBorder1_new.png" 
+width=600 border=0> 
+<P></P>
+<P></P>
+<P><A 
+href="http://www.wiredprairie.us/journal/images/WPSmartBorder.zip">WPSmartBorder.zip 
+(41 KB)</A></P>
+<P><EM>If you use VB.NET, just compile the solution and use the 
+WiredPrairie.Decorators.dll in your VB projects by referencing it.</EM></P>
+<P>Enjoy.</P></DIV>
+<DIV class=entry-more id=more></DIV></DIV>
+<P class=entry-footer><SPAN class=post-footers>Posted by Aaron on September 13, 
+2006 9:10 PM</SPAN> <SPAN class=separator>|</SPAN> <A class=permalink 
+href="http://www.wiredprairie.us/journal/2006/09/wpf_decorators_build_your_own.html">Permalink</A> 
+</P></DIV>
+<DIV class=comments id=comments>
+<DIV class=comments-content>
+<H3 class=comments-header>Comments</H3><A id=c005824></A>
+<DIV class=comment id=comment-5824>
+<DIV class=comment-content>
+<P>Hey man Sweet code. I modified it a little to make it more flexable. I can 
+send you the file if you want! Email me and let me know what you 
+think.</P></DIV>
+<P class=comment-footer>Posted by: Nick | <A 
+href="http://www.wiredprairie.us/journal/2006/09/wpf_decorators_build_your_own.html#comment-5824">September 
+22, 2006 3:29 PM</A> </P></DIV></DIV></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<SCRIPT 
+src="WiredPrairie WPF Decorators - Build your own Chrome!_files/urchin.js" 
+type=text/javascript>
+</SCRIPT>
+
+<SCRIPT type=text/javascript>
+_uacct = "UA-635767-1";
+urchinTracker();
+</SCRIPT>
+</BODY></HTML>

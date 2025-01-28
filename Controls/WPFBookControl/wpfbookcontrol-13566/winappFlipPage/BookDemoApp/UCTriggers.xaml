@@ -1,0 +1,58 @@
+<UserControl x:Class="BookDemoApp.UCTriggers"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:BookDemoApp"
+    Background="LightGray">
+  <DockPanel>
+    <local:UCTitle DockPanel.Dock="Top" DataContext="Triggers" />
+    <Border Padding="5">
+      <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+          <StackPanel.Resources>
+            <Style x:Key="IsMouseOverTriggerStyle" TargetType="{x:Type Button}">
+              <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="Button.Background" Value="Gray" />
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+            <Style x:Key="IsMouseOverOrIsFocusedTriggerStyle" TargetType="{x:Type Button}">
+              <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="Button.Background" Value="Gray" />
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                  <Setter Property="Button.Foreground" Value="Red" />
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+            <Style x:Key="ConditionalTriggerStyle" TargetType="{x:Type Button}">
+              <Style.Triggers>
+                <MultiTrigger>
+                  <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="IsFocused" Value="True" />
+                  </MultiTrigger.Conditions>
+                  <Setter Property="Button.Foreground" Value="Red" />
+                </MultiTrigger>
+              </Style.Triggers>
+            </Style>
+          </StackPanel.Resources>
+
+          <TextBlock Text="Simple trigger" FontSize="12" />
+          <Button Style="{StaticResource IsMouseOverTriggerStyle}" Name="m_btTriggered" Content="IsMouseOver" FontSize="15" />
+
+          <TextBlock />
+
+          <TextBlock Text="Double trigger" FontSize="12" />
+          <Button Style="{StaticResource IsMouseOverOrIsFocusedTriggerStyle}" Name="m_btDoubleTriggered" Content="IsMouseOver and IsFocused" FontSize="15" />
+
+          <TextBlock />
+
+          <TextBlock Text="Multi conditional trigger" FontSize="12" />
+          <Button Style="{StaticResource ConditionalTriggerStyle}" Name="m_btConditionalTrigger" Content="Condition: IsMouseOver and IsFocused" FontSize="15" />
+        </StackPanel>
+      </Grid>
+    </Border>
+  </DockPanel>
+</UserControl>

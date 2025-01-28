@@ -1,0 +1,517 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="author" content="Jérôme LABAN  / Original design: Andreas Viklund - http://andreasviklund.com/"><link href="binding-a-c--property-to-a-wpf-validated-control.aspx_files/btremote.css" media="screen,projection" rel="stylesheet" type="text/css"><link rel="stylesheet" type="text/css" href="binding-a-c--property-to-a-wpf-validated-control.aspx_files/andreas03.css"><title>Binding a C# property to a WPF validated Control - Jérôme Laban</title><meta name="Description" content="Binding a C# property to a WPF validated Control"><link rel="alternate" type="application/rss+xml" title="Jerome Laban - Blog" href="http://www.jaylee.org/rss.aspx"><link rel="alternate" type="application/rss+xml" title="Jérôme Laban - .NET" href="http://www.jaylee.org/rss.aspx?CategoryId=98d2b27d-69fa-49b1-bc8a-069ecd05e45f"><link rel="alternate" type="application/rss+xml" title="Jérôme Laban - Misc" href="http://www.jaylee.org/rss.aspx?CategoryId=1ab21d2c-5ef8-45a1-a17f-34e6e3b77a24"><link rel="alternate" type="application/rss+xml" title="Jérôme Laban - My Life" href="http://www.jaylee.org/rss.aspx?CategoryId=f98c3194-c7d0-4308-b121-c224ab17e5fb"><link rel="alternate" type="application/rss+xml" title="Jérôme Laban - Digital Photography" href="http://www.jaylee.org/rss.aspx?CategoryId=70089930-35e9-4097-b56a-cfdd45d5b198"><link rel="alternate" type="application/rss+xml" title="Jérôme Laban - Bluetooth Remote Control" href="http://www.jaylee.org/rss.aspx?CategoryId=46aa2306-6363-4a42-8927-e6afbb4a1571"></head><body>
+    <form name="aspnetForm" method="post" action="../../../../ViewPost.aspx?PostId=b4cacf57-7dcc-40fe-9dc1-e37f8d5b3d03" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJMTQyMzk2NjQxDxYCHghEdW1iVGVzdAIJFgJmD2QWAgIDD2QWBAIDD2QWBAIBDxYCHgRocmVmBUlhcmNoaXZlcy8yMDA3LzA4LzI5L2JpbmRpbmctYS1jLS1wcm9wZXJ0eS10by1hLXdwZi12YWxpZGF0ZWQtY29udHJvbC5hc3B4ZAInDw8WAh4EVGV4dAUDM3gzZGQCBA9kFgYCAQ8WAh8BBU9hcmNoaXZlcy8yMDA3LzA4LzI5L2JpbmRpbmctYS1jLS1wcm9wZXJ0eS10by1hLXdwZi12YWxpZGF0ZWQtY29udHJvbC5mci1GUi5hc3B4ZAIDDxYCHwEFT2FyY2hpdmVzLzIwMDcvMDgvMjkvYmluZGluZy1hLWMtLXByb3BlcnR5LXRvLWEtd3BmLXZhbGlkYXRlZC1jb250cm9sLmVuLVVTLmFzcHhkAgUPFgIfAQVPYXJjaGl2ZXMvMjAwNy8wOC8yOS9iaW5kaW5nLWEtYy0tcHJvcGVydHktdG8tYS13cGYtdmFsaWRhdGVkLWNvbnRyb2wuZXMtRVMuYXNweGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFJWN0bDAwJENvbnRlbnRQbGFjZUhvbGRlcjEkY2hlY2tOb3RpZnlAb+RT3yYfJL0Vv51ItNa85G294w==" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/WebResource_002.js" type="text/javascript"></script>
+
+
+<script src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/WebResource.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+        <div id="thetop">
+            <a id="top"></a>
+            <p class="hide">
+                Skip to: <a href="#sitemenu" accesskey="2">Site menu</a> | <a href="#maincontent" accesskey="3">Main content</a></p>
+        </div>
+        <div id="container">
+            <div id="main">
+                <div id="logo">
+                    <h1>
+                        [<a href="http://www.jaylee.org/" accesskey="4">Jérôme LABAN</a>]</h1>
+                    <span id="tagline">
+                        .NET Powered
+                    </span>
+                </div>
+                <div id="intro">
+                    <h4>
+                        <a id="maincontent"></a>
+                        Welcome !</h4>
+                    <p>
+                        My name is Jerome Laban, I am a Software developer and .NET enthustiast. You will
+find my blog on this site, where I'm adding my thoughts on current events, or
+the things I'm working on, such as the Bluetooth Remote Control Software.
+                    </p>
+                </div>
+                <div class="clear">
+                </div>
+                
+    <div class="postDiv">
+        <div class="postTitle">
+            <h5><a href="http://www.jaylee.org/archives/2007/08/29/binding-a-c--property-to-a-wpf-validated-control.aspx" id="ctl00_ContentPlaceHolder1_titleLink">Binding a C# property to a WPF validated Control</a></h5>
+        </div>
+        <div class="postBy">
+            Posted on
+                8/29/2007 4:48:02 AM
+            by
+                Jérôme Laban
+        </div>
+        <div class="postCategory">
+            Filed under :
+            <span id="ctl00_ContentPlaceHolder1_categorylabel">.NET</span>
+        </div>
+        <div class="postContent">
+            <p align="justify"><font face="Verdana" size="2">The
+DataBinding in WPF allows the binding&nbsp;of control properties to
+many things, like other control properties, arrays, data providers, ...
+But it can also bind a control property to a property defined by code
+on the C# side.</font></p>
+<p align="justify"><font face="Verdana" size="2">It is interesting to
+bind to C# property to be able to have the integrated WPF validation
+and still use a simple property from&nbsp;the code. In that case, I
+wanted to have the validation of a TextBox displaying a DateTime object.</font></p>
+<p><font face="Verdana" size="2">Here's how to do this.</font></p>
+<p><font face="Verdana" size="2">On the C# side :</font></p><pre class="csharpcode"><font size="2"></font><font color="#0000ff" size="2">public</font> <font color="#0000ff" size="2">partial</font><font size="2"> </font><font color="#0000ff" size="2">class</font><font size="2"> </font><font color="#2b91af" size="2">Window1</font><font size="2"> : </font><font color="#2b91af" size="2">Window</font><font size="2">
+{
+  </font><font color="#0000ff" size="2">public</font><font size="2"> Window1()
+  {
+    MyDate = </font><font color="#2b91af" size="2">DateTime</font><font size="2">.Now;
+    InitializeComponent();
+  }
+
+  </font><font color="#0000ff" size="2">public</font><font size="2"> </font><font color="#2b91af" size="2">DateTime</font><font size="2"> MyDate { </font><font color="#0000ff" size="2">get</font><font size="2">; </font><font color="#0000ff" size="2">set</font><font size="2">; }
+}
+</font></pre>
+<p align="justify"><font face="Verdana" size="2">Note that I'm using
+the latest C# 3.0 syntax to declare variable-less properties. This is
+compiler trick, the variable is still declared at compile time, but
+since I don't need to have a specific code in the get or set accessor,
+it can stay in this short form.</font></p>
+<p align="justify"><font face="Verdana" size="2">Now on the XAML side :</font></p><pre class="csharpcode"><font color="#0000ff" size="2">&lt;</font><font color="#a31515" size="2">Window</font><font color="#ff0000" size="2"> ... </font><font color="#0000ff" size="2">&gt;
+</font><font color="#ff00ff" size="2">  </font><font color="#0000ff" size="2">&lt;</font><font color="#a31515" size="2">TextBox</font><font color="#ff0000" size="2"> Width</font><font color="#0000ff" size="2">="100"</font><font color="#ff0000" size="2"> Height</font><font color="#0000ff" size="2">="20"&gt;
+</font><font color="#ff00ff" size="2">    </font><font color="#0000ff" size="2">&lt;</font><font color="#a31515" size="2">Binding</font><font color="#ff0000" size="2"> Path</font><font color="#0000ff" size="2">="MyDate"</font><font size="2">
+             </font><b><font color="#ff0000" size="2">RelativeSource</font><font color="#0000ff" size="2">="<br>                 </font></b><b><font color="#0000ff" size="2">{</font><font color="#a31515" size="2">RelativeSource</font><font color="#ff0000" size="2"> Mode</font><font color="#0000ff" size="2">=FindAncestor,</font><font color="#ff0000" size="2"><br>                  AncestorType</font><font color="#0000ff" size="2">={</font><font color="#a31515" size="2">x</font><font color="#0000ff" size="2">:</font><font color="#a31515" size="2">Type</font><font color="#ff0000" size="2"> Window</font></b><font color="#0000ff" size="2"><b>}}"</b>
+</font><font size="2">             </font><font color="#ff0000" size="2">UpdateSourceTrigger</font><font color="#0000ff" size="2">="PropertyChanged"&gt;
+</font><font color="#ff00ff" size="2">             </font><font color="#0000ff" size="2">&lt;</font><font color="#a31515" size="2">Binding.ValidationRules</font><font color="#0000ff" size="2">&gt;
+</font><font color="#ff00ff" size="2">               </font><font color="#0000ff" size="2">&lt;</font><font color="#a31515" size="2">ExceptionValidationRule</font><font color="#0000ff" size="2"> /&gt;
+</font><font color="#ff00ff" size="2">             </font><font color="#0000ff" size="2">&lt;/</font><font color="#a31515" size="2">Binding.ValidationRules</font><font color="#0000ff" size="2">&gt;
+</font><font color="#ff00ff" size="2">    </font><font color="#0000ff" size="2">&lt;/</font><font color="#a31515" size="2">Binding</font><font color="#0000ff" size="2">&gt;
+</font><font color="#ff00ff" size="2">  </font><font color="#0000ff" size="2">&lt;/</font><font color="#a31515" size="2">TextBox</font><font color="#0000ff" size="2">&gt;
+&lt;/</font><font color="#a31515" size="2">Window</font><font color="#0000ff" size="2">&gt;
+</font></pre>
+<p align="justify"><font face="Verdana" size="2">The interesting part here is the use of <b><font face="Courier New">RelativeSource</font></b> and the <b><font face="Courier New">FindAncestor</font></b> mode. Here, we're looking for the property <b><font face="Courier New">MyDate</font> </b>from the nearest ancestor&nbsp;instance&nbsp;of the <b><font face="Courier New">Window</font></b> type, from the current instance.</font></p>
+<p align="justify"><font face="Verdana" size="2">This way, you'll have
+a validated date time in your property value. Just make sure you're
+checking that the value is really valid using the <strong><font face="Courier New">System.Windows.Controls.Validation</font></strong> class.</font></p>
+        </div>
+    </div>
+    <div class="commentsHeads">
+         Comments
+     </div>
+    
+    
+    <div class="commentsHeads">
+        Post a comment
+    </div>
+    
+    <a id="Comments"></a>
+    <div class="postNewComment">    
+    
+        <div id="ctl00_ContentPlaceHolder1_panelNotify">
+	
+                </div><table>
+            <tbody><tr>
+                <td>
+                    Name</td>
+                <td style="width: 270px;">
+                    <input name="ctl00$ContentPlaceHolder1$textBoxName" id="ctl00_ContentPlaceHolder1_textBoxName" style="width: 300px;" type="text"></td>
+            </tr>
+            <tr>
+                <td>
+                    Web Site</td>
+                <td style="width: 270px;">
+                    <input name="ctl00$ContentPlaceHolder1$textBoxWebSite" id="ctl00_ContentPlaceHolder1_textBoxWebSite" style="width: 300px;" type="text"></td>
+            </tr>
+            <tr>
+                <td>
+                    EMail</td>
+                <td style="width: 270px;">
+                    <input name="ctl00$ContentPlaceHolder1$textBoxEMail" id="ctl00_ContentPlaceHolder1_textBoxEMail" style="width: 300px;" type="text"><span id="ctl00_ContentPlaceHolder1_ctl00" style="color: Red; visibility: hidden;">*</span><br>
+                    <i>Your email will be kept private.</i></td>
+            </tr>
+            <tr>
+                    <td>
+                        Notify on new comments ?</td>
+                    <td style="width: 270px;">
+                        <span style="width: 300px;"><input id="ctl00_ContentPlaceHolder1_checkNotify" name="ctl00$ContentPlaceHolder1$checkNotify" type="checkbox"></span>    
+                    </td>
+                </tr>
+            
+
+            <tr>
+                <td>
+                    What's<span id="ctl00_ContentPlaceHolder1_dumbText">3x3</span> ?</td>
+                <td style="width: 270px;">
+                    <input name="ctl00$ContentPlaceHolder1$dumbTextBox" id="ctl00_ContentPlaceHolder1_dumbTextBox" style="width: 300px;" type="text"></td>
+            </tr>
+            <tr>
+                <td style="height: 200px;">
+                    Comment</td>
+                <td>
+                    <textarea name="ctl00$ContentPlaceHolder1$textBoxComment" rows="2" cols="20" id="ctl00_ContentPlaceHolder1_textBoxComment" style="height: 200px; width: 300px;"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input name="ctl00$ContentPlaceHolder1$sendButton" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$ContentPlaceHolder1$sendButton", "", true, "", "", false, false))' id="ctl00_ContentPlaceHolder1_sendButton" type="submit"></td>
+            </tr>
+        </tbody></table>
+    </div>
+
+            </div>
+            <div id="sidebar">
+            
+                
+                
+                <h2 class="sidelink menuheader">
+                    <a id="sitemenu"></a>Site menu</h2>
+                <a href="http://www.jaylee.org/" class="sidelink">
+                    Home</a>
+                <span class="hide">| </span><a href="http://www.jaylee.org/RemoteControl" class="sidelink">
+                    Bluetooth Remote Control</a> <span class="hide">| </span>
+                <span class="hide">| </span><a href="http://www.jaylee.org/Forum" id="ctl00_A3" class="sidelink">
+                   Bluetooth Remote Control Forum</a> <span class="hide">| </span>
+                <br>
+                <h2 class="sidelink menuheader">
+                    <a id="A1"></a>Links</h2>
+                <a href="http://www.winwise.fr/" class="sidelink">Winwise</a> <span class="hide">| </span><a href="http://www.white-clouds.org/" class="sidelink">
+                        Matthieu Laban's Blog</a> <span class="hide">| </span><a href="http://www.sebastien-laban.com/" class="sidelink">Sebastien Laban's Blog</a> <span class="hide">
+                                | </span><a class="hide" href="#top" accesskey="1">Top of page</a>
+                <h3>
+                    Blog Categories
+                </h3>
+                <div class="blogCategories">
+                    
+<ul>
+    
+            <li>
+                <a href="http://www.jaylee.org/category-net.aspx">
+                    .NET
+                </a> 
+            </li>
+        
+            <li>
+                <a href="http://www.jaylee.org/category-misc.aspx">
+                    Misc
+                </a> 
+            </li>
+        
+            <li>
+                <a href="http://www.jaylee.org/category-my-life.aspx">
+                    My Life
+                </a> 
+            </li>
+        
+            <li>
+                <a href="http://www.jaylee.org/category-digital-photography.aspx">
+                    Digital Photography
+                </a> 
+            </li>
+        
+            <li>
+                <a href="http://www.jaylee.org/category-bluetooth-remote-control.aspx">
+                    Bluetooth Remote Control
+                </a> 
+            </li>
+        
+</ul>
+                </div>
+                <br>
+                <table id="logos">
+                    <tbody><tr>
+                        <td align="center">
+                            <table class="logosTable" style="width: 100%;">
+                                <tbody><tr>
+                                    <td class="logosCell">
+                                        
+                                    </td>
+                                    </tr><tr>
+                                        <td class="logosCell">
+                                            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=jlaban%40gmail%2ecom&amp;item_name=Bluetooth%20Remote%20Control%20%2d%20J%c3%a9r%c3%b4me%20Laban&amp;no_shipping=0&amp;no_note=1&amp;tax=0&amp;currency_code=EUR&amp;lc=EN&amp;bn=PP%2dDonationsBF&amp;charset=UTF%2d8">
+                                                <img src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/x-click-but04.gif" border="0">
+                                            </a>
+                                        </td>
+                                    </tr>
+                            </tbody></table>
+                            <table class="logosTable">
+                                <tbody><tr>
+                                    <td class="logosCell">
+                                        <a href="http://www.microsoft.com/mcp">
+                                            <img src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/mcts.png" id="ctl00_Img1" alt="Microsoft Certified Technology Specialist">
+                                            <img alt="Microsoft Certified Trainer" src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/mct.gif">
+                                            <img alt="Microsoft Certified Solution Developer" src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/mcsd.gif">
+                                        </a><a href="http://www.linkedin.com/pub/0/359/417">
+                                            <img alt="View Jérôme Laban's profile on LinkedIn" src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/btn_viewmy_120x33.gif">
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                    </tr>
+                </tbody></table>
+                <h3>
+                    Blog History
+                </h3>
+                <div id="blogHistory">
+                    
+        <div>
+            <a href="http://www.jaylee.org/archive/2007/10.aspx">
+                October 2007 (1)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2007/09.aspx">
+                September 2007 (2)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2007/08.aspx">
+                August 2007 (5)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2007/07.aspx">
+                July 2007 (2)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2007/06.aspx">
+                June 2007 (4)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2007/05.aspx">
+                May 2007 (1)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2007/04.aspx">
+                April 2007 (4)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2007/03.aspx">
+                March 2007 (4)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2007/02.aspx">
+                February 2007 (7)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2007/01.aspx">
+                January 2007 (6)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2006/12.aspx">
+                December 2006 (1)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2006/09.aspx">
+                September 2006 (1)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2006/07.aspx">
+                July 2006 (2)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2006/05.aspx">
+                May 2006 (1)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2005/11.aspx">
+                November 2005 (1)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2005/04.aspx">
+                April 2005 (2)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2005/02.aspx">
+                February 2005 (1)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2004/12.aspx">
+                December 2004 (2)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2004/10.aspx">
+                October 2004 (2)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2004/08.aspx">
+                August 2004 (2)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2004/04.aspx">
+                April 2004 (3)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2004/03.aspx">
+                March 2004 (1)
+            </a> 
+        </div>
+    
+        <div>
+            <a href="http://www.jaylee.org/archive/2004/02.aspx">
+                February 2004 (1)
+            </a> 
+        </div>
+    
+
+                </div>
+                <br>
+                <table width="100%">
+                    <tbody><tr>
+                        <td align="center">
+                            This Web Site is Powered by
+                            <div id="logosCella">
+                                <img src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/asp2.gif" id="ctl00_Img2" class="logosCella">
+                                <img src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/SqlServer2005.jpg" id="ctl00_Img3" class="logosCella">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <a href="http://www.jaylee.org/rss.aspx" id="ctl00_A2">
+                                <img src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/rss_button.gif" id="ctl00_Img4" class="logosCella" border="0">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+            <div class="clear">
+                &nbsp;</div>
+        </div>
+        <div id="footer">
+            <p>
+                ©
+                November 2007
+                Jérôme LABAN. - <i>Design by <a href="http://andreasviklund.com/" class="credit">Andreas
+                    Viklund</a> of <a href="http://jokkmokk.biz/" title="ITUS Jokkmokk">Jokkmokk</a>.</i></p>
+        </div>
+    
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00_ContentPlaceHolder1_ctl00"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00_ContentPlaceHolder1_ctl00 = document.all ? document.all["ctl00_ContentPlaceHolder1_ctl00"] : document.getElementById("ctl00_ContentPlaceHolder1_ctl00");
+ctl00_ContentPlaceHolder1_ctl00.controltovalidate = "ctl00_ContentPlaceHolder1_textBoxEMail";
+ctl00_ContentPlaceHolder1_ctl00.errormessage = "*";
+ctl00_ContentPlaceHolder1_ctl00.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ContentPlaceHolder1_ctl00.validationexpression = "^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+// -->
+</script>
+
+<div>
+
+	<input name="__SCROLLPOSITIONX" id="__SCROLLPOSITIONX" value="0" type="hidden">
+	<input name="__SCROLLPOSITIONY" id="__SCROLLPOSITIONY" value="0" type="hidden">
+	<input name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWCALbsq31CALTz8X8AwLCq9SjBwLz5NH2CwLB+qeoAgLp0saCCwL4/fK1CgL3tPvAB1ginaZMOfo2wGQS53RRoLojRbj1" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        
+<script type="text/javascript">
+<!--
+
+theForm.oldSubmit = theForm.submit;
+theForm.submit = WebForm_SaveScrollPositionSubmit;
+
+theForm.oldOnSubmit = theForm.onsubmit;
+theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
+// -->
+</script>
+</form>
+
+    <script src="binding-a-c--property-to-a-wpf-validated-control.aspx_files/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        _uacct = "UA-300089-2";
+        urchinTracker();
+    </script>
+
+</body></html>

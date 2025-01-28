@@ -1,0 +1,35 @@
+﻿<Window x:Class="AsyncBindingTest1.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="AsyncBindingTest1" Height="300" Width="300"
+    Name="myWindow"
+    >
+  <Window.Resources>
+    <XmlNamespaceMappingCollection x:Key="map">
+      <XmlNamespaceMapping Uri="http://search.yahoo.com/mrss/" Prefix="media"/>
+    </XmlNamespaceMappingCollection>
+    <XmlDataProvider IsAsynchronous="True" 
+                     IsInitialLoadEnabled="True" 
+                     XmlNamespaceManager="{StaticResource map}" 
+                     Source="http://api.flickr.com/services/feeds/photos_public.gne?tags=wallpaper&amp;format=rss_200" 
+                     XPath="/rss/channel/item" x:Key="src"/>
+    <DataTemplate x:Key="img">
+      <Image Loaded="onImgLoaded" Source="{Binding XPath=media:content/@url}" Width="{Binding ElementName=myWindow, Path=Width}" Stretch="Uniform"/>
+    </DataTemplate>
+  </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="40"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <StackPanel Orientation="Horizontal">
+      <TextBlock Margin="10">Items loaded:</TextBlock>
+      <TextBlock Margin="10" Text="{Binding ElementName=myWindow, Path=ImagesLoaded}"/>
+      <TextBlock Margin="10">of</TextBlock>
+      <TextBlock Margin="10" Text="{Binding ElementName=myWindow, Path=ImagesTotal}"/>
+    </StackPanel>
+
+    <ListBox Grid.Row="1" ItemsSource="{Binding IsAsync=True, Source={StaticResource src}}"
+             ItemTemplate="{StaticResource img}"/>
+  </Grid>
+</Window>

@@ -1,0 +1,91 @@
+﻿<?Mapping XmlNamespace='Disorder' ClrNamespace='Disorder'?>
+<?Mapping XmlNamespace='System' ClrNamespace='System' Assembly='mscorlib'?>
+<Window 
+	xmlns='http://schemas.microsoft.com/winfx/avalon/2005'
+	xmlns:x='http://schemas.microsoft.com/winfx/xaml/2005'
+	xmlns:c='http://schemas.microsoft.com/winfx/markup-compatibility/2005'
+	xmlns:system='System'
+	x:Name='RootWindow'
+	xmlns:my='Disorder'
+	DataContext='{Binding RelativeSource=/Self}'
+	Title='Disorder' 
+	Width='900' Height='900' x:Class='Disorder.Window1'>
+
+	<Window.Resources>
+		<Style TargetType='{x:Type ListBoxItem}'>
+			<Setter Property='HorizontalContentAlignment' Value='Center'/>
+		</Style>
+
+		<!-- Style to make the object expand when selected-->
+		<Style x:Key='Expando' TargetType='{x:Type Shape}'>
+			<Style.Resources>
+				<Storyboard x:Key='Expand'>
+					<DoubleAnimation To='2.5' Storyboard.TargetProperty='(Shape.RenderTransform).(ScaleTransform.ScaleX)' Duration='0:0:0.25'/>
+					<DoubleAnimation To='2.5' Storyboard.TargetProperty='(Shape.RenderTransform).(ScaleTransform.ScaleY)' Duration='0:0:0.25'/>
+					<DoubleAnimation To='.9' Storyboard.TargetProperty='(Shape.Opacity)' Duration='0:0:0.25'/>
+				</Storyboard>
+				<Storyboard x:Key='Collapse'>
+					<DoubleAnimation To='1' Storyboard.TargetProperty='(Shape.RenderTransform).(ScaleTransform.ScaleX)' Duration='0:0:0.25'/>
+					<DoubleAnimation To='1' Storyboard.TargetProperty='(Shape.RenderTransform).(ScaleTransform.ScaleY)' Duration='0:0:0.25'/>
+					<DoubleAnimation To='1' Storyboard.TargetProperty='(Shape.Opacity)' Duration='0:0:0.25'/>
+				</Storyboard>
+			</Style.Resources>
+			<Style.Triggers>
+				<!-- Trigger the expansion from the ListBoxItems selected value-->
+				<DataTrigger Binding='{Binding RelativeSource=/ContentControl, Path=IsSelected}'>
+					<DataTrigger.Value>
+						<system:Boolean>True</system:Boolean>
+					</DataTrigger.Value>
+
+					<DataTrigger.EnterActions>
+						<BeginStoryboard Storyboard='{StaticResource Expand}'/>
+					</DataTrigger.EnterActions>
+					<DataTrigger.ExitActions>
+						<BeginStoryboard Storyboard='{StaticResource Collapse}'/>
+					</DataTrigger.ExitActions>
+				</DataTrigger>
+				
+			</Style.Triggers>
+			<Setter Property='Width' Value='100'/>
+			<Setter Property='Height' Value='100'/>
+			<Setter Property='RenderTransformOrigin' Value='.5,.5'/>
+			<!-- Add an empty RenderTransform that is targeted by the animation -->
+			<Setter Property='RenderTransform'>
+				<Setter.Value>
+					<ScaleTransform/>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Window.Resources>
+
+	<Grid>
+		<ListBox ItemsSource='{Binding Items}'>
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<!-- Custom stackpanel that allows changing z-order -->
+					<my:StackPanelZ/>
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Rectangle Fill='Orange' Stroke='Black' StrokeThickness='5' Style='{StaticResource Expando}' RadiusX='10' RadiusY='10'/>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+
+			<!-- Hide the default ListBox selection blue background-->
+			<ListBox.ItemContainerStyle>
+				<Style TargetType='{x:Type ListBoxItem}'>
+					<Setter Property='HorizontalAlignment' Value='Center'/>
+					<Setter Property='Background' Value='Transparent'/>
+					<!-- Hide the default border around keyboard focus item-->
+					<Setter Property='FocusVisualStyle'>
+						<Setter.Value>
+							<Style TargetType='{x:Type Control}'/>
+						</Setter.Value>
+					</Setter>
+				</Style>
+			</ListBox.ItemContainerStyle>
+		</ListBox>
+	</Grid>
+</Window>

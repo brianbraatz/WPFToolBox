@@ -1,0 +1,337 @@
+<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xml:lang="en-US"
+	x:Class="XPGadgets.GadgetGallery"
+	x:Name="Window"
+	Title="Gadget Gallery"
+	Background="{x:Null}"
+	Width="679" Height="556" WindowStyle="None" AllowsTransparency="True" xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" FontFamily="Segoe UI" WindowStartupLocation="CenterScreen" xmlns:XPGadgets="clr-namespace:XPGadgets" 
+  xmlns:gadgetframework="clr-namespace:GadgetFramework;assembly=GadgetFramework">
+
+  <Window.Resources>
+    <ResourceDictionary>
+      <ControlTemplate x:Key="TextBoxBaseControlTemplate1" TargetType="{x:Type TextBoxBase}">
+        <ControlTemplate.Resources>
+          <Storyboard x:Key="IsFocusedAnimation" d:StoryboardName="IsFocusedAnimation">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" RepeatBehavior="Forever" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)" Storyboard.TargetName="Rectangle">
+              <SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00"/>
+              <SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1.0304592384905733" KeyTime="00:00:00.5000000"/>
+              <SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:01"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" RepeatBehavior="Forever" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)" Storyboard.TargetName="Rectangle">
+              <SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00"/>
+              <SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1.1696411442454013" KeyTime="00:00:00.5000000"/>
+              <SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:01"/>
+            </DoubleAnimationUsingKeyFrames>
+          </Storyboard>
+        </ControlTemplate.Resources>
+        <Border Background="{TemplateBinding Background}" x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+          <Grid x:Name="Grid" RenderTransformOrigin="0.5,0.5">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ScrollViewer Margin="0,0,29,0" x:Name="PART_ContentHost" RenderTransformOrigin="0.5,0.5"/>
+            <Rectangle Stroke="{TemplateBinding BorderBrush}" Fill="{x:Null}" StrokeThickness="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="-1.96934193721344,-1.91835014311868,-1.98608100086082,-2.01143772386195" Width="Auto" Height="Auto" x:Name="Rectangle" RenderTransformOrigin="0.5,0.5">
+              <Rectangle.RenderTransform>
+                <TransformGroup>
+                  <TranslateTransform X="0" Y="0"/>
+                  <ScaleTransform ScaleX="1" ScaleY="1"/>
+                  <SkewTransform AngleX="0" AngleY="0"/>
+                  <RotateTransform Angle="0"/>
+                  <TranslateTransform X="0" Y="0"/>
+                  <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+              </Rectangle.RenderTransform>
+            </Rectangle>
+          </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+          <Trigger Property="IsEnabled" Value="False">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+          </Trigger>
+          <Trigger Property="Width" Value="Auto">
+            <Setter Property="MinWidth" Value="100"/>
+          </Trigger>
+          <Trigger Property="Height" Value="Auto">
+            <Setter Property="MinHeight" Value="20"/>
+          </Trigger>
+          <EventTrigger RoutedEvent="Keyboard.GotKeyboardFocus">
+            <BeginStoryboard Storyboard="{StaticResource IsFocusedAnimation}" x:Name="IsFocusedAnimation_BeginStoryboard"/>
+          </EventTrigger>
+          <EventTrigger RoutedEvent="Keyboard.LostKeyboardFocus">
+            <StopStoryboard d:StoryboardName="IsFocusedAnimation" BeginStoryboardName="IsFocusedAnimation_BeginStoryboard"/>
+          </EventTrigger>
+        </ControlTemplate.Triggers>
+      </ControlTemplate>
+      <ControlTemplate x:Key="ButtonControlTemplate1" TargetType="{x:Type Button}">
+        <Border RenderTransformOrigin="0.5,0.5" x:Name="Border" BorderBrush="sc#1, 0.331718326, 0, 0" BorderThickness="1,1,1,1" CornerRadius="0,0,4,0">
+          <Grid RenderTransformOrigin="0.5,0.5" x:Name="Grid">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border RenderTransformOrigin="0.5,0.5" x:Name="Border1" BorderThickness="0.5,0.5,0.5,0.5" CornerRadius="0,0,4,0">
+              <Border.Background>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                  <LinearGradientBrush.RelativeTransform>
+                    <TransformGroup>
+                      <TranslateTransform X="0" Y="0"/>
+                      <ScaleTransform ScaleX="1" ScaleY="1"/>
+                      <SkewTransform AngleX="0" AngleY="0"/>
+                      <RotateTransform Angle="90"/>
+                      <TranslateTransform X="0" Y="0"/>
+                      <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                  </LinearGradientBrush.RelativeTransform>
+                  <GradientStop Color="sc#1, 1, 0.6173886, 0.6173886" Offset="0"/>
+                  <GradientStop Color="sc#1, 0.56084615, 0.269266844, 0.269266844" Offset="0.99496336996337187"/>
+                  <GradientStop Color="sc#1, 0.565624833, 0.101045959, 0.101045959" Offset="0.523844744998591"/>
+                  <GradientStop Color="sc#0.9529412, 0.55144006, 0.196951821, 0.196951821" Offset="0.48045224006762494"/>
+                </LinearGradientBrush>
+              </Border.Background>
+            </Border>
+            <Path RenderTransformOrigin="0.5,0.5" Stretch="Fill" Stroke="#FFFFFFFF" StrokeThickness="2" HorizontalAlignment="Stretch" Margin="9.53471105456782,3.88907055348267,8.33579419508301,3.90445025657023" x:Name="Path" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Data="M9.188638,4.5525524 L17.096819,10.946401">
+              <Path.RenderTransform>
+                <TransformGroup>
+                  <TranslateTransform X="0" Y="0"/>
+                  <ScaleTransform ScaleX="1" ScaleY="1"/>
+                  <SkewTransform AngleX="0" AngleY="0"/>
+                  <RotateTransform Angle="0"/>
+                  <TranslateTransform X="0" Y="0"/>
+                  <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+              </Path.RenderTransform>
+            </Path>
+            <Path RenderTransformOrigin="0.5,0.5" Stretch="Fill" Stroke="#FFFFFFFF" StrokeThickness="2" Margin="9.53471105456781,3.88907055348267,8.33579419508301,3.90445025657023" x:Name="Path_Copy" Width="8.55255306936969" Height="7.206479189947" Data="M9.188638,4.5525524 L17.096819,10.946401">
+              <Path.RenderTransform>
+                <TransformGroup>
+                  <TranslateTransform X="0" Y="0"/>
+                  <ScaleTransform ScaleX="-1" ScaleY="1"/>
+                  <SkewTransform AngleX="0" AngleY="0"/>
+                  <RotateTransform Angle="0"/>
+                  <TranslateTransform X="0" Y="0"/>
+                  <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+              </Path.RenderTransform>
+            </Path>
+          </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+          <MultiTrigger>
+            <MultiTrigger.Conditions>
+              <Condition Property="IsMouseOver" Value="True"/>
+            </MultiTrigger.Conditions>
+            <Setter Property="Background" TargetName="Border1">
+              <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                  <LinearGradientBrush.RelativeTransform>
+                    <TransformGroup>
+                      <TranslateTransform X="0" Y="0"/>
+                      <ScaleTransform ScaleX="1" ScaleY="1"/>
+                      <SkewTransform AngleX="0" AngleY="0"/>
+                      <RotateTransform Angle="90"/>
+                      <TranslateTransform X="0" Y="0"/>
+                      <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                  </LinearGradientBrush.RelativeTransform>
+                  <GradientStop Color="sc#1, 1, 0.369195819, 0.369195819" Offset="0"/>
+                  <GradientStop Color="sc#1, 0.3350596, 0.0592075326, 0.0592075326" Offset="0.99496336996337187"/>
+                  <GradientStop Color="sc#1, 0.565624833, 0.101045959, 0.101045959" Offset="0.523844744998591"/>
+                  <GradientStop Color="sc#0.9529412, 0.55144006, 0.196951821, 0.196951821" Offset="0.48045224006762494"/>
+                </LinearGradientBrush>
+              </Setter.Value>
+            </Setter>
+            <Setter Property="Cursor" Value="Hand" TargetName="Grid"/>
+            <Setter Property="BitmapEffect" TargetName="Border1">
+              <Setter.Value>
+                <OuterGlowBitmapEffect GlowColor="Red"/>
+              </Setter.Value>
+            </Setter>
+          </MultiTrigger>
+        </ControlTemplate.Triggers>
+      </ControlTemplate>
+      <Storyboard x:Key="OnLoaded"/>
+      <ObjectDataProvider x:Key="GadgetGalleryModelDS" d:IsDataSource="True" ObjectType="{x:Type XPGadgets:GadgetGalleryModel}"/>
+      <DataTemplate x:Key="GadgetTemplate">
+        <Grid Height="120" Width="100" x:Name="Grid">
+          <Viewbox Height="80" Width="80" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <ContentControl Content="{Binding Gadget.Content}"/>
+          </Viewbox>
+          <TextBlock Text="{Binding Gadget.GadgetName}" TextTrimming="CharacterEllipsis" Margin="0,0,0,10" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        </Grid>
+      </DataTemplate>
+      <Style x:Key="ListBoxStyle1" TargetType="{x:Type ListBox}">
+        <Setter Property="BorderBrush" Value="#FF7F9DB9"/>
+        <Setter Property="BorderThickness" Value="1,1,1,1"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ListBox}">
+              <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True" Padding="1,1,1,1">
+                <ScrollViewer x:Name="ScrollViewer">
+                  <WrapPanel x:Name="WrapPanel" IsItemsHost="True"/>
+                </ScrollViewer>
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                  <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                </Trigger>
+                <Trigger Property="IsGrouping" Value="True">
+                  <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style x:Key="ListBoxItemStyle1" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Background" Value="#00FFFFFF"/>
+        <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="Padding" Value="2,0,0,0"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+              <gadgetframework:SmoothMove>
+                <Grid x:Name="Grid">
+                  <Rectangle Fill="{x:Null}" RadiusX="11.5" RadiusY="11.5" Margin="2,2,2,2" x:Name="Rectangle"/>
+                  <ContentPresenter HorizontalAlignment="Left" x:Name="ContentPresenter" VerticalAlignment="Top" Width="Auto" Height="Auto"/>
+                  <Rectangle Fill="#00000000" RadiusX="11.5" RadiusY="11.5" Margin="2,2,2,2" x:Name="Rectangle_Copy"/>
+                </Grid>
+              </gadgetframework:SmoothMove>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                  <Setter Property="Stroke" Value="#6B91BBE5" TargetName="Rectangle"/>
+                  <Setter Property="Fill" Value="#BF49ACEE" TargetName="Rectangle"/>
+                  <Setter Property="Margin" Value="0,0,0,0" TargetName="Rectangle_Copy"/>
+                  <Setter Property="Width" Value="Auto" TargetName="Rectangle_Copy"/>
+                  <Setter Property="Height" Value="Auto" TargetName="Rectangle_Copy"/>
+                  <Setter Property="Shape.StrokeThickness" Value="3" TargetName="Rectangle"/>
+                </Trigger>
+                <DataTrigger Binding="{Binding IsFiltered}" Value="True">
+                  <Setter Property="Visibility" Value="Collapsed" TargetName="Grid" />
+                </DataTrigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+    </ResourceDictionary>
+  </Window.Resources>
+
+  <Window.Triggers>
+    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+      <BeginStoryboard x:Name="OnLoaded_BeginStoryboard" Storyboard="{DynamicResource OnLoaded}"/>
+    </EventTrigger>
+  </Window.Triggers>
+
+  <Grid x:Name="DocumentRoot">
+    <Rectangle Fill="#FFFFFFFF" Stroke="{x:Null}" RadiusX="7.5" RadiusY="7.5" x:Name="Rectangle_Copy1" Width="679" Height="556" MouseLeftButtonDown="OnMouseLeftButtonDown"/>
+    <Rectangle Stroke="{x:Null}" RadiusX="7.5" RadiusY="7.5" Margin="0,0,0,0" x:Name="Rectangle" MouseLeftButtonDown="OnMouseLeftButtonDown">
+      <Rectangle.Fill>
+        <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+          <LinearGradientBrush.RelativeTransform>
+            <TransformGroup>
+              <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.53644157900462" ScaleY="1.53644157900462"/>
+              <SkewTransform AngleX="0" AngleY="0" CenterX="0.5" CenterY="0.5"/>
+              <RotateTransform CenterX="0.5" CenterY="0.5" Angle="-53.323039484981955"/>
+              <TranslateTransform X="-0.088256129816811718" Y="-0.0873566933432994"/>
+            </TransformGroup>
+          </LinearGradientBrush.RelativeTransform>
+          <GradientStop Color="#586193DD" Offset="1"/>
+          <GradientStop Color="#536596DD" Offset="0"/>
+          <GradientStop Color="#55687A93" Offset="0.48855311355311326"/>
+          <GradientStop Color="#54677D9C" Offset="0.35607448107448025"/>
+          <GradientStop Color="#54E1E8F2" Offset="0.40735653235653158"/>
+          <GradientStop Color="#556581A9" Offset="0.67881695599086733"/>
+          <GradientStop Color="#55DFDFDF" Offset="0.74626400169878249"/>
+        </LinearGradientBrush>
+      </Rectangle.Fill>
+    </Rectangle>
+    <Rectangle Stroke="#FF000000" RadiusX="7.5" RadiusY="7.5" x:Name="Rectangle_Copy" Width="679" Height="556" MouseLeftButtonDown="OnMouseLeftButtonDown">
+      <Rectangle.Fill>
+        <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+          <LinearGradientBrush.RelativeTransform>
+            <TransformGroup>
+              <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.1088809690960815" ScaleY="1.1088809690960815"/>
+              <SkewTransform AngleX="0" AngleY="0" CenterX="0.5" CenterY="0.5"/>
+              <RotateTransform CenterX="0.5" CenterY="0.5" Angle="-40.327893976463436"/>
+              <TranslateTransform X="-0.0080983969052852833" Y="0.0026963256267564847"/>
+            </TransformGroup>
+          </LinearGradientBrush.RelativeTransform>
+          <GradientStop Color="#536193DD" Offset="1"/>
+          <GradientStop Color="#536596DD" Offset="0"/>
+          <GradientStop Color="#537BA5E7" Offset="0.27121489621489214"/>
+          <GradientStop Color="#53B7CFF3" Offset="0.28464590964590542"/>
+          <GradientStop Color="#538AB2EA" Offset="0.37316849816849784"/>
+          <GradientStop Color="#539EC1F1" Offset="0.30479242979242532"/>
+          <GradientStop Color="#53ABCDFE" Offset="0.46596459096458775"/>
+          <GradientStop Color="#5379B0F8" Offset="0.43238705738705308"/>
+          <GradientStop Color="#5384ADEA" Offset="0.50625763125762768"/>
+          <GradientStop Color="#538DB4EE" Offset="0.55326617826617419"/>
+        </LinearGradientBrush>
+      </Rectangle.Fill>
+    </Rectangle>
+    <Button RenderTransformOrigin="0.5,0.5" d:LayoutOverrides="Width, Height" HorizontalAlignment="Right" Margin="0,0,25.0000000000015,0" x:Name="CloseButton" VerticalAlignment="Top" Width="28.4230583190205" Height="16.9999999999999" Template="{DynamicResource ButtonControlTemplate1}" Content="Button" Click="CloseButtonClick"/>
+    <Path Stretch="Fill" Stroke="#FF000000" StrokeThickness="0.5" Margin="15.5,0,17.4930419921875,98.5" x:Name="Path" VerticalAlignment="Bottom" Height="1" Data="M16,456 L661.00698,456">
+      <Path.Fill>
+        <x:Null/>
+      </Path.Fill>
+    </Path>
+    <Path RenderTransformOrigin="0.5,0.5" Stretch="Fill" Stroke="#FFFFFFFF" StrokeThickness="0.5" Margin="15.5,0,17.493041992187,97.796270907595" x:Name="Path_Copy" VerticalAlignment="Bottom" Height="0.638058678365835" Data="M16,456 L661.00698,456">
+      <Path.RenderTransform>
+        <TransformGroup>
+          <ScaleTransform ScaleX="1" ScaleY="1"/>
+          <SkewTransform AngleX="0" AngleY="0"/>
+          <RotateTransform Angle="0"/>
+          <TranslateTransform X="0" Y="0"/>
+        </TransformGroup>
+      </Path.RenderTransform>
+      <Path.Fill>
+        <x:Null/>
+      </Path.Fill>
+    </Path>
+    <ListBox x:Name="GadgetList" ItemsSource="{Binding Gadgets, Source={StaticResource GadgetGalleryModelDS}}" ItemTemplate="{StaticResource GadgetTemplate}" Margin="15.5,75,17.4930419921875,115" MinHeight="0" MinWidth="0" Style="{DynamicResource ListBoxStyle1}" Background="{x:Null}" BorderBrush="#FF797979" ItemContainerStyle="{DynamicResource ListBoxItemStyle1}" />
+    <TextBlock HorizontalAlignment="Right" Margin="0,0,17.4930419921875,61.796270907595" x:Name="TextBlock" VerticalAlignment="Bottom" Width="207.999999999999" Height="31" Text="Microsoft Corporation" TextWrapping="Wrap" FontSize="16" FontFamily="Segoe UI" FontWeight="Normal">
+      <TextBlock.TextDecorations>
+        <TextDecorationCollection/>
+      </TextBlock.TextDecorations>
+    </TextBlock>
+    <TextBlock d:LayoutOverrides="Width, Height" HorizontalAlignment="Right" Margin="0,0,16.4930419921875,40.796270907595" x:Name="TextBlock_Copy" VerticalAlignment="Bottom" Width="207.999999999999" Height="31" Text="www.microsoftgadgets.com" TextWrapping="Wrap" FontSize="12" FontFamily="Segoe UI">
+      <TextBlock.TextDecorations>
+        <TextDecorationCollection/>
+      </TextBlock.TextDecorations>
+    </TextBlock>
+    <ItemsControl d:IsGroup="True" HorizontalAlignment="Left" Margin="15.5,0,0,40.796270907595" x:Name="Group" VerticalAlignment="Bottom" Width="296.999999999999" Height="51.9999999999999">
+      <ItemsControl.Template>
+        <ControlTemplate TargetType="{x:Type ItemsControl}">
+          <Viewbox Stretch="Fill">
+            <Canvas Width="296.999999999999" Height="51.9999999999999" IsItemsHost="True"/>
+          </Viewbox>
+        </ControlTemplate>
+      </ItemsControl.Template>
+      <TextBlock HorizontalAlignment="Stretch" Margin="0,0,0,0" x:Name="TextBlock_Copy1" VerticalAlignment="Stretch" Width="296.999999999999" Height="31" Text="{Binding Path=Gadget.GadgetName, Mode=Default}" TextWrapping="Wrap" FontSize="16" FontWeight="Normal" FontFamily="Segoe UI" DataContext="{Binding Path=SelectedItem, ElementName=GadgetList, Mode=Default}" Canvas.Left="0" Canvas.Top="0">
+        <TextBlock.TextDecorations>
+          <TextDecorationCollection/>
+        </TextBlock.TextDecorations>
+      </TextBlock>
+      <TextBlock HorizontalAlignment="Stretch" Margin="0,0,0,0" x:Name="TextBlock_Copy2" VerticalAlignment="Stretch" Width="295.999999999999" Height="31" Text="{Binding Path=Gadget.Description, Mode=Default}" TextWrapping="Wrap" FontSize="12" FontFamily="Segoe UI" DataContext="{Binding Path=SelectedItem, ElementName=GadgetList, Mode=Default}" Canvas.Left="1" Canvas.Top="20.9999999999999">
+        <TextBlock.TextDecorations>
+          <TextDecorationCollection/>
+        </TextBlock.TextDecorations>
+      </TextBlock>
+    </ItemsControl>
+    <TextBox x:Name="SearchTextBox" Template="{StaticResource TextBoxBaseControlTemplate1}" Margin="0,40,20,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="27" Width="200" TextChanged="OnTextChanged" GotKeyboardFocus="OnGotKeyboardFocus" PreviewMouseLeftButtonDown="OnPreviewMouseLeftButtonDown" Text="Search Gadgets..."/>
+  </Grid>
+</Window>
