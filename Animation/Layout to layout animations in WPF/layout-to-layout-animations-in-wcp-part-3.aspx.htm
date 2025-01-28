@@ -1,0 +1,635 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Dan Crevier's Blog : Layout to layout animations in WCP: Part 3</title>
+
+
+
+
+
+ 
+
+
+<meta name="keywords" content="PanelLayoutAnimator">
+<meta name="description" content="Ok, it took me a lot longer to get to this, but I finally have a post about a better way to do layout to layout animations. In part 1 , I introduced a simple tile panel and then in part 2 , I made modifications so that it animates the children as they">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/dancre/pingback.aspx">
+<link rel="stylesheet" href="layout-to-layout-animations-in-wcp-part-3.aspx_files/print.css" type="text/css" media="print">
+<link rel="stylesheet" href="layout-to-layout-animations-in-wcp-part-3.aspx_files/Common.css" type="text/css" media="screen">
+<link rel="stylesheet" href="layout-to-layout-animations-in-wcp-part-3.aspx_files/Blog.css" type="text/css" media="screen">
+<link rel="stylesheet" href="layout-to-layout-animations-in-wcp-part-3.aspx_files/common_print.css" type="text/css" media="print">
+<link rel="stylesheet" href="layout-to-layout-animations-in-wcp-part-3.aspx_files/blog_print.css" type="text/css" media="print">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Dan Crevier's Blog (RSS 2.0)" href="http://blogs.msdn.com/dancre/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Dan Crevier's Blog (Atom 1.0)" href="http://blogs.msdn.com/dancre/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Layout to layout animations in WCP: Part 3 Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/dancre/commentrss.aspx?PostID=537966">
+
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <script src="layout-to-layout-animations-in-wcp-part-3.aspx_files/global.js" type="text/javascript"></script>
+            <style type="text/css"> body { font-size: 84%; } </style>
+            
+			
+			
+			
+       <script language="JavaScript">var doImage=doImage;var TType=TType;
+function mhHover(tbl,idx,cls){var t,d;if(document.getElementById)t=document.getElementById(tbl);else t=document.all(tbl);if(t==null)return;if(t.getElementsByTagName)d=t.getElementsByTagName("TD");else d=t.all.tags("TD");if(d==null)return;if(d.length<=idx)return;d[idx].className=cls;}
+
+</script>
+<script language="javascript" type="text/javascript" src="layout-to-layout-animations-in-wcp-part-3.aspx_files/minmax.js"></script>
+<style>
+.DoNotDisplay { display: none; }
+</style></head><body>
+<form name="aspnetForm" method="post" action="/dancre/archive/2006/02/23/layout-to-layout-animations-in-wcp-part-3.aspx" id="aspnetForm">
+<div>
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWRk4kqgif0qb+BsXqBU64DM+rPSfXA=" type="hidden">
+</div>
+
+<script language="javascript" type="text/javascript" src="layout-to-layout-animations-in-wcp-part-3.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['CommonModal'],['CommonModalTitle'],['CommonModalClose'],['CommonModalContent'],['CommonModalFooter'],['CommonModalResize'],['CommonModalMask'],100);
+// ]]>
+</script>
+			
+<div id="AllContent">
+
+<div id="CommonHeader">
+<div id="msviMasthead">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody><tr>
+      <td width="100%"><table border="0" cellpadding="0" cellspacing="0" height="22" width="100%">
+          <tbody><tr>
+            <td id="msviRegionIdGraphic" bgcolor="#ffffff"></td>
+            <td bgcolor="#3568cc" width="100%"><img src="layout-to-layout-animations-in-wcp-part-3.aspx_files/topGradient.jpg" alt="*" title="" height="22" width="250"></td>
+          </tr>
+        </tbody></table></td>
+      <td id="msviGlobalToolbar" align="left" bgcolor="#3568cc" height="22" nowrap="nowrap"><table border="0" cellpadding="0" cellspacing="0">
+          <tbody><tr>
+            <td class="gt0" onmouseover="mhHover('msviGlobalToolbar', 0, 'gt1')" onmouseout="mhHover('msviGlobalToolbar', 0, 'gt0')" nowrap="nowrap"><a href="http://www.microsoft.com/" style="font-size: 95%;">Microsoft.com Home</a></td>
+            <td class="gtsep">|</td>
+            <td class="gt0" onmouseover="mhHover('msviGlobalToolbar', 2, 'gt1')" onmouseout="mhHover('msviGlobalToolbar', 2, 'gt0')" nowrap="nowrap"><a href="http://www.microsoft.com/library/toolbar/3.0/sitemap/en-us.mspx" style="font-size: 95%;">Site Map</a></td>
+          </tr>
+        </tbody></table></td>
+    </tr>
+    <tr valign="top">
+      <td width="100%"><table style="" border="0" cellpadding="0" cellspacing="0" height="42" width="100%">
+          <tbody><tr valign="top">
+            <td id="msviBrandBanner" bgcolor="#ffffff"><a href="http://msdn.microsoft.com/"><img src="layout-to-layout-animations-in-wcp-part-3.aspx_files/msdn_masthead_ltr.gif" alt="MSDN" title="" border="0" height="42" width="225"></a></td>
+            <td bgcolor="#6799ff" width="100%"><img src="layout-to-layout-animations-in-wcp-part-3.aspx_files/topGradient2.jpg" alt="*" title="" height="42" width="250"></td>
+          </tr>
+        </tbody></table></td>
+      <td id="msviGlobalSearch" bgcolor="#6799ff"><div id="msviNoSearch"></div></td>
+    </tr>
+  </tbody></table>
+  <div id="msviLocalToolbar">
+    <table border="0" cellpadding="0" cellspacing="0" height="19" width="100%">
+      <tbody><tr>
+        <td id="msviHomePageLink" nowrap="nowrap" width="177"><a href="http://msdn.microsoft.com/">MSDN Home</a></td>
+        <td><span class="ltsep">|</span></td>
+        <td class="lt0" onmouseover="mhHover('msviLocalToolbar', 2, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 2, 'lt0')" nowrap="nowrap"><a href="http://msdn.microsoft.com/developercenters/">Developer Centers</a></td>
+        <td><span class="ltsep">|</span></td>
+        <td class="lt0" onmouseover="mhHover('msviLocalToolbar', 4, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 4, 'lt0')" nowrap="nowrap"><a href="http://msdn.microsoft.com/flash">MSDN Flash</a></td>
+        <td><span class="ltsep">|</span></td>
+        <td class="lt0" onmouseover="mhHover('msviLocalToolbar', 6, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 6, 'lt0')" nowrap="nowrap"><a href="http://msdn.microsoft.com/subscriptions/">Subscribers</a></td>
+        <td></td>
+        <td class="lt0" onmouseover="mhHover('msviLocalToolbar', 8, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 8, 'lt0')" nowrap="nowrap">&nbsp;</td>
+        <td></td>
+        <td class="lt0" onmouseover="mhHover('msviLocalToolbar', 10, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 10, 'lt0')" nowrap="nowrap">&nbsp;</td>
+        <td></td>
+        <td class="lt0" onmouseover="mhHover('msviLocalToolbar', 12, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 12, 'lt0')" nowrap="nowrap">&nbsp;</td>
+        <td></td>
+        <td class="lt0" onmouseover="mhHover('msviLocalToolbar', 14, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 14, 'lt0')" nowrap="nowrap">&nbsp;</td>
+		<td></td> 
+        <td class="lt0" onmouseover="mhHover('msviLocalToolbar', 16, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 16, 'lt0')" nowrap="nowrap">&nbsp;</td>
+		<td width="100%"></td>
+      </tr>
+    </tbody></table>
+  </div>
+</div>
+</div>
+
+<table dir="ltr" border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr valign="top">
+    <td style="border-right: 1px solid rgb(153, 153, 153); overflow-x: hidden;" id="CommonLeftColumn" bgcolor="#f1f1f1" height="100%" width="181">
+	<div id="mnpMenuTop" class="mnpMenuTop">
+        <div class="mnpInherit">
+
+	          
+
+<div class="CommonSidebarArea">
+<div class="CommonSidebarContent">
+	<a href="http://blogs.msdn.com/default.aspx"> Blogs Home</a>
+</div>
+</div>
+
+<div class="CommonSidebarArea">
+<div class="CommonSidebarContent">
+	
+	<a id="ctl00___ctl00___ctl00_ctl00_AggWelcome___Login" href="http://blogs.msdn.com/login.aspx?ReturnUrl=%2fdancre%2farchive%2f2006%2f02%2f23%2flayout-to-layout-animations-in-wcp-part-3.aspx">Sign in</a> | <a id="ctl00___ctl00___ctl00_ctl00_AggWelcome___Register" href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/dancre/archive/2006/02/23/layout-to-layout-animations-in-wcp-part-3.aspx">Join</a>
+</div>
+</div>
+
+<div class="CommonSidebarArea">
+<div class="CommonSidebarContent">
+	<ul class="CommonSidebarList">
+	<li><a href="http://blogs.msdn.com/search/"> Search</a></li>
+	<li><a href="http://blogs.msdn.com/MainFeed.aspx?Type=AllBlogs"> RSS</a></li>
+	<li><a href="http://blogs.msdn.com/Opml.aspx"> OPML</a></li>
+	</ul>
+</div>
+</div>
+                  
+                  
+		  
+        </div>
+      </div>
+      
+      <div class="mnpAds" style="background: rgb(241, 241, 241) none repeat scroll 0%; width: 181px; height: 100%; padding-bottom: 20px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"></div></td>
+    <td width="100%"><table style="table-layout: fixed;" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td width="100%"><div id="pageContainer" class="clsDocBody">
+
+	
+	
+	
+	    <div class="CommonContentArea">
+	        
+<h2 class="CommonTitle"><a id="ctl00___ctl00___ctl00_ctl00_bcr_bth___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/dancre/default.aspx">Dan Crevier's Blog</a></h2>
+<div class="CommonContent">In search of a better name...</div>
+
+	        <div class="CommonContent">
+                
+			
+
+
+
+	
+<div class="BlogPostArea">
+	<h4 class="BlogPostHeader">Layout to layout animations in WCP: Part 3 </h4>
+	<div class="BlogPostContent">
+		<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;">Ok, it took me a lot longer to get to this, but I finally have a post about a better way to do layout to layout animations. In <a href="http://blogs.msdn.com/dancre/archive/2005/10/02/476328.aspx">part 1</a>, I introduced a simple tile panel and then in <a href="http://blogs.msdn.com/dancre/archive/2005/10/03/476689.aspx">part 2</a>,
+I made modifications so that it animates the children as they are
+rearranged. There were a couple of things I don’t like about my
+solution in <a href="http://blogs.msdn.com/dancre/archive/2005/10/03/476689.aspx">part 2</a>:<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormalIndentCxSpFirst" style="margin: 0in 0in 0pt 0.5in; text-indent: -0.25in;"><span style="font-size: 10pt; font-family: Verdana;"><span style="">1.<span style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size: 10pt; font-family: Verdana;">It requires modifying the panel and having enough information to compute the previous layout position<o:p></o:p></span></p>
+<p class="MsoNormalIndentCxSpLast" style="margin: 0in 0in 0pt 0.5in; text-indent: -0.25in;"><span style="font-size: 10pt; font-family: Verdana;"><span style="">2.<span style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size: 10pt; font-family: Verdana;">We
+were changing the render transforms of the children during the layout
+pass. This is a bit fragile because Avalon is also applying and using
+transforms at this stage<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;">Before jumping into my new implementation, I want to mention a couple of other techniques out there.<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><a href="http://blogs.msdn.com/okoboji/archive/2005/11/18/494559.aspx">Kevin Moore</a>
+implemented some seriously crazy animations using
+CompositionTarget.Rendering to get a callback at each frame of
+rendering. This works great if you want to use a physics engine for
+your animations.<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><a href="http://blois.us/blog/2005_10_01_houseomirrors_archive.html">Pete Blois</a>
+used a clever technique of wrapping each child with a ContentControl
+that sees when its layout is changed and applies the render transform
+to itself. This means you can turn on animations for any child in any
+panel by wrapping it in this ContentControl.<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;">The
+implementation I want to present in this post allows you to add layout
+animations to any panel without modifying the panel or adding
+requirements to the children. How is that possible? Well, the basic
+principle is the same as I presented in <a href="http://blogs.msdn.com/dancre/archive/2005/10/03/476689.aspx">part 2</a>.
+After children are arranged, we’ll apply a render transform to put the
+child back at its previous location, and animate that transform so it
+decays to 0 over time. We’ll take advantage of the LayoutUpdated event
+that UIElements fire when their layout changes, and the ability to use
+attached properties to store previous layout information. The basic
+LayoutUpdated handler algorithm goes something like this:<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormalIndentCxSpFirst" style="margin: 0in 0in 0pt 0.5in; text-indent: -0.25in;"><span style="font-size: 10pt; font-family: Symbol;"><span style="">·<span style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size: 10pt; font-family: Verdana;">Compute the position where the child was arranged by looking at the current position and undoing any render transform<o:p></o:p></span></p>
+<p class="MsoNormalIndentCxSpMiddle" style="margin: 0in 0in 0pt 0.5in; text-indent: -0.25in;"><span style="font-size: 10pt; font-family: Symbol;"><span style="">·<span style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size: 10pt; font-family: Verdana;">Read the position it was previously arranged from the attached property<o:p></o:p></span></p>
+<p class="MsoNormalIndentCxSpLast" style="margin: 0in 0in 0pt 0.5in; text-indent: -0.25in;"><span style="font-size: 10pt; font-family: Symbol;"><span style="">·<span style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size: 10pt; font-family: Verdana;">If
+the positions are different, apply a render transform from the newly
+arranged position back to the current position (not the arranged
+position, but where it actually is including current transforms), and
+animate the transform away. If the arrange positions were the same,
+then it’s already in the right place, or an animation is taking care of
+it<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p></o:p></span>&nbsp;</p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p><font color="#ff0000">Update</font>: Pete Blois noted that LayoutUpdated is a global event and fires when any layout updated. So, expect lots of calls to it!</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;">I’ve wrapped it up into a class below that you construct with a panel. You can modify the sample we used in <a href="http://blogs.msdn.com/dancre/archive/2005/10/02/476328.aspx">part 1</a> by just adding:<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">new</span> <span style="color: teal;">PanelLayoutAnimator</span>(_tilePanel);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;">to the Window’s constructor.<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;">An
+alternate form factor would be to create a ContentControl that applied
+a PanelLayoutAnimator to a child. That would let you just wrap the
+panel with this control in the Xaml to get animations. If there is
+interest, I can provide the exact details on how to do that.</span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"></span>&nbsp;</p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><font color="#ff0000">Update</font>:
+Pete Blois had a good idea on another form facotr, and Ben Constable
+noted something similar. One trick you can use is to register an
+attached property along with a global property changed handler on it.
+When the property changed, you can see what it's attached to and create
+a PanelLayoutAnimator pointing to it. Then, you can do something like
+&lt;WrapPanel PanelLayoutAnimator.Active="true" /&gt;. If anyone wants
+details on this, I can provide them.</span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;">Here’s the code:<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">public</span><span style="font-size: 10pt; font-family: 'Courier New';"> <span style="color: blue;">class</span> <span style="color: teal;">PanelLayoutAnimator<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> PanelLayoutAnimator(<span style="color: teal;">Panel</span> panelToAnimate)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>_panel = panelToAnimate;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>_panel.LayoutUpdated += <span style="color: blue;">new</span> <span style="color: teal;">EventHandler</span>(PanelLayoutUpdated);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">void</span> PanelLayoutUpdated(<span style="color: blue;">object</span> sender, <span style="color: teal;">EventArgs</span> e)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// At this point, the panel has moved the children to the new locations, but hasn't<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// been rendered<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">foreach</span> (<span style="color: teal;">UIElement</span> child <span style="color: blue;">in</span> _panel.Children)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// Figure out where child actually is right now. This is a combination of where the<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// panel put it and any render transform currently applied<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: teal;">Point</span> currentPosition = child.TransformToAncestor(_panel).Transform(<span style="color: blue;">new</span> <span style="color: teal;">Point</span>());<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// See what transform is being applied<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: teal;">Transform</span> currentTransform = child.RenderTransform;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// Compute where the panel actually arranged it to<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: teal;">Point</span> arrangePosition = currentPosition;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (currentTransform != <span style="color: blue;">null</span>)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// Undo any transform we applied<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>arrangePosition = currentTransform.Inverse.Transform(arrangePosition);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// If we had previously stored an arrange position, see if it has moved<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (child.ReadLocalValue(SavedArrangePositionProperty) != <span style="color: teal;">DependencyProperty</span>.UnsetValue)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: teal;">Point</span> savedArrangePosition = (<span style="color: teal;">Point</span>)child.GetValue(SavedArrangePositionProperty);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// If the arrange position hasn't changed, then we've already set up animations, etc<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// and don't need to do anything<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (!AreReallyClose(savedArrangePosition, arrangePosition))<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// If we apply the current transform to the saved arrange position, we'll see where<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// it was last rendered<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: teal;">Point</span> lastRenderPosition = currentTransform.Transform(savedArrangePosition);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// Transform the child from the new location back to the old position<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: teal;">TranslateTransform</span> newTransform = <span style="color: blue;">new</span> <span style="color: teal;">TranslateTransform</span>();<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>child.RenderTransform = newTransform;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// Decay the transformation with an animation<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>newTransform.BeginAnimation(<span style="color: teal;">TranslateTransform</span>.XProperty, MakeAnimation(lastRenderPosition.X - arrangePosition.X));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>newTransform.BeginAnimation(<span style="color: teal;">TranslateTransform</span>.YProperty, MakeAnimation(lastRenderPosition.Y - arrangePosition.Y));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// Save off the previous arrange position<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>child.SetValue(SavedArrangePositionProperty, arrangePosition);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// Check if two points are really close. If you don't do epsilon comparisons, you can get lost in the<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// noise of floating point operations<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">private</span> <span style="color: blue;">bool</span> AreReallyClose(<span style="color: teal;">Point</span> p1, <span style="color: teal;">Point</span> p2)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">return</span> (<span style="color: teal;">Math</span>.Abs(p1.X - p2.X) &lt; .001 &amp;&amp; <span style="color: teal;">Math</span>.Abs(p1.Y - p2.Y) &lt; .001); <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// Create an animation to decay from start to 0 over .5 seconds<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">private</span> <span style="color: blue;">static</span> <span style="color: teal;">DoubleAnimation</span> MakeAnimation(<span style="color: blue;">double</span> start)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: teal;">DoubleAnimation</span> animation = <span style="color: blue;">new</span> <span style="color: teal;">DoubleAnimation</span>(start, 0d, <span style="color: blue;">new</span> <span style="color: teal;">Duration</span>(<span style="color: teal;">TimeSpan</span>.FromMilliseconds(500)));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>animation.AccelerationRatio = 0.2;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">return</span> animation;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// dependency property we attach to children to save their last arrange position<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">private</span> <span style="color: blue;">static</span> <span style="color: blue;">readonly</span> <span style="color: teal;">DependencyProperty</span> SavedArrangePositionProperty<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>= <span style="color: teal;">DependencyProperty</span>.RegisterAttached(<span style="color: maroon;">"SavedArrangePosition"</span>, <span style="color: blue;">typeof</span>(<span style="color: teal;">Point</span>), <span style="color: blue;">typeof</span>(<span style="color: teal;">PanelLayoutAnimator</span>));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">private</span> <span style="color: teal;">Panel</span> _panel;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';">}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+	</div>
+	<div class="BlogPostFooter">
+		Published Thursday, February 23, 2006 9:18 AM
+		by
+		<a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=3401">dancre</a> 
+		<div><span id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/dancre/archive/tags/PanelLayoutAnimator/default.aspx" rel="tag">PanelLayoutAnimator</a></span><input name="ctl00$_$ctl00$_$ctl00$ctl00$bcr$ctl00$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+								
+	</div>                            
+</div>
+
+
+
+	<div id="comments">
+		<h3>
+	Comments
+</h3>
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+	<tbody><tr valign="top">
+	<td class="Comment CommentAvatar">
+		<img src="layout-to-layout-animations-in-wcp-part-3.aspx_files/anonymous.gif" border="1">&nbsp;
+	</td>
+	<td class="Comment CommentContent" width="100%">
+		<h4 class="CommentTitle"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl01_NameLink" rel="nofollow" title="TrackBack" href="http://blogs.msdn.com/jeffsim/archive/2006/02/23/537995.aspx">Jeff Simon's Blog</a> 
+		said:</h4>
+		<div class="CommentText">It's like being \.'ed, only with less penguins.
+<br><a rel="nofollow" target="_new" href="http://blogs.msdn.com/dancre/archive/2006/02/22/537534.aspx">http://blogs.msdn.com/dancre/archive/2006/02/22/537534.aspx</a>...</div>
+		<div class="CommentFooter">February 23, 2006 12:52 PM </div>
+	</td>
+	</tr>
+
+	<tr valign="top">
+	<td class="Comment CommentAvatar">
+		<img src="layout-to-layout-animations-in-wcp-part-3.aspx_files/anonymous.gif" border="1">&nbsp;
+	</td>
+	<td class="Comment CommentContent" width="100%">
+		<h4 class="CommentTitle"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl02_NameLink" title="Valentin Iliescu" rel="nofollow" href="http://www.valil.com/winfx">Valentin Iliescu</a> 
+		said:</h4>
+		<div class="CommentText">Great sample!
+<br>
+<br>I have a question though:
+<br>I have created a sample based on part1 and 2 ( <a rel="nofollow" target="_new" href="http://www.valil.com/portaluitest/portaluitest.xbap">http://www.valil.com/portaluitest/portaluitest.xbap</a> &nbsp;- Jan CTP).
+<br>Sometimes I am modifying the render transform of an element during
+the layout pass. Why did you say that this process is a bit fragile?</div>
+		<div class="CommentFooter">March 3, 2006 12:18 PM </div>
+	</td>
+	</tr>
+
+	<tr valign="top">
+	<td class="CommentOwner CommentAvatar">
+		<img src="layout-to-layout-animations-in-wcp-part-3.aspx_files/anonymous.gif" border="1">&nbsp;
+	</td>
+	<td class="CommentOwner CommentContent" width="100%">
+		<h4 class="CommentTitle"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl03_NameLink" title="dancre" href="http://blogs.msdn.com/dancre">dancre</a> 
+		said:</h4>
+		<div class="CommentText">I
+found that if I arranged the child before setting the transform things
+didn't animate properly. In chatting with some Avalon folks, they said
+it's not a good idea to change the transforms during the layout pass
+since they are modified and used in some of the layout calculations.</div>
+		<div class="CommentFooter">March 4, 2006 12:23 PM </div>
+	</td>
+	</tr>
+
+	<tr valign="top">
+	<td class="Comment CommentAvatar">
+		<img src="layout-to-layout-animations-in-wcp-part-3.aspx_files/anonymous.gif" border="1">&nbsp;
+	</td>
+	<td class="Comment CommentContent" width="100%">
+		<h4 class="CommentTitle"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl04_NameLink" rel="nofollow" title="TrackBack" href="http://blogs.msdn.com/dancre/archive/2006/03/04/543854.aspx">Dan Crevier's Blog</a> 
+		said:</h4>
+		<div class="CommentText">Sometimes you want to attach some behavior to an Avalon element by adding some event handlers, but without...</div>
+		<div class="CommentFooter">March 5, 2006 12:10 AM </div>
+	</td>
+	</tr>
+
+	<tr valign="top">
+	<td class="Comment CommentAvatar">
+		<img src="layout-to-layout-animations-in-wcp-part-3.aspx_files/anonymous.gif" border="1">&nbsp;
+	</td>
+	<td class="Comment CommentContent" width="100%">
+		<h4 class="CommentTitle"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl05_NameLink" rel="nofollow" title="TrackBack" href="http://blogs.msdn.com/dancre/archive/2006/03/04/attaching-behavior-to-an-avalon-element-in-xaml.aspx">Dan Crevier's Blog</a> 
+		said:</h4>
+		<div class="CommentText"><p>Sometimes you want to attach some behavior to an Avalon element by adding some event handlers, but without</p>
+</div>
+		<div class="CommentFooter">January 6, 2007 11:41 PM </div>
+	</td>
+	</tr>
+
+	</tbody></table>
+	</div>
+
+
+
+
+
+
+<em>New Comments to this post are disabled</em>
+
+	
+   
+    
+	        </div>
+	    </div>
+    
+
+      </div></td></tr></tbody></table></td>
+      <td style="font-size: 100%;" id="CommonRightColumn">
+		
+		<div class="CommonSidebar">
+			
+<div id="BlogLinksSideBar">
+	
+<div class="CommonSidebarArea">
+	<h4 class="CommonSidebarHeader">This Blog</h4>
+	<div class="CommonSidebarContent">
+		<ul class="CommonSidebarList">
+			<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___home" href="http://blogs.msdn.com/dancre/default.aspx">Home</a></li>
+			
+			
+			<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___Contactlink1" href="http://blogs.msdn.com/dancre/contact.aspx">Email</a></li>
+			<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___LinkListLink1" href="http://blogs.msdn.com/dancre/linklist.aspx">Links</a></li>
+		</ul>
+	</div>
+</div>
+</div>
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="SubscriptionsSideBar">
+	
+<div class="CommonSidebarArea">
+	<h4 class="CommonSidebarHeader">Syndication</h4>
+	<div class="CommonSidebarContent">
+		<ul class="CommonSidebarList">
+			<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___bs___rss" href="http://blogs.msdn.com/dancre/rss.xml">RSS 2.0</a></li>
+			<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___bs___atom" href="http://blogs.msdn.com/dancre/atom.xml">Atom 1.0</a></li>
+		</ul>
+	</div>
+ </div>
+</div>
+
+<div id="RecentPostsSideBar">
+	
+<div class="CommonSidebarArea">
+	<h4 class="CommonSidebarHeader">Recent Posts</h4>
+	<div class="CommonSidebarContent">
+		<ul class="CommonSidebarList">
+		
+				<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl00_Link" href="http://blogs.msdn.com/dancre/archive/2007/10/11/more-skydrive-goodness.aspx">More SkyDrive goodness</a></li>
+			
+				<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl01_Link" href="http://blogs.msdn.com/dancre/archive/2007/08/22/frustrating-error-using-remote-desktop.aspx">Frustrating error using Remote Desktop</a></li>
+			
+				<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl02_Link" href="http://blogs.msdn.com/dancre/archive/2007/08/21/tafiti.aspx">Tafiti</a></li>
+			
+				<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl03_Link" href="http://blogs.msdn.com/dancre/archive/2007/08/09/windows-live-skydrive-spaces-integration.aspx">Windows Live SkyDrive/Spaces integration</a></li>
+			
+				<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl04_Link" href="http://blogs.msdn.com/dancre/archive/2007/08/09/windows-live-folders-is-now-windows-live-skydrive.aspx">Windows Live Folders is now Windows Live SkyDrive!</a></li>
+			
+		</ul>
+	</div>
+ </div>
+
+</div>
+
+<div id="TagSideBar">
+	<div class="CommonSidebarArea">
+		<h4 class="CommonSidebarHeader">Tags</h4>
+		<div class="CommonSidebarContent">
+			<ul class="CommonSidebarTagCloud">
+<li class="CommonTag3"><a href="http://blogs.msdn.com/dancre/archive/tags/ASP.NET/default.aspx" rel="tag">ASP.NET</a></li>
+<li class="CommonTag6"><a href="http://blogs.msdn.com/dancre/archive/tags/Debugging/default.aspx" rel="tag">Debugging</a></li>
+<li class="CommonTag1"><a href="http://blogs.msdn.com/dancre/archive/tags/DM-V-VM/default.aspx" rel="tag">DM-V-VM</a></li>
+<li class="CommonTag1"><a href="http://blogs.msdn.com/dancre/archive/tags/Max/default.aspx" rel="tag">Max</a></li>
+<li class="CommonTag6"><a href="http://blogs.msdn.com/dancre/archive/tags/PageModel/default.aspx" rel="tag">PageModel</a></li>
+<li class="CommonTag4"><a href="http://blogs.msdn.com/dancre/archive/tags/PanelLayoutAnimator/default.aspx" rel="tag">PanelLayoutAnimator</a></li>
+<li class="CommonTag2"><a href="http://blogs.msdn.com/dancre/archive/tags/pdc2005/default.aspx" rel="tag">pdc2005</a></li>
+<li class="CommonTag4"><a href="http://blogs.msdn.com/dancre/archive/tags/Tips+_2600_amp_3B00_+Tricks/default.aspx" rel="tag">Tips &amp; Tricks</a></li>
+<li class="CommonTag2"><a href="http://blogs.msdn.com/dancre/archive/tags/Utilities/default.aspx" rel="tag">Utilities</a></li>
+<li class="CommonTag3"><a href="http://blogs.msdn.com/dancre/archive/tags/VirtualizingTilePanel/default.aspx" rel="tag">VirtualizingTilePanel</a></li>
+<li class="CommonTag6"><a href="http://blogs.msdn.com/dancre/archive/tags/Vista/default.aspx" rel="tag">Vista</a></li>
+<li class="CommonTag6"><a href="http://blogs.msdn.com/dancre/archive/tags/Web+Perf/default.aspx" rel="tag">Web Perf</a></li>
+</ul>
+
+		</div>
+	</div>
+</div> 
+
+<div id="NewsSideBar">
+	
+<div class="CommonSidebarArea">
+	<h4 class="CommonSidebarHeader">News</h4>
+	<div class="CommonSidebarContent">
+The posts on this weblog are provided "AS IS" with no warranties, and
+confer no rights. The opinions expressed herein are my own personal
+opinions and do not represent my employer's view in any way. </div>
+</div>
+</div>
+
+<div id="ArchiveSideBar">
+	
+<div class="CommonSidebarArea">
+	<h4 class="CommonSidebarHeader">Archives</h4>
+	<div class="CommonSidebarContent">
+		<ul class="CommonSidebarList">
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2007/10.aspx">October 2007 (1)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2007/08.aspx">August 2007 (4)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2007/07.aspx">July 2007 (4)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2007/06.aspx">June 2007 (1)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2007/03.aspx">March 2007 (1)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2007/02.aspx">February 2007 (1)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2007/01.aspx">January 2007 (1)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2006/12.aspx">December 2006 (6)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2006/11.aspx">November 2006 (2)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2006/10.aspx">October 2006 (3)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2006/09.aspx">September 2006 (8)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2006/08.aspx">August 2006 (7)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2006/07.aspx">July 2006 (6)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2006/03.aspx">March 2006 (6)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2006/02.aspx">February 2006 (11)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2006/01.aspx">January 2006 (1)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2005/12.aspx">December 2005 (2)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2005/11.aspx">November 2005 (1)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2005/10.aspx">October 2005 (3)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2005/09.aspx">September 2005 (7)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2005/06.aspx">June 2005 (6)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2005/05.aspx">May 2005 (11)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2005/04.aspx">April 2005 (3)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2005/02.aspx">February 2005 (3)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2005/01.aspx">January 2005 (3)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2004/12.aspx">December 2004 (15)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2004/11.aspx">November 2004 (4)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2004/10.aspx">October 2004 (10)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2004/09.aspx">September 2004 (8)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2004/08.aspx">August 2004 (8)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2004/07.aspx">July 2004 (5)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2004/06.aspx">June 2004 (5)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2004/05.aspx">May 2004 (13)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2004/04.aspx">April 2004 (15)</a></li>
+			
+				<li><a href="http://blogs.msdn.com/dancre/archive/2004/03.aspx">March 2004 (18)</a></li>
+			
+		</ul>
+	</div>
+</div>
+</div>
+
+		</div>
+	
+	</td>
+  </tr>
+</tbody></table>
+<!--NOINDEX_START-->
+<div id="CommonFooter">
+<br style="overflow: hidden; line-height: 1px;" clear="all">
+<table id="msviFooter" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr valign="bottom">
+    <td id="msviFooter2"><div id="msviLocalFooter"><nobr><a href="http://go.microsoft.com/?linkid=317027">Manage Your Profile</a> |</nobr><wbr><nobr><a href="http://msdn.microsoft.com/isapi/gomscom.asp?target=/legal/" target="_parent">Legal</a> |</nobr><wbr><nobr><a href="http://register.microsoft.com/contactus30/contactus.asp?domain=msdn" target="_parent">Contact Us</a> |</nobr><wbr><nobr><a href="http://msdn.microsoft.com/flash/" target="_parent">MSDN Flash Newsletter</a></nobr></div>
+      <div id="msviGlobalFooter"><span>©2005 Microsoft Corporation. All rights reserved.&nbsp;</span><nobr><a href="http://www.microsoft.com/info/cpyright.mspx">Terms of Use</a> |</nobr><wbr><nobr><a href="http://msdn.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</a> |</nobr><wbr><nobr><a href="http://www.microsoft.com/info/privacy.mspx">Privacy Statement</a></nobr></div></td>
+    <td bgcolor="#669aff" width="105"><img src="layout-to-layout-animations-in-wcp-part-3.aspx_files/bottomMSFTLogo.jpg" alt="Microsoft" title="" border="0" height="29" width="105"></td>
+  </tr>
+</tbody></table>
+</div>
+</div>
+
+
+
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/dancre/archive/2006/02/23/layout-to-layout-animations-in-wcp-part-3.aspx"
+dc:identifier="http://blogs.msdn.com/dancre/archive/2006/02/23/layout-to-layout-animations-in-wcp-part-3.aspx"
+dc:title="Layout to layout animations in WCP: Part 3"
+trackback:ping="http://blogs.msdn.com/dancre/trackback.aspx?PostID=537966" />
+</rdf:RDF>
+-->
+</form>
+
+</body></html>

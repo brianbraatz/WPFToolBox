@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Attempt at Simple WPF 3D Cell-Shading</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/0500000.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/060416.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/09/040724.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Attempt at Simple WPF 3D Cell-Shading</h2></a><p style="text-align: right;">September 5, 2007<br>New York, N.Y.</p><p>
+I received a 
+<a href="http://www.charlespetzold.com/blog/2007/08/310158.html#comments">recent query</a> about cell-shading in WPF. Cell-shading is the technique of using just a few solid colors to imitate hand-drawn animation.
+</p>
+<p>
+The first idea that occurred to me was fiddling around with the <i>Normals</i> collection of a <i>MeshGeometry3D</i> by restricting it to just a few values. I derived from my <i>TeapotMesh</i> class (described
+<a href="http://www.charlespetzold.com/blog/2007/08/140230.html">here</a>) and reset all the items in the <i>Normals</i> collection to the closest vector among the group <b>(1, 0, 0)</b>, <b>(–1, 0, 0)</b>, <b>(0, 0, 1)</b>, and <b>(0, 0, –1)</b>. Then I aimed some directional light at <b>(1, 0, –1)</b>, and I rotated the teapot a bit relative to the light, and here's what it looked like:
+</p>
+<p align="center">
+<img src="Attempt%20at%20Simple%20WPF%203D%20Cell-Shading_files/TeapotWithCellShading.png">
+</p>
+<p>
+That result, although interesting in its own way, is only a very distant relative to this example shown in 
+<a href="http://en.wikipedia.org/wiki/Cell_shading">the Wikipedia article on cell shading</a>:
+</p>
+<p align="center">
+<img src="Attempt%20at%20Simple%20WPF%203D%20Cell-Shading_files/800px-Celshading_teapot_large.png">
+</p>
+<p>
+The problem, of course, is that the normals are <i>vertex</i>
+normals, and the surface of each pixel in each triangle in the mesh is
+shaded based on the averaqe of the shading at the triangle's vertices.
+(See Chapter 4, "Light and Shading," of <a href="http://www.charlespetzold.com/3D">my book</a> for details.)
+That's why there's a transition area between the light and dark
+shading. From this point, "posterizing" the image doesn't help much:
+</p>
+<p align="center">
+<img src="Attempt%20at%20Simple%20WPF%203D%20Cell-Shading_files/TeapotWithCellShadingPosterized.png">
+</p>
+<p>The color-change boundary needs to be independent of the boundaries
+of the triangles in the mesh — otherwise you get the choppy appearance
+in my image. You actually get a much better result if you just
+posterize the unadulterated teapot:
+</p>
+<p align="center">
+<img src="Attempt%20at%20Simple%20WPF%203D%20Cell-Shading_files/TeapotPosterized.png">
+</p>
+<p>
+It's fairly straightforward to perform whatever fancy post-processing you want on a 3D scene by composing the scene in a <i>Viewport3DVisual</i> and dumping it to a <i>RenderTargetBitmap</i>
+for fiddling. That approach could be adequate if you were interested in
+a single scene, but becomes much clumsier if you also desire real-time
+animation.
+</p>
+<p>
+I believe this job could be accomplished with a custom <i>BitmapEffect</i> derivative that let you restrict the color palette to only those colors in a particular <i>BitmapPalette</i> object, but apparently deriving from <i>BitmapEffect</i> is a rather messy exercise, and doesn't seem to be well documented.
+</p>
+<p>
+Anyway, if you'd like to play around with the program that implements the restriction of normals, here's the XBAP:
+</p>
+<p align="center"> 
+<a href="http://www.charlespetzold.com/3D/TeapotWithCellShading/TeapotWithCellShading.xbap">TeapotWithCellShading.xbap</a>
+</p>
+<p>
+And here's the 
+<a href="http://www.charlespetzold.com/blog/2007/09/TeapotWithCellShading.zip">source code</a>, including the necessary source code files from the Petzold.Media3D library.
+</p>
+
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Attempt%20at%20Simple%20WPF%203D%20Cell-Shading_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+
+
+<div id="comments"><hr><p><b>Comments:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>In
+DirectX, this can be easily accomplished in a shader, and for that you
+need just to reduce number of color gradations dividing each color
+component on integer number and using remainder.
+I feel that using of the BitmapEffect has the same idea, hasn't it?
+</p>
+<p>
+— Sich, Thu, 6 Sep 2007 11:27:04 -0400 (EDT)
+</p>
+</div><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="Attempt at Simple WPF 3D Cell-Shading" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/0500000.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/060416.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

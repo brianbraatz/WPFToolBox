@@ -1,0 +1,205 @@
+Since there is no publicly exposed way for you to get access to a non-matrixCamera’s matrices, you have no choice but to use a matrix camera on your viewport3d.
+
+ 
+
+Then you can use my functions below to generate your view and perspective projection matrices.
+
+ 
+
+Then, if you have a point4D that represents your world-space position you do:
+
+ 
+
+Point4D WCS = <point’s position in world space>
+
+Point4D CCS = WCS * view_matrix * projection_matrix;
+
+ 
+
+Point3D NDCS;
+
+ 
+
+NDCS.x = CCS.x / CCS.w;
+
+NDCS.y = CCS.y / CCS.w;
+
+ 
+
+Point DCS;  // the window coordinates of the projected point
+
+ 
+
+DCS.x = ((NDCS.x + 1.0 )/ 2.0) * vp.ActualWidth;
+
+DCS.y = vp.ActualHeight * (1.0 - ((NDCS.y + 1.0 )/ 2.0) );
+
+ 
+ 
+
+AFAIK that should work.  Lemme know if you have any problems.
+
+ 
+
+David
+
+ 
+
+ 
+
+              static Point3D position;
+
+              static Point3D target;
+
+              static Vector3D up;
+
+ 
+
+              static Matrix3D view_matrix;
+
+ 
+
+              private static void generate_view_matrix()
+
+              {
+
+                     Vector3D backward = position - target;
+
+                     backward.Normalize();
+
+ 
+
+                     Vector3D right = Vector3D.CrossProduct(up, backward);
+
+                     right.Normalize();
+
+ 
+
+                     Vector3D up2 = Vector3D.CrossProduct(backward, right);
+
+                     up2.Normalize();
+
+ 
+
+                     // backward, up, right
+
+ 
+
+                     view_matrix = new Matrix3D();
+
+ 
+
+                     view_matrix.M11 = right.X;
+
+                     view_matrix.M21 = right.Y;
+
+                     view_matrix.M31 = right.Z;
+
+ 
+
+                     view_matrix.M12 = up2.X;
+
+                     view_matrix.M22 = up2.Y;
+
+                     view_matrix.M32 = up2.Z;
+
+ 
+
+                     view_matrix.M13 = backward.X;
+
+                     view_matrix.M23 = backward.Y;
+
+                     view_matrix.M33 = backward.Z;
+
+ 
+
+                     view_matrix.M14 = 0;
+
+                     view_matrix.M24 = 0;
+
+                     view_matrix.M34 = 0;
+
+                     view_matrix.M44 = 1;
+
+ 
+
+                     view_matrix = new TranslateTransform3D(-(Vector3D)position).Value * view_matrix;
+
+ 
+
+                     ((MatrixCamera)(vp.Camera)).ViewMatrix = view_matrix;
+
+              }
+
+ 
+
+       }
+
+ 
+
+ 
+
+ 
+
+ 
+
+              static double fov_degrees = 60;
+
+              static double near_clip_plane = 0.1;
+
+              static double far_clip_plane = 50;
+
+ 
+
+              static Matrix3D perspective_matrix;
+
+ 
+
+ 
+
+              private static void generate_perspective_projection_matrix()
+
+              {
+
+                     double fov_rad = (fov_degrees / 180.0) * Math.PI;
+
+ 
+
+                     double aspect_ratio = (double)vp.ActualWidth / (double)vp.ActualHeight;
+
+ 
+
+                     double denom = Math.Tan(fov_rad / 2.0);
+
+ 
+
+                     double m11 = 1.0 / denom;
+
+                     double m22 = aspect_ratio / denom;
+
+                     double m33 = far_clip_plane / (near_clip_plane - far_clip_plane);
+
+                     double m43 = near_clip_plane * far_clip_plane / (near_clip_plane - far_clip_plane);
+
+ 
+
+ 
+
+                     perspective_matrix = new Matrix3D(m11, 0, 0, 0,
+
+                                                        0, m22, 0, 0,
+
+                                                        0, 0, m33, -1,
+
+                                                        0, 0, m43, 0);
+
+ 
+
+                     ((MatrixCamera)(vp.Camera)).ProjectionMatrix = perspective_matrix;
+
+ 
+
+              }
+
+ 
+

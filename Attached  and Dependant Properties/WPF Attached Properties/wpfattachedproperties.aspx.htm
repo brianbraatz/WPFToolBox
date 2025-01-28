@@ -1,0 +1,665 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><title>Rob Relyea : WPF Attached Properties</title>
+
+
+
+
+
+
+<meta name="keywords" content="Avalon">
+<meta name="description" content="A post on the Avalon Forum from Jaffi raised a question WPF is not straight forward. Simple actions, like setting rectangles X position, requires using myRectange.SetValue(Canvas.LeftProperty, Value). I'm sure there is a performance penalty for such use">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP2 (Build: 61129.1)">
+<link rel="pingback" href="http://www.windows-now.com/blogs/rrelyea/pingback.aspx">
+<link rel="stylesheet" href="wpfattachedproperties.aspx_files/print.css" type="text/css" media="print">
+<link rel="stylesheet" href="wpfattachedproperties.aspx_files/Common.css" type="text/css" media="screen">
+<link rel="stylesheet" href="wpfattachedproperties.aspx_files/Blog.css" type="text/css" media="screen">
+<link rel="stylesheet" href="wpfattachedproperties.aspx_files/common_print.css" type="text/css" media="print">
+<link rel="stylesheet" href="wpfattachedproperties.aspx_files/blog_print.css" type="text/css" media="print">
+<link rel="shortcut icon" type="image/ico" href="http://www.windows-now.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Rob Relyea (RSS 2.0)" href="http://www.windows-now.com/blogs/rrelyea/rss.aspx">
+<link rel="alternate" type="application/atom+xml" title="Rob Relyea (Atom 1.0)" href="http://www.windows-now.com/blogs/rrelyea/atom.aspx">
+<link rel="alternate" type="application/rss+xml" title="WPF Attached Properties Comment RSS (RSS 2.0)" href="http://www.windows-now.com/blogs/rrelyea/commentrss.aspx?PostID=15791">
+
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <script src="wpfattachedproperties.aspx_files/global.js" type="text/javascript"></script><!--<style type="text/css"> body { font-size: 84%; } </style>-->
+            
+            
+		
+		
+		
+		<link rel="editUri" type="application/rsd+xml" href="http://www.windows-now.com/blogs/rrelyea/reallysimplediscovery.ashx" title="RSD">
+		<link rel="search" type="application/opensearchdescription+xml" href="http://www.windows-now.com/OpenSearch.ashx" title="Windows-Now.com"></head><body><script type="text/javascript" src="wpfattachedproperties.aspx_files/al.htm"></script><script type="text/javascript" src="wpfattachedproperties.aspx_files/spit.js"></script><script type="text/javascript" src="wpfattachedproperties.aspx_files/chunks_005.js"></script><script type="text/javascript" src="wpfattachedproperties.aspx_files/chunks_004.js"></script><script type="text/javascript" src="wpfattachedproperties.aspx_files/chunks_006.js"></script><script type="text/javascript" src="wpfattachedproperties.aspx_files/chunks_002.js"></script><script type="text/javascript" src="wpfattachedproperties.aspx_files/chunks.js"></script><script type="text/javascript" src="wpfattachedproperties.aspx_files/chunks_003.js"></script><script type="text/javascript" src="wpfattachedproperties.aspx_files/func_200710161248.js"></script><script type="text/javascript" src="wpfattachedproperties.aspx_files/door.js"></script>
+	<form name="aspnetForm" method="post" action="/blogs/rrelyea/archive/2006/02/09/wpfattachedproperties.aspx" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFTmN0bDAwJF8kY3RsMDAkXyRjdGwwMCRjdGwwMCRiaGNyJEN1c3RvbUhlYWRlcjEkXyRzZWFyY2hiYXIxJFRpdGxlQmFyU2VhcmNoVGV4dI1MZWdl4nRs6V6M/sgUD8eVkfeu" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script language="javascript" type="text/javascript" src="wpfattachedproperties.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['CommonModal'],['CommonModalTitle'],['CommonModalClose'],['CommonModalContent'],['CommonModalFooter'],['CommonModalResize'],['CommonModalMask'],100);
+// ]]>
+</script>
+					
+		
+		<div id="container">
+			<div id="header" class="clearfix">
+				
+<div id="welcome">
+	
+			Welcome to Windows-Now.com
+<a id="ctl00___ctl00___ctl00_ctl00_bhcr_CustomHeader1___Displayuserwelcome1___ctl04___Login" href="http://www.windows-now.com/login.aspx?ReturnUrl=%2fblogs%2frrelyea%2farchive%2f2006%2f02%2f09%2fwpfattachedproperties.aspx">Sign in</a> | <a id="ctl00___ctl00___ctl00_ctl00_bhcr_CustomHeader1___Displayuserwelcome1___ctl04___Register" href="http://www.windows-now.com/user/CreateUser.aspx?ReturnUrl=/blogs/rrelyea/archive/2006/02/09/wpfattachedproperties.aspx">Join</a>
+
+
+
+		
+
+	 |  <a href="http://www.windows-now.com/languages/en-US/docs/faq.aspx">Help</a>
+</div>
+  
+<h1><a href="http://www.windows-now.com/default.aspx">Windows Now</a></h1>
+<div id="navholder">
+	<div id="navbar">
+		
+				<div id="searchbox">
+					<input name="ctl00$_$ctl00$_$ctl00$ctl00$bhcr$CustomHeader1$_$searchbar1$TitleBarSearchText" maxlength="64" id="ctl00___ctl00___ctl00_ctl00_bhcr_CustomHeader1___searchbar1_TitleBarSearchText" class="searchfield" onkeydown="KeyDownHandlerctl00___ctl00___ctl00_ctl00_bhcr_CustomHeader1___searchbar1_TitleBarSearchButton(event);" type="text">
+					 in <select name="ctl00$_$ctl00$_$ctl00$ctl00$bhcr$CustomHeader1$_$searchbar1$TitleBarSearchDropDownList" id="ctl00___ctl00___ctl00_ctl00_bhcr_CustomHeader1___searchbar1_TitleBarSearchDropDownList" class="searchfield">
+	<option value="S:46">Rob Relyea</option>
+	<option value=":">(Entire Site)</option>
+
+</select><a id="ctl00___ctl00___ctl00_ctl00_bhcr_CustomHeader1___searchbar1_TitleBarSearchButton" class="searchbutton" href="javascript:__doPostBack('ctl00$_$ctl00$_$ctl00$ctl00$bhcr$CustomHeader1$_$searchbar1$TitleBarSearchButton','')">Search</a>
+				</div>
+			
+		
+		<ul>
+	
+		<li class=""><a href="http://www.windows-now.com/">Home</a></li>
+	
+		<li class="current"><a href="http://www.windows-now.com/blogs/default.aspx">Blogs</a></li>
+	
+		<li class=""><a href="http://www.windows-now.com/tags/Blogcast/default.aspx">Blogcasts</a></li>
+	
+		<li class=""><a href="http://www.windows-now.com/photos/default.aspx">Pics</a></li>
+	
+		<li class=""><a href="http://www.windows-now.com/files/default.aspx">Files</a></li>
+	
+		<li class=""><a href="http://www.windows-now.com/Store.aspx">Store</a></li>
+	
+		</ul>
+	
+
+	</div>
+</div>
+	
+			</div>
+			<div id="wrapper" class="clearfix">
+				<div id="contentwrapper">
+					<div id="content">
+						<span name="intelliTxt" id="intelliTXT">
+<div id="blogheader">
+
+<ul class="rsslist">
+  <li><a id="ctl00___ctl00___ctl00_ctl00_bcr_bth___s___rss" href="http://www.windows-now.com/blogs/rrelyea/rss.aspx">Subscribe</a></li>
+</ul>
+
+<h2 class="headertitle"><a id="ctl00___ctl00___ctl00_ctl00_bcr_bth___BlogTitle" href="http://www.windows-now.com/blogs/rrelyea/default.aspx">Rob Relyea</a></h2>
+<p class="headerdescription">xaml:Blog</p>
+</div>
+			
+<div class="entryviewcontainer">
+	<h1 class="entryviewheading">WPF Attached Properties </h1><div class="entryviewbody">
+		<p>A&nbsp;<a href="http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=241878&amp;SiteID=1">post</a> on the <a href="http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=119&amp;SiteID=1">Avalon Forum</a>&nbsp;from Jaffi raised a question</p>
+<blockquote dir="ltr">
+<p><font face="Tahoma,Helvetica,Sans-Serif" size="3">WPF is not </font><font face="Tahoma,Helvetica,Sans-Serif">straight forward. Simple actions, like setting rectangles X position, requires using </font><font face="Tahoma,Helvetica,Sans-Serif"><b><i>myRectange.SetValue(Canvas.LeftProperty, Value). </i></b></font><font face="Tahoma,Helvetica,Sans-Serif">I'm sure there is a <a itxtdid="4361515" target="_blank" href="#" style="border-bottom: 0.075em solid darkgreen; font-weight: normal; font-size: 100%; text-decoration: underline; color: darkgreen; background-color: transparent; padding-bottom: 1px;" classname="iAs" class="iAs">performance</a> penalty for such use (Which caused the performance problem).</font></p><font face="Tahoma,Helvetica,Sans-Serif">
+</font><p dir="ltr"><font face="Tahoma,Helvetica,Sans-Serif">Why can't it be simple as <b><i>myRectangle.X = value</i></b>.</font></p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr"><font face="Tahoma,Helvetica,Sans-Serif"><strong>That is why </strong></font><font face="Tahoma,Helvetica,Sans-Serif"><strong><font>Every simple action I'm looking for require hours of searching </font></strong></font></p></blockquote>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr"><strong><u>What were those WPF folks thinking?</u></strong></p>
+<p dir="ltr">We tried to balance extensibility and usability in
+WPF.&nbsp; There are new concepts, we hope to make them easy to learn
+and make sense once you learn them.</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr"><strong><u>Reason for Attached properties:</u></strong></p>
+<p dir="ltr">When dealing with out Layout <a itxtdid="4536416" target="_blank" href="#" style="border-bottom: 0.075em solid darkgreen; font-weight: normal; font-size: 100%; text-decoration: underline; color: darkgreen; background-color: transparent; padding-bottom: 1px;" classname="iAs" class="iAs">system</a>,
+we want to provide the ability for anybody to build new Panels.&nbsp;
+Inside of those panels you should be able to put normal elements:</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr">&lt;my:RobPanel&gt;</p>
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&lt;Button /&gt;</p>
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&lt;Button /&gt;</p>
+<p dir="ltr">&lt;/my:RobPanel&gt;</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr">Often, the new panel will need to define a property that
+the user can place on the children of that panel to control how the
+panel arranges the children.</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr">&lt;my:RobPanel&gt;</p>
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&lt;Button RotationsPerMinute="60" /&gt;</p>
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&lt;Button&nbsp;RotationsPerMinute="3"&nbsp;/&gt;</p>
+<p dir="ltr">&lt;/my:RobPanel&gt;</p>
+<p dir="ltr">Unfortunately that won't work.&nbsp; RotationsPerMinute is
+a newly invented property.&nbsp; The Button class shipped before the
+RobPanel was ever built and the Button class designers forgot to
+include this important property!</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr">So WPF has the concept of attached properties.&nbsp; One
+class defines the property.&nbsp; You attach it to instances of other
+objects.</p>
+<p dir="ltr">&lt;my:RobPanel&gt;</p>
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&lt;Button Name="b1"&nbsp;my:RobPanel.RotationsPerMinute="60" /&gt;</p>
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&lt;Button&nbsp;Name="b2" my:RobPanel.RotationsPerMinute="3"&nbsp;/&gt;</p>
+<p dir="ltr">&lt;/my:RobPanel&gt;</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr">The challenge is how can you expose this to <a itxtdid="4602084" target="_blank" href="#" style="border-bottom: 0.075em solid darkgreen; font-weight: normal; font-size: 100%; text-decoration: underline; color: darkgreen; background-color: transparent; padding-bottom: 1px;" classname="iAs" class="iAs">developers</a> now.</p>
+<p dir="ltr">RobPanel.SetRotatationsPerMinute(b1, 30);</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr">int currentRotationsPerMinute = RobPanel.GetRotationsPerMinute(b1);</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr">So if you buy the need for this extensibility, then you
+need to ask why is Canvas.Top and Canvas.Left modeled as an attached
+property, but Height and Width are modeled as normal properties.</p>
+<p dir="ltr">Top and Left are modeled as attached properties because
+they are only respected inside of a Canvas.&nbsp; If I set Top or Left
+on a Button inside a StackPanel or DockPanel, it would have no effect.</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr"><strong><u>Object Model should Function</u></strong></p>
+<p dir="ltr">We feel it is very bad form to have a number of methods or propeties on an object that actually don't do anything.</p>
+<p dir="ltr">My work with <a itxtdid="3336408" target="_blank" href="#" style="border-bottom: 0.075em solid darkgreen; font-weight: normal; font-size: 100%; text-decoration: underline; color: darkgreen; background-color: transparent; padding-bottom: 1px;" classname="iAs" class="iAs">DHTML</a>
++ CSS left me frustrated.&nbsp; I could set any of the ~200 (?) style
+properties on any element.&nbsp; Unfortunately I could never tell if it
+was supposed to work or not.</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr"><strong><u>Performance Penalty</u></strong></p>
+<p dir="ltr">Jaffi asked if the static method syntax was a performance problem.</p>
+<p dir="ltr">There is cost, but marginal cost between a Top property defined on an element and an attached property Top defined on the panel.</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr">In WPF, regardless of attached vs. normal, most properties
+need some special capabilities: databinding, setting via style,
+animation, etc.</p>
+<p dir="ltr">The property system that enables this is something that is
+perf critical.&nbsp; That is probably why we have reimplemented it 3-4
+times during our development.</p>
+<p dir="ltr">&nbsp;</p>
+<p dir="ltr"><strong><u>Other Links</u></strong></p>
+<p dir="ltr">A few more places to go learn about Attached Properties:</p>
+<ul>
+<li>
+<div><a href="http://windowssdk.msdn.microsoft.com/library/default.asp?url=/library/en-us/wcp_conceptual/html/75928354-dc01-47e8-a018-8409aec1f32d.asp">Attached Property Overview in Windows SDK</a></div>
+</li><li>
+<div><a href="http://blog.hackedbrain.com/archive/2004/08/16/145.aspx">Drew Marsh has a good writeup (which I just remembered when I was creating these links.)</a></div>
+</li><li>
+<div><a href="http://hole19.compurhythms.com/default.aspx?date=2005-02-11">Customer adding an attached property to store some data.</a></div>
+</li><li>
+<div><a href="http://blogs.msdn.com/nickkramer/archive/2005/08/25/456024.aspx">PM Nick Kramer with some background about Attached Properties and our Property System</a></div></li></ul>
+<div class="shareblock"><strong>Share this post<br></strong><a href="mailto:?body=Thought%20you%20might%20like%20this:%20http://www.windows-now.com/blogs/rrelyea/archive/2006/02/09/WpfAttachedProperties.aspx&amp;subject=WPF%20Attached%20Properties" target="_blank" title="Share via Email"><img src="wpfattachedproperties.aspx_files/Share_003.gif" border="0"></a>   <a href="http://www.digg.com/submit?url=http://www.windows-now.com/blogs/rrelyea/archive/2006/02/09/WpfAttachedProperties.aspx&amp;phase=2" target="_blank" title="Submit to digg.com"><img src="wpfattachedproperties.aspx_files/Share_002.gif" border="0"></a>   <a href="http://reddit.com/submit?url=http://www.windows-now.com/blogs/rrelyea/archive/2006/02/09/WpfAttachedProperties.aspx&amp;title=WPF+Attached+Properties" target="_blank" title="Submit to reddit.com"><img src="wpfattachedproperties.aspx_files/Share_004.gif" border="0"></a>   <a href="http://blinklist.com/index.php?Action=Blink/addblink.php&amp;URL=http://www.windows-now.com/blogs/rrelyea/archive/2006/02/09/WpfAttachedProperties.aspx" target="_blank" title="Submit to blinklist.com"><img src="wpfattachedproperties.aspx_files/Share_005.gif" border="0"></a>   <a href="http://furl.net/storeIt.jsp?u=http://www.windows-now.com/blogs/rrelyea/archive/2006/02/09/WpfAttachedProperties.aspx" target="_blank" title="Submit to furl.net"><img src="wpfattachedproperties.aspx_files/Share_007.gif" border="0"></a>   <a href="http://del.icio.us/post?url=http://www.windows-now.com/blogs/rrelyea/archive/2006/02/09/WpfAttachedProperties.aspx&amp;title=WPF+Attached+Properties" target="_blank" title="Submit to del.icio.us"><img src="wpfattachedproperties.aspx_files/Share.gif" border="0"></a>   <a href="https://favorites.live.com/quickadd.aspx?marklet=1&amp;mkt=en-us&amp;url=http://www.windows-now.com/blogs/rrelyea/archive/2006/02/09/WpfAttachedProperties.aspx&amp;title=WPF+Attached+Properties" target="_blank" title="Add to Live Bookmarks"><img src="wpfattachedproperties.aspx_files/Share_006.gif" border="0"></a></div></div>
+	<div class="entryviewfooter">
+		Published Thursday, February 09, 2006 1:21 PM
+		by
+		<a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___AuthorLink" href="http://www.windows-now.com/user/Profile.aspx?UserID=1044">rrelyea</a> 
+		<div><span id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel">Filed under: <a href="http://www.windows-now.com/blogs/rrelyea/archive/tags/Avalon/default.aspx" rel="tag">Avalon</a></span><input name="ctl00$_$ctl00$_$ctl00$ctl00$bcr$ctl00$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+					
+	</div></div>
+	<div class="entryviewicon">
+	<img src="wpfattachedproperties.aspx_files/tempdoc.gif" alt="PostTypeIcon">
+	</div>                            
+
+<div class="entryviewextras">
+	<div id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___ContentPart">
+	
+     		
+<!-- Soupified -->
+
+
+
+
+
+
+
+
+<span id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___ctl01___GoogleAdsense">
+<div class="adstandardmiddle">
+<script type="text/javascript"><!--
+google_ad_client = "pub-4330602465258980";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text_image";
+google_ad_channel = "4052223698";
+google_color_border = "29636F";
+google_color_bg = "FFFFFF";
+google_color_link = "006FF7";
+google_color_text = "000000";
+google_color_url = "006FF7";
+//--></script>
+<script type="text/javascript" src="wpfattachedproperties.aspx_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="wpfattachedproperties.aspx_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="60" scrolling="no" width="468"></iframe>
+</div>
+</span>
+
+
+	
+</div>
+
+
+
+<span id="nointelliTxt">
+
+	<ul class="comments">
+
+	<li>
+<div class="commenthead"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl01_NameLink" title="MichaelLatta" href="http://www.windows-now.com/utility/Redirect.aspx?U=http%3a%2f%2fspaces.msn.com%2fmichaellatta">MichaelLatta</a> 
+		<span class="commentheadsaid">said:</span></div>
+		<div class="commentcontent">The
+current property system for WPF is a reasonable solution to the set of
+problems it is addressing, and implemented in a reasonable way for the
+existing CLR. I would like to see however in the next version more
+direct support. For example in <a itxtdid="2926865" target="_blank" href="#" style="border-bottom: 0.075em solid darkgreen; font-weight: normal; font-size: 100%; text-decoration: underline; color: darkgreen; background-color: transparent; padding-bottom: 1px;" classname="iAs" class="iAs">C#</a>
+3.0 would it be possible to have dynamic properties? Some way for the
+property system of WPF to be tied to the language? Just as C# 3.0
+allows static methods to be declared that appear to be instance
+methods, could there be a way to declare static properties that appear
+to be instance properties?</div>
+		<div class="commentfooter">February 9, 2006 11:20 AM </div>
+		</li>
+
+	<li>
+<div class="commenthead"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl02_NameLink" title="rrelyea" href="http://www.windows-now.com/utility/Redirect.aspx?U=http%3a%2f%2flonghornblogs.com%2frrelyea">rrelyea</a> 
+		<span class="commentheadsaidowner">said:</span></div>
+		<div class="commentcontent commentowner">Michael-
+<br>Yes, we would love something like this.  It is the ideal model for the user.
+<br>
+<br>We've worked with language teams in the past asking for better
+language support for our property system including using attached
+properties.
+<br>
+<br>I'll ping them again now to make sure they keep it in mind and get an update.
+<br>Thanks, Rob
+<br></div>
+		<div class="commentfooter">February 9, 2006 1:06 PM </div>
+		</li>
+
+	<li>
+<div class="commenthead"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl03_NameLink" title="xasd" href="http://www.windows-now.com/user/Profile.aspx?UserID=1644">xasd</a> 
+		<span class="commentheadsaid">said:</span></div>
+		<div class="commentcontent">That's all nice and candy...trade offs,everywhere trade offs.
+<br>But I don't get it,why you not like DHTML+CSS?It's most
+extensible/flexible property system ever existent,particularly in IE
+with their attached behaviors+dynamic expressions in
+css/properties-simple and powerful,when used with thinking-nothing can
+beat that,even XAML(in present state)-AOP in action;-)I build xml
+binding system a'la XAML only ~5Kb in size for IE,dynamically
+updateable and replaceable in runtime!!!Because it's web oriented.You
+build client side oriented,not very dynamic by nature system and
+say-that's a right thing?Well...Avalon is dynamic but to which extent
+and for what price(for <a itxtdid="4537426" target="_blank" href="#" style="border-bottom: 0.075em solid darkgreen; font-weight: normal; font-size: 100%; text-decoration: underline; color: darkgreen; background-color: transparent; padding-bottom: 1px;" classname="iAs" class="iAs">developer</a>)?
+<br>Excuse me,but Avalon(XAML) is only in begining of it's way to compare with IE/iis(7?+Atlas?) abilities IMHO.
+<br>Managed browser is my dream;-)
+<br>
+<br>Thanks.</div>
+		<div class="commentfooter">February 11, 2006 7:46 AM </div>
+		</li>
+
+	<li>
+<div class="commenthead"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl04_NameLink" title="rrelyea" href="http://www.windows-now.com/utility/Redirect.aspx?U=http%3a%2f%2flonghornblogs.com%2frrelyea">rrelyea</a> 
+		<span class="commentheadsaidowner">said:</span></div>
+		<div class="commentcontent commentowner">xasd-
+<br>I was a DHTML <a itxtdid="2928616" target="_blank" href="#" style="border-bottom: 0.075em solid darkgreen; font-weight: normal; font-size: 100%; text-decoration: underline; color: darkgreen; background-color: transparent; padding-bottom: 1px;" classname="iAs" class="iAs">program manager</a>
+from IE5 to IE6 working on many of the features you mentioned. As such,
+I appreciate many of the strengths of DHTML, but I am also very
+familiar with many of the shortcomings.
+<br>
+<br>The property system of DHTML has been one of the inspirations for
+several of the things we have done in WPF: databinding, styles,
+inheritance, etc...
+<br>
+<br>We'd love to hear concrete feedback about what capabilities you find lacking in WPF/XAML's property system (or other things.)
+<br>
+<br>Thx, Rob
+<br>
+<br></div>
+		<div class="commentfooter">February 12, 2006 6:10 AM </div>
+		</li>
+
+	<li>
+<div class="commenthead"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl05_NameLink" rel="nofollow" title="TrackBack" href="http://www.windows-now.com/utility/Redirect.aspx?U=http%3a%2f%2fblogs.msdn.com%2frobburke%2farchive%2f2006%2f02%2f14%2f531807.aspx">Robert Burke's Weblog</a> 
+		<span class="commentheadsaid">said:</span></div>
+		<div class="commentcontent">
+<br>
+<br>Rob Relyea, in his&amp;amp;nbsp;great blog on all things Avalon/WPF, recently posted a discussion of Attached...</div>
+		<div class="commentfooter">February 14, 2006 9:08 AM </div>
+		</li>
+
+	<li>
+<div class="commenthead"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl06_NameLink" rel="nofollow" title="TrackBack" href="http://www.windows-now.com/utility/Redirect.aspx?U=http%3a%2f%2fblogs.msdn.com%2fjfoscoding%2farchive%2f2006%2f02%2f15%2f532305.aspx">jfo's coding</a> 
+		<span class="commentheadsaid">said:</span></div>
+		<div class="commentcontent">I thought I'd put up a few good reads:
+<br>
+<br>Mapping PIs are going away in the next CTP. Rob promises to...</div>
+		<div class="commentfooter">February 14, 2006 11:14 PM </div>
+		</li>
+
+	<li>
+<div class="commenthead"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl07_NameLink" rel="nofollow" title="TrackBack" href="http://www.windows-now.com/utility/Redirect.aspx?U=http%3a%2f%2fodetocode.com%2fBlogs%2fscott%2farchive%2f2006%2f12%2f28%2f9601.aspx">K. Scott Allen</a> 
+		<span class="commentheadsaid">said:</span></div>
+		<div class="commentcontent"><p>I sat down to look at WPF/E this evening. WPF/E is Microsoft's cross-platform XAML engine that runs...</p>
+</div>
+		<div class="commentfooter">December 27, 2006 11:21 PM </div>
+		</li>
+
+	<li>
+<div class="commenthead"><a id="ctl00___ctl00___ctl00_ctl00_bcr_ctl00___Comments___Comments_ctl08_NameLink" rel="nofollow" title="TrackBack" href="http://www.windows-now.com/utility/Redirect.aspx?U=http%3a%2f%2fblogs.estatic.org%2fblogs%2findustry%2farchive%2f2006%2f12%2f28%2fwpf-versus-wpf-e.aspx">Mirror blog entries from the industry</a> 
+		<span class="commentheadsaid">said:</span></div>
+		<div class="commentcontent"><p>I sat down to look at WPF/E this evening. WPF/E is Microsoft's cross-platform XAML engine that runs in</p>
+</div>
+		<div class="commentfooter">December 27, 2006 11:26 PM </div>
+		</li>
+
+	</ul>
+
+</span>
+
+
+
+
+<em>Anonymous comments are disabled</em>
+
+</div>   
+    </span>
+					</div>
+				</div>
+				<div id="subcontent-a">
+					
+		<div class="sidebar">
+			
+
+<div align="center">
+<script type="text/javascript"><!--
+amazon_ad_tag="windowsnowcom-20"; 
+amazon_ad_width="180"; 
+amazon_ad_height="150"; 
+amazon_color_border="29636F"; 
+amazon_color_logo="FFFFFF"; 
+amazon_color_link="206BA2"; 
+amazon_ad_logo="hide"; 
+amazon_ad_link_target="new"; 
+amazon_ad_title="Windows-Now.com Store"; //--></script>
+<script type="text/javascript" src="wpfattachedproperties.aspx_files/asw.js"></script><script src="wpfattachedproperties.aspx_files/ads-common.js" type="text/javascript"></script><iframe src="wpfattachedproperties.aspx_files/cm.htm" marginwidth="0" marginheight="0" border="0" style="border: medium none ;" frameborder="0" height="150" scrolling="no" width="180"></iframe>
+</div>
+<br>
+
+
+	<h4 class="sideheader notop">This Blog</h4>
+		<ul class="sidelist">
+			<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___home" href="http://www.windows-now.com/blogs/rrelyea/default.aspx">Home</a></li>
+			
+			
+			<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___wl___Contactlink1" href="http://www.windows-now.com/blogs/rrelyea/contact.aspx">Contact Me</a></li>
+		</ul>
+
+
+
+<h4 class="sideheader">Tags</h4>
+<ul class="tagcloud">
+<li class="tag1"><a href="http://www.windows-now.com/blogs/rrelyea/archive/tags/Avalon/default.aspx" rel="tag">Avalon</a></li>
+<li class="tag6"><a href="http://www.windows-now.com/blogs/rrelyea/archive/tags/WinFx/default.aspx" rel="tag">WinFx</a></li>
+<li class="tag4"><a href="http://www.windows-now.com/blogs/rrelyea/archive/tags/XAML/default.aspx" rel="tag">XAML</a></li>
+</ul>
+
+
+
+
+	<h4 class="sideheader">Recent Posts</h4>
+		<ul class="sidelist">
+		
+				<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl00_Link" href="http://www.windows-now.com/blogs/rrelyea/archive/2006/04/29/MovingMyBlog.aspx">Requests for xaml:blog should be forwarded to spaces.msn.com/rrelyea</a></li>
+			
+				<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl01_Link" href="http://www.windows-now.com/blogs/rrelyea/archive/2006/04/26/BeyondDataViz.aspx">Beyond data visualization</a></li>
+			
+				<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl02_Link" href="http://www.windows-now.com/blogs/rrelyea/archive/2006/04/26/WallentOnC9.aspx">WPF General Manager on Channel 9</a></li>
+			
+				<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl03_Link" href="http://www.windows-now.com/blogs/rrelyea/archive/2006/04/13/MyAppChangingToApp.aspx">Early notice of a change to WPF templates: "MyApp.xaml" to "App.xaml"</a></li>
+			
+				<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___rp___PostList_ctl04_Link" href="http://www.windows-now.com/blogs/rrelyea/archive/2006/04/13/SoftwareUpdates.aspx">WPF application update w/ Petzold</a></li>
+			
+		</ul>
+
+
+
+
+<h4 class="sideheader">Archives</h4>
+<ul class="sidelist">
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2006/04.aspx">April 2006 (8)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2006/03.aspx">March 2006 (9)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2006/02.aspx">February 2006 (5)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2006/01.aspx">January 2006 (3)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/12.aspx">December 2005 (2)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/11.aspx">November 2005 (8)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/10.aspx">October 2005 (17)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/09.aspx">September 2005 (2)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/08.aspx">August 2005 (1)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/07.aspx">July 2005 (2)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/06.aspx">June 2005 (4)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/05.aspx">May 2005 (7)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/04.aspx">April 2005 (3)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/02.aspx">February 2005 (1)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2005/01.aspx">January 2005 (1)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2004/12.aspx">December 2004 (7)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2004/11.aspx">November 2004 (4)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2004/10.aspx">October 2004 (2)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2004/05.aspx">May 2004 (2)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2004/04.aspx">April 2004 (6)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2004/03.aspx">March 2004 (1)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2004/02.aspx">February 2004 (2)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2004/01.aspx">January 2004 (1)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2003/12.aspx">December 2003 (5)</a></li>
+
+	<li><a href="http://www.windows-now.com/blogs/rrelyea/archive/2003/11.aspx">November 2003 (8)</a></li>
+
+</ul>
+
+
+			<h4 class="sideheader">.Net Framework Team</h4>
+			
+				
+						<ul class="sidelist">
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl00_Links_ctl01_Link" href="http://bluebytesoftware.com/blog/default.aspx">Joe Duffy</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl00_Links_ctl02_Link" href="http://blogs.msdn.com/stevencl/">Steven Clarke</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl00_Links_ctl03_Link" href="http://blogs.msdn.com/brada/">Brad Abrams</a></li>
+					
+						</ul>
+					
+    
+			<h4 class="sideheader">Avalon Community</h4>
+			
+				
+						<ul class="sidelist">
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl01_Links_ctl01_Link" href="http://www.interact-sw.co.uk/iangblog">Ian Griffiths</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl01_Links_ctl02_Link" href="http://blog.hackedbrain.com/">Drew Marsh</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl01_Links_ctl03_Link" href="http://www.sellsbrothers.com/">Chris Sells</a></li>
+					
+						</ul>
+					
+    
+			<h4 class="sideheader">Uris of Note - WPF</h4>
+			
+				
+						<ul class="sidelist">
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl02_Links_ctl01_Link" href="http://msdn.microsoft.com/windowsvista/building/presentation/">WPF on MSDN</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl02_Links_ctl02_Link" href="http://blogs.msdn.com/tims/articles/475132.aspx">WPF Blogger Roll</a></li>
+					
+						</ul>
+					
+    
+			<h4 class="sideheader">Visual Studio Team</h4>
+			
+				
+						<ul class="sidelist">
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl03_Links_ctl01_Link" href="http://www.removingalldoubt.com/">Chuck Jazdzewski</a></li>
+					
+						</ul>
+					
+    
+			<h4 class="sideheader">Windows Presentation Foundation Team</h4>
+			
+				
+						<ul class="sidelist">
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl01_Link" href="http://blogs.msdn.com/namitag">Namita Gupta</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl02_Link" href="http://fortes.com/work">Filipe Fortes</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl03_Link" href="http://www.beacosta.com/">Beatriz Costa</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl04_Link" href="http://www.simplegeek.com/">Chris Anderson</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl05_Link" href="http://blogs.msdn.com/leonardo_blanco">Leonardo Blanco</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl06_Link" href="http://www.notstatic.com/">Robby Ingebretson</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl07_Link" href="http://designerslove.net/">Nathan Dunlap</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl08_Link" href="http://www.fernicola.org/loquitor/">Pablo Fernicola</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl09_Link" href="http://blogs.msdn.com/henryh">Henry Hahn</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl10_Link" href="http://blogs.msdn.com/nickkramer">Nick Kramer</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl11_Link" href="http://laurenlavoie.com/">Lauren Lavoie</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl12_Link" href="http://blogs.msdn.com/danlehen">Daniel Lehenbauer</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl13_Link" href="http://blogs.msdn.com/llobo/default.aspx">Lester Lobo</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl14_Link" href="http://blogs.msdn.com/marcelolr">Marelo Lopez Ruiz</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl15_Link" href="http://blogs.msdn.com/okoboji">Kevin Moore</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl16_Link" href="http://blogs.msdn.com/greg%5Fschechter">Greg Schechter</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl17_Link" href="http://nerddawg.blogspot.com/">Ashish Shetty</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl18_Link" href="http://www.nickthuesen.com/">Nick Thuesen</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl19_Link" href="http://blogs.msdn.com/kamvedbrat/">Kam VedBrat</a></li>
+					
+						<li><a id="ctl00___ctl00___ctl00_ctl00_rcr_bsb___l___Categories_ctl04_Links_ctl20_Link" href="http://blogs.msdn.com/rwlodarc/default.aspx">Robert Wlodarczyk</a></li>
+					
+						</ul>
+					
+    
+
+	
+
+Content is provided "AS IS" with no warranties, and confers no rights.
+
+		</div>
+	
+				</div>
+				<div id="subcontent-b">
+					
+				</div>
+			</div>
+		</div>
+		<div id="footer" class="clearfix">
+			
+<div class="customfooterright">
+<a href="http://www.windows-now.com/default.aspx">Privacy Statement</a> | <a href="http://www.windows-now.com/default.aspx">Legal Information</a> | <a href="http://www.windows-now.com/default.aspx">Terms of Use</a>
+</div>	
+<div class="customfooterleft" style="text-align: left;">
+Copyright © 2002-2007 Interscape Technologies, Inc. All Rights Reserved.<br>
+"Windows Vista", the Start Orb, and related materials are trademarks of Microsoft Corp.
+</div>
+
+				<div class="tempfooter">
+					<div class="Copyright">Copyright 2003-2007 Interscape Technologies, Inc.</div>
+<a target="_blank" href="http://communityserver.org/r.ashx?j"><img alt="Powered by Community Server (Commercial Edition), by Telligent Systems " src="wpfattachedproperties.aspx_files/PoweredByCS_commercial.GIF" border="0"></a>
+				</div>
+               		
+        	</div>
+	
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___ctl00_ctl00_bhcr_CustomHeader1___searchbar1_TitleBarSearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$ctl00$ctl00$bhcr$CustomHeader1$_$searchbar1$TitleBarSearchButton','')	}
+}
+
+//-->
+</script>
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://www.windows-now.com/blogs/rrelyea/archive/2006/02/09/WpfAttachedProperties.aspx"
+dc:identifier="http://www.windows-now.com/blogs/rrelyea/archive/2006/02/09/WpfAttachedProperties.aspx"
+dc:title="WPF Attached Properties"
+trackback:ping="http://www.windows-now.com/blogs/rrelyea/trackback.aspx?PostID=15791" />
+</rdf:RDF>
+-->
+</form>
+	
+	<div style="width: 1px;" visible="false">
+
+                <!-- start Vibrant Media IntelliTXT script section -->
+                <script type="text/javascript" src="wpfattachedproperties.aspx_files/front.js"></script>
+                <!-- end Vibrant Media IntelliTXT script section -->
+	</div>
+</body></html>

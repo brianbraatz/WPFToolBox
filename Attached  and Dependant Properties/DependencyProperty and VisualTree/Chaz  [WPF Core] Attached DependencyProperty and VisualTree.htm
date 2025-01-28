@@ -1,0 +1,649 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0066)http://blog.rioterdecker.net/blogs/chaz/archive/2006/02/24/98.aspx -->
+<HTML><HEAD><TITLE>Chaz : [WPF Core] Attached DependencyProperty and VisualTree</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content=WPF name=keywords>
+<META 
+content="Introduction &#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;After several month of investigation about WPF, We are used to working on enhanced user graphical experience and the foundamentals are quickly forgotten.So I 've decided to stop one minute on one of the most famous mechanism that" 
+name=description>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+href="http://blog.rioterdecker.net/blogs/pingback.aspx" rel=pingback><LINK 
+media=screen 
+href="Chaz  [WPF Core] Attached DependencyProperty and VisualTree_files/style.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Chaz  [WPF Core] Attached DependencyProperty and VisualTree_files/print.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Chaz  [WPF Core] Attached DependencyProperty and VisualTree_files/right%20sidebar.css" 
+type=text/css rel=stylesheet><LINK href="/favicon.ico" type=image/ico 
+rel="shortcut icon"><LINK title="Chaz (RSS 2.0)" 
+href="http://blog.rioterdecker.net/blogs/chaz/rss.aspx" type=application/rss+xml 
+rel=alternate><LINK title="Chaz (Atom 1.0)" 
+href="http://blog.rioterdecker.net/blogs/chaz/atom.aspx" 
+type=application/atom+xml rel=alternate><LINK 
+title="[WPF Core] Attached DependencyProperty and VisualTree Comment RSS (RSS 2.0)" 
+href="http://blog.rioterdecker.net/blogs/chaz/commentrss.aspx?PostID=98" 
+type=application/rss+xml rel=alternate>
+<SCRIPT 
+src="Chaz  [WPF Core] Attached DependencyProperty and VisualTree_files/global.js" 
+type=text/javascript></SCRIPT>
+</HEAD>
+<BODY>
+<FORM id=__aspnetForm name=__aspnetForm 
+action=/blogs/chaz/archive/2006/02/24/98.aspx method=post><INPUT type=hidden 
+name=__EVENTTARGET> <INPUT type=hidden name=__EVENTARGUMENT> <INPUT type=hidden 
+value=dDwxOTEyODEyMTQ3OztsPF9jdGwwOl86X2N0bDA6XzpCbG9nU2lkZUJhcjE6Xzp3czpfOlNlYXJjaEJveDs+PgUL+f/GgIJK9otucOax//Q380gO 
+name=__VIEWSTATE>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+	function __doPostBack(eventTarget, eventArgument) {
+		var theform;
+		if (window.navigator.appName.toLowerCase().indexOf("microsoft") > -1) {
+			theform = document.__aspnetForm;
+		}
+		else {
+			theform = document.forms["__aspnetForm"];
+		}
+		theform.__EVENTTARGET.value = eventTarget.split("$").join(":");
+		theform.__EVENTARGUMENT.value = eventArgument;
+		theform.submit();
+	}
+// -->
+</SCRIPT>
+
+<SCRIPT language=javascript type=text/javascript>
+var RatingControlAJAX = {
+
+"SaveRating": function(id, rating, clientCallBack) {
+	return Ajax_CallBack('CommunityServer.Blogs.Controls.BlogRatePost', id, 'SaveRating', [rating], clientCallBack, false, false, false, true,'/blogs/chaz/archive/2006/02/24/98.aspx?Ajax_CallBack=true');
+}
+
+};
+</SCRIPT>
+ 
+<DIV id=masthead>
+<DIV id=welcome align=right>Welcome to RioterDeckers' HeadQuarter <A 
+id=_ctl0____ctl0___duw1_ac1___Login 
+href="http://blog.rioterdecker.net/login.aspx?ReturnUrl=/blogs/chaz/archive/2006/02/24/98.aspx">Sign 
+in</A> | <A id=_ctl0____ctl0___duw1_ac1___Register 
+href="http://blog.rioterdecker.net/user/CreateUser.aspx?ReturnUrl=/blogs/chaz/archive/2006/02/24/98.aspx">Join</A> 
+| <A id=_ctl0____ctl0___duw1_Faq1 
+href="http://blog.rioterdecker.net/languages/en-US/docs/faq.aspx">Help</A> 
+</DIV></DIV>
+<DIV id=wrapper>
+<DIV id=container>
+<DIV id=header>
+<DIV id=title>
+<H1><A class=headermaintitle id=_ctl0____ctl0___BlogTitleHeader1___BlogTitle 
+href="http://blog.rioterdecker.net/blogs/chaz/default.aspx">Chaz</A></H1>
+<P id=tagline>WPF underground</P></DIV></DIV>
+<DIV id=contentwrapper>
+<DIV id=sidebar-a>
+<DIV id=WeblogLinks>
+<H3>This Blog</H3>
+<UL>
+  <LI><A href="http://blog.rioterdecker.net/blogs/chaz/about.aspx">About</A> 
+  </LI></UL></DIV>
+<H3>Calendar</H3>
+<DIV id=Cal align=center>
+<UL>
+  <LI>
+  <TABLE class=Calendar id=PostCalendar cellSpacing=0 cellPadding=2 border=0>
+    <TBODY>
+    <TR>
+      <TD colSpan=7>
+        <TABLE class=CalendarTitle cellSpacing=0 border=0>
+          <TBODY>
+          <TR>
+            <TD class=CalendarNextPrev align=middle><A style="COLOR: black" 
+              href="javascript:__doPostBack('_ctl0$_$_ctl0$_$BlogSideBar1$_$Cal$_$PostCalendar','V2192')">Jan</A></TD>
+            <TD align=middle>February 2006</TD>
+            <TD class=CalendarNextPrev align=right><A style="COLOR: black" 
+              href="javascript:__doPostBack('_ctl0$_$_ctl0$_$BlogSideBar1$_$Cal$_$PostCalendar','V2251')">Mar</A></TD></TR></TBODY></TABLE></TD></TR>
+    <TR>
+      <TD class=CalendarDayHeader align=middle>S</TD>
+      <TD class=CalendarDayHeader align=middle>M</TD>
+      <TD class=CalendarDayHeader align=middle>T</TD>
+      <TD class=CalendarDayHeader align=middle>W</TD>
+      <TD class=CalendarDayHeader align=middle>T</TD>
+      <TD class=CalendarDayHeader align=middle>F</TD>
+      <TD class=CalendarDayHeader align=middle>S</TD></TR>
+    <TR>
+      <TD class=CalendarOtherMonth align=middle>29</TD>
+      <TD class=CalendarOtherMonth align=middle>30</TD>
+      <TD class=CalendarOtherMonth align=middle>31</TD>
+      <TD align=middle>1</TD>
+      <TD align=middle>2</TD>
+      <TD align=middle><A title="1 Post" 
+        href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/2/3.aspx">3</A></TD>
+      <TD class=CalendarWeekend align=middle>4</TD></TR>
+    <TR>
+      <TD class=CalendarWeekend align=middle>5</TD>
+      <TD align=middle>6</TD>
+      <TD align=middle>7</TD>
+      <TD align=middle><A title="1 Post" 
+        href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/2/8.aspx">8</A></TD>
+      <TD align=middle>9</TD>
+      <TD align=middle>10</TD>
+      <TD class=CalendarWeekend align=middle>11</TD></TR>
+    <TR>
+      <TD class=CalendarWeekend align=middle>12</TD>
+      <TD align=middle>13</TD>
+      <TD align=middle>14</TD>
+      <TD align=middle>15</TD>
+      <TD align=middle>16</TD>
+      <TD align=middle>17</TD>
+      <TD class=CalendarWeekend align=middle>18</TD></TR>
+    <TR>
+      <TD class=CalendarWeekend align=middle>19</TD>
+      <TD align=middle>20</TD>
+      <TD align=middle>21</TD>
+      <TD align=middle>22</TD>
+      <TD align=middle>23</TD>
+      <TD align=middle><A title="1 Post" 
+        href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/2/24.aspx">24</A></TD>
+      <TD class=CalendarWeekend align=middle>25</TD></TR>
+    <TR>
+      <TD class=CalendarWeekend align=middle>26</TD>
+      <TD align=middle>27</TD>
+      <TD align=middle>28</TD>
+      <TD class=CalendarOtherMonth align=middle>1</TD>
+      <TD class=CalendarOtherMonth align=middle>2</TD>
+      <TD class=CalendarOtherMonth align=middle>3</TD>
+      <TD class=CalendarOtherMonth align=middle>4</TD></TR>
+    <TR>
+      <TD class=CalendarOtherMonth align=middle>5</TD>
+      <TD class=CalendarOtherMonth align=middle>6</TD>
+      <TD class=CalendarOtherMonth align=middle>7</TD>
+      <TD class=CalendarOtherMonth align=middle>8</TD>
+      <TD class=CalendarOtherMonth align=middle>9</TD>
+      <TD class=CalendarOtherMonth align=middle>10</TD>
+      <TD class=CalendarOtherMonth 
+align=middle>11</TD></TR></TBODY></TABLE></LI></UL></DIV>
+<H3>Search</H3>
+<DIV id=Search>
+<UL>
+  <LI><INPUT class=searchBox id=_ctl0____ctl0___BlogSideBar1___ws___SearchBox 
+  onkeydown=KeyDownHandler_ctl0____ctl0___BlogSideBar1___ws___SearchButton(event); 
+  name=_ctl0:_:_ctl0:_:BlogSideBar1:_:ws:_:SearchBox> <A 
+  id=_ctl0____ctl0___BlogSideBar1___ws___SearchButton 
+  href="javascript:__doPostBack('_ctl0$_$_ctl0$_$BlogSideBar1$_$ws$_$SearchButton','')">Go</A> 
+  </LI></UL></DIV>
+<DIV id=Subscriptions>
+<H3>Syndication</H3>
+<UL>
+  <LI><A href="http://blog.rioterdecker.net/blogs/chaz/rss.aspx">RSS 2.0</A> 
+  <LI><A href="http://blog.rioterdecker.net/blogs/chaz/atom.aspx">Atom 1.0</A> 
+  </LI></UL></DIV>
+<H3>Archives</H3>
+<UL>
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2007/04.aspx">April 2007 
+  (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/11.aspx">November 
+  2006 (1)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/10.aspx">October 
+  2006 (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/06.aspx">June 2006 
+  (1)</A> 
+  <LI><A href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/05.aspx">May 
+  2006 (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/04.aspx">April 2006 
+  (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/03.aspx">March 2006 
+  (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/02.aspx">February 
+  2006 (3)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/01.aspx">January 
+  2006 (3)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2005/11.aspx">November 
+  2005 (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2005/10.aspx">October 
+  2005 (1)</A> </LI></UL>
+<H3>Navigation</H3>
+<DIV id=headertab>
+<UL>
+  <LI id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl0_listItem><A 
+  id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl0_MenuItem 
+  href="http://blog.rioterdecker.net/">Home</A> 
+  <LI id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl1_listItem><A 
+  id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl1_MenuItem 
+  href="http://blog.rioterdecker.net/blogs/default.aspx">Blogs</A> 
+  <LI id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl2_listItem><A 
+  id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl2_MenuItem 
+  href="http://blog.rioterdecker.net/photos/default.aspx">Photos</A> 
+  <LI id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl3_listItem><A 
+  id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl3_MenuItem 
+  href="http://blog.rioterdecker.net/files/default.aspx">Files</A> 
+</LI></UL></DIV>
+<H3>Post Categories</H3>
+<UL>
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/category/1000.aspx">.Net 
+  Framework 2.0 (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/category/1033.aspx">SilverLight 
+  (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/category/1002.aspx">Windows 
+  Vista (4)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/category/1001.aspx">WPF 
+  (14)</A> </LI></UL>
+<H3>Useful links</H3>
+<UL>
+  <LI><A 
+  id=_ctl0____ctl0___BlogSideBar1___lcl___Categories__ctl0_Links__ctl1_Link 
+  href="http://blogs.msdn.com/tims/archive/2005/06/10/427565.aspx">WPF 
+  Bloggers</A> 
+  <LI><A 
+  id=_ctl0____ctl0___BlogSideBar1___lcl___Categories__ctl0_Links__ctl2_Link 
+  href="http://spaces.msn.com/rrelyea/">Rob Relyea's blog</A> 
+  <LI><A 
+  id=_ctl0____ctl0___BlogSideBar1___lcl___Categories__ctl0_Links__ctl3_Link 
+  href="http://weblogs.asp.net/bleroy/">One of my buddies' blog</A> 
+  <LI><A 
+  id=_ctl0____ctl0___BlogSideBar1___lcl___Categories__ctl0_Links__ctl4_Link 
+  href="http://www.netfxfactory.org/">The NetFxFactory community</A> </LI></UL>
+<H3>The Massai project</H3>
+<UL>
+  <LI><A 
+  id=_ctl0____ctl0___BlogSideBar1___lcl___Categories__ctl1_Links__ctl1_Link 
+  href="http://blog.rioterdecker.net/photos/chaz_blog_pictures/category1031.aspx">Screenshots</A> 
+  </LI></UL></DIV>
+<DIV id=content>
+<DIV class=post>
+<DIV class=postview>
+<H2>[WPF Core] Attached DependencyProperty and VisualTree</H2>
+<P><SPAN>Introduction</SPAN> 
+<HR>
+
+<P></P>
+<P>After several month of investigation about WPF, We are used to working on 
+enhanced user graphical experience and the foundamentals are quickly 
+forgotten.<BR>So I 've decided to stop one minute on one of the most famous 
+mechanism that allows a parent to provide functionalities to its children, its 
+descendants or much more.</P>
+<P>Whereas nobody can ignore the law, nobody can ignore the <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref29/html/T_System_Windows_DependencyProperty.asp">DependencyProperty</A>. 
+You certainly used a canvas to position your visual elements using absolute 
+position and you might notice that the children of the canvas were able to use 
+canvas capabilities to define this postion. The code below can easily refresh 
+your memory:</P><FONT color=#0000ff>
+<P><FONT face="Courier New" size=2>&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>Canvas</FONT><FONT face="Courier New"><FONT size=2><FONT 
+color=#0000ff>&gt;<BR>&nbsp; &lt;</FONT><FONT color=#800000>Button</FONT><FONT 
+color=#0000ff> </FONT><FONT color=#ff0000>Canvas.Top</FONT><FONT 
+color=#0000ff>=</FONT>"<FONT color=#0000ff>10</FONT>"<FONT color=#0000ff> 
+</FONT><FONT color=#ff0000>Canvas.Left</FONT><FONT color=#0000ff>=</FONT>"<FONT 
+color=#0000ff>30</FONT>"<FONT color=#0000ff> </FONT><FONT 
+color=#ff0000>Height</FONT><FONT color=#0000ff>=</FONT>"<FONT 
+color=#0000ff>30</FONT>"<FONT color=#0000ff> </FONT><FONT 
+color=#ff0000>Width</FONT><FONT color=#0000ff>=</FONT>"<FONT 
+color=#0000ff>50</FONT>"</FONT></FONT><FONT face="Courier New"><FONT 
+size=2><FONT color=#0000ff> /&gt;<BR>&lt;/</FONT><FONT 
+color=#800000>Canvas</FONT><FONT color=#0000ff>&gt;</FONT></FONT></FONT></P>
+<P>The button is decorated by the attached DependencyProperty objects of its 
+parent which is the canvas. So now how to implement this powerful mechanism 
+?</P>
+<P><SPAN>Creating the attached DependencyProperty</SPAN> 
+<HR>
+
+<P></P>
+<P>To describe the concept, I suggest to create a panel that allows displaying a 
+disclaimer message, i.e. each child of this panel is decorated with this 
+feature.<BR>So I consume the panel as describes below:</P><FONT color=#0000ff 
+size=2>
+<P><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>l:DisclaimerPanel</FONT><FONT face="Courier New"><FONT 
+color=#0000ff size=2>&gt;<BR>&nbsp; &lt;</FONT><FONT color=#800000 
+size=2>Button</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Height</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>35</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Width</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>90</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Content</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>Disclaimer child</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>l:DisclaimerPanel.Disclaimer</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Copyright 
+©&nbsp;2006 The RioterDeckers</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2> </FONT><FONT color=#ff0000 size=2>Margin</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>0,40,0,10</FONT><FONT size=2>"</FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2> /&gt;<BR>&nbsp; &lt;</FONT><FONT 
+color=#800000 size=2>Button</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Height</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>35</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Width</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>90</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Content</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>Disclaimer child</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>l:DisclaimerPanel.Disclaimer</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Powered by the 
+RioterDeckers</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Margin</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>0,40,0,10</FONT><FONT size=2>"</FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2> /&gt;<BR>&lt;/</FONT><FONT 
+color=#800000 size=2>l:DisclaimerPanel</FONT><FONT color=#0000ff 
+size=2>&gt;</FONT></FONT></P>
+<P><FONT face="Courier New"><FONT color=#0000ff size=2></FONT></FONT></P>
+<P><STRONG><IMG 
+src="Chaz  [WPF Core] Attached DependencyProperty and VisualTree_files/Figure1-RDAttachedDPSample.png" 
+border=0></STRONG></P>
+<P><STRONG>Figure 1. the disclaimer panel and its children</STRONG></P>
+<P>So, in the DisclaimerPanel class, I first create the DependencyProperty. Then 
+I register and attach it into the DependencyProperty system:</P><FONT size=2>
+<P></FONT><FONT face="Courier New"><FONT color=#0000ff 
+size=2>private</FONT><FONT size=2> </FONT><FONT color=#0000ff 
+size=2>static</FONT><FONT size=2> </FONT><FONT color=#0000ff 
+size=2>readonly</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>DependencyProperty</FONT><FONT size=2> 
+DisclaimerProperty;</FONT></FONT></P><FONT size=2><FONT color=#0000ff size=2>
+<P><FONT face="Courier New">static</FONT></FONT><FONT size=2><FONT 
+face="Courier New"> DisclaimerPanel()<BR></FONT><FONT 
+face="Courier New">{<BR>&nbsp; </FONT><FONT 
+face="Courier New">DisclaimerProperty = </FONT></FONT><FONT 
+face="Courier New"><FONT color=#008080 size=2>DependencyProperty</FONT><FONT 
+size=2>.RegisterAttached(</FONT><FONT color=#800000 
+size=2>"Disclaimer"</FONT><FONT size=2>, </FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>string</FONT><FONT size=2>), </FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>DisclaimerPanel</FONT><FONT size=2>), </FONT><FONT color=#0000ff 
+size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>FrameworkPropertyMetadata</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>string</FONT><FONT size=2>.Empty, </FONT><FONT color=#0000ff 
+size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>PropertyChangedCallback</FONT><FONT size=2>(_DisclaimerChangedCallBack)), 
+</FONT><FONT color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>ValidateValueCallback</FONT></FONT><FONT size=2><FONT 
+face="Courier New">(_ValidateValueCallBack));<BR></FONT><FONT 
+face="Courier New">}</FONT></FONT></P></FONT>
+<P>When you declare an attached DependencyProperty, WPF needs at least one 
+accessor method to be called when the value of the property is set. I need no 
+more energy to create another method to get the value of my attached property. 
+Be careful that WPF defines a naming constraint for these method and so in my 
+case, must be Set<EM>PropertyName</EM> and Get<EM>PropertyName</EM> and respect 
+a particular signature.</P><FONT color=#0000ff size=2>
+<P><FONT face="Courier New">public</FONT></FONT><FONT face="Courier New"><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>string</FONT><FONT size=2> 
+GetDisclaimer(</FONT><FONT color=#008080 size=2>UIElement</FONT></FONT><FONT 
+face="Courier New"><FONT size=2> element)<BR>{<BR>&nbsp; </FONT><FONT 
+color=#0000ff size=2>return</FONT><FONT size=2> (</FONT><FONT color=#0000ff 
+size=2>string</FONT></FONT><FONT size=2><FONT 
+face="Courier New">)element.GetValue(DisclaimerProperty);<BR>}<BR></FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>public</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> </FONT><FONT 
+color=#0000ff size=2>void</FONT><FONT size=2> SetDisclaimer(</FONT><FONT 
+color=#008080 size=2>UIElement</FONT><FONT size=2> element, </FONT><FONT 
+color=#0000ff size=2>string</FONT></FONT><FONT face="Courier New" size=2> 
+value)<BR>{<BR>&nbsp; element.SetValue(DisclaimerProperty, 
+value);<BR>}</FONT></P>
+<P><SPAN>Defining a behavior when the DependencyProperty is set</SPAN> 
+<HR>
+
+<P></P>
+<P>In the RegisterAttached method signature, the <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref29/html/T_System_Windows_PropertyChangedCallback.asp">PropertyChangedCallBack</A> 
+parameter enables to define a behavior to execute when a value is set to the 
+DependencyProperty. In my case, I would like to create the visual tree for the 
+specified disclaimer message.</P><FONT color=#0000ff size=2>
+<P><FONT face="Courier New">private</FONT></FONT><FONT face="Courier New"><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>void</FONT><FONT size=2> 
+_DisclaimerChangedCallBack(</FONT><FONT color=#008080 
+size=2>DependencyObject</FONT><FONT size=2> d, </FONT><FONT color=#008080 
+size=2>DependencyPropertyChangedEventArgs</FONT></FONT><FONT 
+face="Courier New"><FONT size=2> e)<BR>{<BR>&nbsp; </FONT><FONT color=#0000ff 
+size=2>if</FONT><FONT size=2>(d == </FONT><FONT color=#0000ff 
+size=2>null</FONT><FONT size=2>) </FONT><FONT color=#0000ff 
+size=2>return</FONT></FONT><FONT face="Courier New"><FONT size=2>;<BR>&nbsp; 
+<BR>&nbsp; </FONT><FONT color=#008080 size=2>FrameworkElement</FONT><FONT 
+size=2> __element = (d </FONT><FONT color=#0000ff size=2>as</FONT><FONT size=2> 
+</FONT><FONT color=#008080 size=2>FrameworkElement</FONT></FONT><FONT 
+face="Courier New"><FONT size=2>);<BR></FONT><FONT color=#0000ff size=2>&nbsp; 
+if</FONT><FONT size=2> (__element == </FONT><FONT color=#0000ff 
+size=2>null</FONT><FONT size=2>) </FONT><FONT color=#0000ff 
+size=2>return</FONT></FONT><FONT size=2><FONT face="Courier New">;</FONT></P>
+<P></FONT><FONT face="Courier New" color=#008080 size=2>&nbsp; 
+Control</FONT><FONT face="Courier New"><FONT size=2> __disclaimerControl = 
+_BuildDisclaimerVisualTree(e.NewValue.ToString());<BR>&nbsp; (__element.Parent 
+</FONT><FONT color=#0000ff size=2>as</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>DisclaimerPanel</FONT></FONT><FONT size=2><FONT 
+face="Courier New">).Children.Add(__disclaimerControl);<BR>}</FONT></FONT></P>
+<P>I also use the <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref29/html/T_System_Windows_ValidateValueCallback.asp">ValidateValueCallback</A> 
+argument in order to check the good type of the attended value. In order to 
+avoid having a null value, it's recommended to give a default value passed as 
+the first parameter of the RegisterAttached method.</P><FONT color=#0000ff 
+size=2>
+<P><FONT face="Courier New">private</FONT></FONT><FONT face="Courier New"><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>bool</FONT><FONT size=2> 
+_ValidateValueCallBack(</FONT><FONT color=#0000ff 
+size=2>object</FONT></FONT><FONT face="Courier New"><FONT size=2> 
+value)<BR>{<BR>&nbsp; </FONT><FONT color=#0000ff size=2>return</FONT><FONT 
+size=2> (value </FONT><FONT color=#0000ff size=2>is</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>string</FONT></FONT><FONT size=2><FONT 
+face="Courier New">);<BR>}</FONT></FONT></P>
+<P><SPAN>Building the VisualTree of the disclaimer message</SPAN> 
+<HR>
+
+<P></P>
+<P>To display the disclaimer message, I don't need to create a complex logical 
+tree, I think that a simple control will be sufficient. I just need to create a 
+visual tree through a <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref30/html/T_System_Windows_Controls_ControlTemplate.asp">ControlTemplate</A> 
+applied to the control and to build the tree I simply use several <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref29/html/T_System_Windows_FrameworkElementFactory.asp">FrameworkElementFactory</A> 
+objects which are very useful to create the visual composition.</P><FONT 
+color=#0000ff size=2>
+<P><FONT face="Courier New">private</FONT></FONT><FONT face="Courier New"><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> 
+</FONT><FONT color=#008080 size=2>Control</FONT><FONT size=2> 
+_BuildDisclaimerVisualTree(</FONT><FONT color=#0000ff 
+size=2>string</FONT></FONT><FONT face="Courier New"><FONT size=2> 
+value)<BR>{<BR>&nbsp; </FONT><FONT color=#008080 size=2>Control</FONT><FONT 
+size=2> __control = </FONT><FONT color=#0000ff size=2>new</FONT><FONT size=2> 
+</FONT><FONT color=#008080 size=2>Control</FONT></FONT><FONT size=2><FONT 
+face="Courier New">();</FONT></P>
+<P></FONT><FONT face="Courier New"><FONT color=#008080 size=2>&nbsp; 
+FrameworkElementFactory</FONT><FONT size=2> __fePanelFactory = </FONT><FONT 
+color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>FrameworkElementFactory</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>StackPanel</FONT></FONT><FONT size=2><FONT 
+face="Courier New">));</FONT></P>
+<P></FONT><FONT face="Courier New"><FONT color=#008080 size=2>&nbsp; 
+FrameworkElementFactory</FONT><FONT size=2> __feFactory = </FONT><FONT 
+color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>FrameworkElementFactory</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>TextBlock</FONT></FONT><FONT face="Courier New"><FONT 
+size=2>));<BR>&nbsp; __feFactory = </FONT><FONT color=#0000ff 
+size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>FrameworkElementFactory</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>TextBlock</FONT></FONT><FONT face="Courier New"><FONT 
+size=2>));<BR>&nbsp; __feFactory.SetValue(</FONT><FONT color=#008080 
+size=2>TextBlock</FONT></FONT><FONT face="Courier New"><FONT 
+size=2>.TextProperty, value);<BR>&nbsp; __feFactory.SetValue(</FONT><FONT 
+color=#008080 size=2>TextBlock</FONT><FONT size=2>.HorizontalAlignmentProperty, 
+</FONT><FONT color=#008080 size=2>HorizontalAlignment</FONT></FONT><FONT 
+face="Courier New"><FONT size=2>.Center);<BR>&nbsp; 
+__feFactory.SetValue(</FONT><FONT color=#008080 size=2>TextBlock</FONT><FONT 
+size=2>.ForegroundProperty, </FONT><FONT color=#0000ff size=2>new</FONT><FONT 
+size=2> </FONT><FONT color=#008080 size=2>SolidColorBrush</FONT><FONT 
+size=2>(</FONT><FONT color=#008080 size=2>Colors</FONT></FONT><FONT 
+face="Courier New"><FONT size=2>.Red));<BR>&nbsp; 
+__feFactory.SetValue(</FONT><FONT color=#008080 
+size=2>TextBlock</FONT></FONT><FONT face="Courier New"><FONT 
+size=2>.FontSizeProperty, 9.0d);<BR>&nbsp; __feFactory.SetValue(</FONT><FONT 
+color=#008080 size=2>TextBlock</FONT><FONT size=2>.FontStyleProperty, 
+</FONT><FONT color=#008080 size=2>FontStyles</FONT></FONT><FONT size=2><FONT 
+face="Courier New">.Italic);</FONT></P>
+<P><FONT face="Courier New">&nbsp; 
+__fePanelFactory.AppendChild(__feFactory);</FONT></P>
+<P></FONT><FONT face="Courier New"><FONT color=#008080 size=2>&nbsp; 
+FrameworkElementFactory</FONT><FONT size=2> __feHLTextBlockFactory = 
+</FONT><FONT color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>FrameworkElementFactory</FONT><FONT size=2>(</FONT><FONT 
+color=#0000ff size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>TextBlock</FONT></FONT><FONT face="Courier New"><FONT 
+size=2>));<BR>&nbsp; </FONT><FONT color=#008080 
+size=2>FrameworkElementFactory</FONT><FONT size=2> __feHlinkFactory = 
+</FONT><FONT color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>FrameworkElementFactory</FONT><FONT size=2>(</FONT><FONT 
+color=#0000ff size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>Hyperlink</FONT></FONT><FONT face="Courier New"><FONT 
+size=2>));<BR>&nbsp; </FONT><FONT color=#008080 
+size=2>FrameworkElementFactory</FONT><FONT size=2> __feSubTBFactory = 
+</FONT><FONT color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>FrameworkElementFactory</FONT><FONT size=2>(</FONT><FONT 
+color=#0000ff size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>TextBlock</FONT></FONT><FONT face="Courier New"><FONT 
+size=2>));<BR>&nbsp; __feHLTextBlockFactory.SetValue(</FONT><FONT color=#008080 
+size=2>TextBlock</FONT><FONT size=2>.HorizontalAlignmentProperty, </FONT><FONT 
+color=#008080 size=2>HorizontalAlignment</FONT></FONT><FONT 
+face="Courier New"><FONT size=2>.Center);<BR>&nbsp; 
+__feHlinkFactory.SetValue(</FONT><FONT color=#008080 
+size=2>Hyperlink</FONT><FONT size=2>.NavigateUriProperty, </FONT><FONT 
+color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>Uri</FONT></FONT><FONT face="Courier New"><FONT 
+size=2>(RD_URI));<BR>&nbsp; __feHlinkFactory.AddHandler(</FONT><FONT 
+color=#008080 size=2>Hyperlink</FONT><FONT size=2>.RequestNavigateEvent, 
+</FONT><FONT color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>RequestNavigateEventHandler</FONT></FONT><FONT 
+face="Courier New"><FONT size=2>(_NavigateToRD));<BR>&nbsp; 
+__feSubTBFactory.SetValue(</FONT><FONT color=#008080 
+size=2>TextBlock</FONT></FONT><FONT face="Courier New"><FONT 
+size=2>.TextProperty, RD_URI);<BR>&nbsp; __feSubTBFactory.SetValue(</FONT><FONT 
+color=#008080 size=2>TextBlock</FONT></FONT><FONT size=2><FONT 
+face="Courier New">.FontSizeProperty, 9.0d);</FONT></P>
+<P><FONT face="Courier New">&nbsp; 
+__feHlinkFactory.AppendChild(__feSubTBFactory);<BR>&nbsp; 
+__feHLTextBlockFactory.AppendChild(__feHlinkFactory);<BR>&nbsp; 
+__fePanelFactory.AppendChild(__feHLTextBlockFactory);</FONT></P>
+<P></FONT><FONT face="Courier New"><FONT color=#008080 size=2>&nbsp; 
+ControlTemplate</FONT><FONT size=2> __template = </FONT><FONT color=#0000ff 
+size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>ControlTemplate</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>Control</FONT></FONT><FONT size=2><FONT face="Courier New">));<BR>&nbsp; 
+__template.VisualTree = __fePanelFactory;<BR>&nbsp; __control.Template = 
+__template;</FONT></P>
+<P></FONT><FONT face="Courier New" color=#0000ff size=2>&nbsp; 
+return</FONT><FONT size=2><FONT face="Courier New"> 
+__control;<BR>}</FONT></FONT></P>
+<P><SPAN>Conclusion</SPAN> 
+<HR>
+
+<P></P>
+<P>As you can see, WPF provides powerful mechanisms to add extended 
+functionalities during the life cycle of dependent objects that it's the 
+behavior of children like the visual tree on the fly. The sources and the 
+binaries come from the&nbsp;WinFX February CTP.</P>
+<P><A 
+href="http://esnips.com/doc/0de82f96-e567-496d-81b4-9ec67558a1c9/RD.AttachedDPSample.sources.zip">Download 
+the sources</A><BR><A 
+href="http://esnips.com/doc/4b86edc6-5c04-458f-9faa-87959adf88c9/RD.AttachedDPSample.binaries.zip">Download 
+the binaries</A></P>
+<DIV class=postfoot>Published Friday, February 24, 2006 6:48 PM by <A 
+id=_ctl0____ctl0____ctl1___Entry___AuthorLink 
+href="http://blog.rioterdecker.net/user/Profile.aspx?UserID=2104">Chaz</A> 
+<BR>Filed Under: <A 
+id=_ctl0____ctl0____ctl1___Entry___Tags___Categories__ctl1_Link 
+href="http://blog.rioterdecker.net/blogs/chaz/archive/category/1001.aspx" 
+rel=tag>WPF</A> </DIV></DIV></DIV>
+<H3>Comments </H3>
+<DIV id=comments>
+<DIV class=comment>
+<H4><A id=_ctl0____ctl0____ctl1___Comments___Comments__ctl0_PermaLink 
+title=permalink 
+href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/02/24/98.aspx#157">#</A> 
+<SPAN>ProxyFactory launch<A name=157></A></SPAN> </H4>
+<DIV class=commentsbody>A first release has been just published. You can get it 
+from the Releases section. <BR><BR>Release 1.0 Beta <BR><A 
+href="http://www.codeplex.com/Release/ProjectReleases.aspx?ProjectName=ProxyFactory&amp;amp;ReleaseId=1079" 
+target=_new 
+rel=nofollow>http://www.codeplex.com/Release/ProjectReleases.aspx?ProjectName=ProxyFactory&amp;amp;ReleaseId=1079</A> 
+<BR><BR>This library offers a convenient way to provide </DIV>
+<DIV class=commentssubhead><SPAN class=commentspan></SPAN>Tuesday, November 21, 
+2006 2:56 AM by <A id=_ctl0____ctl0____ctl1___Comments___Comments__ctl0_NameLink 
+title=TrackBack 
+href="http://blog.rioterdecker.net/utility/Redirect.aspx?U=http%3a%2f%2fblog.rioterdecker.net%2fblogs%2fnezdeboeuf%2farchive%2f2006%2f11%2f21%2f156.aspx" 
+target=_blank rel=nofollow>Nezdeboeuf</A> </DIV></DIV>
+<DIV class=altcomment>
+<H4><A id=_ctl0____ctl0____ctl1___Comments___Comments__ctl1_PermaLink 
+title=permalink 
+href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/02/24/98.aspx#159">#</A> 
+<SPAN>ProxyFactory launch<A name=159></A></SPAN> </H4>
+<DIV class=commentsbody>A first release has been just published. You can get it 
+from the Releases section. <BR><BR>Release 1.0 Beta <BR><A 
+href="http://www.codeplex.com/Release/ProjectReleases.aspx?ProjectName=ProxyFactory&amp;amp;ReleaseId=1079" 
+target=_new 
+rel=nofollow>http://www.codeplex.com/Release/ProjectReleases.aspx?ProjectName=ProxyFactory&amp;amp;ReleaseId=1079</A> 
+<BR><BR>This library offers a convenient way to provide </DIV>
+<DIV class=commentssubhead><SPAN class=commentspan></SPAN>Tuesday, November 21, 
+2006 2:57 AM by <A id=_ctl0____ctl0____ctl1___Comments___Comments__ctl1_NameLink 
+title=TrackBack 
+href="http://blog.rioterdecker.net/utility/Redirect.aspx?U=http%3a%2f%2fblog.rioterdecker.net%2fblogs%2fnezdeboeuf%2farchive%2f2006%2f11%2f21%2f158.aspx" 
+target=_blank rel=nofollow>Nezdeboeuf</A> </DIV></DIV>
+<DIV class=comment>
+<H4><A id=_ctl0____ctl0____ctl1___Comments___Comments__ctl2_PermaLink 
+title=permalink 
+href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/02/24/98.aspx#161">#</A> 
+<SPAN>ProxyFactory launch<A name=161></A></SPAN> </H4>
+<DIV class=commentsbody>Even if the revolution announced by MS with its .Net 3.0 
+platform is just around the corner, the fact... </DIV>
+<DIV class=commentssubhead><SPAN class=commentspan></SPAN>Tuesday, November 21, 
+2006 3:03 AM by <A id=_ctl0____ctl0____ctl1___Comments___Comments__ctl2_NameLink 
+title=TrackBack 
+href="http://blog.rioterdecker.net/utility/Redirect.aspx?U=http%3a%2f%2fblog.rioterdecker.net%2fblogs%2fvalhalla%2farchive%2f2006%2f11%2f21%2f160.aspx" 
+target=_blank rel=nofollow>Valhalla</A> 
+</DIV></DIV></ASP:REPEATER></DIV><EM>Anonymous comments are disabled</EM> </DIV>
+<DIV id=contentfooter>&nbsp;</DIV></DIV>
+<DIV id=footer>
+<DIV class=Copyright>rioterdecker - 2006</DIV><A 
+href="http://communityserver.org/r.ashx?1" target=_blank><IMG 
+alt="Powered by Community Server, by Telligent Systems " 
+src="Chaz  [WPF Core] Attached DependencyProperty and VisualTree_files/EULA.gif" 
+border=0></A> </DIV></DIV></DIV>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+function KeyDownHandler_ctl0____ctl0___BlogSideBar1___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('_ctl0:_:_ctl0:_:BlogSideBar1:_:ws:_:SearchButton','')	}
+}
+
+//-->
+</SCRIPT>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blog.rioterdecker.net/blogs/chaz/archive/2006/02/24/98.aspx"
+dc:identifier="http://blog.rioterdecker.net/blogs/chaz/archive/2006/02/24/98.aspx"
+dc:title="[WPF Core] Attached DependencyProperty and VisualTree"
+trackback:ping="http://blog.rioterdecker.net/blogs/trackback.aspx?PostID=98" />
+</rdf:RDF>
+--></FORM></BODY></HTML>

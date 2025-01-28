@@ -1,0 +1,930 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0084)http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html -->
+<HTML dir=ltr><HEAD><TITLE>Mark .NET: Creating a Custom WPF Button Template in XAML</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content=true name=MSSmartTagsPreventParsing>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+title="Mark .NET - Atom" 
+href="http://mark-dot-net.blogspot.com/feeds/posts/default" 
+type=application/atom+xml rel=alternate><LINK title="Mark .NET - RSS" 
+href="http://mark-dot-net.blogspot.com/feeds/posts/default?alt=rss" 
+type=application/rss+xml rel=alternate><LINK title="Mark .NET - Atom" 
+href="http://www.blogger.com/feeds/6822536077160579260/posts/default" 
+type=application/atom+xml rel=service.post><LINK title=RSD 
+href="http://www.blogger.com/rsd.g?blogID=6822536077160579260" 
+type=application/rsd+xml rel=EditURI><LINK title="Mark .NET - Atom" 
+href="http://mark-dot-net.blogspot.com/feeds/4477595699124826993/comments/default" 
+type=application/atom+xml rel=alternate>
+<STYLE id=page-skin-1 type=text/css>BODY {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: #efefef; PADDING-BOTTOM: 0px; MARGIN: 0px; FONT: small Verdana, Arial; COLOR: #333333; PADDING-TOP: 0px; TEXT-ALIGN: center
+}
+A:link {
+	COLOR: #336699
+}
+A:visited {
+	COLOR: #336699
+}
+A IMG {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+#outer-wrapper {
+	FONT: 100% Verdana, Arial, Sans-serif
+}
+#header-wrapper {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; BACKGROUND-COLOR: #528bc5; TEXT-ALIGN: left
+}
+#header {
+	BORDER-RIGHT: #336699 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #336699 1px solid; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px auto; FONT: 210% Verdana, Arial, Sans-serif; BORDER-LEFT: #336699 1px solid; WIDTH: 760px; COLOR: #ffffff; PADDING-TOP: 0px; BORDER-BOTTOM: #336699 1px solid; BACKGROUND-COLOR: #336699
+}
+H1.title {
+	FONT-SIZE: 100%; MARGIN: 0px 14px 0.1em; LINE-HEIGHT: 1.2em; PADDING-TOP: 38px
+}
+H1.title A {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#header .description {
+	PADDING-RIGHT: 0px; DISPLAY: block; PADDING-LEFT: 0px; FONT-SIZE: 50%; PADDING-BOTTOM: 40px; MARGIN: 0px 14px; LINE-HEIGHT: 1.4em; PADDING-TOP: 0px
+}
+.clear {
+	CLEAR: both
+}
+#content-wrapper {
+	BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #cccccc 0px solid; PADDING-LEFT: 0px; PADDING-BOTTOM: 15px; MARGIN: 0px auto; BORDER-LEFT: #cccccc 1px solid; WIDTH: 760px; PADDING-TOP: 0px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: left
+}
+#main-wrapper {
+	DISPLAY: inline; FLOAT: left; MARGIN-LEFT: 14px; OVERFLOW: hidden; WIDTH: 464px; BACKGROUND-COLOR: #ffffff; WORD-WRAP: break-word
+}
+#sidebar-wrapper {
+	DISPLAY: inline; FLOAT: right; OVERFLOW: hidden; WIDTH: 240px; MARGIN-RIGHT: 14px; BACKGROUND-COLOR: #ffffff; WORD-WRAP: break-word
+}
+H2 {
+	MARGIN: 0px
+}
+H3 {
+	MARGIN: 0px
+}
+.date-header {
+	FONT-WEIGHT: normal; FONT-SIZE: 100%; MARGIN: 1.5em 0px 0px; COLOR: #999999
+}
+.post {
+	PADDING-BOTTOM: 1.5em; MARGIN: 0px 0px 1.5em
+}
+.post-title {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-WEIGHT: bold; FONT-SIZE: 125%; PADDING-BOTTOM: 0px; MARGIN: 0px; LINE-HEIGHT: 1.1em; PADDING-TOP: 0px
+}
+.post-title A {
+	FONT-WEIGHT: bold; COLOR: #333333; TEXT-DECORATION: none
+}
+.post-title A:visited {
+	FONT-WEIGHT: bold; COLOR: #333333; TEXT-DECORATION: none
+}
+.post-title STRONG {
+	FONT-WEIGHT: bold; COLOR: #333333; TEXT-DECORATION: none
+}
+.post DIV {
+	MARGIN: 0px 0px 0.75em; LINE-HEIGHT: 1.3em
+}
+P.post-footer {
+	FONT-SIZE: 83%; MARGIN: -0.25em 0px 0px; COLOR: #ffffff
+}
+.post-footer .span {
+	MARGIN-RIGHT: 0.3em
+}
+.comment-link {
+	MARGIN-LEFT: 0.3em
+}
+.post IMG {
+	BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 4px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid
+}
+.post BLOCKQUOTE {
+	MARGIN: 1em 20px
+}
+.post BLOCKQUOTE P {
+	MARGIN: 0.75em 0px
+}
+#comments H4 {
+	MARGIN: 1em 0px; COLOR: #999999
+}
+#comments H4 STRONG {
+	FONT-SIZE: 110%
+}
+#comments-block {
+	MARGIN: 1em 0px 1.5em; LINE-HEIGHT: 1.3em
+}
+#comments-block DT {
+	MARGIN: 0.5em 0px
+}
+#comments-block DD {
+	MARGIN: 0.25em 0px 0px
+}
+#comments-block DD.comment-footer {
+	FONT-SIZE: 78%; MARGIN: -0.25em 0px 2em; LINE-HEIGHT: 1.4em
+}
+#comments-block DD P {
+	MARGIN: 0px 0px 0.75em
+}
+.deleted-comment {
+	COLOR: gray; FONT-STYLE: italic
+}
+.feed-links {
+	CLEAR: both; LINE-HEIGHT: 2.5em
+}
+#blog-pager-newer-link {
+	FLOAT: left
+}
+#blog-pager-older-link {
+	FLOAT: right
+}
+#blog-pager {
+	TEXT-ALIGN: center
+}
+.sidebar H2 {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-SIZE: 100%; PADDING-BOTTOM: 4px; MARGIN: 1.6em 0px 0.5em; COLOR: #333333; PADDING-TOP: 4px; BACKGROUND-COLOR: #ffd595
+}
+.sidebar UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none
+}
+.sidebar LI {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 15px; PADDING-BOTTOM: 0.5em; MARGIN: 0px; TEXT-INDENT: -15px; LINE-HEIGHT: 1.5em; PADDING-TOP: 0px
+}
+.sidebar {
+	COLOR: #333333; LINE-HEIGHT: 1.3em
+}
+.sidebar .widget {
+	MARGIN-BOTTOM: 1em
+}
+.sidebar .widget-content {
+	MARGIN: 0px 5px
+}
+.profile-img {
+	BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 4px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FLOAT: left; PADDING-BOTTOM: 4px; MARGIN: 0px 5px 5px 0px; BORDER-LEFT: #cccccc 1px solid; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid
+}
+.profile-data {
+	FONT-WEIGHT: bold; FONT-SIZE: 78%; MARGIN: 0px; TEXT-TRANSFORM: uppercase; LINE-HEIGHT: 1.6em; LETTER-SPACING: 0.1em
+}
+.profile-datablock {
+	MARGIN: 0.5em 0px
+}
+.profile-textblock {
+	MARGIN: 0.5em 0px; LINE-HEIGHT: 1.6em
+}
+#footer {
+	CLEAR: both; COLOR: #333333; TEXT-ALIGN: center
+}
+#footer .widget {
+	FONT-SIZE: 85%; MARGIN: 0.5em; LINE-HEIGHT: 1.5em; PADDING-TOP: 20px; TEXT-ALIGN: left
+}
+</STYLE>
+<LINK 
+href="Mark _NET Creating a Custom WPF Button Template in XAML_files/3319451950-blogarchive.css" 
+type=text/css rel=stylesheet><!-- -->
+<STYLE type=text/css>@import url( http://www.blogger.com/css/blog_controls.css );
+@import url( http://www.blogger.com/dyn-css/authorization.css?blogID=6822536077160579260 );
+#navbar-iframe {
+	DISPLAY: block
+}
+</STYLE>
+<LINK 
+href="Mark _NET Creating a Custom WPF Button Template in XAML_files/2791266615-blog.css" 
+type=text/css rel=stylesheet>
+<SCRIPT 
+src="Mark _NET Creating a Custom WPF Button Template in XAML_files/2321995745-widgets.js" 
+type=text/javascript></SCRIPT>
+</HEAD>
+<BODY>
+<DIV class="navbar section" id=navbar>
+<DIV class="widget Navbar" id=Navbar1><IFRAME id=navbar-iframe marginWidth=0 
+marginHeight=0 
+src="Mark _NET Creating a Custom WPF Button Template in XAML_files/navbar.htm" 
+frameBorder=0 width="100%" scrolling=no height=30></IFRAME>
+<DIV id=space-for-ie></DIV></DIV></DIV>
+<DIV id=outer-wrapper>
+<DIV id=wrap2><!-- skip links for text browsers --><SPAN id=skiplinks 
+style="DISPLAY: none"><A 
+href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html#main">skip 
+to main </A>| <A 
+href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html#sidebar">skip 
+to sidebar</A> </SPAN>
+<DIV id=header-wrapper>
+<DIV class="header section" id=header>
+<DIV class="widget Header" id=Header1>
+<DIV id=header-inner>
+<DIV class=titlewrapper>
+<H1 class=title><A href="http://mark-dot-net.blogspot.com/">Mark .NET</A> 
+</H1></DIV>
+<DIV class=descriptionwrapper>
+<P class=description><SPAN>a place for me to talk about programming and .NET ... 
+because my friends and family aren't 
+interested</SPAN></P></DIV></DIV></DIV></DIV></DIV>
+<DIV id=content-wrapper>
+<DIV id=crosscol-wrapper style="TEXT-ALIGN: center">
+<DIV class="crosscol section" id=crosscol></DIV></DIV>
+<DIV id=main-wrapper>
+<DIV class="main section" id=main>
+<DIV class="widget Blog" id=Blog1>
+<DIV class="blog-posts hfeed"><!-- google_ad_section_start -->
+<H2 class=date-header>Tuesday, 10 July 2007</H2>
+<DIV class="post uncustomized-post-template"><A name=4477595699124826993></A>
+<H3 class=post-title><A 
+href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html">Creating 
+a Custom WPF Button Template in XAML</A> </H3>
+<DIV class=post-header-line-1></DIV>
+<DIV class=post-body>
+<P>
+<P>In this post I will demonstrate how to create a custom template for a WPF 
+button using XAML. In particular we will look at being able to have complete 
+control over all the visual states, including disabled, mouse over, mouse down 
+and even the appearance of the focus rectangle. 
+<P> 
+<H3><STRONG>Stage 1: Creating a style</STRONG> </H3>
+<P>The first thing to do is to create a Style which sets the properties of the 
+Button that we want to customize. We will put this in the Page.Resources section 
+of our XAML file.<PRE class=csharpcode><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Style</SPAN> <SPAN class=attr>x:Key</SPAN><SPAN class=kwrd>="OrangeButton"</SPAN> <SPAN class=attr>TargetType</SPAN><SPAN class=kwrd>="Button"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="OverridesDefaultStyle"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="True"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="Margin"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="2"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="FontFamily"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="Verdana"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="FontSize"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="11px"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="FontWeight"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="Bold"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="FocusVisualStyle"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="{StaticResource MyFocusVisual}"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="Background"</SPAN> <SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter.Value</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>        <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>LinearGradientBrush</SPAN> <SPAN class=attr>StartPoint</SPAN><SPAN class=kwrd>="0,0"</SPAN> <SPAN class=attr>EndPoint</SPAN><SPAN class=kwrd>="0,1"</SPAN> <SPAN class=kwrd>&gt;</SPAN><BR>            <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>GradientStop</SPAN> <SPAN class=attr>Color</SPAN><SPAN class=kwrd>="#FFFFD190"</SPAN> <SPAN class=attr>Offset</SPAN><SPAN class=kwrd>="0.2"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR>            <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>GradientStop</SPAN> <SPAN class=attr>Color</SPAN><SPAN class=kwrd>="Orange"</SPAN> <SPAN class=attr>Offset</SPAN><SPAN class=kwrd>="0.85"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR>            <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>GradientStop</SPAN> <SPAN class=attr>Color</SPAN><SPAN class=kwrd>="#FFFFD190"</SPAN> <SPAN class=attr>Offset</SPAN><SPAN class=kwrd>="1"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR>        <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>LinearGradientBrush</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Setter.Value</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Setter</SPAN><SPAN class=kwrd>&gt;</SPAN></PRE><BR>
+<P><SPAN class=kwrd>This is all fairly straightforward stuff - I am just setting 
+the font and background gradient. The only complicated bit is that I am 
+overriding the focus rectangle drawing, as I want a smaller rectangle than the 
+one that gets drawn by default. So I need another style in my Page.Resources 
+section:</SPAN></P><PRE class=csharpcode>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Style</SPAN> <SPAN class=attr>x:Key</SPAN><SPAN class=kwrd>="MyFocusVisual"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>      <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="Control.Template"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>        <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter.Value</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>          <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>ControlTemplate</SPAN> <SPAN class=attr>TargetType</SPAN><SPAN class=kwrd>="{x:Type Control}"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>              <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Grid</SPAN> <SPAN class=attr>Margin</SPAN><SPAN class=kwrd>="3 2"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>                <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Rectangle</SPAN> <SPAN class=attr>Name</SPAN><SPAN class=kwrd>="r1"</SPAN> <SPAN class=attr>StrokeThickness</SPAN><SPAN class=kwrd>="1"</SPAN> <SPAN class=attr>Stroke</SPAN><SPAN class=kwrd>="Black"</SPAN> <SPAN class=attr>StrokeDashArray</SPAN><SPAN class=kwrd>="2 2"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR>                <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Border</SPAN> <SPAN class=attr>Name</SPAN><SPAN class=kwrd>="border"</SPAN> <SPAN class=attr>Width</SPAN><SPAN class=kwrd>="{TemplateBinding ActualWidth}"</SPAN> <SPAN class=attr>Height</SPAN><SPAN class=kwrd>="{TemplateBinding ActualHeight}"</SPAN>  <SPAN class=attr>CornerRadius</SPAN><SPAN class=kwrd>="2"</SPAN> <SPAN class=attr>BorderThickness</SPAN><SPAN class=kwrd>="1"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR>              <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Grid</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>          <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>ControlTemplate</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>        <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Setter.Value</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>      <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Setter</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Style</SPAN><SPAN class=kwrd>&gt;</SPAN></PRE><BR>
+<STYLE type=text/css>UNKNOWN {
+	
+}
+UNKNOWN {
+	MARGIN: 0em
+}
+UNKNOWN {
+	COLOR: #008000
+}
+UNKNOWN {
+	COLOR: #0000ff
+}
+UNKNOWN {
+	COLOR: #006080
+}
+UNKNOWN {
+	COLOR: #0000c0
+}
+UNKNOWN {
+	COLOR: #cc6633
+}
+UNKNOWN {
+	BACKGROUND-COLOR: #ffff00
+}
+UNKNOWN {
+	COLOR: #800000
+}
+UNKNOWN {
+	COLOR: #ff0000
+}
+UNKNOWN {
+	
+}
+UNKNOWN {
+	COLOR: #606060
+}
+</STYLE>
+<BR><BR>
+<STYLE type=text/css>UNKNOWN {
+	
+}
+UNKNOWN {
+	MARGIN: 0em
+}
+UNKNOWN {
+	COLOR: #008000
+}
+UNKNOWN {
+	COLOR: #0000ff
+}
+UNKNOWN {
+	COLOR: #006080
+}
+UNKNOWN {
+	COLOR: #0000c0
+}
+UNKNOWN {
+	COLOR: #cc6633
+}
+UNKNOWN {
+	BACKGROUND-COLOR: #ffff00
+}
+UNKNOWN {
+	COLOR: #800000
+}
+UNKNOWN {
+	COLOR: #ff0000
+}
+UNKNOWN {
+	
+}
+UNKNOWN {
+	COLOR: #606060
+}
+</STYLE>
+<BR><BR>
+<H3>Stage 2: Creating a template </H3><BR>
+<P>We would already be finished if I just wanted the normal appearance of my 
+button to be changed. But I want complete control - including the 
+appearance&nbsp;in mouse over, mouse down and disabled situations. So a template 
+allows us to completely control what visual elements constitute our 
+control.</P><BR>
+<P>Again this goes in Page.Resources. The first part is shown here:</P><PRE class=csharpcode><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="Template"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter.Value</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>        <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>ControlTemplate</SPAN> <SPAN class=attr>TargetType</SPAN><SPAN class=kwrd>="Button"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>            <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Border</SPAN> <SPAN class=attr>Name</SPAN><SPAN class=kwrd>="border"</SPAN> <BR>                <SPAN class=attr>BorderThickness</SPAN><SPAN class=kwrd>="1"</SPAN><BR>                <SPAN class=attr>Padding</SPAN><SPAN class=kwrd>="4,2"</SPAN> <BR>                <SPAN class=attr>BorderBrush</SPAN><SPAN class=kwrd>="DarkGray"</SPAN> <BR>                <SPAN class=attr>CornerRadius</SPAN><SPAN class=kwrd>="3"</SPAN> <BR>                <SPAN class=attr>Background</SPAN><SPAN class=kwrd>="{TemplateBinding Background}"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>                <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Grid</SPAN> <SPAN class=kwrd>&gt;</SPAN><BR>                <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>ContentPresenter</SPAN> <SPAN class=attr>HorizontalAlignment</SPAN><SPAN class=kwrd>="Center"</SPAN> <BR>                               <SPAN class=attr>VerticalAlignment</SPAN><SPAN class=kwrd>="Center"</SPAN> <SPAN class=attr>Name</SPAN><SPAN class=kwrd>="contentShadow"</SPAN> <BR>                    <SPAN class=attr>Style</SPAN><SPAN class=kwrd>="{StaticResource ShadowStyle}"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>                    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>ContentPresenter.RenderTransform</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>                        <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>TranslateTransform</SPAN> <SPAN class=attr>X</SPAN><SPAN class=kwrd>="1.0"</SPAN> <SPAN class=attr>Y</SPAN><SPAN class=kwrd>="1.0"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR>                    <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>ContentPresenter.RenderTransform</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>                <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>ContentPresenter</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>                <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>ContentPresenter</SPAN> <SPAN class=attr>HorizontalAlignment</SPAN><SPAN class=kwrd>="Center"</SPAN> <BR>                            <SPAN class=attr>VerticalAlignment</SPAN><SPAN class=kwrd>="Center"</SPAN> <SPAN class=attr>Name</SPAN><SPAN class=kwrd>="content"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR>                <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Grid</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>            <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Border</SPAN><SPAN class=kwrd>&gt;</SPAN></PRE><BR>
+<P><SPAN class=kwrd>Here you can see I have set up a simple border which gives 
+my button rounded corners, a single pixel gray border, and uses the fill from 
+the control's Background property. This means that by default it will use the 
+orange gradient specified in my style, but that users can override this for 
+their own Background.</SPAN></P><BR>
+<P><SPAN class=kwrd>To draw the content (usually text), we use a 
+ContentPresenter control. I am trying to do something clever here, which is 
+create a bevelled effect on the text by drawing it again in gray. This works 
+fine on text, but for some reason doesn't do anything when the Content is a 
+Shape. I'm not sure why that is. ShadowStyle is defined as follows:</SPAN></P><PRE class=csharpcode><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Style</SPAN> <SPAN class=attr>x:Key</SPAN><SPAN class=kwrd>="ShadowStyle"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="Control.Foreground"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="LightGray"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Style</SPAN><SPAN class=kwrd>&gt;</SPAN></PRE><BR>
+<STYLE type=text/css>UNKNOWN {
+	
+}
+UNKNOWN {
+	MARGIN: 0em
+}
+UNKNOWN {
+	COLOR: #008000
+}
+UNKNOWN {
+	COLOR: #0000ff
+}
+UNKNOWN {
+	COLOR: #006080
+}
+UNKNOWN {
+	COLOR: #0000c0
+}
+UNKNOWN {
+	COLOR: #cc6633
+}
+UNKNOWN {
+	BACKGROUND-COLOR: #ffff00
+}
+UNKNOWN {
+	COLOR: #800000
+}
+UNKNOWN {
+	COLOR: #ff0000
+}
+UNKNOWN {
+	
+}
+UNKNOWN {
+	COLOR: #606060
+}
+</STYLE>
+<BR><BR>
+<STYLE type=text/css>UNKNOWN {
+	
+}
+UNKNOWN {
+	MARGIN: 0em
+}
+UNKNOWN {
+	COLOR: #008000
+}
+UNKNOWN {
+	COLOR: #0000ff
+}
+UNKNOWN {
+	COLOR: #006080
+}
+UNKNOWN {
+	COLOR: #0000c0
+}
+UNKNOWN {
+	COLOR: #cc6633
+}
+UNKNOWN {
+	BACKGROUND-COLOR: #ffff00
+}
+UNKNOWN {
+	COLOR: #800000
+}
+UNKNOWN {
+	COLOR: #ff0000
+}
+UNKNOWN {
+	
+}
+UNKNOWN {
+	COLOR: #606060
+}
+</STYLE>
+<BR><BR>
+<H3>Stage 3: Applying some triggers </H3><BR>
+<P>Now we need to add some triggers to our Button template so that we can change 
+its appearance on various events.</P><BR>
+<P>First is mouse over. When IsMouseOver becomes true, we change the colour of 
+the border and the text colour to blue. Unfortunately, setting the Foreground 
+property does nothing if the content is a shape.</P><PRE class=csharpcode><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>ControlTemplate.Triggers</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>   <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Trigger</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="IsMouseOver"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="True"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>      <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>TargetName</SPAN><SPAN class=kwrd>="border"</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="BorderBrush"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="#FF4788c8"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR>      <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="Foreground"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="#FF4788c8"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR>   <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Trigger</SPAN><SPAN class=kwrd>&gt;</SPAN></PRE><BR>
+<STYLE type=text/css>UNKNOWN {
+	
+}
+UNKNOWN {
+	MARGIN: 0em
+}
+UNKNOWN {
+	COLOR: #008000
+}
+UNKNOWN {
+	COLOR: #0000ff
+}
+UNKNOWN {
+	COLOR: #006080
+}
+UNKNOWN {
+	COLOR: #0000c0
+}
+UNKNOWN {
+	COLOR: #cc6633
+}
+UNKNOWN {
+	BACKGROUND-COLOR: #ffff00
+}
+UNKNOWN {
+	COLOR: #800000
+}
+UNKNOWN {
+	COLOR: #ff0000
+}
+UNKNOWN {
+	
+}
+UNKNOWN {
+	COLOR: #606060
+}
+</STYLE>
+<BR><BR>
+<P>Next is mouse down. When IsPressed becomes true, we modify the background 
+gradient so it looks like the button has gone 'down'. I also move the text down 
+one pixel.</P><PRE class=csharpcode><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Trigger</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="IsPressed"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="True"</SPAN><SPAN class=kwrd>&gt;</SPAN>                    <BR>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="Background"</SPAN> <SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter.Value</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>        <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>LinearGradientBrush</SPAN> <SPAN class=attr>StartPoint</SPAN><SPAN class=kwrd>="0,0"</SPAN> <SPAN class=attr>EndPoint</SPAN><SPAN class=kwrd>="0,1"</SPAN> <SPAN class=kwrd>&gt;</SPAN><BR>            <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>GradientStop</SPAN> <SPAN class=attr>Color</SPAN><SPAN class=kwrd>="#FFFFD190"</SPAN> <SPAN class=attr>Offset</SPAN><SPAN class=kwrd>="0.35"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR>            <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>GradientStop</SPAN> <SPAN class=attr>Color</SPAN><SPAN class=kwrd>="Orange"</SPAN> <SPAN class=attr>Offset</SPAN><SPAN class=kwrd>="0.95"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR>            <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>GradientStop</SPAN> <SPAN class=attr>Color</SPAN><SPAN class=kwrd>="#FFFFD190"</SPAN> <SPAN class=attr>Offset</SPAN><SPAN class=kwrd>="1"</SPAN><SPAN class=kwrd>/&gt;</SPAN><BR>        <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>LinearGradientBrush</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Setter.Value</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Setter</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>TargetName</SPAN><SPAN class=kwrd>="content"</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="RenderTransform"</SPAN> <SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter.Value</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>        <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>TranslateTransform</SPAN> <SPAN class=attr>Y</SPAN><SPAN class=kwrd>="1.0"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Setter.Value</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Setter</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Trigger</SPAN><SPAN class=kwrd>&gt;</SPAN></PRE><BR>
+<STYLE type=text/css>UNKNOWN {
+	
+}
+UNKNOWN {
+	MARGIN: 0em
+}
+UNKNOWN {
+	COLOR: #008000
+}
+UNKNOWN {
+	COLOR: #0000ff
+}
+UNKNOWN {
+	COLOR: #006080
+}
+UNKNOWN {
+	COLOR: #0000c0
+}
+UNKNOWN {
+	COLOR: #cc6633
+}
+UNKNOWN {
+	BACKGROUND-COLOR: #ffff00
+}
+UNKNOWN {
+	COLOR: #800000
+}
+UNKNOWN {
+	COLOR: #ff0000
+}
+UNKNOWN {
+	
+}
+UNKNOWN {
+	COLOR: #606060
+}
+</STYLE>
+<BR><BR>
+<P>Third, we draw a dark gray border when a button is focussed or if it is the 
+default button (the button that will be clicked when you press enter).</P><PRE class=csharpcode><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Trigger</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="IsDefaulted"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="True"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>TargetName</SPAN><SPAN class=kwrd>="border"</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="BorderBrush"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="#FF282828"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Trigger</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Trigger</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="IsFocused"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="True"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>TargetName</SPAN><SPAN class=kwrd>="border"</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="BorderBrush"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="#FF282828"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Trigger</SPAN><SPAN class=kwrd>&gt;</SPAN><BR></PRE><BR>
+<STYLE type=text/css>UNKNOWN {
+	
+}
+UNKNOWN {
+	MARGIN: 0em
+}
+UNKNOWN {
+	COLOR: #008000
+}
+UNKNOWN {
+	COLOR: #0000ff
+}
+UNKNOWN {
+	COLOR: #006080
+}
+UNKNOWN {
+	COLOR: #0000c0
+}
+UNKNOWN {
+	COLOR: #cc6633
+}
+UNKNOWN {
+	BACKGROUND-COLOR: #ffff00
+}
+UNKNOWN {
+	COLOR: #800000
+}
+UNKNOWN {
+	COLOR: #ff0000
+}
+UNKNOWN {
+	
+}
+UNKNOWN {
+	COLOR: #606060
+}
+</STYLE>
+<BR><BR>
+<STYLE type=text/css>UNKNOWN {
+	
+}
+UNKNOWN {
+	MARGIN: 0em
+}
+UNKNOWN {
+	COLOR: #008000
+}
+UNKNOWN {
+	COLOR: #0000ff
+}
+UNKNOWN {
+	COLOR: #006080
+}
+UNKNOWN {
+	COLOR: #0000c0
+}
+UNKNOWN {
+	COLOR: #cc6633
+}
+UNKNOWN {
+	BACKGROUND-COLOR: #ffff00
+}
+UNKNOWN {
+	COLOR: #800000
+}
+UNKNOWN {
+	COLOR: #ff0000
+}
+UNKNOWN {
+	
+}
+UNKNOWN {
+	COLOR: #606060
+}
+</STYLE>
+<BR><BR>
+<P>Finally, the when the button is disabled, we gray out the text and wash out 
+the background a little by reducing its opacity.</P><PRE class=csharpcode>    <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Trigger</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="IsEnabled"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="False"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR>        <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>TargetName</SPAN><SPAN class=kwrd>="border"</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="Opacity"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="0.7"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR>        <SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Setter</SPAN> <SPAN class=attr>Property</SPAN><SPAN class=kwrd>="Foreground"</SPAN> <SPAN class=attr>Value</SPAN><SPAN class=kwrd>="Gray"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR>    <SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Trigger</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>ControlTemplate.Triggers</SPAN><SPAN class=kwrd>&gt;</SPAN></PRE><BR>
+<STYLE type=text/css>UNKNOWN {
+	
+}
+UNKNOWN {
+	MARGIN: 0em
+}
+UNKNOWN {
+	COLOR: #008000
+}
+UNKNOWN {
+	COLOR: #0000ff
+}
+UNKNOWN {
+	COLOR: #006080
+}
+UNKNOWN {
+	COLOR: #0000c0
+}
+UNKNOWN {
+	COLOR: #cc6633
+}
+UNKNOWN {
+	BACKGROUND-COLOR: #ffff00
+}
+UNKNOWN {
+	COLOR: #800000
+}
+UNKNOWN {
+	COLOR: #ff0000
+}
+UNKNOWN {
+	
+}
+UNKNOWN {
+	COLOR: #606060
+}
+</STYLE>
+<BR><BR>
+<H3>Stage 4: Using the control</H3><BR>
+<P>Now we are ready to use our control. All we have to do is set the Style 
+property of our button. We can override any of the settings such as font size if 
+we like. The button will automatically resize itself to fit the content.</P><PRE class=csharpcode><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>StackPanel</SPAN> <SPAN class=attr>HorizontalAlignment</SPAN><SPAN class=kwrd>="Center"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Button</SPAN> <SPAN class=attr>Style</SPAN><SPAN class=kwrd>="{StaticResource OrangeButton}"</SPAN><SPAN class=kwrd>&gt;</SPAN>Hello<SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Button</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Button</SPAN> <SPAN class=attr>Style</SPAN><SPAN class=kwrd>="{StaticResource OrangeButton}"</SPAN><SPAN class=kwrd>&gt;</SPAN>World<SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Button</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Button</SPAN> <SPAN class=attr>Style</SPAN><SPAN class=kwrd>="{StaticResource OrangeButton}"</SPAN> <SPAN class=attr>FontSize</SPAN><SPAN class=kwrd>="20"</SPAN><SPAN class=kwrd>&gt;</SPAN>Big Button<SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Button</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Button</SPAN> <SPAN class=attr>Style</SPAN><SPAN class=kwrd>="{StaticResource OrangeButton}"</SPAN> <SPAN class=attr>IsDefault</SPAN><SPAN class=kwrd>="True"</SPAN><SPAN class=kwrd>&gt;</SPAN>Default<SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Button</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Button</SPAN> <SPAN class=attr>Style</SPAN><SPAN class=kwrd>="{StaticResource OrangeButton}"</SPAN> <SPAN class=attr>IsEnabled</SPAN><SPAN class=kwrd>="False"</SPAN><SPAN class=kwrd>&gt;</SPAN>Disabled<SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Button</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Button</SPAN> <SPAN class=attr>Style</SPAN><SPAN class=kwrd>="{StaticResource OrangeButton}"</SPAN> <SPAN class=attr>Width</SPAN><SPAN class=kwrd>="70"</SPAN> <SPAN class=attr>Height</SPAN><SPAN class=kwrd>="30"</SPAN><SPAN class=kwrd>&gt;</SPAN>70 x 30<SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Button</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>TextBox</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Button</SPAN> <SPAN class=attr>Style</SPAN><SPAN class=kwrd>="{StaticResource OrangeButton}"</SPAN> <SPAN class=attr>Width</SPAN><SPAN class=kwrd>="30"</SPAN> <SPAN class=attr>Height</SPAN><SPAN class=kwrd>="30"</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;</SPAN><SPAN class=html>Path</SPAN> <SPAN class=attr>Fill</SPAN><SPAN class=kwrd>="Black"</SPAN> <SPAN class=attr>Data</SPAN><SPAN class=kwrd>="M 3,3 l 9,9 l -9,9 Z"</SPAN> <SPAN class=kwrd>/&gt;</SPAN><BR><SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>Button</SPAN><SPAN class=kwrd>&gt;</SPAN><BR><SPAN class=kwrd>&lt;/</SPAN><SPAN class=html>StackPanel</SPAN><SPAN class=kwrd>&gt;</SPAN></PRE><BR>
+<STYLE type=text/css>UNKNOWN {
+	
+}
+UNKNOWN {
+	MARGIN: 0em
+}
+UNKNOWN {
+	COLOR: #008000
+}
+UNKNOWN {
+	COLOR: #0000ff
+}
+UNKNOWN {
+	COLOR: #006080
+}
+UNKNOWN {
+	COLOR: #0000c0
+}
+UNKNOWN {
+	COLOR: #cc6633
+}
+UNKNOWN {
+	BACKGROUND-COLOR: #ffff00
+}
+UNKNOWN {
+	COLOR: #800000
+}
+UNKNOWN {
+	COLOR: #ff0000
+}
+UNKNOWN {
+	
+}
+UNKNOWN {
+	COLOR: #606060
+}
+</STYLE>
+<BR><BR>
+<P>Here's what it looks like:</P><BR>
+<P><IMG 
+src="Mark _NET Creating a Custom WPF Button Template in XAML_files/OrangeButton.png"></P>
+<P></P>
+<DIV style="CLEAR: both"></DIV>
+<P><A 
+href="http://www.dotnetkicks.com/kick/?url=http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html"><IMG 
+src="Mark _NET Creating a Custom WPF Button Template in XAML_files/KickItImageGenerator.png" 
+border=0></A></P></DIV>
+<DIV class=post-footer>
+<P class="post-footer-line post-footer-line-1"><SPAN class=post-author>Posted by 
+Mark H </SPAN><SPAN class=post-timestamp>at <A class=timestamp-link 
+title="permanent link" 
+href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html">12:27</A> 
+</SPAN><SPAN class=post-comment-link></SPAN><SPAN 
+class="post-backlinks post-comment-link"></SPAN><SPAN class=post-icons><SPAN 
+class="item-control blog-admin pid-2083124430"><A title="Edit Post" 
+href="http://www.blogger.com/post-edit.g?blogID=6822536077160579260&amp;postID=4477595699124826993"><SPAN 
+class=quick-edit-icon>&nbsp;</SPAN> </A></SPAN></SPAN></P>
+<P class="post-footer-line post-footer-line-2"><SPAN class=post-labels>Labels: 
+<A href="http://mark-dot-net.blogspot.com/search/label/HOWTO" rel=tag>HOWTO</A>, 
+<A href="http://mark-dot-net.blogspot.com/search/label/WPF" rel=tag>WPF</A>, <A 
+href="http://mark-dot-net.blogspot.com/search/label/XAML" rel=tag>XAML</A> 
+</SPAN></P>
+<P class="post-footer-line post-footer-line-3"></P></DIV></DIV>
+<DIV class=comments id=comments><A name=comments></A>
+<H4>1 comments: </H4>
+<DL id=comments-block>
+  <DT class=comment-author id=c6860262666940925156><A 
+  name=c6860262666940925156></A><A 
+  href="http://www.blogger.com/profile/13457422819694563512" rel=nofollow>F 
+  Quednau</A> said... 
+  <DD class=comment-body>
+  <P>Nice work...only nag is that I have trouble seeing your code (this is 
+  firefox 2.0.0.6): It gets clipped by its container at the point where the 
+  right-hand side starts.</P>
+  <DD class=comment-footer><SPAN class=comment-timestamp><A 
+  title="comment permalink" 
+  href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html#c6860262666940925156">12 
+  August 2007 11:43 </A><SPAN class="item-control blog-admin pid-1654059022"><A 
+  title="Delete Comment" 
+  href="http://www.blogger.com/delete-comment.g?blogID=6822536077160579260&amp;postID=6860262666940925156"><SPAN 
+  class=delete-comment-icon>&nbsp;</SPAN> </A></SPAN></SPAN></DD></DL>
+<P class=comment-footer><A onclick="" 
+href="http://www.blogger.com/comment.g?blogID=6822536077160579260&amp;postID=4477595699124826993">Post 
+a Comment</A> </P>
+<DIV id=backlinks-container>
+<DIV id=Blog1_backlinks-container></DIV></DIV></DIV><!-- google_ad_section_end --></DIV>
+<DIV class=blog-pager id=blog-pager><SPAN id=blog-pager-newer-link><A 
+class=blog-pager-newer-link id=Blog1_blog-pager-newer-link title="Newer Post" 
+href="http://mark-dot-net.blogspot.com/2007/07/silverlight-11-alpha-refresh-failure.html">Newer 
+Post</A> </SPAN><SPAN id=blog-pager-older-link><A class=blog-pager-older-link 
+id=Blog1_blog-pager-older-link title="Older Post" 
+href="http://mark-dot-net.blogspot.com/2007/07/xaml-gel-buttons-in-wpf-and-silverlight.html">Older 
+Post</A> </SPAN><A class=home-link 
+href="http://mark-dot-net.blogspot.com/">Home</A> </DIV>
+<DIV class=clear></DIV>
+<DIV class=post-feeds>
+<DIV class=feed-links>Subscribe to: <A class=feed-link 
+href="http://mark-dot-net.blogspot.com/feeds/4477595699124826993/comments/default" 
+target=_blank type=application/atom+xml>Post Comments (Atom)</A> 
+</DIV></DIV></DIV></DIV></DIV>
+<DIV id=sidebar-wrapper>
+<DIV class="sidebar section" id=sidebar>
+<DIV class="widget BlogArchive" id=BlogArchive1>
+<H2>Blog Archive</H2>
+<DIV class=widget-content>
+<DIV id=ArchiveList>
+<DIV id=BlogArchive1_ArchiveList>
+<UL>
+  <LI class="archivedate expanded"><A class=toggle 
+  href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=close&amp;toggle=YEARLY-1167609600000&amp;toggleopen=MONTHLY-1185922800000"><SPAN 
+  class="zippy toggle-open">▼ </SPAN></A><A class=post-count-link 
+  href="http://mark-dot-net.blogspot.com/search?updated-min=2007-01-01T00%3A00%3A00Z&amp;updated-max=2008-01-01T00%3A00%3A00Z&amp;max-results=17">2007</A> 
+  (<SPAN class=post-count>17</SPAN>) 
+  <UL>
+    <LI class="archivedate expanded"><A class=toggle 
+    href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=close&amp;toggle=MONTHLY-1185922800000&amp;toggleopen=MONTHLY-1185922800000"><SPAN 
+    class="zippy toggle-open">▼ </SPAN></A><A class=post-count-link 
+    href="http://mark-dot-net.blogspot.com/2007_08_01_archive.html">August</A> 
+    (<SPAN class=post-count>1</SPAN>) 
+    <UL class=posts>
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/08/new-version-of-midi-file-mapper.html">New 
+      Version of MIDI File Mapper</A> </LI></UL></LI></UL>
+  <UL>
+    <LI class="archivedate collapsed"><A class=toggle 
+    href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1183244400000&amp;toggleopen=MONTHLY-1185922800000"><SPAN 
+    class=zippy>► </SPAN></A><A class=post-count-link 
+    href="http://mark-dot-net.blogspot.com/2007_07_01_archive.html">July</A> 
+    (<SPAN class=post-count>5</SPAN>) 
+    <UL class=posts>
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/07/silverlight-11-alpha-refresh-failure.html">Silverlight 
+      1.1 Alpha Refresh "Catastrophic Failur...</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html">Creating 
+      a Custom WPF Button Template in XAML</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/07/xaml-gel-buttons-in-wpf-and-silverlight.html">XAML 
+      Gel Buttons in WPF and Silverlight</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/07/subsonic-gridview-and-objectdatasource.html">SubSonic 
+      GridView and ObjectDataSource</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/07/aspnetdbmdf.html">ASPNETDB.MDF?</A> 
+      </LI></UL></LI></UL>
+  <UL>
+    <LI class="archivedate collapsed"><A class=toggle 
+    href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1180652400000&amp;toggleopen=MONTHLY-1185922800000"><SPAN 
+    class=zippy>► </SPAN></A><A class=post-count-link 
+    href="http://mark-dot-net.blogspot.com/2007_06_01_archive.html">June</A> 
+    (<SPAN class=post-count>10</SPAN>) 
+    <UL class=posts>
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/06/adding-net-kicks-link-to-blogger-blog.html">Adding 
+      a .NET kicks link to a Blogger blog</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/06/openid-in-aspnet.html">OpenID 
+      in ASP.NET</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/06/identity-or-uniqueidentifier-guid-for.html">Identity 
+      or UniqueIdentifier (GUID) for Database K...</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/06/css-layout-columns-headers-and-footers.html">CSS 
+      Layout - Columns, Headers and Footers</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/06/xaml-football-pitch.html">XAML 
+      Football Pitch</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/06/basic-web-service-access-from-c.html">Basic 
+      Web Service Access From C#</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/06/creating-hatched-patterned-brush-in-wpf.html">Creating 
+      a Hatched / Patterned Brush in WPF</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/06/orcas-beta-1-not-ready-for-prime-time.html">Orcas 
+      Beta 1 - Not ready for the Prime time</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/06/howto-make-your-silverlight-11.html">HOWTO: 
+      Make your Silverlight 1.1 Application Scrip...</A> 
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/06/visual-studio-regions.html">Visual 
+      Studio Regions</A> </LI></UL></LI></UL>
+  <UL>
+    <LI class="archivedate collapsed"><A class=toggle 
+    href="http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html?widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=toggle&amp;dir=open&amp;toggle=MONTHLY-1170288000000&amp;toggleopen=MONTHLY-1185922800000"><SPAN 
+    class=zippy>► </SPAN></A><A class=post-count-link 
+    href="http://mark-dot-net.blogspot.com/2007_02_01_archive.html">February</A> 
+    (<SPAN class=post-count>1</SPAN>) 
+    <UL class=posts>
+      <LI><A 
+      href="http://mark-dot-net.blogspot.com/2007/02/welcome.html">Welcome</A> 
+      </LI></UL></LI></UL></LI></UL></DIV></DIV>
+<DIV class=clear></DIV><SPAN class=widget-item-control><SPAN 
+class="item-control blog-admin"><A class=quickedit title=Edit 
+onclick='return _WidgetManager._PopupConfig(document.getElementById("BlogArchive1"));' 
+href="http://www.blogger.com/rearrange?blogID=6822536077160579260&amp;widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=editWidget" 
+target=configBlogArchive1><SPAN class=quick-edit-icon>&nbsp;</SPAN> 
+</A></SPAN></SPAN>
+<DIV class=clear></DIV></DIV></DIV>
+<DIV class="widget Profile" id=Profile1>
+<H2>About Me</H2>
+<DIV class=widget-content>
+<DL class=profile-datablock>
+  <DT class=profile-data>Mark Heath 
+  <DD class=profile-textblock>I'm a C# programmer based in Southampton, UK, 
+  trying to keep up with new technologies and best practices. </DD></DL><A 
+class=profile-link 
+href="http://www.blogger.com/profile/17900587357903273800">View my complete 
+profile</A> 
+<DIV class=clear></DIV><SPAN class=widget-item-control><SPAN 
+class="item-control blog-admin"><A class=quickedit title=Edit 
+onclick='return _WidgetManager._PopupConfig(document.getElementById("Profile1"));' 
+href="http://www.blogger.com/rearrange?blogID=6822536077160579260&amp;widgetType=Profile&amp;widgetId=Profile1&amp;action=editWidget" 
+target=configProfile1><SPAN class=quick-edit-icon>&nbsp;</SPAN> 
+</A></SPAN></SPAN>
+<DIV class=clear></DIV></DIV></DIV>
+<DIV class="widget Feed" id=Feed1>
+<H2>DotNetKicks.com : Stories kicked by markheath</H2>
+<DIV class=widget-content>
+<UL id=Feed1_feedItemListDisplay>
+  <LI><SPAN class=item-title><A 
+  href="http://www.dotnetkicks.com/patterns/Just_because_it_s_in_a_patterns_book">Just 
+  because it's in a patterns book... </A></SPAN>
+  <LI><SPAN class=item-title><A 
+  href="http://www.dotnetkicks.com/aspnet/Crazy_talk_Inline_scripting_and_code_behind">Crazy 
+  talk: Inline scripting and code-behind </A></SPAN>
+  <LI><SPAN class=item-title><A 
+  href="http://www.dotnetkicks.com/aspnet/ASP_NET_MVC_Framework_ScottGu_s_Blog">ASP.NET 
+  MVC Framework - ScottGu's Blog </A></SPAN>
+  <LI><SPAN class=item-title><A 
+  href="http://www.dotnetkicks.com/other/SubSonic_ASP_NET_Providers">SubSonic 
+  ASP.NET Providers </A></SPAN>
+  <LI><SPAN class=item-title><A 
+  href="http://www.dotnetkicks.com/tipsandtricks/39_Photoshop_Button_Tutorials_You_Should_Have_in_Your_Arsenal">39 
+  Photoshop Button Tutorials You Should Have in Your Arsenal </A></SPAN></LI></UL>
+<DIV class=clear></DIV><SPAN class=widget-item-control><SPAN 
+class="item-control blog-admin"><A class=quickedit title=Edit 
+onclick='return _WidgetManager._PopupConfig(document.getElementById("Feed1"));' 
+href="http://www.blogger.com/rearrange?blogID=6822536077160579260&amp;widgetType=Feed&amp;widgetId=Feed1&amp;action=editWidget" 
+target=configFeed1><SPAN class=quick-edit-icon>&nbsp;</SPAN> </A></SPAN></SPAN>
+<DIV class=clear></DIV></DIV></DIV>
+<DIV class="widget Label" id=Label1>
+<H2>Labels</H2>
+<DIV class=widget-content>
+<UL>
+  <LI><A 
+  href="http://mark-dot-net.blogspot.com/search/label/ASP.NET">ASP.NET</A> (3) 
+  <LI><A href="http://mark-dot-net.blogspot.com/search/label/C#">C#</A> (1) 
+  <LI><A href="http://mark-dot-net.blogspot.com/search/label/HOWTO">HOWTO</A> 
+  (4) 
+  <LI><A href="http://mark-dot-net.blogspot.com/search/label/orcas">orcas</A> 
+  (2) 
+  <LI><A 
+  href="http://mark-dot-net.blogspot.com/search/label/Silverlight">Silverlight</A> 
+  (4) 
+  <LI><A href="http://mark-dot-net.blogspot.com/search/label/SQL">SQL</A> (1) 
+  <LI><A 
+  href="http://mark-dot-net.blogspot.com/search/label/SubSonic">SubSonic</A> (1) 
+
+  <LI><A href="http://mark-dot-net.blogspot.com/search/label/WPF">WPF</A> (4) 
+  <LI><A href="http://mark-dot-net.blogspot.com/search/label/XAML">XAML</A> (5) 
+  </LI></UL>
+<DIV class=clear></DIV><SPAN class=widget-item-control><SPAN 
+class="item-control blog-admin"><A class=quickedit title=Edit 
+onclick='return _WidgetManager._PopupConfig(document.getElementById("Label1"));' 
+href="http://www.blogger.com/rearrange?blogID=6822536077160579260&amp;widgetType=Label&amp;widgetId=Label1&amp;action=editWidget" 
+target=configLabel1><SPAN class=quick-edit-icon>&nbsp;</SPAN> </A></SPAN></SPAN>
+<DIV class=clear></DIV></DIV></DIV></DIV></DIV><!-- spacer for skins that want sidebar and main to be the same height-->
+<DIV class=clear>&nbsp;</DIV></DIV><!-- end content-wrapper -->
+<DIV id=footer-wrapper>
+<DIV class="footer section" id=footer>
+<DIV class="widget AdSense" id=AdSense1>
+<DIV class=widget-content>
+<SCRIPT type=text/javascript><!--
+google_ad_client="pub-4583197049167294";
+google_ad_host="pub-1556223355139109";
+google_ad_width=468;
+google_ad_height=60;
+google_ad_format="468x60_as";
+google_ad_type="text";
+google_color_border="FFFFFF";
+google_color_bg="FFFFFF";
+google_color_link="333333";
+google_color_url="FF6633";
+google_color_text="FF9933";
+//--></SCRIPT>
+
+<SCRIPT 
+src="Mark _NET Creating a Custom WPF Button Template in XAML_files/show_ads.js" 
+type=text/javascript>
+</SCRIPT>
+</DIV></DIV></DIV></DIV></DIV></DIV><!-- end outer-wrapper -->
+<SCRIPT type=text/javascript>
+_WidgetManager._Init('http://www.blogger.com/rearrange?blogID=6822536077160579260', 'http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html','6822536077160579260');
+_WidgetManager._SetPageActionUrl('http://www.blogger.com/display?blogID=6822536077160579260', 't2iUqeSvv6-i_0pCpMQV7JGb73k=:1192951521792');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'title': 'Mark .NET', 'pageType': 'item', 'url': 'http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html', 'homepageUrl': 'http://mark-dot-net.blogspot.com/', 'pageTitle': 'Mark .NET: Creating a Custom WPF Button Template in XAML', 'encoding': 'UTF-8', 'isPrivate': false, 'languageDirection': 'ltr', 'feedLinks': '\u003clink rel\u003d\"alternate\" type\u003d\"application/atom+xml\" title\u003d\"Mark .NET - Atom\" href\u003d\"http://mark-dot-net.blogspot.com/feeds/posts/default\" /\>\n\u003clink rel\u003d\"alternate\" type\u003d\"application/rss+xml\" title\u003d\"Mark .NET - RSS\" href\u003d\"http://mark-dot-net.blogspot.com/feeds/posts/default?alt\u003drss\" /\>\n\u003clink rel\u003d\"service.post\" type\u003d\"application/atom+xml\" title\u003d\"Mark .NET - Atom\" href\u003d\"http://www.blogger.com/feeds/6822536077160579260/posts/default\" /\>\n\u003clink rel\u003d\"EditURI\" type\u003d\"application/rsd+xml\" title\u003d\"RSD\" href\u003d\"http://www.blogger.com/rsd.g?blogID\u003d6822536077160579260\" /\>\n\u003clink rel\u003d\"alternate\" type\u003d\"application/atom+xml\" title\u003d\"Mark .NET - Atom\" href\u003d\"http://mark-dot-net.blogspot.com/feeds/4477595699124826993/comments/default\" /\>\n'}}]);
+_WidgetManager._SetSystemMarkup({'layout': {'varName': '', 'template': '\u003cdiv class\u003d\'widget-wrap1\'\>  \u003cdiv class\u003d\'widget-wrap2\'\> \u003cdiv class\u003d\'widget-wrap3\'\> \u003cdiv class\u003d\'widget-content\'\> \u003cdiv class\u003d\'layout-title\'\>\u003cdata:layout-title\>\u003c/data:layout-title\>\u003c/div\> \u003ca class\u003d\'editlink\' expr:href\u003d\'data:widget.quickEditUrl\' expr:onclick\u003d\'\"return _WidgetManager._PopupConfig(document.getElementById(\\\"\" +       data:widget.instanceId + \"\\\"));\"\' target\u003d\'chooseWidget\'\>\u003cdata:edit-link\>\u003c/data:edit-link\>\u003c/a\> \u003c/div\> \u003c/div\> \u003c/div\> \u003c/div\>'}, 'quickedit': {'varName': '', 'template': '\u003cdiv class\u003d\'clear\'\>\u003c/div\> \u003cspan class\u003d\'widget-item-control\'\> \u003cspan class\u003d\'item-control blog-admin\'\> \u003ca class\u003d\'quickedit\' expr:href\u003d\'data:widget.quickEditUrl\' expr:onclick\u003d\'\"return _WidgetManager._PopupConfig(document.getElementById(\\\"\" +       data:widget.instanceId + \"\\\"));\"\' expr:target\u003d\'\"config\" + data:widget.instanceId\' expr:title\u003d\'data:edit-link\'\> \u003cspan class\u003d\'quick-edit-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\> \u003c/span\> \u003cdiv class\u003d\'clear\'\>\u003c/div\>'}, 'all-head-content': {'varName': 'page', 'template': '\u003cmeta expr:content\u003d\'\"text/html; charset\u003d\" + data:page.encoding\' http-equiv\u003d\'Content-Type\'/\> \u003cmeta content\u003d\'true\' name\u003d\'MSSmartTagsPreventParsing\'/\> \u003cmeta content\u003d\'blogger\' name\u003d\'generator\'/\> \u003cdata:blog.feedLinks\>\u003c/data:blog.feedLinks\> \u003cb:if cond\u003d\'data:page.isPrivate\'\> \u003cmeta content\u003d\'NOINDEX,NOFOLLOW\' name\u003d\'robots\'/\> \u003c/b:if\>'}});
+_WidgetManager._RegisterWidget('_AdSenseView', new _WidgetInfo('AdSense1',  'footer',{'main': {'varName': '', 'template': '\u003cdiv class\u003d\'widget-content\'\> \u003cdata:adCode\>\u003c/data:adCode\> \u003c/div\>'}}, document.getElementById('AdSense1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogArchiveView', new _WidgetInfo('BlogArchive1',  'sidebar',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:title\'\> \u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\> \u003c/b:if\> \u003cdiv class\u003d\'widget-content\'\> \u003cdiv id\u003d\'ArchiveList\'\> \u003cdiv expr:id\u003d\'data:widget.instanceId + \"_ArchiveList\"\'\> \u003cb:if cond\u003d\'data:style \u003d\u003d \"HIERARCHY\"\'\> \u003cb:include data\u003d\'data\' name\u003d\'interval\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:style \u003d\u003d \"FLAT\"\'\> \u003cb:include data\u003d\'data\' name\u003d\'flat\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:style \u003d\u003d \"MENU\"\'\> \u003cb:include data\u003d\'data\' name\u003d\'menu\'\>\u003c/b:include\> \u003c/b:if\> \u003c/div\> \u003c/div\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}, 'flat': {'varName': 'data', 'template': '\u003cul\> \u003cb:loop values\u003d\'data:data\' var\u003d\'i\'\> \u003cli class\u003d\'archivedate\'\> \u003ca expr:href\u003d\'data:i.url\'\>\u003cdata:i.name\>\u003c/data:i.name\>\u003c/a\> (\u003cdata:i.post-count\>\u003c/data:i.post-count\>) \u003c/li\> \u003c/b:loop\> \u003c/ul\>'}, 'menu': {'varName': 'data', 'template': '\u003cselect expr:id\u003d\'data:widget.instanceId + \"_ArchiveMenu\"\'\> \u003coption value\u003d\'\'\>\u003cdata:title\>\u003c/data:title\>\u003c/option\> \u003cb:loop values\u003d\'data:data\' var\u003d\'i\'\> \u003coption expr:value\u003d\'data:i.url\'\>\u003cdata:i.name\>\u003c/data:i.name\> (\u003cdata:i.post-count\>\u003c/data:i.post-count\>)\u003c/option\> \u003c/b:loop\> \u003c/select\>'}, 'interval': {'varName': 'intervalData', 'template': '\u003cb:loop values\u003d\'data:intervalData\' var\u003d\'i\'\> \u003cul\> \u003cli expr:class\u003d\'\"archivedate \" + data:i.expclass\'\> \u003cb:include data\u003d\'i\' name\u003d\'toggle\'\>\u003c/b:include\> \u003ca class\u003d\'post-count-link\' expr:href\u003d\'data:i.url\'\>\u003cdata:i.name\>\u003c/data:i.name\>\u003c/a\> (\u003cspan class\u003d\'post-count\'\>\u003cdata:i.post-count\>\u003c/data:i.post-count\>\u003c/span\>) \u003cb:if cond\u003d\'data:i.data\'\> \u003cb:include data\u003d\'i.data\' name\u003d\'interval\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:i.posts\'\> \u003cb:include data\u003d\'i.posts\' name\u003d\'posts\'\>\u003c/b:include\> \u003c/b:if\> \u003c/li\> \u003c/ul\> \u003c/b:loop\>'}, 'toggle': {'varName': 'interval', 'template': '\u003cb:if cond\u003d\'data:interval.toggleId\'\> \u003cb:if cond\u003d\'data:interval.expclass \u003d\u003d \"expanded\"\'\> \u003ca class\u003d\'toggle\' expr:href\u003d\'data:widget.actionUrl + \"&amp;action\u003dtoggle\" +       \"&amp;dir\u003dclose&amp;toggle\u003d\" + data:interval.toggleId +       \"&amp;toggleopen\u003d\" + data:toggleopen\'\> \u003cspan class\u003d\'zippy toggle-open\'\>&#9660; \u003c/span\> \u003c/a\> \u003cb:else\>\u003c/b:else\> \u003ca class\u003d\'toggle\' expr:href\u003d\'data:widget.actionUrl + \"&amp;action\u003dtoggle\" +         \"&amp;dir\u003dopen&amp;toggle\u003d\" + data:interval.toggleId +         \"&amp;toggleopen\u003d\" + data:toggleopen\'\> \u003cspan class\u003d\'zippy\'\>&#9658; \u003c/span\> \u003c/a\> \u003c/b:if\> \u003c/b:if\>'}, 'posts': {'varName': 'posts', 'template': '\u003cul class\u003d\'posts\'\> \u003cb:loop values\u003d\'data:posts\' var\u003d\'i\'\> \u003cli\>\u003ca expr:href\u003d\'data:i.url\'\>\u003cdata:i.title\>\u003c/data:i.title\>\u003c/a\>\u003c/li\> \u003c/b:loop\> \u003c/ul\>'}}, document.getElementById('BlogArchive1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_ProfileView', new _WidgetInfo('Profile1',  'sidebar',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:title !\u003d \"\"\'\> \u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\> \u003c/b:if\> \u003cdiv class\u003d\'widget-content\'\> \u003cb:if cond\u003d\'data:team \u003d\u003d \"true\"\'\>  \u003cul\> \u003cb:loop values\u003d\'data:authors\' var\u003d\'i\'\> \u003cli\>\u003ca expr:href\u003d\'data:i.userUrl\'\>\u003cdata:i.display-name\>\u003c/data:i.display-name\>\u003c/a\>\u003c/li\> \u003c/b:loop\> \u003c/ul\> \u003cb:else\>\u003c/b:else\>  \u003cb:if cond\u003d\'data:photo.url !\u003d \"\"\'\> \u003ca expr:href\u003d\'data:userUrl\'\>\u003cimg class\u003d\'profile-img\' expr:alt\u003d\'data:photo.alt\' expr:height\u003d\'data:photo.height\' expr:src\u003d\'data:photo.url\' expr:width\u003d\'data:photo.width\'/\>\u003c/a\> \u003c/b:if\> \u003cdl class\u003d\'profile-datablock\'\> \u003cdt class\u003d\'profile-data\'\>\u003cdata:displayname\>\u003c/data:displayname\>\u003c/dt\> \u003cb:if cond\u003d\'data:showlocation \u003d\u003d \"true\"\'\> \u003cdd class\u003d\'profile-data\'\>\u003cdata:location\>\u003c/data:location\>\u003c/dd\> \u003c/b:if\> \u003cb:if cond\u003d\'data:aboutme !\u003d \"\"\'\>\u003cdd class\u003d\'profile-textblock\'\>\u003cdata:aboutme\>\u003c/data:aboutme\>\u003c/dd\>\u003c/b:if\> \u003c/dl\> \u003ca class\u003d\'profile-link\' expr:href\u003d\'data:userUrl\'\>\u003cdata:viewProfileMsg\>\u003c/data:viewProfileMsg\>\u003c/a\> \u003c/b:if\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}}, document.getElementById('Profile1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_FeedView', new _WidgetInfo('Feed1',  'sidebar',{'main': {'varName': '', 'template': '\u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\> \u003cdiv class\u003d\'widget-content\'\> \u003cul expr:id\u003d\'data:widget.instanceId + \"_feedItemListDisplay\"\'\> \u003cb:loop values\u003d\'data:feedData.items\' var\u003d\'i\'\> \u003cli\> \u003cspan class\u003d\'item-title\'\> \u003ca expr:href\u003d\'data:i.alternate.href\'\> \u003cdata:i.title\>\u003c/data:i.title\> \u003c/a\> \u003c/span\> \u003cb:if cond\u003d\'data:showItemDate\'\> \u003cb:if cond\u003d\'data:i.str_published !\u003d \"\"\'\> \u003cspan class\u003d\'item-date\'\> &#160;-&#160;\u003cdata:i.str_published\>\u003c/data:i.str_published\> \u003c/span\> \u003c/b:if\> \u003c/b:if\> \u003cb:if cond\u003d\'data:showItemAuthor\'\> \u003cb:if cond\u003d\'data:i.author !\u003d \"\"\'\> \u003cspan class\u003d\'item-author\'\> &#160;-&#160;\u003cdata:i.author\>\u003c/data:i.author\> \u003c/span\> \u003c/b:if\> \u003c/b:if\> \u003c/li\> \u003c/b:loop\> \u003c/ul\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}}, document.getElementById('Feed1'), {'title': 'DotNetKicks.com : Stories kicked by markheath', 'showItemDate': false, 'showItemAuthor': false, 'feedUrl': 'http://dotnetkicks.com/users/markheath/rss', 'numItemsShow': 5, 'locale': 'en_GB', 'timeZone': 'Europe/London', 'feedReaderJsonBaseUrl': '/feedReaderJson', 'feedWidgetRefreshIntervalSec': 1800, 'feedData': {'title': 'DotNetKicks.com : Stories kicked by markheath', 'items': [{'guid': 'http://www.dotnetkicks.com/patterns/Just_because_it_s_in_a_patterns_book', 'title': 'Just because it\'s in a patterns book...', 'published': 1192523822, 'updated': 0, 'alternate': {'href': 'http://www.dotnetkicks.com/patterns/Just_because_it_s_in_a_patterns_book', 'type': 'application/octet-stream'}, 'author': '', 'summary': 'Just because it\'s in a patterns book...  by Jeremy D. Miller  \u003cbr\>\u003cbr\>\u003cbr\>\u003ca href\u003d\"http://www.dotnetkicks.com/kick/?url\u003dhttp%3a%2f%2fcodebetter.com%2fblogs%2fjeremy.miller%2farchive%2f2007%2f10%2f15%2fjust-because-it-s-in-a-patterns-book.aspx\"\>\u003cimg src\u003d\"http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url\u003dhttp%3a%2f%2fcodebetter.com%2fblogs%2fjeremy.miller%2farchive%2f2007%2f10%2f15%2fjust-because-it-s-in-a-patterns-book.aspx\" border\u003d\"0\" alt\u003d\"kick it on DotNetKicks.com\"\>\u003c/a\>', 'str_published': '16-Oct-2007', 'str_updated': '', 'custom_content': []}, {'guid': 'http://www.dotnetkicks.com/aspnet/Crazy_talk_Inline_scripting_and_code_behind', 'title': 'Crazy talk: Inline scripting and code-behind', 'published': 1192543262, 'updated': 0, 'alternate': {'href': 'http://www.dotnetkicks.com/aspnet/Crazy_talk_Inline_scripting_and_code_behind', 'type': 'application/octet-stream'}, 'author': '', 'summary': 'Rob Conery says it\'s time to reconsider inline script in ASP.NET. \u003cbr\>\u003cbr\>\u003cbr\>\u003ca href\u003d\"http://www.dotnetkicks.com/kick/?url\u003dhttp%3a%2f%2fblog.wekeroad.com%2f2007%2f10%2f15%2fcrazy-talk-inline-scripting-and-code-behind%2f\"\>\u003cimg src\u003d\"http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url\u003dhttp%3a%2f%2fblog.wekeroad.com%2f2007%2f10%2f15%2fcrazy-talk-inline-scripting-and-code-behind%2f\" border\u003d\"0\" alt\u003d\"kick it on DotNetKicks.com\"\>\u003c/a\>', 'str_published': '16-Oct-2007', 'str_updated': '', 'custom_content': []}, {'guid': 'http://www.dotnetkicks.com/aspnet/ASP_NET_MVC_Framework_ScottGu_s_Blog', 'title': 'ASP.NET MVC Framework - ScottGu\'s Blog', 'published': 1192454162, 'updated': 0, 'alternate': {'href': 'http://www.dotnetkicks.com/aspnet/ASP_NET_MVC_Framework_ScottGu_s_Blog', 'type': 'application/octet-stream'}, 'author': '', 'summary': 'ASP.NET MVC Framework described by ScottGu. \u003cbr\>\u003cbr\>\u003cbr\>\u003ca href\u003d\"http://www.dotnetkicks.com/kick/?url\u003dhttp%3a%2f%2fweblogs.asp.net%2fscottgu%2farchive%2f2007%2f10%2f14%2fasp-net-mvc-framework.aspx\"\>\u003cimg src\u003d\"http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url\u003dhttp%3a%2f%2fweblogs.asp.net%2fscottgu%2farchive%2f2007%2f10%2f14%2fasp-net-mvc-framework.aspx\" border\u003d\"0\" alt\u003d\"kick it on DotNetKicks.com\"\>\u003c/a\>', 'str_published': '15-Oct-2007', 'str_updated': '', 'custom_content': []}, {'guid': 'http://www.dotnetkicks.com/other/SubSonic_ASP_NET_Providers', 'title': 'SubSonic ASP.NET Providers', 'published': 1192400163, 'updated': 0, 'alternate': {'href': 'http://www.dotnetkicks.com/other/SubSonic_ASP_NET_Providers', 'type': 'application/octet-stream'}, 'author': '', 'summary': 'I am announcing the SubSonic ASP.NET Providers (now only Membership and Roles) using the SubSonic DAL and the official Beta 1 release. \u003cbr\>\u003cbr\>\u003cbr\>\u003ca href\u003d\"http://www.dotnetkicks.com/kick/?url\u003dhttp%3a%2f%2fweblogs.asp.net%2fzowens%2farchive%2f2007%2f10%2f14%2fsubsonic-asp-net-providers-project-and-announcement.aspx\"\>\u003cimg src\u003d\"http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url\u003dhttp%3a%2f%2fweblogs.asp.net%2fzowens%2farchive%2f2007%2f10%2f14%2fsubsonic-asp-net-providers-project-and-announcement.aspx\" border\u003d\"0\" alt\u003d\"kick it on DotNetKicks.com\"\>\u003c/a\>', 'str_published': '14-Oct-2007', 'str_updated': '', 'custom_content': []}, {'guid': 'http://www.dotnetkicks.com/tipsandtricks/39_Photoshop_Button_Tutorials_You_Should_Have_in_Your_Arsenal', 'title': '39 Photoshop Button Tutorials You Should Have in Your Arsenal', 'published': 1192436868, 'updated': 0, 'alternate': {'href': 'http://www.dotnetkicks.com/tipsandtricks/39_Photoshop_Button_Tutorials_You_Should_Have_in_Your_Arsenal', 'type': 'application/octet-stream'}, 'author': '', 'summary': 'Your website navigation plays an integral role in keeping your site easy to use and navigate. Here\'s the 39 Photoshop Button tutorials every designer should have in their arsenal. \u003cbr\>\u003cbr\>\u003cbr\>\u003ca href\u003d\"http://www.dotnetkicks.com/kick/?url\u003dhttp%3a%2f%2fwww.designvitality.com%2fblog%2f2007%2f10%2fphotoshop-button-tutorials%2f\"\>\u003cimg src\u003d\"http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url\u003dhttp%3a%2f%2fwww.designvitality.com%2fblog%2f2007%2f10%2fphotoshop-button-tutorials%2f\" border\u003d\"0\" alt\u003d\"kick it on DotNetKicks.com\"\>\u003c/a\>', 'str_published': '15-Oct-2007', 'str_updated': '', 'custom_content': []}]}}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LabelView', new _WidgetInfo('Label1',  'sidebar',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:title\'\> \u003ch2\>\u003cdata:title\>\u003c/data:title\>\u003c/h2\> \u003c/b:if\> \u003cdiv class\u003d\'widget-content\'\> \u003cul\> \u003cb:loop values\u003d\'data:labels\' var\u003d\'label\'\> \u003cli\> \u003cb:if cond\u003d\'data:blog.url \u003d\u003d data:label.url\'\> \u003cdata:label.name\>\u003c/data:label.name\> \u003cb:else\>\u003c/b:else\> \u003ca expr:href\u003d\'data:label.url\'\>\u003cdata:label.name\>\u003c/data:label.name\>\u003c/a\> \u003c/b:if\> (\u003cdata:label.count\>\u003c/data:label.count\>) \u003c/li\> \u003c/b:loop\> \u003c/ul\> \u003cb:include name\u003d\'quickedit\'\>\u003c/b:include\> \u003c/div\>'}}, document.getElementById('Label1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1',  'header',{'main': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:useImage\'\> \u003cb:if cond\u003d\'data:imagePlacement \u003d\u003d \"REPLACE\"\'\>  \u003cdiv id\u003d\'header-inner\'\> \u003ca expr:href\u003d\'data:blog.homepageUrl\' style\u003d\'display: block\'\> \u003cimg expr:alt\u003d\'data:title\' expr:height\u003d\'data:height\' expr:id\u003d\'data:widget.instanceId + \"_headerimg\"\' expr:src\u003d\'data:sourceUrl\' expr:width\u003d\'data:width\' style\u003d\'display: block\'/\> \u003c/a\> \u003c/div\> \u003cb:else\>\u003c/b:else\>  \u003cdiv expr:style\u003d\'\"background-image: url(\\\"\" + data:sourceUrl + \"\\\"); \"                      + \"background-repeat: no-repeat; \"                      + \"width: \" + data:width + \"px; \"                      + \"height: \" + data:height + \"px;\"\' id\u003d\'header-inner\'\> \u003cdiv class\u003d\'titlewrapper\' style\u003d\'background: transparent\'\> \u003ch1 class\u003d\'title\' style\u003d\'background: transparent; border-width: 0px\'\> \u003cb:if cond\u003d\'data:blog.url \u003d\u003d data:blog.homepageUrl\'\> \u003cdata:title\>\u003c/data:title\> \u003cb:else\>\u003c/b:else\> \u003ca expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:title\>\u003c/data:title\>\u003c/a\> \u003c/b:if\> \u003c/h1\> \u003c/div\> \u003cdiv class\u003d\'descriptionwrapper\'\> \u003cp class\u003d\'description\'\>\u003cspan\>\u003cdata:description\>\u003c/data:description\>\u003c/span\>\u003c/p\> \u003c/div\> \u003c/div\> \u003c/b:if\> \u003cb:else\>\u003c/b:else\>  \u003cdiv id\u003d\'header-inner\'\> \u003cdiv class\u003d\'titlewrapper\'\> \u003ch1 class\u003d\'title\'\> \u003cb:if cond\u003d\'data:blog.url \u003d\u003d data:blog.homepageUrl\'\> \u003cdata:title\>\u003c/data:title\> \u003cb:else\>\u003c/b:else\> \u003ca expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:title\>\u003c/data:title\>\u003c/a\> \u003c/b:if\> \u003c/h1\> \u003c/div\> \u003cdiv class\u003d\'descriptionwrapper\'\> \u003cp class\u003d\'description\'\>\u003cspan\>\u003cdata:description\>\u003c/data:description\>\u003c/span\>\u003c/p\> \u003c/div\> \u003c/div\> \u003c/b:if\>'}}, document.getElementById('Header1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_NavbarView', new _WidgetInfo('Navbar1',  'navbar',{'main': {'varName': '', 'template': '&lt;iframe src\u003d&quot;http://www.blogger.com/navbar.g?targetBlogID\u003d6822536077160579260&amp;amp;blogName\u003dMark+.NET&amp;amp;publishMode\u003dPUBLISH_MODE_BLOGSPOT&amp;amp;navbarType\u003dBLUE&amp;amp;layoutType\u003dLAYOUTS&amp;amp;homepageUrl\u003dhttp%3A%2F%2Fmark-dot-net.blogspot.com%2F&amp;amp;searchRoot\u003dhttp%3A%2F%2Fmark-dot-net.blogspot.com%2Fsearch&quot; marginwidth\u003d&quot;0&quot; marginheight\u003d&quot;0&quot; scrolling\u003d&quot;no&quot; frameborder\u003d&quot;0&quot; height\u003d&quot;30px&quot; width\u003d&quot;100%&quot; id\u003d&quot;navbar-iframe&quot;&gt;&lt;/iframe&gt; &lt;div id\u003d&quot;space-for-ie&quot;&gt;&lt;/div&gt;'}}, document.getElementById('Navbar1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1',  'main',{'main': {'varName': 'top', 'template': '\u003cdiv class\u003d\'blog-posts hfeed\'\> \u003cb:include data\u003d\'top\' name\u003d\'status-message\'\>\u003c/b:include\> \u003cdata:adStart\>\u003c/data:adStart\> \u003cb:loop values\u003d\'data:posts\' var\u003d\'post\'\> \u003cb:if cond\u003d\'data:post.dateHeader\'\> \u003ch2 class\u003d\'date-header\'\>\u003cdata:post.dateHeader\>\u003c/data:post.dateHeader\>\u003c/h2\> \u003c/b:if\> \u003cb:include data\u003d\'post\' name\u003d\'post\'\>\u003c/b:include\> \u003cb:if cond\u003d\'data:blog.pageType \u003d\u003d \"item\"\'\> \u003cb:include data\u003d\'post\' name\u003d\'comments\'\>\u003c/b:include\> \u003c/b:if\> \u003cb:if cond\u003d\'data:post.includeAd\'\> \u003cdata:adEnd\>\u003c/data:adEnd\> \u003cdata:adCode\>\u003c/data:adCode\> \u003cdata:adStart\>\u003c/data:adStart\> \u003c/b:if\> \u003c/b:loop\> \u003cdata:adEnd\>\u003c/data:adEnd\> \u003c/div\>  \u003cb:include name\u003d\'nextprev\'\>\u003c/b:include\>  \u003cb:include name\u003d\'feedLinks\'\>\u003c/b:include\>'}, 'nextprev': {'varName': '', 'template': '\u003cdiv class\u003d\'blog-pager\' id\u003d\'blog-pager\'\> \u003cb:if cond\u003d\'data:newerPageUrl\'\> \u003cspan id\u003d\'blog-pager-newer-link\'\> \u003ca class\u003d\'blog-pager-newer-link\' expr:href\u003d\'data:newerPageUrl\' expr:id\u003d\'data:widget.instanceId + \"_blog-pager-newer-link\"\' expr:title\u003d\'data:newerPageTitle\'\>\u003cdata:newerPageTitle\>\u003c/data:newerPageTitle\>\u003c/a\> \u003c/span\> \u003c/b:if\> \u003cb:if cond\u003d\'data:olderPageUrl\'\> \u003cspan id\u003d\'blog-pager-older-link\'\> \u003ca class\u003d\'blog-pager-older-link\' expr:href\u003d\'data:olderPageUrl\' expr:id\u003d\'data:widget.instanceId + \"_blog-pager-older-link\"\' expr:title\u003d\'data:olderPageTitle\'\>\u003cdata:olderPageTitle\>\u003c/data:olderPageTitle\>\u003c/a\> \u003c/span\> \u003c/b:if\> \u003cb:if cond\u003d\'data:blog.homepageUrl !\u003d data:blog.url\'\> \u003ca class\u003d\'home-link\' expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:homeMsg\>\u003c/data:homeMsg\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cb:if cond\u003d\'data:newerPageUrl\'\> \u003ca class\u003d\'home-link\' expr:href\u003d\'data:blog.homepageUrl\'\>\u003cdata:homeMsg\>\u003c/data:homeMsg\>\u003c/a\> \u003c/b:if\> \u003c/b:if\> \u003c/div\> \u003cdiv class\u003d\'clear\'\>\u003c/div\>'}, 'post': {'varName': 'post', 'template': '\u003cdiv class\u003d\'post uncustomized-post-template\'\> \u003ca expr:name\u003d\'data:post.id\'\>\u003c/a\> \u003cb:if cond\u003d\'data:post.title\'\> \u003ch3 class\u003d\'post-title\'\> \u003cb:if cond\u003d\'data:post.link\'\> \u003ca expr:href\u003d\'data:post.link\'\>\u003cdata:post.title\>\u003c/data:post.title\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cb:if cond\u003d\'data:post.url\'\> \u003ca expr:href\u003d\'data:post.url\'\>\u003cdata:post.title\>\u003c/data:post.title\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cdata:post.title\>\u003c/data:post.title\> \u003c/b:if\> \u003c/b:if\> \u003c/h3\> \u003c/b:if\> \u003cdiv class\u003d\'post-header-line-1\'\>\u003c/div\> \u003cdiv class\u003d\'post-body\'\> \u003cp\>\u003cdata:post.body\>\u003c/data:post.body\>\u003c/p\> \u003cdiv style\u003d\'clear: both;\'\>\u003c/div\>   \u003cp\>\u003ca expr:href\u003d\'\"http://www.dotnetkicks.com/kick/?url\u003d\" + data:post.url\'\>\u003cimg border\u003d\'0\' expr:src\u003d\'\"http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url\u003d\" + data:post.url\'/\>\u003c/a\>\u003c/p\>  \u003c/div\> \u003cdiv class\u003d\'post-footer\'\> \u003cp class\u003d\'post-footer-line post-footer-line-1\'\> \u003cspan class\u003d\'post-author\'\> \u003cb:if cond\u003d\'data:top.showAuthor\'\> \u003cdata:top.authorLabel\>\u003c/data:top.authorLabel\> \u003cdata:post.author\>\u003c/data:post.author\> \u003c/b:if\> \u003c/span\> \u003cspan class\u003d\'post-timestamp\'\> \u003cb:if cond\u003d\'data:top.showTimestamp\'\> \u003cdata:top.timestampLabel\>\u003c/data:top.timestampLabel\> \u003cb:if cond\u003d\'data:post.url\'\> \u003ca class\u003d\'timestamp-link\' expr:href\u003d\'data:post.url\' title\u003d\'permanent link\'\>\u003cdata:post.timestamp\>\u003c/data:post.timestamp\>\u003c/a\> \u003c/b:if\> \u003c/b:if\> \u003c/span\> \u003cspan class\u003d\'post-comment-link\'\> \u003cb:if cond\u003d\'data:blog.pageType !\u003d \"item\"\'\> \u003cb:if cond\u003d\'data:post.allowComments\'\> \u003ca class\u003d\'comment-link\' expr:href\u003d\'data:post.addCommentUrl\' expr:onclick\u003d\'data:post.addCommentOnclick\'\>\u003cb:if cond\u003d\'data:post.numComments \u003d\u003d 1\'\>1 \u003cdata:top.commentLabel\>\u003c/data:top.commentLabel\>\u003cb:else\>\u003c/b:else\>\u003cdata:post.numComments\>\u003c/data:post.numComments\> \u003cdata:top.commentLabelPlural\>\u003c/data:top.commentLabelPlural\>\u003c/b:if\>\u003c/a\> \u003c/b:if\> \u003c/b:if\> \u003c/span\>  \u003cspan class\u003d\'post-backlinks post-comment-link\'\> \u003cb:if cond\u003d\'data:blog.pageType !\u003d \"item\"\'\> \u003cb:if cond\u003d\'data:post.showBacklinks\'\> \u003ca class\u003d\'comment-link\' expr:href\u003d\'data:post.url + \"#links\"\'\>\u003cdata:top.backlinkLabel\>\u003c/data:top.backlinkLabel\>\u003c/a\> \u003c/b:if\> \u003c/b:if\> \u003c/span\> \u003cspan class\u003d\'post-icons\'\>  \u003cb:if cond\u003d\'data:post.emailPostUrl\'\> \u003cspan class\u003d\'item-action\'\> \u003ca expr:href\u003d\'data:post.emailPostUrl\' expr:title\u003d\'data:top.emailPostMsg\'\> \u003cspan class\u003d\'email-post-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\> \u003c/b:if\>  \u003cb:include data\u003d\'post\' name\u003d\'postQuickEdit\'\>\u003c/b:include\> \u003c/span\> \u003c/p\> \u003cp class\u003d\'post-footer-line post-footer-line-2\'\> \u003cspan class\u003d\'post-labels\'\> \u003cb:if cond\u003d\'data:post.labels\'\> \u003cdata:postLabelsLabel\>\u003c/data:postLabelsLabel\> \u003cb:loop values\u003d\'data:post.labels\' var\u003d\'label\'\> \u003ca expr:href\u003d\'data:label.url\' rel\u003d\'tag\'\>\u003cdata:label.name\>\u003c/data:label.name\>\u003c/a\>\u003cb:if cond\u003d\'data:label.isLast !\u003d \"true\"\'\>,\u003c/b:if\> \u003c/b:loop\> \u003c/b:if\> \u003c/span\> \u003c/p\> \u003cp class\u003d\'post-footer-line post-footer-line-3\'\>\u003c/p\> \u003c/div\> \u003c/div\>'}, 'postQuickEdit': {'varName': 'post', 'template': '\u003cb:if cond\u003d\'data:post.editUrl\'\> \u003cspan expr:class\u003d\'\"item-control \" + data:post.adminClass\'\> \u003ca expr:href\u003d\'data:post.editUrl\' expr:title\u003d\'data:top.editPostMsg\'\> \u003cspan class\u003d\'quick-edit-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\> \u003c/b:if\>'}, 'commentDeleteIcon': {'varName': 'comment', 'template': '\u003cspan expr:class\u003d\'\"item-control \" + data:comment.adminClass\'\> \u003ca expr:href\u003d\'data:comment.deleteUrl\' expr:title\u003d\'data:top.deleteCommentMsg\'\> \u003cspan class\u003d\'delete-comment-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\>'}, 'backlinkDeleteIcon': {'varName': 'backlink', 'template': '\u003cspan expr:class\u003d\'\"item-control \" + data:backlink.adminClass\'\> \u003ca expr:href\u003d\'data:backlink.deleteUrl\' expr:title\u003d\'data:top.deleteBacklinkMsg\'\> \u003cspan class\u003d\'delete-comment-icon\'\>&#160;\u003c/span\> \u003c/a\> \u003c/span\>'}, 'comments': {'varName': 'post', 'template': '\u003cdiv class\u003d\'comments\' id\u003d\'comments\'\> \u003ca name\u003d\'comments\'\>\u003c/a\> \u003cb:if cond\u003d\'data:post.allowComments\'\> \u003ch4\> \u003cb:if cond\u003d\'data:post.numComments \u003d\u003d 1\'\> 1 \u003cdata:commentLabel\>\u003c/data:commentLabel\>: \u003cb:else\>\u003c/b:else\> \u003cdata:post.numComments\>\u003c/data:post.numComments\> \u003cdata:commentLabelPlural\>\u003c/data:commentLabelPlural\>: \u003c/b:if\> \u003c/h4\> \u003cdl id\u003d\'comments-block\'\> \u003cb:loop values\u003d\'data:post.comments\' var\u003d\'comment\'\> \u003cdt class\u003d\'comment-author\' expr:id\u003d\'data:comment.anchorName\'\> \u003ca expr:name\u003d\'data:comment.anchorName\'\>\u003c/a\> \u003cb:if cond\u003d\'data:comment.authorUrl\'\> \u003ca expr:href\u003d\'data:comment.authorUrl\' rel\u003d\'nofollow\'\>\u003cdata:comment.author\>\u003c/data:comment.author\>\u003c/a\> \u003cb:else\>\u003c/b:else\> \u003cdata:comment.author\>\u003c/data:comment.author\> \u003c/b:if\> \u003cdata:commentPostedByMsg\>\u003c/data:commentPostedByMsg\> \u003c/dt\> \u003cdd class\u003d\'comment-body\'\> \u003cb:if cond\u003d\'data:comment.isDeleted\'\> \u003cspan class\u003d\'deleted-comment\'\>\u003cdata:comment.body\>\u003c/data:comment.body\>\u003c/span\> \u003cb:else\>\u003c/b:else\> \u003cp\>\u003cdata:comment.body\>\u003c/data:comment.body\>\u003c/p\> \u003c/b:if\> \u003c/dd\> \u003cdd class\u003d\'comment-footer\'\> \u003cspan class\u003d\'comment-timestamp\'\> \u003ca expr:href\u003d\'data:comment.url\' title\u003d\'comment permalink\'\> \u003cdata:comment.timestamp\>\u003c/data:comment.timestamp\> \u003c/a\> \u003cb:include data\u003d\'comment\' name\u003d\'commentDeleteIcon\'\>\u003c/b:include\> \u003c/span\> \u003c/dd\> \u003c/b:loop\> \u003c/dl\> \u003cp class\u003d\'comment-footer\'\> \u003ca expr:href\u003d\'data:post.addCommentUrl\' expr:onclick\u003d\'data:post.addCommentOnclick\'\>\u003cdata:postCommentMsg\>\u003c/data:postCommentMsg\>\u003c/a\> \u003c/p\> \u003c/b:if\> \u003cdiv id\u003d\'backlinks-container\'\> \u003cdiv expr:id\u003d\'data:widget.instanceId + \"_backlinks-container\"\'\> \u003cb:if cond\u003d\'data:post.showBacklinks\'\> \u003cb:include data\u003d\'post\' name\u003d\'backlinks\'\>\u003c/b:include\> \u003c/b:if\> \u003c/div\> \u003c/div\> \u003c/div\>'}, 'backlinks': {'varName': 'post', 'template': '\u003ca name\u003d\'links\'\>\u003c/a\>\u003ch4\>\u003cdata:post.backlinksLabel\>\u003c/data:post.backlinksLabel\>\u003c/h4\> \u003cb:if cond\u003d\'data:post.numBacklinks !\u003d 0\'\> \u003cdl class\u003d\'comments-block\' id\u003d\'comments-block\'\> \u003cb:loop values\u003d\'data:post.backlinks\' var\u003d\'backlink\'\> \u003cdiv class\u003d\'collapsed-backlink backlink-control\'\> \u003cdt class\u003d\'comment-title\'\> \u003cspan class\u003d\'backlink-toggle-zippy\'\>&#160;\u003c/span\> \u003ca expr:href\u003d\'data:backlink.url\' rel\u003d\'nofollow\'\>\u003cdata:backlink.title\>\u003c/data:backlink.title\>\u003c/a\> \u003cb:include data\u003d\'backlink\' name\u003d\'backlinkDeleteIcon\'\>\u003c/b:include\> \u003c/dt\> \u003cdd class\u003d\'comment-body collapseable\'\> \u003cdata:backlink.snippet\>\u003c/data:backlink.snippet\> \u003c/dd\> \u003cdd class\u003d\'comment-footer collapseable\'\> \u003cspan class\u003d\'comment-author\'\>\u003cdata:post.authorLabel\>\u003c/data:post.authorLabel\> \u003cdata:backlink.author\>\u003c/data:backlink.author\>\u003c/span\> \u003cspan class\u003d\'comment-timestamp\'\>\u003cdata:post.timestampLabel\>\u003c/data:post.timestampLabel\> \u003cdata:backlink.timestamp\>\u003c/data:backlink.timestamp\>\u003c/span\> \u003c/dd\> \u003c/div\> \u003c/b:loop\> \u003c/dl\> \u003c/b:if\> \u003cp class\u003d\'comment-footer\'\> \u003ca class\u003d\'comment-link\' expr:href\u003d\'data:post.createLinkUrl\' expr:id\u003d\'data:widget.instanceId + \"_backlinks-create-link\"\' target\u003d\'_blank\'\>\u003cdata:post.createLinkLabel\>\u003c/data:post.createLinkLabel\>\u003c/a\> \u003c/p\>'}, 'feedLinks': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:blog.pageType !\u003d \"item\"\'\>  \u003cb:if cond\u003d\'data:feedLinks\'\> \u003cdiv class\u003d\'blog-feeds\'\> \u003cb:include data\u003d\'feedLinks\' name\u003d\'feedLinksBody\'\>\u003c/b:include\> \u003c/div\> \u003c/b:if\> \u003cb:else\>\u003c/b:else\>  \u003cdiv class\u003d\'post-feeds\'\> \u003cb:loop values\u003d\'data:posts\' var\u003d\'post\'\> \u003cb:if cond\u003d\'data:post.allowComments\'\> \u003cb:if cond\u003d\'data:post.feedLinks\'\> \u003cb:include data\u003d\'post.feedLinks\' name\u003d\'feedLinksBody\'\>\u003c/b:include\> \u003c/b:if\> \u003c/b:if\> \u003c/b:loop\> \u003c/div\> \u003c/b:if\>'}, 'feedLinksBody': {'varName': 'links', 'template': '\u003cdiv class\u003d\'feed-links\'\> \u003cdata:feedLinksMsg\>\u003c/data:feedLinksMsg\> \u003cb:loop values\u003d\'data:links\' var\u003d\'f\'\> \u003ca class\u003d\'feed-link\' expr:href\u003d\'data:f.url\' expr:type\u003d\'data:f.mimeType\' target\u003d\'_blank\'\>\u003cdata:f.name\>\u003c/data:f.name\> (\u003cdata:f.feedType\>\u003c/data:f.feedType\>)\u003c/a\> \u003c/b:loop\> \u003c/div\>'}, 'status-message': {'varName': '', 'template': '\u003cb:if cond\u003d\'data:navMessage\'\> \u003cdiv class\u003d\'status-msg-wrap\'\> \u003cdiv class\u003d\'status-msg-body\'\> \u003cdata:navMessage\>\u003c/data:navMessage\> \u003c/div\> \u003cdiv class\u003d\'status-msg-border\'\> \u003cdiv class\u003d\'status-msg-bg\'\> \u003cdiv class\u003d\'status-msg-hidden\'\>\u003cdata:navMessage\>\u003c/data:navMessage\>\u003c/div\> \u003c/div\> \u003c/div\> \u003c/div\> \u003cdiv style\u003d\'clear: both;\'\>\u003c/div\> \u003c/b:if\>'}}, document.getElementById('Blog1'), {}, 'displayModeFull'));
+</SCRIPT>
+</BODY></HTML>

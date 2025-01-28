@@ -1,0 +1,113 @@
+﻿<Expander
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:l="clr-namespace:RD.Controls.ExpanderSample" 
+	x:Class="RD.Controls.ExpanderSample.Expander"
+	>
+
+	<Expander.Resources>
+
+		<Style x:Key="MediaButtonStyle" TargetType="{x:Type Button}">
+			<Setter Property="Template" Value="{StaticResource MediaButton_Template}" />
+		</Style>
+
+		<Style x:Key="{x:Type l:RDExpander}" TargetType="{x:Type l:RDExpander}">
+			<Setter Property="Template" Value="{StaticResource RDExpander_Template}" />
+		</Style>
+
+		<ControlTemplate x:Key="MediaButton_Template">
+			<Grid>
+				<MediaElement x:Name="MatrixMovie" Width="134" Height="77" Stretch="Fill" Opacity="0" Margin="1,-3,0,0">
+					<MediaElement.Triggers>
+						<EventTrigger RoutedEvent="MediaElement.MediaOpened">
+							<EventTrigger.Actions>
+								<BeginStoryboard>
+									<Storyboard>
+										<DoubleAnimation Duration="0:0:0.5" To="1" Storyboard.TargetProperty="Opacity" />
+									</Storyboard>
+								</BeginStoryboard>
+							</EventTrigger.Actions>
+						</EventTrigger>
+					</MediaElement.Triggers>
+				</MediaElement>
+			</Grid>
+			<ControlTemplate.Triggers>
+				<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+					<EventTrigger.Actions>
+						<BeginStoryboard>
+							<Storyboard>
+								<MediaTimeline Source="matrix.avi" RepeatBehavior="Forever" Storyboard.TargetName="MatrixMovie" />
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger.Actions>
+				</EventTrigger>
+			</ControlTemplate.Triggers>
+		</ControlTemplate>
+		
+		<ControlTemplate x:Key="RDExpander_Template" TargetType="{x:Type l:RDExpander}">
+			<Grid x:Name="EnterTheMatrix" Width="168" Height="109">
+				<ContentPresenter x:Name="_expanderContent" Content="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}">
+					<ContentPresenter.RenderTransform>
+						<TranslateTransform X="0" Y="0" />
+					</ContentPresenter.RenderTransform>
+				</ContentPresenter>
+				<Image Source="Images/MatrixScreen.png" Width="168" Height="109" />
+				<Grid Margin="4,2,0,0">
+					<ContentPresenter x:Name="_header" Content="{Binding Path=Header, RelativeSource={RelativeSource TemplatedParent}}" />
+					<Button x:Name="_matrix" Style="{StaticResource MediaButtonStyle}" Command="l:RDExpander.ExpandOrCollapseCommand" />
+				</Grid>
+			</Grid>
+			<ControlTemplate.Triggers>
+				<EventTrigger RoutedEvent="Mouse.MouseEnter">
+					<EventTrigger.Actions>
+						<BeginStoryboard>
+							<Storyboard>
+								<DoubleAnimation Duration="0:0:0" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_matrix" />
+								<DoubleAnimation Duration="0:0:0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_header" />
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger.Actions>
+				</EventTrigger>
+				<EventTrigger RoutedEvent="Mouse.MouseLeave">
+					<EventTrigger.Actions>
+						<BeginStoryboard>
+							<Storyboard>
+								<DoubleAnimation Duration="0:0:0.5" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_matrix" />
+								<DoubleAnimation Duration="0:0:0" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_header" />
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger.Actions>
+				</EventTrigger>
+				<EventTrigger RoutedEvent="l:RDExpander.Expanded">
+					<EventTrigger.Actions>
+						<BeginStoryboard>
+							<Storyboard>
+								<DoubleAnimation Duration="0:0:0.5" To="102" Storyboard.TargetName="_expanderContent" Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(TranslateTransform.Y)" />
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger.Actions>
+				</EventTrigger>
+				<EventTrigger RoutedEvent="l:RDExpander.ExpandedUp">
+					<EventTrigger.Actions>
+						<BeginStoryboard>
+							<Storyboard>
+								<DoubleAnimation Duration="0:0:0.5" To="-102" Storyboard.TargetName="_expanderContent" Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(TranslateTransform.Y)" />
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger.Actions>
+				</EventTrigger>
+				<EventTrigger RoutedEvent="l:RDExpander.Collapsed">
+					<EventTrigger.Actions>
+						<BeginStoryboard>
+							<Storyboard>
+								<DoubleAnimation Duration="0:0:0.5" To="0" Storyboard.TargetName="_expanderContent" Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(TranslateTransform.Y)" />
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger.Actions>
+				</EventTrigger>
+			</ControlTemplate.Triggers>
+		</ControlTemplate>
+
+	</Expander.Resources>
+	
+</Expander>

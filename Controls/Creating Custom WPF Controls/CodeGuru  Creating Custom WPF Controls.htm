@@ -1,0 +1,2138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml2/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><title>CodeGuru: Creating Custom WPF Controls</title>
+
+
+
+<meta name="description" content="Custom controls assist developers in maximizing code reuse and minimizing headaches. Learn the process of creating custom controls within Microsoft's latest UI model, the Windows Presentation Foundation (WPF). By Chad Campbell.">
+<meta name="Author" content="Chad Campbell">
+<meta name="keywords" content="">
+<meta name="date" content="20060828">
+<meta name="MS.LOCALE" content="en-US">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+
+<meta name="Search.TopicType" content="kbArticle">
+<meta name="Search.PublishDate" content="Mon, 28 Aug 2006 00:00:00 -0400">
+<meta name="Search.ReviseDate" content="Mon, 28 Aug 2006 00:00:00 -0400">
+<meta name="Search.UserRating" content="0">
+
+<link rel="stylesheet" media="all" type="text/css" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/flyout.css"><!--[if lte IE 6]>
+<link rel="stylesheet" media="all" type="text/css" href="/css/flyout_ie.css" />
+<![endif]-->
+
+
+
+<link rel="stylesheet" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/newstyle.css" type="text/css">
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function show(object) {
+if (document.getElementById) {
+document.getElementById(object).style.visibility = 'visible';
+}
+else if (document.layers && document.layers[object]) {
+document.layers[object].visibility = 'visible';
+}
+else if (document.all) {
+document.all[object].style.visibility = 'visible';
+}
+}
+
+function hide(object) {
+if (document.getElementById) {
+document.getElementById(object).style.visibility = 'hidden';
+}
+else if (document.layers && document.layers[object]) {
+document.layers[object].visibility = 'hidden';
+}
+else if (document.all) {
+document.all[object].style.visibility = 'hidden';
+}
+}
+
+//-->
+</script><link rel="stylesheet" type="text/css" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/listmenu_h.css"><link rel="stylesheet" type="text/css" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/listmenu_h_settings.css"><link rel="stylesheet" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/headermenu.css" type="text/css"><link rel="stylesheet" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/epfs.css" type="text/css"><link rel="stylesheet" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/security.css" type="text/css"><link rel="stylesheet" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/security.css" type="text/css"><link rel="stylesheet" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/security.css" type="text/css"><link rel="stylesheet" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/security.css" type="text/css"><link rel="stylesheet" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/security.css" type="text/css"><link rel="stylesheet" type="text/css" href="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/footer-new-v2.css"></head><body leftmargin="0" topmargin="4" bgcolor="#ffffff" marginheight="4" marginwidth="0">
+<script language="JavaScript1.2" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/HM_Loader.js" type="text/javascript"></script><script language="JavaScript1.2" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/HM_ArraysCG.js" type="text/javascript"></script><script language="JavaScript1.2" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/HM_ScriptDOM.js" type="text/javascript"></script>
+<center>
+<script type="text/javascript" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/fsmenu_commented.js"></script>
+<script type="text/javascript" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/menuset.js"></script>
+<script type="text/javascript" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/menusetv2.js"></script>
+<script type="text/javascript" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/menusetv3.js"></script>
+
+
+
+
+
+
+
+<!-- START TOP TOOLBAR -->
+<div id="heightcontainer"></div>		
+
+<div style="width: 100%;" id="navitoolbarcontainer">
+		  <div style="margin: 0px; padding: 0px; width: 100%;">
+		  <div id="navitile" style="width: 100%;">
+			<div style="padding-left: 0px; margin-left: 0px; padding-top: 5px; padding-right: 5px; float: left; white-space: nowrap;">
+
+			<a title="View Internet.com - The Network for Technology Professionals" href="http://www.internet.com/" class="gt"><img alt="Internet.com - The Network for Technology Professionals" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/icom_logo_global.png" border="0"></a>
+
+			</div>		
+				<ul class="menulist" id="listMenuRoot" style="height: 22px;">
+				 <li style="margin-top: 0px;">
+				  <a class="gt" href="http://www.internet.com/it/" style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;"><span class="subind">&gt;</span> <b>IT</b> </a>
+
+				  
+				  
+				  <ul id="listMenu-id-1">
+                   <li style="background-image: url(/icom_includes/toolbars/globaltoolbar/img/background_topsub.jpg); background-repeat: repeat-x;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none; font-weight: bold;" href="http://www.internet.com/it">internet.com/IT</a></li>  
+                   <li style="background-image: url(/icom_includes/toolbars/globaltoolbar/img/background_topsub.jpg); background-repeat: repeat-x;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none; font-weight: bold;" href="http://www.internet.com/security">internet.com/Security</a></li>  
+                   <li style="background-image: url(/icom_includes/toolbars/globaltoolbar/img/background_topsub.jpg); background-repeat: repeat-x;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none; font-weight: bold;" href="http://www.internet.com/networking">internet.com/Networking</a></li>  
+                   <li style="background-image: url(/icom_includes/toolbars/globaltoolbar/img/background_topsub.jpg); background-repeat: repeat-x;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none; font-weight: bold;" href="http://www.internet.com/storage">internet.com/Storage</a></li>  
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.bitaplanet.com/">bITa Planet</a></li>  
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.cioupdate.com/">CIO Update</a></li> 
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.databasejournal.com/">Database Journal</a></li>   
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.datamation.com/">Datamation</a></li> 
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.enterpriseitplanet.com/">Enterprise IT Planet</a></li>   
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.enterprisenetworkingplanet.com/">Enterprise Networking Planet</a></li> 
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.enterprisestorageforum.com/">Enterprise Storage Forum</a></li> 
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.esecurityplanet.com/">eSecurity Planet</a></li> 
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.hardwarecentral.com/">Hardware Central</a></li>   
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.intranetjournal.com/">Intranet Journal</a></li> 
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.isp-planet.com/">ISP Planet</a></li> 
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.itsmwatch.com/">ITSMwatch</a></li> 
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.linuxplanet.com/">Linux Planet</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.opennetworkstoday.com/">Open Networks Today</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://serverwatch.internet.com/">ServerWatch</a></li>   
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.voipplanet.com/">VoIP Planet</a></li>   
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.webvideouniverse.com/">WebVideoUniverse</a> 
+				   </li><li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.wi-fiplanet.com/">Wi-Fi Planet</a></li>   
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.windrivers.com/">WinDrivers.com</a></li>   
+                   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/sections/">Network Map</a></li>  
+				  </ul>
+				 </li>
+				
+				 <li style="margin-top: 0px;">
+				  <a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/developer" class="gt"><span class="subind">&gt;</span> <b>Developer</b> </a>
+				   <ul id="listMenu-id-2">
+                   <li style="background-image: url(/icom_includes/toolbars/globaltoolbar/img/background_topsub.jpg); background-repeat: repeat-x;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none; font-weight: bold;" href="http://www.internet.com/developer/">internet.com/Developer</a></li>
+                   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.15seconds.com/">15 Seconds</a></li>
+
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.4guysfromrolla.com/">4GuysFromRolla.com</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.asp101.com/">ASP101</a></li>		
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.codeguru.com/">CodeGuru</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.developer.com/">Developer.com</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.devx.com/">DevX</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.flashkit.com/">FlashKit.com</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.developer.com/java/">Gamelan</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.jars.com/">JARS</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.javascript.com/">JavaScript.com</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://javascriptsource.com/">JavaScriptSource</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.phpbuilder.com/">PHPBuilder.com</a></li>   
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.scriptsearch.com/">ScriptSearch</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.vbforums.com/">VB Forums</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.vbwire.com/">VB Wire</a></li>
+
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.webdeveloper.com/">WebDeveloper.com</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.webreference.com/">Webreference</a></li>
+                   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/sections/">Network Map</a></li>  
+				  </ul>
+
+				 </li>
+				
+				 <li style="margin-top: 0px;">
+				  <a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internetnews.com/" class="gt"><span class="subind">&gt;</span> <b>News</b> </a>
+				   <ul id="listMenu-id-3">
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internetnews.com/">Internetnews.com</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.linuxtoday.com/">Linux Today</a></li>   		   
+                   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/sections/">Network Map</a></li>  
+				  </ul>
+				 </li>
+				
+				
+				 <li style="margin-top: 0px;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.smallbusinesscomputing.com/" class="gt"><span class="subind">&gt;</span> <b>Small Business</b> </a>
+				   <ul id="listMenu-id-4">
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.ecommerce-guide.com/">Ecommerce Guide</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.refer-it.com/">Refer-It</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.smallbusinesscomputing.com/">SmallBusinessComputing</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.webopedia.com/">Webopedia</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.winplanet.com/">WinPlanet</a></li>
+                   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/sections/">Network Map</a></li>  
+				  </ul>
+				 </li>
+				 
+				
+				 <li style="margin-top: 0px;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/personaltechnology/" class="gt"><span class="subind">&gt;</span> <b>Personal Tech</b> </a>
+
+				   <ul id="listMenu-id-5">
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.blackberrytoday.com/">BlackBerryToday</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.jumbo.com/">Jumbo</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.megapixel.net/">Megapixel.net</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.palmblvd.com/">Palm Boulevard</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.pdastreet.com/">PDAStreet</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.pocketpcwire.com/">PocketPCWire</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.smartphonetoday.com/">Smart Phone Today</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.windowsmobiletoday.com/">WindowsMobileToday</a></li>
+                   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/sections/">Network Map</a></li>  
+				  </ul>
+				 </li>		
+				</ul>
+				
+				
+				
+				<ul style="height: 22px;" id="listMenuv2Root" class="menulistv2">
+				 <li style="margin-top: 0px;">
+
+				  <a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica;" href="http://www.jupiterevents.com/" class="gt"><span class="subind">&gt;</span> Events </a>
+
+				  <ul id="listMenuv2-id-1">
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.jupiterevents.com/">JupiterEvents</a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.jupiterwebcasts.com/">JupiterWebcasts</a></li>
+				  </ul>
+				 </li>
+
+				 <li style="margin-top: 0px;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.justtechjobs.com/" class="gt"> Jobs </a></li>
+				 <li style="margin-top: 0px;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.jupitermedia.com/partners/" class="gt"> Partners </a></li>
+
+				 <li style="margin-top: 0px;">
+				  <a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/solutions" class="gt"><span class="subind">&gt;</span> Solutions </a>
+				  <ul id="listMenuv2-id-2">
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/ebook"> eBooks </a></li>
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/video"> Video </a></li>
+				  </ul>
+				 </li>
+
+				 <li style="margin-top: 0px;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://shop.internet.com/" class="" gt=""> Shop </a></li>
+
+				 
+				</ul>
+		
+		
+				<ul class="menulistv3" id="listMenuv3Root" style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; height: 22px;">
+				 <li style="margin-top: 0px;"><a class="gt" href="http://member.internet.com/" style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;"><span class="subind">&gt;</span> Login </a>
+
+				 
+				  <ul id="listMenuv3-id-1">
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://member.internet.com/profile/postal">Manage My Profile</a></li>
+
+				  </ul>
+
+				 
+				 
+				 </li>
+				 <li style="margin-top: 0px;"><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://member.internet.com/register" class="gt"><span class="subind">&gt;</span>Register </a>
+				 
+				   <ul id="listMenuv3-id-2">
+				   <li><a style="color: rgb(255, 255, 255); font-size: 9px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/WhyJoin">Why Join?</a></li>
+				  </ul>
+				 
+				 
+				 </li>
+		
+				 
+				</ul>
+
+		<div style="margin-top: 0px;" id="lightgrey">
+
+		<form target="_top" action="http://search.internet.com/www.jupiterweb.com" method="post">
+			<input value="1" name="IC_Summary" type="hidden">
+			<input value="0" name="IC_StartNumber" type="hidden">
+			<input value="10" name="IC_BatchSize" type="hidden">
+
+			<input value="50" name="IC_RelevanceThreshold" type="hidden">
+			<input value="all" name="IC_QueryDatabase" type="hidden">
+			<input title="Search Internet.com" onfocus="this.value='';" class="inputglobal" size="11" name="IC_QueryText" value="" type="text">
+
+			<input alt="go" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/searchgt_button.gif" name="SUBMIT" value="Find" align="absmiddle" border="0" height="18" type="image" vspace="2" width="42">
+		</form>
+		</div>
+	</div>
+	</div>
+
+	<!--	<div style="width:100%;">    	<img src="/icom_includes/toolbars/globaltoolbar/img/shad.png" style="width:100%; height:11px; padding:0px; margin-top:22px;" />	</div>	-->
+	</div>
+   
+   <script src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/pngadapt.js" type="text/javascript"></script>
+
+
+<!-- END TOP TOOLBAR --><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_004.gif" height="2" width="2"><p><iframe src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/search.htm" marginheight="0" marginwidth="0" frameborder="0" height="100" scrolling="no" width="750"></iframe>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_012.gif" height="1" width="1"></p><p>
+</p></center>
+
+<!--Top Navigation-->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr>
+
+    <td>
+
+<script src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/headermenu.js"></script>
+<div style="position: relative; top: 16px; left: 0px; text-align: left;">
+<div onmouseout="showMenuit(0)" onmouseover="showMenuit(1)" id="menuit" style="border: 1px solid rgb(0, 0, 0); padding: 3px; background-color: rgb(255, 255, 204); position: absolute; left: 5px; width: 475px; visibility: hidden; opacity: 0.95;"> 
+<a href="http://itmanagement.earthweb.com/" class="menulink"><b>IT MANAGEMENT</b></a>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td width="20%">
+<a href="http://www.cioupdate.com/" class="menulink">CIO Update</a><br>
+<a href="http://itmanagement.earthweb.com/" class="menulink">Datamation</a></td>
+<td width="20%">
+<a href="http://www.ecrmguide.com/" class="menulink">eCRMGuide</a><br>
+<a href="http://www.drmwatch.com/" class="menulink">DRM Watch</a></td>
+<td width="20%">
+<a href="http://www.esecurityplanet.com/" class="menulink">eSecurity Planet</a><br>
+<a href="http://www.itsmwatch.com/" class="menulink">ITSMWatch</a></td>
+<td width="20%">
+<a href="http://www.intranetjournal.com/" class="menulink">Intranet Journal</a><br>
+<a href="http://www.insideid.com/" class="menulink">Inside ID</a></td>
+<td width="20%">
+<a href="http://www.gridcomputingplanet.com/" class="menulink">Grid Computing Planet</a><br>
+<a href="http://www.bitaplanet.com/" class="menulink">bITa Planet</a>
+</td>
+<td width="20%">
+<a href="http://www.itcareerplanet.com/" class="menulink">IT Career Planet Planet</a>
+</td>
+</tr></tbody></table>
+</div>
+</div>
+
+<div style="position: relative; top: 16px; left: 0px; text-align: left;">
+<div onmouseout="showMenunc(0)" onmouseover="showMenunc(1)" id="menunc" style="border: 1px solid rgb(0, 0, 0); padding: 3px; background-color: rgb(255, 255, 204); position: absolute; width: 400px; left: 113px; visibility: hidden; opacity: 0.95;"> 
+<a href="http://networking.earthweb.com/" class="menulink"><b>NETWORKING</b></a>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td>
+<a href="http://www.enterprisenetworkingplanet.com/" class="menulink">EnterpriseNetworkingPlanet</a><br>
+<a href="http://www.instantmessagingplanet.com/" class="menulink">InstantMessagingPlanet</a></td>
+<td>
+<a href="http://www.enterprisestorageforum.com/" class="menulink">EnterpriseStorageForum</a><br>
+<a href="http://www.opennetworkstoday.com/" class="menulink">OpenNetworksToday</a></td>
+<td valign="top">
+<a href="http://www.opticallynetworked.com/" class="menulink">OpticallyNetworked</a><br>
+<a href="http://www.practicallynetworked.com/" class="menulink">PracticallyNetworked</a></td>
+</tr></tbody></table>
+</div>
+</div>
+
+<div style="position: relative; top: 16px; left: 0px; text-align: left;">
+<div onmouseout="showMenuweb(0)" onmouseover="showMenuweb(1)" id="menuweb" style="border: 1px solid rgb(0, 0, 0); padding: 3px; background-color: rgb(255, 255, 204); position: absolute; width: 200px; left: 204px; visibility: hidden; opacity: 0.95;"> 
+<a href="http://webdeveloper.earthweb.com/" class="menulink"><b>WEB DEVELOPMENT</b></a>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td width="50%">
+<a href="http://www.htmlgoodies.com/" class="menulink">HTML Goodies</a><br></td>
+<td valign="top" width="50%">
+<a href="http://webdeveloper.earthweb.com/webjs/" class="menulink">Javascripts.com</a><br>
+</td></tr></tbody></table>
+</div>
+</div>
+
+<div style="position: relative; top: 16px; left: 0px; text-align: left;">
+<div onmouseout="showMenuhw(0)" onmouseover="showMenuhw(1)" id="menuhw" style="border: 1px solid rgb(0, 0, 0); padding: 3px; background-color: rgb(255, 255, 204); position: absolute; width: 215px; left: 324px; visibility: hidden; opacity: 0.95;"> 
+<a href="http://hardware.earthweb.com/" class="menulink"><b>HARDWARE &amp; SYSTEMS</b></a>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td width="50%">
+<a href="http://earthwebhardware.com/" class="menulink">EarthWeb Hardware </a><br>
+<a href="http://www.sysopt.com/" class="menulink">SysOpt</a></td>
+<td width="50%">
+<a href="http://www.virtualdr.com/" class="menulink">Virtual Dr.</a><br>
+<a href="http://www.workstationplanet.com/" class="menulink">WorkstationPlanet</a></td></tr></tbody></table>
+</div>
+</div>
+
+<div style="position: relative; top: 16px; left: 0px; text-align: left;">
+<div onmouseout="showMenusw(0)" onmouseover="showMenusw(1)" id="menusw" style="border: 1px solid rgb(0, 0, 0); padding: 3px; background-color: rgb(255, 255, 204); position: absolute; width: 215px; left: 466px; visibility: hidden; opacity: 0.95;"> 
+<a href="http://softwaredev.earthweb.com/" class="menulink"><b>SOFTWARE DEVELOPMENT</b></a>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td>
+<a href="http://www.codeguru.com/" class="menulink">CodeGuru</a><br>
+<a href="http://www.developer.com/" class="menulink">Developer</a></td>
+<td>
+<a href="http://www.jguru.com/" class="menulink"> jGuru.com</a><br>
+<a href="http://www.jars.com/" class="menulink"> JARS</a></td>
+<td valign="top">
+<a href="http://www.gamelan.com/" class="menulink">Gamelan</a><br></td>
+</tr></tbody></table>
+</div>
+</div>
+
+<div style="position: relative; top: 16px; left: 0px; text-align: left;">
+<div onmouseout="showMenuitnews(0)" onmouseover="showMenuitnews(1)" id="menuitnews" style="border: 1px solid rgb(0, 0, 0); padding: 3px; background-color: rgb(255, 255, 204); position: absolute; width: 460px; left: 225px; visibility: hidden; opacity: 0.95;"> 
+<a href="http://news.earthweb.com/" class="menulink"><b>EARTHWEBNEWS.COM</b></a>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td width="20%">
+<a href="http://news.earthweb.com/bus-news/" class="menulink">Business</a><br>
+<a href="http://news.earthweb.com/dev-news/" class="menulink">Developer</a></td>
+<td width="20%">
+<a href="http://news.earthweb.com/ec-news/" class="menulink">Ecommerce</a><br>
+<a href="http://news.earthweb.com/ent-news/" class="menulink">Enterprise</a></td>
+<td width="20%">
+<a href="http://news.earthweb.com/infra/" class="menulink">Networking</a><br>
+<a href="http://news.earthweb.com/security/" class="menulink">Security</a></td>
+<td width="20%">
+<a href="http://news.earthweb.com/special/" class="menulink">Special Reports</a><br>
+<a href="http://news.earthweb.com/storage/" class="menulink">Storage</a></td>
+<td width="20%">
+<a href="http://news.earthweb.com/commentary/" class="menulink">Commentary</a><br>
+<a href="http://news.earthweb.com/wireless/" class="menulink">Wireless</a></td>
+<td width="20%">
+<a href="http://news.earthweb.com/xsp/" class="menulink">xSP</a><br>
+<a href="http://news.earthweb.com/stats/" class="menulink">Stats</a></td>
+</tr></tbody></table>
+</div>
+</div>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td>
+<div id="cgheader" style="width: 750px;">
+    <ul>
+      <li onmouseover="showMenuit(1)" onmouseout="showMenuit(0)"><a href="http://itmanagement.earthweb.com/">IT MANAGEMENT</a></li>
+      <li onmouseover="showMenunc(1)" onmouseout="showMenunc(0)"><a href="http://networking.earthweb.com/">NETWORKING</a></li>
+      <li onmouseover="showMenuweb(1)" onmouseout="showMenuweb(0)"><a href="http://webdeveloper.earthweb.com/">WEB DEVELOPMENT</a></li>
+      <li onmouseover="showMenuhw(1)" onmouseout="showMenuhw(0)"><a href="http://hardware.earthweb.com/">HARDWARE &amp; SYSTEMS</a></li>
+      <li onmouseover="showMenusw(1)" onmouseout="showMenusw(0)"><a href="http://softwaredev.earthweb.com/">SOFTWARE DEVELOPMENT</a></li>
+	  <li onmouseover="showMenuitnews(1)" onmouseout="showMenuitnews(0)"><a href="http://news.earthweb.com/">IT NEWS</a></li></ul>
+</div>
+</td></tr></tbody></table>
+</td>
+
+
+  </tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td background="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/top-bg.gif">
+      <table border="0" cellpadding="0" cellspacing="0" width="780">
+        <tbody><tr>
+          <td width="272"><a href="http://www.codeguru.com/"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/logo.gif" alt="CodeGuru" border="0" height="82" hspace="0" vspace="0" width="272"></a></td>
+          <td background="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/top-bg-2.gif">
+
+            <table background="" border="0" cellpadding="0" cellspacing="0" width="508">
+               <tbody><tr>
+                 <td colspan="2" width="508"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="1" hspace="0" vspace="0" width="508"></td>
+               </tr>
+               <tr><form method="post" name="myform" action="http://search.internet.com/www.codeguru.com"></form>
+                 <td width="1"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="54" hspace="0" vspace="0" width="1"></td>
+                 <td><a href="http://www.earthweb.com/"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/eweb.gif" alt="Earthweb" align="right" border="0" height="20" width="135"></a>
+                 <input name="starget" value="" type="hidden">
+              	 <input name="IC_QueryDatabase" value="" type="hidden">
+
+              	 <img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/search.gif" alt="Search" align="absmiddle" border="0" height="23" width="50">
+              	 <select name="searchsite" style="color: rgb(0, 0, 0); font-family: verdana,arial,sans-serif; font-weight: normal; font-size: 9pt; background-color: rgb(255, 255, 255);">
+                 <option value="CodeGuru" selected="selected">CodeGuru.com</option>
+                 <option value="CodeGuru-Articles">---Articles</option>
+                 <option value="CodeGuru-Comments">---Comments</option>
+                 <option value="CodeGuru-Forums">---Forums</option>
+                 <option value="Earthweb">Earthweb</option>
+
+                 </select>
+              <input name="IC_QueryText" size="10" type="text">
+              <input name="submit" value="Go!" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/go.gif" alt="Go" align="absmiddle" border="0" height="23" type="image" width="40">
+                 </td>
+               </tr>
+               <tr>
+                 <td width="1"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="27" hspace="0" vspace="0" width="1"></td>
+                 <td align="center"> 
+                 <img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/eweb-nav.gif" usemap="#eweb_nav_Map" border="0" height="14" hspace="0" vspace="0" width="330">
+
+					<map name="eweb_nav_Map"><area shape="rect" alt="Forums" coords="253,0,330,14" href="http://www.codeguru.com/forum"><area shape="rect" alt="Wireless" coords="185,0,244,14" href="http://www.developer.com/ws/"><area shape="rect" alt="Jars" coords="145,0,176,14" href="http://www.jars.com/"><area shape="rect" alt="Gamelan" coords="77,0,136,14" href="http://www.developer.com/java/"><area shape="rect" alt="Developer.com" coords="0,0,69,14" href="http://www.developer.com/">
+					
+					
+					
+					
+					
+					</map>
+                </td>
+              </tr>
+
+            </tbody></table>
+          </td>
+        </tr>
+      </tbody></table>
+    </td>
+  </tr>
+</tbody></table>
+
+<!--End Top-->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td background="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/leftnav-bg.gif" valign="top" width="1%">
+    <!--Left Navigation-->
+   <!--Left Navigation-->
+
+
+<table bgcolor="#999999" border="0" cellpadding="0" cellspacing="0" width="165">
+        <tbody><tr>
+          <td>
+          <a href="http://www.codeguru.com/"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/leftnav-top.gif" alt="CodeGuru Navigation" border="0" height="30" width="165"></a></td>
+
+        </tr>
+
+        <tr>
+          <td>
+          	
+
+<div class="menu">
+
+<ul>
+<li><a href="http://www.codeguru.com/Cpp" class="hide"><b>Visual C++ / C++</b></a>
+
+<!--[if lte IE 6]>
+<a href="/Cpp"><B>Visual C++ / C++</B>
+<table><tr><td>
+<![endif]-->
+
+<ul>
+
+<li><a class="hide" href="http://www.codeguru.com/cpp/cpp">C++ <b>»</b></a>
+
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/cpp">C++ <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/cpp/cpp/algorithms">Algorithms &amp; Formulas</a></li>
+<li><a href="http://www.codeguru.com/cpp/cpp/cpp_mfc">C++ &amp; MFC</a></li>
+<li><a href="http://www.codeguru.com/cpp/cpp/date_time">Date &amp; Time</a></li>
+<li><a href="http://www.codeguru.com/cpp/cpp/cpp_managed">Managed C++</a></li>
+<li><a href="http://www.codeguru.com/cpp/cpp/string">String Programming</a></li>
+
+</ul>
+
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/cpp/com-tech">COM-based Technologies <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/com-tech">COM-based Technologies <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/cpp/com-tech/atl">ATL &amp; WTL Programming</a></li>
+<li><a href="http://www.codeguru.com/cpp/com-tech/activex">ActiveX Programming</a></li>
+<li><a href="http://www.codeguru.com/cpp/com-tech/complus">COM+</a></li>
+<li><a href="http://www.codeguru.com/cpp/com-tech/shell">Shell Programming</a></li>
+</ul>
+
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/cpp/controls">Controls <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/controls">Controls <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/cpp/controls/buttonctrl">Button Control</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/combobox">ComboBox</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/editctrl">Edit Control</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/imagelist">ImageList Control</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/controls/listbox">ListBox Control</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/listview">ListView Control</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/menu">Menu</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/controls">Other Controls</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/propertysheet">Property Sheet</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/richedit">Rich Edit Control</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/controls/staticctrl">Static Control</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/statusbar">Status Bar</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/toolbar">Toolbar</a></li>
+				<li><a href="http://www.codeguru.com/cpp/controls/treeview">Treeview Control</a></li>
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/cpp/data">Data <b>»</b></a>
+
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/data">Data <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/cpp/data/mfc_database">Database</a></li>
+				<li><a href="http://www.codeguru.com/cpp/data/data-misc">Miscellaneous</a></li>
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/cpp/frameworks">Frameworks <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/frameworks">Frameworks <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/cpp/frameworks/advancedui">UI &amp; Printing Frameworks</a></li>
+
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/cpp/g-m">Graphics &amp; Multimedia <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/g-m">Graphics & Multimedia <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/cpp/g-m/bitmap">Bitmaps &amp; Palettes</a></li>
+				<li><a href="http://www.codeguru.com/cpp/g-m/directx">DirectX</a></li>
+				<li><a href="http://www.codeguru.com/cpp/g-m/gdi">GDI</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/g-m/multimedia">Multimedia</a></li>
+				<li><a href="http://www.codeguru.com/cpp/g-m/opengl">OpenGL</a></li>
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/cpp/i-n">Internet &amp; Networking <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/i-n">Internet & Networking <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/cpp/i-n/ieprogram">IE Programming</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/i-n/isapi">ISAPI</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/i-n/internet">Internet Protocols</a></li>
+				<li><a href="http://www.codeguru.com/cpp/i-n/network">Network Protocols</a></li>
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/cpp/misc">Miscellaneous <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/misc">Miscellaneous <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+
+<li><a href="http://www.codeguru.com/cpp/misc/misc">Miscellaneous</a></li>
+				<li><a href="http://www.codeguru.com/cpp/misc/samples">Samples</a></li>
+
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+<li><a class="hide2" href="http://www.codeguru.com/cpp/security">Security</a>
+<!--[if lte IE 6]>
+<a class="sub2" href="/cpp/security">Security
+<table><tr><td>
+<![endif]-->
+
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+<li><a class="hide2" href="http://www.codeguru.com/Cpp/STL">Standard Template Library</a>
+<!--[if lte IE 6]>
+<a class="sub2" href="/Cpp/STL">Standard Template Library
+<table><tr><td>
+<![endif]-->
+
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+<li><a class="hide" href="http://www.codeguru.com/cpp/v-s">Visual Studio <b>»</b></a>
+
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/v-s">Visual Studio <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/cpp/v-s/devstudio_macros">Add-ins &amp; Macros</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/v-s/debug">Debugging</a></li>
+				<li><a href="http://www.codeguru.com/cpp/v-s/tips">Editor Tips</a></li>
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/cpp/w-d">Windows &amp; Dialogs <b>»</b></a>
+
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/w-d">Windows & Dialogs <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/cpp/w-d/console">Console</a></li>
+				<li><a href="http://www.codeguru.com/cpp/w-d/dislog">Dialog</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/w-d/doc_view">Doc/View</a></li>
+				<li><a href="http://www.codeguru.com/cpp/w-d/docking">Docking Window</a></li>
+				<li><a href="http://www.codeguru.com/cpp/w-d/splitter">Splitter</a></li>
+
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/cpp/w-p">Windows Programming <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/cpp/w-p">Windows Programming <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/cpp/w-p/ce">CE</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/w-p/clipboard">Clipboard</a></li>
+				<li><a href="http://www.codeguru.com/cpp/w-p/dll">DLL</a></li>
+				<li><a href="http://www.codeguru.com/cpp/w-p/files">File &amp; Folder</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/w-p/help">Help Systems</a></li>
+				<li><a href="http://www.codeguru.com/cpp/w-p/printing">Printing</a></li>
+				<li><a href="http://www.codeguru.com/cpp/w-p/system">System</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/w-p/vista">Vista</a></li>
+
+				<li><a href="http://www.codeguru.com/cpp/w-p/win32">Win32</a></li>
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide2" href="http://www.codeguru.com/cpp/sample_chapter">Sample Chapter</a>
+
+<!--[if lte IE 6]>
+<a class="sub2" href="/cpp/sample_chapter">Sample Chapter
+<table><tr><td>
+<![endif]-->
+
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+
+</ul>
+
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+
+</li>
+
+</ul>
+
+
+<ul>
+<li><a class="hide" href="http://www.codeguru.com/Csharp"><b>.NET / C#</b></a>
+
+<!--[if lte IE 6]>
+<a href="/Csharp"><B>.NET / C#</B>
+<table><tr><td>
+<![endif]-->
+
+<ul>
+
+<li><a class="hide" href="http://www.codeguru.com/csharp/.net">.NET <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/csharp/.net">.NET <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+
+<ul>
+<li><a href="http://www.codeguru.com/csharp/.net/net_data">Data &amp; Databases</a></li>
+				<li><a href="http://www.codeguru.com/csharp/.net/net_debugging">Debugging</a></li>
+				<li><a href="http://www.codeguru.com/csharp/.net/net_framework">Framework</a></li>
+
+				<li><a href="http://www.codeguru.com/csharp/.net/net_general">General</a></li>
+				<li><a href="http://www.codeguru.com/csharp/.net/net_asp">General ASP.NET</a></li>
+				<li><a href="http://www.codeguru.com/csharp/.net/jscript">JScript .NET</a></li>
+
+				<li><a href="http://www.codeguru.com/csharp/.net/cpp_managed">Managed C++</a></li>
+				<li><a href="http://www.codeguru.com/csharp/.net/net_security">Net Security</a></li>
+				<li><a href="http://www.codeguru.com/csharp/.net/net_vs_addins">VS Add-Ins</a></li>
+
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/csharp/csharp">C# <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/csharp/csharp">C# <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/csharp/csharp/cs_syntax">Basic Syntax</a></li>
+
+				<li><a href="http://www.codeguru.com/csharp/csharp/cs_collections">Collections</a></li>
+				<li><a href="http://www.codeguru.com/csharp/csharp/cs_controls">Controls</a></li>
+				<li><a href="http://www.codeguru.com/csharp/csharp/cs_data">Data &amp; I/O</a></li>
+
+				<li><a href="http://www.codeguru.com/csharp/csharp/cs_date_time">Date &amp; Time</a></li>
+				<li><a href="http://www.codeguru.com/csharp/csharp/cs_delegates">Delegates</a></li>
+
+				<li><a href="http://www.codeguru.com/csharp/csharp/cs_graphics">Graphics &amp; Multimedia</a></li>
+				<li><a href="http://www.codeguru.com/csharp/csharp/cs_internet">Internet</a></li>
+				<li><a href="http://www.codeguru.com/csharp/csharp/cs_misc">Miscellaneous</a></li>
+
+				<li><a href="http://www.codeguru.com/csharp/csharp/net30">.NET 3.0</a></li>
+				<li><a href="http://www.codeguru.com/csharp/csharp/cs_network">Network &amp; Systems</a></li>
+				<li><a href="http://www.codeguru.com/csharp/csharp/cs_webservices">Web Services</a></li>
+
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+<li><a class="hide2" href="http://www.codeguru.com/csharp/sample_chapter">Sample Chapter</a>
+<!--[if lte IE 6]>
+<a class="sub2" href="/csharp/sample_chapter">Sample Chapter
+<table><tr><td>
+<![endif]-->
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+</ul>
+
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+
+</li>
+
+</ul>
+
+
+
+<ul>
+<li><a class="hide" href="http://www.codeguru.com/vb"><b>Visual Basic</b></a>
+
+<!--[if lte IE 6]>
+<a href="/vb"><B>Visual Basic</B>
+<table><tr><td>
+<![endif]-->
+
+<ul>
+
+<li><a class="hide" href="http://www.codeguru.com/vb/gen">General <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/vb/gen" >General <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/vb/gen/vb_database">Database</a></li>			
+
+<li><a href="http://www.codeguru.com/vb/gen/vb_forms">Forms &amp; Controls</a></li>			
+<li><a href="http://www.codeguru.com/vb/gen/vb_general">IDE &amp; Language</a></li>			
+<li><a href="http://www.codeguru.com/vb/gen/vb_misc">Misc</a></li>			
+<li><a href="http://www.codeguru.com/vb/gen/vb_system">System</a></li>			
+
+<li><a href="http://www.codeguru.com/vb/gen/vb_graphics">VB Graphics</a></li>			
+<li><a href="http://www.codeguru.com/vb/gen/vb_multimedia">VB Multimedia</a></li>
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+<li><a class="hide" href="http://www.codeguru.com/vb/vb_internet">Internet <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/vb/vb_internet" >Internet <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/vb/vb_internet/aspnet">ASP .NET</a></li>			
+<li><a href="http://www.codeguru.com/vb/vb_internet/database">Database</a></li>			
+<li><a href="http://www.codeguru.com/vb/vb_internet/html">HTML</a></li>			
+
+<li><a href="http://www.codeguru.com/vb/vb_internet/indexing">Indexing</a></li>			
+<li><a href="http://www.codeguru.com/vb/vb_internet/smtpemail">SMTP / eMail</a></li>			
+<li><a href="http://www.codeguru.com/vb/vb_internet/webservices">Web Services</a></li>
+</ul>
+
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+<li><a class="hide" href="http://www.codeguru.com/vb/mobile">Mobile/Wireless <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/vb/mobile" >Mobile/Wireless <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+<ul>
+<li><a href="http://www.codeguru.com/vb/mobile/mobileinternettoolkit">Mobile Internet<br>Toolkit</a></li>		
+
+<li><a href="http://www.codeguru.com/vb/mobile/pocketpc">Pocket PC</a></li>
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+<li><a class="hide2" href="http://www.codeguru.com/vb/vbnet30">.NET 3.0</a>
+<!--[if lte IE 6]>
+<a class="sub2" href="/vb/vbnet30">.NET 3.0
+<table><tr><td>
+<![endif]-->
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+
+<li><a class="hide" href="http://www.codeguru.com/vb/controls">VB Controls <b>»</b></a>
+<!--[if lte IE 6]>
+<a class="sub" href="/vb/controls" >VB Controls <B>&raquo;</B>
+<table><tr><td>
+<![endif]-->
+
+<ul>
+<li><a href="http://www.codeguru.com/vb/controls/vbnet_controls">.NET Controls</a></li>			
+<li><a href="http://www.codeguru.com/vb/controls/vb_activex">VB ActiveX</a></li>			
+<li><a href="http://www.codeguru.com/vb/controls/vb_combobox">VB ComboBox</a></li>			
+<li><a href="http://www.codeguru.com/vb/controls/vb_file">VB Files</a></li>			
+
+<li><a href="http://www.codeguru.com/vb/controls/vb_listbox">VB ListBox</a></li>			
+<li><a href="http://www.codeguru.com/vb/controls/vb_listview">VB ListView</a></li>			
+<li><a href="http://www.codeguru.com/vb/controls/vb_othctrl">VB Other Controls</a></li>			
+<li><a href="http://www.codeguru.com/vb/controls/vb_shell">VB Shell</a></li>
+</ul>
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+
+<li><a class="hide2" href="http://www.codeguru.com/vb/sample_chapter">Sample Chapter</a>
+<!--[if lte IE 6]>
+<a class="sub2" href="/vb/sample_chapter">Sample Chapter
+<table><tr><td>
+<![endif]-->
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+</li>
+
+
+</ul>
+
+<!--[if lte IE 6]>
+</td></tr></table>
+</a>
+<![endif]-->
+
+</li>
+
+</ul>
+
+</div>
+
+<div class="menu2">
+
+<ul>
+		<li><a href="http://www.codeguru.com/video"><b>Videos</b></a></li>
+
+	</ul>
+		<ul>
+		<li><a href="http://www.codeguru.com/edit-article.php"><b>Submit an Article</b></a></li>
+
+	</ul>
+		<ul>
+		<li><a href="http://www.codeguru.com/forum"><b>Discussion Forums</b></a></li>
+
+	</ul>
+
+		<ul>
+		<li><a href="http://www.codeguru.com/resources"><b>Resource Directory</b></a></li>
+	</ul>
+
+		<ul>
+		<li><a href="http://www.codeguru.com/announcements"><b>Announcements</b></a></li>
+	</ul>
+		<ul>
+
+		<li><a href="http://extra.codeguru.com/bookList/booklist.asp"><b>Book List</b></a></li>
+	</ul>
+		<ul>
+
+		<li><a href="http://extra.codeguru.com/default.asp"><b>Book Reviews</b></a></li>
+	</ul>
+		<ul>
+		<li><a href="http://www.codeguru.com/gurus.php"><b>List of Gurus</b></a></li>
+
+	</ul>
+		<ul>
+		<li><a href="http://www.theguestbook.com/read.php/608196"><b>Guest Book</b></a></li>
+
+	</ul>
+		<ul>
+		<li><a href="http://www.justtechjobs.com/Jobseekers.asp"><b>Technology Jobs</b></a></li>
+
+	</ul>
+		<ul>
+		<li><a href="http://www.codeguru.com/about.php"><b>About Us</b></a></li>
+	</ul>
+
+		<ul>
+
+		<li><a href="http://www.codeguru.com/faq.php"><b>FAQs</b></a></li>
+	</ul>
+
+		<ul>
+		<li><a href="http://www.codeguru.com/sitemap.php"><b>Site Map</b></a></li>
+	</ul>
+
+</div>
+
+ </td>
+</tr>
+</tbody></table><input name="action" value="login" type="hidden">
+  <input name="url" value="/cpp/data/data-misc/xml/article.php/c12521/" type="hidden">
+    <table bgcolor="#053061" border="0" cellpadding="3" cellspacing="0" width="165">
+  <tbody><tr><form action="/login.php" method="post"></form>
+  <td colspan="2" align="center">
+            	  <img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/member-top.gif" alt="Member Sign In" border="0" height="13" vspace="5" width="113">
+          		</td>
+        	  </tr>
+        	  <tr>
+          		<td align="right"><span class="bodycopy"><font color="#ffffff">User ID:</font></span></td>
+          		<td><input size="7" style="width: 60px;" name="username" type="text"></td>
+        	  </tr>
+        	  <tr>
+          		<td align="right"><span class="bodycopy"><font color="#ffffff">Password:</font></span></td>
+          		<td><input size="7" style="width: 60px;" name="password" type="password"></td>
+        	  </tr>
+                  <tr>
+          		<td colspan="2" align="center"><span class="bodycopy"><font color="#ffffff">Remember Me:</font></span> <input name="perm" value="1" type="checkbox"></td>
+        	  </tr>
+
+        	  <tr>
+          		<td colspan="2" align="center"><input name="member" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/signin-blue.gif" align="absmiddle" border="0" height="23" type="image" width="73"></td>
+        	  </tr>
+						<tr>
+        	    <td colspan="2" align="center"><a href="http://www.codeguru.com/forgotpw.php" class="moreinfo">Forgot Password?</a></td>
+        	  </tr>
+        	  <tr>
+        	    <td colspan="2" align="center"><a href="http://www.codeguru.com/register.php" class="moreinfo">Not a member?<br>Click here for more information and to register.</a></td>
+        	  </tr>
+        	</tbody></table>
+
+<table bgcolor="#999999" border="0" cellpadding="0" cellspacing="0" width="165">
+        <tbody><tr>
+          <td bgcolor="#000000"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="1" width="1"></td>
+        </tr>
+        <tr>
+          <td bgcolor="#999999"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="1" width="1"></td>
+        </tr>
+
+      </tbody></table>
+      <img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="10" width="151">
+      <table border="0" cellpadding="0" cellspacing="0" width="165">
+        <tbody><tr>
+          <td align="center">
+          <table bgcolor="#190c80" border="0" cellpadding="0" cellspacing="0" height="125" width="125">
+<tbody><tr>
+<td valign="top">
+<table bgcolor="#190c80" border="0" cellpadding="1" cellspacing="0">
+<tbody><tr><form name="search" method="get" action="http://www.business.com/internet/search.asp" target="_top"></form>	
+<td colspan="2" align="center"><a href="http://www.business.com/" target="_top"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/bdclogo125.gif" border="0"></a></td>
+</tr>
+<tr>
+<td colspan="2" align="center"><br style="font-size: 6px;"><font color="#ffffff" face="arial" size="2"><b>Search<br>The Business Internet</b></font></td>
+</tr>
+<tr>
+<td align="center"><input name="query" size="13" style="font-size: 10px;" type="text"><br>
+<input name="search" value="Search" style="font-size: 10px;" border="0" type="submit">
+</td>
+</tr>
+
+</tbody></table><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_009.gif" height="1" width="1"></td></tr></tbody></table>          <p>
+          <a href="http://www.jobs.internet.com/"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/jobs.gif" alt="jobs.internet.com" border="0" height="35" width="120"></a>
+          </p><p>
+
+            </p><table background="" border="0" cellpadding="3" cellspacing="0" width="100%">
+              <tbody><tr>
+                <td class="bodycopy" align="center" bgcolor="#000000"><font color="#ffffff"><b>internet.commerce</b></font></td>
+              </tr>
+              <tr>
+                <td class="bodycopy" align="left" bgcolor="#cccccc"><a href="http://www.internet.com/partners/">Partners &amp; Affiliates</a><br>
+<a href="http://www.iqualifynow.com/" target="new">Free Credit Score</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_007.gif" height="1" width="1"><br><a href="http://shop.internet.com/" target="new">Shop</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_024.gif" height="1" width="1"><br><a href="http://www.42u.com/datacenter-solutions.htm" target="new">Data Center Solutions</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_013.gif" height="1" width="1"><br><a href="http://www.iscdfw.com/">Internet Security</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_023.gif" border="0" height="1" width="1"><br><a href="http://www.carangel.com/">Car Donation</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_015.gif" border="0" height="1" width="1"><br><a href="http://www.bugdugle.com/" target="new">Blog</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_006.gif" height="1" width="1"><br><a href="http://www.saatchi-gallery.co.uk/" target="new">Contemporary Art</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_017.gif" height="1" width="1"><br><a href="http://shop.internet.com/index.php?IC_ic=1&amp;IC_query_search=1&amp;IC_QueryText=gps">GPS</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_019.gif" height="1" width="1"><br><a href="http://www.datamemorysystems.com/" target="new">Memory Upgrades</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_020.gif" height="1" width="1"><br><a href="http://www.motivators.com/">Promos and Premiums</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_018.gif" border="0" height="1" width="1"><br><a href="http://www.getafreelancer.com/">Web Design</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_021.gif" border="0" height="1" width="1"><br><a href="http://www.franchiseadvantage.com/">Franchise Directory</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_005.gif" border="0" height="1" width="1"><br><a href="http://www.promopeddler.com/">Promotional Items</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_022.gif" border="0" height="1" width="1"><br><a href="http://shop.internet.com/index.php?IC_ic=1&amp;IC_query_search=1&amp;IC_QueryText=gps" target="new">GPS Devices</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430.gif" height="1" width="1"><br>
+</td>
+              </tr>
+            </tbody></table>                
+          </td>
+        </tr>
+      </tbody></table>     
+<br>
+<br>
+<table bgcolor="#053061" cellpadding="4" width="165">
+<tbody><tr>
+<td>
+<font color="#cccc66"><b>RSS Feeds</b></font><p>
+
+<a href="http://www.codeguru.com/icom_includes/feeds/codeguru/rss-all.xml"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/xml_002.gif" alt="RSS" align="absmiddle" border="0" height="14" hspace="5" width="36"><font color="#ffffff">All</font></a>
+<br><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="2" width="1"><br>
+<a href="http://www.codeguru.com/icom_includes/feeds/codeguru/rss-cpp.xml"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/xml_002.gif" alt="RSS" align="absmiddle" border="0" height="14" hspace="5" width="36"><font color="#ffffff">VC++/C++</font></a>
+<br><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="2" width="1"><br>
+<a href="http://www.codeguru.com/icom_includes/feeds/codeguru/rss-csharp.xml"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/xml_002.gif" alt="RSS" align="absmiddle" border="0" height="14" hspace="5" width="36"><font color="#ffffff">.NET/C#</font></a>
+<br><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="2" width="1"><br>
+<a href="http://www.codeguru.com/icom_includes/feeds/codeguru/rss-vb.xml"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/xml_002.gif" alt="RSS" align="absmiddle" border="0" height="14" hspace="5" width="36"><font color="#ffffff">VB</font></a>
+<br><br>
+<a href="http://www.jupiterweb.com/rss/earthweb.html"><font color="#ffffff">See more EarthWeb Network feeds</font></a>
+
+</p></td>
+</tr>
+
+</tbody></table>    </td>
+
+    <td background="" bgcolor="#ffffff" valign="top" width="99%">
+    <img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="1" width="629">
+
+    <table border="0" cellpadding="4" cellspacing="0" width="100%">
+      <tbody><tr>
+	<td>
+
+
+
+
+<span class="bodycopy"><b><a href="http://www.codeguru.com/">Home</a></b> &gt;&gt; <b><a href="http://www.codeguru.com/cpp/">Visual C++ / C++</a></b> &gt;&gt; <b><a href="http://www.codeguru.com/cpp/data/">Data</a></b> &gt;&gt; <b><a href="http://www.codeguru.com/cpp/data/data-misc/">Miscellaneous</a></b> &gt;&gt; <b><a href="http://www.codeguru.com/cpp/data/data-misc/xml/">XML</a></b><br><br>
+
+
+<!--content_start-->
+<table bgcolor="#000000" border="0" cellpadding="1" cellspacing="0">
+        <tbody><tr>
+          <td>
+            <table bgcolor="#cccccc" border="0" cellpadding="1" cellspacing="0">
+              <tbody><tr> 
+                <td><font face="Verdana, Arial, Helvetica, sans-serif" size="-2"><a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/622169408/ciu/OasDefault/MS_Forefront_Portal_GEMS_1eh/CIU_120DayTrial2.html/34323037663935323437323637366430">
+<b>120-Day Trial: Evaluate Microsoft Forefront Security for SharePoint.</b>
+Protect your SharePoint Server 2007 &amp; Windows SharePoint Services
+3.0 environments from docs that contain malicious code &amp; other
+hidden threats.
+</a>
+
+</font></td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+      </tbody></table><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_002.gif" height="1" width="1"><br>
+<font class="sectionhead">Creating Custom WPF Controls</font><br>
+<b>Rating:</b> <font color="#990000">none</font><br>
+<br>
+
+<table border="0" cellpadding="5" cellspacing="0">
+  <tbody><tr>
+    <td align="right">
+    </td>
+    <td class="bodycopy">
+    <b>Chad Campbell</b> (<a href="http://www.codeguru.com/member.php/541487/">view profile</a>)<br>
+    August 28, 2006    </td>
+  </tr>
+</tbody></table>	 
+
+
+
+<p>
+<span class="bodycopy">
+<b>Go to page:</b> 
+1&nbsp;&nbsp;<a href="http://www.codeguru.com/cpp/data/data-misc/xml/article.php/c12521__2/">2</a>&nbsp;&nbsp;<a href="http://www.codeguru.com/cpp/data/data-misc/xml/article.php/c12521__2/">Next</a> <p>
+
+</p><p></p><p>The advent of any new programming model generates a great
+deal of excitement, and the Windows Presentation Foundation (WPF) is no
+exception. This powerful UI framework provides a plush set of controls
+to construct rich user experiences. The controls provided within this
+coding quiver will help you hit the mark for the majority of your UI
+targets.</p>
+
+<br><a href="#more">(continued)</a><p></p><center>
+        <table style="border: 1px solid rgb(25, 139, 103); background-color: rgb(255, 255, 255);" border="0" cellpadding="5" cellspacing="0" width="350">
+<tbody><tr><td colspan="3" style="border-bottom: 1px solid rgb(25, 139, 103); font-family: Arial,Helvetica,sans-serif; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: normal; font-size-adjust: none; font-stretch: normal; background-color: rgb(213, 217, 221);" align="center">
+
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/1611825729/flex/OasDefault/Microsoft_Linux_SC_GEMS_3k/33006.gif/34323037663935323437323637366430?MicrosoftSC/Door/33006" style="color: rgb(0, 0, 0);">
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/12833.gif" border="0" height="51" width="360">
+
+</a></td></tr>
+
+<tr>
+<td style="font-family: Verdana,Arial,Helvetica,sans-serif; font-style: normal; font-variant: normal; font-weight: normal; font-size: 11px; line-height: normal; font-size-adjust: none; font-stretch: normal;" valign="top">
+
+CASE STUDY:
+<br>  
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/1611825729/flex/OasDefault/Microsoft_Linux_SC_GEMS_3k/298mrt.gif/34323037663935323437323637366430?MRT/go/ntroiitp0290000298mrt/direct/01/" style="color: rgb(0, 0, 0);">
+<b>NCsoft Supports Massive Number of Simultaneous Connections</b><br></a>
+<span style="color: rgb(17, 92, 161);"></span>
+<br>
+
+CASE STUDY:
+<br>  
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/1611825729/flex/OasDefault/Microsoft_Linux_SC_GEMS_3k/297mrt.gif/34323037663935323437323637366430?MRT/go/ntroiitp0290000297mrt/direct/01/" style="color: rgb(0, 0, 0);">
+<b>Learn how Microsoft helped the state of Illinois serve its 12 million constituents more quickly while saving taxpayer dollars</b><br></a>
+<span style="color: rgb(17, 92, 161);"></span>
+<br>
+
+WHITEPAPER:
+<br>  
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/1611825729/flex/OasDefault/Microsoft_Linux_SC_GEMS_3k/105mrt.gif/34323037663935323437323637366430?MRT/go/ntroiitp0290000105mrt/direct/01/" style="color: rgb(0, 0, 0);">
+<b>Linux vs. Microsoft--Making the Right Choice for Your Client-Server Infrastructure </b><br></a>
+<span style="color: rgb(17, 92, 161);"></span>
+<br>
+
+WHITEPAPER:
+<br>  
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/1611825729/flex/OasDefault/Microsoft_Linux_SC_GEMS_3k/102mrt.gif/34323037663935323437323637366430?MRT/go/ntroiitp0290000102mrt/direct/01/" style="color: rgb(0, 0, 0);">
+<b>Using the .NET Framework to Increase Performance, Availability, &amp; Business Agility</b><br></a>
+<span style="color: rgb(17, 92, 161);"></span>
+<br>
+
+
+
+</td>
+</tr>
+</tbody></table><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_011.gif" height="1" width="1">
+
+
+<br><br><table style="border: 1px solid rgb(6, 45, 76); background-color: rgb(255, 255, 255);" border="0" cellpadding="0" cellspacing="0" width="358">
+	<tbody><tr>
+		<td><a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/20690.gif" border="0"></a><br>
+		<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/20691.gif" border="0"></td>
+	</tr><tr>
+		<td style="padding: 10px; text-align: left; background-color: rgb(248, 247, 242);">
+				<script>
+function popWin(url){
+	spawn = window.open(url,'newWin','width=800,height=600,top=0,left=0,location=yes,toolbar=yes,status=true,scrollbars=yes,resizable=yes,fullscreen=no,menubar=no,directories=no');
+	spawn.focus();
+}
+
+</script>
+		
+		<span style="font-family: Arial,Helvetica,sans-serif; font-size: 11px; line-height: 14px;">
+
+ <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671" onclick="javascript:popWin('http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/UsabilityandDesign.gif/34323037663935323437323637366430?IBM_Spaces/Link/35587')" style="color: rgb(95, 47, 11); font-size: 12px; text-decoration: none;"><b>Usability and Design</b></a><br>
+The Usability and design space brings together the latest information,
+research, tools, podcasts, and conference information related to
+usability and design. Content is pulled from IBM and non-IBM sites. <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671" onclick="javascript:popWin('http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/UsabilityandDesign.gif/34323037663935323437323637366430?IBM_Spaces/Link/35587')" style="color: rgb(95, 47, 11); text-decoration: none; font-size: 14px; font-weight: bold;">»</a><br>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/20692.gif" border="0">
+<div style="line-height: 4px;">&nbsp;</div> 
+
+ <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671" onclick="javascript:popWin('http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/AjaxResourceCenter.gif/34323037663935323437323637366430?IBM_Spaces/Link/35588')" style="color: rgb(95, 47, 11); font-size: 12px; text-decoration: none;"><b>Ajax Resource Center</b></a><br>
+This space is your one-stop shop for information on the Ajax
+programming model, including articles and tutorials, discussion forums,
+blogs, wikis, events, and news. If it's happening, it's covered here. <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671" onclick="javascript:popWin('http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/AjaxResourceCenter.gif/34323037663935323437323637366430?IBM_Spaces/Link/35588')" style="color: rgb(95, 47, 11); text-decoration: none; font-size: 14px; font-weight: bold;">»</a><br> 
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/20692.gif" border="0">
+
+
+<div style="line-height: 4px;">&nbsp;</div> 
+
+ <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671" onclick="javascript:popWin('http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/LinuxSecurity.gif/34323037663935323437323637366430?IBM_Spaces/Link/35589')" style="color: rgb(95, 47, 11); font-size: 12px; text-decoration: none;"><b>Linux Security</b></a><br>
+The Linux security space gives an overview of security issues related
+to Linux and covers all aspects of securing a Linux distribution. It
+also links to Linux security-related news and articles. <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671" onclick="javascript:popWin('http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/LinuxSecurity.gif/34323037663935323437323637366430?IBM_Spaces/Link/35589')" style="color: rgb(95, 47, 11); text-decoration: none; font-size: 14px; font-weight: bold;">»</a><br>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/20692.gif" border="0">
+
+
+<div style="line-height: 4px;">&nbsp;</div> 
+
+ <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671" onclick="javascript:popWin('http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/RubyProgramming.gif/34323037663935323437323637366430?IBM_Spaces/Link/35590')" style="color: rgb(95, 47, 11); font-size: 12px; text-decoration: none;"><b>Ruby Programming</b></a><br>
+Take a closer look at Ruby, a dynamic programming language that is
+growing rapidly in popularity. Explore its intriguing features and
+learn what programmers are doing with it. <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671" onclick="javascript:popWin('http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/RubyProgramming.gif/34323037663935323437323637366430?IBM_Spaces/Link/35590')" style="color: rgb(95, 47, 11); text-decoration: none; font-size: 14px; font-weight: bold;">»</a><br>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/20692.gif" border="0">
+
+
+<div style="line-height: 4px;">&nbsp;</div> 
+
+ <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671" onclick="javascript:popWin('http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/WikiWebSphere.gif/34323037663935323437323637366430?IBM_Spaces/Link/35591')" style="color: rgb(95, 47, 11); font-size: 12px; text-decoration: none;"><b>Wiki: WebSphere, SOA, J2EE in Practice</b></a><br>
+This wiki discusses how to use J2EE and related technologies to develop
+business applications, including how to make best use of IBM J2EE
+products like WebSphere Application Server and Rational Application
+Developer, and IBM SOA products like WebSphere Process Server and
+WebSphere Integration Developer. While it occasionally delves into
+tangential topics and future trends, the primary focus is on how to
+make use of the products and technologies that we have today. <a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671" onclick="javascript:popWin('http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/WikiWebSphere.gif/34323037663935323437323637366430?IBM_Spaces/Link/35591')" style="color: rgb(95, 47, 11); text-decoration: none; font-size: 14px; font-weight: bold;">»</a>
+	</span></td>
+ </tr><tr>
+		<td><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/20693.gif" border="0"><br><a href="http://www.codeguru.com/RealMedia/ads/click_lx.ads/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/490776079/accessunit/OasDefault/IBM_dWorks_SolCtr_1a/IBMSpacesDoor35671.gif/34323037663935323437323637366430?IBM_Spaces/Door/35671"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/20694.gif" border="0"></a></td>
+	</tr>
+</tbody></table><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_014.gif" height="1" width="1">
+</center><a name="more"></a><p><a name="more">Occasionally, you will
+come across a development requirement that you have not previously
+encountered. When this occurs, the need for a custom control may arise.
+A custom control generally involves melding a collection of standard
+controls together to address the needs of a specific task. Think of a
+custom control as one of the drag-and-drop UI components often used to
+develop ASP.NET and Windows Forms applications within Visual Studio.
+The primary benefit of creating a custom control is that it opens the
+door for reuse.</a></p>
+
+<p><a name="more">The remainder of this article walks you through the
+process of creating a custom control within WPF. However, it is not
+meant to be an introduction to XAML or WPF. For an introduction to XAML
+and WPF, please refer to the </a><a href="http://www.microsoft.com/downloads/details.aspx?familyid=1d7f16b3-d2d5-48f7-9494-6696117ee712&amp;displaylang=en" target="new">Windows SDK documentation</a> for .NET 3.0.</p>
+
+<h3>Meet Your Custom Control</h3>
+
+<p>User-generated ratings have become commonplace amongst both media
+players and community-based Web sites. This article walks through the
+process of using WPF to create a simple, reusable rating control. By
+the end, you will have a valuable control that looks like this:</p>
+
+<p><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/get_image.jpg" height="25" width="84"></p>
+
+<p>Before diving into the implementation, make sure that your system
+has the .NET 3.0 runtime components and Windows SDK. If you would like
+just to experiment with Extensible Application Markup Language (XAML),
+Lorin Thwaits has posted <a href="http://geekswithblogs.net/lorint/archive/2006/07/06/84287.aspx" target="new">a great article</a> on his blog to help you get started with WPF quickly.</p>
+
+<h3>Getting Started</h3>
+
+<p>In WPF, all projects must include a project file. The project file is composed entirely of XML. For custom controls, the <tt>outputType</tt>
+element is of particular interest. This element must have the value set
+to "library". In general, Visual Studio 2005 automatically creates the
+project file for you, provided you have the necessary Visual Studio
+extensions installed. If you are creating a project file from scratch,
+Microsoft has provided an example on its MSDN site.</p>
+
+<h3>Control Design</h3>
+
+<p>After the project itself has been created, the next step is to add
+your XAML pages. In general, the code for your control will reside
+within a single XAML file. By using a project file, you easily can add
+additional controls and create a custom control library that will allow
+for easy distribution of multiple custom controls.</p>
+
+<p>For the rating control, you will use the following XAML:</p>
+
+<pre>&lt;UserControl x:<span class="codeKeyword">Class</span>="CustomControlLibrary.RatingUserControl"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Tag="Rating"&gt;
+   &lt;UserControl.Resources&gt;
+      &lt;Style x:Key="UnselectedStyle" TargetType="{x:Type Ellipse}"&gt;
+         &lt;Setter <span class="codeKeyword">Property</span>="Width" Value="16" /&gt;
+         &lt;Setter <span class="codeKeyword">Property</span>="Height" Value="16" /&gt;
+         &lt;Setter <span class="codeKeyword">Property</span>="Stroke" Value="Black" /&gt;
+         &lt;Setter <span class="codeKeyword">Property</span>="StrokeThickness" Value="0" /&gt;
+
+         &lt;Setter <span class="codeKeyword">Property</span>="Fill"&gt;
+            &lt;Setter.Value&gt;
+               &lt;LinearGradientBrush&gt;
+                  &lt;LinearGradientBrush.GradientStops&gt;
+                     &lt;GradientStopCollection&gt;
+                        &lt;GradientStop Color="#F02821" Offset="0.05" /&gt;
+                        &lt;GradientStop Color="#71130F" Offset="0.95" /&gt;
+                     &lt;/GradientStopCollection&gt;
+                  &lt;/LinearGradientBrush.GradientStops&gt;
+               &lt;/LinearGradientBrush&gt;
+            &lt;/Setter.Value&gt;
+         &lt;/Setter&gt;
+      &lt;/Style&gt;
+
+      &lt;Style x:Key="SelectedStyle" TargetType="{x:Type Ellipse}"&gt;
+         &lt;Setter <span class="codeKeyword">Property</span>="Width" Value="16" /&gt;
+         &lt;Setter <span class="codeKeyword">Property</span>="Height" Value="16" /&gt;
+         &lt;Setter <span class="codeKeyword">Property</span>="Stroke" Value="Black" /&gt;
+         &lt;Setter <span class="codeKeyword">Property</span>="StrokeThickness" Value="0" /&gt;
+
+         &lt;Setter <span class="codeKeyword">Property</span>="Fill"&gt;
+            &lt;Setter.Value&gt;
+               &lt;LinearGradientBrush&gt;
+                  &lt;LinearGradientBrush.GradientStops&gt;
+                     &lt;GradientStopCollection&gt;
+                        &lt;GradientStop Color="#1AE700" Offset="0.05" /&gt;
+                        &lt;GradientStop Color="#074300" Offset="0.95" /&gt;
+                     &lt;/GradientStopCollection&gt;
+                  &lt;/LinearGradientBrush.GradientStops&gt;
+               &lt;/LinearGradientBrush&gt;
+            &lt;/Setter.Value&gt;
+         &lt;/Setter&gt;
+      &lt;/Style&gt;
+   &lt;/UserControl.Resources&gt;
+
+   &lt;StackPanel Name="EllipsesStackPanel" Orientation="Horizontal"
+               MouseLeave="OnMouseLeave"&gt;
+      &lt;Ellipse Name="Ellipse1" Style="{StaticResource UnselectedStyle}"
+               MouseLeftButtonUp="OnMouseLeftButtonUp"
+               MouseEnter="OnMouseEnter" /&gt;
+      &lt;Ellipse Name="Ellipse2" Style="{StaticResource UnselectedStyle}"
+               MouseLeftButtonUp="OnMouseLeftButtonUp"
+               MouseEnter="OnMouseEnter" /&gt;
+      &lt;Ellipse Name="Ellipse3" Style="{StaticResource UnselectedStyle}"
+               MouseLeftButtonUp="OnMouseLeftButtonUp"
+               MouseEnter="OnMouseEnter" /&gt;
+      &lt;Ellipse Name="Ellipse4" Style="{StaticResource UnselectedStyle}"
+               MouseLeftButtonUp="OnMouseLeftButtonUp"
+               MouseEnter="OnMouseEnter" /&gt;
+      &lt;Ellipse Name="Ellipse5" Style="{StaticResource UnselectedStyle}"
+               MouseLeftButtonUp="OnMouseLeftButtonUp"
+               MouseEnter="OnMouseEnter" /&gt;
+   &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+</pre>
+
+<p>By separating the UI from the procedural code, you quickly can use
+SDK tools such as XAMLPad to preview what the control will look like
+without having to compile it. By removing the need for compilation, you
+quickly can receive feedback from your end users by designing the user
+interface right in front of them and saving the implementation details
+for a later time.</p>
+
+<p>An interesting point about custom controls is that their root elements are usually the <tt>UserControl</tt>
+element. This element provides the simplest means for creating a custom
+control. If you would like to provide developers with the added
+functionality of templates (or skins), your control MUST derive from
+the <tt>Control</tt> class.</p>
+
+<p>Also, WPF provides a unified user experience development platform,
+meaning a WPF control that works within your Windows applications can
+also work within your Web applications that use WPF. The only
+difference is the security mode within which they run. Please refer to
+the Windows SDK for further information on security modes.</p>
+
+<h3>Interaction Implementation</h3>
+
+<p>When developing a custom control, you have to go beyond developing
+just the look of the control. You also must decide how an end user can
+interact with the control. When determining the user interaction
+implementation, you have to consider the functionality you want your
+control to provide and consider how you believe your end users would
+want to drive this functionality. In the event of the control, you are
+basing the design on something that already is familiar to users.</p>
+
+<p>Once you have the functionality defined, you can begin taking this
+functionality and converting it into collections of controls and
+events. For the rating control, you use five ellipse elements, one for
+each rating. For each of these rating elements, you will implement the
+user's interactions through the following events:</p>
+
+<table border="2" cellpadding="2" cellspacing="2">
+<tbody><tr bgcolor="#ffff99" valign="top">
+<th>Event</th>
+<th>Description</th></tr>
+
+<tr valign="top"><td><b>MouseLeftButtonUp</b></td>
+<td>Simulates a completed click. The API for the ellipse does not provide a Click event.</td></tr>
+
+<tr valign="top"><td><b>MouseEnter</b></td>
+<td>Determines which ellipses should be selected.</td></tr>
+
+<tr valign="top"><td><b>MouseLeave</b></td>
+<td>Determines which ellipses should be selected.</td></tr>
+</tbody></table>
+<p>
+
+<b>Go to page:</b> 
+1&nbsp;&nbsp;<a href="http://www.codeguru.com/cpp/data/data-misc/xml/article.php/c12521__2/">2</a>&nbsp;&nbsp;<a href="http://www.codeguru.com/cpp/data/data-misc/xml/article.php/c12521__2/">Next</a> </p><p>
+
+  <b>Downloads</b><br>
+    </p><li><a href="http://www.codeguru.com/dbfiles/get_file/SourceCode.zip?id=12521&amp;lbl=SOURCECODE_ZIP&amp;ds=20060828">SourceCode.zip</a> - Download source code - 3 Kb<br>
+    <p>
+
+
+</p></li></span>
+<!--content_stop-->
+<!-- print box -->
+
+</p><table border="0" cellpadding="0" cellspacing="7">
+<tbody><tr><td>
+    <div id="tools_inews">
+
+		<b>Tools:</b>
+		<a href="http://www.codeguru.com/cpp/data/data-misc/xml/email.php/c12521"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/badge_email.gif" alt="" align="absmiddle" border="0" height="17" hspace="2" vspace="2" width="71"></a>
+		<a href="http://www.codeguru.com/cpp/data/data-misc/xml/print.php/c12521"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/badge_print.gif" alt="" align="absmiddle" border="0" height="17" hspace="2" vspace="2" width="71"></a>
+
+		<a href="http://digg.com/submit?phase=2&amp;url=www.codeguru.com/cpp/data/data-misc/xml/article.php/c12521&amp;title=&amp;bodytext=&amp;topic=" onclick="window.open('http://digg.com/submit?phase=2&url=www.codeguru.com/cpp/data/data-misc/xml/article.php/c12521&title=&bodytext=&topic=','digg','toolbar=no,width=900,height=600,scrollbars=yes'); return false;"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/badge_digg.gif" alt="" align="absmiddle" border="0" height="17" hspace="2" vspace="2" width="91"></a>
+
+		<a href="http://del.icio.us/post" onclick="window.open('http://del.icio.us/post?v=4&noui&jump=close&url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title), 'delicious','toolbar=no,width=700,height=400'); return false;"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/badge_delicious.gif" alt="" align="absmiddle" border="0" height="17" hspace="2" vspace="2" width="91"></a>    </div>
+</td></tr>
+
+<tr><td>
+    <div id="tools_inews">
+<!-- search box -->
+<script type="text/javascript">
+function addFireFox() {
+	if ((typeof window.sidebar == "object") && (typeof window.sidebar.addSearchEngine == "function")) {
+		window.sidebar.addSearchEngine('http://www.codeguru.com/search/ffsearch.src', 'http://www.codeguru.com/search/ffsearch.png', 'CodeGuru', 'CodeGuru');
+	}
+	else {
+		alert(' x ');
+	}
+}
+
+function addIE() {
+	window.external.AddSearchProvider('/search/iesearch.xml');
+}
+</script>
+		<b>Add www.codeguru.com</b> to your favorites<br>
+
+		<a href="http://add.my.yahoo.com/rss?url=http://www.codeguru.com/icom_includes/feeds/codeguru/rss-all.xml"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/badge_myyahoo.gif" alt="" border="0" height="17" hspace="2" vspace="2" width="91"></a>
+
+		<a href="javascript:window.external.AddFavorite('http://www.codeguru.com', 'www.codeguru.com')"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/badge_windowsfav.gif" alt="" border="0" height="17" hspace="2" vspace="2" width="118"></a>
+		<div class="dotrule"></div>
+		<b>Add www.codeguru.com</b> to your browser search box<br>
+		<a href="javascript:addIE();"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/ie_icon.gif" alt="" align="absmiddle" border="0" hspace="2" vspace="2">IE 7</a> | <a href="javascript:addFireFox();"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/ff_icon.gif" alt="" align="absmiddle" border="0" hspace="2" vspace="2">Firefox 2.0</a> | <a href="javascript:addFireFox();"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/ff_icon.gif" alt="" align="absmiddle" border="0" hspace="2" vspace="2">Firefox 1.5.x</a> 
+<!-- search box -->
+<div class="dotrule"></div>
+		<b>Receive news</b> via our XML/RSS <a href="http://www.codeguru.com/icom_includes/feeds/codeguru/rss-all.xml">feed</a> <a href="http://www.codeguru.com/icom_includes/feeds/codeguru/rss-all.xml"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/xml.gif" alt="" align="absmiddle" border="0" height="14" hspace="0" width="36"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/rss.png" alt="" align="absmiddle" border="0" height="14" hspace="0" width="36"></a>    </div>
+</td></tr>
+</tbody></table>
+<p>
+<!-- end print box -->
+
+
+</p><p><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/jw_devsol.gif"></p>
+<p>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/arrow_004.gif" align="bottom"> 
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/1194083886/fl1/OasDefault/Verio_OpenSource_GEMS_1i/FeaturedLink_WhitepaperPerformance.html/34323037663935323437323637366430" class="ss"><b>Whitepaper: Performance, Control, and Security--The Benefits of Verio Virtual Private Servers (VPS) 
+</b></a>
+<b><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_010.gif" height="1" width="1"><br>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/arrow_003.gif" align="bottom"> 
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/64505797/fl2/OasDefault/MSFT_APO_Dev_GEMS_1a/FeaturedLink_Getafree.html/34323037663935323437323637366430" class="ss">Get a free copy of Software Engineering with Microsoft Visual Studio Team System. Click here. 
+</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_016.gif" height="1" width="1"><br>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/arrow_005.gif" align="bottom"> 
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/378596364/fl3/OasDefault/Sun_SDN_GEMS_2j/FeaturedLink_DownloadSunJava.html/34323037663935323437323637366430" class="ss"><b>Download: Sun Java Studio Creator.</b> Build apps visually with minimal code creation, automatic page navigation &amp; more.
+</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_003.gif" height="1" width="1"><br>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/arrow_002.gif" align="bottom"> 
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/2055207704/fl4/OasDefault/MSFT_APO_SOA_GEMS_1a/FeaturedLink_MicrosoftBizTalk.html/34323037663935323437323637366430" class="ss">Microsoft BizTalk Server and Microsoft Dynamics: A Line of Business Management and Integration. 
+</a>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_026.gif" height="1" width="1"><br>
+<img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/arrow.gif" align="bottom"> 
+<a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/576674408/fl5/OasDefault/Verio_OpenSource_GEMS_1j/FeaturedLink_WhitepaperComplete.html/34323037663935323437323637366430" class="ss"><b>Whitepaper: Complete Peace of Mind--The Benefits of Verio Managed Private Servers (MPS)  
+</b></a>
+<b><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_025.gif" height="1" width="1"></b></b></p>
+
+<table border="0" cellpadding="3" width="100%">
+  <tbody><tr> 
+    <td align="left" valign="top"> <br>
+<a href="http://www.codeguru.com/cpp/data/data-misc/xml/email.php/c12521/"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/emailicon.gif" border="0"></a>
+
+<a href="http://www.codeguru.com/cpp/data/data-misc/xml/print.php/c12521/"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/printicon.gif" border="0"></a>           
+
+    </td>
+  </tr>
+</tbody></table>
+
+
+<b><b>        </b></b></span></td>
+      </tr>
+
+      <tr>
+        <td>
+<a name="rating"></a>
+<input name="url" value="/cpp/data/data-misc/xml/article.php/c12521/" type="hidden">
+    <table bgcolor="#cccccc" border="1" cellpadding="4" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td class="bodycopy">
+    <font color="#cc0000"><b>RATE THIS ARTICLE:</b></font>&nbsp;&nbsp;
+<input value="5" name="vote" type="radio">Excellent&nbsp;&nbsp;<input value="4" name="vote" type="radio">Very Good&nbsp;&nbsp;<input value="3" name="vote" type="radio">Average&nbsp;&nbsp;<input value="2" name="vote" type="radio">Below Average&nbsp;&nbsp;<input value="1" name="vote" type="radio">Poor&nbsp;&nbsp;<input src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/rate.gif" align="absmiddle" border="0" height="23" type="image" width="73">
+
+<br><br><b>(You must be signed in to rank an article. Not a member? <a href="http://www.codeguru.com/register.php?url=/cpp/data/data-misc/xml/article.php/c12521/">Click here</a> to register)</b>
+    </td>
+  </tr>
+
+</tbody></table>
+
+
+
+<br>
+
+
+  <!--COMMENTS-->  
+<table bgcolor="#cccccc" border="0" cellpadding="4" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td class="bodycopy" colspan="2"><font class="title">Latest Comments: </font></td>
+  </tr>
+  <tr>
+    <td class="bodycopy">
+No Comments Posted.    <hr>
+    </td>
+  </tr> 
+  <tr>
+    <td class="bodycopy" colspan="2"><font class="title">Add a Comment: </font></td>
+  </tr>
+  <tr>
+    <td class="bodycopy">
+		    <input name="action" value="add" type="hidden">
+    <center>
+    <table class="bodycopy">
+      <tbody><tr valign="top">
+        <td class="bodycopy" align="right"><strong>Title: </strong></td>
+        <td><input name="title" size="60" maxlength="256" type="text"></td>
+      </tr>
+      <tr valign="top">
+        <td class="bodycopy" align="right"><strong>Comment: </strong></td>
+        <td><textarea name="subject" rows="5" cols="60" wrap="physical"></textarea></td>
+      </tr>
+      <tr valign="top">
+        <td class="bodycopy" align="right"><strong>Pre-Formatted: </strong></td>
+        <td><input name="preformatted" value="on" type="checkbox">Check this if you want the text to display with the formatting as typed (good for source code)</td>
+      </tr>
+    </tbody></table>
+    <br>
+    <input src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/submit.gif" name="AddComment" value="Add Comment" border="0" height="23" type="image" width="73">
+    </center>
+		<br><br><b>(You must be signed in to comment on an article. Not a member? <a href="http://www.codeguru.com/register.php?url=/cpp/data/data-misc/xml/article.php/c12521/">Click here</a> to register)</b>
+       </td>
+ 
+  </tr>
+</tbody></table>
+
+
+        </td>
+      </tr>
+
+    </tbody></table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" bgcolor="#666666"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/sp.gif" alt="" border="0" height="2" width="1"></td>
+  </tr>
+</tbody></table>
+
+<table bgcolor="#ffffff" border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td align="center"><a href="http://www.codeguru.com/RealMedia/ads/click_lx.cgi/ew/ewsoftware/www.codeguru.com/cpp/data/data-misc/xml/article/c12521i/1817948923/468x60-2/OasDefault/Swsoft_Whitepaper_GEMS_1hb/SWsoft_whitepaper_LEO.jpg/34323037663935323437323637366430" target="_top"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/SWsoft_whitepaper_LEO.jpg" alt="" border="0"></a><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/34323037663935323437323637366430_008.gif" border="0" height="1" width="1"></td>
+  </tr>
+  <tr>
+    <td class="bodycopy" align="center">
+      <center>
+
+<!-- Google Analytics -->
+<script src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/ga.js" type="text/javascript">
+</script>
+
+<script type="text/javascript">
+<!--     hide from no js browsers 
+delete Array.prototype.itemValidation;
+delete Array.prototype.isArray;
+var superTracker = _gat._getTracker("UA-2838492-1");
+superTracker._initData();
+superTracker._trackPageview(); 
+
+-->
+</script>
+<script type="text/javascript">
+  var site_name =  location.hostname;
+  if ( site_name.indexOf("www.") != 0 ) {
+    site_name  = "www."+site_name ;
+  }
+  document.write("<SCR" + "IPT LANGUAGE='JavaScript1.2' SRC='/icom_includes/footers/sites/"+ site_name +".js' TYPE='text/javascript'><\/SCR" + "IPT>");
+-->
+</script><script language="JavaScript1.2" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/www.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--     hide from no js browsers 
+  pageTracker._initData();
+  pageTracker._trackPageview();
+  // -->
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+<script src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/decorators.js" type="text/javascript"></script>
+<script src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/prototype.js" type="text/javascript"></script>
+
+<script src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/pngadapt.js" type="text/javascript"></script>
+
+
+		<!-- start foot links -->
+<div class="setimageload"></div>
+<div style="margin: 0pt auto; padding-top: 10px; padding-left: 5px; padding-right: 5px; width: 730px;">				
+	
+	<div style="margin-bottom: 15px;">			
+					
+		<!-- start icom links section -->			  
+								
+		<div id="div1" class="smsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">Internet.com Sitemap</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+			
+			<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+
+				<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">	
+					<table cellpadding="1" cellspacing="1" width="680">
+						<tbody><tr>
+							<td class="smheader" align="right">IT Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://alllinuxdevices.com/">All Linux Devices</a> | 
+								<a class="sitemaplink" href="http://www.antionline.com/index.php/">AntiOnline</a> |
+								<a class="sitemaplink" href="http://apachetoday.com/">Apache Today</a> |
+								<a class="sitemaplink" href="http://www.aspnews.com/">ASPNews</a> | 
+								<a class="sitemaplink" href="http://www.cpu-planet.com/">CPU Planet</a> |
+ 								<a class="sitemaplink" href="http://www.databasejournal.com/">DatabaseJournal</a> |
+								<a class="sitemaplink" href="http://www.dbasupport.com/">DBASupport.com</a> |
+ 								<a class="sitemaplink" href="http://www.enterpriseitplanet.com/">Enterprise IT Planet</a> |
+								<a class="sitemaplink" href="http://www.hardwarecentral.com/">HardwareCentral</a> |       
+								<a class="sitemaplink" href="http://isp.webopedia.com/">ISP Glossary</a> |
+								<a class="sitemaplink" href="http://www.internetnews.com/xSP/">ISP News</a> |
+								<a class="sitemaplink" href="http://www.isp-planet.com/">ISP Planet</a> |
+								<a class="sitemaplink" href="http://www.justlinux.com/">Just Linux</a> |
+								<a class="sitemaplink" href="http://www.linuxplanet.com/">Linux Planet</a> |
+								<a class="sitemaplink" href="http://www.serverwatch.com/stypes/compare/">ServerCompare</a> |
+								<a class="sitemaplink" href="http://serverwatch.internet.com/">ServerWatch</a> |
+								<a class="sitemaplink" href="http://solarisguide.com/">Solaris Guide</a> |
+								<a class="sitemaplink" href="http://www.sqlcourse.com/">SQLCourse.com</a> |
+								<a class="sitemaplink" href="http://sqlcourse2.com/">SQLCourse2.com</a> | 
+								<a class="sitemaplink" href="http://www.sysopt.com/">SysOpt</a> |
+								<a class="sitemaplink" href="http://asp.thelist.com/">The List: ASPs</a> |
+								<a class="sitemaplink" href="http://broadband.thelist.com/">The List: Broadband</a> |
+								<a class="sitemaplink" href="http://thelist.internet.com/">The List: ISPs</a> |
+								<a class="sitemaplink" href="http://webhosts.thelist.com/">The List: WebHosts</a> |
+								<a class="sitemaplink" href="http://webdesign.thelist.com/">The List: WebDesigners</a> |
+								
+<a class="sitemaplink" href="http://www.ultrawidebandplanet.com/">Ultrawideband Planet</a> |
+   								<a class="sitemaplink" href="http://www.voipplanet.com/">VoIPPlanet</a> |       
+								<a class="sitemaplink" href="http://www.webvideouniverse.com/">WebVideoUniverse</a> |           
+								<a class="sitemaplink" href="http://www.wi-fihotspotlist.com/">Wi-FIHotSpotList</a> |
+								<a class="sitemaplink" href="http://www.wi-fiplanet.com/">Wi-FiPlanet</a> |
+								<a class="sitemaplink" href="http://www.windrivers.com/">WinDrivers</a> |
+								<a class="sitemaplink" href="http://www.internetnews.com/asp-news/">xSP News</a>        
+ 							</td>
+
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Developer Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.4guysfromrolla.com/">4GuysFromRolla.com</a> | 
+								<a class="sitemaplink" href="http://www.15seconds.com/">15 Seconds</a> | 
+								<a class="sitemaplink" href="http://www.asp101.com/">ASP101</a> | 
+								<a class="sitemaplink" href="http://www.aspwire.com/">ASP Wire</a> | 
+								<a class="sitemaplink" href="http://www.flashkit.com/">FlashKit.com</a> | 
+								<a class="sitemaplink" href="http://www.hiermenuscentral.com/">HierMenusCentral.com</a> | 
+								<a class="sitemaplink" href="http://www.javascript.com/">JavaScript.com</a> | 
+								<a class="sitemaplink" href="http://javascriptsource.com/">JavaScriptSource</a> |
+								<a class="sitemaplink" href="http://www.phpbuilder.com/">PHPBuilder.com</a> |
+								<a class="sitemaplink" href="http://www.scriptsearch.com/">ScriptSearch</a> | 
+								<a class="sitemaplink" href="http://www.streamingmediaworld.com/">StreamingMediaWorld</a> | 
+								<a class="sitemaplink" href="http://www.thecounter.com/">The Counter</a> | 
+								<a class="sitemaplink" href="http://www.theguestbook.com/">The Guestbook</a> | 
+								<a class="sitemaplink" href="http://www.vbforums.com/">VB Forums</a> | 
+								<a class="sitemaplink" href="http://www.vbwire.com/">VB Wire</a> | 
+								<a class="sitemaplink" href="http://www.webdevelopersjournal.com/">Web Developer's Journal</a> | 
+								<a class="sitemaplink" href="http://www.wdvl.com/">Web Developer's Virtual Library</a> | 
+								<a class="sitemaplink" href="http://www.webdeveloper.com/">WebDeveloper.com</a> | 
+								<a class="sitemaplink" href="http://www.webreference.com/">Webreference</a> | 
+								<a class="sitemaplink" href="http://www.xmlfiles.com/">XMLfiles.com</a>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="smheader" align="right">International Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://asia.internet.com/">asia.internet.com</a> | 
+								<a class="sitemaplink" href="http://germany.internet.com/">germany.internet.com</a> | 
+								<a class="sitemaplink" href="http://japan.internet.com/">japan.internet.com</a> | 
+								<a class="sitemaplink" href="http://korea.internet.com/">korea.internet.com</a> | 
+								<a class="sitemaplink" href="http://turkey.internet.com/">turkey.internet.com</a>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="smheader" align="right">InternetNews Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://eltoday.com/">Enterprise Linux Today</a> | 
+								<a class="sitemaplink" href="http://www.internetnews.com/">Internetnews.com</a> | 
+								<a class="sitemaplink" href="http://www.linuxtoday.com/">Linux Today</a> | 
+								<a class="sitemaplink" href="http://www.newslinx.com/">NewsLinx</a>													
+							</td>
+
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Personal Technology Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.blackberrytoday.com/">BlackBerryToday</a> | 
+								<a class="sitemaplink" href="http://www.jumbo.com/">Jumbo</a> | 
+								<a class="sitemaplink" href="http://www.megapixel.net/">Megapixel.net</a> | 
+								<a class="sitemaplink" href="http://www.pocketpcwire.com/">PocketPCWire</a> | 
+								<a class="sitemaplink" href="http://www.palmblvd.com/">Palm Boulevard</a> | 
+								<a class="sitemaplink" href="http://www.pdastreet.com/">PDAStreet</a> | 
+								<a class="sitemaplink" href="http://sharkyextreme.com/">SharkyExtreme.com</a> | 
+								<a class="sitemaplink" href="http://www.smartphonetoday.com/">Smart Phone Today</a> | 
+								<a class="sitemaplink" href="http://www.windowsmobiletoday.com/">WindowsMobileToday</a>													
+							</td>
+
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Small Business Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.ecommerce-guide.com/">ECommerce-Guide</a> | 
+								<a class="sitemaplink" href="http://www.internetnews.com/ec-news/">ECommerce News</a> | 
+								<a class="sitemaplink" href="http://www.refer-it.com/">Refer-It</a> |
+								<a class="sitemaplink" href="http://www.smallbusinesscomputing.com/">SmallBusinessComputing</a> | 
+								<a class="sitemaplink" href="http://www.webopedia.com/">Webopedia</a> | 
+								<a class="sitemaplink" href="http://www.winplanet.com/">WinPlanet</a>													
+							</td>
+
+						</tr>
+					</tbody></table>										
+				 </li>
+			 </ul>
+		 </div></div>
+		<!-- end icom links section -->			  
+
+		<!-- start eweb links section -->			  
+		<div id="div1" class="smsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">EarthWeb Sitemap</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+			
+			<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+
+				<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">			
+					<table cellpadding="1" cellspacing="1" width="680">
+						<tbody><tr>
+							<td class="smheader" align="right">IT Management Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.bitaplanet.com/">bITa Planet</a> | 
+								<a class="sitemaplink" href="http://www.cioupdate.com/">CIO Update</a> | 
+								<a class="sitemaplink" href="http://www.datamation.com/">Datamation</a> | 
+								
+								<a class="sitemaplink" href="http://www.drmwatch.com/">DRM Watch</a> | 
+								<a class="sitemaplink" href="http://www.ecrmguide.com/">eCRM Guide</a> | 
+								<a class="sitemaplink" href="http://www.esecurityplanet.com/">eSecurityPlanet.com</a> | 
+								<a class="sitemaplink" href="http://www.gridcomputingplanet.com/">GridComputingPlanet</a> | 
+								<a class="sitemaplink" href="http://www.insideid.com/">Inside ID</a> | 
+								<a class="sitemaplink" href="http://www.intranetjournal.com/">Intranet Journal</a> | 
+								<a class="sitemaplink" href="http://www.itcareerplanet.com/">IT Career Planet</a> | 
+								<a class="sitemaplink" href="http://www.itsmwatch.com/">ITSMWatch.com</a> | 
+<a class="sitemaplink" href="http://www.projectmanagerplanet.com/">Project Manager Planet</a> | <a class="sitemaplink" href="http://www.semanticweb.com/">Semantic Web</a>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Networking &amp; Communications Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.enterprisenetworkingplanet.com/">EnterpriseNetworkingPlanet</a> | 
+								<a class="sitemaplink" href="http://www.enterprisestorageforum.com/">EnterpriseStorageForum</a> | 
+								<a class="sitemaplink" href="http://www.instantmessagingplanet.com/">Instantmessagingplanet</a> | 
+								<a class="sitemaplink" href="http://www.opennetworkstoday.com/">OpenNetworksToday</a> | 
+								<a class="sitemaplink" href="http://www.opticallynetworked.com/">Optically Networked</a> | 
+								<a class="sitemaplink" href="http://www.practicallynetworked.com/">Practically Networked</a>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Web Development Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.htmlgoodies.com/">HTML Goodies</a> | 
+								<a class="sitemaplink" href="http://www.javascripts.com/">Javascripts.com</a>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Hardware &amp; Systems Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.earthwebhardware.com/">EarthWeb Hardware</a> | 
+								<a class="sitemaplink" href="http://www.sysopt.com/">SysOpt.com</a> | 
+								<a class="sitemaplink" href="http://www.virtualdr.com/">Virtual Dr.</a> | 
+								<a class="sitemaplink" href="http://www.workstationplanet.com/">WorkstationPlanet</a>													
+							</td>
+
+						</tr>
+						<tr>
+							<td class="smheader" align="right">Software Development Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.codeguru.com/">CodeGuru.com</a> | 
+								<a class="sitemaplink" href="http://www.developer.com/">Developer.com</a> | 
+								<a class="sitemaplink" href="http://www.jguru.com/">jGuru.com</a> | 
+								<a class="sitemaplink" href="http://www.jars.com/">JARS.com</a> | 
+								<a class="sitemaplink" href="http://www.developer.com/java/">Gamelan.com</a>												
+							</td>
+
+						</tr>
+						<tr>
+							<td class="smheader" align="right">IT News Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.earthweb.com/">EarthWeb.com</a> | 
+								<a class="sitemaplink" href="http://news.earthweb.com/">Earthweb News</a>													
+							</td>
+						</tr>
+
+					</tbody></table>											
+				</li>
+			</ul>
+		</div></div>
+		<!-- end eweb links section -->			  
+
+		<!-- start devx links section -->			  
+		<div id="div1" class="smsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">DevX Sitemap</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+			
+			<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+				<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">	
+					<table cellpadding="1" cellspacing="1" width="680">
+
+						<tbody><tr>
+							<td class="smheader" align="right">DevX Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+							    <a class="sitemaplink" href="http://www.apifinder.com/">APIFinder</a> |
+							    <a class="sitemaplink" href="http://www.devx.com/architect/Door/7046">Architecture Zone</a> |
+								<a class="sitemaplink" href="http://www.devx.com/asp/">ASP.NET Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/cplus/">C++ Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/dbzone/">Database Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/">DevX.com</a> | 
+								<a class="sitemaplink" href="http://www.devxnews.com/">DevXNews</a> |
+								<a class="sitemaplink" href="http://www.devx.com/enterprise/Door/7043">Enterprise Zone</a> |
+								<a class="sitemaplink" href="http://www.freevbcode.com/">FreeVBCode</a> | 
+								<a class="sitemaplink" href="http://javaboutique.internet.com/">JavaBoutique</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/Java/">Java Zone</a> |
+								<a class="sitemaplink" href="http://www.devx.com/wireless/">Mobile Zone</a> |
+								<a class="sitemaplink" href="http://www.devx.com/dotnet/">.NET Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/opensource/">Open Source Zone</a> |
+								<a class="sitemaplink" href="http://www.devx.com/semantic/Door/34578">Semantic Web</a> |
+																<a class="sitemaplink" href="http://www.devx.com/vb/">Visual Basic Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/webdev/">Web Dev Zone</a> | 
+								<a class="sitemaplink" href="http://www.devx.com/xml/">XML Zone</a>
+
+							</td>
+						</tr>
+					</tbody></table>								
+				 </li>
+			 </ul>
+		 </div></div>
+		<!-- end devx links section -->
+        
+        <!-- start mediabistro links section -->			  
+		<div id="div1" class="smsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">MediaBistro Sitemap</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+			
+
+			<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+				<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">				
+					<table cellpadding="1" cellspacing="1" width="680">
+						<tbody><tr>
+							<td class="smheader" align="right" height="35">Jobs Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.mediabistro.com/Ad-Agency-jobs.html" title="The best jobs in Advertising">Ad Agency Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Book-Publishing-jobs.html" title="The best jobs in Book Publishing">Book Publishing Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Communications-jobs.html" title="The best jobs in Corporate Communications">Corporate Communications Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/DesignArtPhoto-jobs.html" title="The best jobs in Design, Art Direction, and Photography">Design/Art/Photo Jobs </a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Edit-jobs.html" title="The best Editing jobs">Editing Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Journalism-jobs.html" title="The best jobs in Journalism">Journalism Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Magazine-Publishing-jobs.html" title="The best jobs in Magazine Publishing">Magazine Publishing Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Sales-jobs.html" title="The best jobs in Media Sales">Media Sales Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Newspapers-jobs.html" title="The best jobs in Newspaper Publishing">Newspaper Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/OnlineNew-Media-jobs.html" title="The best jobs in Online and New Media">Online/New Media Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/PRMarketing-jobs.html" title="The best jobs in PR and Marketing">PR/Marketing Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Radio-jobs.html" title="The best jobs in Radio">Radio Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/TeachingAcademia-jobs.html" title="The best media jobs in Academia">Teaching/Academia Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Television-jobs.html" title="The best jobs in Television">Television Jobs</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/Write-jobs.html" title="The best Writing jobs">Writing Jobs</a>
+
+							</td>
+						</tr>
+                        <tr>
+                        	<td class="smheader" align="right" height="35">Education Channel</td>
+                        	<td class="sitemappad" bgcolor="#e0e0e0">
+                            	<a class="sitemaplink" href="http://www.mediabistro.com/courses/inhouse" title="In-House Training programs">Corporate Training</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/courses" title="Career-building courses to launch you to the top of your field">Courses</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/ondemand" title="Video crash courses, audio toolkits, and a look inside our panel discussions and speakers series">Mediabistro On Demand</a>
+
+                            </td>
+                        </tr>
+                        <tr>
+                        	<td class="smheader" align="right" height="35">News Channel</td>
+                        	<td class="sitemappad" bgcolor="#e0e0e0">
+                            	<a class="sitemaplink" href="http://www.mediabistro.com/content/archives" title="">Features</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/fishbowldc" title="DC media, from the inside">FishbowlDC</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/fishbowlla" title="The LA media news you wish you knew">FishbowlLA</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/fishbowlny" title="NY media news, insight &amp; gossip">FishbowlNY</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/galleycat" title="The first word on the book publishing industry">GalleyCat</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/news" title="Media news">Media News Feed</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/tvnewser" title="The inside scoop on TV news">TVNewser</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/unbeige" title="Where designers read design">Unbeige</a>
+
+                            </td>
+                        </tr>
+                        <tr>
+                        	<td class="smheader" align="right" height="35">Other Channel</td>
+                        	<td class="sitemappad" bgcolor="#e0e0e0">
+                            	<a class="sitemaplink" href="http://www.mediabistro.com/events" title="Cocktail parties and other events for media professionals">Events</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/bbs" title="">Forums</a> | 
+                                <a class="sitemaplink" href="http://www.mediabistro.com/fm" title="A forum for talented freelancers to showcase their work">Freelance Marketplace</a>
+
+                            </td>
+                        </tr>
+					</tbody></table>												
+				</li>
+			</ul>
+		</div></div>
+		<!-- end mediabistro links section -->		  
+
+		<!-- start graphics links section -->			  
+		<div id="div1" class="smsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">Graphics Sitemap</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+			
+
+			<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+				<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">				
+					<table cellpadding="1" cellspacing="1" width="680">
+						<tbody><tr>
+							<td class="smheader" align="right" height="35">Graphics Channel</td>
+							<td class="sitemappad" bgcolor="#e0e0e0">
+								<a class="sitemaplink" href="http://www.adsoftheworld.com/">AdsOfTheWorld.com</a> | 
+								<a class="sitemaplink" href="http://www.creativebits.org/">CreativeBits.org</a> | 
+								<a class="sitemaplink" href="http://www.dynamicgraphics.com/">Dynamic Graphics</a> | 
+								<a class="sitemaplink" href="http://www.graphicdesignforum.com/">Graphic Design Forum</a> | 
+								<a class="sitemaplink" href="http://graphics.com/">Graphics.com</a> | 
+								<a class="sitemaplink" href="http://www.liquidtreat.com/">Liquid Treat</a> | 
+								<a class="sitemaplink" href="http://www.stepinsidedesign.com/">STEP inside design</a>
+
+							</td>
+						</tr>
+					</tbody></table>												
+				</li>
+			</ul>
+		</div></div>
+		<!-- end graphics links section -->
+
+
+		<!-- start solutions links section -->
+									<div id="div1" class="smsolutionsection" collapsible="true"><div class="floatingIcon"><a href="javascript://" title="Expand/Contract this item" onclick="toggleDiv(this.parentNode.parentNode);"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/expand.gif" alt="Expand/Contract this item" title="Expand/Contract this item"></a></div><p style="cursor: pointer;" class="" onmouseover="changeFade(this, 1);" onmouseout="changeFade(this, 0);"><a onclick="toggleDiv(this.parentNode.parentNode);" title="Expand/Contract this item" href="javascript://" class="footinsetlink">Solutions</a></p><div class="collapseWrap" style="display: none; margin-top: -10px; clear: left;">
+						
+						<ul style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+							<li style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+
+								<table cellpadding="1" cellspacing="1" width="680">
+																		<tbody><tr>
+
+										<td class="smsolutionsheader" align="right">Whitepapers and eBooks</td>
+										<td class="sitemappad" bgcolor="#e1e2dc">
+																						<a class="sitemaplink" href="http://www.devx.com/OracleSC/Door/35610" target="_blank">Oracle eBook: Migrating to Orace Database 11g</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ipswitchVS/Door/34969" target="_blank">Ipswitch Whitepaper: The Changing Role of the Network Administrator</a> | 																						<a class="sitemaplink" href="http://www.devx.com/QuestSoftware/Door/35578" target="_blank">Quest Software: Adaptive Management to Drive .NET Service Levels </a> | 																						<a class="sitemaplink" href="http://www.devx.com/SymantecVS/Door/33490" target="_blank">Symantec: Disk-Based Data Protection--Achieve Faster Backups and Restores While Reducing Your Backup Windows</a> | 																						<a class="sitemaplink" href="http://www.devx.com/OpSourceVS/Door/35473%20" target="_blank">OpSource PDF: A Step-by-Step Guide to Starting Up Your SaaS Operations </a> | 																						<a class="sitemaplink" href="http://www.devx.com/go-parallel/Article/33121" target="_blank">Intel Article Series: Managing Multi-Core Projects, Part 1: HPC on the Parallelism Frontier </a> | 																						<a class="sitemaplink" href="http://www.devx.com/HPSC/Door/34388" target="_blank">HP Whitepaper: Benefits to the ITIL Approach to Service Management</a> | 																						<a class="sitemaplink" href="http://www.devx.com/symantec/Link/35321" target="_blank">Symantec Whitepaper: Emerging Trends in Fighting Spam</a> | 																						<a class="sitemaplink" href="http://www.devx.com/SwsoftVS/Door/34472" target="_blank">Swsoft Whitepaper: Top Ten Server Virtualization Technology Considerations </a> | 																						<a class="sitemaplink" href="http://www.devx.com/SwsoftVS/Door/34472" target="_blank">SWsoft Whitepaper: An Introduction to OS Virtualization and Virtuozzo</a> | 																						<a class="sitemaplink" href="http://www.devx.com/go-parallel/Article/33534" target="_blank">Intel Paper: Best Practices for Developing and Optimizing Threaded Applications</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ipswitchVS/Door/34969" target="_blank">Ipswitch Whitepaper: Secure File Transfer In the Era of Regulatory Compliance </a> | 																						<a class="sitemaplink" href="http://www.devx.com/avaya/Link/34813" target="_blank">Avaya Whitepaper: SIP--Creating Next-Generation Telecom Applications</a> | 																						<a class="sitemaplink" href="http://www.devx.com/symantec/Link/34673" target="_blank">Symantec Whitepaper: Advantages of Integrated Messaging Security</a>																					</td>
+									</tr>
+																		<tr>
+
+										<td class="smsolutionsheader" align="right">Webcasts</td>
+										<td class="sitemappad" bgcolor="#e1e2dc">
+																						<a class="sitemaplink" href="http://www.devx.com/OracleVS/Door/35618" target="_blank">Oracle Podcast: Focus on Embedded Technologies - Embedded Oracle </a> | 																						<a class="sitemaplink" href="http://www.devx.com/go-parallel/Link/33898" target="_blank">Intel Webcast Series: Multi-Threading Tools and Techniques for Software Developers </a> | 																						<a class="sitemaplink" href="http://www.devx.com/HPSC/Door/34388" target="_blank">HP: ITIL v3--Driving Continual Service Improvement</a> | 																						<a class="sitemaplink" href="http://solutions.internet.com/index.php/3771_default" target="_blank">Finisar: Cure Fabric Blindness and Optimize SAN Performance for Application Availability</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/35005" target="_blank"> Rational Asset Manager: Succeed with Asset-based Development</a> | 																						<a class="sitemaplink" href="http://solutions.internet.com/index.php/4296_default" target="_blank">Nortel Webcast: Next Generation Services--The Ethernet and MPLS Debate</a>																					</td>
+									</tr>
+																		<tr>
+
+										<td class="smsolutionsheader" align="right">Downloads and eKits</td>
+										<td class="sitemappad" bgcolor="#e1e2dc">
+																						<a class="sitemaplink" href="http://www.devx.com/CrystalDecisionsVS/Link/35631" target="_blank">Business Objects: Access Crystal Reports for Eclipse Basic Edition, Free</a> | 																						<a class="sitemaplink" href="http://www.devx.com/SunSC/Link/35379" target="_blank">Sun Java Studio Creator</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/34625" target="_blank">IBM Rational Systems Development Solution e-Kit</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/29378%20" target="_blank">IBM  SOA Development Survival Guide eKit</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/33330" target="_blank">IBM Enterprise Architect eKit for SOA </a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/34424" target="_blank">Evaluate Rational Application Developer Online </a> | 																						<a class="sitemaplink" href="http://www.devx.com/IronSpeedVS/Door/17479" target="_blank">Iron Speed Designer Application Generator</a> | 																						<a class="sitemaplink" href="http://www.devx.com/symantec/Link/34286" target="_blank">Symantec IM Detection Utility </a>																					</td>
+									</tr>
+																		<tr>
+
+										<td class="smsolutionsheader" align="right">Tutorials and Demos</td>
+										<td class="sitemappad" bgcolor="#e1e2dc">
+																						<a class="sitemaplink" href="http://www.devx.com/CrystalDecisionsVS/Link/35629" target="_blank">Business Objects: Crystal Reports 2008 Announced</a> | 																						<a class="sitemaplink" href="http://www.devx.com/OnDemandDemos/Link/35340" target="_blank">Demo: Unify Your System i Test Efforts with IBM Rational Software</a> | 																						<a class="sitemaplink" href="http://www.devx.com/SunSC/Link/35382" target="_blank">JavaOne Online Technical Sessions and Labs</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/33034" target="_blank">Rational Functional Tester Tutorial: Create Robust, Reusable Automated Functional Tests </a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/31606" target="_blank">Rational Software Modeler Tutorial: UML 2.0 Modeling</a> | 																						<a class="sitemaplink" href="http://www.devx.com/ibm/Link/33060" target="_blank">DB2 9 Tutorial: Shrink Your Database Using  Row Compression </a> | 																						<a class="sitemaplink" href="http://www.devx.com/ipswitchVS/Link/34972" target="_blank">WhatsUp Gold v11 Demo:  Discovery, Mapping, Reporting, &amp; Monitoring </a>																					</td>
+									</tr>
+																	</tbody></table>
+
+							 </li>
+						 </ul>
+					 </div></div>
+					<!-- end solutions links section -->
+			  </div>		<!-- end foot links -->
+
+
+
+
+	</div>
+				
+		<!-- end foot links -->
+
+			
+		<div style="height: 20px;"></div>
+	
+<!-- footer stops here -->
+		
+
+
+
+
+
+<div style="margin: 0pt auto; width: 730px;" align="center">
+<br clear="all"><center><table border="0" cellpadding="5" cellspacing="0">
+                <tbody><tr> 
+                  <form method="post" action="http://search.internet.com/www.jupiterweb.com" target="_top"></form>
+                    <td align="center">
+<table class="mgfoot" border="0">
+  <tbody><tr><td class="foot_alt" style="vertical-align: middle;" align="center">
+					 <img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/onlinemedia_footer.png" alt="JupiterOnlineMedia" border="0" height="17" hspace="0" width="175"> 
+                      <p align="center"> 
+                      <a href="http://www.internet.com/" class="foot" target="_top"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/icom_foot.png" alt="internet.com" style="" align="absmiddle" border="0" height="15" hspace="0" width="97"></a><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/ruledivide_foot.gif" alt="" align="absmiddle" border="0" height="25" hspace="10" width="1"><a href="http://www.earthweb.com/" target="_top"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/earthweb_foot.png" alt="earthweb.com" style="" align="absmiddle" border="0" height="10" hspace="5" width="93"></a><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/ruledivide_foot.gif" alt="" align="absmiddle" border="0" height="25" hspace="10" width="1"><a href="http://www.devx.com/" target="_top"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/devx_foot.png" alt="Devx.com" align="absmiddle" border="0" height="30" hspace="0" width="34"></a><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/ruledivide_foot.gif" alt="" align="absmiddle" border="0" height="25" hspace="10" width="1"><a href="http://www.mediabistro.com/" target="_top"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/mediabistro_foot.png" alt="mediabistro.com" align="absmiddle" border="0" height="35" hspace="0" width="100"></a><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/ruledivide_foot.gif" alt="" align="absmiddle" border="0" height="25" hspace="10" width="1"><a href="http://www.graphics.com/" target="_top"><img src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/grcom_foot.png" alt="Graphics.com" style="" align="absmiddle" border="0" height="16" hspace="0" width="97"></a></p></td></tr></tbody></table>
+                      <p> 
+                      <font face="verdana, arial, helvetica" size="-2"><b>Search:</b> 
+                      <input name="IC_Summary" value="1" type="hidden">
+                      <input name="IC_StartNumber" value="0" type="hidden">
+                      <input name="IC_BatchSize" value="10" type="hidden">
+                      <input name="IC_RelevanceThreshold" value="50" type="hidden">
+                      <input name="IC_QueryDatabase" value="all" type="hidden">
+                      <input name="IC_QueryText" size="45" type="text">
+                      <input value="Find" name="SUBMIT" src="CodeGuru%20%20Creating%20Custom%20WPF%20Controls_files/but_find.gif" align="absmiddle" border="0" height="20" type="image" width="41">
+                      </font>
+                      </p><p>
+                      <font face="verdana, arial, helvetica" size="-2">
+                     <a href="http://www.jupitermedia.com/" class="foot"> Jupitermedia Corporation</a> has two divisions: <a href="http://www.jupiterimages.com/" class="foot">Jupiterimages</a> and <a href="http://www.jupitermedia.com/onlinemedia.html" class="foot">JupiterOnlineMedia</a></font></p><p><font face="verdana, arial, helvetica" size="-2"> <font face="verdana, arial, helvetica" size="-2"><a href="http://www.jupitermedia.com/corporate/" class="foot" target="_top">Jupitermedia Corporate Info</a>                      </font></font></p><p>
+<font face="verdana, arial, helvetica" size="-2"><font face="verdana, arial, helvetica" size="-2">                      </font></font></p><div class="foot"><!--Copyright 2005-2007-->
+
+<font face="verdana, arial, helvetica" size="-2"><font face="verdana, arial, helvetica" size="-2"><script type="text/javascript">
+document.write(' Copyright ');
+var now = new Date();
+document.write(  + now.getFullYear());
+document.write(' Jupitermedia Corporation All Rights Reserved.');
+</script> Copyright 2007 Jupitermedia Corporation All Rights Reserved.
+<noscript> Copyright 2007 Jupitermedia Corporation All Rights Reserved.</noscript>
+<br>
+                        <a href="http://www.jupitermedia.com/corporate/legal.html" class="foot" target="_top">Legal 
+                        Notices</a>, <a href="http://www.jupitermedia.com/corporate/reprints.html#Licensing1" class="foot" target="_top">Licensing</a>, 
+                        <a href="http://www.jupitermedia.com/corporate/reprints.html#Reprints1" class="foot" target="_top">Reprints</a>, 
+                        &amp; <a href="http://www.jupitermedia.com/corporate/reprints.html#Permissions" class="foot" target="_top">Permissions</a>, 
+                        <a href="http://www.jupitermedia.com/corporate/privacy/privacypolicy.html" class="foot" target="_top">Privacy 
+                        Policy</a>. </font>
+                      </font><p><font face="verdana, arial, helvetica" size="-2"> <font face="verdana, arial, helvetica" size="-2"><a href="http://www.jupitermedia.com/onlinemedia.html" class="foot" target="_top">Advertise</a> | <a href="http://e-newsletters.internet.com/" class="foot">Newsletters</a> 
+                       | <a href="http://jobs.internet.com/" class="foot" target="_top">Tech 
+                        Jobs</a> | <a href="http://www.internetshopper.com/" class="foot" target="_top">Shopping</a> | <a href="http://e-newsletters.internet.com/announcement_list.html" class="foot" target="_top">E-mail 
+                        Offers</a></font></font></p></div>
+
+<font face="verdana, arial, helvetica" size="-2">                    </font></td>
+                  
+                </tr>
+              </tbody></table></center>
+
+
+
+</div>
+<script type="text/javascript" class="footinsetlink_sm">
+	// Must be contained in the footer for each page
+	applyDecorators();
+</script>
+
+</center>
+
+    </td>
+  </tr>
+  
+</tbody></table>     </body></html>

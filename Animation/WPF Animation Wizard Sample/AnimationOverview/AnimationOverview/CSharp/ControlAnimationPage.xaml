@@ -1,0 +1,502 @@
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+      x:Class="SDKSamples.ControlAnimationPage" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="PathGeometry Examples">
+  <Page.Resources>
+    <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="DarkGray" Offset="0" />
+        <GradientStop Color="#CCCCFF" Offset="0.5" />
+        <GradientStop Color="DarkGray" Offset="1" />
+    </LinearGradientBrush>
+    <Style TargetType="{x:Type Button}">
+      <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" ClipToBounds="True">
+              <Rectangle x:Name="outerRectangle" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Stroke="{TemplateBinding Background}" 
+                  RadiusX="20" RadiusY="20" StrokeThickness="5" Fill="Transparent" />
+              <Rectangle x:Name="innerRectangle" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Stroke="Transparent" StrokeThickness="20" 
+                  Fill="{TemplateBinding Background}" RadiusX="20" RadiusY="20" />
+              <Rectangle x:Name="glassCube" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" 
+                StrokeThickness="2" RadiusX="10" RadiusY="10" Opacity="0" 
+                Fill="{StaticResource MyGlassBrushResource}"
+                RenderTransformOrigin="0.5,0.5">
+                <Rectangle.Stroke>
+                  <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <LinearGradientBrush.GradientStops>
+                      <GradientStop Offset="0.0" Color="LightBlue" />
+                      <GradientStop Offset="1.0" Color="Gray" />
+                    </LinearGradientBrush.GradientStops>
+                  </LinearGradientBrush>
+                </Rectangle.Stroke>
+                <Rectangle.RenderTransform>
+                  <TransformGroup>
+                    <ScaleTransform />
+                    <RotateTransform />
+                  </TransformGroup>
+                </Rectangle.RenderTransform>
+                <Rectangle.BitmapEffect>
+                  <BevelBitmapEffect />
+                </Rectangle.BitmapEffect>
+              </Rectangle>
+              <DockPanel Name="myContentPresenterDockPanel">
+                <ContentPresenter x:Name="myContentPresenter" Margin="20" 
+                  Content="{TemplateBinding  Content}" TextBlock.Foreground="Black" />
+
+              </DockPanel>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <MultiTrigger>
+                <MultiTrigger.Conditions>
+                  <Condition Property="IsMouseOver" Value="true" />
+                </MultiTrigger.Conditions>
+                <Setter Property ="Rectangle.Stroke" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" TargetName="outerRectangle" />
+                <Setter Property="Rectangle.Opacity" Value="1" TargetName="glassCube" />
+                <Setter Property="ContentPresenter.BitmapEffect" TargetName="myContentPresenter">
+                  <Setter.Value>
+                    <BlurBitmapEffect Radius="1" />
+                  </Setter.Value>
+                </Setter>
+              </MultiTrigger>
+              <Trigger Property="IsFocused" Value="true">
+                <Setter Property="Rectangle.Opacity" Value="1" TargetName="glassCube" />
+              </Trigger>
+              <Trigger Property="IsFocused" Value="true">
+                <Setter Property="Rectangle.Stroke" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" TargetName="outerRectangle" />
+                <Setter Property="Rectangle.Opacity" Value="1" TargetName="glassCube" />
+              </Trigger>
+              <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Name="mouseEnterBeginStoryboard">
+                    <Storyboard>
+                      <DoubleAnimation
+                        Storyboard.TargetName="glassCube"
+                        Storyboard.TargetProperty="(Rectangle.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                        By="-0.1" Duration="0:0:0.5" />
+                      <DoubleAnimation
+                        Storyboard.TargetName="glassCube"
+                        Storyboard.TargetProperty="(Rectangle.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
+                        By="-0.1" Duration="0:0:0.5" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                <EventTrigger.Actions>
+                  <StopStoryboard BeginStoryboardName="mouseEnterBeginStoryboard" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <EventTrigger RoutedEvent="Button.Click">
+                <EventTrigger.Actions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation
+                        Storyboard.TargetName="glassCube"
+                        Storyboard.TargetProperty="(Rectangle.RenderTransform).(TransformGroup.Children)[1].(RotateTransform.Angle)"
+                        By="360" Duration="0:0:0.5" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger.Actions>
+              </EventTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    
+    <Style TargetType="{x:Type ComboBoxItem}">
+
+      <!-- This LayoutTransform is targeted by the 
+           Property Trigger Enter and Exit Actions. -->
+      <Setter Property="LayoutTransform">
+        <Setter.Value>
+          <ScaleTransform ScaleX="1" ScaleY="1" />
+        </Setter.Value>
+      </Setter>
+
+      <Setter Property="RenderTransformOrigin" Value="0,0.5" />
+
+      <Style.Triggers>
+        <Trigger Property="IsFocused" Value="True">
+          <Trigger.EnterActions>
+            <BeginStoryboard>
+              <Storyboard >
+                <DoubleAnimation 
+                  Storyboard.TargetProperty="LayoutTransform.ScaleX"
+                  To="1.5" Duration="0:0:0.1"  />
+                <DoubleAnimation 
+                  Storyboard.TargetProperty="LayoutTransform.ScaleY"
+                  To="1.5" Duration="0:0:0.1"  />
+              </Storyboard>
+            </BeginStoryboard>
+          </Trigger.EnterActions>
+
+          <Trigger.ExitActions>
+            <BeginStoryboard>
+              <Storyboard >
+                <DoubleAnimation 
+                  Storyboard.TargetProperty="LayoutTransform.ScaleX"
+                  To="1" Duration="0:0:0.1" />
+                <DoubleAnimation 
+                  Storyboard.TargetProperty="LayoutTransform.ScaleY"
+                  To="1" Duration="0:0:0.1" />
+              </Storyboard>
+            </BeginStoryboard>
+          </Trigger.ExitActions>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+    
+    <Style TargetType="{x:Type RadioButton}" x:Key="RadioButtonStyle">
+      <Setter Property="FontSize" Value="18" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+
+      <!-- This BitmapEffect is targeted by the Property Trigger. -->
+      <Setter Property="BitmapEffect">
+        <Setter.Value>
+          <OuterGlowBitmapEffect 
+            GlowColor="{x:Static SystemColors.HighlightColor}" 
+            GlowSize="0" Noise="0" Opacity="0.4" />
+        </Setter.Value>
+      </Setter>
+
+      <Style.Triggers>
+        <Trigger Property="IsChecked" Value="True">
+          <Trigger.EnterActions>
+            <BeginStoryboard Name="IsCheckedStoryboard">
+              <Storyboard>
+                <DoubleAnimation 
+                  Storyboard.TargetProperty="BitmapEffect.GlowSize"
+                  To="15" Duration="0:0:0.5" />
+                <DoubleAnimation 
+                 Storyboard.TargetProperty="BitmapEffect.Opacity"
+                 From="0.4" To="0.1" AutoReverse="True" Duration="0:0:1"
+                 RepeatBehavior="Forever" BeginTime="0:0:0.5"/>
+              </Storyboard>
+            </BeginStoryboard>
+          </Trigger.EnterActions>
+          <Trigger.ExitActions>
+            <BeginStoryboard>
+              <Storyboard >
+                <DoubleAnimation 
+                  Storyboard.TargetProperty="BitmapEffect.GlowSize"
+                  To="0" Duration="0:0:0.5" />
+                <DoubleAnimation 
+                  Storyboard.TargetProperty="BitmapEffect.Opacity"
+                  To="0.4" />
+              </Storyboard>
+            </BeginStoryboard>
+          </Trigger.ExitActions>
+        </Trigger>
+      </Style.Triggers>
+
+    </Style>
+  </Page.Resources>
+
+
+  <StackPanel Margin="10" Orientation="Vertical">
+
+    <FlowDocumentScrollViewer>
+      <FlowDocument>
+        <Paragraph>
+          <Span Style="{StaticResource MyHeadingSpanStyle}">Using Animations in Controls</Span>
+          <LineBreak/>
+          A common use for animations is to spice up control behavior, perhaps even enhance
+          usability of a control. The examples below demonstrate animations being used with controls. 
+          Markup for the style used to create the sample is provided to give you a glimpse of how
+          these animations can be implemented. You will learn more about creating animations in
+          markup later.
+        </Paragraph>
+
+      </FlowDocument>
+      </FlowDocumentScrollViewer>
+
+
+    <Canvas HorizontalAlignment="Left" Width="1200" Height="50" Margin="0,30,0,0">
+      <Rectangle Style="{StaticResource myAnimatedRectangleStyle}" Width="1200" Height="30" />
+      <TextBlock FontSize="12" FontWeight="Bold" Margin="30,10,10,18">
+        ComboBox
+      </TextBlock>
+    </Canvas>
+    <StackPanel Orientation="Horizontal">
+      <ComboBox HorizontalAlignment="Left" MinWidth="120" MaxHeight="30"  Margin="40" >
+        <ComboBoxItem>
+          <TextBlock>Item 1</TextBlock>
+        </ComboBoxItem>
+        <ComboBoxItem>
+          <TextBlock>Item 2</TextBlock>
+        </ComboBoxItem>
+        <ComboBoxItem>
+          <TextBlock>Item 3</TextBlock>
+        </ComboBoxItem>
+        <ComboBoxItem>
+          <TextBlock>Item 4</TextBlock>
+        </ComboBoxItem>
+        <ComboBoxItem>
+          <TextBlock>Item 5</TextBlock>
+        </ComboBoxItem>
+        <ComboBoxItem>
+          <TextBlock>Item 6</TextBlock>
+        </ComboBoxItem>
+        <ComboBoxItem>
+          <TextBlock>Item 7</TextBlock>
+        </ComboBoxItem>
+        <ComboBoxItem>
+          <TextBlock>Item 8</TextBlock>
+        </ComboBoxItem>
+      </ComboBox>
+      <!-- Displays functional code for demonstration. -->
+      <Border Background="#EEEEEE" BorderBrush="Black" Width="600" Height="400"  BorderThickness="1">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+          <TextBlock Style="{StaticResource CodeSnippetParagraph}" xml:space="preserve">
+ ...
+&lt;Style TargetType="{x:Type ComboBoxItem}"&gt;
+
+  &lt;!-- This LayoutTransform is targeted by the 
+       Property Trigger Enter and Exit Actions. --&gt;
+  &lt;Setter Property="LayoutTransform"&gt;
+    &lt;Setter.Value&gt;
+      &lt;ScaleTransform ScaleX="1" ScaleY="1" /&gt;
+    &lt;/Setter.Value&gt;
+  &lt;/Setter&gt;
+
+  &lt;Setter Property="RenderTransformOrigin" Value="0,0.5" /&gt;
+
+  &lt;Style.Triggers&gt;
+    &lt;Trigger Property="IsFocused" Value="True"&gt;
+      &lt;Trigger.EnterActions&gt;
+        &lt;BeginStoryboard&gt;
+          &lt;Storyboard &gt;
+            &lt;DoubleAnimation 
+              Storyboard.TargetProperty="LayoutTransform.ScaleX"
+              To="1.5" Duration="0:0:0.1"  /&gt;
+            &lt;DoubleAnimation 
+              Storyboard.TargetProperty="LayoutTransform.ScaleY"
+              To="1.5" Duration="0:0:0.1"  /&gt;
+          &lt;/Storyboard&gt;
+        &lt;/BeginStoryboard&gt;
+      &lt;/Trigger.EnterActions&gt;
+
+      &lt;Trigger.ExitActions&gt;
+        &lt;BeginStoryboard&gt;
+          &lt;Storyboard &gt;
+            &lt;DoubleAnimation 
+              Storyboard.TargetProperty="LayoutTransform.ScaleX"
+              To="1" Duration="0:0:0.1" /&gt;
+            &lt;DoubleAnimation 
+              Storyboard.TargetProperty="LayoutTransform.ScaleY"
+              To="1" Duration="0:0:0.1" /&gt;
+          &lt;/Storyboard&gt;
+        &lt;/BeginStoryboard&gt;
+      &lt;/Trigger.ExitActions&gt;
+    &lt;/Trigger&gt;
+  &lt;/Style.Triggers&gt;
+&lt;/Style&gt;
+...
+      </TextBlock>
+        </ScrollViewer>
+      </Border>
+      <!-- End of code display. -->
+    </StackPanel>
+    
+    <Canvas HorizontalAlignment="Left" Width="1200" Height="50" Margin="0,30,0,0">
+      <Rectangle Style="{StaticResource myAnimatedRectangleStyle}" Width="1200" Height="30" />
+      <TextBlock FontSize="12" FontWeight="Bold" Margin="30,10,10,18">
+        Radio Buttons with Animated Bitmap Effect (Glow)
+      </TextBlock>
+    </Canvas>
+
+    <StackPanel Orientation="Horizontal">
+      <StackPanel HorizontalAlignment="Left" Margin="40">
+        <RadioButton Style="{StaticResource RadioButtonStyle}" IsChecked="True">Radio 1</RadioButton>
+        <RadioButton Style="{StaticResource RadioButtonStyle}">Radio 2</RadioButton>
+        <RadioButton Style="{StaticResource RadioButtonStyle}">Radio 3</RadioButton>
+        <RadioButton Style="{StaticResource RadioButtonStyle}">Radio 4</RadioButton>
+      </StackPanel>
+      <!-- Displays functional code for demonstration. -->
+      <Border Background="#EEEEEE" BorderBrush="Black" Width="600" Height="400"  BorderThickness="1">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+          <TextBlock Style="{StaticResource CodeSnippetParagraph}" xml:space="preserve">
+ ...
+&lt;Style TargetType="{x:Type RadioButton}" x:Key="RadioButtonStyle"&gt;
+  &lt;Setter Property="FontSize" Value="18" /&gt;
+  &lt;Setter Property="HorizontalAlignment" Value="Center" /&gt;
+
+  &lt;!-- This BitmapEffect is targeted by the Property Trigger. --&gt;
+  &lt;Setter Property="BitmapEffect"&gt;
+    &lt;Setter.Value&gt;
+      &lt;OuterGlowBitmapEffect 
+        GlowColor="{x:Static SystemColors.HighlightColor}" 
+        GlowSize="0" Noise="0" Opacity="0.4" /&gt;
+    &lt;/Setter.Value&gt;
+  &lt;/Setter&gt;
+
+  &lt;Style.Triggers&gt;
+    &lt;Trigger Property="IsChecked" Value="True"&gt;
+      &lt;Trigger.EnterActions&gt;
+        &lt;BeginStoryboard Name="IsCheckedStoryboard"&gt;
+          &lt;Storyboard&gt;
+            &lt;DoubleAnimation 
+              Storyboard.TargetProperty="BitmapEffect.GlowSize"
+              To="15" Duration="0:0:0.5" /&gt;
+            &lt;DoubleAnimation 
+             Storyboard.TargetProperty="BitmapEffect.Opacity"
+             From="0.4" To="0.1" AutoReverse="True" Duration="0:0:1"
+             RepeatBehavior="Forever" BeginTime="0:0:0.5"/&gt;
+          &lt;/Storyboard&gt;
+        &lt;/BeginStoryboard&gt;
+      &lt;/Trigger.EnterActions&gt;
+      &lt;Trigger.ExitActions&gt;
+        &lt;BeginStoryboard&gt;
+          &lt;Storyboard &gt;
+            &lt;DoubleAnimation 
+              Storyboard.TargetProperty="BitmapEffect.GlowSize"
+              To="0" Duration="0:0:0.5" /&gt;
+            &lt;DoubleAnimation 
+              Storyboard.TargetProperty="BitmapEffect.Opacity"
+              To="0.4" /&gt;
+          &lt;/Storyboard&gt;
+        &lt;/BeginStoryboard&gt;
+      &lt;/Trigger.ExitActions&gt;
+    &lt;/Trigger&gt;
+  &lt;/Style.Triggers&gt;
+
+&lt;/Style&gt;
+      ...
+      </TextBlock>
+        </ScrollViewer>
+      </Border>
+      <!-- End of code display. -->
+    </StackPanel>
+    
+    <Canvas HorizontalAlignment="Left" Width="1200" Height="50" Margin="0,30,0,0">
+      <Rectangle Style="{StaticResource myAnimatedRectangleStyle}" Width="1200" Height="30" />
+      <TextBlock FontSize="12" FontWeight="Bold" Margin="30,10,10,18">
+        Button
+      </TextBlock>
+    </Canvas>
+
+    <StackPanel Orientation="Horizontal">
+      <Button HorizontalAlignment="Left" Width="100" Height="100" Margin="40">
+        <Image Width="80" Height="80" Source="sampleImages\blueberries.jpg" />
+      </Button>
+      <!-- Displays functional code for demonstration. -->
+      <Border Background="#EEEEEE" BorderBrush="Black" Width="600" Height="400"  BorderThickness="1">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+          <TextBlock Style="{StaticResource CodeSnippetParagraph}" xml:space="preserve">
+ ...
+    &lt;LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1"&gt;
+        &lt;GradientStop Color="DarkGray" Offset="0" /&gt;
+        &lt;GradientStop Color="#CCCCFF" Offset="0.5" /&gt;
+        &lt;GradientStop Color="DarkGray" Offset="1" /&gt;
+    &lt;/LinearGradientBrush&gt;
+    &lt;Style TargetType="{x:Type Button}"&gt;
+      &lt;Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" /&gt;
+      &lt;Setter Property="Template"&gt;
+        &lt;Setter.Value&gt;
+          &lt;ControlTemplate TargetType="{x:Type Button}"&gt;
+            &lt;Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" ClipToBounds="true"&gt;
+              &lt;Rectangle x:Name="outerRectangle" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Stroke="{TemplateBinding Background}" 
+                  RadiusX="20" RadiusY="20" StrokeThickness="5" Fill="Transparent" /&gt;
+              &lt;Rectangle x:Name="innerRectangle" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Stroke="Transparent" StrokeThickness="20" 
+                  Fill="{TemplateBinding Background}" RadiusX="20" RadiusY="20" /&gt;
+              &lt;Rectangle x:Name="glassCube" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" 
+                StrokeThickness="2" RadiusX="10" RadiusY="10" Opacity="0" 
+                Fill="{StaticResource MyGlassBrushResource}"
+                RenderTransformOrigin="0.5,0.5"&gt;
+                &lt;Rectangle.Stroke&gt;
+                  &lt;LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1"&gt;
+                    &lt;LinearGradientBrush.GradientStops&gt;
+                      &lt;GradientStop Offset="0.0" Color="LightBlue" /&gt;
+                      &lt;GradientStop Offset="1.0" Color="Gray" /&gt;
+                    &lt;/LinearGradientBrush.GradientStops&gt;
+                  &lt;/LinearGradientBrush&gt;
+                &lt;/Rectangle.Stroke&gt;
+                &lt;Rectangle.RenderTransform&gt;
+                  &lt;TransformGroup&gt;
+                    &lt;ScaleTransform /&gt;
+                    &lt;RotateTransform /&gt;
+                  &lt;/TransformGroup&gt;
+                &lt;/Rectangle.RenderTransform&gt;
+                &lt;Rectangle.BitmapEffect&gt;
+                  &lt;BevelBitmapEffect /&gt;
+                &lt;/Rectangle.BitmapEffect&gt;
+              &lt;/Rectangle&gt;
+              &lt;DockPanel Name="myContentPresenterDockPanel"&gt;
+                &lt;ContentPresenter x:Name="myContentPresenter" Margin="20" 
+                  Content="{TemplateBinding  Content}" TextBlock.Foreground="Black" /&gt;
+
+              &lt;/DockPanel&gt;
+            &lt;/Grid&gt;
+            &lt;ControlTemplate.Triggers&gt;
+              &lt;MultiTrigger&gt;
+                &lt;MultiTrigger.Conditions&gt;
+                  &lt;Condition Property="IsMouseOver" Value="true" /&gt;
+                &lt;/MultiTrigger.Conditions&gt;
+                &lt;Setter Property ="Rectangle.Stroke" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" TargetName="outerRectangle" /&gt;
+                &lt;Setter Property="Rectangle.Opacity" Value="1" TargetName="glassCube" /&gt;
+                &lt;Setter Property="ContentPresenter.BitmapEffect" TargetName="myContentPresenter"&gt;
+                  &lt;Setter.Value&gt;
+                    &lt;BlurBitmapEffect Radius="1" /&gt;
+                  &lt;/Setter.Value&gt;
+                &lt;/Setter&gt;
+              &lt;/MultiTrigger&gt;
+              &lt;Trigger Property="IsFocused" Value="true"&gt;
+                &lt;Setter Property="Rectangle.Opacity" Value="1" TargetName="glassCube" /&gt;
+              &lt;/Trigger&gt;
+              &lt;Trigger Property="IsFocused" Value="true"&gt;
+                &lt;Setter Property="Rectangle.Stroke" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" TargetName="outerRectangle" /&gt;
+                &lt;Setter Property="Rectangle.Opacity" Value="1" TargetName="glassCube" /&gt;
+              &lt;/Trigger&gt;
+              &lt;EventTrigger RoutedEvent="Mouse.MouseEnter"&gt;
+                &lt;EventTrigger.Actions&gt;
+                  &lt;BeginStoryboard Name="mouseEnterBeginStoryboard"&gt;
+                    &lt;Storyboard&gt;
+                      &lt;DoubleAnimation
+                        Storyboard.TargetName="glassCube"
+                        Storyboard.TargetProperty="(Rectangle.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                        By="-0.1" Duration="0:0:0.5" /&gt;
+                      &lt;DoubleAnimation
+                        Storyboard.TargetName="glassCube"
+                        Storyboard.TargetProperty="(Rectangle.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
+                        By="-0.1" Duration="0:0:0.5" /&gt;
+                    &lt;/Storyboard&gt;
+                  &lt;/BeginStoryboard&gt;
+                &lt;/EventTrigger.Actions&gt;
+              &lt;/EventTrigger&gt;
+              &lt;EventTrigger RoutedEvent="Mouse.MouseLeave"&gt;
+                &lt;EventTrigger.Actions&gt;
+                  &lt;StopStoryboard BeginStoryboardName="mouseEnterBeginStoryboard" /&gt;
+                &lt;/EventTrigger.Actions&gt;
+              &lt;/EventTrigger&gt;
+              &lt;EventTrigger RoutedEvent="Button.Click"&gt;
+                &lt;EventTrigger.Actions&gt;
+                  &lt;BeginStoryboard&gt;
+                    &lt;Storyboard&gt;
+                      &lt;DoubleAnimation
+                        Storyboard.TargetName="glassCube"
+                        Storyboard.TargetProperty="(Rectangle.RenderTransform).(TransformGroup.Children)[1].(RotateTransform.Angle)"
+                        By="360" Duration="0:0:0.5" /&gt;
+                    &lt;/Storyboard&gt;
+                  &lt;/BeginStoryboard&gt;
+                &lt;/EventTrigger.Actions&gt;
+              &lt;/EventTrigger&gt;
+            &lt;/ControlTemplate.Triggers&gt;
+          &lt;/ControlTemplate&gt;
+        &lt;/Setter.Value&gt;
+      &lt;/Setter&gt;
+    &lt;/Style&gt;
+...
+      </TextBlock>
+        </ScrollViewer>
+      </Border>
+      <!-- End of code display. -->
+    </StackPanel>
+
+  </StackPanel>
+</Page>

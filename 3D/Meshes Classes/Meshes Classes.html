@@ -1,0 +1,126 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - The Petzold.Media3D Library: The "Meshes" Classes</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/110502.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/121223.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/08/110532.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>The Petzold.Media3D Library: The "Meshes" Classes</h2></a><p style="text-align: right;">August 11, 2007<br>Roscoe, N.Y.</p><p>
+If you want to write classes that create 3D primitives for use in WPF
+3D, and you also want to reference those classes in XAML files, there
+are basically two ways to do it, as I discuss in Chapter 6 of my book
+<a href="http://www.charlespetzold.com/3D"><i>3D Programming for Windows</i></a>, "Algorithmic Mesh Geometries."
+</p>
+<p>
+The first way is this:  You write a class that exposes a public property named <i>Geometry</i> (for example) of type <i>MeshGeometry3D</i>.  You define an instance of this class as a resource in a XAML file. Later on in the markup, you bind the <i>Geometry</i> property of a <i>GeometryModel3D</i> element with the <i>Geometry</i> property of the resource. Such resources can be shared among multiple <i>GeometryModel3D</i> elements.
+</p>
+<p>
+That's the concept behind the classes defined in the <i>Meshes</i>
+directory of the Visual Studio project for the Petzold.Media3D library
+included with the source code for the book. The hierarchy for these
+classes begins with <i>MeshGeneratorBase</i>:
+</p>
+<ul>
+Object<br>
+&nbsp;&nbsp;&nbsp;DispatcherObject<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DependencyObject<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freezable<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Animatable<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MeshGeneratorBase<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BoxMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CylindricalMeshBase<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CylinderMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HollowCylinderMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TubeMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FlatSurfaceMeshBase<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PolygonMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PolyhedronMeshBase<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CubeMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DodecahedronMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IcosahedronMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OctahedronMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TetrahedronMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SphereMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TeapotMesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TorusMesh<br>
+</ul>
+<p>
+All classes with the word <i>Base</i> in their names are abstract.
+To a certain extent, the names of these classes and some of the
+properties were inspired by DirectX 3D. The <i>TeapotMesh</i> class is a WPF 3D version of the famous
+<a href="http://en.wikipedia.org/wiki/Utah_Teapot">Utah Teapot</a> that I derived from the DirectX 3D teapot.
+</p>
+<p>
+Here's a little XAML file that uses the <i>TorusMesh</i> class.
+You'll need to run this in XamlCruncher 2.0 with the Petzold.Media3D
+library loaded, as I've described in previous blog entries:
+</p>
+<ul style="font-family: monospace; font-weight: bold; font-size: smaller;">
+&lt;Page&nbsp;xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:cp="http://schemas.charlespetzold.com/2007/xaml"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title="Rotating&nbsp;Torus"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindowTitle="Rotating&nbsp;Torus"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Page.Resources&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cp:TorusMesh&nbsp;x:Key="torus"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radius="1"&nbsp;TubeRadius="0.75"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Slices="100"&nbsp;Stacks="100"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Page.Resources&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Viewport3D&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ModelVisual3D&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ModelVisual3D.Content&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GeometryModel3D&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Geometry="{Binding&nbsp;Source={StaticResource&nbsp;torus},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path=Geometry}"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GeometryModel3D.Material&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DiffuseMaterial&nbsp;Brush="Cyan"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GeometryModel3D.Material&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GeometryModel3D.Transform&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;RotateTransform3D&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;RotateTransform3D.Rotation&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;AxisAngleRotation3D&nbsp;x:Name="rotate"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Axis="-1&nbsp;0&nbsp;0"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/RotateTransform3D.Rotation&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/RotateTransform3D&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GeometryModel3D.Transform&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GeometryModel3D&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ModelVisual3D.Content&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ModelVisual3D&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--&nbsp;Light&nbsp;sources.&nbsp;--&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ModelVisual3D&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ModelVisual3D.Content&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Model3DGroup&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;AmbientLight&nbsp;Color="#404040"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DirectionalLight&nbsp;Color="#C0C0C0"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Direction="2&nbsp;-3&nbsp;-1"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Model3DGroup&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ModelVisual3D.Content&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ModelVisual3D&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--&nbsp;Camera.&nbsp;--&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Viewport3D.Camera&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;PerspectiveCamera&nbsp;Position="0&nbsp;0&nbsp;5"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LookDirection="0&nbsp;0&nbsp;-1"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UpDirection="0&nbsp;1&nbsp;0"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FieldOfView="45"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Viewport3D.Camera&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Viewport3D&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Page.Triggers&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;EventTrigger&nbsp;RoutedEvent="Page.Loaded"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;BeginStoryboard&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Storyboard&nbsp;TargetName="rotate"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TargetProperty="Angle"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DoubleAnimation&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From="0"&nbsp;To="360"&nbsp;Duration="0:0:5"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RepeatBehavior="Forever"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Storyboard&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/BeginStoryboard&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/EventTrigger&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Page.Triggers&gt;<br>&lt;/Page&gt;<br><br>
+</ul>
+<p>
+Notice the binding from the <i>GeometryModel3D</i> to the resource.
+</p>
+<p>
+With the exception of <i>TeapotMesh</i> all these classes define a <i>TextureCoordinates</i> collection in a rational manner so that you can apply non-solid brushes to the figures. For example, try replacing the <i>DiffuseMaterial</i> element with the following:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;DiffuseMaterial&gt;<br>&nbsp;&nbsp;&lt;DiffuseMaterial.Brush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;DrawingBrush&nbsp;TileMode="Tile"&nbsp;Viewport="0&nbsp;0.05&nbsp;0.1&nbsp;0.1"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DrawingBrush.Drawing&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DrawingGroup&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GeometryDrawing&nbsp;Brush="AliceBlue"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GeometryDrawing.Geometry&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;RectangleGeometry&nbsp;Rect="0&nbsp;0&nbsp;10&nbsp;10"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GeometryDrawing.Geometry&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GeometryDrawing&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GeometryDrawing&nbsp;Brush="Red"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GeometryDrawing.Geometry&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;EllipseGeometry&nbsp;Center="5&nbsp;5"&nbsp;RadiusX="2.5"&nbsp;RadiusY="2.5"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GeometryDrawing.Geometry&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GeometryDrawing&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DrawingGroup&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DrawingBrush.Drawing&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DrawingBrush&gt;<br>&nbsp;&nbsp;&lt;/DiffuseMaterial.Brush&gt;<br>&lt;/DiffuseMaterial&gt;
+</ul>
+<p>
+To derive from <i>MeshGeneratorBase</i>, you only need to override two methods: <i>Triangulate</i> and <i>CreateInstanceCore</i>, the latter of which must be overridden by all non-abstract classes that derive from <i>Freezable</i>.
+You'll probably also want to define a few properties backed by
+dependency properties. The property-changed method for these dependency
+properties should be the static <i>PropertyChanged</i> method defined in <i>MeshGeneratorBase</i>.
+If your class displays a valid object with all its properties set to
+default values, your class's constructor should explicitly call the
+instance version of <i>PropertyChanged</i> defined in <i>MeshGeneratorBase</i>:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+PropertyChanged(new DependencyPropertyChangedEventArgs());
+</ul>
+<p>
+You'll override the <i>Triangulate</i> method like so:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+protected override void Triangulate(DependencyPropertyChangedEventArgs args,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Point3DCollection vertices,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Vector3DCollection normals,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Int32Collection indices,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;PointCollection textures)<br>
+{<br>
+...<br>
+}
+</ul>
+<p>
+The first parameter indicates the dependency property that changed to
+trigger this call. The other four parameters correspond to the four
+collections of the <i>MeshGeometry3D</i>
+class. Your responsibility is to clear those collections and then fill
+them with new values. Preferably you should do this without making any
+memory allocations. In some cases, you can use the <i>DependencyPropertyChangedEventArgs</i>
+parameter to avoid regenerating some of the collections. For example,
+if a figure is only changing its position in 3D space, then probably
+only the <i>Point3DCollection</i> needs to change, and the other collections can remain as they were.
+</p>
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Meshes%20Classes_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+
+
+<div id="comments"><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="The Petzold.Media3D Library: The " meshes="" classes="" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/110502.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/121223.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

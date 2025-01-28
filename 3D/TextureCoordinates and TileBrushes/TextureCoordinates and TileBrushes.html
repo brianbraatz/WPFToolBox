@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - TextureCoordinates and TileBrushes</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/12/140114.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/12/160115.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/12/150841.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>TextureCoordinates and TileBrushes</h2></a><p style="text-align: right;">December 15, 2006<br>Roscoe, NY</p><p>
+<a href="http://www.charlespetzold.com/blog/2006/12/140114.html">Yesterday</a> I discussed how the <i>TextureCoordinates</i> collection of the <i>MeshGeometry3D</i>
+class can actually have coordinates outside the range of 0 and 1,
+contrary to the documentation. I said coordinates outside this range
+were "internally normalized." Of course, that was a supposition because
+I am not privy to WPF source code, and today I think that supposition
+was not quite conceptually correct.
+</p>
+<p>
+I think it's probably more accurate to say that the complete range of <i>TextureCoordinates</i>
+values defines a 2D coordinate system for the brush. In many cases, the
+actual extents of this coordinate system are irrelevant because by
+default brushes stretch to fill their content, which in this case is
+the coordinate system implied by the <i>TextureCoordinates</i> collection.
+</p>
+<p>
+But sometimes brushes can be affected by the coordinate system. In 2D
+graphics programming, that coordinate system is 96 DPI. In 3D
+programming, that coordinate system is defined by <i>TextureCoordinates</i> collection.
+</p>
+<p>
+Consider this XAML file:
+</p>
+<ul>
+<a href="http://www.charlespetzold.com/blog/2006/12/TiledDrawingBrushDemo.xaml">TileDrawingBrushDemo.xaml</a>
+</ul>
+<p>
+The program defines a 10 x 10 unit <i>GeometryDrawing</i> as a resource and then uses that in two <i>DrawingBrush</i> objects with <i>TileMode</i> set to <i>Tile</i>. These two <i>DrawingBrush</i> objects cover two <i>GeometryModel3D</i> objects. In both, the mesh geometries define rectangular surfaces 2 units wide and 4 units deep.
+</p>
+<p>
+In the first object, the <i>TextureCoordinates</i> collection is defined as the documentation suggests with coordinates between 0 and 1. The <i>Viewport</i> of the <i>DrawingBrush</i>
+is defined as "0 0 0.1 0.05", which means that each tile occupies
+1/10th of the width and 1/20 of the depth of the surface. Consequently,
+the surface is covered with 10 tiles across the width, and 20 tiles
+down the depth, which results in the tiles appearing square.
+</p>
+<p>
+In the second object, the <i>TextureCoordinates</i> are defined with X values ranging from 0 to 100, and Y values from 0 to 50. The <i>ViewportUnits</i> property of the <i>DrawingBrush</i> is set to "Absolute" and the <i>Viewport</i>
+property is "0 0 10 2.5", which means that each tile is 10 units wide
+and 2.5 units deep. These units are relative to the coordinate system
+defined by the <i>TextureCoordinates</i> collection (which is 100 wide
+and 50 deep), so again there are 10 tiles across the width and 20 tiles
+down the depth. The result is the same as the first object.
+</p>
+<p>
+In the second object, you can set <i>ViewportUnits</i> to the default "RelativeToBoundingBox" (or leave it out) and <i>Viewport</i> to "0 0 0.1 0.05" and you'll get the same result. In the first object, it doesn't matter what you set <i>ViewportUnits</i> to because the coordinate system defined by the <i>TextureCoordinates</i> collection has rendered the two options the same.
+</p>
+<p>
+I haven't seen any advantage to defining <i>TextureCoordinates</i>
+values outside the range of 0 and 1, and I don't think there is one.
+But I think this example provides a little bit of insight into how 2D
+brushes are used by WPF 3D.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/12/140114.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/12/160115.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

@@ -1,0 +1,955 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Microsoft Blend Style Incrementing TextBox - The Code Project - Windows Presentation Foundation</title>
+
+
+
+
+<!-- base -->
+<meta http-equiv="Reply-to" content="mailto:webmaster@codeproject.com">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="MS.LOCALE" content="en-US">
+<meta name="Description" content="An article on how to extend the WPF TextBox control to function like the Microsoft Blend TextBox that change value by using the mouse.  As a bonus feature, a very cool data binding tooltip is included.">
+<meta name="Search.TopicType" content="kbArticle">
+<meta name="Author" content="Karl_Shifflett">
+<meta name="Search.PublishDate" content="23 Jun 2007 14:00:00 GMT">
+<meta name="Search.RevisedDate" content="23 Jun 2007 14:00:00 GMT">
+
+<meta name="keywords" content="Free source code, , Visual C++, MFC, Windows, article">
+<meta name="Copyright" content="Article content copyright Karl_Shifflett, 2007, everthing else Copyright © CodeProject, 1999-2007, All Rights Reserved.">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Lounge Postings" href="http://www.codeproject.com/webservices/LoungeRSS.aspx">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - All topics" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=1">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - MFC / C++" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=2">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - C#" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=3">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - ASP.NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=4">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - .NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=5">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - VB.NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=6">
+<link rel="search" type="application/opensearchdescription+xml" title="The Code Project" href="http://www.codeproject.com/info/OpenSearch.xml">
+<link rel="icon" href="http://www.codeproject.com/favicon.ico" type="image/ico">
+<link rel="SHORTCUT ICON" href="http://www.codeproject.com/favicon.ico">
+<link rel="stylesheet" type="text/css" href="MicrosoftBlendStyleTextBo.asp_files/global.css">
+
+<link rel="stylesheet" type="text/css" href="MicrosoftBlendStyleTextBo.asp_files/netscape6.css">
+
+<script language="javascript" src="MicrosoftBlendStyleTextBo.asp_files/oncopy.js"></script>
+<script language="javascript">
+if (top != self) top.location.href = location.href;
+if (typeof(DemoUrl) != "undefined")
+	document.write('<me' + 'ta http' + '-equiv="re' + 'fresh" con' + 'tent="1;url=' + DemoUrl + '">');
+</script></head><body style="margin: 0pt; background-color: rgb(255, 255, 255);" oncopy="return copyCode();" alink="red" bgcolor="white" link="blue" text="black" vlink="navy"><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/al.htm"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/spit.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_005.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_003.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_007.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_010.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_011.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_009.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_012.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_006.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_013.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_002.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_004.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks_008.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/chunks.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/func_200710161248.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/door.js"></script><script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/tsc.js"></script>
+
+<script src="MicrosoftBlendStyleTextBo.asp_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1735123-1";
+urchinTracker();
+</script>
+
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+<tbody><tr>
+	<td class="HeaderLogo"><a href="http://www.codeproject.com/"><img alt="Home" src="MicrosoftBlendStyleTextBo.asp_files/codeproject225x90.gif" border="0" height="90"></a></td>
+	<td class="HeaderBanner"><span id="AdBanner4"><script language="javascript">document.write("<a href=\"/script/admentor/admentorredir.asp?id=4299&way=ban\" target=_blank><img src=\"/script/ann/ServeImg.aspx?File=%2Fscript%2Fadmentor%2Fimages%2FIronSpeed%5F728x90%5F3%2Egif&C=False&id=4299&cb=5717709\" alt=\"\" border=0 width=728 height=90></a>");</script><a href="http://www.codeproject.com/script/admentor/admentorredir.asp?id=4299&amp;way=ban" target="_blank"><img src="MicrosoftBlendStyleTextBo.asp_files/ServeImg_003.htm" alt="" border="0" height="90" width="728"></a></span></td>
+</tr>
+<tr><td colspan="2">
+<table class="MemberNavBar" border="0" cellpadding="5" cellspacing="0" width="100%">
+<tbody><tr valign="middle">
+
+<td class="smallText" style="font-weight: bold;">4,631,958 members and growing! &nbsp;
+11,127 now online.
+</td>
+
+
+<td class="userNavText" align="right">
+
+
+
+<a href="http://www.codeproject.com/script/profile/whos_who.asp?id=3574032">
+brianbrtz
+</a> |
+<a href="http://www.codeproject.com/script/profile/modify.asp?ct=/useritems/MicrosoftBlendStyleTextBo.asp"><b>My Settings</b></a> |
+<a href="http://www.codeproject.com/script/profile/bookmark_list.asp">My Bookmarks</a> |
+<a href="http://www.codeproject.com/script/articles/list_articles.asp?userid=3574032">My Articles</a> |
+
+<a href="http://www.codeproject.com/script/profile/logoff.asp?ct=/useritems/MicrosoftBlendStyleTextBo.asp">Sign out</a>
+
+
+</td>
+</tr>
+</tbody></table></td></tr>
+<tr><td colspan="2">
+<table class="SiteNavBar" id="tblSiteToolbar" cellpadding="0" cellspacing="0">
+<tbody><tr>
+<td><a href="http://www.codeproject.com/">Home</a></td>
+<td nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=2">MFC/C++</a></td>
+<td><a href="http://www.codeproject.com/index.asp?cat=3">C#</a></td>
+<td nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=4">ASP.NET</a></td>
+<td nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=6">VB.NET</a></td>
+<td nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=8">Architect</a></td>
+<td nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=9">SQL</a></td>
+<td class="SelCat" nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=1">All Topics</a></td>
+<td width="100%">&nbsp;</td>
+<td>
+	<div id="MenuPos" style="position: relative; width: 300px; height: 22px; top: 1px;">
+	<table id="MPH" style="border-width: 0pt; height: 20px; display: none;" cellpadding="0" cellspacing="0" width="300">
+	<tbody><tr valign="middle">
+		<td style="border-width: 0pt;" nowrap="nowrap"><a href="http://www.codeproject.com/info/faq.asp">Help!</a></td>
+		<td style="border-width: 0pt;" nowrap="nowrap"><a href="http://www.codeproject.com/info/latest.asp">Articles</a></td>
+		<td style="border-width: 0pt;" nowrap="nowrap"><a href="http://www.codeproject.com/script/comments/forums.asp">Message Boards</a></td>
+		
+		<td style="border-width: 0pt;" nowrap="nowrap"><a href="http://www.codeproject.com/lounge.asp">Lounge</a></td>
+	</tr>
+	</tbody></table>
+	</div>
+</td>
+</tr>
+</tbody></table>
+<script type="text/javascript">function Go(){return}</script>
+<script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/cpmenu_var.js"></script>
+<script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/menu10_com.js"></script>
+<script type="text/javascript">
+var MPH = document.getElementById("MPH");
+if (MPH) MPH.style.display='none';
+</script>
+</td></tr>
+
+
+<tr><td colspan="2">
+
+	<table class="ArticleUneditedHeader" cellpadding="3" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+		<td class="smallText" style="padding-right: 10px;"><a href="http://www.codeproject.com/?cat=1">All Topics</a>, <a href="http://www.codeproject.com/?cat=2">MFC/C++</a>, <a href="http://www.codeproject.com/?cat=3">C#</a>, <a href="http://www.codeproject.com/?cat=4">ASP.NET</a>, <a href="http://www.codeproject.com/?cat=5">.NET</a>, <a href="http://www.codeproject.com/?cat=6">VB.NET</a> &gt;&gt; <a href="http://www.codeproject.com/WPF/">Windows Presentation Foundation</a> &gt;&gt; <a href="http://www.codeproject.com/WPF/#Unedited+Reader+Contributions">Unedited Reader Contributions</a><br>
+			
+			<br>
+			<div style="font-weight: bold; font-size: 16pt;">Microsoft Blend Style Incrementing TextBox</div>
+			<b>By <a href="http://www.codeproject.com/script/Articles/list_articles.asp?userid=271234">Karl_Shifflett</a></b>.
+			
+			<br><br><div style="font-size: 12px;">An
+article on how to extend the WPF TextBox control to function like the
+Microsoft Blend TextBox that change value by using the mouse. As a
+bonus feature, a very cool data binding tooltip is included.</div>
+		</td>
+		<td class="smallText" style="width: 200px;">
+			C# (C# 2.0, C# 3.0), VB (VB 8.0, VB 9.0)<br> Windows (WinXP, Vista), .NET (.NET 3.0)<br> Win32, VS (VS2005), XAML, WPF<br> Arch, Dev, Design<br>
+			<span style="padding-right: 2ex;">Posted</span>: <b>24 Jun 2007</b><br>
+			<span style="padding-right: 3ex;">Views</span>: <b>9,825</b>
+		</td>
+	</tr>
+	
+	
+	<tr class="ArticleUneditedHeader"><td colspan="2">
+
+		<table cellpadding="0" cellspacing="0" width="100%"><tbody><tr>	
+			<td class="smallText" width="100%">
+			
+			<b>Note: <a title="Click here for more information" href="http://www.codeproject.com/info/unedited.asp">This is an unedited reader contribution</a></b>
+			
+			</td>
+			<td class="SmallText" nowrap="nowrap"><a href="http://www.codeproject.com/script/Submit/EditArticle1.asp?guid=MicrosoftBlendStyleTextBo%2Fuseritems6%2F24%2F2007">Modify</a> | <a href="http://www.codeproject.com/script/Submit/DeleteArticle1.asp?guid=MicrosoftBlendStyleTextBo%2Fuseritems6%2F24%2F2007">Delete</a>&nbsp;</td>
+		</tr></tbody></table>
+	
+
+	</td></tr>
+
+
+</tbody></table>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody><tr valign="top">
+
+	
+	<td rowspan="2" class="LHNavBar">
+	
+	<!-- Yes, there are IE hacks that will allow us to create a min-width DIV 
+	     (eg http://www.webreference.com/programming/min-width/) but I couldn't
+	     be arsed. Wait for it in v2.0 -->
+	
+	<div class="FeatureBlockHeader">Announcements</div>
+<div class="FeatureBlockContent RHFeatureBar">
+
+
+<div style="padding-top: 5px;"><img src="MicrosoftBlendStyleTextBo.asp_files/VS2008_sm.gif" alt="VS 2008" style="margin: 12px 3px 12px 0pt; float: left; padding-right: 10px;" height="12" width="20">
+<a href="http://www.codeproject.com/Feature/VS2008/">Visual Studio 2008<br>competition.<br>$25,000 in prizes</a></div>
+
+
+<div style="padding-top: 3px;"><img src="MicrosoftBlendStyleTextBo.asp_files/staff_sm.gif" alt="Jobs" style="margin-left: 2px; margin-right: 5px;" align="absmiddle" height="16" width="12"> <a href="http://www.codeproject.com/info/jobs/">Jobs @ CodeProject</a></div>
+
+<div style="padding-top: 3px;"><img src="MicrosoftBlendStyleTextBo.asp_files/prize_winner_sm.gif" alt="Comp" style="margin-left: 2px; margin-right: 5px;" align="absmiddle" height="20" width="10"> <a href="http://www.codeproject.com/script/competitions/monthly/">Monthly Competition</a></div>
+
+</div>	<center>
+<script language="javascript">document.write("<a href=\"/script/admentor/admentorredir.asp?id=4390&way=ban\" target=_blank><img src=\"/script/ann/ServeImg.aspx?File=%2Fscript%2Fadmentor%2Fimages%2FWholeTomato%5FRefRename%5F160x600%2Egif&C=False&id=4390&cb=5717721\" alt=\"The intellisense upgrade for Visual Studio .NET - make your IDE as smart as you.\" border=0 width=160 height=600></a>");</script><a href="http://www.codeproject.com/script/admentor/admentorredir.asp?id=4390&amp;way=ban" target="_blank"><img src="MicrosoftBlendStyleTextBo.asp_files/ServeImg_002.htm" alt="The intellisense upgrade for Visual Studio .NET - make your IDE as smart as you." border="0" height="600" width="160"></a>
+</center>
+<br><br>
+
+	
+	<img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" height="1" width="160">
+	
+	</td>
+	
+
+	<td width="100%">
+
+		<table class="SearchHeaderBar" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="right" nowrap="nowrap" valign="middle" width="60%">
+
+	<form method="post" action="/info/search.asp" name="Search" style="margin: 0pt;">
+	<b>Search &nbsp;</b><input class="smallText" name="target" style="width: 200px;">
+	<select style="font-weight: bold; font-size: 8pt;" name="st">
+		<option value="kw">Articles</option>
+		<option value="au">Authors</option>
+	</select>
+	<input style="font-weight: bold; font-size: 8pt;" value=" Go! " type="submit"> &nbsp;
+	</form>
+</td>
+
+<td class="tinyText" nowrap="nowrap">
+<a href="http://www.codeproject.com/info/search.asp">Advanced Search</a><br>
+<a href="http://www.codeproject.com/script/articles/sections.asp">Sitemap</a> 
+
+
+</td>
+</tr>
+</tbody></table>
+		
+		<table width="100%">
+		<tbody><tr valign="top">
+		<td class="SmallText" nowrap="nowrap"><table><tbody><tr><td class="smallText" nowrap="nowrap"><img src="MicrosoftBlendStyleTextBo.asp_files/print.gif" align="absmiddle"> <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?print=true" target="_print">Print</a></td><td class="smallText" nowrap="nowrap"><img src="MicrosoftBlendStyleTextBo.asp_files/sitebuild_icon.gif" align="absmiddle"><a href="http://www.codeproject.com/script/submit/ReportProblem.asp?GUID=MicrosoftBlendStyleTextBo%2Fuseritems6%2F24%2F2007">Broken Article?</a></td><td class="smallText" nowrap="nowrap"><img src="MicrosoftBlendStyleTextBo.asp_files/link.gif" align="absmiddle"><a href="http://www.codeproject.com/script/profile/add_bookmark.asp?t=0&amp;ct=%2Fuseritems%2FMicrosoftBlendStyleTextBo%2Easp&amp;guid=MicrosoftBlendStyleTextBo%2Fuseritems6%2F24%2F2007">Bookmark</a></td><td class="smallText" nowrap="nowrap"><img src="MicrosoftBlendStyleTextBo.asp_files/mail_small.gif" align="absmiddle"> <a href="#__comments">Discuss</a></td><td class="smallText" nowrap="nowrap"><img src="MicrosoftBlendStyleTextBo.asp_files/mail.gif" align="absmiddle"> <a href="http://www.codeproject.com/script/recommend/form.asp?guid=MicrosoftBlendStyleTextBo%2Fuseritems6%2F24%2F2007">Send to a friend</a></td></tr></tbody></table>
+		</td>
+		<td align="right" nowrap="nowrap"><a name="__top"></a><table><tbody><tr><td class="smallText" align="right">3 votes  for this article.</td><td>
+<table border="2" cellpadding="0" cellspacing="0"><tbody><tr>
+<td><img src="MicrosoftBlendStyleTextBo.asp_files/red.gif" border="0" height="5" width="20"></td>
+<td><img src="MicrosoftBlendStyleTextBo.asp_files/red.gif" border="0" height="5" width="20"></td>
+<td><img src="MicrosoftBlendStyleTextBo.asp_files/red.gif" border="0" height="5" width="20"></td>
+<td><img src="MicrosoftBlendStyleTextBo.asp_files/red.gif" border="0" height="5" width="10"><img src="MicrosoftBlendStyleTextBo.asp_files/white.gif" border="0" height="5" width="10"></td>
+<td><img src="MicrosoftBlendStyleTextBo.asp_files/white.gif" border="0" height="5" width="20"></td>
+</tr></tbody></table>
+</td></tr><tr><td colspan="2" class="smallText" align="right"><a href="http://www.codeproject.com/script/articles/top_articles.asp?st=2" title="Calculated as rating x Log10(# votes)">Popularity: 1.67</a>. Rating: <b>3.5</b> out of 5.</td></tr></tbody></table></td></tr>
+		</tbody></table>
+		
+			
+	</td>
+</tr>
+
+<tr>
+	<td class="ArticlePane">
+<p class="smallText" style="margin: 5px; padding: 5px;"><b>Note:</b>
+This is an unedited contribution. If this article is inappropriate,
+needs attention or copies someone else's work without reference then
+please <a href="http://www.codeproject.com/script/submit/ReportProblem.asp?GUID=MicrosoftBlendStyleTextBo%2Fuseritems6%2F24%2F2007">Report this article</a>.</p>
+<span name="intelliTxt" id="intelliTXT">
+<div id="contentdiv">
+
+
+<!-- Article Starts -->
+
+
+
+<ul class="download">
+<li><a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo/MicrosoftBlendStyleTextbox.zip">Download MicrosoftBlendStyleTextbox.zip - 37.1 KB</a> </li>
+</ul>
+
+<h2>Introduction</h2>
+
+<p>This article describes how to extend the WPF <a itxtdid="4670853" target="_blank" href="#" style="border-bottom: 0.075em solid darkgreen; font-weight: normal; font-size: 100%; text-decoration: underline; color: darkgreen; background-color: transparent; padding-bottom: 1px;" classname="iAs" class="iAs">TextBox</a>
+control to function like the Microsoft Blend TextBox that increment and
+decrement their value by using the mouse. As a bonus feature, a very
+cool data binding tooltip is included. </p>
+
+<h2>Background</h2>
+
+<p>As part of a Blend presentation, I included a WPF Take Home Pay
+Calculator program. (Demo only calculates North Carolina State tax for
+2007 not a full blown program). As a demo feature, I wanted TextBoxes
+that the user could change the value by using their mouse. You can
+download that presentation and code at my blog here : <a href="http://karlshifflett.wordpress.com/">Get The Code From : Grain Of Sand</a></p>
+
+<p>Obviously, developers wouldn't want every TextBox on their forms to
+have this feature! However, you may have an application that this fits.
+This is more of a you can do this article.</p>
+
+<p>Also included in the .xaml is a resource that renders the ToolTip and <a itxtdid="4602486" target="_blank" href="#" style="border-bottom: 0.075em solid darkgreen; font-weight: normal; font-size: 100%; text-decoration: underline; color: darkgreen; background-color: transparent; padding-bottom: 1px;" classname="iAs" class="iAs">data</a> binds back to the properties of the control that spawned the tooltip. </p>
+
+<p>I must give credit to Tom Mathews for his demo code on ToolTip data binding. You can view his code here : <a href="http://blogs.msdn.com/tom_mathews/archive/2006/11/06/binding-a-tooltip-in-xaml.aspx">Binding a ToolTip in XAML.</a> </p>
+
+<p>I spent a good deal of time trying different things and almost gave up before I found Tom's post. Thank you Tom!</p>
+
+<h2>Desired Feature Of TextBox : To Function Like The Microsoft Blend TextBox</h2>
+
+<ul>
+<li>Increment or decrement numeric value of TextBox by allowing the
+user to click on the TextBox and drag up, down, right or left and have
+value change.</li>
+
+<li>If the user enters a non-numeric value, just return the TextBox to its previous value after the user leaves the TextBox.</li>
+
+<li>Extra Credit : Display a ToolTip to the user, explaining how the
+feature works and how much the value will change based on the direction
+they drag their mouse.</li>
+</ul>
+
+<h2>Extending The TextBox</h2>
+
+<p>Like a good number of developers, I have authored all my own ASP.NET
+controls and WinForm controls. I have not extended any WPF controls so
+far, so this is my first. If I miss something or didn't do it the WPF
+way please post a comment.</p>
+
+<h3>Properties</h3>
+
+<p>Added two new properties <code>XIncrementValue</code> and <code>YIncrementValue</code> to the extended TextBox.</p>
+
+<p><code>XIncrementValue</code> is the how much the value will be incremented or decremented when the user drags the mouse right or left.</p>
+
+<p><code>YIncrementValue</code> is the how much the value will be incremented or decremented when the user drags the mouse up or down.</p>
+
+<pre>Public Property XIncrementValue() As Integer
+    Get
+        Return _intXIncrementValue
+    End Get
+    Set(ByVal Value As Integer)
+
+        If Value &lt; 0 Then
+            Throw New ArgumentOutOfRangeException(<span class="cpp-string">"XIncrementValue"</span>, <span class="cpp-string">"Must be equal to or greater than 0."</span>)
+        End If
+
+        _intXIncrementValue = Value
+    End Set
+End Property
+
+Public Property YIncrementValue() As Integer
+    Get
+        Return _intYIncrementValue
+    End Get
+    Set(ByVal Value As Integer)
+
+        If Value &lt; 0 Then
+            Throw New ArgumentOutOfRangeException(<span class="cpp-string">"YIncrementValue"</span>, <span class="cpp-string">"Must be equal to or greater than 0."</span>)
+        End If
+
+        _intYIncrementValue = Value
+    End Set
+End Property
+
+</pre>
+
+<h3>Trapping The Mouse Down To Begin The Increment - Decrement</h3>
+
+<p>I have declare a module level variable <code>_objMouseIncrementor</code> of Type <code>MouseIncrementor</code>. When the user first clicks the TextBox a new <code>MouseIncrementor</code> object is fired up and stored. </p>
+
+<p>Notice that we are storing the location of the mouse and setting the initial state of the <code>MouseIncrementor</code> to <code>MouseIncrementor.MouseDirections.None</code>.
+This is important because until the user starts dragging right, left,
+up or down, the TextBox control does not know how to change the value
+of the TextBox.</p>
+
+<p>The <code>MouseIncrementor</code> class is a simple container for
+the data we need to know in order to make the calculations and also to
+know if the control is in Mouse Increment mode. It keeps track of the
+mouse movement direction and the <code>Point</code> of the mouse. </p>
+
+<pre>Private _objMouseIncrementor As MouseIncrementor
+
+Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Input.MouseButtonEventArgs)
+    MyBase.OnMouseDown(e)
+    _objMouseIncrementor = New MouseIncrementor(e.GetPosition(Me), MouseIncrementor.MouseDirections.None)
+End Sub
+</pre>
+
+<p>A simple class for storing the state of the mouse increment, decrement operation.</p>
+
+<div class="smallText" id="premain2" style="width: 100%;"><img preid="2" src="MicrosoftBlendStyleTextBo.asp_files/minus.gif" id="preimg2" height="9" width="9"><span preid="2" style="margin-bottom: 0pt;" id="precollapse2"> Collapse</span></div><pre style="margin-top: 0pt;" id="pre2">Class MouseIncrementor
+
+    Private _enumMouseDirection As MouseDirections = MouseDirections.None
+    Private _objPoint As Point
+
+    Enum MouseDirections
+        LeftRight
+        None
+        UpDown
+    End Enum
+
+    Public Property MouseDirection() As MouseDirections
+        Get
+            Return _enumMouseDirection
+        End Get
+        Set(ByVal Value As MouseDirections)
+            _enumMouseDirection = Value
+        End Set
+    End Property
+
+    Public Property Point() As Point
+        Get
+            Return _objPoint
+        End Get
+        Set(ByVal Value As Point)
+            _objPoint = Value
+        End Set
+    End Property
+
+    Public Sub New(ByVal objPoint As Point, _
+                   ByVal enumMouseDirection As MouseDirections)
+        _objPoint = objPoint
+        _enumMouseDirection = enumMouseDirection
+
+    End Sub
+
+End Class
+</pre>
+
+<h3>Trapping The MouseMove, Incrementing, Decrementing The Value</h3>
+
+<p>Sanity Checks</p>
+
+<ul>
+<li>Verify that we are in an incrementing or decrementing operation. We know this by checking if the <code>_objMouseIncrementor</code> object has been instantiated or not.</li>
+
+<li>Check if the developer set the <code>XIncrementValue</code> and <code>YIncrementValue</code> property values at design or run-time.</li>
+
+<li>Check to make sure the value in the TextBox will parse to a number. </li>
+</ul>
+
+<p>We need to determine if this is the first time the <code>OnMouseMove</code> sub has run since the <code>_objMouseIncrementor</code> object was instantiated. We know this by checking the <code>_objMouseIncrementor.MouseDirection</code> property. If its currently set to <code>None</code> then by checking the delta of the <code>X</code> and <code>Y</code> movements and testing for the higher value we can set the <code>_objMouseIncrementor.MouseDirection</code> to either <code>LeftRight</code> or <code>UpDown</code> so that the next time <code>OnMouseMove</code> is called, we know how to calculate the new TextBox value.</p>
+
+<p>Now that we know which direction the mouse is moving and the delta
+from the last position, we can quickly calculate the new value of the
+TextBox.</p>
+
+<p>Last order of business to the actually set the TextBox value and to record the current position of the mouse.</p>
+
+<div class="smallText" id="premain3" style="width: 100%;"><img preid="3" src="MicrosoftBlendStyleTextBo.asp_files/minus.gif" id="preimg3" height="9" width="9"><span preid="3" style="margin-bottom: 0pt;" id="precollapse3"> Collapse</span></div><pre style="margin-top: 0pt;" id="pre3">Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Input.MouseEventArgs)
+    MyBase.OnMouseMove(e)
+
+    If _objMouseIncrementor Is Nothing Then
+        'nothing to do here
+        Exit Sub
+    End If
+
+    If _intXIncrementValue = 0 AndAlso _intYIncrementValue = 0 Then
+        'nothing to do here
+        Exit Sub
+    End If
+
+    Dim dblValue As Double
+
+    If Double.TryParse(Me.Text, dblValue) = False Then
+        'since we can't parse the value, we are out of here, i.e. user put text in our number box
+        _objMouseIncrementor = Nothing
+        Exit Sub
+    End If
+
+    Dim intDeltaX As Double = _objMouseIncrementor.Point.X - e.GetPosition(Me).X
+    Dim intDeltaY As Double = _objMouseIncrementor.Point.Y - e.GetPosition(Me).Y
+
+    If _objMouseIncrementor.MouseDirection = MouseIncrementor.MouseDirections.None Then
+
+        'this is our first time here, so we need to record if we are tracking x or y movements
+        If Math.Abs(intDeltaX) &gt; Math.Abs(intDeltaY) Then
+            _objMouseIncrementor.MouseDirection = MouseIncrementor.MouseDirections.LeftRight
+
+        Else
+            _objMouseIncrementor.MouseDirection = MouseIncrementor.MouseDirections.UpDown
+        End If
+
+    End If
+
+    If _objMouseIncrementor.MouseDirection = MouseIncrementor.MouseDirections.LeftRight Then
+
+        If intDeltaX &gt; 0 Then
+            dblValue -= _intXIncrementValue
+
+        ElseIf intDeltaX &lt; 0 Then
+            dblValue += _intXIncrementValue
+        End If
+
+    Else
+
+        If intDeltaY &gt; 0 Then
+            dblValue += _intYIncrementValue
+
+        Else
+            dblValue -= _intYIncrementValue
+        End If
+
+    End If
+
+    Me.Text = dblValue.ToString
+    _objMouseIncrementor.Point = e.GetPosition(Me)
+
+End Sub
+</pre>
+
+<h3>When User Releases The Mouse Button</h3>
+
+<p>When the <code>OnMouseUp</code> event code runs it sets <code>_objMouseIncrementor = Nothing</code>. This takes the TextBox control out of mouse increment mode.</p>
+
+<pre>Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Input.MouseButtonEventArgs)
+    MyBase.OnMouseUp(e)
+    _objMouseIncrementor = Nothing
+    _strOriginalTextValue = Nothing
+End Sub
+</pre>
+
+<h3>Allowing The User To Select Text In TextBox With The Mouse</h3>
+
+<p>With all this mouse movement and mouse down trapping going on, we
+can't forget to allow the user to double click the TextBox to select
+the text. Easily accomplish by the following event handler.</p>
+
+<pre>Protected Overrides Sub OnMouseDoubleClick(ByVal e As System.Windows.Input.MouseButtonEventArgs)
+    MyBase.OnMouseDoubleClick(e)
+    _objMouseIncrementor = Nothing
+    Me.SelectAll()
+End Sub
+</pre>
+
+<h3>Handling Text Entry In Our Numeric TextBox</h3>
+
+<p>Please keep in mind, there are better ways to restrict the allowed
+characters in a TextBox than the below code. We are trying to emulate
+the <a itxtdid="4524914" target="_blank" href="#" style="border-bottom: 0.075em solid darkgreen; font-weight: normal; font-size: 100%; text-decoration: underline; color: darkgreen; background-color: transparent; padding-bottom: 1px;" classname="iAs" class="iAs">Microsoft</a> Blend TextBox, so let us just do it like Blend. Below is the simple code that accomplishes this.</p>
+
+<p>The only comment for this code is the <code>_strOriginalTextValue</code> variable that gets set in the <code>OnGotFocus</code> event. This value allows us to restore the TextBox value if the user enters a non numeric value.</p>
+
+<pre>Protected Overrides Sub OnLostFocus(ByVal e As System.Windows.RoutedEventArgs)
+    MyBase.OnLostFocus(e)
+
+    'this simulates the functionality of the Blend textbox.
+    'it allows the end user to enter non numeric characters in the textbox and simply resets the original value rather an catching mistakes at keypress time.
+
+    Dim dblValue As Double
+
+    If Double.TryParse(MyBase.Text, dblValue) = True Then
+        MyBase.Text = dblValue.ToString
+
+    Else
+        If String.IsNullOrEmpty(_strOriginalTextValue) Then
+            _strOriginalTextValue = <span class="cpp-string">"0"</span>
+        End If
+        MyBase.Text = _strOriginalTextValue
+    End If
+
+    _strOriginalTextValue = Nothing
+    _objMouseIncrementor = Nothing
+
+End Sub
+</pre>
+
+<h2>The ToolTip!</h2>
+
+<p>Most of the below code is standard xaml mark up.</p>
+
+<p>However, the cool part of this ToolTip is the data binding to properties from the control this ToolTip belongs to.</p>
+
+<p>Since a ToolTip is really a new Window, you can't data bind by
+trying to set its source to an element on the Window like we normally
+would by setting the <code>ElementName</code> property. Instead you must set a <code>DataContext</code>
+for the ToolTip. It took me forever to find out how to do this. I
+finally found this in Tom Mathews article that I mentioned at the start
+of this article that explains this.</p>
+
+<p>The magic is all in the statement, <code>DataContext=<span class="cpp-string">"{Binding Path=PlacementTarget, RelativeSource={RelativeSource Self}}"</span></code>.
+This establishes the DataContext of the ToolTip as the control. Now we
+have full access to all of the control's properties. This code is
+slightly different from Tom's but is also performing a different
+function. </p>
+
+<p>Since we now have a <code>DataContext</code>, just data bind to properties on the control that opened this ToolTip. Example : <code>Text=<span class="cpp-string">"{Binding Path=XIncrementValue}"</span></code></p>
+
+<p>Below the two bold values, 100 and 50 are the <code>YIncrementValue</code> and <code>XIncrementValue</code> properties of the TextBox.</p>
+
+<p><img alt="Screenshot - CoolTooltip.png" src="MicrosoftBlendStyleTextBo.asp_files/CoolTooltip.png" height="302" width="591"> </p>
+
+<div class="smallText" id="premain7" style="width: 100%;"><img preid="7" src="MicrosoftBlendStyleTextBo.asp_files/minus.gif" id="preimg7" height="9" width="9"><span preid="7" style="margin-bottom: 0pt;" id="precollapse7"> Collapse</span></div><pre style="margin-top: 0pt;" id="pre7">&lt;Window.Resources&gt;
+
+    &lt;ToolTip x:Key=<span class="cpp-string">"toolTip4TextBoxWithMouseIncrementing"</span> DataContext=<span class="cpp-string">"{Binding Path=PlacementTarget, RelativeSource={RelativeSource Self}}"</span>&gt;
+        &lt;StackPanel HorizontalAlignment=<span class="cpp-string">"Left"</span> VerticalAlignment=<span class="cpp-string">"Top"</span> Width=<span class="cpp-string">"409"</span> Height=<span class="cpp-string">"Auto"</span> Background=<span class="cpp-string">"#FFDEE5F0"</span>&gt;
+            &lt;StackPanel.Resources&gt;
+                &lt;LinearGradientBrush x:Key=<span class="cpp-string">"CoolToolTipGradientBrush"</span> EndPoint=<span class="cpp-string">"1,0.5"</span> StartPoint=<span class="cpp-string">"0,0.5"</span>&gt;
+                    &lt;GradientStop Color=<span class="cpp-string">"#FF0024A5"</span> Offset=<span class="cpp-string">"0"</span>/&gt;
+                    &lt;GradientStop Color=<span class="cpp-string">"#FF148CAB"</span> Offset=<span class="cpp-string">"1"</span>/&gt;
+                    &lt;GradientStop Color=<span class="cpp-string">"#FF14A7AE"</span> Offset=<span class="cpp-string">"0.242"</span>/&gt;
+                    &lt;GradientStop Color=<span class="cpp-string">"#FF1676AA"</span> Offset=<span class="cpp-string">"0.542"</span>/&gt;
+                    &lt;GradientStop Color=<span class="cpp-string">"#FE09E4CE"</span> Offset=<span class="cpp-string">"0.836"</span>/&gt;
+                &lt;/LinearGradientBrush&gt;
+            &lt;/StackPanel.Resources&gt;
+
+            &lt;TextBlock FontWeight=<span class="cpp-string">"Bold"</span> Foreground=<span class="cpp-string">"White"</span> 
+                Text=<span class="cpp-string">"Using The Incrementing TextBox"</span> 
+                Background=<span class="cpp-string">"{DynamicResource CoolToolTipGradientBrush}"</span> 
+                Margin=<span class="cpp-string">"0,0,0,10"</span> Padding=<span class="cpp-string">"0,3,0,3"</span> TextAlignment=<span class="cpp-string">"Center"</span>/&gt;
+
+            &lt;TextBlock TextWrapping=<span class="cpp-string">"WrapWithOverflow"</span> Margin=<span class="cpp-string">"5,0,5,0"</span>&gt;
+                 You can increment or decrement the value of this 
+                 textbox by simply clicking the mouse, hold and drag 
+                 up or down, right or left. Release when happy with the value.&lt;/TextBlock&gt;
+
+            &lt;Line Stroke=<span class="cpp-string">"#FF0069D7"</span> StrokeThickness=<span class="cpp-string">"2"</span> Margin=<span class="cpp-string">"0,5,0,5"</span> HorizontalAlignment=<span class="cpp-string">"Stretch"</span> X2=<span class="cpp-string">"409"</span>/&gt;
+
+            &lt;StackPanel Orientation=<span class="cpp-string">"Horizontal"</span> Margin=<span class="cpp-string">"0,0,0,0"</span>&gt;
+               &lt;TextBlock Margin=<span class="cpp-string">"5,0,5,0"</span>&gt;When moving the mouse up(+) or down(-) the value will change by :&lt;/TextBlock&gt;
+               &lt;TextBlock FontWeight=<span class="cpp-string">"Bold"</span> Text=<span class="cpp-string">"{Binding Path=YIncrementValue}"</span>/&gt;
+            &lt;/StackPanel&gt;
+
+            &lt;StackPanel Orientation=<span class="cpp-string">"Horizontal"</span> Margin=<span class="cpp-string">"0,5,0,0"</span>&gt;
+                &lt;TextBlock Margin=<span class="cpp-string">"5,0,5,0"</span>&gt;When moving the mouse right(+) or left(-) the value will change by :&lt;/TextBlock&gt;
+                &lt;TextBlock FontWeight=<span class="cpp-string">"Bold"</span> Text=<span class="cpp-string">"{Binding Path=XIncrementValue}"</span>/&gt;
+            &lt;/StackPanel&gt;
+
+            &lt;TextBlock Text=<span class="cpp-string">"WPF is so cool!"</span> 
+                  HorizontalAlignment=<span class="cpp-string">"Stretch"</span> 
+                  Background=<span class="cpp-string">"{DynamicResource CoolToolTipGradientBrush}"</span> 
+                  Foreground=<span class="cpp-string">"#FFFFFFFF"</span> TextAlignment=<span class="cpp-string">"Center"</span> Margin=<span class="cpp-string">"0,5,0,0"</span> Padding=<span class="cpp-string">"0,3,0,3"</span>/&gt;
+        &lt;/StackPanel&gt;
+    &lt;/ToolTip&gt;
+
+
+&lt;/Window.Resources&gt;
+
+</pre>
+
+<h2>Closing</h2>
+
+<p>Hope this article can help someone learn a little more about WPF.</p>
+
+<h2>History</h2>
+
+<ul>
+<li>24 June 2007 : Initial Release</li>
+</ul>
+
+
+
+<!-- Article Ends -->
+
+
+
+</div>
+</span>
+
+<script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/togglePre.js"></script>
+
+<h2>About Karl_Shifflett</h2>
+<div style="overflow: hidden;"><table border="0"><tbody><tr valign="top"><td class="smallText" nowrap="nowrap"><img src="MicrosoftBlendStyleTextBo.asp_files/4FDC2433-F70B-4B37-92D2-FC6037308F9B.jpg"><br></td><td class="smallText"><strong>Current Title</strong> : .Net Architect &amp; Programmer for emGovPower<br><br><strong>Additional Hats</strong> :  Systems Administrator, Exchange Administrator, Web Master and DBA.  <br><br>Senior
+Information Technology Professional with proven expertise in computer
+software design, programming and project management. Microsoft .NET
+MCAD. Recognized for technical excellence, strategic thinking, creative
+solutions, strong analytical skills and sound business logic. Excellent
+at soliciting requirements form stakeholders and users alike.
+Inspirational leader, self starter, quick learner dedicated to quality
+results. Extensive experience with multi-platform heterogeneous
+environments (UNIX, VMS, MAC, DOS, Windows workstations, NT Servers,
+W2K Servers, W2003 Servers, Vista). Experience designing and
+integrating business requirements with technology solutions. <br><br><strong>Programming Languages</strong>:<br>VB.NET,
+ProIV, T-SQL, DTS, Access VBA, ASP.NET, ASP, XML, VBScript, HTML,
+JavaScript, Visual Basic 1-6, VAX BASIC, UNIX BASIC, UNIX C, DCL, UNIX
+Shell Scripting, Norand RF, MEQ BASIC, QB45, BC7<br><br><strong>Programming Technologies</strong> :<br>WPF,
+.NET Framework, .NET Compact Framework, ADO.NET, Microsoft SQL Server
+2000/2005 Reporting Services, .NET Web Services, ADO, ActiveX,
+COM/COM+, Windows Message Queuing MSMQ, Windows Services, .Net Remoting<br><br><strong>Databases</strong> :<br>Microsoft
+SQL Server 2005, Microsoft SQL Server 2000, Microsoft SQL Server 7,
+Microsoft OLAP, Microsoft Access 95/97/2000/XP/2003/2007, VMS RMS,
+ProIV, UNIX C-ISAM, BTRIEVE<br><br>Click <a href="http://karlshifflett.wordpress.com/"><strong>Here</strong></a> to check out my WPF Blog.<br><br><font color="#c0943f">Just a grain of sand on the worlds beaches.</font><br><p class="smallText">Click <a href="http://www.codeproject.com/script/profile/whos_who.asp?vt=arts&amp;id=271234">here</a> to view Karl_Shifflett's online profile.</p></td></tr></tbody></table></div><br>
+<table border="0" cellpadding="4" width="100%"><tbody><tr valign="top">
+<td width="100%"><h2>Other popular Windows Presentation Foundation articles:</h2><ul><li><a href="http://www.codeproject.com/WPF/TheWpfThoughtProcess.asp">The WPF Thought Process</a><div class="smallText">An introspective journey of solving problems using WPF</div></li><li><a href="http://www.codeproject.com/WPF/SkinningInWPF.asp">Creating a Skinned User Interface in WPF</a><div class="smallText">Reviews the basics of creating a WPF user interface with various visual styles.</div></li><li><a href="http://www.codeproject.com/useritems/FlashvsWPF.asp">Comparing Flash and WPF</a><div class="smallText">Comparing Flash and WPF</div></li><li><a href="http://www.codeproject.com/WPF/AdvancedCustomTreeViewLyt.asp">Advanced Custom TreeView Layout in WPF</a><div class="smallText">Reviews an advanced layout customization for the WPF TreeView.</div></li></ul></td>
+<td width="360">
+<script language="javascript">document.write("<a href=\"/script/admentor/admentorredir.asp?id=4303&way=ban\" target=_blank><img src=\"/script/ann/ServeImg.aspx?File=%2Fscript%2Fadmentor%2Fimages%2FIronSpeed%5F300x250%5F2%2Egif&C=False&id=4303&cb=5717743\" alt=\"\" border=0 width=300 height=250></a>");</script><a href="http://www.codeproject.com/script/admentor/admentorredir.asp?id=4303&amp;way=ban" target="_blank"><img src="MicrosoftBlendStyleTextBo.asp_files/ServeImg.htm" alt="" border="0" height="250" width="300"></a>
+</td>
+</tr></tbody></table>
+
+<br>
+<script language="JavaScript" src="MicrosoftBlendStyleTextBo.asp_files/addto.js" type="text/javascript"></script>
+<script language="JavaScript" type="text/javascript">
+var addtoMethod=1;
+var AddURL = document.location.href;
+var AddTitle = escape(document.title);
+DrawLinks(100, 0, "smallText", "addto") 
+</script><span class="smallText">Add this article to: </span> <a class="addto" title="Add this page to Del.icio.us" onclick="return addto(0);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Delicious.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Digg" onclick="return addto(1);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Digg.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Google" onclick="return addto(2);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Google.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Spurl" onclick="return addto(3);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Spurl.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Blink" onclick="return addto(4);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Blink.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Furl" onclick="return addto(5);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Furl.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Simpy" onclick="return addto(6);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Simpy.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Yahoo! MyWeb" onclick="return addto(7);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Yahoo.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Technorati" onclick="return addto(8);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Technorati.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Reddit" onclick="return addto(9);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Reddit.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Windows Live" onclick="return addto(10);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Live.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Newsvine" onclick="return addto(11);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_Newsvine.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Stumbleupon" onclick="return addto(12);" href="#"><img src="MicrosoftBlendStyleTextBo.asp_files/AddTo_stumbleupon.png" align="absmiddle" border="0" height="16" width="16"></a>  
+<br><br>
+
+		<form action="/script/rating/code/app/insert_vote.asp" method="post">
+		<input name="vote_name" value="MicrosoftBlendStyleTextBo/useritems6/24/2007" type="hidden">
+		<input name="goal" value="/useritems/MicrosoftBlendStyleTextBo.asp" type="hidden">
+
+<table bgcolor="#ff9900" border="0" cellpadding="1" cellspacing="0" width="100%">
+<tbody><tr><td width="100%">
+<table bgcolor="#fbedbb" border="0" cellpadding="4" cellspacing="0" width="100%"><tbody><tr>
+<td class="smalltext" valign="middle">[<a href="#__top">Top</a>]</td>
+<td align="right" nowrap="nowrap" valign="middle">
+<i><b>Rate this Article for us!</b></i>&nbsp;&nbsp;&nbsp;&nbsp; <i>Poor</i><input value="1" name="rate" type="radio"><input value="2" name="rate" type="radio"><input value="3" name="rate" type="radio"><input value="4" name="rate" type="radio"><input value="5" name="rate" type="radio"><i>Excellent</i>&nbsp;&nbsp;<input value="Vote" class="FormButton" type="submit">
+</td></tr>
+</tbody></table></td></tr></tbody></table>
+</form>
+<center><div style="margin: 10px;"><span id="AdBanner5"><script language="javascript">document.write("<IFRAME src=\"/script/ann/ServeHTML.aspx?C=False&id=4166&cb=5717714\" border=0 frameborder=0 scrolling=no width=468 height=60></IFRAME>");</script><iframe src="MicrosoftBlendStyleTextBo.asp_files/ServeHTML.htm" border="0" frameborder="0" height="60" scrolling="no" width="468"></iframe></span></div></center>
+
+<a name="__comments"></a>
+
+<script language="JavaScript">
+
+function MsgVoteForm(MemberID, MsgID)
+{
+	document.write("<span id=\"MVF" + MsgID + "\">");
+	document.write("Rate this message: ");
+	for (var i=1; i<=5;i++)
+	{
+		document.write("<a href='#xx" + MsgID.toString() + "xx' title='give this message a vote of " + i.toString());
+		document.write("' onclick='return RateMsg(" + MemberID.toString() + ", " + MsgID.toString() + ", ");
+		document.write(i.toString() + ")'><b>" + i.toString() + "</b></a> ");
+	}
+	document.write(" (out of 5)");
+	document.writeln("</span>");
+	
+	
+}
+
+function RetypeForm(MemberID, MsgID)
+{
+	var types = [
+				 {pic:'news_general.gif',  id: 1},
+	             {pic:'news_info.gif',     id: 2},
+	             {pic:'news_question.gif', id: 4},
+	             {pic:'news_answer.gif',   id: 8},
+	             {pic:'news_game.gif',     id: 16},
+	             {pic:'news_spam.gif',     id: 32}
+	            ];
+	
+	document.write("<span id=\"RTF" + MsgID + "\">");
+	for (var i=0;i<types.length;i++)
+	{
+		document.write("<a href='/script/comments/retype?msg=" + MsgID.toString());
+		document.write("&mid=" + MemberID.toString() + "&type=" + types[i].id + "'>");
+		document.write("<img border=0 src='/script/images/" + types[i].pic + "'></a><br />");
+	}
+	document.writeln("</span>");
+}
+
+function ReportMsg(userid, msgid, score)
+{
+	if (confirm("Are you sure you want to report this message?") == true)
+		return RateMsg(userid, msgid, score);
+	else return false;
+}
+
+
+function RateMsg(userid, msgid, score)
+{
+
+   var req = new XMLHttpRequest();
+
+   req.onreadystatechange = function()
+   {
+      if ( req.readyState == 4 )
+      {
+         if ( req.status == 200 )
+         {
+         	var respText = req.responseText;
+         	var re = new RegExp("\<div\>([^\<]*)\</div\>", "g");
+         	var match = re.exec(respText);
+         	status.innerHTML = "<b>" + (match)?match[1]:"An error occured" + "</b>";
+         }
+         else
+         {
+            status.innerHTML = "<b style='color:red'>Failed!" + req.statusText + "</b>";
+         }
+      }
+   }
+   
+   var status = document.getElementById("MVF" + msgid);
+   if (!status) return;  // should never happen...   
+   status.innerHTML = "<b style='color:green'>Voting...</b>";
+   
+   var strAction = "/script/comments/vote.asp?js=1&user="+userid+"&msg="+msgid+"&score="+score;
+   req.open("GET", strAction, true);
+   req.send(null);
+   return false;
+}
+
+</script>
+
+
+<script language="JavaScript">
+var Selected = "";
+
+var AdTime = new Date();
+
+
+// Ensures the expanded message appears reasonably close to where 
+// it should appear: on screen, and if possible, under the mouse cursor.
+function SwitchMessage(e)
+{
+   if ( !e ) e = window.event;
+   var target = e.target ? e.target : e.srcElement;
+
+   // is it a post?
+   while ( target && target.id != 'DynMessLink' )
+      target = target.parentNode;
+   if ( !target || target.id != 'DynMessLink' )
+      return;
+
+   if (Selected)
+   {
+      var body = document.getElementById(Selected + "_h1");
+      if (body)
+         body.style.display = 'none';
+      var head = document.getElementById(Selected + "_h0");
+      if (head)
+         head.bgColor = '#FEF9E7';
+   }
+
+   if (Selected == target.name) // just collapse
+      Selected="";
+   else
+   {
+      Selected = target.name;
+      var body = document.getElementById(Selected + "_h1");
+      if (body)
+      {
+         if (body.style.display=='none')
+            body.style.display='';
+         else
+            body.style.display = 'none';
+      }
+      var head = document.getElementById(Selected + "_h0");
+      if (head)
+         head.bgColor = '#99CCFF';
+
+      if ( body && head && body.style.display != 'none' )
+      {
+         // the bit that keeps the post on-screen and under the cursor
+         //var dif = (getRealPos(head, "Top") + head.offsetHeight/2) - (document.body.scrollTop+e.clientY);
+         //document.body.scrollTop += dif;
+         document.body.scrollTop = getRealPos(head, "Top") - document.body.clientHeight/10;
+         EnsureMessageVisible(target.name, true);
+      }
+   }
+
+   if ( e.preventDefault )
+      e.preventDefault();
+   else
+      e.returnValue = false;
+   return false;
+}
+
+// does its best to make a message visible on-screen (vs. scrolled off somewhere).
+function EnsureMessageVisible(msgID, bShowTop) {
+   var msgHeader = document.getElementById(msgID + "_h0");
+   var msgBody = document.getElementById(msgID + "_h1");
+
+   // determine scroll position of top and bottom
+   var scrollContainer = document.body;
+   var top = getRealPos(msgHeader, 'Top');
+   var bottom = getRealPos(msgBody, 'Top') + msgBody.offsetHeight;
+
+   // if not already visible, scroll to make it so
+   if ( scrollContainer.scrollTop > top && !bShowTop)
+      scrollContainer.scrollTop = top - document.body.clientHeight/10;
+   if ( scrollContainer.scrollTop+scrollContainer.clientHeight < bottom )
+      scrollContainer.scrollTop = bottom-scrollContainer.clientHeight;
+   if ( scrollContainer.scrollTop > top && bShowTop)
+      scrollContainer.scrollTop = top - document.body.clientHeight/10;
+}
+
+// utility
+function getRealPos(i,which)
+{
+   iPos = 0
+   while (i!=null)
+   {
+      iPos += i["offset" + which];
+      i = i.offsetParent;
+   }
+   return iPos
+}
+
+
+</script>
+<div id="_MessageBoard" onclick="SwitchMessage(event)"><table bgcolor="#ff9900" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td width="100%"><table id="ForumTable" bgcolor="#ff9900" border="0" cellpadding="0" cellspacing="1" width="100%"><form action="/script/comments/app/do_filtermessages.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662" method="post"></form><tbody><tr><td><table bgcolor="white" border="0" cellpadding="3" cellspacing="0" width="100%"><tbody><tr bgcolor="#fbedbb"><td class="smalltext" nowrap="nowrap"><a href="http://www.codeproject.com/script/comments/faq.asp"><img src="MicrosoftBlendStyleTextBo.asp_files/forum_faq.GIF" align="absmiddle" border="0" height="16" width="16"> <b>FAQ</b></a>&nbsp;</td><td class="smalltext" align="right" nowrap="nowrap" valign="top">Message score threshold <select size="1" name="noise" class="smalltext"><option value="1">1.0 </option>
+<option value="2">2.0</option>
+<option selected="selected" value="3">3.0</option>
+<option value="4">4.0</option>
+<option value="5">5.0</option>
+</select>&nbsp;&nbsp;</td><td class="smalltext" colspan="2" align="right" nowrap="nowrap" valign="middle"><a href="http://www.codeproject.com/script/comments/search_comments.asp?forumid=431662"><img src="MicrosoftBlendStyleTextBo.asp_files/forum_search.gif" border="0" height="15" width="16"> Search comments</a> &nbsp;</td><td align="right" valign="top"><input value="Set Options" name="submit" class="FormButton" type="submit"></td></tr><tr bgcolor="#ff9900"><td width="100%">&nbsp;</td><td class="smalltext" align="right" nowrap="nowrap" valign="top">View <select size="1" name="expand" class="smalltext"><option value="0">Normal (slow)</option>
+<option value="2">Preview (slow)</option>
+<option selected="selected" value="5">Message View</option>
+<option value="6">Topic View</option>
+<option value="1">Thread View</option>
+<option value="3">Expanded</option>
+</select>&nbsp;&nbsp;</td><td class="smalltext" nowrap="nowrap" valign="top">Per page <select size="1" name="perpage" class="smalltext"><option value="10">10</option>
+<option selected="selected" value="25">25</option>
+<option value="50">50</option>
+</select></td><td colspan="2">&nbsp;</td></tr></tbody></table>
+</td></tr><tr bgcolor="#fbedbb"><td><a name="xx0xx"></a><table bgcolor="#fbedbb" border="0" cellpadding="2" width="100%"><tbody><tr><td class="messagetitle"><img src="MicrosoftBlendStyleTextBo.asp_files/forum_newmsg.gif" align="top" border="0" height="16" width="16"><a href="http://www.codeproject.com/script/comments/user_new.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662" class="HoverLink" target="_top" name="HoverNL" title="Add a new message to the discussions"><b>New Message</b></a></td><td class="messagetitle">Msgs 1 to 5 of 5 (Total: 5) (<a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;forumid=431662">Refresh</a>)</td><td align="right" nowrap="nowrap"><font class="messagetitle"><span class="HoverLink">First</span> <span class="HoverLink">Prev</span> <span class="HoverLink">Next</span> <span class="HoverLink">&nbsp;&nbsp;&nbsp;&nbsp;</span> </font></td></tr></tbody></table>
+</td></tr><tr bgcolor="white"><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2" bgcolor="#fbedbb" width="70%"><table border="0" cellpadding="2" cellspacing="0" width="100%"><tbody><tr><td class="messagetitle">Subject&nbsp;</td></tr></tbody></table></td><td bgcolor="#fbedbb" width="140"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" border="0" height="1" width="1"></td></tr><tr><td class="messagetitle">Author&nbsp;</td></tr><tr><td><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" border="0" height="1" width="1"></td></tr></tbody></table></td><td bgcolor="#fbedbb" width="12%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" border="0" height="1" width="1"></td></tr><tr><td class="messagetitle" align="right">Date&nbsp;</td></tr><tr><td><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" border="0" height="1" width="1"></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" border="0" height="5" width="1"></td></tr><tr id="2270937_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2270937xx"></a><img src="MicrosoftBlendStyleTextBo.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2270937" href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;forumid=431662&amp;select=2270937#xx2270937xx"><b>Nice Article!</b></a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=4609181"><img src="MicrosoftBlendStyleTextBo.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle"><b>Nan Sheng</b>&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle"><b>21:17 14 Oct '07</b>&nbsp;</font></td></tr>
+<tr id="2270937_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="MicrosoftBlendStyleTextBo.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Thanks for sharing!<img src="MicrosoftBlendStyleTextBo.asp_files/smiley_smile.gif" align="absmiddle"> <br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662&amp;select=2270937" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662&amp;select=2270937" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;tid=2270937&amp;forumid=431662&amp;select=2270937#xx2270937xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?msg=2270937#xx2270937xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?msg=2270937#xx2270937xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(4609181,2270937);</script><span id="MVF2270937">Rate this message: <a href="#xx2270937xx" title="give this message a vote of 1" onclick="return RateMsg(4609181, 2270937, 1)"><b>1</b></a> <a href="#xx2270937xx" title="give this message a vote of 2" onclick="return RateMsg(4609181, 2270937, 2)"><b>2</b></a> <a href="#xx2270937xx" title="give this message a vote of 3" onclick="return RateMsg(4609181, 2270937, 3)"><b>3</b></a> <a href="#xx2270937xx" title="give this message a vote of 4" onclick="return RateMsg(4609181, 2270937, 4)"><b>4</b></a> <a href="#xx2270937xx" title="give this message a vote of 5" onclick="return RateMsg(4609181, 2270937, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2270941_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2270941xx"></a><img src="MicrosoftBlendStyleTextBo.asp_files/ind.gif" height="1" width="18"><img src="MicrosoftBlendStyleTextBo.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2270941" href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;forumid=431662&amp;select=2270941#xx2270941xx">Re: Nice Article!</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="MicrosoftBlendStyleTextBo.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">21:22 14 Oct '07&nbsp;</font></td></tr>
+<tr id="2270941_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="MicrosoftBlendStyleTextBo.asp_files/ind.gif" height="1" width="18"><img src="MicrosoftBlendStyleTextBo.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Nan,<br><br>Thank you for your kind words.<br><br>I have updated the code, you can download it on my blog at: <a href="http://karlshifflett.wordpress.com/" rel="nofollow">http://karlshifflett.wordpress.com/</a><br><br>If you look at the 2nd and 3rd postings, the download is there.  Posting #2 explains why I had to updated the code.<br><br>Have a great day!<br> <br><br><div class="ForumSig">Cheers,  Karl<br><br><font color="#c0943f">Just a grain of sand on the worlds beaches.</font></div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662&amp;select=2270941" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662&amp;select=2270941" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;tid=2270937&amp;forumid=431662&amp;select=2270941#xx2270941xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?msg=2270941#xx2270941xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?msg=2270937#xx2270937xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2270941);</script><span id="MVF2270941">Rate this message: <a href="#xx2270941xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2270941, 1)"><b>1</b></a> <a href="#xx2270941xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2270941, 2)"><b>2</b></a> <a href="#xx2270941xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2270941, 3)"><b>3</b></a> <a href="#xx2270941xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2270941, 4)"><b>4</b></a> <a href="#xx2270941xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2270941, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" border="0" height="5" width="1"></td></tr><tr height="1"><td colspan="4" bgcolor="#ff9900"><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" height="1" width="1"></td></tr><tr id="2101164_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2101164xx"></a><img src="MicrosoftBlendStyleTextBo.asp_files/news_question.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2101164" href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;forumid=431662&amp;select=2101164#xx2101164xx"><b>Can't load project</b></a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=3097485"><img src="MicrosoftBlendStyleTextBo.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle"><b>the-rpd</b>&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle"><b>16:54 26 Jun '07</b>&nbsp;</font></td></tr>
+<tr id="2101164_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="MicrosoftBlendStyleTextBo.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Hi,<br><br>Looks nice but I can't load the project in vs2005.<br>Forgot some files of broke some? <br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662&amp;select=2101164" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662&amp;select=2101164" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;tid=2101164&amp;forumid=431662&amp;select=2101164#xx2101164xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?msg=2101164#xx2101164xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?msg=2101164#xx2101164xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(3097485,2101164);</script><span id="MVF2101164">Rate this message: <a href="#xx2101164xx" title="give this message a vote of 1" onclick="return RateMsg(3097485, 2101164, 1)"><b>1</b></a> <a href="#xx2101164xx" title="give this message a vote of 2" onclick="return RateMsg(3097485, 2101164, 2)"><b>2</b></a> <a href="#xx2101164xx" title="give this message a vote of 3" onclick="return RateMsg(3097485, 2101164, 3)"><b>3</b></a> <a href="#xx2101164xx" title="give this message a vote of 4" onclick="return RateMsg(3097485, 2101164, 4)"><b>4</b></a> <a href="#xx2101164xx" title="give this message a vote of 5" onclick="return RateMsg(3097485, 2101164, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2101357_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2101357xx"></a><img src="MicrosoftBlendStyleTextBo.asp_files/ind.gif" height="1" width="18"><img src="MicrosoftBlendStyleTextBo.asp_files/news_answer.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2101357" href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;forumid=431662&amp;select=2101357#xx2101357xx">Re: Can't load project [modified]</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="MicrosoftBlendStyleTextBo.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">21:43 26 Jun '07&nbsp;</font></td></tr>
+<tr id="2101357_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="MicrosoftBlendStyleTextBo.asp_files/ind.gif" height="1" width="18"><img src="MicrosoftBlendStyleTextBo.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">I
+just downloaded the project to my Temp directory and it load no problem
+into Visual Studio 2005 with the below configuration. This is the
+"standard" Visual Studio 2005 setup for WPF projects.<br><br>Do you
+have the Visual Studio 2005 WPF Extenstions installed on your computer?
+Your system must have the below installed to open the project in Visual
+Studio 2005.<br><br>If not, this is probably why your having an issue.
+Below is a list of Microsoft software you must load and the order they
+should be loaded in. There is also notes if you on Vista or XP Pro.<br><br>Install Visual Studio 2005.<br>If using Window XP Pro, install .NET 3.0 Runtime Components <br>Windows SDK for Vista and the .NET Framework 3.0  (recent updated version)<br>Visual Studio 2005 Extensions for .NET Framework 3.0 (Windows Workflow Foundation)<br>Visual Studio 2005 Extensions for .NET Framework 3.0 (WCF &amp; WPF), November 2006 CTP<br>Visual Studio SP1<br>If running Vista install Visual Studio SP1 Update For Vista<br>Expression Blend (optional)<br>Defrag your hard drive and begin programming.<br><br><br> -- modified at 7:27 Wednesday 27th June, 2007 <br><br><div class="ForumSig">Cheers,  Karl<br><br>Just a grain of sand on the beach.</div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662&amp;select=2101357" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662&amp;select=2101357" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;tid=2101164&amp;forumid=431662&amp;select=2101357#xx2101357xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?msg=2101357#xx2101357xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?msg=2101164#xx2101164xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2101357);</script><span id="MVF2101357">Rate this message: <a href="#xx2101357xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2101357, 1)"><b>1</b></a> <a href="#xx2101357xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2101357, 2)"><b>2</b></a> <a href="#xx2101357xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2101357, 3)"><b>3</b></a> <a href="#xx2101357xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2101357, 4)"><b>4</b></a> <a href="#xx2101357xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2101357, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2102849_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2102849xx"></a><img src="MicrosoftBlendStyleTextBo.asp_files/ind.gif" height="1" width="36"><img src="MicrosoftBlendStyleTextBo.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2102849" href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;forumid=431662&amp;select=2102849#xx2102849xx">Re: Can't load project</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=3097485"><img src="MicrosoftBlendStyleTextBo.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">the-rpd&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">12:16 27 Jun '07&nbsp;</font></td></tr>
+<tr id="2102849_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="MicrosoftBlendStyleTextBo.asp_files/ind.gif" height="1" width="36"><img src="MicrosoftBlendStyleTextBo.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Thanks, I think that's it.<br>I'm going to try that. <br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662&amp;select=2102849" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/useritems/MicrosoftBlendStyleTextBo.asp&amp;df=100&amp;forumid=431662&amp;select=2102849" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?df=100&amp;tid=2101164&amp;forumid=431662&amp;select=2102849#xx2102849xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?msg=2102849#xx2102849xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/useritems/MicrosoftBlendStyleTextBo.asp?msg=2101164#xx2101164xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(3097485,2102849);</script><span id="MVF2102849">Rate this message: <a href="#xx2102849xx" title="give this message a vote of 1" onclick="return RateMsg(3097485, 2102849, 1)"><b>1</b></a> <a href="#xx2102849xx" title="give this message a vote of 2" onclick="return RateMsg(3097485, 2102849, 2)"><b>2</b></a> <a href="#xx2102849xx" title="give this message a vote of 3" onclick="return RateMsg(3097485, 2102849, 3)"><b>3</b></a> <a href="#xx2102849xx" title="give this message a vote of 4" onclick="return RateMsg(3097485, 2102849, 4)"><b>4</b></a> <a href="#xx2102849xx" title="give this message a vote of 5" onclick="return RateMsg(3097485, 2102849, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="MicrosoftBlendStyleTextBo.asp_files/t.gif" border="0" height="5" width="1"></td></tr></tbody></table></td></tr><tr bgcolor="#fbedbb"><td><table cellpadding="2" width="100%"><tbody><tr><td class="messagetitle">Last Visit: 18:36 Friday 19th October, 2007</td><td align="right" nowrap="nowrap"><font class="messagetitle"><span class="HoverLink">First</span> <span class="HoverLink">Prev</span> <span class="HoverLink">Next</span> <span class="HoverLink">&nbsp;&nbsp;&nbsp;&nbsp;</span> </font></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>
+</div><p class="smallText"><img src="MicrosoftBlendStyleTextBo.asp_files/news_general.gif" align="absmiddle"> General comment &nbsp;&nbsp; <img src="MicrosoftBlendStyleTextBo.asp_files/news_info.gif" align="absmiddle"> News / Info &nbsp;&nbsp; <img src="MicrosoftBlendStyleTextBo.asp_files/news_question.gif" align="absmiddle"> Question &nbsp;&nbsp; <img src="MicrosoftBlendStyleTextBo.asp_files/news_answer.gif" align="absmiddle"> Answer &nbsp;&nbsp; <img src="MicrosoftBlendStyleTextBo.asp_files/news_game.gif" align="absmiddle"> Joke / Game &nbsp;&nbsp; <img src="MicrosoftBlendStyleTextBo.asp_files/news_sticky.gif" align="absmiddle"> Admin message</p>
+<br>
+
+
+<table cellspacing="5" width="100%">
+<tbody><tr valign="top"><td class="smallText">
+
+Updated: 24 Jun 2007
+</td><td class="SmallText" align="right">
+Article content copyright Karl_Shifflett, 2007<br>
+everything else Copyright © <a href="mailto:webmaster@codeproject.com">CodeProject</a>, 1999-2007.
+
+<br>
+Web09 |
+<a href="http://www.codeproject.com/info/MediaKit">Advertise on The Code Project</a> | <a href="http://www.codeproject.com/info/privacy.asp">Privacy</a>
+
+</td></tr>
+</tbody></table>
+
+</td></tr></tbody></table>
+
+
+<script type="text/javascript" src="MicrosoftBlendStyleTextBo.asp_files/front.js"></script>
+<br>
+<center>
+<table border="0" cellpadding="0" cellspacing="0" width="95%">
+<tbody><tr><td bgcolor="#ff9900" height="1"><img src="MicrosoftBlendStyleTextBo.asp_files/space.gif" height="1"></td></tr>
+<tr>
+<td align="center"><font size="1">
+
+<a href="http://www.theultimatetoolbox.com/">The Ultimate Toolbox</a> &#8226;
+<a href="http://aspalliance.com/">ASP Alliance</a> &#8226;
+<a href="http://www.developerfusion.co.uk/">Developer Fusion</a> &#8226;
+<a href="http://www.developersdex.com/">Developersdex</a> &#8226;
+<a href="http://www.devguru.com/">DevGuru</a> &#8226;
+<a href="http://www.programmersheaven.com/">Programmers Heaven</a> &#8226;
+<a href="http://www.planet-source-code.com/">Planet Source Code</a> &#8226;
+<a href="http://www.tek-tips.com/">Tek-Tips Forums</a> &#8226;
+
+</font>	
+</td>
+</tr>
+</tbody></table>
+</center>
+</td></tr></tbody></table><div style="position: absolute; visibility: visible; background-color: rgb(72, 142, 0); z-index: 101; width: 298px; height: 22px; top: 115px; left: 956px;"><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 40px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 2px;">Help!</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 55px; height: 16px; padding-left: 5px; padding-top: 2px; left: 50px; top: 2px;">Articles</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 115px; height: 16px; padding-left: 5px; padding-top: 2px; left: 113px; top: 2px;">Message Boards</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 55px; height: 16px; padding-left: 5px; padding-top: 2px; left: 236px; top: 2px;">Lounge</div></div><div style="position: absolute; visibility: hidden; background-color: rgb(72, 142, 0); z-index: 102; width: 194px; height: 98px; top: 0pt; left: 0pt;"><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 185px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 2px;">What is 'The Code Project'?</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 185px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 21px;">General FAQ</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 185px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 40px;">Post a Question</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 185px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 59px;">Site Directory</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 185px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 78px;">About Us</div></div><div style="position: absolute; visibility: hidden; background-color: rgb(72, 142, 0); z-index: 102; width: 154px; height: 136px; top: 0pt; left: 0pt;"><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 2px;">Latest</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 21px;">Most Popular</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 40px;">Search</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 59px;">Site Directory</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 78px;">Submit an Article</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 97px;">Update an Article</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 116px;">Article Competition</div></div><div style="position: absolute; visibility: hidden; background-color: rgb(72, 142, 0); z-index: 102; width: 174px; height: 459px; top: 0pt; left: 0pt;"><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 2px;">Windows Vista</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 21px;">Visual C++</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 40px;">ATL / WTL / STL</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 59px;">COM</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 78px;">C++/CLI</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 97px;">C#</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 116px;">ASP.NET</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 135px;">VB.NET</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 154px;">Web Development</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 173px;">.NET Framework</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 192px;">Mobile Development</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 211px;">SQL / ADO / ADO.NET</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 230px;">XML / XSL</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 249px;">OS / SysAdmin</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 268px;">Work Issues</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 287px;">Article Requests</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 306px;">Collaboration</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 325px;">General Discussions</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 344px;">Hardware</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 363px;">Algorithms / Math</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 382px;">Design and Architecture</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 401px;">Subtle Bugs</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 420px;">Suggestions</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 439px;">The Soapbox</div></div></body></html>

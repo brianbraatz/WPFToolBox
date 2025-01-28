@@ -1,0 +1,397 @@
+﻿<?Mapping XmlNamespace="c" ClrNamespace="RD.Controls" Assembly="RD.EllipticItemSelectorControl"?>
+<Window x:Class="RD.EllipticSample.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/avalon/2005"
+    xmlns:x="http://schemas.microsoft.com/winfx/xaml/2005"
+    xmlns:c="c"
+    xmlns:l="l" 
+    Title="RioterDecker Elliptic Control Sample"
+    >
+
+  <Window.Resources>
+
+    <Storyboard x:Key="RDTextAnimation_Enter">
+      <DoubleAnimation Duration="0:0:0.2" From="0" To="1" Storyboard.TargetName="PART_Text" Storyboard.TargetProperty="Opacity" />
+    </Storyboard>
+
+    <Storyboard x:Key="RDTextAnimation_Leave">
+      <DoubleAnimation Duration="0:0:0.2" From="1" To="0" Storyboard.TargetName="PART_Text" Storyboard.TargetProperty="Opacity" />
+    </Storyboard>
+
+    <Storyboard x:Key="RDAbilitiesAnimation_Enter">
+      <DoubleAnimation Duration="0:0:0.2" From="0" To="1" Storyboard.TargetName="PART_Abilities" Storyboard.TargetProperty="Opacity" />
+    </Storyboard>
+
+    <Storyboard x:Key="RDAbilitiesAnimation_Leave">
+      <DoubleAnimation Duration="0:0:0.2" From="1" To="0" Storyboard.TargetName="PART_Abilities" Storyboard.TargetProperty="Opacity" />
+    </Storyboard>
+    
+    <Style x:Key="RDText_Style" TargetType="{x:Type TextBlock}">
+      <Setter Property="FontFamily" Value="Segoe UI" />
+      <Setter Property="FontSize" Value="9" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="Opacity" Value="0" />
+      <Setter Property="TextBlock.BitmapEffect">
+        <Setter.Value>
+          <DropShadowBitmapEffect Color="Black" Direction="0" Opacity="0.9" ShadowDepth="2" Softness="0.3" />
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="RDAbility_Style" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource RDText_Style}">
+      <Setter Property="Opacity" Value="1" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <Style TargetType="{x:Type c:EllipticItem}" x:Key="AvalonBoy_EllipticItem_Style">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate>
+            <StackPanel Name="PART_Container">
+              <Image Source="images/avalonboy.rd.release.png" Width="70" Height="70" />
+              <Grid>
+                <TextBlock Name="PART_Text" Text="{Binding Path=Text, RelativeSource=/TemplatedParent}" Style="{StaticResource RDText_Style}" />
+              </Grid>
+              <Grid Name="PART_Abilities" Visibility="Collapsed" Margin="20" Width="225">
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" FontSize="14" Margin="0,0,0,10" HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding ElementName=PART_Text, Path=Text}" />
+                  <TextBlock Text=" abilities" />
+                </TextBlock>
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="1" Text="DotNet drilling" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="1" Text="18" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="2" Text="Analysis gathering" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="2" Text="12" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="3" Text="DataBlaster" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="3" Text="15" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="4" Text="Early adopter" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="4" Text="16" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="5" Text="UI Arts" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="5" Text="17" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="6" Text="Project handling" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="6" Text="12" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="7" Text="Business opportunist" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="7" Text="12" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Margin="0,10,0,0" Text="Master in technologeek" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Margin="0,20,0,0" HorizontalAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" Text="'Put this in your head.'" />
+              </Grid>
+            </StackPanel>
+            <ControlTemplate.Triggers>
+              <EventTrigger RoutedEvent="c:EllipticItem.MouseEnter">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Storyboard="{StaticResource RDTextAnimation_Enter}" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <EventTrigger RoutedEvent="c:EllipticItem.MouseLeave">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Storyboard="{StaticResource RDTextAnimation_Leave}" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="{x:Type c:EllipticItem}" x:Key="Chaz_EllipticItem_Style">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate>
+            <StackPanel Name="PART_Container">
+              <Image Source="images/chaz.rd.release.png" Width="70" Height="70" />
+              <Grid>
+                <TextBlock Name="PART_Text" Text="{Binding Path=Text, RelativeSource=/TemplatedParent}" Style="{StaticResource RDText_Style}" />
+              </Grid>
+              <Grid Name="PART_Abilities" Visibility="Collapsed" Margin="20" Width="225">
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" FontSize="14" Margin="0,0,0,10" HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding ElementName=PART_Text, Path=Text}" />
+                  <TextBlock Text=" abilities" />
+                </TextBlock>
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="1" Text="DotNet drilling" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="1" Text="16" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="2" Text="Analysis gathering" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="2" Text="14" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="3" Text="DataBlaster" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="3" Text="15" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="4" Text="Early adopter" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="4" Text="15" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="5" Text="UI Arts" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="5" Text="18" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="6" Text="Project handling" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="6" Text="15" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="7" Text="Business opportunist" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="7" Text="12" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Margin="0,10,0,0" Text="Master in technologeek" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Margin="0,20,0,0" HorizontalAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" Text="'I kicked the first, I smashed the second! And I swam!'" />
+              </Grid>
+
+            </StackPanel>
+            <ControlTemplate.Triggers>
+              <EventTrigger RoutedEvent="c:EllipticItem.MouseEnter">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Storyboard="{StaticResource RDTextAnimation_Enter}" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <EventTrigger RoutedEvent="c:EllipticItem.MouseLeave">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Storyboard="{StaticResource RDTextAnimation_Leave}" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="{x:Type c:EllipticItem}" x:Key="Raskal_EllipticItem_Style">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate>
+            <StackPanel Name="PART_Container">
+              <Image Source="images/raskal.rd.release.png" Width="70" Height="70" />
+              <Grid>
+                <TextBlock Name="PART_Text" Text="{Binding Path=Text, RelativeSource=/TemplatedParent}" Style="{StaticResource RDText_Style}" />
+              </Grid>
+              <Grid Name="PART_Abilities" Visibility="Collapsed" Margin="20" Width="225">
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" FontSize="14" Margin="0,0,0,10" HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding ElementName=PART_Text, Path=Text}" />
+                  <TextBlock Text=" abilities" />
+                </TextBlock>
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="1" Text="DotNet drilling" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="1" Text="15" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="2" Text="Analysis gathering" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="2" Text="14" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="3" Text="DataBlaster" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="3" Text="15" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="4" Text="Early adopter" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="4" Text="15" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="5" Text="UI Arts" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="5" Text="12" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="6" Text="Project handling" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="6" Text="11" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="7" Text="Business opportunist" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="7" Text="18" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Margin="0,10,0,0" Text="Master in technologeek" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Margin="0,20,0,0" HorizontalAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" Text="'It's integrated to GDPML. Neness!'" />
+              </Grid>
+            </StackPanel>
+            <ControlTemplate.Triggers>
+              <EventTrigger RoutedEvent="c:EllipticItem.MouseEnter">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Storyboard="{StaticResource RDTextAnimation_Enter}" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <EventTrigger RoutedEvent="c:EllipticItem.MouseLeave">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Storyboard="{StaticResource RDTextAnimation_Leave}" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="{x:Type c:EllipticItem}" x:Key="Thor_EllipticItem_Style">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate>
+            <StackPanel Name="PART_Container">
+              <Image Source="images/thor.rd.release.png" Width="70" Height="70" />
+              <Grid>
+                <TextBlock Name="PART_Text" Text="{Binding Path=Text, RelativeSource=/TemplatedParent}" Style="{StaticResource RDText_Style}" />
+              </Grid>
+              <Grid Name="PART_Abilities" Visibility="Collapsed" Margin="20" Width="225">
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" FontSize="14" Margin="0,0,0,10" HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding ElementName=PART_Text, Path=Text}" />
+                  <TextBlock Text=" abilities" />
+                </TextBlock>
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="1" Text="DotNet drilling" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="1" Text="15" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="2" Text="Analysis gathering" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="2" Text="12" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="3" Text="DataBlaster" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="3" Text="17" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="4" Text="Early adopter" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="4" Text="18" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="5" Text="UI Arts" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="5" Text="15" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="6" Text="Project handling" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="6" Text="13" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="7" Text="Business opportunist" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="7" Text="12" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Margin="0,10,0,0" Text="Master in technologeek" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Margin="0,20,0,0" HorizontalAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" Text="'Who is OK for a bullshit bingo ?'" />
+              </Grid>
+            </StackPanel>
+            <ControlTemplate.Triggers>
+              <EventTrigger RoutedEvent="c:EllipticItem.MouseEnter">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Storyboard="{StaticResource RDTextAnimation_Enter}" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <EventTrigger RoutedEvent="c:EllipticItem.MouseLeave">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Storyboard="{StaticResource RDTextAnimation_Leave}" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="{x:Type c:EllipticItem}" x:Key="Wozoi_EllipticItem_Style">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate>
+            <StackPanel Name="PART_Container">
+              <Image Source="images/wozoi.rd.release.png" Width="70" Height="70" />
+              <Grid>
+                <TextBlock Name="PART_Text" Text="{Binding Path=Text, RelativeSource=/TemplatedParent}" Style="{StaticResource RDText_Style}" />
+              </Grid>
+              <Grid Name="PART_Abilities" Visibility="Collapsed" Margin="20" Width="225">
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" FontSize="14" Margin="0,0,0,10" HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding ElementName=PART_Text, Path=Text}" />
+                  <TextBlock Text=" abilities" />
+                </TextBlock>
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="1" Text="DotNet drilling" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="1" Text="13" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="2" Text="Analysis gathering" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="2" Text="18" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="3" Text="DataBlaster" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="3" Text="11" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="4" Text="Early adopter" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="4" Text="14" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="5" Text="UI Arts" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="5" Text="11" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="6" Text="Project handling" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="6" Text="15" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.Row="7" Text="Business opportunist" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="1" Grid.Row="7" Text="12" HorizontalAlignment="Right" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Margin="0,10,0,0" Text="Master in technologeek" />
+                <TextBlock Style="{StaticResource RDAbility_Style}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Margin="0,20,0,0" HorizontalAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" Text="'Vous allez rire, il n'y a pas de serrure (in french in the text).'" />
+              </Grid>
+            </StackPanel>
+            <ControlTemplate.Triggers>
+              <EventTrigger RoutedEvent="c:EllipticItem.MouseEnter">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Storyboard="{StaticResource RDTextAnimation_Enter}" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <EventTrigger RoutedEvent="c:EllipticItem.MouseLeave">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Storyboard="{StaticResource RDTextAnimation_Leave}" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+  </Window.Resources>
+
+  <Window.Background>
+    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+      <LinearGradientBrush.GradientStops>
+        <GradientStop Color="#000000" Offset="0.0" />
+        <GradientStop Color="#435A7D" Offset="0.5" />
+        <GradientStop Color="#FBFBFC" Offset="1.0" />
+      </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+  </Window.Background>
+
+  <Canvas Width="{Binding Path=Width, RelativeSource=/Self}" Height="{Binding Path=Height, RelativeSource=/Self}">
+    <StackPanel Orientation="Vertical">
+      <TextBlock FontFamily="Segoe UI" FontSize="30" Foreground="White" Text="Elliptic Control Sample" Margin="20" FontWeight="500" />
+      <TextBlock FontFamily="Segoe UI" FontSize="12" Foreground="White" Text="A sample from our geek laboratory" Margin="20,0,0,0" />
+      <TextBlock FontFamily="Segoe UI" FontSize="12" Foreground="White" Text="Click on a RD symbol to play the animation" Margin="20,0,0,0" />
+    </StackPanel>
+    <Border Width="275" Height="356" CornerRadius="4" BorderBrush="White" BorderThickness="1" Canvas.Left="600" Canvas.Top="150">
+      <Border.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <LinearGradientBrush.GradientStops>
+            <GradientStop Color="#CC3E4960" Offset="0.0" />
+            <GradientStop Color="#86FFFFFF" Offset="1.0" />
+          </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+      </Border.Background>
+      <Grid>
+        <Image Width="121" Height="87" Source="images/rioterdecker.logo.png" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <StackPanel Name="_rdContent" Orientation="Vertical">
+          <TextBlock FontFamily="Segoe UI" FontSize="20" Foreground="White" Margin="10">The RioterDeckers</TextBlock>
+        </StackPanel>
+      </Grid>
+    </Border>
+    
+    <c:EllipticItemSelector x:Name="_selector" ItemWidth="90" ItemHeight="90" EllipticWidth="225" EllipticHeight="40" RotationSpeed="0:0:4" Angle="-25" Canvas.Top="300" Canvas.Left="225">
+      <c:EllipticItem x:Name="_avalonboyItem" Text="AvalonBoy" Style="{StaticResource AvalonBoy_EllipticItem_Style}" Selected="_OnSelected" Unselected="_OnUnselected" />
+      <c:EllipticItem x:Name="_chazItem" Text="Chaz" Style="{StaticResource Chaz_EllipticItem_Style}" Selected="_OnSelected" Unselected="_OnUnselected" />
+      <c:EllipticItem x:Name="_raskalItem" Text="Raskal"  Style="{StaticResource Raskal_EllipticItem_Style}" Selected="_OnSelected" Unselected="_OnUnselected" />
+      <c:EllipticItem x:Name="_thorItem" Text="Thor" Style="{StaticResource Thor_EllipticItem_Style}" Selected="_OnSelected" Unselected="_OnUnselected" />
+      <c:EllipticItem x:Name="_wozoiItem" Text="WoZoI" Style="{StaticResource Wozoi_EllipticItem_Style}" Selected="_OnSelected" Unselected="_OnUnselected" />
+    </c:EllipticItemSelector>
+    
+    <TextBlock Canvas.Top="680" Canvas.Left="20" Name="_rdLink">
+      <Hyperlink Text="Go to The RioterDeckers' Headquarter" NavigateUri="http://blog.rioterdecker.net/blogs" Click="_gotoRDWebSite" />
+    </TextBlock>
+  </Canvas>
+
+</Window>

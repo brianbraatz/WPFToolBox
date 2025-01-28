@@ -1,0 +1,890 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0050)http://www.kindohm.com/technical/WPF3DTutorial.htm -->
+<HTML><HEAD><TITLE>WPF 3D Tutorial (a.k.a. Avalon 3D Tutorial)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR>
+<META content=http://schemas.microsoft.com/intellisense/ie5 
+name=vs_targetSchema><LINK 
+href="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/technical.css" 
+type=text/css rel=stylesheet></HEAD>
+<BODY>
+<DIV id=main>
+<DIV id=left>
+<P>
+<SCRIPT type=text/javascript><!--
+google_ad_client = "pub-1037851691997403";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_type = "text_image";
+google_ad_channel = "";
+//--></SCRIPT>
+
+<SCRIPT src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/show_ads.js" 
+type=text/javascript>
+</SCRIPT>
+</P>
+<P><A href="http://www.kindohm.com/technical/toc.htm">WPF Tutorials Table of 
+Contents</A> | <A href="http://www.kindohm.com/">Return to 
+www.kindohm.com</A></P>
+<P><A href="http://www.kindohm.com/files/WPF3DTutorial.zip">Download source code 
+(58 KB)</A></P>
+<H1 class=mainTitle>Windows Presentation Foundation (WPF) 3D Tutorial</H1>
+<P>The purpose of this tutorial is to provide the simplest explanation and 
+examples possible of how to create 3D graphics with Windows Presentation 
+Foundation (WPF) (formerly known as "Avalon"). It is not a comprehensive guide 
+to 3D modeling, but simply a primer for those who have no knowledge of or 
+experience with 3D graphics. 3D or vector-based graphics is a different world 
+from 2D GDI, and it took a long period of guessing, stumbling, and trial and 
+error before I understood what was going on with it. Ultimately I hope that you 
+are able to avoid some of the pains I went through by reading through this 
+tutorial.</P>
+<P>For your convenience, the tutorial contains inline links to the documentation 
+of all of the .Net 3.0 classes, structures, properties, and methods used in the 
+example code. Click away as you please.</P>
+<P>
+<SCRIPT type=text/javascript><!--
+google_ad_client = "pub-1037851691997403";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_type = "text_image";
+google_ad_channel = "";
+//--></SCRIPT>
+
+<SCRIPT src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/show_ads.js" 
+type=text/javascript>
+</SCRIPT>
+</P>
+<H1>Disclaimer</H1>
+<P>While I make my best effort to make sure the content and examples in this 
+tutorial are accurate and bug-free, I'm not responsible for anything bad (e.g. 
+crashes, loss of data, any damage) that may happen if you use the information or 
+code in this tutorial. I'll do my best to make sure bugs are fixed and that the 
+content is as accurate as possible. In short, have some common sense and use 
+this at your own risk. </P>
+<H1><A name=note01source></A>Mike's Version of 3D Graphics Theory</H1>
+<P>When I started 3D graphics in WPF (back when it was still called Avalon), I 
+had no idea what I was doing. I didn't have a clue what the significance was of 
+a mesh, triangle index, or normal. This was the most painful part about learning 
+3D modeling, because without a minimal understanding of these things, nothing 
+will show up correctly in WPF (or you'll just get lucky). In short, all you 
+really need to know is what a mesh is and what it is composed of <A 
+href="http://www.kindohm.com/technical/WPF3DTutorial.htm#note01">[1]</A>. </P>
+<H2>What is a mesh?</H2>
+<P>A mesh is basically a representation of a surface. The mesh represents the 
+surface through a system of points and lines. The points describe the high and 
+low areas of the surface, and the lines connect the points to establish how you 
+get from one point to the next. </P>
+<P>At a minimum, a surface is a flat plane. A flat plane needs three points to 
+define it. Thus, the simplest surface that can be described in a mesh is a 
+single triangle. It turns out that meshes can <STRONG><EM>only</EM></STRONG> be 
+described with triangles. That is because a triangle is the simplest, most 
+granular way to define a surface. A large, complex surface obviously can't be 
+accurately described by one triangle. Instead, it can be approximated by many 
+smaller triangles. You could argue that you could use a rectangle to define a 
+surface, but it's not as granular as a triangle. When you think about it, a 
+rectangle can be broken into two triangles. Two triangles can much more 
+accurately describe a surface than a single rectangle. Ok enough... the point is 
+that a mesh represents a surface through many triangles.</P>
+<P>A whole mesh is composed of: </P>
+<UL>
+  <LI>Mesh Positions 
+  <LI>Triangle indeces 
+  <LI>Triangle normals</LI></UL>
+<H2>Mesh Positions</H2>
+<P>A mesh position is the location of a single point on a surface. The more 
+dense the points are, the more accurately the mesh describes the surface.</P>
+<H2>Triangle Indeces</H2>
+<P>A triangle index is a mesh position that defines one of the three points of a 
+triangle in the mesh. The mesh positions alone cannot describe the mesh 
+triangles. After the positions have been added, you need to define what 
+positions make up which triangles. </P>
+<P>In WPF, the order in which you add mesh positions is important. A position's 
+index value in a mesh's position collection is used when adding triangle 
+indeces. For example, let's say you have a surface composed of five positions 
+{p0, p1, p2, p3, p4}. If you wanted to define a triangle from p1, p3, and p4, 
+you would add triangle indeces with index values 1, 3, and 4. If the positions 
+were added in a different order {p3, p4, p0, p2, p1} and you wanted a triangle 
+made of the same positions, you would add triangle indeces with index values 4, 
+0, and 1. </P>
+<P>The order in which you add triangle indeces is also important. When you 
+define a triangle, you are basically defining the points in either a clockwise 
+or counter-clockwise direction (depending on which side of the triangle you're 
+on, of course). The reason this is important is because it affects which side of 
+the triangle is visible. When I say "side", I don't mean which of the three 
+triangle sides, but which side of the plane. </P>
+<P>Let's say you're looking straight ahead at the surface of a triangle. If you 
+define its indeces in a clockwise direction, the side you are looking at will be 
+invisible and the opposite side will be visible. If you define its indeces in a 
+counter-clockwise direction, the side you are looking at will be visible and the 
+opposite side will be invisible. You can use the "right hand rule" to remember 
+this. Take your right hand and make a "thumbs up" sign. The direction your 
+fingers curl is counter-clockwise and your thumb points up (or out) in the 
+direction the surface would be visible. </P>
+<P>Exactly why a right-hand-rule applies to index ordering is beyond me. My best 
+guess is that WPF doesn't think it is necessary or efficient to render both 
+sides of the triangle, so you need to pick one of them.</P>
+<H2>Triangle Normals</H2>
+<P>After defining positions and triangle indeces, you need to add normals to 
+each position. While the direction in which you add triangle indeces determines 
+which side of the triangle is visible, a normal is used by WPF to know how the 
+surface should be lit by a light source. </P>
+<P>A normal is a vector that is perpendicular to the surface of the triangle. 
+The normal vector is computed as the "cross product" of two vectors that make up 
+the side of the triangle. If you have a triangle defined by points A, B, and C, 
+you could create the normal by multiplying AB x AC, BC x BA, or CB x CA. All 
+three ways will result in the same normal. However, the right-hand rule still 
+applies. AB x AC will result in a normal in the opposite direction from AC x AB. 
+</P>
+<P><IMG alt="Normal 1" 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/Normal01.jpg"> <BR><IMG 
+alt="Normal 2" 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/normal02.jpg"> </P>
+<P>In general you'll want your normals to point in the same direction as the 
+visible side of your triangle surface. However, if the normals are angled away 
+from being perpendicular, the surface of the triangle will have a more 
+interesting lighting effect. </P>
+<P>Each position in the mesh should have a normal assigned to it, and a position 
+can only have one normal. You'll add normals to the mesh in the same order that 
+you added the positions. In other words, the index values of the normals 
+collection in the mesh corresponds to the index values of the positions 
+collection. </P>
+<P>The more positions you have, the more normals you have. The more normals you 
+have, the more pleasant the lighting and shading will be. In a mesh, a single 
+point may be the index of more than one triangle. In this case, you may want to 
+use multiple points with the same coordinates so that you can have multiple 
+normals at that point. Take the corner of a cube, for example. The corner of a 
+cube is the intersection of three different triangles on the cube. If you only 
+used one position in the mesh to define the common index of those three 
+triangles, you could only use one normal vector for that position. As a result, 
+two of the triangles at that position won't be shaded as well as it could be. It 
+would be better to define that cube corner with three unique positions. Each of 
+the three triangles would use their own unique points, and you could use three 
+normals at that corner instead of just one. </P>
+<H1>Getting Started With the Code</H1>
+<P>I'll assume you have a basic understanding of WPF and how to create a basic 
+WPF user interface with XAML. So with that, let's jump in and create a new WPF 
+application in VS.Net 2005. Add the following XAML to the app to create a simple 
+layout with a panel for buttons and a <CODE><A 
+href="http://msdn1.microsoft.com/System.Windows.Controls.Viewport3D.aspx" 
+target=_blank>Viewport3D</A></CODE> for displaying our 3D stuff:</P><PRE><CODE>&lt;Grid&gt;
+ &lt;DockPanel 
+  Width="Auto" 
+  VerticalAlignment="Stretch" 
+  Height="Auto" 
+  HorizontalAlignment="Stretch" 
+  Grid.ColumnSpan="1" 
+  Grid.Column="0" 
+  Grid.Row="0" 
+  Margin="0,0,0,0" 
+  Grid.RowSpan="1"&gt;
+  &lt;StackPanel&gt;
+   &lt;StackPanel.Background&gt;
+    &lt;LinearGradientBrush&gt;
+      &lt;GradientStop Color="White" Offset="0"/&gt;
+      &lt;GradientStop Color="DarkKhaki" Offset=".3"/&gt;
+      &lt;GradientStop Color="DarkKhaki" Offset=".7"/&gt;
+      &lt;GradientStop Color="White" Offset="1"/&gt;
+    &lt;/LinearGradientBrush&gt;
+   &lt;/StackPanel.Background&gt;
+   &lt;StackPanel Margin="10"&gt;
+    &lt;Button 
+     Name="simpleButton" 
+     Click="simpleButtonClick"&gt;Simple&lt;/Button&gt;
+   &lt;/StackPanel&gt;
+  &lt;/StackPanel&gt;
+  &lt;Viewport3D Name="mainViewport" ClipToBounds="True"&gt;
+   &lt;Viewport3D.Camera&gt;
+    &lt;PerspectiveCamera 
+	  FarPlaneDistance="100"
+	  LookDirection="-11,-10,-9"
+	  UpDirection="0,1,0"
+	  NearPlaneDistance="1" 
+	  Position="11,10,9" 
+	  FieldOfView="70" /&gt;
+    &lt;/Viewport3D.Camera&gt;
+    &lt;ModelVisual3D&gt;
+     &lt;ModelVisual3D.Content&gt;
+	   &lt;DirectionalLight 
+	    Color="White" 
+	    Direction="-2,-3,-1" /&gt;
+	  &lt;/ModelVisual3D.Content&gt;
+   &lt;/ModelVisual3D&gt;
+  &lt;/Viewport3D&gt;
+ &lt;/DockPanel&gt;
+&lt;/Grid&gt;</CODE></PRE>
+<P>Basically, all of the 3D stuff in WPF happens in <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.Viewport3D.aspx" 
+target=_blank>Viewport3D</A></CODE> controls. That's where we'll be adding our 
+3D models once we start writing some code. Notice that a <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.PerspectiveCamera.aspx" 
+target=_blank>PerspectiveCamera</A></CODE> has been added to the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.Viewport3D.aspx" 
+target=_blank>Viewport3D</A></CODE>. The camera is used to allow us to "view" 
+what's in the model from the user interface. Note that the camera is looking at 
+the point {0,0,0} in the model.</P>
+<P>The model also contains a <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.DirectionalLight.aspx" 
+target=_blank>DirectionalLight</A></CODE> light source so that we can view stuff 
+in the model.</P>
+<P>I encourage you to change the camera's <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.ProjectionCamera.LookDirection.aspx" 
+target=_blank>LookDirection</A></CODE> and <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.ProjectionCamera.Position.aspx" 
+target=_blank>Position</A></CODE> while you go through the examples. The 
+screenshots in this tutorial do not necessarily use the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.ProjectionCamera.LookDirection.aspx" 
+target=_blank>LookDirection</A></CODE> and <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.ProjectionCamera.Position.aspx" 
+target=_blank>Position</A></CODE> values in the XAML above. </P>
+<P>The XAML above has one <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.Button.aspx" 
+target=_blank>Button</A></CODE> named <CODE>simpleButton</CODE>, so we need to 
+hook up its click event to a method named <CODE>simpleButtonClick</CODE> in the 
+window's code-behind file.</P><PRE><CODE>private void simpleButtonClick(object sender, RoutedEventArgs e)
+{
+}</CODE></PRE><A name=note02source></A>
+<H1>Creating a Simple Mesh</H1>
+<P>When you click the <CODE>simpleButton</CODE> button, you're going to create a 
+very simple mesh and add the model to the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.Viewport3D.aspx" 
+target=_blank>Viewport3D</A></CODE>. But before you do that, you'll need to know 
+a little bit about the types of 3D classes and structures you'll be working 
+with:</P>
+<UL>
+  <LI><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.GeometryModel3D.aspx" 
+  target=_blank>GeometryModel3D</A> - a model described by a Mesh (<CODE><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.MeshGeometry3D.aspx" 
+  target=_blank>MeshGeometry3D</A></CODE>) and a Material (<CODE><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.DiffuseMaterial.aspx" 
+  target=_blank>DiffuseMaterial</A></CODE>). 
+  <LI><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.MeshGeometry3D.aspx" 
+  target=_blank>MeshGeometry3D</A> - a mesh. Has a <CODE><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.MeshGeometry3D.Positions.aspx" 
+  target=_blank>Positions</A></CODE> collection, a <CODE><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.MeshGeometry3D.TriangleIndices.aspx" 
+  target=_blank>TriangleIndeces</A></CODE> collection, and a <CODE><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.MeshGeometry3D.Normals.aspx" 
+  target=_blank>Normals</A></CODE> collection. 
+  <LI><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Point3D.aspx" 
+  target=_blank>Point3D</A> - the most basic unit of mesh construction. Used to 
+  define positions and vectors. 
+  <LI><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Vector3D.aspx" 
+  target=_blank>Vector3D</A> - used in the calculation of normals. 
+  <LI><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.DiffuseMaterial.aspx" 
+  target=_blank>DiffuseMaterial</A> - gives a model color and texture. 
+  <LI><A 
+  href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.DirectionalLight.aspx" 
+  target=_blank>DirectionalLight</A> - provides light so that objects in the 
+  <CODE><A 
+  href="http://msdn2.microsoft.com/System.Windows.Controls.Viewport3D.aspx" 
+  target=_blank>Viewport3D</A></CODE> can be seen. Without it, nothing shows 
+  up.</LI></UL>
+<P>Full documentation of all of the System.Windows.Media.Media3D classes can be 
+found at <A href="http://msdn2.microsoft.com/" 
+target=_blank>msdn.microsoft.com</A></P>
+<H2>Add the code</H2>
+<P>Before we start digging into the nuts and bolts, make sure you import the 
+using System.Windows.Media.Media3D namespace into the code-behind. That 
+namespace has all of the classes we'll be working with:</P><PRE><CODE>using System.Windows.Media.Media3D;</CODE></PRE>
+<P>Now let's create a simple mesh and add it to the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.Viewport3D.aspx" 
+target=_blank>Viewport3D</A></CODE>. We'll start with the simplest mesh 
+possible: a triangle. It'll be located near the origin of the model (remember 
+where the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.PerspectiveCamera.aspx" 
+target=_blank>PerspectiveCamera</A></CODE> is pointing?) and will have one side 
+along the X-axis (5 units long), one along the Z-axis (5 units long), and a 
+hypotenuse connecting the first two sides. </P>
+<P>First, create a new <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.MeshGeometry3D.aspx" 
+target=_blank>MeshGeometry3D</A></CODE>:</P><PRE><CODE>MeshGeometry3D triangleMesh = new MeshGeometry3D();</CODE></PRE>
+<P>Next, define the three points of the triangle:</P><PRE><CODE>Point3D point0 = new Point3D(0, 0, 0);
+Point3D point1 = new Point3D(5, 0, 0);
+Point3D point2 = new Point3D(0, 0, 5);</CODE></PRE>
+<P>Next, add the three points as positions in the mesh:</P><PRE><CODE>triangleMesh.Positions.Add(point0);
+triangleMesh.Positions.Add(point1);
+triangleMesh.Positions.Add(point2);</CODE></PRE>
+<P>Now we'll add the triangle indeces to define the triangle of the mesh. Since 
+our entire mesh <STRONG><EM>is</EM></STRONG> a triangle, this might seem 
+redundant, but WPF doesn't know how the points connect. Remember the 
+right-hand-rule. We want the top surface of the triangle to be visible, so add 
+the indeces in the appropriate order:</P><PRE><CODE>triangleMesh.TriangleIndices.Add(0);
+triangleMesh.TriangleIndices.Add(2);
+triangleMesh.TriangleIndices.Add(1);</CODE></PRE>
+<P>Next we'll add the normal vectors for the mesh positions. Since this one's 
+easy (the normal will point straight up in the Y direction), we'll just create a 
+normal vector with known dimensions rather than computing a cross product:</P><PRE><CODE>Vector3D normal = new Vector3D(0, 1, 0);
+triangleMesh.Normals.Add(normal);
+triangleMesh.Normals.Add(normal);
+triangleMesh.Normals.Add(normal);</CODE></PRE>
+<P>Next we'll need to create a <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.DiffuseMaterial.aspx" 
+target=_blank>DiffuseMaterial</A></CODE> for the surface, add the mesh to a 
+model, and add the model to the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.Viewport3D.aspx" 
+target=_blank>Viewport3D</A></CODE>:</P><PRE><CODE>Material material = new DiffuseMaterial(
+    new SolidColorBrush(Colors.DarkKhaki));
+GeometryModel3D triangleModel = new GeometryModel3D(
+    triangleMesh, material);
+ModelVisual3D model = new ModelVisual3D();
+model.Content = triangleModel;
+this.mainViewport.Children.Add(model);</CODE></PRE>
+<P>When all is said and done, the <CODE>simpleButtonClick</CODE> event handler 
+will look like this:</P><PRE><CODE>private void simpleButtonClick(object sender, RoutedEventArgs e)
+{
+    MeshGeometry3D triangleMesh = new MeshGeometry3D();
+    Point3D point0 = new Point3D(0, 0, 0);
+    Point3D point1 = new Point3D(5, 0, 0);
+    Point3D point2 = new Point3D(0, 0, 5);
+    triangleMesh.Positions.Add(point0);
+    triangleMesh.Positions.Add(point1);
+    triangleMesh.Positions.Add(point2);
+    triangleMesh.TriangleIndices.Add(0);
+    triangleMesh.TriangleIndices.Add(2);
+    triangleMesh.TriangleIndices.Add(1);
+    Vector3D normal = new Vector3D(0, 1, 0);
+    triangleMesh.Normals.Add(normal);
+    triangleMesh.Normals.Add(normal);
+    triangleMesh.Normals.Add(normal);
+    Material material = new DiffuseMaterial(
+        new SolidColorBrush(Colors.DarkKhaki));
+    GeometryModel3D triangleModel = new GeometryModel3D(
+        triangleMesh, material);
+    ModelVisual3D model = new ModelVisual3D();
+    model.Content = triangleModel;
+    this.mainViewport.Children.Add(model);
+}</CODE></PRE>
+<P>That's it! The code produces the following result:</P>
+<P><A href="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/SimpleResult.jpg" 
+target=_blank><IMG alt="Simple Result" 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/SimpleResult.jpg" 
+width=550 border=0></A></P>
+<P>Hardly exciting, I know, but just think - now you understand the building 
+blocks of 3D meshes! Still not excited? Ok, then next we'll move on to a 
+cube.</P>
+<H1>Creating a Cube</H1>
+<P>A cube is just an extension of creating a triangle. The differences are:</P>
+<UL>
+  <LI>A cube is composed of 12 triangles instead of one (six sides, each with 
+  two triangles) 
+  <LI>The triangles are oriented in each cardinal direction of the Cartesian 
+  coordinate system, which may or may not be easy to visualize at times. It can 
+  be particularly tricky when remembering which way would be counter-clockwise 
+  for the right-hand-rule.</LI></UL>
+<P>Let's continue by adding another button to the button panel in the XAML:</P><PRE><CODE>&lt;Button Name="cubeButton" Click="cubeButtonClick"&gt;Cube&lt;/Button&gt;</CODE></PRE>
+<P>Then, hook up the <CODE>cubeButtonClick</CODE> event handler in the 
+code-behind:</P><PRE><CODE>private void cubeButtonClick(object sender, RoutedEventArgs e)
+{
+}</CODE></PRE>
+<P>We can now do a little refactoring of the code to make life easier. But 
+before we do that we need to talk about the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Model3DGroup.aspx">Model3DGroup</A></CODE> 
+class. A <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Model3DGroup.aspx" 
+target=_blank>Model3DGroup</A></CODE> is a collection of <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.GeometryModel3D.aspx" 
+target=_blank>GeometryModel3D</A></CODE> objects. In other words, a <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Model3DGroup.aspx" 
+target=_blank>Model3DGroup</A></CODE> can contain many meshes. On top of that, 
+<CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Model3DGroup.aspx" 
+target=_blank>Model3DGroup</A></CODE> objects can contain other <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Model3DGroup.aspx" 
+target=_blank>Model3DGroup</A></CODE> objects too, and so on. Last, a <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Model3DGroup.aspx" 
+target=_blank>Model3DGroup</A></CODE> can be added to a <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.Viewport3D.aspx" 
+target=_blank>Viewport3D</A></CODE>. What does all this mean? It provides a 
+means to create small sets of 3D objects and make them a part of other models 
+easily. Think of it as creating a Windows User Control that you can re-use in 
+other User Controls. </P>
+<P>So, let's start refactoring by abstracting out the creation of a single 
+triangle mesh with normals at its triangle indeces. Add these two methods 
+(<CODE>CreateTriangleModel()</CODE> and <CODE>CalculateNormal()</CODE> to the 
+code-behind:</P><PRE><CODE>private Model3DGroup CreateTriangleModel(Point3D p0, Point3D p1, Point3D p2)
+{
+    MeshGeometry3D mesh = new MeshGeometry3D();
+    mesh.Positions.Add(p0);
+    mesh.Positions.Add(p1);
+    mesh.Positions.Add(p2);
+    mesh.TriangleIndices.Add(0);
+    mesh.TriangleIndices.Add(1);
+    mesh.TriangleIndices.Add(2);
+    Vector3D normal = CalculateNormal(p0, p1, p2);
+    mesh.Normals.Add(normal);
+    mesh.Normals.Add(normal);
+    mesh.Normals.Add(normal);
+    Material material = new DiffuseMaterial(
+        new SolidColorBrush(Colors.DarkKhaki));
+    GeometryModel3D model = new GeometryModel3D(
+        mesh, material);
+    Model3DGroup group = new Model3DGroup();
+    group.Children.Add(model);
+    return group;
+}
+private Vector3D CalculateNormal(Point3D p0, Point3D p1, Point3D p2)
+{
+    Vector3D v0 = new Vector3D(
+        p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z);
+    Vector3D v1 = new Vector3D(
+        p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
+    return Vector3D.CrossProduct(v0, v1);
+}</CODE></PRE>
+<P>The <CODE>CreateTriangleModel()</CODE> method can be used anywhere to create 
+a <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Model3DGroup.aspx" 
+target=_blank>Model3DGroup</A></CODE> that contains a mesh defined by three 
+supplied points. Pretty nifty. The <CODE>CalculateNormal()</CODE> method is used 
+by <CODE>CreateTriangleModel()</CODE> to get its normals for its triangle 
+indeces. It does this easily using the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Vector3D.CrossProduct.aspx" 
+target=_blank>CrossProduct</A></CODE> method of the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Vector3D.aspx" 
+target=_blank>Vector3D</A></CODE> structure. This is really cool because now all 
+you have to do is know the mesh positions and these two methods do the rest for 
+you.</P>
+<P>Next, let's visualize what the cube will look like in Cartesian space. There 
+are eight unique points, and we'll order them like so:</P>
+<P><A href="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/cube01.jpg" 
+target=_blank><IMG alt="Cube 1" 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/cube01.jpg" width=550 
+border=0></A></P>
+<P>Now let's create a cube in code. Add this code to the 
+<CODE>cubeButtonClick()</CODE> event handler:</P><PRE><CODE>private void cubeButtonClick(object sender, RoutedEventArgs e)
+{
+    Model3DGroup cube = new Model3DGroup();
+    Point3D p0 = new Point3D(0, 0, 0);
+    Point3D p1 =new Point3D(5, 0, 0);
+    Point3D p2 =new Point3D(5, 0, 5);
+    Point3D p3 =new Point3D(0, 0, 5);
+    Point3D p4 =new Point3D(0, 5, 0);
+    Point3D p5 =new Point3D(5, 5, 0);
+    Point3D p6 =new Point3D(5, 5, 5);
+    Point3D p7 = new Point3D(0, 5, 5);
+    //front side triangles
+    cube.Children.Add(CreateTriangleModel(p3, p2, p6));
+    cube.Children.Add(CreateTriangleModel(p3, p6, p7));
+    //right side triangles
+    cube.Children.Add(CreateTriangleModel(p2, p1, p5));
+    cube.Children.Add(CreateTriangleModel(p2, p5, p6));
+    //back side triangles
+    cube.Children.Add(CreateTriangleModel(p1, p0, p4));
+    cube.Children.Add(CreateTriangleModel(p1, p4, p5));
+    //left side triangles
+    cube.Children.Add(CreateTriangleModel(p0, p3, p7));
+    cube.Children.Add(CreateTriangleModel(p0, p7, p4));
+    //top side triangles
+    cube.Children.Add(CreateTriangleModel(p7, p6, p5));
+    cube.Children.Add(CreateTriangleModel(p7, p5, p4));
+    //bottom side triangles
+    cube.Children.Add(CreateTriangleModel(p2, p3, p0));
+    cube.Children.Add(CreateTriangleModel(p2, p0, p1));
+    
+    ModelVisual3D model = new ModelVisual3D();
+    model.Content = cube;
+    this.mainViewport.Children.Add(model);
+}</CODE></PRE>
+<P>Now when you run the code, you'll see a cube in the app:</P>
+<P><A href="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/cuberendered.jpg" 
+target=_blank><IMG alt="Cube Rendered" 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/cuberendered.jpg" 
+width=550 border=0></A></P>
+<H1>Clearing the Viewport</H1>
+<P>If you've tried clicking both the "Simple" and "Cube" buttons one after 
+another, you've essentially added a cube right on top of the original triangle 
+(or vice-versa). Not a big deal, but kind of annoying if you like keeping things 
+clean. Add this method to the code-behimd to clear out the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.Viewport3D.aspx" 
+target=_blank>Viewport3D</A></CODE> except for the light source:</P><PRE><CODE>private void ClearViewport()
+{
+    ModelVisual3D m;
+    for (int i = mainViewport.Children.Count - 1; i &gt;= 0; i--)
+    {
+        m = (ModelVisual3D)mainViewport.Children[i];
+        if (m.Content is DirectionalLight == false)
+            mainViewport.Children.Remove(m);
+    }
+}</CODE></PRE>
+<P>Call the <CODE>ClearViewport()</CODE> method whenever you want to clean 
+things up (e.g. each time you click a button that adds some stuff).</P>
+<H1>Controlling the Camera</H1>
+<P>Let's make another small enhancement that makes it easier to move the camera 
+and where it's looking without having to modify the XAML all the time. Add the 
+following <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.TextBlock.aspx" 
+target=_blank>TextBlock</A></CODE> and <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.TextBox.aspx" 
+target=_blank>TextBox</A></CODE> code to the XAML above the buttons we've 
+already added:</P><PRE><CODE>&lt;TextBlock Text="Camera X Position:"/&gt;
+&lt;TextBox Name="cameraPositionXTextBox" MaxLength="5" 
+   HorizontalAlignment="Left" Text="9"/&gt;
+&lt;TextBlock Text="Camera Y Position:"/&gt;
+&lt;TextBox Name="cameraPositionYTextBox" MaxLength="5" 
+   HorizontalAlignment="Left" Text="8"/&gt;
+&lt;TextBlock Text="Camera Z Position:"/&gt;
+&lt;TextBox Name="cameraPositionZTextBox" MaxLength="5" 
+   HorizontalAlignment="Left" Text="10"/&gt;
+&lt;Separator/&gt;
+&lt;TextBlock Text="Look Direction X:"/&gt;
+&lt;TextBox Name="lookAtXTextBox" MaxLength="5" 
+   HorizontalAlignment="Left" Text="-9"/&gt;
+&lt;TextBlock Text="Look Direction Y:"/&gt;
+&lt;TextBox Name="lookAtYTextBox" MaxLength="5" 
+   HorizontalAlignment="Left" Text="-8"/&gt;
+&lt;TextBlock Text="Look Direction Z:"/&gt;
+&lt;TextBox Name="lookAtZTextBox" MaxLength="5" 
+   HorizontalAlignment="Left" Text="-10"/&gt;
+&lt;Separator/&gt;
+
+&lt;!-- buttons --&gt;
+&lt;Button Name="simpleButton" Click="simpleButtonClick"&gt;Simple&lt;/Button&gt;
+&lt;Button Name="cubeButton" Click="cubeButtonClick"&gt;Cube&lt;/Button&gt;
+</CODE></PRE>
+<P>Now, add a new method to the code behind named <CODE>SetCamera()</CODE> with 
+this code:</P><PRE><CODE>private void SetCamera()
+{
+    PerspectiveCamera camera = (PerspectiveCamera)mainViewport.Camera;
+    Point3D position = new Point3D(
+        Convert.ToDouble(cameraPositionXTextBox.Text),
+        Convert.ToDouble(cameraPositionYTextBox.Text),
+        Convert.ToDouble(cameraPositionZTextBox.Text)
+    );
+    Vector3D lookDirection = new Vector3D(
+        Convert.ToDouble(lookAtXTextBox.Text),
+        Convert.ToDouble(lookAtYTextBox.Text),
+        Convert.ToDouble(lookAtZTextBox.Text)
+    );
+    camera.Position = position;
+    camera.LookDirection = lookDirection;
+}</CODE></PRE>
+<P>The code simply grabs the points entered in the text boxes, creates <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Point3D.aspx" 
+target=_blank>Point3D</A></CODE> objects from the values, and assigns the points 
+to the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.ProjectionCamera.Position.aspx" 
+target=_blank>Position</A></CODE> and <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.ProjectionCamera.LookDirection.aspx" 
+target=_blank>LookDirection</A></CODE> properties of the camera. Go ahead and 
+add a call to <CODE>SetCamera()</CODE> whenever you click one of the buttons or 
+add something to the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Controls.Viewport3D.aspx" 
+target=_blank>Viewport3D</A></CODE>.</P>
+<P>Now you can move the camera around and get a different view of things:</P>
+<P><A href="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/cubecamera.jpg" 
+target=_blank><IMG alt="Cube Camera" 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/cubecamera.jpg" width=500 
+border=0></A></P>
+<H1>The ScreenSpaceLines3D Class</H1>
+<P>Back in the beta days of WPF, it used to contain a class named 
+<CODE>ScreenSpaceLines3D</CODE>. <CODE>ScreenSpaceLines3D</CODE> was used to 
+draw a simple line in 3D space. Unfortunately, in the .Net 3.0 Framework, the 
+<CODE>ScreenSpaceLines3D</CODE> class no longer exists, nor does another class 
+exist that replaces its functionality.</P>
+<P>Fortunately, <A href="http://blogs.msdn.com/danlehen/default.aspx" 
+target=_blank>Dan Lehenbauer</A> has designed a new 
+<CODE>ScreenSpaceLines3D</CODE> class for use with .Net 3.0 and WPF. The 
+remainder of this tutorial will use that class, so you'll need to go and 
+download his code from <A href="http://codeplex.com/3DTools" target=_blank>this 
+3DTools project on CodePlex.com</A>. Extract the files, build the solution, and 
+reference the 3DTools dll in your WPF project. Then add the following 
+<CODE>using</CODE> statement in your code:</P><PRE><CODE>using _3DTools;</CODE></PRE>
+<P>We'll be using ScreenSpaceLines3D to help do interesting things with normals 
+and wireframes, but We won't use it just yet. We'll come back to it in a 
+minute.</P>
+<H1>Add Normals to the Rendered Model</H1>
+<P>Wouldn't it be cool to see exactly where the normals are and what direction 
+they're pointing in? Absolutely. Is it necessary? Well, it depends... it can be 
+very handy when building more complex surfaces (like later in this tutorial). We 
+can easily do this by drawing lines with the <CODE>ScreenSpaceLines3D</CODE> 
+class. All we really want to do is draw a short little line from the triangle 
+indeces out in the direction of the indeces' normal. To accomplish this, add the 
+following code to the panel containing our controls in the XAML:</P><PRE><CODE>&lt;Separator/&gt;
+
+&lt;CheckBox Name="normalsCheckBox"&gt;Show Normals&lt;/CheckBox&gt;
+&lt;TextBlock Text="Normal Size:"/&gt;
+&lt;TextBox Name="normalSizeTextBox" Text="1"/&gt;
+</CODE></PRE>
+<P>The XAML above will allow us to use a check box to toggle whether the normals 
+are shown or not and to set how big the normals are. Next, add this method to 
+the code-behind:</P><PRE><CODE>private Model3DGroup BuildNormals(
+    Point3D p0,
+    Point3D p1,
+    Point3D p2,
+    Vector3D normal)
+{
+    Model3DGroup normalGroup = new Model3DGroup();
+    Point3D p;
+    ScreenSpaceLines3D normal0Wire = new ScreenSpaceLines3D();
+    ScreenSpaceLines3D normal1Wire = new ScreenSpaceLines3D();
+    ScreenSpaceLines3D normal2Wire = new ScreenSpaceLines3D();
+    Color c = Colors.Blue;
+    int width = 1;
+    normal0Wire.Thickness = width;
+    normal0Wire.Color = c;
+    normal1Wire.Thickness = width;
+    normal1Wire.Color = c;
+    normal2Wire.Thickness = width;
+    normal2Wire.Color = c;
+    double num = 1;
+    double mult = .01;
+    double denom = mult * Convert.ToDouble(normalSizeTextBox.Text);
+    double factor = num / denom;
+    p = Vector3D.Add(Vector3D.Divide(normal, factor), p0);
+    normal0Wire.Points.Add(p0);
+    normal0Wire.Points.Add(p);
+    p = Vector3D.Add(Vector3D.Divide(normal, factor), p1);
+    normal1Wire.Points.Add(p1);
+    normal1Wire.Points.Add(p);
+    p = Vector3D.Add(Vector3D.Divide(normal, factor), p2);
+    normal2Wire.Points.Add(p2);
+    normal2Wire.Points.Add(p);
+
+    //Normal wires are not models, so we can't
+    //add them to the normal group.  Just add them
+    //to the viewport for now...
+    this.mainViewport.Children.Add(normal0Wire);
+    this.mainViewport.Children.Add(normal1Wire);
+    this.mainViewport.Children.Add(normal2Wire);
+
+    return normalGroup;
+}
+</CODE></PRE>
+<P>The method above takes three points (the points of a triangle) and a given 
+normal vector. It then draws some lines out from the points in the direction of 
+the normal and adds them to a <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Model3DGroup.aspx" 
+target=_blank>Model3DGroup</A></CODE>. It also scales the normals using the 
+<CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Vector3D.Divide.aspx" 
+target=_blank>Divide</A></CODE> method of the <CODE><A 
+href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.Vector3D.aspx" 
+target=_blank>Vector3D</A></CODE> structure and the value entered in the 
+<CODE>normalSizeTextBox</CODE>. Pretty simple. </P>
+<P>Then add this code near the end of the <CODE>CreateTriangleModel</CODE> 
+method:</P><PRE><CODE>if (normalsCheckBox.IsChecked == true)
+                group.Children.Add(BuildNormals(p0, p1, p2, normal));</CODE></PRE>
+<P>Now when you build the cube with normals, you'll see this:</P>
+<P><EM>Click to enlarge</EM><BR><A 
+href="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/cubewithnormals.jpg"><IMG 
+alt="Cube With Normals" 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/cubewithnormals.jpg" 
+width=500 border=0></A></P>
+<H1>Building a Topography</H1>
+<P>At this point, you know all of the basics of my loose 3D theory and how 
+meshes work in WPF. Let's give it another shot though and create a surface that 
+isn't so orthogonal. Imagine if you will a topography made up of peaks and 
+valleys. A surface where the points are connected by vectors that majestically 
+dance together through space, creating a scene so delightful that you drool on 
+your keyboard. Or, just imagine a topography. </P>
+<P>First, add another button into the control panel. This new button will be 
+used to create and add the topography to the model:</P><PRE><CODE>&lt;Button 
+     Name="topographyButton" 
+     Click="topographyButtonClick"&gt;
+          Topography
+     &lt;/Button&gt;</CODE></PRE>
+<P>Essentially, we're going to create a topography that stretches out in the X-Z 
+plane and has peaks and valleys in the Y direction. We'll make it a 10x10 
+surface. From overhead, the mesh will essentially look like a checkerboard whose 
+squares are divided in two by triangles. Using a nested loop (one loop for the X 
+direction and one for the Z) and some random number generation, we can create 
+the points of the topography: </P><PRE><CODE>private Point3D[] GetRandomTopographyPoints()
+{
+    //create a 10x10 topography.
+    Point3D[] points = new Point3D[100];
+    Random r = new Random();
+    double y;
+    double denom = 1000;
+    int count = 0;
+    for (int z = 0; z &lt; 10; z++)
+    {
+        for (int x = 0; x &lt; 10; x++)
+        {
+            System.Threading.Thread.Sleep(1);
+            y = Convert.ToDouble(r.Next(1, 999)) / denom;
+            points[count] = new Point3D(x, y, z);
+            count += 1;
+        }
+    }
+    return points;
+}</CODE></PRE>
+<P>Once you have the array of points, you can use another simple set of loops to 
+load the points into triangles using our good old 
+<CODE>CreateTriangleModel()</CODE> method. Add another button to the XAML in the 
+button panel named <CODE>topographyButton</CODE> and hook up an event handler 
+named <CODE>topographyButtonClick</CODE> in the code-behind: </P><PRE><CODE>private void topographyButtonClick(object sender, RoutedEventArgs e)
+{
+    ClearViewport();
+    SetCamera();
+    Model3DGroup topography = new Model3DGroup();
+    Point3D[] points = GetRandomTopographyPoints();
+    for (int z = 0; z &lt;= 80; z = z + 10)
+    {
+        for (int x = 0; x &lt; 9; x++)
+        {
+            topography.Children.Add(
+                CreateTriangleModel(
+                        points[x + z], 
+                        points[x + z + 10], 
+                        points[x + z + 1])
+            );
+            topography.Children.Add(
+                CreateTriangleModel(
+                        points[x + z + 1], 
+                        points[x + z + 10], 
+                        points[x + z + 11])
+            );
+        }
+    }
+    ModelVisual3D model = new ModelVisual3D();
+    model.Content = topography;
+    this.mainViewport.Children.Add(model);
+}</CODE></PRE>
+<P>Basically, the nested loops just zig-zag around the grid and adds points for 
+the triangles. When you run the app, you'll see something like this:</P>
+<P><EM>Click to enlarge</EM><BR><A 
+href="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/topography.jpg"><IMG 
+alt=Topography 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/topography.jpg" width=500 
+border=0></A></P>
+<P>With normals turned on:</P>
+<P><EM>Click to enlarge</EM><BR><A 
+href="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/topographynormals.jpg"><IMG 
+alt="Topography with normals" 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/topographynormals.jpg" 
+width=500 border=0></A></P>
+<H1>Add a Wireframe</H1>
+<P>Another helpful tool in visualizing a mesh is to see its "wireframe". A 
+wireframe is just a visual representation of the mesh positions and sides of the 
+mesh triangles. It gives a little more definition to the surface so that you can 
+see all of the edges, peaks, and valleys. To draw the wireframe, we'll use the 
+<CODE>ScreenSpaceLines3D</CODE> class again. All we need to do is enhance the 
+<CODE>CreateTriangleModel()</CODE> method.</P>
+<P>First, add some more XAML to the controls panel in the application so that we 
+can have the option of viewing the wireframe when the model is rendered:</P><PRE><CODE>&lt;Separator/&gt;
+&lt;CheckBox Name="wireframeCheckBox"&gt;Show Wireframe&lt;/CheckBox&gt;</CODE></PRE>
+<P>Next, add the following code at the end of the 
+<CODE>CreateTriangleModel()</CODE> method to add the wireframe if the 
+<CODE>wireframeCheckBox</CODE> control is checked:</P><PRE><CODE>if (wireframeCheckBox.IsChecked == true)
+{
+ ScreenSpaceLines3D wireframe = new ScreenSpaceLines3D();
+        wireframe.Points.Add(p0);
+        wireframe.Points.Add(p1);
+        wireframe.Points.Add(p2);
+        wireframe.Points.Add(p0);
+        wireframe.Color = Colors.LightBlue;
+        wireframe.Thickness = 3;
+        
+        this.mainViewport.Children.Add(wireframe);
+}</CODE></PRE>
+<P>The code above just uses the existing points that have already been defined 
+in the method and draws a path to connect them. The path is then added to the 
+viewport. The final <CODE>CreateTriangleModel()</CODE> method will look like 
+this:</P><PRE><CODE>private Model3DGroup CreateTriangleModel(Point3D p0, Point3D p1, Point3D p2)
+{
+   MeshGeometry3D mesh = new MeshGeometry3D();
+   mesh.Positions.Add(p0);
+   mesh.Positions.Add(p1);
+   mesh.Positions.Add(p2);
+   mesh.TriangleIndices.Add(0);
+   mesh.TriangleIndices.Add(1);
+   mesh.TriangleIndices.Add(2);
+   Vector3D normal = CalculateNormal(p0, p1, p2);
+   mesh.Normals.Add(normal);
+   mesh.Normals.Add(normal);
+   mesh.Normals.Add(normal);
+   Material material = new DiffuseMaterial(
+      new SolidColorBrush(Colors.DarkKhaki));
+   GeometryModel3D model = new GeometryModel3D(mesh, material);
+   Model3DGroup group = new Model3DGroup();
+   group.Children.Add(model);
+
+   if (normalsCheckBox.IsChecked == true)
+         group.Children.Add(BuildNormals(p0, p1, p2, normal));
+
+   if (wireframeCheckBox.IsChecked == true)
+   {
+         ScreenSpaceLines3D wireframe = new ScreenSpaceLines3D();
+         wireframe.Points.Add(p0);
+         wireframe.Points.Add(p1);
+         wireframe.Points.Add(p2);
+         wireframe.Points.Add(p0);
+         wireframe.Color = Colors.LightBlue;
+         wireframe.Thickness = 3;
+         this.mainViewport.Children.Add(wireframe);
+   }
+
+   return group;
+}</CODE></PRE>
+<P>When you include the wireframe in the model, you'll see this: </P>
+<P><A href="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/wireframe.jpg" 
+target=_blank><IMG alt=Wireframe 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/wireframe.jpg" width=550 
+border=0></A></P>
+<H1>Welcome to 3D Land! </H1>
+<P>That's it! You now have a foundation of the building blocks of meshes 
+(positions, triangle indeces, and normals) and the classes used to create 3D 
+objects in WPF. You should be able to apply these principles to more complex 3D 
+shapes and problems in WPF. </P>
+<H1>Resources and Other Links</H1>
+<UL>
+  <LI><A href="http://www.kindohm.com/technical/toc.htm">Return to the WPF 
+  Article Table of Contents</A> 
+  <LI><A href="http://blogs.inetium.com/blogs/mhodnick" target=_blank>Mike's 
+  Inetium WPF Blog</A> 
+  <LI><A href="http://blogs.msdn.com/karstenj" target=_blank>Karsten J's 
+  Blog</A> 
+  <LI><A href="http://blogs.msdn.com/karstenj/archive/2006/02/08/528082.aspx" 
+  target=_blank>Karsten's "3D Sandbox" app</A> 
+  <LI><A href="http://blogs.msdn.com/tims/default.aspx" target=_blank>Tim 
+  Sneath's Blog</A> 
+  <LI>Tim's <A href="http://blogs.msdn.com/tims/archive/2006/02/08/527850.aspx" 
+  target=_blank>Five Great WPF 3D Nuggets</A> 
+  <LI><A href="http://msdn.microsoft.com/library/" target=_blank>Windows SDK</A> 
+
+  <LI><A href="http://msdn2.microsoft.com/System.Windows.Media.Media3D.aspx" 
+  target=_blank>System.Windows.Media.Media3D Namespace documentation</A> 
+  <LI><A href="http://kindohm.com/archive/2005/07/11/1001.aspx">Twin Cities 
+  Metro in 3D</A> 
+  <LI><A 
+  href="http://kindohm.com/archive/2006/02/06/ImprovingDDDPerformance.aspx" 
+  target=_blank>Improving 3D Performance in WPF</A> 
+  <LI><A 
+  href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnlong/html/fluid.aspx" 
+  target=_blank>The North Face In-Store Explorer Proof-of-Concept: A White 
+  Paper</A> (From 2005 PDC) </LI></UL>
+<HR>
+
+<P><A name=note01>[1]</A> (<A 
+href="http://www.kindohm.com/technical/WPF3DTutorial.htm#note01source">go back 
+^</A>) there is more to a mesh than what I've written about in this tutorial, 
+but just for the basics of 3D in WPF I'm keeping it limited to the bare 
+minimum.</P>
+<P><A href="http://validator.w3.org/" target=_blank><IMG height=31 
+alt="Valid XHTML 1.0 Transitional" 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/valid-xhtml10.png" 
+width=88 border=0></A> <A href="http://jigsaw.w3.org/css-validator" 
+target=_blank><IMG 
+style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; WIDTH: 88px; HEIGHT: 31px; BORDER-RIGHT-WIDTH: 0px" 
+alt="Valid CSS!" 
+src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/vcss.gif"></A> </P></DIV>
+<DIV id=right>
+<SCRIPT type=text/javascript><!--
+google_ad_client = "pub-1037851691997403";
+google_ad_width = 120;
+google_ad_height = 600;
+google_ad_format = "120x600_as";
+google_ad_type = "text";
+google_ad_channel = "";
+//--></SCRIPT>
+
+<SCRIPT src="WPF 3D Tutorial (a_k_a_ Avalon 3D Tutorial)_files/show_ads.js" 
+type=text/javascript>
+</SCRIPT>
+</DIV></DIV></BODY></HTML>

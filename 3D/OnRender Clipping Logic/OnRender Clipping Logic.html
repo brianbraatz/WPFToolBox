@@ -1,0 +1,101 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - OnRender Clipping Logic</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/230852.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/250925.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/01/240837.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>OnRender Clipping Logic</h2></a><p style="text-align: right;">January 24, 2006<br>New York City</p><p>
+In my WPF book, my original Chapter 10 ("Custom Elements") has now
+spilled over into Chapter 11 ("Single-Child Elements") and Chapter 12
+("Custom Panels") as I continue to wrestle with the art and science of
+overriding <i>MeasureOverride</i>, <i>ArrangeOverride</i>, and <i>OnRender</i>.
+</p>
+<p>
+In the past I've noticed that sometimes <i>OnRender</i> seems to
+clip and sometimes it does not, and yesterday I tried to finally nail
+down a better analysis. My conclusion is simple: Sometimes <i>OnRender</i> clips and sometimes it does not.  Fortunately, I believe I have found the "tipping point" and have some code to demonstrate it.
+</p>
+<p>
+Background: A class that derives from <i>FrameworkElement</i> but which has no visual children will probably override <i>MeasureOverride</i> and <i>OnRender</i>. <i>MeasureOverride</i> has an argument of type <i>Size</i> commonly called <i>availableSize</i> or (in a naming scheme I prefer) <i>sizeAvailable</i>. This is generally the size of the element's container, for example, the client area of a window or the cell of a <i>Grid</i>. If the window has been set for <i>SizeToContent</i> or the <i>Grid</i> cell set for <i>Auto</i>, then one or more dimensions of <i>sizeAvailable</i> could be infinite (that is, the value <i>Double.PositiveInfinity</i>). The <i>sizeAvailable</i> dimensions exclude the <i>Margin</i> set for the element and are always non-negative. (It gets more complex when <i>Width</i>, <i>MinWidth</i>, <i>MaxWidth</i>, <i>Height</i>, <i>MinHeight</i>, or <i>MaxHeight</i> have been set on the element. I'll ignore those cases in this discussion.)
+</p>
+<p>
+The return value of <i>MeasureOverride</i> is also a <i>Size</i> object that I name <i>sizeDesired</i>. It is the duty of the element's override of <i>MeasureOverride</i>
+to indicate a proper "natural" size of the element or at least a
+minimum size. For example, a button that contains text would return a
+size based on the text string, the font, and the button border.
+</p>
+<p>
+The element also overrides <i>OnRender</i>, during which the
+element is responsible for drawing itself. The element assumes an
+origin of (0, 0) and drawing dimensions given by the <i>RenderSize</i> property. <i>RenderSize</i> is often set directly from the return value from <i>MeasureOverride</i>, but there's an important exception: If the container has a non-infinite width (that is, the parameter to <i>sizeAvailable.Width</i> argument to <i>MeasureOverride</i> was non-infinite), and if the <i>HorizontalAlignment</i> of the element is set to <i>Stretch</i>, then <i>RenderSize.Width</i> will the maximum of <i>sizeAvailable.Width</i> and <i>sizeDesired.Width</i> (the return value from <i>MeasureOverride</i>), and similarly for the height. This is how many elements exhibit a default behavior of filling up their containers.
+</p>
+<p>
+Let's go to the code: <a href="http://www.charlespetzold.com/blog/2006/01/RectAndText.cs">RectAndText.cs</a> is a simple no-child <i>FrameworkElement</i> derivative that overrides <i>MeasureOverride</i> and <i>OnRender</i>
+to display a text string inside a rectangle. To illustrate clipping, it
+also displays 4 lines extending from the rectangle to points beyond the
+window.
+</p>
+<p>
+The <i>MeasureOverride</i> method calculates a desired size of the element based on the rectangle border width and the size of the <i>FormattedText</i> object. If the <i>Mode</i> property equals 0 (the default case) that's the size that the element returns from <i>MeasureOverride</i>. As it's supposed to, the <i>OnRender</i> method uses the <i>RenderSize</i> property to size the rectangle, and then displays the <i>FormattedText</i> object inside the rectangle.
+</p>
+<p>
+The <a href="http://www.charlespetzold.com/blog/2006/01/TryRectAndText.cs">TryRectAndText.cs</a> puts this custom element in the fill section of a <i>DockPanel</i> and sets up a menu to change the <i>Mode</i> property. (Here's the  <a href="http://www.charlespetzold.com/blog/2006/01/TryRectAndText.csproj">TryRectAndText.csproj</a> project file to round out the project.) Notice that the <i>RectAndText</i> element is given <i>HorizontalAlignment</i> and <i>VerticalAlignment</i> values of <i>Center</i> and a <i>Margin</i> (on all four sides) of 192 device-independent units (two inches). The <i>Margin</i> setting implies that the <i>sizeAvailable</i> parameter to <i>MeasureOverride</i> equals the size of the window client area minus the menu minus 4 inches horizontally and vertically.
+</p>
+<p>When you first run the program, you should see the entire rectangle
+with the text inside and four lines going off in the four directions.
+There's no clipping going on. Now gradually make the window narrower.
+When you reach the point where there's only two inches on the left and
+right, suddenly clipping kicks in. The lines at the left and right
+disappear, part of the border on the left and right disappears, and the
+lines on the top and bottom become much shorter. The clipping area is
+obviously based on <i>sizeAvailable</i> but it only kicks in when <i>sizeDesired</i> becomes greater than <i>sizeAvailable</i>. 
+</p>
+<p>
+As you make the window even narrower, you'll see the left and right
+sides of the rectangle disappear. If you've experimented with WPF
+buttons, you'll know they behave a little differently if the buttons
+are sized too small for their content. The regular button truncates its
+content but still attempts to display its border (unless the container
+gets way too small).
+</p>
+<p>
+To mimic that behavior, I decided to set the return value from <i>MeasureOverride</i> to values no larger than the parameter to <i>MeasureOverride</i>.  That's <i>Mode</i>
+equal to 1, which you can set from the program's menu by selecting
+"Constrain MeasureOverride return value from parameter". (Keep in mind
+that the parameter to <i>MeasureOverride</i> reflects the container size less the <i>Margin</i> property of the element.) The corresponding code in <i>MeasureOverride</i> is:
+</p>
+<ul>
+<pre>sizeDesired.Width = Math.Min(sizeDesired.Width, sizeAvailable.Width);
+</pre>
+</ul>
+<p>
+and similarly for the height. And what happens is very bizarre. <i>RenderSize</i> (which is based on the return value from <i>MeasureOverride</i>)
+now changes as the window is made too narrow or too short, but there is
+no clipping at all going on, so the text that's supposed to be inside
+the rectangle now spills out. You probably don't want this happening in
+a real-life program, so there are a couple solutions. The first is to
+simply set a clipping area for the <i>DrawingContext</i> right in the <i>OnRender</i> method:
+</p>
+<ul>
+<pre>dc.PushClip(new RectangleGeometry(new Rect(new Point(0, 0), RenderSize)));
+</pre>
+</ul>
+<p>
+The other solution is illustrated by setting a <i>Mode</i> value
+of 2 in my program, available from the menu by selecting "Add 0.1 to
+constrained return value." This option adds 0.1 to the value calculated
+from Mode 1. The additional code is:
+</p>
+<ul>
+<pre>sizeDesired.Width += 0.1;
+</pre>
+</ul>
+<p>and similarly for the height. And now if you make the window too
+narrow or short, clipping kicks in. Now the rectangle behaves more like
+the normal WPF button. The rectangle is always displayed and, if
+necessary, the contents get truncated.
+</p>
+<p>
+So, if (<i>sizeDesired.Width</i> &lt;= <i>sizeAvailable.Width</i> &amp;&amp; <i>sizeDesired.Height</i> &lt;= <i>sizeAvailable.Height</i>) then there's no clipping. Otherwise, <i>OnRender</i> output is clipped to <i>sizeAvailable</i>.
+</p>
+<p>Personally, I would prefer that this logic involve &lt; rather than
+&lt;= so that fudge factors don't have to be used to make the clipping
+kick in those cases when <i>sizeDesired</i> is constrained to <i>sizeAvailable</i> .
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/230852.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/250925.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

@@ -1,0 +1,32 @@
+﻿<Window x:Class="WPFAnimations.RotatingObjects"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="WPFAnimations" Height="300" Width="300"
+    >
+	<Window.Resources>
+	</Window.Resources>
+	<Grid>
+		<Path Fill="LightYellow" Stroke="Black" StrokeThickness="2" Margin="15,15,15,15">
+			<Path.Data>
+				<EllipseGeometry x:Name="PathGeometry" Center="20,100" RadiusX="18" RadiusY="12" />
+			</Path.Data>
+			<Path.Triggers>
+				<EventTrigger RoutedEvent="Path.Loaded">
+					<EventTrigger.Actions>
+						<BeginStoryboard>
+							<Storyboard RepeatBehavior="Forever">
+								<PointAnimationUsingPath Storyboard.TargetName="PathGeometry"
+														 Storyboard.TargetProperty="Center"
+														 Duration="0:0:10">
+									<PointAnimationUsingPath.PathGeometry>
+										<PathGeometry Figures="M20,100 L 80,10 C 100,90 160,140 190,180 S 160,220 130,180 T 120,100 20,100" />
+									</PointAnimationUsingPath.PathGeometry>
+								</PointAnimationUsingPath>
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger.Actions>
+				</EventTrigger>
+			</Path.Triggers>
+		</Path>
+	</Grid>
+</Window>

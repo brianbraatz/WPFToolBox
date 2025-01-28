@@ -1,0 +1,1007 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How do I make a data bound Bar Graph?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">October 31, 2005</div>
+					<h2 id="post-11"><a id="postTitle" href="http://www.beacosta.com/blog/?p=11" rel="bookmark" title="How do I make a data bound Bar Graph?">How do I make a data bound Bar Graph?</a></h2>
+					<p><span id="text">A
+very simple bar graph can be created by combining Avalon’s styling and
+templating features with a data bound ItemsControl. An ItemsControl is
+simply a control that displays a list of items. Those items can be
+anything you want: people, numbers, controls, and so on. If you
+template each item of an ItemsControl to be a rectangle whose height is
+bound to numerical data, you have a data bound bar graph.</span></p>
+<p><span id="text">The data source for this sample is a class with a
+property called ValueCollection of type
+ObservableCollection&lt;int&gt;. ObservableCollection&lt;T&gt;
+implements INotifyCollectionChanged, which means that if items are
+added/removed/replaced from that collection, the binding engine will be
+notified of that and the UI will be updated.</span></p>
+<p><span id="text">This is the markup for the ItemsControl:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;ItemsControl ItemsSource=”{Binding Source={StaticResource source}, Path=ValueCollection}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemTemplate=”{StaticResource template}” Height=”130″&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ItemsControl.ItemsPanel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel Orientation=”Horizontal” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ItemsControl.ItemsPanel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ItemsControl&gt;</span></p>
+<p><span id="text">The default Panel for ItemsControl has vertical
+orientation, but we want the items to be displayed horizontally - each
+bar should be to the right of the previous one. To change the panel, we
+set the ItemsControl’s ItemsPanel property (see my previous blog post
+for more details on changing the Panel of an ItemsControl).</span></p>
+<p><span id="text">The template for each item has a rectangle with
+height bound to the corresponding integer in the data source and a
+second rectangle with no fill to add some blank space between the bars:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate x:Key=”template”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel Orientation=”Horizontal” VerticalAlignment=”Bottom”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Rectangle
+Height=”{Binding}” Width=”20″ Fill=”Red” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Rectangle Width=”5″ /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</span></p>
+<p><span id="text">This is a very simple bar graph but it will
+hopefully give you ideas and serve as the base for more elaborate
+representations of data. This is the result:</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/8BarGraph.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/8BarGraph.zip">Here</a> you can find the VS project with this sample code. This works with September CTP WPF bits.</span></p>
+<p><span id="text">Click the button below the graph to change the items in the data source and see the UI update.</span></p>
+<p><span id="text">Update October 01, 2007: <a href="http://www.beacosta.com/Zips/8BarGraphOrcasBeta2.zip">Here</a> you can find this project working with Orcast Beta 2 bits.</span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=11"
+    dc:identifier="http://www.beacosta.com/blog/?p=11"
+    dc:title="How do I make a data bound Bar Graph?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=11" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=11"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=11">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">15 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-300" class="comment">
+				<a name="comment-300" id="comment-300"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-300")'>
+					<cite>Comment by Anonymous<a href="#comment-300"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-01 08:44:22 						
+					</div>					
+					<div class="content">
+						<p>how do I generate a bar for each series if my datasource is xml and it has 3 attributes corresponding to 3 series</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-300", 300, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-301" class="comment odd">
+				<a name="comment-301" id="comment-301"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-301")'>
+					<cite>Comment by Bea<a href="#comment-301"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-02 09:54:07 						
+					</div>					
+					<div class="content">
+						<p>Can
+you please elaborate a little more? What type is the data in those
+elements? (int?) If you have series A, B and C, and have several
+elements with attribute A, how do you want column A to be represented?
+(add all ints?)</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-301", 301, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-302" class="comment">
+				<a name="comment-302" id="comment-302"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-302")'>
+					<cite>Comment by Anonymous<a href="#comment-302"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-03 10:09:39 						
+					</div>					
+					<div class="content">
+						<p>yes the data is say int or double</p>
+<p>let say if I have xml , I want to have a chart with 3 series showing countries ‘a’,'b’..</p>
+<p>each country will have 3 bars one for male, one for female one for children etc.</p>
+<p>I am trying to do a custom control for charts</p>
+<p>so the number of series or the names will have to be evaluated from the properties of the control</p>
+<p>Thanks</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-303" class="comment odd">
+				<a name="comment-303" id="comment-303"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-303")'>
+					<cite>Comment by Bea<a href="#comment-303"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-07 19:52:19 						
+					</div>					
+					<div class="content">
+						<p>I made a <a href="http://www.beacosta.com/BlogComments/4ChartWithSeries.zip" rel="nofollow">sample </a>for
+you that has 3 countries, each with 3 series (Children, Male, Female),
+and displays each of those series as a separate bar in the graph.
+Hopefully this is what you were looking for.</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-304" class="comment odd">
+				<a name="comment-304" id="comment-304"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-304")'>
+					<cite>Comment by Anonymous<a href="#comment-304"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-09 09:28:25 						
+					</div>					
+					<div class="content">
+						<p>hi,<br>
+Thanks for your time, last few days I was playing with it somehow got
+it to work, not elegant as your sample. I am having difficult in
+figuring out how to display only the series that are in the xml</p>
+<p>in the sample xml we have male,female,children. lets say my xml also
+has seriescollection node which will have only the series I want to
+see, I cannot hardcode the values, how would I send what I have to you</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-305" class="comment odd">
+				<a name="comment-305" id="comment-305"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-305")'>
+					<cite>Comment by Anonymous<a href="#comment-305"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-10 09:41:27 						
+					</div>					
+					<div class="content">
+						<p>here is the code I am playing with<br>
+&lt;Window x:Class=”WindowsApplication1.Window5″<br>
+xmlns=”http://schemas.microsoft.com/winfx/2006/xaml/presentation”<br>
+xmlns:x=”http://schemas.microsoft.com/winfx/2006/xaml”<br>
+Title=”WindowsApplication1″ Height=”600″ Width=”600″<br>
+&gt;<br>
+&lt;Window.Resources&gt;<br>
+&lt;XmlDataProvider x:Key=”master” XPath=”/root” &gt;<br>
+&lt;x:XData &gt;<br>
+&lt;root xmlns=”"&gt;<br>
+&lt;series&gt;<br>
+&lt;s field=”orders”&gt;&lt;/s&gt;<br>
+&lt;s field=”quantity”&gt;&lt;/s&gt;<br>
+&lt;/series&gt;<br>
+&lt;v customerid=”ALFKI” orders=”16″ quantity=”20″ /&gt;<br>
+&lt;v customerid=”ANATR” orders=”40″ quantity=”40″ /&gt;<br>
+&lt;v customerid=”ANTON” orders=”70″ quantity=”60″ /&gt;<br>
+&lt;v customerid=”AROUT” orders=”13″ quantity=”10″ /&gt;<br>
+&lt;v customerid=”BERGS” orders=”18″ quantity=”30″ /&gt;<br>
+&lt;v customerid=”BLAUS” orders=”17″ quantity=”90″ /&gt;<br>
+&lt;/root&gt;<br>
+&lt;/x:XData&gt;<br>
+&lt;/XmlDataProvider&gt;<br>
+&lt;DataTemplate x:Key=”dt1″&gt;<br>
+&lt;Border Margin=”2″ BorderBrush=”Black” Height=”100″ VerticalAlignment=”Bottom” &gt;<br>
+&lt;ListBox Style=”{StaticResource q2}” ItemsSource=”{Binding
+Source={StaticResource master}, XPath=series/s}”
+ItemTemplate=”{StaticResource dt2}”&gt;<br>
+&lt;/ListBox&gt;</p>
+<p>&lt;/Border&gt;</p>
+<p>&lt;/DataTemplate&gt;<br>
+&lt;DataTemplate x:Key=”dt2″&gt;<br>
+&lt;Rectangle Fill=”green” Width=”5″ x:Name=”rect”<br>
+DataContext=”{Binding Path=Content,RelativeSource={RelativeSource
+FindAncestor,AncestorType={x:Type ListBoxItem},AncestorLevel=2}}” &gt;<br>
+&lt;Rectangle.Height&gt;<br>
+&lt;Binding XPath=”@orders” &gt;<br>
+&lt;/Binding&gt;<br>
+&lt;/Rectangle.Height&gt;<br>
+&lt;/Rectangle&gt;<br>
+&lt;/DataTemplate&gt;<br>
+&lt;Style x:Key=”q2″ TargetType=”{x:Type ListBox}”&gt;<br>
+&lt;Setter Property=”Template”&gt;<br>
+&lt;Setter.Value&gt;<br>
+&lt;ControlTemplate TargetType=”{x:Type ListBox}”&gt;<br>
+&lt;StackPanel VerticalAlignment=”Bottom” Orientation=”Horizontal” IsItemsHost=”True” Background=”Aqua”&gt;</p>
+<p>&lt;/StackPanel&gt;<br>
+&lt;/ControlTemplate&gt;<br>
+&lt;/Setter.Value&gt;<br>
+&lt;/Setter&gt;<br>
+&lt;/Style&gt;<br>
+&lt;Style x:Key=”q1″ TargetType=”{x:Type ListBox}”&gt;<br>
+&lt;Setter Property=”Template”&gt;<br>
+&lt;Setter.Value&gt;<br>
+&lt;ControlTemplate TargetType=”{x:Type ListBox}”&gt;<br>
+&lt;StackPanel VerticalAlignment=”Bottom” Orientation=”Horizontal”
+Width=”600″ IsItemsHost=”True” Height=”100″ Background=”Azure”&gt;</p>
+<p>&lt;/StackPanel&gt;<br>
+&lt;/ControlTemplate&gt;<br>
+&lt;/Setter.Value&gt;<br>
+&lt;/Setter&gt;<br>
+&lt;/Style&gt;<br>
+&lt;/Window.Resources&gt;<br>
+&lt;ListBox Style=”{StaticResource q1}” ItemsSource=”{Binding
+Source={StaticResource master}, XPath=v}” ItemTemplate=”{StaticResource
+dt1}”&gt;<br>
+&lt;/ListBox&gt;</p>
+<p>&lt;/Window&gt;</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-306" class="comment odd">
+				<a name="comment-306" id="comment-306"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-306")'>
+					<cite>Comment by Bea<a href="#comment-306"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-11 14:24:33 						
+					</div>					
+					<div class="content">
+						<p>I see the problem.</p>
+<p>Your xml data source implementation would work great if we could
+bind to the XPath property of binding: you would get the names of the
+attributes in the series section and bind the XPath of DataTemplate dt2
+to that. Unfortunately you can not bind to any property of the Binding
+object - Binding is not even a DO, so its properties can not be DPs.</p>
+<p>I gave your sample a little twist to get it to work. I changed the schema of the XML data to be the following:</p>
+<p>    &lt;XmlDataProvider x:Key=”master” XPath=”/root” &gt;<br>
+        &lt;x:XData&gt;<br>
+            &lt;root xmlns=”"&gt;<br>
+                &lt;v orders=”16″ quantity=”20&gt;ALFKI&lt;/v&gt;<br>
+                &lt;v orders=”40″ quantity=”40″&gt;ANATR&lt;/v&gt;<br>
+                &lt;v orders=”70″ quantity=”60″&gt;ANTON&lt;/v&gt;<br>
+                &lt;v orders=”13″ quantity=”10″&gt;AROUT&lt;/v&gt;<br>
+                &lt;v orders=”18″ quantity=”30″&gt;BERGS&lt;/v&gt;<br>
+                &lt;v orders=”17″ quantity=”90″&gt;BLAUS&lt;/v&gt;<br>
+            &lt;/root&gt;<br>
+        &lt;/x:XData&gt;<br>
+    &lt;/XmlDataProvider&gt;</p>
+<p>The idea here is that all attributes of “v” become a bar in the
+graph custom control. You can have any number of them, and call them
+whatever you want, and in fact you can have different attributes from
+one item to the next - the control would be able to generate the right
+columns for you. To make this work, I added the customer ID as content
+of “v”. I don’t know if it is a problem for your application, or if
+there are any other attributes that should be ignored when creating the
+columns. If so let me know and I’ll think of a solution for that.</p>
+<p>Anyway, assuming you are ok with the changes in the xml source, your
+DataTemplates would be really simple. The top level DataTemplate would
+enumerate through all attributes. The bottom level one simply needs to
+bind the Rectangle’s height to the InnerText of the XmlAttribute, which
+is really easy to do because the DataContext of this template is the
+XmlAttribute we’re interested in:</p>
+<p>    &lt;DataTemplate x:Key=”dt1″&gt;<br>
+        &lt;Border Margin=”2″ BorderBrush=”Black” Height=”100″ VerticalAlignment=”Bottom” &gt;<br>
+&lt;ListBox Style=”{StaticResource q2}” ItemsSource=”{Binding
+Path=Attributes}” ItemContainerStyle=”{StaticResource lbiStyle}”
+ItemTemplate=”{StaticResource dt2}”&gt;<br>
+            &lt;/ListBox&gt;<br>
+        &lt;/Border&gt;<br>
+    &lt;/DataTemplate&gt;</p>
+<p>    &lt;DataTemplate x:Key=”dt2″&gt;<br>
+        &lt;Rectangle Fill=”green” Width=”5″ x:Name=”rect” VerticalAlignment=”Bottom” Height=”{Binding Path=InnerText}”/&gt;<br>
+    &lt;/DataTemplate&gt;</p>
+<p>Let me know if this would work for your scenario.</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-307" class="comment odd">
+				<a name="comment-307" id="comment-307"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-307")'>
+					<cite>Comment by Anonymous<a href="#comment-307"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-12 02:01:39 						
+					</div>					
+					<div class="content">
+						<p>Thanks
+a lot for your time and sample. let me play around with this and see if
+I can somehow extend this to show only the series I want</p>
+<p>Thanks</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-308" class="comment odd">
+				<a name="comment-308" id="comment-308"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-308")'>
+					<cite>Comment by Anonymous<a href="#comment-308"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-20 06:03:31 						
+					</div>					
+					<div class="content">
+						<p>Hi,<br>
+I am still working with this. I am trying to adjust the height of the
+bars based on the height set for the control, and the max value of the
+data.<br>
+havind hard time trying to pass this calculated value in codebehind as converter parameter.<br>
+I even declared the calculated value as property<br>
+&lt;Rectangle.Height&gt;<br>
+&lt;Binding XPath=”@orders” Converter=”{StaticResource heightConverter}” ConverterParameter=”{???}” &gt;<br>
+&lt;/Binding&gt;</p>
+<p>&lt;/Rectangle.Height&gt;</p>
+<p>Thanks</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-309" class="comment odd">
+				<a name="comment-309" id="comment-309"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-309")'>
+					<cite>Comment by Bea<a href="#comment-309"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-21 19:27:55 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>Having that calculated value in a public property would be helpful
+if you could bind the ValueConverter to that property (you would do
+this by giving your Window a Name and setting the ElementName of your
+binding to that Name). This however is not possible because you can not
+bind any of the properties of Binding. Binding is not a
+DependencyObject, which means none of its properties are
+DependencyProperties, and the target of a Binding has to be a
+DependencyProperty. You can’t use a DynamicResource either because it
+also requires a DP as the target.</p>
+<p>You also can’t set the ConverterParameter in code when you calculate
+your new value because we made a breaking change recently that makes
+bindings immutable, for perf reasons. </p>
+<p>One possible workaround for this would be to redo the binding in
+code, when you calculate the new value for the height of the bars, and
+set the ConverterParameter to that value, manually.</p>
+<p>I know this is an ugly workaround <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/icon_sad.gif" alt=":(" class="wp-smiley">
+Allowing Bindings, DynamicResources or changing properties in the
+Binding would make the Binding object a lot more heavyweight than it is
+right now, and lead to perf problems. It was more important for us to
+make Bindings cheap and simple than to make them heavy and with more
+functionality. I hope our customers will give us feedback in that
+direction. And if we get feedback from people to add specific extra
+functionality, we can always do that in V2. </p>
+<p>Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-310" class="comment odd">
+				<a name="comment-310" id="comment-310"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-310")'>
+					<cite>Comment by Anonymous<a href="#comment-310"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2005-11-22 13:03:13 						
+					</div>					
+					<div class="content">
+						<p>thanks</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-302", 302, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-311" class="comment">
+				<a name="comment-311" id="comment-311"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-311")'>
+					<cite>Comment by Anonymous<a href="#comment-311"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-11-12 03:03:10 						
+					</div>					
+					<div class="content">
+						<p>Excellent!</p>
+<p>Would it be possible for you to provide an article explaining/demonstrating how to create a Line Graph control?</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-311", 311, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-312" class="comment odd">
+				<a name="comment-312" id="comment-312"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-312")'>
+					<cite>Comment by Bea<a href="#comment-312"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-11-13 10:12:10 						
+					</div>					
+					<div class="content">
+						<p>Hello,</p>
+<p>I wrote a three series blog article about <a href="http://www.beacosta.com/Archive/2006_10_01_bcosta_archive.html" rel="nofollow">binding Polygon’s Points to a data source</a>. You can implement a line graph with a Polygon, and use the techniques I mentioned to bind the points to your source.</p>
+<p>Let me know if this helps.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-312", 312, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-661" class="comment">
+				<a name="comment-661" id="comment-661"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-661")'>
+					<cite>Comment by Tona<a href="#comment-661"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-30 00:16:27 						
+					</div>					
+					<div class="content">
+						<p>Hello,</p>
+<p>I downloaded the project but gave below error. </p>
+<p>VS gives the error “Property ‘ItemsPanel’ does not support values of type ‘StackPanel’</p>
+<p>Thanks…</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-661", 661, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-756" class="comment odd">
+				<a name="comment-756" id="comment-756"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-756")'>
+					<cite>Comment by Bea<a href="#comment-756"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-10-01 11:38:24 						
+					</div>					
+					<div class="content">
+						<p>Hi Tona,</p>
+<p>Yes, there have been breaking changes in the product since I wrote
+this sample. I updated it to Orcas Beta 2 bits - you can find my code <a href="http://www.beacosta.com/Zips/8BarGraphOrcasBeta2.zip" rel="nofollow">here</a>.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-756", 756, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1457" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1457" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20make%20a%20data%20bound%20Bar%20Graph_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="11" type="hidden">
+		<input name="redirect_to" value="/blog/?p=11" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="2198ec516f77b034f8e7afb39df8e16d" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>7056</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 7056;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

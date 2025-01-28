@@ -1,0 +1,343 @@
+<Page 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+  x:Class="SDKSamples.KeyFramesExamplesPage" 
+  Title="Key Frames Example">
+  
+  <StackPanel>
+
+    <FlowDocumentScrollViewer>
+      <FlowDocument>
+        <Paragraph>
+          <Span Style="{StaticResource MyHeadingSpanStyle}">Key Frame Examples</Span>
+          <LineBreak/>
+          Below are several simple key frame examples.
+        </Paragraph>
+      </FlowDocument>
+    </FlowDocumentScrollViewer>
+
+    <Canvas HorizontalAlignment="Left" Width="1200" Height="50">
+      <Rectangle Style="{StaticResource myAnimatedRectangleStyle}" Width="1200" Height="30" />
+      <TextBlock FontSize="12" FontWeight="Bold" Margin="30,10,10,18">
+        Animate the Thickness of a Border (ThicknessAnimationUsingKeyFrames)
+      </TextBlock>
+    </Canvas>
+
+    <StackPanel Orientation="Horizontal">
+
+      <Border Background="#99FFFFFF" BorderBrush="#CCCCFF" BorderThickness="1"
+      Margin="40" Padding="20" Width="300" VerticalAlignment="Top">
+        <Border.Triggers>
+          <EventTrigger RoutedEvent="Border.Loaded">
+            <BeginStoryboard>
+              <Storyboard>
+
+                <!-- Animating the BorderThickness property uses 3 KeyFrames. -->
+                <ThicknessAnimationUsingKeyFrames
+                  Storyboard.TargetProperty="BorderThickness"
+                  Duration="0:0:5" FillBehavior="HoldEnd" RepeatBehavior="Forever">
+                  <ThicknessAnimationUsingKeyFrames.KeyFrames>
+
+                    <!-- Using a LinearThicknessKeyFrame, thickness increases gradually
+                  over the first half second of the animation. -->
+                    <LinearThicknessKeyFrame KeyTime="0:0:0.5">
+                      <LinearThicknessKeyFrame.Value>
+                        <Thickness Left="8" Right="8" Top="6" Bottom="6" />
+                      </LinearThicknessKeyFrame.Value>
+                    </LinearThicknessKeyFrame>
+
+                    <!-- Using a DiscreteThicknessKeyFrame, thickness increases suddenly
+                  after the first second of the animation. -->
+                    <DiscreteThicknessKeyFrame KeyTime="0:0:1">
+                      <DiscreteThicknessKeyFrame.Value>
+                        <Thickness Left="28" Right="28" Top="24" Bottom="24" />
+                      </DiscreteThicknessKeyFrame.Value>
+                    </DiscreteThicknessKeyFrame>
+
+                    <!-- Using a SplineThicknessKeyFrame, thickness decreases slowly at first
+                  and then suddenly contracts. This KeyFrame takes 2 seconds. -->
+                    <SplineThicknessKeyFrame KeySpline="0.6,0.0 0.9,0.00" KeyTime="0:0:3">
+                      <SplineThicknessKeyFrame.Value>
+                        <Thickness Left="1" Right="1" Top="1" Bottom="8" />
+                      </SplineThicknessKeyFrame.Value>
+                    </SplineThicknessKeyFrame>
+
+                  </ThicknessAnimationUsingKeyFrames.KeyFrames>
+                </ThicknessAnimationUsingKeyFrames>
+              </Storyboard>
+            </BeginStoryboard>
+          </EventTrigger>
+        </Border.Triggers>
+
+        <TextBlock>
+          This example shows how to use the ThicknessAnimationUsingKeyFrames to create
+          an animation on the BorderThickness property of a Border.
+        </TextBlock>
+      </Border>
+    
+    <!-- Displays functional code for demonstration. -->
+    <Border Background="#EEEEEE" BorderBrush="Black" Width="600" Height="400"  BorderThickness="1">
+      <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <TextBlock Style="{StaticResource CodeSnippetParagraph}" xml:space="preserve">
+ ...
+&lt;Border Background="#99FFFFFF" BorderBrush="#CCCCFF" BorderThickness="1"
+Margin="40" Padding="20" Width="300" VerticalAlignment="Top"&gt;
+  &lt;Border.Triggers&gt;
+    &lt;EventTrigger RoutedEvent="Border.Loaded"&gt;
+      &lt;BeginStoryboard&gt;
+        &lt;Storyboard&gt;
+
+          &lt;!-- Animating the BorderThickness property uses 3 KeyFrames. --&gt;
+          &lt;ThicknessAnimationUsingKeyFrames
+            Storyboard.TargetProperty="BorderThickness"
+            Duration="0:0:5" FillBehavior="HoldEnd" RepeatBehavior="Forever"&gt;
+            &lt;ThicknessAnimationUsingKeyFrames.KeyFrames&gt;
+
+              &lt;!-- Using a LinearThicknessKeyFrame, thickness increases gradually
+            over the first half second of the animation. --&gt;
+              &lt;LinearThicknessKeyFrame KeyTime="0:0:0.5"&gt;
+                &lt;LinearThicknessKeyFrame.Value&gt;
+                  &lt;Thickness Left="8" Right="8" Top="6" Bottom="6" /&gt;
+                &lt;/LinearThicknessKeyFrame.Value&gt;
+              &lt;/LinearThicknessKeyFrame&gt;
+
+              &lt;!-- Using a DiscreteThicknessKeyFrame, thickness increases suddenly
+            after the first second of the animation. --&gt;
+              &lt;DiscreteThicknessKeyFrame KeyTime="0:0:1"&gt;
+                &lt;DiscreteThicknessKeyFrame.Value&gt;
+                  &lt;Thickness Left="28" Right="28" Top="24" Bottom="24" /&gt;
+                &lt;/DiscreteThicknessKeyFrame.Value&gt;
+              &lt;/DiscreteThicknessKeyFrame&gt;
+
+              &lt;!-- Using a SplineThicknessKeyFrame, thickness decreases slowly at first
+            and then suddenly contracts. This KeyFrame takes 2 seconds. --&gt;
+              &lt;SplineThicknessKeyFrame KeySpline="0.6,0.0 0.9,0.00" KeyTime="0:0:3"&gt;
+                &lt;SplineThicknessKeyFrame.Value&gt;
+                  &lt;Thickness Left="1" Right="1" Top="1" Bottom="8" /&gt;
+                &lt;/SplineThicknessKeyFrame.Value&gt;
+              &lt;/SplineThicknessKeyFrame&gt;
+
+            &lt;/ThicknessAnimationUsingKeyFrames.KeyFrames&gt;
+          &lt;/ThicknessAnimationUsingKeyFrames&gt;
+        &lt;/Storyboard&gt;
+      &lt;/BeginStoryboard&gt;
+    &lt;/EventTrigger&gt;
+  &lt;/Border.Triggers&gt;
+
+  &lt;TextBlock&gt;
+    This example shows how to use the ThicknessAnimationUsingKeyFrames to create
+    an animation on the BorderThickness property of a Border.
+  &lt;/TextBlock&gt;
+&lt;/Border&gt;
+      ...
+      </TextBlock>
+      </ScrollViewer>
+    </Border>
+    <!-- End of code display. -->
+    </StackPanel>
+
+    <Canvas HorizontalAlignment="Left" Width="1200" Height="50" Margin="0,30,0,0">
+      <Rectangle Style="{StaticResource myAnimatedRectangleStyle}" Width="1200" Height="30" />
+      <TextBlock FontSize="12" FontWeight="Bold" Margin="30,10,10,18">
+        Animate the Color of a Border Background (ColorAnimationUsingKeyFrames)
+      </TextBlock>
+    </Canvas>
+
+    <StackPanel Orientation="Horizontal">
+      <Border Background="#99FFFFFF"  BorderThickness="28"
+      Margin="40" Width="300" Padding="20" >
+        <Border.BorderBrush>
+          <SolidColorBrush x:Name="MyAnimatedBrush" Color="Green" />
+        </Border.BorderBrush>
+        <Border.Triggers>
+          <EventTrigger RoutedEvent="Border.Loaded">
+            <BeginStoryboard>
+              <Storyboard>
+
+                <!-- Animate from green to red using a linear key frame, from red to 
+              yellow using a discrete key frame, and from yellow back to green with
+              a spline key frame. This animation repeats forever. -->
+                <ColorAnimationUsingKeyFrames
+                  Storyboard.TargetProperty="(SolidColorBrush.Color)"
+                  Storyboard.TargetName="MyAnimatedBrush"
+                  Duration="0:0:6" FillBehavior="HoldEnd" RepeatBehavior="Forever">
+                  <ColorAnimationUsingKeyFrames.KeyFrames>
+
+                    <!-- Go from green to red in the first 2 seconds. LinearColorKeyFrame creates
+                  a smooth, linear animation between values. -->
+                    <LinearColorKeyFrame Value="Red" KeyTime="0:0:2" />
+
+                    <!-- In the next half second, go to yellow. DiscreteColorKeyFrame creates a 
+                  sudden jump between values. -->
+                    <DiscreteColorKeyFrame Value="Yellow" KeyTime="0:0:2.5" />
+
+                    <!-- In the final 2 seconds of the animation, go from yellow back to green. SplineColorKeyFrame 
+                  creates a variable transition between values depending on the KeySpline property. In this example,
+                  the animation starts off slow but toward the end of the time segment, it speeds up exponentially.-->
+                    <SplineColorKeyFrame Value="Green" KeyTime="0:0:4.5" KeySpline="0.6,0.0 0.9,0.00" />
+                  </ColorAnimationUsingKeyFrames.KeyFrames>
+                </ColorAnimationUsingKeyFrames>
+              </Storyboard>
+            </BeginStoryboard>
+          </EventTrigger>
+        </Border.Triggers>
+
+        <TextBlock>
+          This example shows how to use the ColorAnimationUsingKeyFrames to create
+          an animation on the BorderBrush property of a Border.
+        </TextBlock>
+      </Border>
+      
+      <!-- Displays functional code for demonstration. -->
+      <Border Background="#EEEEEE" BorderBrush="Black" Width="600" Height="400"  BorderThickness="1">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+          <TextBlock Style="{StaticResource CodeSnippetParagraph}" xml:space="preserve">
+...
+&lt;Border Background="#99FFFFFF"  BorderThickness="28"
+Margin="40" Width="300" Padding="20" &gt;
+  &lt;Border.BorderBrush&gt;
+    &lt;SolidColorBrush x:Name="MyAnimatedBrush" Color="Green" /&gt;
+  &lt;/Border.BorderBrush&gt;
+  &lt;Border.Triggers&gt;
+    &lt;EventTrigger RoutedEvent="Border.Loaded"&gt;
+      &lt;BeginStoryboard&gt;
+        &lt;Storyboard&gt;
+
+          &lt;!-- Animate from green to red using a linear key frame, from red to 
+        yellow using a discrete key frame, and from yellow back to green with
+        a spline key frame. This animation repeats forever. --&gt;
+          &lt;ColorAnimationUsingKeyFrames
+            Storyboard.TargetProperty="(SolidColorBrush.Color)"
+            Storyboard.TargetName="MyAnimatedBrush"
+            Duration="0:0:6" FillBehavior="HoldEnd" RepeatBehavior="Forever"&gt;
+            &lt;ColorAnimationUsingKeyFrames.KeyFrames&gt;
+
+              &lt;!-- Go from green to red in the first 2 seconds. LinearColorKeyFrame creates
+               a smooth, linear animation between values. --&gt;
+              &lt;LinearColorKeyFrame Value="Red" KeyTime="0:0:2" /&gt;
+
+              &lt;!-- In the next half second, go to yellow. DiscreteColorKeyFrame creates a 
+              sudden jump between values. --&gt;
+              &lt;DiscreteColorKeyFrame Value="Yellow" KeyTime="0:0:2.5" /&gt;
+
+              &lt;!-- In the final 2 seconds of the animation, go from yellow back to green.  
+              SplineColorKeyFrame creates a variable transition between values depending 
+              on the KeySpline property. In this example, the animation starts off slow 
+              but toward the end of the time segment, it speeds up exponentially.--&gt;
+              &lt;SplineColorKeyFrame Value="Green" KeyTime="0:0:4.5" KeySpline="0.6,0.0 0.9,0.00" /&gt;
+            &lt;/ColorAnimationUsingKeyFrames.KeyFrames&gt;
+          &lt;/ColorAnimationUsingKeyFrames&gt;
+        &lt;/Storyboard&gt;
+      &lt;/BeginStoryboard&gt;
+    &lt;/EventTrigger&gt;
+  &lt;/Border.Triggers&gt;
+
+  &lt;TextBlock&gt;
+    This example shows how to use the ColorAnimationUsingKeyFrames to create
+    an animation on the BorderBrush property of a Border.
+  &lt;/TextBlock&gt;
+&lt;/Border&gt;
+...
+      </TextBlock>
+        </ScrollViewer>
+      </Border>
+      <!-- End of code display. -->
+    </StackPanel>
+
+    <Canvas HorizontalAlignment="Left" Width="1200" Height="50" Margin="0,30,0,0">
+      <Rectangle Style="{StaticResource myAnimatedRectangleStyle}" Width="1200" Height="30" />
+      <TextBlock FontSize="12" FontWeight="Bold" Margin="30,10,10,18">
+        Animate a Rectangle (RectAnimationUsingKeyFrames)
+      </TextBlock>
+    </Canvas>
+
+    <StackPanel Orientation="Horizontal">
+      <Canvas Width="300" Height="400">
+        <Path Stroke="Black" StrokeThickness="1" Fill="LemonChiffon">
+          <Path.Data>
+            <RectangleGeometry x:Name="myRectangleGeometry" Rect="0,200,100,100" />
+          </Path.Data>
+          <Path.Triggers>
+            <EventTrigger RoutedEvent="Path.Loaded">
+              <BeginStoryboard>
+                <Storyboard>
+
+                  <!-- Animate the Rect property of the RectangleGeometry which causes the
+              rectangle to animate its position as well as its width and height. -->
+                  <RectAnimationUsingKeyFrames
+                    Storyboard.TargetName="myRectangleGeometry"
+                    Storyboard.TargetProperty ="Rect"
+                    Duration="0:0:6" FillBehavior="HoldEnd" RepeatBehavior="Forever">
+
+                    <!-- Animate position, width, and height in first 2 seconds. LinearRectKeyFrame creates
+                a smooth, linear animation between values. -->
+                    <LinearRectKeyFrame Value="100,50,200,50" KeyTime="0:0:2" />
+
+                    <!-- In the next half second, change height to 10. DiscreteColorKeyFrame creates a 
+                sudden "jump" between values. -->
+                    <DiscreteRectKeyFrame Value="100,50,200,10" KeyTime="0:0:2.5" />
+
+                    <!-- In the final 2 seconds of the animation, go back to the starting position, width, and height.  
+                Spline key frames like SplineRectKeyFrame creates a variable transition between values depending 
+                on the KeySpline property. In this example, the animation starts off slow but toward the end of 
+                the time segment, it speeds up exponentially.-->
+                    <SplineRectKeyFrame Value="0,200,100,100" KeyTime="0:0:4.5" KeySpline="0.6,0.0 0.9,0.00"  />
+                  </RectAnimationUsingKeyFrames>
+                </Storyboard>
+              </BeginStoryboard>
+            </EventTrigger>
+          </Path.Triggers>
+        </Path>
+      </Canvas>
+      <!-- Displays functional code for demonstration. -->
+      <Border Background="#EEEEEE" BorderBrush="Black" Width="600" Height="400" Margin="60,0,0,100"   BorderThickness="1">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+          <TextBlock Style="{StaticResource CodeSnippetParagraph}" xml:space="preserve">
+...
+&lt;Path Stroke="Black" StrokeThickness="1" Fill="LemonChiffon"&gt;
+&lt;Path.Data&gt;
+  &lt;RectangleGeometry x:Name="myRectangleGeometry" Rect="0,200,100,100" /&gt;
+&lt;/Path.Data&gt;
+&lt;Path.Triggers&gt;
+  &lt;EventTrigger RoutedEvent="Path.Loaded"&gt;
+    &lt;BeginStoryboard&gt;
+      &lt;Storyboard&gt;
+
+        &lt;!-- Animate the Rect property of the RectangleGeometry which causes the
+         rectangle to animate its position as well as its width and height. --&gt;
+        &lt;RectAnimationUsingKeyFrames
+          Storyboard.TargetName="myRectangleGeometry"
+          Storyboard.TargetProperty ="Rect"
+          Duration="0:0:6" FillBehavior="HoldEnd" RepeatBehavior="Forever"&gt;
+
+          &lt;!-- Animate position, width, and height in first 2 seconds. 
+           LinearRectKeyFrame createsa smooth, linear animation between values. --&gt;
+          &lt;LinearRectKeyFrame Value="100,50,200,50" KeyTime="0:0:2" /&gt;
+
+          &lt;!-- In the next half second, change height to 10. DiscreteColorKeyFrame 
+           creates a sudden "jump" between values. --&gt;
+          &lt;DiscreteRectKeyFrame Value="100,50,200,10" KeyTime="0:0:2.5" /&gt;
+
+          &lt;!-- In the final 2 seconds of the animation, go back to the starting 
+           position, width, and height. Spline key frames like SplineRectKeyFrame 
+           creates a variable transition between values depending on the KeySpline 
+           property. In this example, the animation starts off slow but toward the 
+           end of the time segment, it speeds up exponentially.--&gt;
+          &lt;SplineRectKeyFrame Value="0,200,100,100" KeyTime="0:0:4.5" 
+           KeySpline="0.6,0.0 0.9,0.00"  /&gt;
+        &lt;/RectAnimationUsingKeyFrames&gt;
+      &lt;/Storyboard&gt;
+    &lt;/BeginStoryboard&gt;
+  &lt;/EventTrigger&gt;
+&lt;/Path.Triggers&gt;
+&lt;/Path&gt;
+...
+      </TextBlock>
+        </ScrollViewer>
+      </Border>
+      <!-- End of code display. -->
+
+    </StackPanel>
+    
+  </StackPanel>
+</Page>

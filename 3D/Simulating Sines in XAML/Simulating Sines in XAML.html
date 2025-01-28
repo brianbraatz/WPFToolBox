@@ -1,0 +1,71 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Simulating Sines in XAML</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/11/130618.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/11/210905.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/11/190700.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Simulating Sines in XAML</h2></a><p style="text-align: right;">November 19, 2006<br>New York, NY</p><p>
+Those of us who suffer from advanced Xamlholism can no longer even
+think about a programming challenge without wondering whether it could
+be done entirely in XAML. And once we are sure an all-XAML solution is
+possible, we don't care how ugly or how wasteful the result may be. The
+most important objective of our obsession is seeing it run in IE, and
+saying proudly (or rather, <i>thinking</i> proudly, because no one else is really interested in our addiction) "I did it entirely in a single XAML file."
+</p>
+<p>
+Not every WPF programmer has this sickness. Ian Griffiths' 
+<a href="http://www.interact-sw.co.uk/iangblog/2006/11/19/wpfwavedata">WPF Data Binding: Harmonic Series Visualization</a>, for example, is an elegant mix of C# code <i>and</i>
+XAML. This program demonstrates proper (and admirable) programming
+moderation, and there's some nice stuff in there. I particularly like
+the "generation" of the <i>Slider</i> controls as data templates in an <i>ItemsControl</i>. Change one number in the program — the first argument to the <i>HarmonicSeries</i> constructor in Windows1.xaml.cs — and you get more or fewer sliders as a result.
+</p>
+<p>
+Well, seeing this nice piece of code was enough to trigger my
+Xamlholism to kick in, and I went on a binge. (And on a Sunday morning,
+no less.) My goal was to do something similar, but entirely in XAML. I
+toyed around with displaying a polyline, but came to the conclusion
+that the XAML would just be way too repetitious, even for my low
+Xamlholic standards.
+</p>
+<p>So, I decided to use an animation instead. What you see is a little
+red dot tracing out the curve on an oscilloscope-like screen, so I
+called the file:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2006/11/Oscilloscope.xaml">Oscilloscope.xaml</a>
+</p>
+<p>
+It looks like this:
+</p>
+<p align="center">
+<img src="Simulating%20Sines%20in%20XAML_files/Oscilloscope.png">
+</p>
+<p>The 10 sliders correspond to the first 10 harmonics, and you can set
+the amplitude of each to anything from -100 to 100. There are also
+three buttons down at the bottom for presets. Clicking the buttons sets
+the 10 sliders for a square wave, triangle wave, or sawtooth. (Of
+course, the results are only approximate because only 10 harmonics are
+involved. Adding more harmonics to my solution involves a lot of ugly
+cut-and-paste-and-modify.)
+</p>
+<p>
+Before you try to figure out how this program works, you might want to look at 
+<a href="http://www.charlespetzold.com/blog/2006/11/SingleSineCurve.xaml">SingleSineCurve.xaml</a>.
+This simpler program just displays the first harmonic with a constant
+amplitude of 100. It has two animations: The first simply moves the red
+dot along the x-axis from left to right, repeated forever. The second
+animation animates a <i>double</i> from 0 to 360, again repeated forever. The second animation targets the <i>Angle</i> property of a <i>RotateTransform</i>, which is part of a <i>RenderTransform</i> for an invisible element. That <i>RenderTransform</i> also contains a <i>ScaleTransform</i> with a fixed <i>ScaleY</i> attribute of 100. In the composite transform, the <i>M21</i> element of the matrix is equal to -100 times the sine of the animated angle. That number is bound to a <i>TranslateTransform</i> of the red dot to move it up and down.
+</p>
+<p>
+In Oscilloscope.xaml, there's one animation for the horizontal movement of the red dot, and 10 animations for 10 <i>RotateTransform</i>s for 10 invisible elements, where each <i>RotateTransform</i> is combined with a <i>ScaleTransform</i> that's bound to one of the 10 <i>Slider</i> controls. The <i>RenderTransform</i> of the red dot is a composite of 10 <i>TranslateTransform</i>s, each of which is bound with the <i>M21</i> element of the <i>RenderTransform</i> matrix of the 10 invisible elements.
+</p>
+<p>
+I know, I know, I know. This is totally perverted. But as an active
+Xamlholic, this is the type of thing that to people like me is "having
+fun."
+</p>
+<hr>
+<p>
+<b>November 20 Postscript:</b> I added the buttons very late in
+developing this file. I only discovered after Oscilloscope.xaml was
+posted that clicking one of the buttons then renders the sliders from
+being changed by hand. I'm not sure how to fix this problem, except to
+refresh the file in Internet Explorer.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/11/130618.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/11/210905.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

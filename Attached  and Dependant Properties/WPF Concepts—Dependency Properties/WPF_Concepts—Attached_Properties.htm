@@ -1,0 +1,582 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" dir="ltr" lang="en"><head>
+
+
+
+	
+<meta name="verify-v1" content="qLIlUXv7S0L6yiAxLJpOJiD7QYp2mFrujAKdor8rOiI=">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="keywords" content="WPF Concepts—Attached Properties,.NET Articles,WPF Concepts,WPF Concepts—A Tour of the Class Hierarchy,WPF Concepts—Change Notification,WPF Concepts—Commands,WPF Concepts—Conclusion,WPF Concepts—Dependency Properties,WPF Concepts—Dependency Property Implementation,WPF Concepts—Logical and Visual Trees,WPF Concepts—Property Value Inheritance">
+<link rel="shortcut icon" href="http://en.csharp-online.net/favicon.ico">
+<link rel="copyright" href="http://en.csharp-online.net/CSharp-Online.NET:Copyright"><title>WPF Concepts—Attached Properties at C# Online.NET (CSharp-Online.NET)</title>
+		
+		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "/skins/csobook/main.css?7"; /*]]>*/</style>
+		<link rel="stylesheet" type="text/css" media="print" href="WPF_Concepts%97Attached_Properties_files/commonPrint.css"><!--[if lt IE 5.5000]><style type="text/css">@import "/skins/csobook/IE50Fixes.css";</style><![endif]--><!--[if IE 5.5000]><style type="text/css">@import "/skins/csobook/IE55Fixes.css";</style><![endif]--><!--[if IE 6]><style type="text/css">@import "/skins/csobook/IE60Fixes.css";</style><![endif]--><!--[if IE 7]><style type="text/css">@import "/skins/csobook/IE70Fixes.css?1";</style><![endif]--><!--[if lt IE 7]><script type="text/javascript" src="/skins/common/IEFixes.js"></script>
+		<meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+		
+		
+		
+		
+		
+		<script type="text/javascript">var skin = 'csobook';var stylepath = '/skins';</script>
+		<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/wikibits.js"><!-- wikibits js --></script>
+		<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/index.php"><!-- site js --></script>
+		<style type="text/css">/*<![CDATA[*/
+@import "/index.php?title=MediaWiki:Common.css&action=raw&ctype=text/css&smaxage=18000";
+@import "/index.php?title=MediaWiki:Csobook.css&action=raw&ctype=text/css&smaxage=18000";
+@import "/index.php?title=-&action=raw&gen=css&maxage=18000";
+/*]]>*/</style><!-- Head Scripts -->
+		
+				<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/previewbubble.js"></script>
+		<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/CSO.js"></script>
+        <link href="WPF_Concepts%97Attached_Properties_files/CSOmenu.htm" type="text/css" rel="stylesheet">
+<style type="text/css">
+#main { border-top: 1px solid #666; clear: both; width: 100%; }
+#contents { background: #DFDCD1; border-top: 2em solid #807960; }
+#header { position: relative; width: 100%; height: 2em; width: 45em; }
+#header ul#primary { margin: 0; padding: 0; position: absolute; bottom: -1px; left: 20px; width: 45em; }
+#header ul#primary li { display: inline; list-style: none; }
+#header ul#primary a,#header ul#primary span,#header ul#primary a.current, #header ul#primary strong {
+        width: auto; display: block; float: left; padding: 4px 0px; padding-left: 4px;
+        padding-right: 4px; margin-top: 1px; margin-right: 2px; text-align: center; font-family: Arial;
+        font-size: 85%; text-decoration: none; color: #333; }
+#header ul#primary span,#header ul#primary a.current,#header ul#primary a.current:hover, #header ul#primary strong {
+        border: 1px solid #666; border-bottom: none; background: #DFDCD1;
+        padding-bottom: 6px; padding-left: 4px; padding-right: 4px; margin-top: 0; }
+/* Unselected menu tabs */
+#header ul#primary a
+   {
+   background: #BFBAA7;
+   border: 1px solid #807960;
+   border-bottom: none;
+   }
+#header ul#primary a:hover
+   {
+   margin-top: 0;
+   border-color: #807960;
+   background: #DFDCD1;
+   padding-bottom: 5px;
+   }
+/* Sub menu tabs (text only) */
+#header ul#secondary
+   {
+   position: absolute;
+   margin: 0;
+   padding: 0;
+   bottom: -1.4em;
+   left: 1px;
+   width: 50em;
+   }
+#header ul#secondary li a,#header ul#secondary li span ,#header ul#secondary li strong
+   {
+   width: auto;
+   display: block;
+   float: left;
+   padding: 0 5px;
+   margin: 0;
+   text-align: center;
+   border: none;
+   border-left: 1px dotted #807960;
+/*   background: #DFDCD1; */
+   }
+/* Sub menu text */
+#header ul#secondary li a
+   {
+   color: #06C;
+   text-decoration: underline;
+   }
+#header ul#secondary li a:hover
+   {
+   color: #333;
+   background: #DFDCD1;
+   padding: 0 5px;
+   border: none;
+   border-left: 1px dotted #807960;
+}
+/* */
+#header ul#secondary li a:active
+   {
+   color: #333;
+   font-weight: normal;
+   background: transparent;
+   }
+#header ul#secondary li:first-child a, #header ul#secondary li:first-child span
+   { border: none; }
+</style></head><body class="ns-0 ltr">
+	<div id="globalWrapper">
+		<div id="column-content">
+	<div id="content">
+		<a name="top" id="top"></a>
+				<h1 class="firstHeading">WPF Concepts—Attached Properties</h1>
+		<div id="bodyContent">
+			<h3 id="siteSub">From C# Online.NET (CSharp-Online.NET)—your free C# and .NET encyclopedia</h3>
+			<div id="contentSub"></div>
+<div align="center"><table bgcolor="#554a1c" cellpadding="0" cellspacing="0"><tbody><tr><td align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-9095722307447682";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text";
+//2006-11-01: enCSOBannerBU
+google_ad_channel = "6332880125";
+google_color_border = "BFBAA7";
+google_color_bg = "DFDCD1";
+google_color_link = "002BB8";
+google_color_text = "000000";
+google_color_url = "000000";
+//--></script>
+<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="WPF_Concepts%97Attached_Properties_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="60" scrolling="no" width="468"></iframe></td></tr></tbody></table></div><br>
+									<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>			<!-- start content -->
+			<table id="Article" style="border: 1px solid gray; margin: 0pt 0pt 1em 1em; font-size: 90%; float: right; clear: right; width: 180px;">
+
+<tbody><tr style="background: rgb(242, 242, 242) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" align="center">
+<td style="border-bottom: 2px solid rgb(204, 204, 255);"> <b><a href="http://en.csharp-online.net/CSharp-Online.NET:Articles" title="CSharp-Online.NET:Articles">CSharp-Online.NET:Articles</a></b>
+</td></tr>
+<tr style="background: rgb(242, 242, 242) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" align="center">
+<td style="border-bottom: 2px solid rgb(204, 204, 255);"> <b><a href="http://en.csharp-online.net/.NET_Articles" title=".NET Articles">.NET Articles</a></b>
+</td></tr>
+
+<tr style="background: rgb(242, 242, 242) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<td style="border-bottom: 2px solid rgb(204, 204, 255);">
+<p><b><a href="http://en.csharp-online.net/WPF_Concepts" title="WPF Concepts">Important New WPF Concepts</a></b>
+</p>
+<ul><li><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Logical_and_Visual_Trees" title="WPF Concepts—Logical and Visual Trees">Logical and Visual Trees</a>
+</li><li><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Dependency_Properties" title="WPF Concepts—Dependency Properties">Dependency Properties §</a>
+<ul><li><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Dependency_Property_Implementation" title="WPF Concepts—Dependency Property Implementation">Dependency Property Implementation</a>
+</li><li><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Change_Notification" title="WPF Concepts—Change Notification">Change Notification</a>
+</li><li><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Property_Value_Inheritance" title="WPF Concepts—Property Value Inheritance">Property Value Inheritance</a>
+</li><li><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Support_for_Multiple_Providers" title="WPF Concepts—Support for Multiple Providers">Support for Multiple Providers</a>
+</li><li><strong>Attached Properties</strong>
+</li></ul>
+</li><li><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Routed_Events" title="WPF Concepts—Routed Events">Routed Events §</a>
+</li><li><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Commands" title="WPF Concepts—Commands">Commands §</a>
+</li><li><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94A_Tour_of_the_Class_Hierarchy" title="WPF Concepts—A Tour of the Class Hierarchy">Class Hierarchy</a>
+</li><li><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Conclusion" title="WPF Concepts—Conclusion">Conclusion</a>
+</li></ul>
+</td></tr>
+<tr style="background: rgb(242, 242, 242) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" align="left">
+<td style="border-bottom: 2px solid rgb(204, 204, 255);">
+<ul><li><a href="http://en.csharp-online.net/Windows_Presentation_Foundation_Unleashed%2C_Sams" title="Windows Presentation Foundation Unleashed, Sams">This Book Reviewed!</a>
+</li></ul>
+</td></tr>
+<tr style="background: rgb(242, 242, 242) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" align="center">
+<td><small>© 2007 Sams Publishing</small>
+</td></tr></tbody></table>
+<a name="Attached_Properties"></a><h2> Attached Properties</h2>
+<p>An attached property is a special form of dependency property that can effectively be <i>attached</i> to arbitrary objects. This may sound strange at first, but this mechanism has several applications in WPF.
+</p><p>For the About dialog example, imagine that rather than setting <code>FontSize</code> and <code>FontStyle</code> for the entire Window (as done in Listing 3.4), you would rather set them on the inner <code>StackPanel</code> so they are inherited only by the two <code>Button</code>s. Moving the property attributes to the inner <code>StackPanel</code> element doesn't work, however, because <code>StackPanel</code> doesn't have any font-related properties of its own! Instead, you must use the <code>FontSize</code> and <code>FontStyle</code> attached properties that happen to be defined on a class called <code>TextElement</code>.
+Listing 3.5 demonstrates this, introducing new XAML syntax designed
+especially for attached properties. This enables the desired property
+value inheritance, as shown in Figure 3.6.
+</p><p><br> 
+<a href="http://en.csharp-online.net/Image:WPFUnleashed3-6.jpg" class="image" title="Image:WPFUnleashed3-6.jpg"><img src="WPF_Concepts%97Attached_Properties_files/WPFUnleashed3-6.jpg" alt="Image:WPFUnleashed3-6.jpg" longdesc="/Image:WPFUnleashed3-6.jpg" height="280" width="330"></a><br>
+<b>Figure 3.6</b> The About dialog with <code>FontSize</code> and <code>FontStyle</code> set on both <code>Buttons</code> via inheritance from the inner StackPanel.
+</p><p><br>
+<b>Listing 3.5. The About Dialog with Font Properties Moved to the Inner StackPanel</b> 
+</p>
+<pre class="xml"><span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;Window</span> <span style="color: rgb(0, 0, 102);">xmlns</span>=<span style="color: rgb(255, 0, 0);">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span>
+  <span style="color: rgb(0, 0, 102);">Title</span>=<span style="color: rgb(255, 0, 0);">"About WPF Unleashed"</span> <span style="color: rgb(0, 0, 102);">SizeToContent</span>=<span style="color: rgb(255, 0, 0);">"WidthAndHeight"</span>
+  <span style="color: rgb(0, 0, 102);">Background</span>=<span style="color: rgb(255, 0, 0);">"OrangeRed"</span><span style="font-weight: bold; color: black;">&gt;</span></span>
+  <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;StackPanel<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+    <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;Label</span> <span style="color: rgb(0, 0, 102);">FontWeight</span>=<span style="color: rgb(255, 0, 0);">"Bold"</span> <span style="color: rgb(0, 0, 102);">FontSize</span>=<span style="color: rgb(255, 0, 0);">"20"</span> <span style="color: rgb(0, 0, 102);">Foreground</span>=<span style="color: rgb(255, 0, 0);">"White"</span><span style="font-weight: bold; color: black;">&gt;</span></span>
+      WPF Unleashed (Version 3.0)
+    <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/Label<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+    <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;Label<span style="font-weight: bold; color: black;">&gt;</span></span></span>© 2006 SAMS Publishing<span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/Label<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+    <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;Label<span style="font-weight: bold; color: black;">&gt;</span></span></span>Installed Chapters:<span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/Label<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+    <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;ListBox<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+      <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;ListBoxItem<span style="font-weight: bold; color: black;">&gt;</span></span></span>Chapter 1<span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/ListBoxItem<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+      <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;ListBoxItem<span style="font-weight: bold; color: black;">&gt;</span></span></span>Chapter 2<span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/ListBoxItem<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+    <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/ListBox<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+    <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;StackPanel</span> TextElement.<span style="color: rgb(0, 0, 102);">FontSize</span>=<span style="color: rgb(255, 0, 0);">"30"</span> TextElement.<span style="color: rgb(0, 0, 102);">FontStyle</span>=<span style="color: rgb(255, 0, 0);">"Italic"</span>
+      <span style="color: rgb(0, 0, 102);">Orientation</span>=<span style="color: rgb(255, 0, 0);">"Horizontal"</span> <span style="color: rgb(0, 0, 102);">HorizontalAlignment</span>=<span style="color: rgb(255, 0, 0);">"Center"</span><span style="font-weight: bold; color: black;">&gt;</span></span>
+      <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;Button</span> <span style="color: rgb(0, 0, 102);">MinWidth</span>=<span style="color: rgb(255, 0, 0);">"75"</span> <span style="color: rgb(0, 0, 102);">Margin</span>=<span style="color: rgb(255, 0, 0);">"10"</span><span style="font-weight: bold; color: black;">&gt;</span></span>Help<span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/Button<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+      <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;Button</span> <span style="color: rgb(0, 0, 102);">MinWidth</span>=<span style="color: rgb(255, 0, 0);">"75"</span> <span style="color: rgb(0, 0, 102);">Margin</span>=<span style="color: rgb(255, 0, 0);">"10"</span><span style="font-weight: bold; color: black;">&gt;</span></span>OK<span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/Button<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+    <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/StackPanel<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+    <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;StatusBar<span style="font-weight: bold; color: black;">&gt;</span></span></span>You have successfully registered this product.<span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/StatusBar<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+  <span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/StackPanel<span style="font-weight: bold; color: black;">&gt;</span></span></span>
+<span style="color: rgb(0, 153, 0);"><span style="font-weight: bold; color: black;">&lt;/Window<span style="font-weight: bold; color: black;">&gt;</span></span></span></pre>
+<p><code>TextElement.FontSize</code> and <code>TextElement.FontStyle</code> (rather than simply <code>FontSize</code> and <code>FontStyle</code>) must be used in the <code>StackPanel</code> element because <code>StackPanel</code> does not have these properties. When a XAML parser or compiler encounters this syntax, it requires that <code>TextElement</code> (sometimes called the <i>attached property provider</i>) has static methods called <code>SetFontSize</code> and <code>SetFontStyle</code> that can set the value accordingly. Therefore, the <code>StackPanel</code> declaration in Listing 3.5 is equivalent to the following C# code:
+</p>
+<pre class="csharp">StackPanel panel = <span style="color: rgb(6, 0, 255);">new</span> StackPanel<span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(0, 0, 0);">)</span>;
+TextElement.<span style="color: rgb(0, 0, 0);">SetFontSize</span><span style="color: rgb(0, 0, 0);">(</span>panel, <span style="color: rgb(255, 0, 0);">30</span><span style="color: rgb(0, 0, 0);">)</span>;
+TextElement.<span style="color: rgb(0, 0, 0);">SetFontStyle</span><span style="color: rgb(0, 0, 0);">(</span>panel, FontStyles.<span style="color: rgb(0, 0, 0);">Italic</span><span style="color: rgb(0, 0, 0);">)</span>;
+panel.<span style="color: rgb(0, 0, 0);">Orientation</span> = Orientation.<span style="color: rgb(0, 0, 0);">Horizontal</span>;
+panel.<span style="color: rgb(0, 0, 0);">HorizontalAlignment</span> = HorizontalAlignment.<span style="color: rgb(0, 0, 0);">Center</span>;
+Button helpButton = <span style="color: rgb(6, 0, 255);">new</span> Button<span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(0, 0, 0);">)</span>;
+helpButton.<span style="color: rgb(0, 0, 0);">MinWidth</span> = <span style="color: rgb(255, 0, 0);">75</span>;
+helpButton.<span style="color: rgb(0, 0, 0);">Margin</span> = <span style="color: rgb(6, 0, 255);">new</span> Thickness<span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(255, 0, 0);">10</span><span style="color: rgb(0, 0, 0);">)</span>;
+helpButton.<span style="color: rgb(0, 0, 0);">Content</span> = <span style="color: rgb(163, 21, 21);">"Help"</span>;
+Button okButton = <span style="color: rgb(6, 0, 255);">new</span> Button<span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(0, 0, 0);">)</span>;
+okButton.<span style="color: rgb(0, 0, 0);">MinWidth</span> = <span style="color: rgb(255, 0, 0);">75</span>;
+okButton.<span style="color: rgb(0, 0, 0);">Margin</span> = <span style="color: rgb(6, 0, 255);">new</span> Thickness<span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(255, 0, 0);">10</span><span style="color: rgb(0, 0, 0);">)</span>;
+okButton.<span style="color: rgb(0, 0, 0);">Content</span> = <span style="color: rgb(163, 21, 21);">"OK"</span>;
+panel.<span style="color: rgb(0, 0, 0);">Children</span>.<span style="color: rgb(0, 0, 0);">Add</span><span style="color: rgb(0, 0, 0);">(</span>helpButton<span style="color: rgb(0, 0, 0);">)</span>;
+panel.<span style="color: rgb(0, 0, 0);">Children</span>.<span style="color: rgb(0, 0, 0);">Add</span><span style="color: rgb(0, 0, 0);">(</span>okButton<span style="color: rgb(0, 0, 0);">)</span>;</pre>
+<p>Notice that the enumeration values such as <code>FontStyles.Italic</code>, <code>Orientation.Horizontal</code>, and <code>HorizontalAlignment.Center</code> were previously specified in XAML simply as <code>Italic</code>, <code>Horizontal</code>, and <code>Center</code>, respectively. This is possible thanks to the <code>EnumConverter</code> type converter in the .NET Framework, which can convert any case-insensitive string.
+</p><p>Although the XAML in Listing 3.5 nicely represents the logical attachment of <code>FontSize</code> and <code>FontStyle</code> to <code>StackPanel</code>,
+the C# code reveals that there's no real magic here; just a method call
+that associates an element with an otherwise-unrelated property. One of
+the interesting things about the attached property abstraction is that
+no .NET property is a part of it!
+</p><p>Internally, methods like <code>SetFontSize</code> simply call the same <code>DependencyObject.SetValue</code> method that a normal dependency property accessor calls, but on the passed-in <code>DependencyObject</code> rather than the current instance:
+</p>
+<pre class="csharp"><span style="color: rgb(6, 0, 255);">public</span> <span style="color: rgb(6, 0, 255);">static</span> <span style="color: rgb(6, 0, 255);">void</span> SetFontSize<span style="color: rgb(0, 0, 0);">(</span>DependencyObject element, <span style="color: rgb(6, 0, 255);">double</span> value<span style="color: rgb(0, 0, 0);">)</span>
+<span style="color: rgb(0, 0, 0);">{</span>
+  element.<span style="color: rgb(0, 0, 0);">SetValue</span><span style="color: rgb(0, 0, 0);">(</span>TextElement.<span style="color: rgb(0, 0, 0);">FontSizeProperty</span>, value<span style="color: rgb(0, 0, 0);">)</span>;
+<span style="color: rgb(0, 0, 0);">}</span></pre>
+<p>Similarly, attached properties also define a static <code>GetXXX</code> method (where <code>XXX</code> is the name of the property) that calls the familiar <code>DependencyObject.GetValue</code> method:
+</p>
+<pre class="csharp"><span style="color: rgb(6, 0, 255);">public</span> <span style="color: rgb(6, 0, 255);">static</span> <span style="color: rgb(6, 0, 255);">double</span> GetFontSize<span style="color: rgb(0, 0, 0);">(</span>DependencyObject element<span style="color: rgb(0, 0, 0);">)</span>
+<span style="color: rgb(0, 0, 0);">{</span>
+  <span style="color: rgb(6, 0, 255);">return</span> <span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(6, 0, 255);">double</span><span style="color: rgb(0, 0, 0);">)</span>element.<span style="color: rgb(0, 0, 0);">GetValue</span><span style="color: rgb(0, 0, 0);">(</span>TextElement.<span style="color: rgb(0, 0, 0);">FontSizeProperty</span><span style="color: rgb(0, 0, 0);">)</span>;
+<span style="color: rgb(0, 0, 0);">}</span></pre>
+<p>As with property wrappers for normal dependency properties, these <code>GetXXX</code> and <code>SetXXX</code> methods must not do anything other than making a call to <code>GetValue</code> and <code>SetValue</code>.
+</p>
+<table style="border: 1px solid rgb(170, 170, 170); margin: 1em 1em 1em 0pt; border-collapse: collapse; background-color: rgb(249, 249, 249); font-size: 95%; empty-cells: show;" border="2" cellpadding="4" cellspacing="0" rules="all">
+
+<tbody><tr bgcolor="lightgrey" valign="top">
+<td> <b>Digging Deeper: Understanding the Attached Property Provider</b>
+</td></tr>
+<tr align="left" valign="top">
+<td> The most confusing part about the <code>FontSize</code> and <code>FontStyle</code> attached properties used in Listing 3.5 is that they aren't defined by <code>Button</code> or even <code>Control</code>, the base class that defines the normal <code>FontSize</code> and <code>FontStyle</code> dependency properties! Instead, they are defined by the seemingly unrelated <code>TextElement</code> class (and also by the <code>TextBlock</code> class, which could also be used in the preceding examples).
+<p>How can this possibly work when <code>TextElement.FontSizeProperty</code> is a separate <code>DependencyProperty</code> field from <code>Control.FontSizeProperty</code> (and <code>TextElement.FontStyleProperty</code> is separate from <code>Control.FontStyleProperty</code>)? The key is the way these dependency properties are internally registered. If you were to look at the source code for <code>TextElement</code>, you would see something like the following:
+</p>
+<pre class="csharp">TextElement.<span style="color: rgb(0, 0, 0);">FontSizeProperty</span> = DependencyProperty.<span style="color: rgb(0, 0, 0);">RegisterAttached</span><span style="color: rgb(0, 0, 0);">(</span>
+  <span style="color: rgb(163, 21, 21);">"FontSize"</span>, <span style="color: rgb(6, 0, 255);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(6, 0, 255);">double</span><span style="color: rgb(0, 0, 0);">)</span>, <span style="color: rgb(6, 0, 255);">typeof</span><span style="color: rgb(0, 0, 0);">(</span>TextElement<span style="color: rgb(0, 0, 0);">)</span>, <span style="color: rgb(6, 0, 255);">new</span> FrameworkPropertyMetadata<span style="color: rgb(0, 0, 0);">(</span>
+  SystemFonts.<span style="color: rgb(0, 0, 0);">MessageFontSize</span>, FrameworkPropertyMetadataOptions.<span style="color: rgb(0, 0, 0);">Inherits</span> |
+  FrameworkPropertyMetadataOptions.<span style="color: rgb(0, 0, 0);">AffectsRender</span> |
+  FrameworkPropertyMetadataOptions.<span style="color: rgb(0, 0, 0);">AffectsMeasure</span><span style="color: rgb(0, 0, 0);">)</span>,
+  <span style="color: rgb(6, 0, 255);">new</span> ValidateValueCallback<span style="color: rgb(0, 0, 0);">(</span>TextElement.<span style="color: rgb(0, 0, 0);">IsValidFontSize</span><span style="color: rgb(0, 0, 0);">)</span><span style="color: rgb(0, 0, 0);">)</span>;</pre>
+<p>This is similar to the earlier example of registering <code>Button</code>'s <code>IsDefault</code> dependency property, except that the <code>RegisterAttached</code> method optimizes the handling of property metadata for attached property scenarios.
+</p><p>Control, on the other hand, doesn't register its FontSize dependency property! Instead, it calls <code>AddOwner</code> on <code>TextElement</code>'s already-registered property, getting a reference to the exact same instance:
+</p>
+<pre class="csharp">Control.<span style="color: rgb(0, 0, 0);">FontSizeProperty</span> = TextElement.<span style="color: rgb(0, 0, 0);">FontSizeProperty</span>.<span style="color: rgb(0, 0, 0);">AddOwner</span><span style="color: rgb(0, 0, 0);">(</span>
+   <span style="color: rgb(6, 0, 255);">typeof</span><span style="color: rgb(0, 0, 0);">(</span>Control<span style="color: rgb(0, 0, 0);">)</span>, <span style="color: rgb(6, 0, 255);">new</span> FrameworkPropertyMetadata<span style="color: rgb(0, 0, 0);">(</span>SystemFonts.<span style="color: rgb(0, 0, 0);">MessageFontSize</span>,
+   FrameworkPropertyMetadataOptions.<span style="color: rgb(0, 0, 0);">Inherits</span><span style="color: rgb(0, 0, 0);">)</span><span style="color: rgb(0, 0, 0);">)</span>;</pre>
+<p>Therefore, the <code>FontSize</code>, <code>FontStyle</code>, and other font-related dependency properties inherited by all controls are the same properties exposed by <code>TextElement</code>!
+</p><p>Fortunately, in most cases, the class that exposes an attached property (e.g. <code>GetXXX</code> and <code>SetXXX</code> methods) is the same class that defines the normal dependency property, avoiding this confusion.
+</p>
+</td></tr></tbody></table>
+<p>Although the About dialog example uses attached properties for
+advanced property value inheritance, attached properties are most
+commonly used for layout of user interface elements. (In fact, attached
+properties were originally designed for WPF's layout system.) Various <code>Panel</code>-derived
+classes define attached properties designed to be attached to their
+children for controlling how they are arranged. This way, each Panel
+can apply its own custom behavior to arbitrary children without
+requiring all possible child elements to be burdened with their own set
+of relevant properties. It also enables systems like layout to be
+easily extensible, because anyone can write a new <code>Panel</code> with custom attached properties. 
+</p>
+<table style="border: 1px solid rgb(170, 170, 170); margin: 1em 1em 1em 0pt; border-collapse: collapse; background-color: rgb(249, 249, 249); font-size: 95%; empty-cells: show;" border="2" cellpadding="4" cellspacing="0" rules="all">
+
+<tbody><tr bgcolor="lightgrey" valign="top">
+<td> <b>Digging Deeper: Attached Properties as an Extensibility Mechanism</b>
+</td></tr>
+<tr align="left" valign="top">
+<td> Just like previous technologies such as Windows Forms, many classes in WPF define a <code>Tag</code> property (of type <code>System.Object</code>)
+intended for storing arbitrary custom data with each instance. But
+attached properties are a more powerful and flexible mechanism for
+attaching custom data to any object deriving from <code>DependencyObject</code>.
+It's often overlooked that attached properties enable you to
+effectively add custom data to instances of sealed classes (something
+that WPF has plenty of)!
+<p>A further twist to the story of attached properties is that although setting them in XAML relies on the presence of the static <code>SetXXX</code> method, you can bypass this method in procedural code and call <code>DependencyObject.SetValue</code>
+directly. This means that you can use any dependency property as an
+attached property in procedural code. For example, the following line
+of code attaches <code>ListBox</code>'s <code>IsTextSearchEnabled</code> property to a <code>Button</code> and assigns it a value:
+</p>
+<pre class="csharp"><span style="color: rgb(0, 128, 128); font-style: italic;">// Attach an unrelated property to a Button and set its value to true:</span>
+okButton.<span style="color: rgb(0, 0, 0);">SetValue</span><span style="color: rgb(0, 0, 0);">(</span>ListBox.<span style="color: rgb(0, 0, 0);">IsTextSearchEnabledProperty</span>, <span style="color: rgb(6, 0, 255);">true</span><span style="color: rgb(0, 0, 0);">)</span>;</pre>
+<p>Although this seems nonsensical, and it certainly doesn't magically enable new functionality on this <code>Button</code>, you have the freedom to consume this property value in a way that makes sense to your application or component.
+</p><p>There are more interesting ways to extend elements in this manner. For example, <code>FrameworkElement</code>'s <code>Tag</code> property is a dependency property, so you can attach it to an instance of a <code>GeometryModel3D</code> (a class that is sealed and does not have a <code>Tag</code> property) as follows:
+</p>
+<pre class="csharp">GeometryModel3D model = <span style="color: rgb(6, 0, 255);">new</span> GeometryModel3D<span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(0, 0, 0);">)</span>;
+model.<span style="color: rgb(0, 0, 0);">SetValue</span><span style="color: rgb(0, 0, 0);">(</span>FrameworkElement.<span style="color: rgb(0, 0, 0);">TagProperty</span>, <span style="color: rgb(163, 21, 21);">"my custom data"</span><span style="color: rgb(0, 0, 0);">)</span>;</pre>
+<p>This is just one of the ways in which WPF provides extensibility without the need for traditional inheritance.
+</p>
+</td></tr></tbody></table>
+<p><br>
+</p>
+<table style="border-color: transparent; border-width: 0px; background-color: transparent;" align="center">
+
+<tbody><tr>
+<td> <span class="plainlinks"><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Support_for_Multiple_Providers" title="http://en.csharp-online.net/WPF_Concepts%E2%80%94Support_for_Multiple_Providers" rel="nofollow"><img src="WPF_Concepts%97Attached_Properties_files/Previous_Page_.gif" alt="Previous_Page_.gif"></a> <a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Routed_Events" title="http://en.csharp-online.net/WPF_Concepts%E2%80%94Routed_Events" rel="nofollow"><img src="WPF_Concepts%97Attached_Properties_files/Next_Page_.gif" alt="Next_Page_.gif"></a></span>
+</td></tr></tbody></table>
+<div class="printfooter">
+Retrieved from "<a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Attached_Properties">http://en.csharp-online.net/WPF_Concepts%E2%80%94Attached_Properties</a>"</div>
+						<!-- end content -->
+			<div class="visualClear"></div>
+
+
+<div class="visualClear"></div><br>
+<div align="center"><table bgcolor="#554a1c" cellpadding="0" cellspacing="0"><tbody><tr><td align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-9095722307447682";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text";
+//2006-11-01: enCSOBannerBL
+google_ad_channel = "4522375412";
+google_color_border = "BFBAA7";
+google_color_bg = "DFDCD1";
+google_color_link = "002BB8";
+google_color_text = "000000";
+google_color_url = "000000";
+//--></script>
+<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="WPF_Concepts%97Attached_Properties_files/ads_002.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="60" scrolling="no" width="468"></iframe></td></tr></tbody></table></div>
+
+		</div>
+	</div>
+
+<div id="column-google">
+   <!-- Google AdSense -->
+   <script type="text/javascript"><!--
+google_ad_client = "pub-9095722307447682";
+google_ad_width = 120;
+google_ad_height = 600;
+google_ad_format = "120x600_as";
+google_ad_type = "text";
+//2006-11-01: enCSOTowerR
+google_ad_channel = "4224729855";
+google_color_border = "554A1C";
+google_color_bg = "DFDCD1";
+google_color_link = "002BB8";
+google_color_text = "000000";
+google_color_url = "000000";
+//--></script>
+<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="WPF_Concepts%97Attached_Properties_files/ads_003.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="600" scrolling="no" width="120"></iframe>   <!-- ?php include("includes/Performics/RandomPromo120x60.php") ? -->
+     <!-- Google AdSense Referral -->
+     <!-- ?php include("includes/Google/AdSenseReferral.php") ?-->
+     <!-- Google AdWords Referral -->
+     <!-- ?php include("includes/Google/AdWordsReferral.php") ? -->
+     <!-- Google Photo Software Referral -->
+     <!-- ?php include("includes/Google/GooglePhotoSoftware.php") ? -->
+     <!-- Google Pack Referral -->
+     <!-- ?php include("includes/Google/GooglePack.php") ? -->
+     <!-- ?php include("includes/SiteGround.php") ? -->
+</div>
+
+		</div>
+		<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Views</h5>
+		<ul>
+				 <li id="ca-nstab-main" class="selected"><a href="http://en.csharp-online.net/WPF_Concepts%E2%80%94Attached_Properties">Article</a></li>
+				 <li id="ca-talk" class="new"><a href="http://en.csharp-online.net/index.php?title=Talk:WPF_Concepts%E2%80%94Attached_Properties&amp;action=edit">Discussion</a></li>
+				 <li id="ca-viewsource"><a href="http://en.csharp-online.net/index.php?title=WPF_Concepts%E2%80%94Attached_Properties&amp;action=edit">View source</a></li>
+				 <li id="ca-history"><a href="http://en.csharp-online.net/index.php?title=WPF_Concepts%E2%80%94Attached_Properties&amp;action=history">History</a></li>
+		</ul>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Personal tools</h5>
+		<div class="pBody">
+			<ul>
+				<li id="pt-login"><a href="http://en.csharp-online.net/index.php?title=Special:Userlogin&amp;returnto=WPF_Concepts%E2%80%94Attached_Properties">Log in / create account</a></li>
+&nbsp;&nbsp;<a href="javascript:location.href='http://del.icio.us/post?v=2&url='+encodeURIComponent(document.location.href)+'&title='+encodeURIComponent(document.title)+' '"><img src="WPF_Concepts%97Attached_Properties_files/delicious14x14.png" alt="del.icio.us C# Online.NET" height="14" width="14"></a>
+<a href="javascript:location.href='http://digg.com/submit?phase=2&title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(document.location.href)+' '"><img src="WPF_Concepts%97Attached_Properties_files/digg14x12.png" alt="digg C# Online.NET" height="12" width="14"></a>
+<a href="javascript:location.href='http://www.dotnetkicks.com/kick/?url='+encodeURIComponent(document.location.href)+'&title='+encodeURIComponent(document.title)+' '"><img src="WPF_Concepts%97Attached_Properties_files/dotnetkicks14x14.png" alt="kick C# Online.NET" height="14" width="14"></a>
+<a href="javascript:location.href='http://www.furl.net/storeIt.jsp?u='+encodeURIComponent(document.location.href)+'&t='+encodeURIComponent(document.title)+' '"><img src="WPF_Concepts%97Attached_Properties_files/furl14x14b.png" alt="furl C# Online.NET" height="14" width="14"></a>
+<a href="http://en.csharp-online.net/index.php?title=Social_bookmarking">?</a>
+<a href="http://toolbar.google.com/buttons/add?url=http://en.csharp-online.net/encsharponlinebutton.xml"><img src="WPF_Concepts%97Attached_Properties_files/GoogleToolbar14x14.jpg" alt="Get C# Online.NET Toolbar" height="14" width="14"></a>
+<a href="http://fusion.google.com/add?moduleurl=http%3A%2F%2Fwww.google.com%2Fcoop/api/015184517059031426848/cse/myxksvkpaf0/gadget"><img src="WPF_Concepts%97Attached_Properties_files/add.gif" alt="Add C# Online Web Search" border="0" height="17" width="104"></a>
+<a href="#bottom" title="Go to bottom of page">‡</a>
+</ul>
+		</div>
+	</div>
+	<!-- div class="portlet" id="p-logo" -->
+	<div id="p-logo">
+		<a style="background-image: url(/skins/common/images/CSOLogo4.gif);" href="http://en.csharp-online.net/Main%28%29" title="Main()"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+
+
+	<div class="portlet">
+	  <div>
+        <!-- Google Link Unit -->
+        <script type="text/javascript"><!--
+google_ad_client = "pub-9095722307447682";
+google_ad_width = 180;
+google_ad_height = 90;
+google_ad_format = "180x90_0ads_al";
+//2006-11-06: enCSOMenu
+google_ad_channel = "8093141770";
+google_color_border = "807960";
+google_color_bg = "DFDCD1";
+google_color_link = "002BB8";
+google_color_text = "000000";
+google_color_url = "000000";
+//--></script>
+<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="WPF_Concepts%97Attached_Properties_files/ads_004.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="90" scrolling="no" width="180"></iframe>	  </div>
+	</div>
+
+	<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Search me</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="/Special:Search" id="searchform"><div>
+				<input id="searchInput" name="search" accesskey="f" value="" type="text">
+				<input name="go" class="searchButton" id="searchGoButton" value="Go" type="submit">&nbsp;
+				<input name="fulltext" class="searchButton" value="Search me" type="submit">
+			</div></form>
+		</div>
+	</div>
+
+	<!-- div id="g-search" class="portlet" -->
+	   <!-- h5 --><!-- label for="searchInput">C# Online Web Search</label --><!-- /h5 -->
+		&lt;!-- div class="pBody"&gt;
+	       <!-- ?php include("includes/Google/CSharpOnlineSearch.php") ? -->
+		<!-- /div -->
+	<!-- /div -->
+
+		<div class="portlet" id="p-C# Entry Points">
+		<h5>C# Entry Points</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-mainpage"><a href="http://en.csharp-online.net/Main%28%29">Main()</a></li>
+				<li id="n-.NET-Framework"><a href="http://en.csharp-online.net/.NET_Framework_and_CLR">.NET Framework</a></li>
+				<li id="n-Articles"><a href="http://en.csharp-online.net/CSharp-Online.NET:Articles">Articles</a></li>
+				<li id="n-ASP.NET"><a href="http://en.csharp-online.net/ASP.NET_Entry_Points">ASP.NET</a></li>
+				<li id="n-C#-and-Visual-C#"><a href="http://en.csharp-online.net/CSharp_Entry_Points">C# and Visual C#</a></li>
+				<li id="n-Glossary-of-Terms"><a href="http://en.csharp-online.net/Glossary_of_.NET_/_CSharp_Terms">Glossary of Terms</a></li>
+				<li id="n-Resources"><a href="http://en.csharp-online.net/CSharp-Online.NET:Resources">Resources</a></li>
+				<li id="n-Reviews"><a href="http://en.csharp-online.net/CSharp-Online.NET:Reviews">Reviews</a></li>
+				<li id="n-Tutorials"><a href="http://en.csharp-online.net/CSharp-Online.NET:Tutorials">Tutorials</a></li>
+				<li id="n-Visual-Studio"><a href="http://en.csharp-online.net/Visual_Studio">Visual Studio</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="portlet">
+	  <div>
+        <!-- Google Link Unit -->
+        <script type="text/javascript"><!--
+google_ad_client = "pub-9095722307447682";
+google_ad_width = 180;
+google_ad_height = 90;
+google_ad_format = "180x90_0ads_al";
+//2007-09-10: enCSOMenuM
+google_ad_channel = "0500359493";
+google_color_border = "807960";
+google_color_bg = "DFDCD1";
+google_color_link = "002BB8";
+google_color_text = "000000";
+google_color_url = "000000";
+//-->
+</script>
+<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/show_ads.js"></script><iframe name="google_ads_frame" src="WPF_Concepts%97Attached_Properties_files/ads_005.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="90" scrolling="no" width="180"></iframe>	  </div>
+	</div>
+
+    <div class="portlet" id="p-C# Online.NET">
+   <div class="mH" onclick="toggleClosedMenu('CSOmenu')"><h5>+ C# Online.NET</h5></div>
+      <div id="CSOmenu" class="mL pBody">
+         <ul>
+         <li id="n-Categories"><a href="http://en.csharp-online.net/Special:Categories">Categories</a></li>
+         <li id="n-portal"><a href="http://en.csharp-online.net/CSharp-Online.NET:Community_Portal">Community portal</a></li>
+         <li id="n-currentevents"><a href="http://en.csharp-online.net/Current_events">Current events</a></li>
+         <li id="n-Forums"><a href="http://forum.csharp-online.net/">Forums</a></li>
+         <li id="n-Getting-involved"><a href="http://en.csharp-online.net/Getting_involved_with_CSharp-Online.NET">Getting involved</a></li>
+         <li id="n-help"><a href="http://en.csharp-online.net/Help:Contents">Help</a></li>
+         <li id="n-Link-to-us"><a href="http://en.csharp-online.net/Link_to_us">Link to us</a></li>
+         <li id="n-Newest-pages"><a href="http://en.csharp-online.net/Special:Newestpages//">Newest pages</a></li>
+         <li id="n-Popular-pages"><a href="http://en.csharp-online.net/Special:Popularpages">Popular pages</a></li>
+         <li id="n-randompage"><a href="http://en.csharp-online.net/Special:Random">Random page</a></li>
+         <li id="n-Sister-sites"><a href="http://en.csharp-online.net/CSharp-Online.NET:Sister_Sites">Sister sites</a></li>
+         <li id="n-Weblog-(Blog)"><a href="http://blog.csharp-online.net/">Weblog (Blog)</a></li>
+         </ul>
+      </div>
+</div>
+
+	<div class="portlet" id="p-tb">
+	<div class="mH" onclick="toggleClosedMenu('toolmenu')">
+		<h5>+ Toolbox</h5></div>
+		<div id="toolmenu" class="mL pBody">
+			<ul>
+				<li class="mO" id="t-whatlinkshere"><a href="http://en.csharp-online.net/Special:Whatlinkshere/WPF_Concepts%E2%80%94Attached_Properties">What links here</a></li>
+				<li class="mO" id="t-recentchangeslinked"><a href="http://en.csharp-online.net/Special:Recentchangeslinked/WPF_Concepts%E2%80%94Attached_Properties">Related changes</a></li>
+<li class="mO" id="t-upload"><a href="http://en.csharp-online.net/Special:Upload">Upload file</a></li>
+<li class="mO" id="t-specialpages"><a href="http://en.csharp-online.net/Special:Specialpages">Special pages</a></li>
+				<li class="mO" id="t-print"><a href="http://en.csharp-online.net/index.php?title=WPF_Concepts%E2%80%94Attached_Properties&amp;printable=yes">Printable version</a></li>				<li class="mO" id="t-permalink"><a href="http://en.csharp-online.net/index.php?title=WPF_Concepts%E2%80%94Attached_Properties&amp;oldid=31837">Permanent link</a></li>			</ul>
+		</div>
+	</div>
+
+	<div class="portlet">
+	  <div>
+        <!-- Google Link Unit -->
+        <script type="text/javascript"><!--
+google_ad_client = "pub-9095722307447682";
+google_ad_width = 180;
+google_ad_height = 150;
+google_ad_format = "180x150_as";
+google_cpa_choice = "CAEaCPE0Qicm8BvfUAU";
+google_ad_channel = "0865279724";
+google_color_border = "807960";
+google_color_bg = "DFDCD1";
+google_color_link = "002BB8";
+google_color_text = "000000";
+google_color_url = "000000";
+//-->
+</script>
+<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/show_ads.js"></script><iframe name="google_ads_frame" src="WPF_Concepts%97Attached_Properties_files/ads_006.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="150" scrolling="no" width="180"></iframe>	  </div>
+	</div>
+
+		</div><!-- end of the left (by default at least) column -->
+
+			<div class="visualClear"></div>
+			<div id="footer">
+<a name="bottom" id="top"></a>
+<div align="center">
+<table bgcolor="#554a1c" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr><td align="center" bgcolor="#bfbaa7" valign="middle"><script type="text/javascript"><!--
+google_ad_client = "pub-9095722307447682";
+google_ad_width = 728;
+google_ad_height = 15;
+google_ad_format = "728x15_0ads_al_s";
+//2007-09-10: enCSOMenuBL
+google_ad_channel = "9117687914";
+google_color_border = "BFBAA7";
+google_color_bg = "BFBAA7";
+google_color_link = "002BB8";
+google_color_text = "000000";
+google_color_url = "000000";
+//-->
+</script>
+<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/show_ads.js"></script><iframe name="google_ads_frame" src="WPF_Concepts%97Attached_Properties_files/ads_007.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="15" scrolling="no" width="728"></iframe><br><br></td></tr>
+  <tr><td align="center" bgcolor="#bfbaa7" valign="middle"><script type="text/javascript"><!--
+google_ad_client = "pub-9095722307447682";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_cpa_choice = "CAEQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAGgj1CN-T_2bIriiBgvZsKMmehm0otYP2bCjdg_xqKPmC9mwo9YD8aiiBuIGkASj1gPxqKKiwl7EBKKnGqJcBKKjjvYIBKJXjrL4BKJi0ya4BKNXSiMsBKLzst-8BKJSAk7ABKMeI2Xooxc_-rwEoguKZvgEowM652gE";
+google_ad_channel = "6228464539";
+google_color_border = "807960";
+google_color_bg = "DFDCD1";
+google_color_link = "002BB8";
+google_color_text = "000000";
+google_color_url = "000000";
+//-->
+</script>
+<script type="text/javascript" src="WPF_Concepts%97Attached_Properties_files/show_ads.js"></script><iframe name="google_ads_frame" src="WPF_Concepts%97Attached_Properties_files/ads_008.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="90" scrolling="no" width="728"></iframe><br><br></td></tr>
+  <tr><td colspan="2" bgcolor="#bfbaa7"><ul id="f-list">
+				<li id="about"><a href="http://en.csharp-online.net/CSharp-Online.NET:About" title="CSharp-Online.NET:About">About CSharp-Online.NET</a></li>
+				<li id="disclaimer"><a href="http://en.csharp-online.net/CSharp-Online.NET:General_disclaimer" title="CSharp-Online.NET:General disclaimer">Disclaimers</a></li>
+				<li id="privacy"><a href="http://en.csharp-online.net/CSharp-Online.NET:Privacy_policy" title="CSharp-Online.NET:Privacy policy">Privacy policy</a></li>
+				<li id="copyright">© <a href="http://en.csharp-online.net/CSharp-Online.NET:Copyright" title="CSharp-Online.NET:Copyright">CSharp-Online.NET</a></li>
+<nobr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:location.href='http://del.icio.us/post?v=2&url='+encodeURIComponent(document.location.href)+'&title='+encodeURIComponent(document.title)+' '"><img src="WPF_Concepts%97Attached_Properties_files/delicious14x14.png" alt="del.icio.us C# Online.NET" height="14" width="14"></a>
+<a href="javascript:location.href='http://digg.com/submit?phase=2&title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(document.location.href)+' '"><img src="WPF_Concepts%97Attached_Properties_files/digg14x12.png" alt="digg C# Online.NET" height="12" width="14"></a>
+<a href="javascript:location.href='http://www.dotnetkicks.com/kick/?url='+encodeURIComponent(document.location.href)+'&title='+encodeURIComponent(document.title)+' '"><img src="WPF_Concepts%97Attached_Properties_files/dotnetkicks14x14.png" alt="kick C# Online.NET" height="14" width="14"></a>
+<a href="javascript:location.href='http://www.furl.net/storeIt.jsp?u='+encodeURIComponent(document.location.href)+'&t='+encodeURIComponent(document.title)+' '"><img src="WPF_Concepts%97Attached_Properties_files/furl14x14b.png" alt="furl C# Online.NET" height="14" width="14"></a>
+<a href="http://en.csharp-online.net/index.php?title=Social_bookmarking">?</a>
+<a href="http://toolbar.google.com/buttons/add?url=http://en.csharp-online.net/encsharponlinebutton.xml"><img src="WPF_Concepts%97Attached_Properties_files/GoogleToolbar14x14.jpg" alt="Get C# Online.NET Toolbar" height="14" width="14"></a>
+<a href="http://fusion.google.com/add?moduleurl=http%3A%2F%2Fwww.google.com%2Fcoop/api/015184517059031426848/cse/myxksvkpaf0/gadget"><img src="WPF_Concepts%97Attached_Properties_files/add.gif" alt="Add C# Online Web Search" border="0" height="17" width="104"></a>
+<a href="#top" title="Go to top of page">†</a></nobr>
+			</ul>
+</td></tr>
+</tbody></table></div>
+</div>
+	<script type="text/javascript"> if (window.runOnloadHook) runOnloadHook();</script>
+</div>
+<!-- Served by host.siteground-vps68.com in 0.48 secs. --></body></html>

@@ -1,0 +1,77 @@
+<Page 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+  x:Class="SDKSamples.DecorationAnimationPage" >
+
+  <StackPanel>
+
+    <FlowDocumentScrollViewer>
+      <FlowDocument>
+        <Paragraph>
+          <Span Style="{StaticResource MyHeadingSpanStyle}">Decorations</Span>
+          <LineBreak/>
+          A few subtle animations in an application can decorate and enhance any application. For example,
+          you could use the following animated background for a menu bar.
+        </Paragraph>
+      </FlowDocument>
+    </FlowDocumentScrollViewer>
+
+    <Canvas Width="400" Height="50" HorizontalAlignment="Left">
+      <Rectangle Style="{StaticResource myAnimatedRectangleStyle}"
+      Margin="30,0,0,0" Width="600" Height="50" />
+    </Canvas>
+
+    <FlowDocumentScrollViewer Margin="10,0,0,0">
+      <FlowDocument>
+        <Paragraph>
+          The animation above is created by animating the transform and viewport of the image
+          below in the fill of the rectangle.
+        </Paragraph>
+        <BlockUIContainer>
+          <Image Source="sampleImages\purpleblock.jpg" Height="100" HorizontalAlignment="Left" />
+        </BlockUIContainer>
+      </FlowDocument>
+    </FlowDocumentScrollViewer>
+    
+    <!-- Displays functional code for demonstration. -->
+    <Border HorizontalAlignment="Left" Background="#EEEEEE" BorderBrush="Black" Width="600" Height="400" BorderThickness="1" Margin="30">
+      <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <TextBlock Style="{StaticResource CodeSnippetParagraph}" xml:space="preserve">
+&lt;Canvas Width="400" Height="100" HorizontalAlignment="Left"&gt;
+&lt;Rectangle Style="{StaticResource myAnimatedRectangleStyle}"
+Margin="30,0,0,10" Width="600" Height="50" /&gt;
+&lt;/Canvas&gt;
+...
+&lt;Style x:Key="myAnimatedRectangleStyle"&gt;
+  &lt;Setter Property="Rectangle.Fill"&gt;
+    &lt;Setter.Value&gt;
+      &lt;ImageBrush ImageSource="sampleImages\purpleblock.jpg" TileMode="FlipXY" Opacity="0.25"&gt;
+        &lt;ImageBrush.Transform&gt;
+          &lt;RotateTransform Angle="0" /&gt;
+        &lt;/ImageBrush.Transform&gt;
+      &lt;/ImageBrush&gt;
+    &lt;/Setter.Value&gt;
+  &lt;/Setter&gt;
+  &lt;Style.Triggers&gt;
+    &lt;EventTrigger RoutedEvent="Rectangle.Loaded"&gt;
+      &lt;EventTrigger.Actions&gt;
+        &lt;BeginStoryboard&gt;
+          &lt;Storyboard SpeedRatio="1.25"&gt;
+            &lt;RectAnimation Storyboard.TargetProperty="(Rectangle.Fill).(ImageBrush.Viewport)"
+              To="0,0,0.5,0.5" Duration="0:0:20" RepeatBehavior="Forever" AutoReverse="True" /&gt;
+            &lt;DoubleAnimation 
+              Storyboard.TargetProperty="(Rectangle.Fill).(ImageBrush.Transform).(RotateTransform.Angle)" 
+              To="360" Duration="0:1:00" RepeatBehavior="Forever" AccelerationRatio="0.5" DecelerationRatio="0.5" /&gt;
+          &lt;/Storyboard&gt;
+        &lt;/BeginStoryboard&gt;
+      &lt;/EventTrigger.Actions&gt;
+    &lt;/EventTrigger&gt;
+  &lt;/Style.Triggers&gt;
+&lt;/Style&gt;
+      </TextBlock>
+      </ScrollViewer>
+    </Border>
+    <!-- End of code display. -->
+  </StackPanel>
+
+</Page>

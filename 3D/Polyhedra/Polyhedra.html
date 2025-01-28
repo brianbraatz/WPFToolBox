@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - The Petzold.Media3D Library: Polyhedra</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/130617.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/140157.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/08/130724.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>The Petzold.Media3D Library: Polyhedra</h2></a><p style="text-align: right;">August 13, 2007<br>Roscoe, N.Y.</p><p>
+Suppose you wanted to use WPF 3D to create a dodecahedron. A regular
+dodecahedron has 12 faces, each of which is a pentagon. A handy source
+of the three-dimensional coordinates is <a href="http://en.wikipedia.org/wiki/Dodecahedron">this Wikipedia article</a>.
+One easy approach is to break each pentagonal face into five triangles
+that meet at the center. Implementing it, you might come up with
+something like this XAML file from Chapter 3 of my new book <i>3D Programming for Windows</i>:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/RotatingDodecahedron.xaml">RotatingDodecahedron.xaml</a>
+</p>
+<p>
+There's nothing really wrong about doing it this way. In fact, you can even define a <i>TextureCoordinates</i> collection and apply a non-solid brush, as in this XAML file from Chapter 5:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/DodecahedronWithRadialBrush.xaml">RotatingDodecahedronWithRadialBrush.xaml</a>
+</p>
+<p>
+However, if you wanted to shine a <i>PointLight</i> or a <i>SpotLight</i> on this figure, you're in bad shape. The illumination of a triangle from a <i>PointLight</i> or <i>SpotLight</i>
+is based on an interpolation over the surface of the triangle governed
+by the illumination at the vertices. To get it to work right, those
+triangles defining the surface of the dodecahedron need to be divided
+into much tinier triangles.
+</p>
+<p>
+If you look at the class hierarchy in 
+<a href="http://www.charlespetzold.com/blog/2007/08/110532.html">this recent blog entry</a> showing some of the classes defined in the Petzold.Media3D library available 
+<a href="http://www.charlespetzold.com/3D">here</a>, you'll see an abstract class named <i>FlatSurfaceMeshBase</i>, from which a generalized <i>PolygonMesh</i> class derives and also classes for regular polyhedra. <i>FlatSurfaceMeshBase</i> defines a public property named <i>Slices</i> with a default value of 1, and a protected method named <i>TriangleSubdivide</i>
+that divides large triangles created by the derived classes into much
+smaller triangles. This little method allows the polygons and polyhedra
+to be used with <i>PointLight</i> and <i>SpotLight</i>.
+</p>
+<p>
+Here's a XAML file that displays a <i>DodecahedronMesh</i> figure with a <i>Slices</i> value of 32. Two <i>SpotLight</i> objects sweep back and forth across its surface:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/SpotlightedDodecahedron.xaml">SpotlightedDodecahedron.xaml</a>
+</p>
+<p>
+You can't run this XAML file in the browser. However, you can download
+it and run it in XamlCruncher 2.0 if you've loaded at least version
+0.9.1.0 of the Petzold.Media3D library. Or you can see what it looks by
+running this XBAP: </p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/SpotlightedDodecahedron/SpotlightedDodecahedron.xbap">SpotlightedDodecahedron.xbap</a>
+</p>
+<p>
+The XBAP was basically constructed from the
+SpotlightedDodecahedron.xaml file with an application definition file,
+and a reference to version 0.9.1.0 or Petzold.Media.dll.
+</p>
+
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Polyhedra_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+
+<div id="comments"><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="The Petzold.Media3D Library: Polyhedra" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/130617.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/140157.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

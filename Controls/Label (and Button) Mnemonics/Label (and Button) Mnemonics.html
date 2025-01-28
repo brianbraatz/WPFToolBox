@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Label (and Button) Mnemonics</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/050404.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/090853.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/01/061004.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Label (and Button) Mnemonics</h2></a><p style="text-align: right;">January 6, 2006<br>NYC</p><p>
+<a href="http://blogs.msdn.com/jfoscoding/archive/2006/01/06/509989.aspx">JFo</a> and <a href="http://blogs.msdn.com/richard_bailey/archive/2006/01/05/509921.aspx">Richard Bailey</a> have been discussing underline mnemonics on <i>Label</i> controls in WPF. The underline mnemonics also work with text set in menu items and buttons.
+</p>
+<p>
+Both <i>Button</i> and <i>Label</i> derive from <i>ContentControl</i>, which defines an all-important property named <i>Content</i> of type <i>object</i>.  The <i>Content</i> property is what actually appears in the <i>Button</i> or <i>Label</i>. If you set <i>Content</i> to an instance of any class that derives from <i>UIElement</i>, the content will be rendered graphically using the class's <i>OnRender</i> method. Otherwise, the <i>Content</i> object is displayed with <i>ToString</i>. (<i>MenuItem</i> derives from <i>HeaderedItemsControl</i>, but the <i>Header</i> property plays basically the same role as <i>Content</i>.)
+</p>
+<p>
+For simple traditional buttons, you set the <i>Content</i>
+property to a string, and that's what shows up in the button. The
+string can optionally contain an underline character for a mnemonic.
+Pressing Alt and the underlined letter triggers the button.
+</p>
+<p>
+If you want to mix text and graphics in a button, you need to set the <i>Content</i>
+property to a panel of some sort, and then put the text and graphics on
+that panel. Do you lose the mnemonic feature in that case? Not at all.
+The trick is this: If you include a <i>Label</i> control among the
+stuff you put on the button, then the label can have an underlined
+mnemonic and the button will respond to it.
+</p>
+<p>
+I have a program from Part 1 of my forthcoming book <i>Applications = Code + Markup</i> that demonstrates this technique. Here's <a href="http://www.charlespetzold.com/blog/2006/01/DesignAButton.csproj">DesignAButton.csproj</a>, <a href="http://www.charlespetzold.com/blog/2006/01/DesignAButton.cs">DesignAButton.cs</a>, and <a href="http://www.charlespetzold.com/blog/2006/01/BOOK06.ICO">BOOK06.ICO</a>, an icon file among the collection shipped with Visual Studio 2005.  The program puts a <i>StackPanel</i> on a button, and then adds a <i>Polyline</i>, an <i>Image</i> based on the icon, a <i>Label</i> with an underlined letter, and another <i>Polyline</i>.  And, as promised, clicking the label mnemonic (Alt-R) triggers the button.
+</p>
+<p>
+I've tried deeper nestings of the <i>Label</i> within <i>Button</i>
+content, and it seems to work just fine. (If there's anything we know
+about WPF, it's an assurance that there's lots of recursive code in
+there.)
+</p>
+<p>
+This mnemonic feature of <i>Label</i> is really the only reason to keep this ancient conrol around. If you just need to display a little text, <i>TextBlock</i> works fine and lets you format individual words as a bonus.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/050404.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/090853.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

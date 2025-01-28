@@ -1,0 +1,33 @@
+var TaggingService=function() {
+TaggingService.initializeBase(this);
+this._timeout = 0;
+this._userContext = null;
+this._succeeded = null;
+this._failed = null;
+}
+TaggingService.prototype={
+GetTagList:function(prefixText,count,succeededCallback, failedCallback, userContext) {
+return this._invoke(TaggingService.get_path(), 'GetTagList',false,{prefixText:prefixText,count:count},succeededCallback,failedCallback,userContext); },
+GetTagAutoCompleteInfo:function(prefixText,count,succeededCallback, failedCallback, userContext) {
+return this._invoke(TaggingService.get_path(), 'GetTagAutoCompleteInfo',false,{prefixText:prefixText,count:count},succeededCallback,failedCallback,userContext); }}
+TaggingService.registerClass('TaggingService',Sys.Net.WebServiceProxy);
+TaggingService._staticInstance = new TaggingService();
+TaggingService.set_path = function(value) { TaggingService._staticInstance._path = value; }
+TaggingService.get_path = function() { return TaggingService._staticInstance._path; }
+TaggingService.set_timeout = function(value) { TaggingService._staticInstance._timeout = value; }
+TaggingService.get_timeout = function() { return TaggingService._staticInstance._timeout; }
+TaggingService.set_defaultUserContext = function(value) { TaggingService._staticInstance._userContext = value; }
+TaggingService.get_defaultUserContext = function() { return TaggingService._staticInstance._userContext; }
+TaggingService.set_defaultSucceededCallback = function(value) { TaggingService._staticInstance._succeeded = value; }
+TaggingService.get_defaultSucceededCallback = function() { return TaggingService._staticInstance._succeeded; }
+TaggingService.set_defaultFailedCallback = function(value) { TaggingService._staticInstance._failed = value; }
+TaggingService.get_defaultFailedCallback = function() { return TaggingService._staticInstance._failed; }
+TaggingService.set_path("/Services/TaggingService.asmx");
+TaggingService.GetTagList= function(prefixText,count,onSuccess,onFailed,userContext) {TaggingService._staticInstance.GetTagList(prefixText,count,onSuccess,onFailed,userContext); }
+TaggingService.GetTagAutoCompleteInfo= function(prefixText,count,onSuccess,onFailed,userContext) {TaggingService._staticInstance.GetTagAutoCompleteInfo(prefixText,count,onSuccess,onFailed,userContext); }
+var gtc = Sys.Net.WebServiceProxy._generateTypedConstructor;
+Type.registerNamespace('Microsoft.Foundation.Common.Domain');
+if (typeof(Microsoft.Foundation.Common.Domain.TagAutoCompleteInfo) === 'undefined') {
+Microsoft.Foundation.Common.Domain.TagAutoCompleteInfo=gtc("Microsoft.Foundation.Common.Domain.TagAutoCompleteInfo");
+Microsoft.Foundation.Common.Domain.TagAutoCompleteInfo.registerClass('Microsoft.Foundation.Common.Domain.TagAutoCompleteInfo');
+}

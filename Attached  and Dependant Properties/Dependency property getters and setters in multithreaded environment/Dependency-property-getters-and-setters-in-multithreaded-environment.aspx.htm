@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional-dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head id="ctl00_ctl00">
+ 
+
+<meta name="description" content="Technology blog about new Microsoft technologies. E.g. WPF, crossbow, .NET framework 3, Live etc. It includes code sources and samples">
+<meta name="keywords" content=".NET Framework, Example, Internals, Microsoft, Programming, Source Code, technology, tutorial, wpf.">
+<meta name="GENERATOR" content="CommunityServer 2007 SP2 (Build: 20611.960)">
+<link rel="pingback" href="http://blogs.microsoft.co.il/blogs/tamir/pingback.aspx">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.microsoft.co.il/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Just code - Tamir Khason (RSS 2.0)" href="http://feeds.feedburner.com/microsft">
+<link rel="alternate" type="application/rss+xml" title="Just code - Tamir Khason - All Comments (RSS 2.0)" href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx">
+<link rel="alternate" type="application/rss+xml" title="Dependency property getters and setters in multithreaded environment - Comments for this post (RSS 2.0)" href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx?PostID=12618">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/style.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/print.htm" type="text/css" media="print">
+	<link rel="stylesheet" href="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/light_sidebar_left_wide.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/DynamicStyle.css" type="text/css" media="screen">
+<script src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-486526-1";
+urchinTracker();
+</script><title>Dependency property getters and setters in multithreaded environment - Just code - Tamir Khason</title></head><body>
+    <form name="aspnetForm" method="post" action="/blogs/tamir/archive/2007/04/29/Dependency-property-getters-and-setters-in-multithreaded-environment.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTIwMjk4NDE1MzdkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBS5jdGwwMCRNYWluJGN0bDA4JGN0bDAyJGN0bDAyJGN0bDAyJGNoa1JlbWVtYmVyNnOa7G3ox0C7N39AE+DRj1GRFAw=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/WebResource.js" type="text/javascript"></script>
+
+
+<script src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/WebResource_002.axd" type="text/javascript"></script>
+<script src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/WebResource_004.axd" type="text/javascript"></script>
+<script src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/WebResource_003.axd" type="text/javascript"></script>
+<script src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/WebResource.axd" type="text/javascript"></script>
+        
+<script type="text/javascript">
+<!--   
+    function ValidateCaptcha(val, args) {
+      
+        var value = args.Value;
+        var nameEQ = "CAPTCHA=";
+        var captchaNumbers;        	
+        var ca = document.cookie.split(';');
+        
+        for(var i=0;i < ca.length;i++) {
+    	    var c = ca[i];
+    	    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    	    if (c.indexOf(nameEQ) == 0) captchaNumbers =  c.substring(nameEQ.length,c.length);
+	    }
+
+        args.IsValid = captchaNumbers == value;
+
+    }
+-->
+</script>
+
+<script src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/WebResource_002.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+
+    			
+
+    <div id="masthead">
+        <div id="welcome" align="right">
+            
+        <a href="http://blogs.microsoft.co.il/login.aspx?ReturnUrl=%2fblogs%2ftamir%2farchive%2f2007%2f04%2f29%2fDependency-property-getters-and-setters-in-multithreaded-environment.aspx">Sign in </a>
+         | <a href="http://blogs.microsoft.co.il/user/CreateUser.aspx?ReturnUrl=">Join</a>
+        | <a href="http://communityserver.org/r.ashx?K">Help</a>
+     
+
+
+        </div>
+    </div>
+    <div id="wrapper">
+	        <div id="container">
+		        <div id="header">
+		            <div id="title">	                    
+                        <h1 class="headermaintitle"><a href="http://blogs.microsoft.co.il/blogs/tamir/">Just code - Tamir Khason</a></h1>      
+                        <p id="tagline">Take care of the sense, and the sounds will take care of themselves.</p>
+                    </div>
+                    <div id="SubscriptionsSideBar">
+                        <div id="subscriptions"> 
+                            <ul>
+                                <li><a href="http://feeds.feedburner.com/microsft">RSS</a></li>
+	                            <li><a href="http://feeds.feedburner.com/microsft">Atom</a></li>
+						        <li id="RssComments"><a href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx">Comments RSS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="nav">                    
+                        <ul>
+                            <li><a href="http://blogs.microsoft.co.il/blogs/tamir/">Home</a></li>
+                            <li><a href="http://blogs.microsoft.co.il/blogs/tamir/contact.aspx">Contact</a></li>
+                            
+                            
+                        </ul>
+                    </div>
+                </div>
+                
+                    <div id="contentwrapper">
+		                <div id="sidebar-a">              
+                            <div id="TasksSideBar">                                
+                                
+                                
+                            </div>
+                            
+                            <div id="SearchSideBar">    
+                                <div id="Search">
+	                                        <h3>Search</h3>
+                                            <ul>
+                                                <li>
+                                                    <input name="ctl00$SideBar$ctl01$ctl00$SearchBox" id="ctl00_SideBar_ctl01_ctl00_SearchBox" class="searchBox" button="SearchButton" onclick="if(this.defaultValue==this.value) this.value='';" onblur="if(this.value=='') this.value=this.defaultValue;" type="text">
+                                                    <a id="ctl00_SideBar_ctl01_ctl00_SearchButton" class="SearchButton" href="javascript:__doPostBack('ctl00$SideBar$ctl01$ctl00$SearchButton','')">Go</a>
+                                                </li>
+                                            </ul>
+                                    </div>
+                            </div>  
+                                
+                                <div id="TagSideBar">
+                                        <h3>Tags</h3>
+                                    <ul class="SidebarTagCloud">
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Accessibility/default.aspx" rel="tag">Accessibility</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/blogging+general/default.aspx" rel="tag">blogging general</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Blogging+rules/default.aspx" rel="tag">Blogging rules</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/blogging+tools/default.aspx" rel="tag">blogging tools</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/C_2300_/default.aspx" rel="tag">C#</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/demos/default.aspx" rel="tag">demos</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/download/default.aspx" rel="tag">download</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/events/default.aspx" rel="tag">events</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/fun/default.aspx" rel="tag">fun</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/help/default.aspx" rel="tag">help</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/jobs/default.aspx" rel="tag">jobs</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Mobile/default.aspx" rel="tag">Mobile</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Performance/default.aspx" rel="tag">Performance</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/promo/default.aspx" rel="tag">promo</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Silverlight/default.aspx" rel="tag">Silverlight</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/SkyDrive/default.aspx" rel="tag">SkyDrive</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/soft/default.aspx" rel="tag">soft</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/source/default.aspx" rel="tag">source</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/thoughts/default.aspx" rel="tag">thoughts</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Tips+and+Tricks/default.aspx" rel="tag">Tips and Tricks</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tools/default.aspx" rel="tag">tools</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tutorial/default.aspx" rel="tag">tutorial</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Vista/default.aspx" rel="tag">Vista</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Vista+Battery+Saver/default.aspx" rel="tag">Vista Battery Saver</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Visual+Studio/default.aspx" rel="tag">Visual Studio</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/VSTS/default.aspx" rel="tag">VSTS</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WCF/default.aspx" rel="tag">WCF</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Web/default.aspx" rel="tag">Web</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Gadgets/default.aspx" rel="tag">Windows Gadgets</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Live/default.aspx" rel="tag">Windows Live</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Live+Writer/default.aspx" rel="tag">Windows Live Writer</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF/default.aspx" rel="tag">WPF</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF+crossbow/default.aspx" rel="tag">WPF crossbow</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF_2F00_E/default.aspx" rel="tag">WPF/E</a></li>
+</ul>
+</div>
+                              
+                                
+                                <div id="NewsSidebar">
+                                        <h3>News</h3>
+                                        <ul>
+                                    <a href="http://www.linkedin.com/in/tamirk"><img src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/btn_profile_bluetxt_80x15.gif" alt="View Tamir Khason's profile on LinkedIn" border="0" height="15" width="80"></a>
+
+
+                                        </ul>
+                                    </div>                
+                                                
+                                
+                                <div id="NavSideBar"><h3>Navigation</h3>
+<ul>
+<li><a href="http://blogs.microsoft.co.il/">Home</a></li><li><a href="http://blogs.microsoft.co.il/blogs/">Blogs</a></li><li><a href="http://blogs.microsoft.co.il/blogs/MainFeed.aspx">RSS</a></li>
+</ul></div>
+                                
+                                
+                                
+                                
+                                <div id="ArchiveSideBar"><h3>Archives</h3>
+<ul>
+<li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/10.aspx">October 2007 (15)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/09.aspx">September 2007 (14)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/08.aspx">August 2007 (21)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/07.aspx">July 2007 (32)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/06.aspx">June 2007 (10)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/05.aspx">May 2007 (22)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/04.aspx">April 2007 (21)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/03.aspx">March 2007 (20)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/02.aspx">February 2007 (9)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/01.aspx">January 2007 (10)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12.aspx">December 2006 (11)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/11.aspx">November 2006 (4)</a></li>
+</ul></div> 
+                                
+                                
+                                
+	                    
+                    </div>
+                    <div id="content"><div id="content2">
+	                    
+    <div class="post">
+        <div class="posthead">
+            Sunday, April 29, 2007 7:54 PM
+            <a href="http://blogs.microsoft.co.il/members/tamir.aspx">Tamir Khason</a>
+            
+            <h2>
+                Dependency property getters and setters in multithreaded environment
+                
+            </h2>
+        </div>        
+            <p>Recently I&nbsp;<a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/04/22/Thread-safe-observable-collection.aspx" target="_blank">blogged about Thread safe ObservableCollection</a>.
+And what's about regular single Dependency Properties? Actually, the
+story is rather same and the rule is clear - Bring into your STAThread
+first, then do whatever you want to do. So how to do it? Simple Let's
+create regular window with two DPs MyTextProperty and
+ButtonTitleProperty. We'll bind TextBox to MyTextProperty and will
+change it from other thread, based on ButtonTitleProperty value.</p>
+<p><img style="border: 0px none ;" alt="image" src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/image_d2705e10-26f7-434a-98b7-997f1309337d.png" border="0" height="94" width="301"> </p>
+<p>So, first of all those properties</p>
+<p></p><pre>        <span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">readonly</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);"> ButtonTitleProperty = </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);">.Register(</span><span style="color: rgb(255, 0, 255);">"ButtonTitle"</span><span style="color: rgb(0, 0, 0);">, </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(163, 21, 21);">ButtonStates</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(163, 21, 21);">Window1</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">new</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">UIPropertyMetadata</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(163, 21, 21);">ButtonStates</span><span style="color: rgb(0, 0, 0);">.Start));</span></pre><pre><span style="color: rgb(0, 0, 0);"></span>        <span style="color: rgb(43, 145, 175);">public</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">static</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(43, 145, 175);">readonly</span><span style="color: rgb(0, 0, 0);"> </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);"> MyTextProperty = </span><span style="color: rgb(163, 21, 21);">DependencyProperty</span><span style="color: rgb(0, 0, 0);">.Register(</span><span style="color: rgb(255, 0, 255);">"MyText"</span><span style="color: rgb(0, 0, 0);">, </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(43, 145, 175);">string</span><span style="color: rgb(0, 0, 0);">), </span><span style="color: rgb(43, 145, 175);">typeof</span><span style="color: rgb(0, 0, 0);">(</span><span style="color: rgb(163, 21, 21);">Window1</span><span style="color: rgb(0, 0, 0);">));
+</span></pre>
+<p></p>
+<p>Now, the crazy thread</p>
+<p></p><pre><span style="color: rgb(0, 0, 255);">Random</span><span style="color: rgb(43, 145, 175);"> r;
+        </span><span style="color: rgb(163, 21, 21);">void</span><span style="color: rgb(43, 145, 175);"> updateText()
+        {
+            r = </span><span style="color: rgb(163, 21, 21);">new</span><span style="color: rgb(43, 145, 175);"> </span><span style="color: rgb(0, 0, 255);">Random</span><span style="color: rgb(43, 145, 175);">();
+            </span><span style="color: rgb(163, 21, 21);">while</span><span style="color: rgb(43, 145, 175);"> (ButtonTitle == </span><span style="color: rgb(0, 0, 255);">ButtonStates</span><span style="color: rgb(43, 145, 175);">.Stop)
+            {
+                </span><span style="color: rgb(0, 0, 255);">StringBuilder</span><span style="color: rgb(43, 145, 175);"> sb = </span><span style="color: rgb(163, 21, 21);">new</span><span style="color: rgb(43, 145, 175);"> </span><span style="color: rgb(0, 0, 255);">StringBuilder</span><span style="color: rgb(43, 145, 175);">();
+                </span><span style="color: rgb(163, 21, 21);">for</span><span style="color: rgb(43, 145, 175);"> (</span><span style="color: rgb(163, 21, 21);">int</span><span style="color: rgb(43, 145, 175);"> i = 0; i &lt; 10; i++)
+                {
+                    sb.Append((</span><span style="color: rgb(163, 21, 21);">char</span><span style="color: rgb(43, 145, 175);">)r.Next(0x41, 0x51));
+                }
+
+                MyText = sb.ToString();
+
+            }
+        }<p>&nbsp;</p></span></pre>
+<p>And finally the method to invoke it</p>
+<p></p><pre><span style="color: rgb(0, 0, 255);">void</span><span style="color: rgb(0, 0, 255);"> onClick(</span><span style="color: rgb(0, 0, 255);">object</span><span style="color: rgb(0, 0, 255);"> sender, </span><span style="color: rgb(0, 128, 0);">RoutedEventArgs</span><span style="color: rgb(0, 0, 255);"> e)
+        {
+            </span><span style="color: rgb(0, 0, 255);">if</span><span style="color: rgb(0, 0, 255);"> (ButtonTitle == </span><span style="color: rgb(0, 128, 0);">ButtonStates</span><span style="color: rgb(0, 0, 255);">.Start)
+            {
+                </span><span style="color: rgb(255, 0, 255);">//start
+</span><span style="color: rgb(0, 0, 255);">                </span><span style="color: rgb(0, 0, 255);">new</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 128, 0);">Thread</span><span style="color: rgb(0, 0, 255);">(</span><span style="color: rgb(0, 0, 255);">new</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 128, 0);">ThreadStart</span><span style="color: rgb(0, 0, 255);">(updateText)).Start();
+                ButtonTitle = </span><span style="color: rgb(0, 128, 0);">ButtonStates</span><span style="color: rgb(0, 0, 255);">.Stop;
+            }
+            </span><span style="color: rgb(0, 0, 255);">else
+</span><span style="color: rgb(0, 0, 255);">            { 
+                </span><span style="color: rgb(255, 0, 255);">//end
+</span><span style="color: rgb(0, 0, 255);">                ButtonTitle = </span><span style="color: rgb(0, 128, 0);">ButtonStates</span><span style="color: rgb(0, 0, 255);">.Start;
+            }
+        }</span></pre>
+<p></p><pre><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(255, 0, 0);">Button</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Click</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">onClick</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Content</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">{Binding ElementName=myWindow, Path=ButtonTitle}</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">/&gt;
+&lt;</span><span style="color: rgb(255, 0, 0);">TextBlock</span><span style="color: rgb(0, 0, 255);"> </span><span style="color: rgb(0, 0, 0);">Text</span><span style="color: rgb(0, 0, 255);">=</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">{Binding ElementName=myWindow, Path=MyText}</span><span style="color: rgb(0, 0, 255);">"</span><span style="color: rgb(0, 0, 255);">/&gt;<p>&nbsp;</p></span></pre><pre><span style="color: rgb(0, 0, 255);"><p>&nbsp;</p></span></pre>
+<p>Now, try to run - the first thing will happen is exception: The
+calling thread cannot access this object because a different thread
+owns it. in ButtonTitle getter&nbsp;The next - the same exception in
+MyText setter. What to do? Bring&nbsp;the value&nbsp;into STAThread.
+How? Simple instead of regular getter </p>
+<p></p><pre> <span style="color: rgb(43, 145, 175);">get</span><span style="color: rgb(0, 0, 0);"> { </span><span style="color: rgb(43, 145, 175);">return</span><span style="color: rgb(0, 0, 0);"> (</span><span style="color: rgb(0, 0, 0);">ButtonStates</span><span style="color: rgb(0, 0, 0);">)GetValue(ButtonTitleProperty); }<p>&nbsp;</p></span></pre>
+<p>We'll use thread safe getter</p>
+<p></p><pre><span style="color: rgb(0, 0, 255);">get
+</span><span style="color: rgb(0, 0, 255);">            {
+
+                </span><span style="color: rgb(0, 0, 255);">try
+</span><span style="color: rgb(0, 0, 255);">                {
+                    </span><span style="color: rgb(0, 0, 255);">return</span><span style="color: rgb(0, 0, 255);"> (ButtonStates)</span><span style="color: rgb(0, 0, 255);">this</span><span style="color: rgb(0, 0, 255);">.Dispatcher.Invoke(
+                       System.Windows.Threading.DispatcherPriority.Background,
+                       (DispatcherOperationCallback)</span><span style="color: rgb(0, 0, 255);">delegate</span><span style="color: rgb(0, 0, 255);"> { </span><span style="color: rgb(0, 0, 255);">return</span><span style="color: rgb(0, 0, 255);"> GetValue(ButtonTitleProperty); },
+                       ButtonTitleProperty);
+                }
+                </span><span style="color: rgb(0, 0, 255);">catch
+</span><span style="color: rgb(0, 0, 255);">                {
+                    
+                    </span><span style="color: rgb(0, 0, 255);">return</span><span style="color: rgb(0, 0, 255);"> (ButtonStates)ButtonTitleProperty.DefaultMetadata.DefaultValue;
+                }
+            }<p>&nbsp;</p></span></pre>
+<p>And instead of regular setter</p>
+<p></p><pre><span style="color: rgb(0, 0, 255);">set</span><span style="color: rgb(0, 0, 255);"> { SetValue(MyTextProperty, </span><span style="color: rgb(0, 0, 255);">value</span><span style="color: rgb(0, 0, 255);">); }<p>&nbsp;</p></span></pre>
+<p>We'll use thread safe setter</p>
+<p></p><pre><span style="color: rgb(0, 0, 255);">set
+</span><span style="color: rgb(0, 0, 255);">            {
+                </span><span style="color: rgb(0, 0, 255);">this</span><span style="color: rgb(0, 0, 255);">.Dispatcher.BeginInvoke(</span><span style="color: rgb(0, 0, 0);">DispatcherPriority</span><span style="color: rgb(0, 0, 255);">.Background,
+                    (</span><span style="color: rgb(0, 0, 0);">SendOrPostCallback</span><span style="color: rgb(0, 0, 255);">)</span><span style="color: rgb(0, 0, 255);">delegate</span><span style="color: rgb(0, 0, 255);"> { SetValue(MyTextProperty, </span><span style="color: rgb(0, 0, 255);">value</span><span style="color: rgb(0, 0, 255);">); },
+                    </span><span style="color: rgb(0, 0, 255);">value</span><span style="color: rgb(0, 0, 255);">);
+            }<p>&nbsp;</p></span></pre>
+<p>I believe it's clear why getter do&nbsp;synchronous and setter&nbsp;does not? :)</p>
+<p>Try to experiment with DispatcherPriority enum to see how busy your system will be. Good luck</p>
+<p><a href="http://blogs.microsoft.co.il/blogs/tamir/attachment/12618.ashx">Source code for this article</a></p>  
+                  
+            <span id="ctl00_Main_ctl07_ctl01">Filed under: <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF/default.aspx" rel="tag">WPF</a>, <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tutorial/default.aspx" rel="tag">tutorial</a>, <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Tips+and+Tricks/default.aspx" rel="tag">Tips and Tricks</a>, <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/source/default.aspx" rel="tag">source</a></span><input name="ctl00$Main$ctl07$ctl01" id="ctl00_Main_ctl07_ctl01_State" value="value:Filed%20under%3A%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2FWPF%2Fdefault.aspx%22%20rel%3D%22tag%22%3EWPF%3C%2Fa%3E%2C%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2Ftutorial%2Fdefault.aspx%22%20rel%3D%22tag%22%3Etutorial%3C%2Fa%3E%2C%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2FTips%2Band%2BTricks%2Fdefault.aspx%22%20rel%3D%22tag%22%3ETips%20and%20Tricks%3C%2Fa%3E%2C%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2Fsource%2Fdefault.aspx%22%20rel%3D%22tag%22%3Esource%3C%2Fa%3E" type="hidden">
+    </div>
+        <div class="postfoot">
+            <div><span class="em">Attachment:</span> <a href="http://blogs.microsoft.co.il/blogs/tamir/attachment/12618.ashx">MTADependencyProperties.zip</a></div>	
+      </div>
+    
+            
+                    <a name="Comments">
+                    </a><h3><a name="Comments">Comments</a></h3>
+<a name="Comments">                    </a><div id="comments">
+<a name="Comments">                
+                    </a><p><a name="Comments">No Comments</a></p>
+<a name="Comments">                
+                        </a></div>
+<a name="Comments">                    </a></div>
+<a name="Comments">                
+            
+            
+            
+            
+                    </a><div id="commentform">
+<a name="Comments">                    </a><h3><a name="Comments">Leave a Comment</a></h3>
+<a name="Comments">	                    </a><dl>
+<a name="Comments">                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle">Title</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02" style="color: Red; visibility: hidden;">*</span></dt>
+	                        <dd><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbTitle" value="re: Dependency property getters and setters in multithreaded environment" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle" class="smallbox" type="text"></dd>
+
+                            <dt id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_NameTitle"><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName">Name</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10" style="color: Red; visibility: hidden;">*</span></dt>
+                            <dd id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_NameDesc"><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbName" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName" class="smallbox" type="text"></dd>
+
+                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbUrl">Your URL</label> <em>(optional</em>)</dt>
+                            <dd><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbUrl" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbUrl" class="smallbox" type="text"></dd>
+
+                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment">Comments</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07" style="color: Red; visibility: hidden;">*</span></dt>
+                            <dd><textarea name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbComment" rows="5" cols="25" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment"></textarea></dd>
+
+                            <dt><input id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_chkRemember" name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$chkRemember" type="checkbox"><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_chkRemember">Remember Me?</label></dt>
+               
+                            <dt><div id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaPanel" class="Captcha_Div">
+	<img src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/captcha.jpg" style="border-width: 0px;"><br><span>Enter the numbers above: </span><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$CaptchaTextBox" size="3" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaTextBox" type="text"><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13" style="color: Red; display: none;">*</span>
+</div><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$Main$ctl08$ctl02$ctl02$ctl02$btnSubmit", "", true, "CreateCommentForm", "", false, false))' id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_btnSubmit" type="submit"></dt>
+	                    </a></dl>
+<a name="Comments">                    </a></div>
+<a name="Comments">                    
+        
+        
+                    </a></div></div>
+<a name="Comments">                    </a><div id="contentfooter"><a name="Comments">&nbsp;</a></div>
+<a name="Comments">		        </a></div>
+<a name="Comments">                </a><div id="footer">
+<a name="Comments">                    
+					    </a><div class="Copyright"><div align="center"><a name="Comments">‎©2006 Microsoft Corporation. All rights reserved.‎  <span></span></a><a href="http://www.microsoft.com/israel/info/cpyright.asp">תנאי שימוש</a> |<span><a href="http://www.microsoft.com/library/toolbar/3.0/trademarks/he-il.mspx">סימנים מסחריים</a> |</span><span><a href="http://www.microsoft.com/info/iw/privacy.mspx">הצהרת פרטיות</a></span></div></div>
+					    
+					    
+
+                        
+					            <a href="http://communityserver.org/r.ashx?j" target="_blank"><img id="ctl00_BodyFooterRegion_ctl02_ctl03_ctl00" src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/PoweredByCS_commercial.gif" alt="Powered by Community Server (Commercial Edition), by Telligent Systems " style="border-width: 0px;"></a>
+    						
+    					
+					
+                </div>
+            </div>        
+        
+    
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaTextBox";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.display = "Dynamic";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.evaluationfunction = "CustomValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.clientvalidationfunction = "ValidateCaptcha";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.validateemptytext = "true";
+// -->
+</script>
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/04/29/Dependency-property-getters-and-setters-in-multithreaded-environment.aspx"
+dc:identifier="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/04/29/Dependency-property-getters-and-setters-in-multithreaded-environment.aspx"
+dc:title="Dependency property getters and setters in multithreaded environment"
+trackback:ping="http://blogs.microsoft.co.il/blogs/tamir/trackback.ashx?PostID=12618" />
+</rdf:RDF>
+-->
+<script src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/microsft.js" type="text/javascript" charset="utf-8"></script><script type="text/javascript" charset="utf-8" src="Dependency-property-getters-and-setters-in-multithreaded-environment.aspx_files/site-tracker.js"></script> <script type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_Main_ctl07_ctl01 = new Telligent_InlineEditorPanel('ctl00_Main_ctl07_ctl01','ctl00_Main_ctl07_ctl01','ctl00_Main_ctl07_ctl01_State','ctl00_Main_ctl07_ctl00',false,null,null,null);
+// ]]>
+</script>
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        </form>
+</body></html>

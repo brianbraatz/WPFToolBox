@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - How to Get SpotLight to Work</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/220254.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/260228.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/01/240222.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>How to Get SpotLight to Work</h2></a><p style="text-align: right;">January 24, 2007<br>New York, NY</p><p>
+Several times over the past months, I've begun exploring the <i>SpotLight</i> class in <i>System.Windows.Media.Media3D</i> and become totally frustrated.  As the name suggests and the documentation attests, <i>SpotLight</i> is a form of light that "projects its effect in a cone-shaped area along a specified direction." Besides the <i>Direction</i> property (a <i>Vector3D</i> object), <i>SpotLight</i> also defines <i>InnerConeAngle</i> and <i>OuterConeAngle</i> properties to define an area of full illumination, and an outer area where the illumination falls off.
+</p>
+<p>
+Yet, in multiple attempts, when I directed a <i>SpotLight</i> on a
+flat surface, either I got full illumination or no illumination at all
+depending on the angle settings. The only sample XAML file for <i>SpotLight</i> (available online
+<a href="http://msdn2.microsoft.com/en-us/library/system.windows.media.media3d.spotlight.aspx">here</a>) was like one of those weird experiments in quantum physics: Any attempt to examine how it works causes it to stop working.
+</p>
+<p>
+And then a few days ago, I slapped myself on the forehead, tried something different, and <i>voilà</i>:
+</p>
+<p align="center">
+<img src="How%20to%20Get%20SpotLight%20to%20Work_files/Spotlight50x50.png">
+</p>
+<p>
+That's a square with sides of 4 units in length colored with a blue brush. The <i>SpotLight</i> is 6 units away, with an <i>InnerConeAngle</i> of 15° and an <i>OuterConeAngle</i>
+of 30°. Do the math and you should calculate a radius of 0.79 units [6
+* tan(15 /2)] for the fully-illuminated circle and a radius of 1.6
+units [6 * tan(30/2)] of the outer circle before the illumination ends.
+</p>
+<p>How did I get it to work? Easy: That 4-unit square isn't composed of
+just 2 triangles as a rational person would construct it. It's actually
+5,000 triangles that are halves of a grid of 50-by-50 small squares.
+Here's the huge XAML file:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/01/Spotlight50x50.xaml">Spotlight50x50.xaml</a> (~100K)
+</p>
+<p>
+Is it really necessary to have all those triangles?  Pretty much so, yes, if you want to get <i>SpotLight</i> to work. Here's the result when you cut the squares down to an 8-by-8 grid with 128 triangles:
+</p>
+<p align="center">
+<img src="How%20to%20Get%20SpotLight%20to%20Work_files/Spotlight8x8.png">
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/01/Spotlight8x8.xaml">Spotlight8x8.xaml</a>
+</p>
+<p>
+As you can see, some strange effects crop up. Let's go down to a 4-by-4 grid with 32 triangles:
+</p>
+<p align="center">
+<img src="How%20to%20Get%20SpotLight%20to%20Work_files/Spotlight4x4.png">
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/01/Spotlight4x4.xaml">Spotlight4x4.xaml</a>
+</p>
+<p>
+And now 2-by-2 with 8 triangles:
+</p>
+<p align="center">
+<img src="How%20to%20Get%20SpotLight%20to%20Work_files/Spotlight2x2.png">
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/01/Spotlight2x2.xaml">Spotlight2x2.xaml</a>
+</p>
+<p>
+And finally, when we go down to just two triangles — which is how I inevitably began my experimentation with <i>SpotLight</i> — the light disappears entirely:
+</p>
+<p align="center">
+<img src="How%20to%20Get%20SpotLight%20to%20Work_files/Spotlight1x1.png">
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/01/Spotlight2x2.xaml">Spotlight1x1.xaml</a>
+</p>
+<p>
+Just what is going on here?
+</p>
+<p>In the 3D subsystem of the WPF, illumination is based on vertices.
+For any point on any triangle, the amount of reflected light is
+calculated as an interpolation based on the illumination of the
+vertices of that triangle. If those vertices aren't illuminated at all
+(which is the case in the final example because the vertices are at the
+corners of the large square) then no part of the entire triangle
+reflects light. If the vertices are illuminated equally, then all
+points in the entire triangle reflect the same amount of light. If two
+vertices of a triangle are illuminated the same — which is the case for
+some of the later examples here — then the line connecting those two
+vertices reflects the same amount of light, which creates some
+interesting (but incorrect) patterns.
+</p>
+<p>
+Conclusion: If you want <i>SpotLight</i> (and also <i>PointLight</i>) to work correctly, chop your figures up into lots of tiny triangles.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/220254.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/260228.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

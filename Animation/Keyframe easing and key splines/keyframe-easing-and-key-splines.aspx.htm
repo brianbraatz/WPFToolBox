@@ -1,0 +1,453 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Expression Blend and Design : Keyframe easing and key splines</title>
+ 
+
+
+
+
+<meta name="keywords" content="Expression Interactive Designer,Expression,Designer Tools,Windows Presentation Foundation,Expression Blend">
+<meta name="description" content="An animation authored in Blend contains keyframes. The animation defines which element/property to affect and each keyframe defines a key time at which a value should be in effect. The process of animating the property values between successive key times">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/expression/pingback.aspx">
+<link rel="stylesheet" href="keyframe-easing-and-key-splines.aspx_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="keyframe-easing-and-key-splines.aspx_files/print.htm" type="text/css" media="print">
+<link rel="stylesheet" href="keyframe-easing-and-key-splines.aspx_files/customcss.css" type="text/css" media="screen">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Expression Blend and Design (RSS 2.0)" href="http://blogs.msdn.com/expression/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Expression Blend and Design (Atom 1.0)" href="http://blogs.msdn.com/expression/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Keyframe easing and key splines Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/expression/commentrss.aspx?PostID=1387587">
+
+	<script src="keyframe-easing-and-key-splines.aspx_files/global.js" type="text/javascript"></script>
+<style>
+.DoNotDisplay { display: none; }
+</style></head><body>
+<form name="aspnetForm" method="post" action="/expression/archive/2006/12/30/keyframe-easing-and-key-splines.aspx" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFI2N0bDAwJF8kY3RsMDAkXyRidCRfJHdzJF8kU2VhcmNoQm94OF9SPxZcTrUZtH+KlInBIuHdXL8=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script language="javascript" type="text/javascript" src="keyframe-easing-and-key-splines.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script>
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Welcome to MSDN Blogs
+<a id="ctl00___ctl00___duw1_ac1___Login" href="http://blogs.msdn.com/login.aspx?ReturnUrl=%2fexpression%2farchive%2f2006%2f12%2f30%2fkeyframe-easing-and-key-splines.aspx">Sign in</a> | <a id="ctl00___ctl00___duw1_ac1___Register" href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/expression/archive/2006/12/30/keyframe-easing-and-key-splines.aspx">Join</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="wrapper">
+	<div id="container">
+		<div id="header">
+			
+<div id="title">
+	<div id="SearchSideBar">
+		
+<div id="search">
+	<input name="ctl00$_$ctl00$_$bt$_$ws$_$SearchBox" id="ctl00___ctl00___bt___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bt___ws___SearchButton(event);" type="text">
+	<a id="ctl00___ctl00___bt___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bt$_$ws$_$SearchButton','')">Search</a>
+</div>	
+	</div>
+	<h1><a id="ctl00___ctl00___bt___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/expression/default.aspx">Expression Blend and Design</a></h1>
+	<p id="tagline">The team blog of the Microsoft Expression Blend and Design products.</p>
+</div>
+<div id="nav">
+	<div id="SubscriptionsSideBar">
+		
+<div id="subscriptions">
+<ul>
+	<li><a id="ctl00___ctl00___bt___s___rss" href="http://blogs.msdn.com/expression/rss.xml">RSS 2.0</a></li>
+	<li><a id="ctl00___ctl00___bt___s___atom" href="http://blogs.msdn.com/expression/atom.xml">Atom 1.0</a></li>
+	
+</ul></div>
+	</div>
+	<ul>
+		<li><a id="ctl00___ctl00___bt___home" href="http://blogs.msdn.com/expression/default.aspx">Home</a></li>
+		
+		
+	</ul>
+</div></div>
+		<div id="contentmargin"></div>
+		<div id="contentwrapper">
+			<div id="sidebar-a">
+				
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul>
+	<ul class="SidebarTagCloud">
+<li class="Tag2"><a href="http://blogs.msdn.com/expression/archive/tags/Designer+Tools/default.aspx" rel="tag">Designer Tools</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/expression/archive/tags/Expression/default.aspx" rel="tag">Expression</a></li>
+<li class="Tag3"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Blend/default.aspx" rel="tag">Expression Blend</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Design/default.aspx" rel="tag">Expression Design</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Graphic+Designer/default.aspx" rel="tag">Expression Graphic Designer</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Interactive+Designer/default.aspx" rel="tag">Expression Interactive Designer</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Web/default.aspx" rel="tag">Expression Web</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Web+Designer/default.aspx" rel="tag">Expression Web Designer</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/expression/archive/tags/Microsoft+Silverlight/default.aspx" rel="tag">Microsoft Silverlight</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/expression/archive/tags/MSDN/default.aspx" rel="tag">MSDN</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/expression/archive/tags/survey/default.aspx" rel="tag">survey</a></li>
+<li class="Tag3"><a href="http://blogs.msdn.com/expression/archive/tags/Windows+Presentation+Foundation/default.aspx" rel="tag">Windows Presentation Foundation</a></li>
+</ul>
+
+	</ul>
+</div>
+
+<div id="NewsSideBar">
+	
+</div>
+
+<div id="ArchiveSideBar">
+	
+
+<h3>Archives</h3>
+<ul>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/10.aspx">October 2007 (4)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/09.aspx">September 2007 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/08.aspx">August 2007 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/07.aspx">July 2007 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/06.aspx">June 2007 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/05.aspx">May 2007 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/04.aspx">April 2007 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/03.aspx">March 2007 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/01.aspx">January 2007 (4)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/12.aspx">December 2006 (7)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/09.aspx">September 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/08.aspx">August 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/07.aspx">July 2006 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/06.aspx">June 2006 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/05.aspx">May 2006 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/04.aspx">April 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/03.aspx">March 2006 (10)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/02.aspx">February 2006 (21)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/01.aspx">January 2006 (14)</a></li>
+
+</ul>
+</div>
+
+<div id="LinkSideBar">
+	
+    <h3>Article Categories</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl01_Link" href="http://blogs.msdn.com/expression/pages/samples-and-tutorials-gallery-expression-design.aspx">Design : Samples and Tutorials</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl02_Link" href="http://blogs.msdn.com/expression/articles/517022.aspx">Blend : Community Samples</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl03_Link" href="http://blogs.msdn.com/expression/articles/543834.aspx">Blend : Samples and Tutorials</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl04_Link" href="http://blogs.msdn.com/expression/pages/community-samples-gallery-expression-design.aspx">Design : Community Samples</a></li>
+    </ul>
+
+    <h3>Blend Team Bloggers</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl01_Link" href="http://blogs.msdn.com/adamu/">Adam Ulrich</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl02_Link" href="http://blogs.msdn.com/alanga/">Alan Gasperini</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl04_Link" href="http://blogs.msdn.com/jeremykuhne/">Jeremy Kuhne</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl06_Link" href="http://www.aisto.com/roeder/frontier">Lutz Roeder</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl07_Link" href="http://blogs.msdn.com/micahel">Michael J Hunter</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl09_Link" href="http://blogs.msdn.com/stevewhitepsfd/">Steve White</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl11_Link" href="http://blogs.msdn.com/unnir">Unni Ravindranathan</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl13_Link" href="http://blogs.msdn.com/mariogu">Mario Guzzi</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl14_Link" href="http://blogs.msdn.com/adrianma">Adrian Mascarenhas</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl15_Link" href="http://rhizohm.net/irhetoric/">Karsten Januszewski</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl16_Link" href="http://blogs.msdn.com/adrianvinca/">Adrian Vinca</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl17_Link" href="http://blogs.msdn.com/jrowe/">Jen Rowe</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl18_Link" href="http://blogs.msdn.com/danteg">Dante Gagne</a></li>
+    
+        
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl21_Link" href="http://blogs.msdn.com/lingesh">Lingesh Palaniappan</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl23_Link" href="http://blog.kirupa.com/">Kirupa Chinnathambi</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl24_Link" href="http://www.blois.us/blog/">Peter Blois</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl25_Link" href="http://blog.nibblestutorials.net/">Celso Gomes</a></li>
+    </ul>
+
+    <h3>Need Help?</h3>
+    <ul>
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl02_Links_ctl02_Link" href="http://www.microsoft.com/communities/newsgroups/en-us/default.aspx?dg=microsoft.public.expression.interactivedesigner&amp;lang=en&amp;cr=US">Expression Blend Discussion</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl02_Links_ctl03_Link" href="http://www.microsoft.com/communities/newsgroups/en-us/default.aspx?dg=microsoft.public.expression.graphicdesigner&amp;lang=en&amp;cr=US">Expression Design Discussion</a></li>
+    
+        
+    </ul>
+
+    <h3>Related Expression Sites</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl01_Link" href="http://blogs.msdn.com/xWeb">Expression Web Team Blog</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl02_Link" href="http://channel9.msdn.com/tags/Expression">C9 Expression Videos</a></li>
+    </ul>
+
+
+</div>
+			</div>
+			<div id="content"><div id="content2">
+				
+			
+
+
+
+
+<div class="post">
+	<div class="posthead">
+		<div class="postviewhead">
+			Saturday, December 30, 2006 7:41 PM
+			by
+			<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=15719">xprblog</a> 
+			
+		</div>
+		<h2>Keyframe easing and key splines</h2>
+	</div>
+	<div class="postcontent">
+		<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">An
+animation authored in Blend contains keyframes. The animation defines
+which element/property to affect and each keyframe defines a <i style="">key time</i> at which a <i style="">value</i> should be in effect. The process of animating the property values between successive key times is called <i style="">interpolation</i>.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">Let’s
+say you’re translating an element from the top of a Grid to the bottom
+to represent a falling motion. With the element at the top of the
+screen you drop a keyframe at time 0. Then you move the playhead to
+time 1 and drag the element to the bottom of the screen. The
+interpolation between the two screen positions will be linear by
+default: the element will appear to fall at a steady rate.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">If
+you want the motion to resemble a real-world falling object then you
+want the element’s speed to be slow at the beginning and gradually
+speed up towards the end. This kind of interpolation is known as <i style="">ease out</i> because the element’s position is easing out of its original value on its way to the new value. Similarly there exists an <i style="">ease in</i>
+type of interpolation which can either be used alone or combined with
+ease out. To apply full ease out to the animation you right-click the
+first keyframe and click <b style="">Ease Out</b> &gt; <b style="">100%</b>.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">If you want more control over interpolation then we need to talk about <i style="">key splines</i> and you’ll need to tweak some XAML. If you followed along with the <i style="">ease in</i>
+walkthrough above then switch to XAML view and find the storyboard
+which contains your animations and key frames. There are two
+animations: one targeting TranslateTransform.X and one targeting
+TranslateTransform.Y. Take a look at the key frames in the Y animation.
+The second keyframe has a KeySpline attribute which is a string
+containing the coordinates of a pair of points – let’s call them x1,y1
+and x2,y2 respectively. The secret to understanding and controlling
+keyframe interpolation lies with these coordinates and what they
+represent.</font></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';">In the sense of the KeySpline attribute, a <i style="">spline</i> is a curve of <i style="">value over time</i>
+(drawn between implied coordinates of 0,0 and 1,1) whose shape is
+defined by two control points. The KeySpline attribute contains those
+control points. If you’ve drawn curves with Blend’s Pen tool then you
+may know such control points as <i style="">tangents</i>. When you
+omit the KeySpline attribute, its control points default to the
+coordinates 0,0 and 1,1. Here’s a visualization of the resulting key
+spline:</span></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><img style="width: 261px; height: 262px;" src="keyframe-easing-and-key-splines.aspx_files/keyspline001.jpg" mce_src="http://www.xamlshare.com/sparkle/images/Posts06/keyspline001.jpg" align="middle" height="262" width="261"></span></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';">When
+the control points (shown in red) coincide with the start and end
+points of the curve, as they do by default, the curve is actually a
+straight line. This is why, unless you explicitly set ease in or ease
+out, Blend will give linear interpolation between keyframes. The unit
+square key spline is scaled to the actual <i style="">value</i> and <i style="">time</i> deltas of the keyframe which defines it. Here’s what the key spline looks like when ease out is set to 100%:</span></span></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><img style="width: 252px; height: 248px;" src="keyframe-easing-and-key-splines.aspx_files/keyspline002.jpg" mce_src="http://www.xamlshare.com/sparkle/images/Posts06/keyspline002.jpg" align="middle" height="248" width="252"></span></span></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"></span></span></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';">The
+first control point (x1,y1) has moved to 0.5,0. If you now set the ease
+in value of the second keyframe to 100%, the second control point
+(x2,y2) moves to 0.5,1 and the resulting visualization looks like this:</span></span></span></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><img style="width: 239px; height: 237px;" src="keyframe-easing-and-key-splines.aspx_files/keyspline003.jpg" mce_src="http://www.xamlshare.com/sparkle/images/Posts06/keyspline003.jpg" align="middle" height="237" width="239"></span></span></span></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"></span></span></span></p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';">
+<p class="MsoNormal" style="margin: 0in 0in 10pt;">To be clear, the KeySpline values x1,y1,x2,y2 for keyframe n correspond to <i style="">ease out</i> for keyframe n-1 (first control point: x1,y1) and <i style="">ease in</i>
+for keyframe n (second control point: x2,y2) respectively. This means
+that, for a handoff animation, you can still define an ease out for the
+non-existent keyframe at time 0. When you first build the animation,
+drop a keyframe at time 0; then right-click it to set ease out; then
+delete it. The ease out value will be safely stored in the x1,y1 values
+of the second keyframe’s KeySpline.</p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';">The
+control point coordinates can be set to any pair of double values
+between 0 and 1. In this example the first control point is at 0.1,0.5
+and the second control point is at 0.8,0.33:</span></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><img style="width: 254px; height: 244px;" src="keyframe-easing-and-key-splines.aspx_files/keyspline004.jpg" mce_src="http://www.xamlshare.com/sparkle/images/Posts06/keyspline004.jpg" align="middle" height="244" width="254"></span></p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';">
+<p class="MsoNormal" style="margin: 0in 0in 10pt;">Try this key spline
+out in your application. Replace the contents of the KeySpline
+attribute on the second keyframe with the control point coordinate
+string “0.1,0.5,0.8,0.33”. Build and run and see if the resulting
+motion matches the graph. Remember that the graph is showing an
+increase in the property which is being animated. In this case the
+property is TranslateTransform.Y and Y increases <i style="">down the screen</i> in WPF.</p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';">In
+fact, the control points for a given curve are identical whether the
+value is increasing or decreasing. But it’s easier to imagine them on a
+graph with the <i style="">value</i> axis flipped (so the origin moves
+to the top-left and positive y is downwards). Here’s an example where
+the value of keyframe n is less than the value of keyframe n-1 but y1
+and y2 have the same positive values as the previous example:</span></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"><img style="width: 260px; height: 240px;" src="keyframe-easing-and-key-splines.aspx_files/keyspline005.jpg" mce_src="http://www.xamlshare.com/sparkle/images/Posts06/keyspline005.jpg" align="middle" height="240" width="260"></span></p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';">
+<p class="MsoNormal" style="margin: 0in 0in 10pt;">You can use Blend’s
+Pen tool to draw graphs like the ones shown. If you want more complex
+value curves than the ones shown here then just draw more segments.
+Adjust the control points (tangents) so that the interpolation curve
+between each value is how you want it. Then imagine (or draw) the
+dotted unit square around each pair of values and use it to call off
+the control point coordinates in the range 0,0 to 1,1 and build a
+KeySpline string from them. It’s important that your control points
+don’t fall outside the dotted rectangle. For a value curve, control
+point coordinates outside the valid range mean either that the curve
+has a turning point (a keyframe value is missing) or that time is
+decreasing somewhere on the curve.</p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';">In
+the next post I’ll share a tool, based on Blend, that you can use to
+generate double animations from a set of value curves (drawn with the
+Pen tool) and parameter objects.</span></p>
+<p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';"></span></p></span></span></span></span></span>&nbsp;
+	</div>
+	<div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/expression/archive/tags/Expression+Interactive+Designer/default.aspx" rel="tag">Expression Interactive Designer</a>, <a href="http://blogs.msdn.com/expression/archive/tags/Expression/default.aspx" rel="tag">Expression</a>, <a href="http://blogs.msdn.com/expression/archive/tags/Designer+Tools/default.aspx" rel="tag">Designer Tools</a>, <a href="http://blogs.msdn.com/expression/archive/tags/Windows+Presentation+Foundation/default.aspx" rel="tag">Windows Presentation Foundation</a>, <a href="http://blogs.msdn.com/expression/archive/tags/Expression+Blend/default.aspx" rel="tag">Expression Blend</a></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+							
+</div>            
+
+
+
+	<h3>
+	Comments
+</h3>
+	<div id="comments">
+
+	<div class="comment">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_PermaLink" title="permalink" href="http://blogs.msdn.com/expression/archive/2006/12/30/keyframe-easing-and-key-splines.aspx#1395594">#</a>
+		Generating key splines from a Path drawn in Blend<a name="1395594"></a>
+	</h4>
+	<div class="commentssubhead">
+		Monday, January 01, 2007 6:41 PM 
+		by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_NameLink" rel="nofollow" title="TrackBack" href="http://blogs.msdn.com/expression/archive/2007/01/01/generating-key-splines-from-a-path-drawn-in-blend.aspx" target="_blank">Microsoft Expression</a>
+		<span class="commentspan"></span>
+	</div>
+	<div class="commentsbody">
+		<p>In Blend you can author keyframes with ease out and ease in interpolation to give your animations acceleration</p>
+
+	</div>
+	</div>
+
+	</div>
+
+
+
+
+
+<em>New Comments to this post are disabled</em>
+
+   
+    
+			</div></div>
+			<div id="contentfooter">&nbsp;</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bt___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bt$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/expression/archive/2006/12/30/keyframe-easing-and-key-splines.aspx"
+dc:identifier="http://blogs.msdn.com/expression/archive/2006/12/30/keyframe-easing-and-key-splines.aspx"
+dc:title="Keyframe easing and key splines"
+trackback:ping="http://blogs.msdn.com/expression/trackback.aspx?PostID=1387587" />
+</rdf:RDF>
+-->
+</form>
+</body></html>

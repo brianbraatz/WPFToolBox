@@ -1,0 +1,99 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xml:lang="en-US"
+	xmlns:ImageButtons="clr-namespace:ImageButtons" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna" xmlns:d="http://schemas.microsoft.com/expression/blend/2006" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+	x:Class="ImageButtons.Window1"
+	x:Name="Window"
+	Title="Window"
+	Width="640" Height="480">
+
+	<Window.Resources>
+
+		<Style x:Key="ButtonFocusVisual">
+			<Setter Property="Control.Template">
+				<Setter.Value>
+					<ControlTemplate>
+						<Rectangle Margin="3"
+							StrokeThickness="1"
+							Stroke="Black"
+							StrokeDashArray="1 2"
+							SnapsToDevicePixels="true"/>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+
+
+		<LinearGradientBrush x:Key="ButtonNormalBackgroundFill"
+			EndPoint="0.5,1"
+			StartPoint="0.5,0">
+			<GradientStop Color="White"
+				Offset="0"/>
+			<GradientStop Color="#FFE3E5F0"
+				Offset="0.5"/>
+			<GradientStop Color="#FFC6C5D7"
+				Offset="1.0"/>
+		</LinearGradientBrush>
+		<SolidColorBrush x:Key="ButtonBorder"
+			Color="#FF003C74"/>
+		<Style
+			x:Key="ImageButtonStyle"
+			TargetType="{x:Type ImageButtons:ImageButton}">
+			<Setter Property="FocusVisualStyle"
+				Value="{StaticResource ButtonFocusVisual}"/>
+			<Setter Property="Background"
+				Value="{StaticResource ButtonNormalBackgroundFill}"/>
+			<Setter Property="BorderBrush"
+				Value="{StaticResource ButtonBorder}"/>
+			<Setter Property="Foreground"
+				Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+			<Setter Property="HorizontalContentAlignment"
+				Value="Center"/>
+			<Setter Property="VerticalContentAlignment"
+				Value="Center"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type ImageButtons:ImageButton}">
+						<Microsoft_Windows_Themes:ButtonChrome SnapsToDevicePixels="true" x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Fill="{TemplateBinding Background}" RenderDefaulted="{TemplateBinding IsDefaulted}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" ThemeColor="Homestead">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="0.5*"/>
+									<ColumnDefinition Width="0.5*"/>
+								</Grid.ColumnDefinitions>
+								<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" d:LayoutOverrides="Width, Height" HorizontalAlignment="Center" Margin="8,8,8,8" VerticalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="1" RecognizesAccessKey="True"/>
+								<Image Margin="8,8,8,8" Source="{TemplateBinding Source}"/>
+							</Grid>
+						</Microsoft_Windows_Themes:ButtonChrome>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsKeyboardFocused"
+								Value="true"/>
+							<Trigger Property="ToggleButton.IsChecked"
+								Value="true"/>
+							<Trigger Property="IsEnabled"
+								Value="false">
+								<Setter Property="Foreground"
+									Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+
+	</Window.Resources>
+
+	<Grid x:Name="LayoutRoot">
+		<ImageButtons:ImageButton HorizontalAlignment="Center" Style="{DynamicResource ImageButtonStyle}" VerticalAlignment="Center" Content="ImageButton" Margin="0,0,140,140" Width="200" Source="Blue hills.jpg"/>
+		<ImageButtons:ImageButton HorizontalAlignment="Center" Margin="140,140,0,0" Style="{DynamicResource ImageButtonStyle}" VerticalAlignment="Center" Width="200" Content="ImageButton" Source="Sunset.jpg"/>
+		<RichTextBox x:Name="Sample_Information" Width="250" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="Auto" IsEnabled="True" IsReadOnly="True" Margin="-250,0,0,0">
+			<FlowDocument>
+				<Paragraph xml:space="preserve">The ImageButtons sample demonstrates how to create a custom control that is based on an existing control type - in this case, based on the Button control.  </Paragraph>
+				<Paragraph>The custom ImageButton control is implemented in the Window1.xaml.cs code-behind file. The implementation simply adds a new property named Source to the Button class. The control template in Window1.xaml uses template binding to use the Source property to display the image referenced in the property.</Paragraph>
+				<Paragraph>For more information, please see the tutorial ImageButtons that comes with this sample.</Paragraph>
+			</FlowDocument>
+		</RichTextBox>
+	</Grid>
+</Window>

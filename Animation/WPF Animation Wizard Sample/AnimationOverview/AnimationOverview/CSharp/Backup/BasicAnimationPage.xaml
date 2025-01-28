@@ -1,0 +1,87 @@
+<Page 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+  x:Class="SDKSamples.BasicAnimationPage" 
+  Title="Basic Animations">
+  <StackPanel>
+
+    <FlowDocumentScrollViewer>
+      <FlowDocument>
+        <Paragraph>
+          <Span Style="{StaticResource MyHeadingSpanStyle}">Basic Animations</Span><LineBreak/>
+          Let's consider this simple example of a fading rectangle.
+        </Paragraph>
+
+        <BlockUIContainer>
+          <Rectangle HorizontalAlignment="Left" 
+           Name="MyRectangle"
+           Width="100" 
+           Height="100"
+           Fill="Blue">
+            <Rectangle.Triggers>
+              <!-- Animates the rectangle's opacity. -->
+              <EventTrigger RoutedEvent="Rectangle.Loaded">
+                <BeginStoryboard>
+                  <Storyboard>
+                    <DoubleAnimation
+                      Storyboard.TargetName="MyRectangle" 
+                      Storyboard.TargetProperty="Opacity"
+                      From="1.0" To="0.0" Duration="0:0:5" 
+                      AutoReverse="True" RepeatBehavior="Forever" />
+                  </Storyboard>
+                </BeginStoryboard>
+              </EventTrigger>
+            </Rectangle.Triggers>
+          </Rectangle>
+        </BlockUIContainer>
+
+        <Paragraph>
+          Below is an image of the XAML markup code that creates this animation.
+        </Paragraph>
+        <BlockUIContainer>
+          <Image Source="/sampleImages/BasicAnimationMarkupWithCallouts.gif" />
+        </BlockUIContainer>
+
+        <Paragraph>
+          The following is necessary for even a basic animation like this one. 
+        </Paragraph>
+        <List>
+          <ListItem>
+            <Paragraph>
+              <Bold>Trigger the Animation:</Bold> You have to specify when an animation will occur. This example uses a trigger
+            (when the rectangle loads) to begin the animation.</Paragraph>
+          </ListItem>
+          <ListItem>
+            <Paragraph>
+              <Bold>Target the Animation:</Bold> An animation animates the value of a property. However, you need to specify what
+              object is having its property animated. This example uses the TargetName property to target the rectangle.
+            </Paragraph>
+          </ListItem>
+          <ListItem>
+            <Paragraph>
+              <Bold>Target the Property:</Bold> In this example the TargetProperty property is used to specify that the Opacity property is
+              animated.
+            </Paragraph>
+          </ListItem>
+          <ListItem>
+            <Paragraph>
+              <Bold>Specify Values to Animate Between:</Bold> In this example the From and To properties specify that the Opacity property is 
+              animated between the values of 1.0 to 0.0 (fully opaque to fully transparent).
+            </Paragraph>
+          </ListItem>
+          <ListItem>
+            <Paragraph>
+              <Bold>Specify a Duration for Animation:</Bold> This example specifies a duration in the form 
+              of <Span FontStyle="Italic">Hours</Span>:<Span FontStyle="Italic">Minutes</Span>:<Span FontStyle="Italic">Seconds</Span>
+              (0:0:5 - 5 seconds).
+            </Paragraph>
+          </ListItem>
+        </List>
+        <Paragraph>
+          The next several pages demonstrate the most important properties used for basic animations.
+        </Paragraph>
+      </FlowDocument>
+    </FlowDocumentScrollViewer>
+
+  </StackPanel>
+</Page>

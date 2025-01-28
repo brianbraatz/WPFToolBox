@@ -1,0 +1,78 @@
+﻿<Window x:Class="AdvancedCustomTreeViewLayout.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="TreeView Explorer" Width="850" Height="800"
+    WindowStartupLocation="CenterScreen"
+    FontSize="12"
+    >
+  <Grid>
+    <Grid.Resources>
+      <XmlDataProvider x:Key="countriesXml" 
+        Source="..\..\countries.xml" 
+        XPath="Countries/Country" 
+        />
+
+      <HierarchicalDataTemplate
+        DataType="Country" 
+        ItemsSource="{Binding}"
+        >
+        <TextBlock Text="{Binding XPath=@CountryName}" />
+      </HierarchicalDataTemplate>
+
+      <HierarchicalDataTemplate 
+        DataType="Region" 
+        ItemsSource="{Binding}"
+        >
+        <TextBlock Text="{Binding XPath=@RegionName}" />
+      </HierarchicalDataTemplate>
+
+      <DataTemplate DataType="City">
+        <Label>
+          <Hyperlink 
+            NavigateUri="{Binding XPath=@Uri}" 
+            RequestNavigate="OnNavigateToCity"
+            >
+            <TextBlock Text="{Binding XPath=@CityName}" />
+          </Hyperlink>
+        </Label>
+      </DataTemplate>
+
+      <ImageBrush x:Key="WorldMapBrush" ImageSource="..\..\worldmap.png" />
+    </Grid.Resources>
+
+    <Grid.RowDefinitions>
+      <!-- Top row is for the TreeView. -->
+      <RowDefinition Height="Auto" />
+      <!-- Bottom row is for the web page. -->
+      <RowDefinition />
+    </Grid.RowDefinitions>
+
+    <TreeView Name="tree" 
+      DataContext="{StaticResource countriesXml}" 
+      ItemsSource="{Binding}"
+      >
+      <!-- Import the resource file with the 
+           new TreeViewItem style. -->
+      <TreeView.Resources>
+        <ResourceDictionary 
+          Source="GroupedTreeViewItemStyle.xaml" />
+      </TreeView.Resources>
+
+      <!-- Arrange the root items horizontally. -->
+      <TreeView.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel 
+            IsItemsHost="True" 
+            Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+      </TreeView.ItemsPanel>
+    </TreeView>
+
+    <!-- Displays the selected web page. -->
+    <Frame Name="webPageFrame"
+      Background="{StaticResource WorldMapBrush}"
+      Grid.Row="1"
+      LoadCompleted="OnWebPageFrameLoadCompleted"     
+      />
+  </Grid>
+</Window>

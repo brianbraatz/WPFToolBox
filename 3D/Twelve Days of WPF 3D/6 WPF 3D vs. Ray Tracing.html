@@ -1,0 +1,300 @@
+<html><head><title>6: WPF 3D vs. Ray Tracing</title>
+
+
+
+
+
+<script type="text/javascript" src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/ericsinksoftware.js"> </script>
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://software.ericsink.com/rss.xml">
+<style type="text/css">
+.SiteTitle {font-family: Arial, Helvetica, sans-serif; font-size:36pt}
+.Tagline {font-family: Arial, Helvetica, sans-serif}
+.ArticleTitle {text-decoration: none; color: black; font-family: Arial, Helvetica, sans-serif; font-weight:bold; font-size:16pt}
+.ArticleTitleGreen {text-decoration: none; color: #669900; font-family: Arial, Helvetica, sans-serif; font-weight:bold; font-size:16pt}
+.DayPageArticleTitle {text-decoration: none; color: black; font-family: Arial, Helvetica, sans-serif; font-weight:bold; font-size:12pt}
+.ArticleDate {color:black; font-family: Arial, Helvetica, sans-serif; font-size:7pt;font-weight:normal}
+.LeftSide {font-family: Arial, Helvetica, sans-serif; font-size:10pt}
+.Copyright { font-family: Arial, Helvetica, sans-serif; font-size:7pt }
+BLOCKQUOTE {font-family: Arial, Helvetica, sans-serif; font-size:10pt}
+P {font-family: Arial, Helvetica, sans-serif; font-size:10pt}
+OL {font-family: Arial, Helvetica, sans-serif; font-size:10pt}
+UL {font-family: Arial, Helvetica, sans-serif; font-size:10pt}
+LI {font-family: Arial, Helvetica, sans-serif; font-size:10pt}
+H2 {font-family:Arial,Helvetica,sans-serif}
+H3 {font-family:Arial,Helvetica,sans-serif}
+H4 {font-family:Arial,Helvetica,sans-serif}
+H5 {font-family:Arial,Helvetica,sans-serif}
+</style></head><body bgcolor="#000000">
+
+<table align="center" bgcolor="#99cc33" border="0" cellpadding="0" cellspacing="0" width="870">
+<tbody><tr><td colspan="3"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/EricWeblogHeader1.jpg"></td></tr>
+<tr>
+<td colspan="3">&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr valign="top">
+<td align="left" bgcolor="white"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/corner_inside_upper_left.png"></td>
+<td bgcolor="white">&nbsp;</td>
+<td align="right" bgcolor="white"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/corner_inside_upper_right.png"></td>
+<td>&nbsp;</td>
+<td align="left" bgcolor="white"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/corner_inside_upper_left.png"></td>
+<td bgcolor="white">&nbsp;</td>
+<td align="right" bgcolor="white"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/corner_inside_upper_right.png"></td>
+</tr>
+<tr>
+<td bgcolor="white">&nbsp;</td>
+<td bgcolor="white" valign="top" width="180">
+<table border="0" cellpadding="0">
+<tbody><tr><td class="LeftSide">
+<a href="http://software.ericsink.com/index.html">Home</a><br>
+<br>
+<a href="http://software.ericsink.com/about_author.html">About Eric</a><br>
+<br>
+<a href="http://software.ericsink.com/rss.xml">RSS <img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/xml.gif" border="0"></a><br>
+<br>
+<a href="http://software.ericsink.com/archive_index.html">Complete Archive</a><br>
+<br>
+<br>
+<center><a href="http://www.amazon.com/exec/obidos/ASIN/1590596234/sawdust08-20"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/ew-bos.png" border="0"></a></center>
+<br>
+<br>
+<b>Series:</b><br>
+<br>
+<a href="http://software.ericsink.com/scm/source_control.html">Source Control HOWTO</a><br>
+<br>
+<a href="http://software.ericsink.com/Marketing_for_Geeks.html">Marketing for Geeks</a><br>
+<br>
+<a href="http://software.ericsink.com/laws/Immutable_Laws_Marketing.html">The 22 Immutable Laws of Marketing</a><br>
+<br>
+<a href="http://software.ericsink.com/bos/Business_of_Software.html">The Business of Software</a><br>
+<br>
+<a href="http://software.ericsink.com/wpf3d/index.html">WPF 3D</a><br>
+<br>
+<b>Topics:</b><br>
+<br>
+<a href="http://software.ericsink.com/tocs/Software_Development.html">Software Development</a><br>
+<br>
+<a href="http://software.ericsink.com/tocs/WPF.html">WPF</a><br>
+<br>
+<a href="http://software.ericsink.com/tocs/Business.html">Business</a><br>
+<br>
+<a href="http://software.ericsink.com/tocs/Laughs.html">Laughs</a><br>
+<br>
+<a href="http://software.ericsink.com/tocs/SourceGear_Products.html">SourceGear</a><br>
+<br>
+<br>
+<b>Related Sites:</b><br>
+<br>
+<a href="http://notalegend.com/">www.NotALegend.com</a><br>
+<br>
+<a href="http://www.sourcegear.com/">www.SourceGear.com</a><br>
+<br>
+<a href="http://www.teamprise.com/">www.Teamprise.com</a><br>
+<br>
+
+</td></tr>
+</tbody></table></td>
+<td bgcolor="white">&nbsp;</td>
+<td>&nbsp;</td>
+<td bgcolor="white">&nbsp;</td>
+<td bgcolor="white" valign="top" width="590">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr><td>
+
+<p class="ArticleDate" align="right">Wednesday, July 18, 2007</p>
+<p class="ArticleTitle">6: WPF 3D vs. Ray Tracing</p>
+
+<p>This entry is part 6 of a <a href="http://software.ericsink.com/wpf3d/index.html">12-part series</a> on WPF
+3D.</p>
+
+<h3>Not a Ray Tracer</h3>
+
+<p>To understand what something is, sometimes it is helpful to
+talk about what it is not.</p>
+
+<p>WPF 3D is not a ray tracer.</p>
+
+<p>The two common ways of rendering 3D objects are:</p>
+
+<ol style="margin-top: 0in;" start="1" type="1">
+ <li>Describe objects as polygons (broken into triangles).&nbsp; Do
+     a projection to 2D and use some clever shortcuts to simulate lighting.&nbsp;
+     This is the method used by accelerated graphics APIs, including WPF,
+     Direct3D, OpenGL and their ilk.&nbsp; All real-time games use this method or
+     something similar to it.</li>
+ <li>Describe objects using whatever form makes sense for that
+     object.&nbsp; For every pixel in the resulting image, fire one or more light
+     rays, tracing the path of light to determine the proper coloring for that
+     pixel.&nbsp; An example of a ray tracer is <a href="http://www.povray.org/">POV-Ray</a>.&nbsp;
+     Some movies use this method, such as <a href="http://www.imdb.com/title/tt0268380/">Ice Age</a>.</li>
+</ol>
+
+<p>It is generally true that ray tracing produces higher
+quality images.&nbsp; So why do we bother with the other method when our
+grandfathers told us that anything worth doing is worth doing right?&nbsp; Our
+grandfathers were not software developers.&nbsp; Ray tracing is hundreds or
+thousands of times slower.&nbsp; Given a choice between a good rendering in 10
+milliseconds or a great rendering in 10 seconds, there are times we want to
+choose the former.</p>
+
+<p>But what is this difference between good and great?&nbsp; We
+always say that ray tracing produces higher quality images, but I've seen some
+pretty amazing stuff rendered by OpenGL or Direct3D.&nbsp; Exactly <i>how</i> are
+ray-traced images of higher quality?</p>
+
+<h3>Curves</h3>
+
+<p>Remember in <a href="http://software.ericsink.com/wpf3d/5_Triangles.html">part 5</a> when I said that
+every polygon can be decomposed into triangles?&nbsp; This is true, but not
+everything is a polygon.&nbsp; What if you want to render a sphere?&nbsp; You can only <i>approximate</i>
+a sphere with a triangle mesh.</p>
+
+<p>Ray tracing doesn't have this problem.&nbsp; A ray tracer will
+usually represent a sphere in a more exact fashion.&nbsp; It knows how to intersect
+rays with the equation of a sphere.&nbsp; The quality of the resulting image is
+limited only by the resolution of that image.</p>
+
+<h3>Shadows and Reflections</h3>
+
+<p>Accelerated graphics APIs like OpenGL do not automatically
+draw shadows or reflections.&nbsp; There just isn't any good way to calculate
+shadows when you're trying to render 60 frames per second.&nbsp; Reflections are
+even worse.</p>
+
+<p>But both of these things are quite simple for a ray tracer.&nbsp;
+Want to find shadows?&nbsp; Fire a ray and find the 3D point where it intersects.&nbsp;
+Then fire a ray from that point to the light source.&nbsp; If the second ray doesn't
+hit the light source directly, you are in a shadow.</p>
+
+<p>The quintessential demo for a ray tracer is a chrome sphere
+casting a shadow on the floor.</p>
+
+<h3>Transparency</h3>
+
+<p>Remember in <a href="http://software.ericsink.com/wpf3d/2_Transparency.html">part 2</a> when I was
+fussing about transparency?&nbsp; Accelerated graphics APIs need you to sort things
+because they use a shortcut called a <a href="http://en.wikipedia.org/wiki/Z-buffering">Z-buffer</a>.&nbsp; Ray tracing can do
+transparency more accurately because it's not in such a hurry.&nbsp; A ray tracer
+can take the time to intersect every ray with every object in the scene, just
+to make sure it doesn't miss anything.</p>
+
+<h3>A Project Idea</h3>
+
+<p>As I write this, I look out the window to my left and see
+the University of Illinois campus.&nbsp; The fall semester will start in six weeks
+or so.&nbsp; I assume that one of this fall's classes will be "Introduction to
+Computer Graphics".&nbsp; I further assume that there will be approximately 100
+students in that class, and that each of them will be asked to write a ray
+tracer.</p>
+
+<p>A little web research suggests that in the United States there are 479 colleges and universities that offer a computer science
+program.&nbsp; Extending my assumptions to the national level, I figure all of them
+have a computer graphics course with an average of 50 students every semester.&nbsp;
+So as a society, each year we are producing over 47,000 new ray tracer
+implementations.</p>
+
+<p>And that's just here in the United States.&nbsp; When I think
+about all the other CS students worldwide, I shudder to think how many homeless
+ray tracers are being born every year.&nbsp; (Please, folks, have your ray tracer
+spayed or neutered.)</p>
+
+<p>As long as we're writing so many ray tracers, why not write
+one for WPF?</p>
+
+<p>Because WPF 3D is built on a "retained scene" model, a
+Viewport3D object has all the information necessary for rendering.&nbsp; We can
+write a ray tracer which takes a Viewport3D and returns an image which was
+constructed by ray tracing its contents.&nbsp; Basically, it's the same task as
+writing any other ray tracer, except instead of creating a new scene
+description language, you just use the one provided by WPF.</p>
+
+<p>Remember of course that in WPF, everything is a triangle.&nbsp;
+So don't expect photorealistic rendering of a chrome sphere unless your
+triangles are really small.</p>
+
+<p>But I still think a WPF ray tracer would actually be
+useful.&nbsp; If you already have a Viewport3D anyway, it might be nice to be able
+to paste it into a WPF ray tracer and get a rendering which has reflections and
+shadows.</p>
+
+<p>I'll get you started.&nbsp; The shell of your ray tracer will
+probably look something like this:</p>
+
+<p style="margin-left: 0.5in;"><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: blue;">public</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;;"> <span style="color: teal;">BitmapSource</span>
+RayTrace(<span style="color: teal;">Viewport3D</span> vp)<br>
+{<br>
+&nbsp;&nbsp;&nbsp; <span style="color: blue;">int</span> width = (<span style="color: blue;">int</span>)vp.Width;<br>
+&nbsp;&nbsp;&nbsp; <span style="color: blue;">int</span> height = (<span style="color: blue;">int</span>)vp.Height;<br>
+<br>
+&nbsp;&nbsp;&nbsp; <span style="color: blue;">byte</span>[] pixelData = <span style="color: blue;">new</span>
+<span style="color: blue;">byte</span>[width * height * 3];<br>
+<br>
+&nbsp;&nbsp;&nbsp; <span style="color: blue;">for</span> (<span style="color: blue;">int</span> c
+= 0; c &lt; width; c++)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: blue;">for</span> (<span style="color: blue;">int</span>
+r = 0; r &lt; height; r++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: teal;">Color</span> clr = GetColorForPixel(vp, c,
+r);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pixelData[(r * width + c) * 3 + 0] = clr.R;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pixelData[(r * width + c) * 3 + 1] = clr.G;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pixelData[(r * width + c) * 3 + 2] = clr.B;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <span style="color: teal;">BitmapSource</span> bmpSource = <span style="color: teal;">BitmapSource</span>.Create(<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;width, height, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 96, 96,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: teal;">PixelFormats</span>.Rgb24, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: blue;">null</span>, pixelData, width * 3);<br>
+<br>
+&nbsp;&nbsp;&nbsp; <span style="color: blue;">return</span> bmpSource;<br>
+}</span></p>
+
+<p>Now you basically just need to implement GetColorForPixel().&nbsp;
+One of the first lines of that method is probably going to look like this:</p>
+
+<p style="margin-left: 0.5in;"><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: teal;">RayMeshGeometry3DHitTestResult</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;;"> hit =<br>
+&nbsp; (<span style="color: teal;">RayMeshGeometry3DHitTestResult</span>)<br>
+&nbsp;&nbsp;&nbsp; <span style="color: teal;">VisualTreeHelper</span>.HitTest(vp, <span style="color: blue;">new</span> <span style="color: teal;">Point</span>(c, r));</span></p>
+
+<p>Also, in RayTrace(), before you start the loop, you probably
+want to walk through all the children of the Viewport3D and find all the lights.&nbsp;
+This will save you the cost of doing that search once for every pixel.</p>
+
+<p>Enjoy!</p>
+
+<p></p><hr>
+<a href="javascript:HaloScan('1690');" target="_self"><script type="text/javascript">postCount('1690');</script>Comments (6)</a><p>
+</p>
+</td></tr>
+</tbody></table>
+</td>
+<td bgcolor="white">&nbsp;</td>
+</tr>
+<tr valign="bottom">
+<td align="left" bgcolor="white"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/corner_inside_lower_left.png"></td>
+<td bgcolor="white">&nbsp;</td>
+<td align="right" bgcolor="white"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/corner_inside_lower_right.png"></td>
+<td>&nbsp;</td>
+<td align="left" bgcolor="white"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/corner_inside_lower_left.png"></td>
+<td bgcolor="white">&nbsp;</td>
+<td align="right" bgcolor="white"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/corner_inside_lower_right.png"></td>
+</tr>
+<tr><td colspan="7" class="Copyright">Copyright 2001-2007 Eric Sink. All Rights Reserved</td>
+<td align="right">&nbsp;</td>
+</tr>
+</tbody></table>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr valign="bottom">
+<td align="left"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/corner_main_lower_left.png"></td>
+<td>&nbsp;</td>
+<td align="right"><img src="6%20WPF%203D%20vs.%20Ray%20Tracing_files/corner_main_lower_right.png"></td>
+</tr>
+</tbody></table></body></html>

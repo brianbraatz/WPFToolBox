@@ -1,0 +1,51 @@
+<!-- ================================================================
+      WindDownPendulum.xaml (c) 2006 by Charles Petzold
+
+      See blog entry www.charlespetzold.com/blog/2006/06/160538.html
+     ================================================================ -->
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      WindowTitle="Wind-Down Pendulum"
+      Title="Wind-Down Pendulum">
+    <Grid>
+        <!-- Invisible element just to host composite tranform -->
+        <FrameworkElement Name="el">
+            <FrameworkElement.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform x:Name="xformRotate" />
+                    <ScaleTransform x:Name="xformScale" />
+                </TransformGroup>
+            </FrameworkElement.RenderTransform>
+        </FrameworkElement>
+
+        <!-- Pendulum angle is sine curve times scaling factor -->
+        <Path HorizontalAlignment="Center" VerticalAlignment="Top"
+              Data="M 0 0 L 0 200 A 20 20 0 0 0 0 240 A 20 20 0 0 0 0 200" 
+              Fill="Brown" Stroke="Black" StrokeThickness="3">
+            <Path.RenderTransform>
+                <RotateTransform Angle="{Binding ElementName=el, 
+                                    Path=RenderTransform.Value.M11}" />
+            </Path.RenderTransform>
+        </Path>
+    </Grid>
+
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <!-- RotateTransform angle from 0 to 360, repeated -->
+                    <DoubleAnimation Storyboard.TargetName="xformRotate"
+                                     Storyboard.TargetProperty="Angle"
+                                     From="0" To="360" Duration="0:0:2"
+                                     RepeatBehavior="0:5:0" />
+
+                    <!-- ScaleTransform scale factor from 30 to 0 -->
+                    <DoubleAnimation Storyboard.TargetName="xformScale"
+                                     Storyboard.TargetProperty="ScaleX"
+                                     From="30" To="0" Duration="0:5:0" />
+
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
+</Page>

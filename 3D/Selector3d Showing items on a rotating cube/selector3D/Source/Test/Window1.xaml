@@ -1,0 +1,41 @@
+﻿<Window x:Class="Ricciolo.Controls.Test.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Ricciolo.Controls;assembly=Ricciolo.Controls.Selector3D,Version=1.0.0.0,Culture=neutral,PublicKeyToken=null" 
+    xmlns:c2="clr-namespace:Ricciolo.Controls" 
+    Title="Selector3D" Height="300" Width="400"
+    >
+  <Window.Resources>
+    <DataTemplate x:Key="cube">
+      <Border Background="#99FF66"
+        BorderBrush="Black" 
+        BorderThickness="2" 
+        CornerRadius="0" 
+        Padding="25">
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="40" FontFamily="Sans Serif" Foreground="#003333" Text="{Binding Name}" />
+            <TextBlock DockPanel.Dock="Bottom" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="8" FontFamily="Sans Serif" Foreground="#999933" Text="by Ricciolo" />
+            <c2:CalendarGrid Month="{Binding Month}" />
+          </DockPanel>
+        </Border>
+    </DataTemplate>
+
+  </Window.Resources>
+
+  <DockPanel>
+
+
+    <Button DockPanel.Dock="Top" Command="c:Selector3D.MoveNextCommand" CommandTarget="{Binding ElementName=tab}">Next</Button>
+    <Button DockPanel.Dock="Top" Command="c:Selector3D.MoveBackCommand" CommandTarget="{Binding ElementName=tab}">Back</Button>
+
+    <ListBox DisplayMemberPath="Name" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" Margin="5">
+    </ListBox>
+
+    <c:Selector3D x:Name="tab" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" Margin="5" ItemTemplate="{StaticResource cube}">
+      <c:Selector3D.Background>
+        <ImageBrush ImageSource="background.jpg" />
+      </c:Selector3D.Background>
+  </c:Selector3D>
+
+  </DockPanel>
+</Window>

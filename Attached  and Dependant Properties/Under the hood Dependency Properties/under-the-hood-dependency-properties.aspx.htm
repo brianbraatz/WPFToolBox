@@ -1,0 +1,588 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional-dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head id="ctl00_ctl00">
+ 
+
+<meta name="description" content="Rudi Grobler's Blog">
+<meta name="keywords" content="Rudi; Grobler; XP; Embedded; C#; LINQ; Impilo; WPF; WCF; XPE; Guides; Tutorials; windows; Communication; Foundation; Presentation; Workflow; WF; Codename Silver;SELECT TOP;SELECT;SQL;MySQL;DB2;Oracle">
+<meta name="GENERATOR" content="CommunityServer 2007 SP2 (Build: 20611.960)">
+<link rel="pingback" href="http://dotnet.org.za/rudi/pingback.aspx">
+<link rel="shortcut icon" type="image/ico" href="http://dotnet.org.za/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Rudi Grobler (RSS 2.0)" href="http://dotnet.org.za/rudi/rss.aspx">
+<link rel="alternate" type="application/atom+xml" title="Rudi Grobler (Atom 1.0)" href="http://dotnet.org.za/rudi/atom.aspx">
+<link rel="alternate" type="application/rss+xml" title="Rudi Grobler - All Comments (RSS 2.0)" href="http://dotnet.org.za/rudi/rsscomments.aspx">
+<link rel="alternate" type="application/rss+xml" title="Under the hood: Dependency Properties - Comments for this post (RSS 2.0)" href="http://dotnet.org.za/rudi/rsscomments.aspx?PostID=193040">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="under-the-hood-dependency-properties.aspx_files/style.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="under-the-hood-dependency-properties.aspx_files/print.css" type="text/css" media="print">
+	
+	<link rel="stylesheet" href="under-the-hood-dependency-properties.aspx_files/DynamicStyle.css" type="text/css" media="screen">
+<script src="under-the-hood-dependency-properties.aspx_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-615452-1";
+urchinTracker();
+</script>
+
+<meta name="verify-v1" content="d75FJB4Fp/jMQ8EM99A5zseWOrRRIESI29RHxYES/yM="> 
+<script src="under-the-hood-dependency-properties.aspx_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2129292-1";
+urchinTracker();
+</script>
+<script src="under-the-hood-dependency-properties.aspx_files/embed.htm"></script><title>Under the hood: Dependency Properties - Rudi Grobler</title><script id="cocomment-loader" src="under-the-hood-dependency-properties.aspx_files/integration.js"></script><script src="under-the-hood-dependency-properties.aspx_files/ClientInitializeServlet" type="text/javascript"></script><link href="under-the-hood-dependency-properties.aspx_files/client.css" type="text/css" rel="STYLESHEET"><script src="under-the-hood-dependency-properties.aspx_files/LoginServlet" type="text/javascript"></script><script id="cocomment-extender-bus"></script></head><body><img style="display: none;" src="under-the-hood-dependency-properties.aspx_files/log.htm" height="1" width="1">
+
+<!-- Start AMATOMU.COM code-->
+<script type="text/javascript" src="under-the-hood-dependency-properties.aspx_files/embed_002.htm"></script><img style="display: none;" src="under-the-hood-dependency-properties.aspx_files/log_002.htm" height="1" width="1">
+<!-- End AMATOMU.COM code -->
+
+
+    <form name="aspnetForm" method="post" action="/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE3NDg3MTUwMzhkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBS5jdGwwMCRNYWluJGN0bDA5JGN0bDAyJGN0bDAyJGN0bDAyJGNoa1JlbWVtYmVyPfAiDW3xx+tsBS1PNgf4HCKSM7A=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="under-the-hood-dependency-properties.aspx_files/WebResource.js" type="text/javascript"></script>
+
+
+<script src="under-the-hood-dependency-properties.aspx_files/WebResource_003.axd" type="text/javascript"></script>
+<script src="under-the-hood-dependency-properties.aspx_files/WebResource_002.axd" type="text/javascript"></script>
+<script src="under-the-hood-dependency-properties.aspx_files/WebResource_004.axd" type="text/javascript"></script>
+<script src="under-the-hood-dependency-properties.aspx_files/WebResource.axd" type="text/javascript"></script>
+        
+<script type="text/javascript">
+<!--   
+    function ValidateCaptcha(val, args) {
+      
+        var value = args.Value;
+        var nameEQ = "CAPTCHA=";
+        var captchaNumbers;        	
+        var ca = document.cookie.split(';');
+        
+        for(var i=0;i < ca.length;i++) {
+    	    var c = ca[i];
+    	    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    	    if (c.indexOf(nameEQ) == 0) captchaNumbers =  c.substring(nameEQ.length,c.length);
+	    }
+
+        args.IsValid = captchaNumbers == value;
+
+    }
+-->
+</script>
+
+<script src="under-the-hood-dependency-properties.aspx_files/WebResource_002.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+
+    			
+
+    <div id="masthead">
+        <div id="welcome" align="right">
+            
+        <a href="http://dotnet.org.za/login.aspx?ReturnUrl=%2frudi%2farchive%2f2007%2f07%2f02%2funder-the-hood-dependency-properties.aspx">Sign in </a>
+         | <a href="http://dotnet.org.za/user/CreateUser.aspx?ReturnUrl=">Join</a>
+        | <a href="http://communityserver.org/r.ashx?K">Help</a>
+     
+
+
+        </div>
+    </div>
+    <div id="wrapper">
+	        <div id="container">
+		        <div id="header">
+	                <div id="title">
+                        <h1 class="headermaintitle"><a href="http://dotnet.org.za/rudi/default.aspx">Rudi Grobler</a></h1>
+	                    <p id="tagline">&lt;Blog x:Name="Rudi Grobler" /&gt;</p>                        
+                    </div>
+                </div>
+                <div id="contentwrapper">
+			        <div id="sidebar-a">
+                        
+                            <div id="BlogLinksSideBar">
+			                    <div id="WeblogLinks">
+			                        <h3>This Blog</h3>
+		                            <ul>
+		                                <li><a href="http://dotnet.org.za/rudi/default.aspx">Home</a></li>
+			                            <li><a href="http://dotnet.org.za/rudi/contact.aspx">Contact</a></li>
+			                            
+			                            
+		                            </ul>
+		                        </div>
+                            </div>
+                            <div id="TasksSideBar">                                
+                                
+                                
+                            </div>
+                            <div id="SubscriptionsSideBar">
+                                <div id="Subscriptions"> 
+                                    <h3>Syndication</h3>
+                                    <ul>
+                                        <li><a href="http://dotnet.org.za/rudi/rss.aspx">RSS</a></li>
+			                            <li><a href="http://dotnet.org.za/rudi/atom.aspx">Atom</a></li>
+								        <li id="RssComments"><a href="http://dotnet.org.za/rudi/rsscomments.aspx">Comments RSS</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="SearchSideBar">    
+                                <div id="Search">
+	                                        <h3>Search</h3>
+                                            <ul>
+                                                <li>
+                                                    <input name="ctl00$SideBar$ctl10$ctl00$SearchBox" id="ctl00_SideBar_ctl10_ctl00_SearchBox" class="searchBox" button="SearchButton" onclick="if(this.defaultValue==this.value) this.value='';" onblur="if(this.value=='') this.value=this.defaultValue;" type="text">
+                                                    <a id="ctl00_SideBar_ctl10_ctl00_SearchButton" href="javascript:__doPostBack('ctl00$SideBar$ctl10$ctl00$SearchButton','')">Go</a>		        
+                                                </li>
+                                            </ul>
+                                    </div>
+                            </div>  
+                                
+                                <div id="TagSideBar">
+                                        <h3>Tags</h3>
+                                        <ul>
+                                    <ul class="SidebarTagCloud">
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/3D/default.aspx" rel="tag">3D</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Blend/default.aspx" rel="tag">Blend</a></li>
+<li class="Tag2"><a href="http://dotnet.org.za/rudi/archive/tags/Bluetooth/default.aspx" rel="tag">Bluetooth</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Code+Project/default.aspx" rel="tag">Code Project</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/DB2/default.aspx" rel="tag">DB2</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Dependency+Property/default.aspx" rel="tag">Dependency Property</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/DevDays/default.aspx" rel="tag">DevDays</a></li>
+<li class="Tag2"><a href="http://dotnet.org.za/rudi/archive/tags/Facebook/default.aspx" rel="tag">Facebook</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Firebird/default.aspx" rel="tag">Firebird</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Halo+3/default.aspx" rel="tag">Halo 3</a></li>
+<li class="Tag2"><a href="http://dotnet.org.za/rudi/archive/tags/HTPC/default.aspx" rel="tag">HTPC</a></li>
+<li class="Tag2"><a href="http://dotnet.org.za/rudi/archive/tags/Impilo/default.aspx" rel="tag">Impilo</a></li>
+<li class="Tag2"><a href="http://dotnet.org.za/rudi/archive/tags/LINQ/default.aspx" rel="tag">LINQ</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Mono/default.aspx" rel="tag">Mono</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/MRS/default.aspx" rel="tag">MRS</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/MVP/default.aspx" rel="tag">MVP</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/MySpace/default.aspx" rel="tag">MySpace</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/MySQL/default.aspx" rel="tag">MySQL</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Oracle/default.aspx" rel="tag">Oracle</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Personal/default.aspx" rel="tag">Personal</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/PostgreSQL/default.aspx" rel="tag">PostgreSQL</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Project+Management/default.aspx" rel="tag">Project Management</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Robotics/default.aspx" rel="tag">Robotics</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/RSS/default.aspx" rel="tag">RSS</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/SELECT+TOP/default.aspx" rel="tag">SELECT TOP</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Silver/default.aspx" rel="tag">Silver</a></li>
+<li class="Tag2"><a href="http://dotnet.org.za/rudi/archive/tags/Silverlight/default.aspx" rel="tag">Silverlight</a></li>
+<li class="Tag1"><a href="http://dotnet.org.za/rudi/archive/tags/SQL/default.aspx" rel="tag">SQL</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Surface/default.aspx" rel="tag">Surface</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Sybase/default.aspx" rel="tag">Sybase</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Threading/default.aspx" rel="tag">Threading</a></li>
+<li class="Tag2"><a href="http://dotnet.org.za/rudi/archive/tags/Vista/default.aspx" rel="tag">Vista</a></li>
+<li class="Tag2"><a href="http://dotnet.org.za/rudi/archive/tags/WCF/default.aspx" rel="tag">WCF</a></li>
+<li class="Tag2"><a href="http://dotnet.org.za/rudi/archive/tags/WF/default.aspx" rel="tag">WF</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/What+Am+I+Reading/default.aspx" rel="tag">What Am I Reading</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Windows+Communication+Foundation/default.aspx" rel="tag">Windows Communication Foundation</a></li>
+<li class="Tag1"><a href="http://dotnet.org.za/rudi/archive/tags/WinXPe/default.aspx" rel="tag">WinXPe</a></li>
+<li class="Tag6"><a href="http://dotnet.org.za/rudi/archive/tags/Workflow/default.aspx" rel="tag">Workflow</a></li>
+<li class="Tag1"><a href="http://dotnet.org.za/rudi/archive/tags/WPF/default.aspx" rel="tag">WPF</a></li>
+<li class="Tag2"><a href="http://dotnet.org.za/rudi/archive/tags/XBOX360/default.aspx" rel="tag">XBOX360</a></li>
+<li class="Tag1"><a href="http://dotnet.org.za/rudi/archive/tags/XPE/default.aspx" rel="tag">XPE</a></li>
+</ul>
+
+                                        </ul>
+                                    </div>
+                              
+                                
+                                <div id="NewsSidebar">
+                                        <h3>News</h3>
+                                        <ul>
+                                    <p><a href="http://feeds.feedburner.com/RudiGrobler"><img src="under-the-hood-dependency-properties.aspx_files/RudiGrobler.gif" style="border: 0pt none ;" alt="" height="26" width="88"></a></p>
+
+
+                                        </ul>
+                                    </div>                
+                                                
+                                
+                                <div id="NavSideBar"><h3>Navigation</h3>
+<ul>
+<li><a href="http://dotnet.org.za/">Home</a></li><li><a href="http://dotnet.org.za/default.aspx?GroupID=153">Careers</a></li><li><a href="http://dotnet.org.za/files/">Downloads</a></li><li><a href="http://dotnet.org.za/forums/">Support</a></li>
+</ul></div>
+                                
+                                
+                                
+                                
+                                
+                                <div id="ArchiveSideBar"><h3>Archives</h3>
+<ul>
+<li><a href="http://dotnet.org.za/rudi/archive/2007/10.aspx">October 2007 (6)</a></li><li><a href="http://dotnet.org.za/rudi/archive/2007/09.aspx">September 2007 (9)</a></li><li><a href="http://dotnet.org.za/rudi/archive/2007/08.aspx">August 2007 (4)</a></li><li><a href="http://dotnet.org.za/rudi/archive/2007/07.aspx">July 2007 (12)</a></li><li><a href="http://dotnet.org.za/rudi/archive/2007/06.aspx">June 2007 (15)</a></li><li><a href="http://dotnet.org.za/rudi/archive/2007/05.aspx">May 2007 (8)</a></li><li><a href="http://dotnet.org.za/rudi/archive/2005/11.aspx">November 2005 (1)</a></li><li><a href="http://dotnet.org.za/rudi/archive/2005/10.aspx">October 2005 (2)</a></li>
+</ul></div> 
+                                
+                                
+                                
+	                    
+                    </div>
+                    <div id="content"><div id="content2">
+	                    
+    <div class="post">
+        <div class="postview">
+            <h2>Under the hood: Dependency Properties</h2>
+
+            <p>Dependency
+Properties are a huge part of what makes WPF work so I decided to spend
+a little time on the subject! As the name implies, Dependency
+Properties are properties that depend on other factors. &nbsp;The value
+of a dependency property can be determined by a variety of factors,
+enabling features such as real-time property validation and notifying
+related properties of changes to value for other properties.</p>
+<h2>A little bit of history</h2>
+<p>To understand dependency properties, you have to remember the good
+old days of normal CLR properties. If you missed that part, here is a
+quick recap: Properties basically uses a getter and a setter to set a
+private variable.</p><code style="font-size: 12px;"><span style="color: blue;">private&nbsp;bool&nbsp;</span><span style="color: black;">IsEmptyValue</span><span style="color: gray;">; <br></span><span style="color: blue;">public&nbsp;bool&nbsp;</span><span style="color: black;">IsEmpty <br>{ <br>&nbsp;&nbsp;&nbsp;&nbsp;get&nbsp;{&nbsp;</span><span style="color: blue;">return&nbsp;</span><span style="color: black;">IsEmptyValue</span><span style="color: gray;">;&nbsp;</span><span style="color: black;">} <br>&nbsp;&nbsp;&nbsp;&nbsp;set&nbsp;{&nbsp;IsEmptyValue&nbsp;</span><span style="color: blue;">=&nbsp;</span><span style="color: black;">value</span><span style="color: gray;">;&nbsp;</span><span style="color: black;">} <br>} <br></span></code>
+<p>.NET Framework 3.0 added a quick way to define a property</p><code style="font-size: 12px;"><span style="color: blue;">public&nbsp;bool&nbsp;</span><span style="color: black;">IsEmpty <br>{ <br>&nbsp;&nbsp;&nbsp;&nbsp;get</span><span style="color: gray;">; <br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: black;">set</span><span style="color: gray;">; <br></span><span style="color: black;">} <br></span></code>
+<p>Now for the good stuff... </p>
+<p>There is now better way to start learning something new then by
+doing it. Charles Petzold's book Application = Markup + Code has an
+excellent example of how to test the basics of dependency properties.
+The application creates a Window and adds a grid to the content of this
+window. The grid is then divided into 2 rows and 3 columns. Each cell
+gets 1 button. The top row's buttons basically change the font size of
+the window and the bottom row changes the font size of the button. The
+important features to notice is that once a buttons font size has been
+changed, then changing the font size using the windows font size has no
+effect. This indicates that there is some order of precedence in
+setting the value of a property.</p>
+<h3>Order of precedence</h3>
+<ul>
+<li>1. Property system coercion</li>
+<li>2. Active animation</li></ul>
+<p><b>•3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b><b>Local value</b></p>
+<ul>
+<li>4. TemplateParent template</li>
+<li>5. Style triggers</li>
+<li>6. Template triggers</li>
+<li>7. Style setters</li>
+<li>8. Theme style</li></ul>
+<p><b>•9.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b><b>Inheritance</b></p>
+<p><b>•10.&nbsp;&nbsp; </b><b>Default value</b></p>
+<p>From this list we can deduct why the application functions the way
+it does. Once the button is created, it gets it default value from its
+metadata. This is the lowest value it can have. If the font size of the
+window gets changed, then the buttons inherit this value. This
+inherited value is of slight higher precedence. If you manually set the
+value of a button, then inheritance is ignored because it has a lower
+precedence than manually setting the buttons value.</p>
+<p>This is a very important concept to grasp. Another interesting thing
+to note is that the grid has no FontSize property but the FontSize
+property of the Window gets passed down to all children of this grid.</p>
+<h2>How to implement a Dependency Properties</h2>
+<p>A class can only define dependency properties if it is derived from
+DependencyObject. This provides all the basic functionality required to
+implement dependency properties. The 3 most important methods defined
+are SetValue, GetValue and ClearValue. Have a look at an older post I
+made about dependency properties to see how to implement them.</p>
+<p><a href="http://dotnet.org.za/rudi/archive/2007/05/21/dependency-properties.aspx">http://dotnet.org.za/rudi/archive/2007/05/21/dependency-properties.aspx</a></p>
+<h2>Why use Dependency Properties?</h2>
+<p>So, inheritance is great but what else can these properties do?
+Dependency properties have very well defined set of metadata that can
+be set per property. Some of the options that can be defined with this
+metadata is the default value, can it be inherited, etc. Dependency
+Properties facilitate attached properties. I will hopefully cover
+attached properties later, but for now just know that attached
+properties are often used in WPF to simplify layout. Dependency
+properties also provide self-contained validation handling and of
+course dependency properties are XAML friendly. This allows other
+features like data binding, styling, animation, etc...</p>
+<h2>Where is Dependency Properties used?</h2>
+<p>Well, the short answer is basically everywhere... Properly the
+biggest example of using dependency properties is
+FrameworkElement.DataContext. This property is inherited by all the
+decedents and can thus implicitly share the same data source. The
+example out of Charles Petzold's book used the FontSize property.</p>
+<p>For more detailed information, have a look at the 3 articles Josh Smith wrote at <a href="http://joshsmithonwpf.wordpress.com/">http://joshsmithonwpf.wordpress.com/</a>. The sample code from Charles Petzold's book can be downloaded from his homepage at <a href="http://www.charlespetzold.com/">http://www.charlespetzold.com/</a>.</p>
+<p><b>Disclaimer</b></p>
+<p>The following article is based on my personal testing, code from
+Charles Petzolds book, great articles on Josh Smith's blog about
+Dependency Properties and also some research on MSDN</p><a href="http://www.dotnetkicks.com/kick/?url=http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx"><img alt="kick it on DotNetKicks.com" src="under-the-hood-dependency-properties.aspx_files/KickItImageGenerator.png" border="0"></a>
+<div class="shareblock"><strong>Share this post:</strong> <a href="mailto:?body=Thought%20you%20might%20like%20this:%20http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx&amp;;subject=Under+the+hood%3a+Dependency+Properties" target="_blank" title="Post http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx">email it!</a> |  <a href="http://del.icio.us/post?url=http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx&amp;;title=Under+the+hood%3a+Dependency+Properties" target="_blank" title="Post http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx">bookmark it!</a> |  <a href="http://www.digg.com/submit?url=http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx&amp;;phase=2" target="_blank" title="Post http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx">digg it!</a> |  <a href="http://reddit.com/submit?url=http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx&amp;title=Under+the+hood%3a+Dependency+Properties" target="_blank" title="Post http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx">reddit!</a> |  <a href="http://www.dotnetkicks.com/submit/?url=http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx&amp;;title=Under+the+hood%3a+Dependency+Properties" target="_blank" title="Post http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx">kick it!</a> |  <a href="https://favorites.live.com/quickadd.aspx?marklet=1&amp;;mkt=en-us&amp;;url=http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx&amp;;title=Under+the+hood%3a+Dependency+Properties&amp;;top=1" target="_blank" title="Post http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx">live it!</a></div>
+            
+
+            <div class="postfoot">
+                	
+                <span class="em">Published</span>
+                Monday, July 02, 2007 5:39 PM
+			    by
+			    <a href="http://dotnet.org.za/members/rudi.aspx">rudi</a>          
+                
+                            
+                <div class="em"><span id="ctl00_Main_ctl08_ctl01">Filed under: <a href="http://dotnet.org.za/rudi/archive/tags/WPF/default.aspx" rel="tag">WPF</a>, <a href="http://dotnet.org.za/rudi/archive/tags/Dependency+Property/default.aspx" rel="tag">Dependency Property</a></span><input name="ctl00$Main$ctl08$ctl01" id="ctl00_Main_ctl08_ctl01_State" value="value:Filed%20under%3A%20%3Ca%20href%3D%22%2Frudi%2Farchive%2Ftags%2FWPF%2Fdefault.aspx%22%20rel%3D%22tag%22%3EWPF%3C%2Fa%3E%2C%20%3Ca%20href%3D%22%2Frudi%2Farchive%2Ftags%2FDependency%2BProperty%2Fdefault.aspx%22%20rel%3D%22tag%22%3EDependency%20Property%3C%2Fa%3E" type="hidden"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+            
+                    <a name="Comments">
+                    </a><h3><a name="Comments">Comments</a></h3>
+<a name="Comments">                    </a><div id="comments">
+<a name="Comments">                
+                    </a><div class="commentowner">
+<a name="Comments">			            </a><h4>
+<a name="Comments">				            </a><a href="http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx#193680">#</a>
+				            <span>re: Under the hood: Dependency Properties</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p></p><p>The
+ClearValue method provides an expedient means to clear any locally
+applied value from a dependency property that is set on an element.
+However, calling ClearValue is not guarantee that the default as
+established in metata during property registration is the new effective
+value. All other participants in value precedence are still active.
+Only the locally set value has been removed from the precedence
+sequence.</p>
+<p>The following is taken from a MSDN article I found. Have a look at
+the following forum entry I made a while ago were I tried to figure out
+how the SetValue/ClearValue worked.</p>
+<p><a rel="nofollow" target="_new" href="http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=1789420&amp;SiteID=1">forums.microsoft.com/.../ShowPost.aspx</a></p>
+<p>Just remember that ClearValue only clears the locally set value, so
+if you have a default value and it then inherits a new value and then
+gets a local value, the ClearValue wil then only remove the lcoal value
+and would revert back to the inherited value and NOT the metadata
+default. I initially did not understand this...</p>
+
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Wednesday, July 04, 2007 3:55 PM
+			                by <a title="rudi" href="http://dotnet.org.za/rudi">rudi</a>
+                        </div>
+                     </div>
+                
+                    <div class="commentowner">
+			            <h4>
+				            <a href="http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx#193867">#</a>
+				            <span>re: Under the hood: Dependency Properties</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p></p><p>Some other properties defined as DependencyProperty:</p>
+<p>UIElement -&gt; AllowDrop, IsEnabled, IsVisible, SnapToDevicePrixels</p>
+<p>FrameworkElement -&gt; CultureInfo, FlowDirection, InputScope</p>
+<p>Control -&gt; FontFamily, FontSize, FontStretch, FontStyle, FontWeight, Foreground</p>
+<p>There might be more I haven't mentioned yet, feel ffree to add to this list...</p>
+
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Thursday, July 05, 2007 10:15 AM
+			                by <a title="rudi" href="http://dotnet.org.za/rudi">rudi</a>
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx#195351">#</a>
+				            <span>Under the hood: Dependency Properties</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p></p><p>You've been kicked (a good thing) - Trackback from DotNetKicks.com</p>
+
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Tuesday, July 10, 2007 4:40 PM
+			                by <a title="TrackBack" rel="nofollow" href="http://www.dotnetkicks.com/wpf/Under_the_hood_Dependency_Properties">DotNetKicks.com</a>
+                        </div>
+                     </div>
+                
+                    <div class="comment">
+			            <h4>
+				            <a href="http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx#203064">#</a>
+				            <span>re: Under the hood: Dependency Properties</span>
+			            </h4>		
+		                <div class="commentsbody">
+		                    <p></p><p>&gt; .NET Framework 3.0 added a quick way to define a property</p>
+<p>&gt; public bool IsEmpty</p>
+<p>&gt; {</p>
+<p>&gt; &nbsp; &nbsp;get;</p>
+<p>&gt; &nbsp; &nbsp;set;</p>
+<p>&gt; } </p>
+<p>I think this might be only in C# 3.0 / VS2008</p>
+
+                        </div>
+                        <div class="commentssubhead">
+			                <span class="commentspan">
+			                    
+                            </span>
+			                Thursday, August 23, 2007 7:44 PM
+			                by MarkT
+                        </div>
+                     </div>
+                
+                    </div>
+                
+            
+            
+            
+            
+                    <div id="commentform">
+                    <h3>Leave a Comment</h3>
+	                    <dl>
+                            <dt><label for="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbTitle">Title</label> <em>(required)</em><span id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02" style="color: Red; visibility: hidden;">*</span></dt>
+	                        <dd><input name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$tbTitle" value="re: Under the hood: Dependency Properties" id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbTitle" class="smallbox" type="text"></dd>
+
+                            <dt id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_NameTitle"><label for="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbName">Name</label> <em>(required)</em><span id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10" style="color: Red; visibility: hidden;">*</span></dt>
+                            <dd id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_NameDesc"><input name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$tbName" id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbName" class="smallbox" type="text"></dd>
+
+                            <dt><label for="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbUrl">Your URL</label> <em>(optional</em>)</dt>
+                            <dd><input name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$tbUrl" id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbUrl" class="smallbox" type="text"></dd>
+
+                            <dt><label for="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbComment">Comments</label> <em>(required)</em><span id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07" style="color: Red; visibility: hidden;">*</span></dt>
+                            <dd><textarea style="" name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$tbComment" rows="5" cols="25" id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbComment"></textarea><div style="width: 400px; display: block;" class="cocomment-minibar" id="cocomment-minibar"><div id="cocomment-status" title="Your page"></div><div id="cocomment-username" class="cocomment-username"><div><a href="http://www.cocomment.com/getting_started" target="_new">Learn more</a></div></div><div id="cocomment-track" title="Track"><div class="cocomment-cocobar-track"><div class="cocomment-icon-plus"></div><div class="cocomment-cocobar-track-title">Track</div></div></div><div id="cocomment-share" title="Share"><div class="cocomment-cocobar-share"><div class="cocomment-icon-share"></div><div class="cocomment-cocobar-share-title">Share</div></div></div><div id="cocomment-tags-text">Tags: </div><div id="cocomment-tags"><input id="cocomment-tags-input" title="enterTags" value="" onkeyup="cocomment.utils.checkTags(this);" type="text"></div><div id="cocomment-progress">Sending to coComment server ... <a id="cocomment-real_submit" class="cocomment-underline">cancel and submit to blog</a></div><div id="cocomment-disabler" class="cocomment-disabler">X</div><div id="cocomment-cocobar-menu"><div id="cocomment-cocobar-menu-content"><div><a target="_new" href="http://www.cocomment.com/getting_started">Learn more</a></div></div></div></div></dd>
+
+                            <dt><input id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_chkRemember" name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$chkRemember" type="checkbox"><label for="ctl00_Main_ctl09_ctl02_ctl02_ctl02_chkRemember">Remember Me?</label></dt>
+               
+                            <dt><div id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_CaptchaPanel" class="Captcha_Div">
+	<img src="under-the-hood-dependency-properties.aspx_files/captcha.jpg" style="border-width: 0px;"><br><span>Enter the numbers above: </span><input name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$CaptchaTextBox" size="3" id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_CaptchaTextBox" type="text"><span id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13" style="color: Red; display: none;">*</span>
+</div><input name="ctl00$Main$ctl09$ctl02$ctl02$ctl02$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$Main$ctl09$ctl02$ctl02$ctl02$btnSubmit", "", true, "CreateCommentForm", "", false, false))' id="ctl00_Main_ctl09_ctl02_ctl02_ctl02_btnSubmit" type="submit"></dt>
+	                    </dl>
+                    </div>
+                    
+        
+        
+                    </div></div>
+                    <div id="contentfooter">&nbsp;</div>
+		        </div>
+                <div id="footer">
+                    
+				        
+    				    
+				        
+
+                        
+				                <a href="http://communityserver.org/r.ashx?j" target="_blank"><img id="ctl00_BodyFooterRegion_ctl02_ctl03_ctl00" src="under-the-hood-dependency-properties.aspx_files/PoweredByCS_commercial.gif" alt="Powered by Community Server (Commercial Edition), by Telligent Systems " style="border-width: 0px;"></a>
+						    
+    					
+				    
+                </div>
+            </div>        
+        </div>
+    
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02"), document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10"), document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07"), document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02 = document.all ? document.all["ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02"] : document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02");
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.controltovalidate = "ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbTitle";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.errormessage = "*";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl02.initialvalue = "";
+var ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10 = document.all ? document.all["ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10"] : document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10");
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.controltovalidate = "ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbName";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.errormessage = "*";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl10.initialvalue = "";
+var ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07 = document.all ? document.all["ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07"] : document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07");
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.controltovalidate = "ctl00_Main_ctl09_ctl02_ctl02_ctl02_tbComment";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.errormessage = "*";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl07.initialvalue = "";
+var ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13 = document.all ? document.all["ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13"] : document.getElementById("ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13");
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13.controltovalidate = "ctl00_Main_ctl09_ctl02_ctl02_ctl02_CaptchaTextBox";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13.errormessage = "*";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13.display = "Dynamic";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13.evaluationfunction = "CustomValidatorEvaluateIsValid";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13.clientvalidationfunction = "ValidateCaptcha";
+ctl00_Main_ctl09_ctl02_ctl02_ctl02_ctl13.validateemptytext = "true";
+// -->
+</script>
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx"
+dc:identifier="http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx"
+dc:title="Under the hood: Dependency Properties"
+trackback:ping="http://dotnet.org.za/rudi/trackback.ashx?PostID=193040" />
+</rdf:RDF>
+-->
+<script type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_Main_ctl08_ctl01 = new Telligent_InlineEditorPanel('ctl00_Main_ctl08_ctl01','ctl00_Main_ctl08_ctl01','ctl00_Main_ctl08_ctl01_State','ctl00_Main_ctl08_ctl00',false,null,null,null);
+// ]]>
+</script>
+<script type="text/javascript">
+coco = {
+tool:      "CommunityServer 2007 SP2 (Build: 20611.960)",
+siteurl:   "http://dotnet.org.za/rudi/default.aspx",
+sitetitle: "Rudi Grobler",
+pageurl:   "http://dotnet.org.za/rudi/archive/2007/07/02/under-the-hood-dependency-properties.aspx",
+pagetitle: "Under the hood: Dependency Properties",
+authorID:  "ctl00$Main$ctl09$ctl02$ctl02$ctl02$tbName",
+formID:    "aspnetForm",
+textareaID:"ctl00$Main$ctl09$ctl02$ctl02$ctl02$tbComment",
+buttonID:  "ctl00$Main$ctl09$ctl02$ctl02$ctl02$btnSubmit"
+}
+</script>
+<script id="cocomment-fetchlet" src="under-the-hood-dependency-properties.aspx_files/enabler.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        </form>
+</body></html>

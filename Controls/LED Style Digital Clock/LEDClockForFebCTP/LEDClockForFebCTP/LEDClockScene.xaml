@@ -1,0 +1,894 @@
+
+<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	mc:Ignorable="d"
+	x:Name="RootWindow"
+	x:Class="LEDClock.Scene1"
+	WindowStyle="None"
+	
+	BorderBrush="Black"
+	FontSize="10"
+	Padding="0,0,0,0" xmlns:ClockMon="clr-namespace:ClockMon">
+	<Window.Background>
+		<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+			<LinearGradientBrush.GradientStops>
+				<GradientStopCollection>
+					<GradientStop Color="#FF990000" Offset="0"/>
+					<GradientStop Color="#FF220000" Offset="1"/>
+				</GradientStopCollection>
+			</LinearGradientBrush.GradientStops>
+			<LinearGradientBrush.RelativeTransform>
+				<TransformGroup>
+					<TranslateTransform X="-0.5" Y="-0.5"/>
+					<ScaleTransform ScaleX="1" ScaleY="1.5"/>
+					<SkewTransform AngleX="0" AngleY="15"/>
+					<RotateTransform Angle="45"/>
+					<TranslateTransform X="0.5" Y="0.5"/>
+					<TranslateTransform X="0" Y="0"/>
+				</TransformGroup>
+			</LinearGradientBrush.RelativeTransform>
+		</LinearGradientBrush>
+
+	</Window.Background>
+
+	<Window.Resources>
+	<Style x:Key="InvertBtnHighlightStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Fill">
+			<Setter.Value>
+				<RadialGradientBrush RadiusX="1.5" RadiusY="1" Center="0.5,0" GradientOrigin="0.5, 0">
+					<RadialGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#005C0000" Offset="0"/>
+							<GradientStop Color="#12FFFFFF" Offset="0.45"/>
+							<GradientStop Color="#5FFFFFFF" Offset="0.65"/>
+							<GradientStop Color="#C9FFFFFF" Offset="1"/>
+						</GradientStopCollection>
+					</RadialGradientBrush.GradientStops>
+				</RadialGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="MainFrameStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Fill">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#FF001111" Offset="0"/>
+							<GradientStop Color="#FF002222" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="MainHighlightStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Fill">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#D9FFFFFF" Offset="0"/>
+							<GradientStop Color="#7FFFFFFF" Offset="0.45"/>
+							<GradientStop Color="#22FFFFFF" Offset="0.65"/>
+							<GradientStop Color="#005C0000" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="MainBevelStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Stroke">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#B3556666" Offset="0"/>
+							<GradientStop Color="#B3112222" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="DisplayBevelStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Stroke">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#FF223333" Offset="0"/>
+							<GradientStop Color="#FF88AAAA" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+		<Style x:Key="InvertBevelStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Stroke">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#FF223333" Offset="1"/>
+							<GradientStop Color="#FF88AAAA" Offset="0"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="DisplayFaceStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Fill">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#FF000000" Offset="0"/>
+							<GradientStop Color="#FF110000" Offset="0.45"/>
+							<GradientStop Color="#FF441111" Offset="0.55"/>
+							<GradientStop Color="#FF992222" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="RedTextStyle" TargetType="{x:Type TextBlock}">
+		<Setter Property="Foreground">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#FF991111" Offset="0"/>
+							<GradientStop Color="#FFFF2222" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="RadBtnTextStyle" TargetType="{x:Type TextBlock}">
+		<Setter Property="Foreground">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#FFCC9999" Offset="0"/>
+							<GradientStop Color="#FFFF9999" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="DateTextStyle" TargetType="{x:Type TextBlock}">
+		<Setter Property="Foreground">
+			<Setter.Value>
+					<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop Color="#FF000000" Offset="0"/>
+								<GradientStop Color="#FF442222" Offset="0.8"/>
+								<GradientStop Color="#FF664444" Offset="1"/>
+							</GradientStopCollection>
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="RedShapeStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Fill">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#FFD01111" Offset="0"/>
+							<GradientStop Color="#FFFF2222" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="DisplayHighlightStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Fill">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#C9FFFFFF" Offset="0"/>
+							<GradientStop Color="#5FFFFFFF" Offset="0.45"/>
+							<GradientStop Color="#12FFFFFF" Offset="0.65"/>
+							<GradientStop Color="#005C0000" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="ButtonHighlightStyle" TargetType="{x:Type Shape}">
+		<Setter Property="Fill">
+			<Setter.Value>
+				<RadialGradientBrush RadiusX="1.5" RadiusY="1" Center="0.5,0" GradientOrigin="0.5, 0">
+					<RadialGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Color="#C9FFFFFF" Offset="0"/>
+							<GradientStop Color="#5FFFFFFF" Offset="0.45"/>
+							<GradientStop Color="#12FFFFFF" Offset="0.65"/>
+							<GradientStop Color="#005C0000" Offset="1"/>
+						</GradientStopCollection>
+					</RadialGradientBrush.GradientStops>
+				</RadialGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<DrawingBrush x:Key="GhostEights">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<DrawingGroup.Children>
+					<DrawingCollection>
+						<GeometryDrawing Geometry="M 27.6214,71.3193L 23.4569,75.5245L 15.6082,75.5245L 11.4436,71.3193L 27.6214,71.3193 Z M 27.6214,99.3473L 11.4436,99.3473L 15.6082,95.1862L 23.4569,95.1862L 27.6214,99.3473 Z M 14.8045,88.7382L 14.8045,94.3833L 10.6433,98.5471L 10.6433,87.6973L 12.2038,86.1358L 14.8045,88.7382 Z M 10.6433,82.9701L 10.6433,72.1203L 14.8045,76.284L 14.8045,81.9291L 12.2038,84.5716L 10.6433,82.9701 Z M 28.3816,87.6973L 28.3816,98.5471L 24.2205,94.3833L 24.2205,88.7382L 26.8212,86.1358L 28.3816,87.6973 Z M 24.2205,81.9291L 24.2205,76.284L 28.3816,72.1203L 28.3816,82.9701L 26.8212,84.5716L 24.2205,81.9291 Z M 23.9816,83.2559L 26.0635,85.3365L 23.9816,87.4171L 15.0873,87.4171L 13.0054,85.3365L 15.0873,83.2559L 23.9816,83.2559 Z M 50.0426,71.3193L 45.878,75.5245L 38.0293,75.5245L 33.8647,71.3193L 50.0426,71.3193 Z M 50.0426,99.3473L 33.8647,99.3473L 38.0293,95.1862L 45.878,95.1862L 50.0426,99.3473 Z M 37.2256,88.7382L 37.2256,94.3833L 33.0645,98.5471L 33.0645,87.6973L 34.6249,86.1358L 37.2256,88.7382 Z M 33.0645,82.9701L 33.0645,72.1203L 37.2256,76.284L 37.2256,81.9291L 34.6249,84.5716L 33.0645,82.9701 Z M 50.8028,87.6973L 50.8028,98.5471L 46.6416,94.3833L 46.6416,88.7382L 49.2423,86.1358L 50.8028,87.6973 Z M 46.6416,81.9291L 46.6416,76.284L 50.8028,72.1203L 50.8028,82.9701L 49.2423,84.5716L 46.6416,81.9291 Z M 46.4028,83.2559L 48.4846,85.3365L 46.4028,87.4171L 37.5085,87.4171L 35.4265,85.3365L 37.5085,83.2559L 46.4028,83.2559 Z M 82.2317,71.3193L 78.0672,75.5245L 70.2185,75.5245L 66.0539,71.3193L 82.2317,71.3193 Z M 82.2317,99.3473L 66.0539,99.3473L 70.2185,95.1862L 78.0672,95.1862L 82.2317,99.3473 Z M 69.4148,88.7382L 69.4148,94.3833L 65.2536,98.5471L 65.2536,87.6973L 66.8141,86.1358L 69.4148,88.7382 Z M 65.2536,82.9701L 65.2536,72.1203L 69.4148,76.284L 69.4148,81.9291L 66.8141,84.5716L 65.2536,82.9701 Z M 82.9919,87.6973L 82.9919,98.5471L 78.8308,94.3833L 78.8308,88.7382L 81.4315,86.1358L 82.9919,87.6973 Z M 78.8308,81.9291L 78.8308,76.284L 82.9919,72.1203L 82.9919,82.9701L 81.4315,84.5716L 78.8308,81.9291 Z M 78.5919,83.2559L 80.6738,85.3365L 78.5919,87.4171L 69.6976,87.4171L 67.6157,85.3365L 69.6976,83.2559L 78.5919,83.2559 Z M 104.653,71.3193L 100.488,75.5245L 92.6396,75.5245L 88.475,71.3193L 104.653,71.3193 Z M 104.653,99.3473L 88.475,99.3473L 92.6396,95.1862L 100.488,95.1862L 104.653,99.3473 Z M 91.8359,88.7382L 91.8359,94.3833L 87.6748,98.5471L 87.6748,87.6973L 89.2352,86.1358L 91.8359,88.7382 Z M 87.6748,82.9701L 87.6748,72.1203L 91.8359,76.284L 91.8359,81.9291L 89.2352,84.5716L 87.6748,82.9701 Z M 105.413,87.6973L 105.413,98.5471L 101.252,94.3833L 101.252,88.7382L 103.853,86.1358L 105.413,87.6973 Z M 101.252,81.9291L 101.252,76.284L 105.413,72.1203L 105.413,82.9701L 103.853,84.5716L 101.252,81.9291 Z M 101.013,83.2559L 103.095,85.3365L 101.013,87.4171L 92.1188,87.4171L 90.0368,85.3365L 92.1188,83.2559L 101.013,83.2559 Z M 136.842,71.3193L 132.677,75.5245L 124.829,75.5245L 120.664,71.3193L 136.842,71.3193 Z M 136.842,99.3473L 120.664,99.3473L 124.829,95.1862L 132.677,95.1862L 136.842,99.3473 Z M 124.025,88.7382L 124.025,94.3833L 119.864,98.5471L 119.864,87.6973L 121.424,86.1358L 124.025,88.7382 Z M 119.864,82.9701L 119.864,72.1203L 124.025,76.284L 124.025,81.9291L 121.424,84.5716L 119.864,82.9701 Z M 137.602,87.6973L 137.602,98.5471L 133.441,94.3833L 133.441,88.7382L 136.042,86.1358L 137.602,87.6973 Z M 133.441,81.9291L 133.441,76.284L 137.602,72.1203L 137.602,82.9701L 136.042,84.5716L 133.441,81.9291 Z M 133.202,83.2559L 135.284,85.3365L 133.202,87.4171L 124.308,87.4171L 122.226,85.3365L 124.308,83.2559L 133.202,83.2559 Z M 159.263,71.3193L 155.099,75.5245L 147.25,75.5245L 143.085,71.3193L 159.263,71.3193 Z M 159.263,99.3473L 143.085,99.3473L 147.25,95.1862L 155.099,95.1862L 159.263,99.3473 Z M 146.446,88.7382L 146.446,94.3833L 142.285,98.5471L 142.285,87.6973L 143.845,86.1358L 146.446,88.7382 Z M 142.285,82.9701L 142.285,72.1203L 146.446,76.284L 146.446,81.9291L 143.845,84.5716L 142.285,82.9701 Z M 160.023,87.6973L 160.023,98.5471L 155.862,94.3833L 155.862,88.7382L 158.463,86.1358L 160.023,87.6973 Z M 155.862,81.9291L 155.862,76.284L 160.023,72.1203L 160.023,82.9701L 158.463,84.5716L 155.862,81.9291 Z M 155.623,83.2559L 157.705,85.3365L 155.623,87.4171L 146.729,87.4171L 144.647,85.3365L 146.729,83.2559L 155.623,83.2559 Z ">
+							<GeometryDrawing.Pen>
+								<Pen Thickness="0.666667" MiterLimit="2">
+									<Pen.Brush>
+										<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+											<LinearGradientBrush.GradientStops>
+												<GradientStopCollection>
+													<GradientStop Color="#A6C40000" Offset="0"/>
+													<GradientStop Color="#A6800000" Offset="0.5"/>
+													<GradientStop Color="#A6FF1010" Offset="1"/>
+												</GradientStopCollection>
+											</LinearGradientBrush.GradientStops>
+										</LinearGradientBrush>
+									</Pen.Brush>
+								</Pen>
+							</GeometryDrawing.Pen>
+						</GeometryDrawing>
+					</DrawingCollection>
+				</DrawingGroup.Children>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+	
+	<Style x:Key="LEDRadBtnLeft" TargetType="{x:Type RadioButton}">
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="FontFamily" Value="Trebuchet MS" />
+		<Setter Property="FontSize" Value="9pt" />
+		<Setter Property="FontStyle" Value="Normal" />
+		<Setter Property="FontWeight" Value="Normal" />
+		<Setter Property="Foreground" Value="Black" />
+		<Setter Property="Padding" Value="0,0,0,0" />
+		<Setter Property="Margin" Value="2,2,0,2" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RadioButton}">
+					<BulletDecorator Background="Transparent">
+					<Grid>
+							<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+
+			<RowDefinition />
+
+		</Grid.RowDefinitions>
+						<Canvas Width="12" Height="12" Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="1" Name="RadBtnCircles" RenderTransformOrigin="0.5,0.5">
+							<Ellipse Style="{DynamicResource DisplayBevelStyle}" Width="12" Height="12" Canvas.Left="0" Canvas.Top="0" Name="OuterBevel" RenderTransformOrigin="0.5,0.5"/>
+							<Ellipse Style="{DynamicResource MainFrameStyle}" Width="11" Height="11" Canvas.Left="0.5" Canvas.Top="0.5" Name="OuterFace" RenderTransformOrigin="0.5,0.5"/>
+							<Ellipse Style="{DynamicResource InvertBtnHighlightStyle}" Width="11" Height="11" Canvas.Left="0.5" Canvas.Top="0.5" x:Name="OuterHighlight" RenderTransformOrigin="0.5,0.5"/>
+							<Canvas Width="8" Height="8" Canvas.Left="2" Canvas.Top="2" Name="InnerCircs" RenderTransformOrigin="0.5,0.5">
+								<Ellipse Style="{DynamicResource MainBevelStyle}" Width="8" Height="8" Canvas.Left="0" Canvas.Top="0" Name="InnerBevel" RenderTransformOrigin="0.5,0.5"/>
+								<Ellipse Style="{DynamicResource DisplayFaceStyle}" Width="7" Height="7" Canvas.Left="0.5" Canvas.Top="0.5" Name="InnerFace" RenderTransformOrigin="0.5,0.5"/>
+								<Ellipse Style="{DynamicResource ButtonHighlightStyle}" Width="7" Height="7" Canvas.Left="0.5" Canvas.Top="0.5" Name="InnerHiglight" RenderTransformOrigin="0.5,0.5"/>
+							</Canvas>
+						</Canvas>
+						<Canvas Margin="3,0,0,0" Width="52" Height="12" Grid.Row="0" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="1" Name="RadBtnContentCanvas" RenderTransformOrigin="0.5,0.5">
+							<Rectangle RadiusX="6" RadiusY="6" Style="{DynamicResource DisplayFaceStyle}" Width="51" Height="11" Canvas.Left="0.5" Canvas.Top="0.5" x:Name="ContFace" RenderTransformOrigin="0.5,0.5"/>
+							<ContentPresenter Name="RadBtnContentPresenter" RecognizesAccessKey="True"/>
+							<Rectangle RadiusX="6" RadiusY="6" Opacity="0.8" Style="{DynamicResource ButtonHighlightStyle}" Width="51" Height="11" Canvas.Left="0.5" Canvas.Top="0.5" Name="ContHighlight" RenderTransformOrigin="0.5,0.5"/>
+							<Rectangle RadiusX="6" RadiusY="6" StrokeThickness="1" Style="{DynamicResource MainBevelStyle}" Width="52" Height="12" Canvas.Left="0" Canvas.Top="0" Name="ContBevel" RenderTransformOrigin="0.5,0.5"/>
+						</Canvas>
+						</Grid>
+					</BulletDecorator>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsChecked" Value="false">
+							<Setter TargetName="InnerCircs" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="IsPressed" Value="true">
+							<Setter TargetName="InnerCircs" Property="Opacity" Value="0.66" />
+							<Setter TargetName="ContHighlight" Property="Opacity" Value="0"/>
+							<Setter TargetName="OuterHighlight" Property="Opacity" Value="0"/>
+							<Setter TargetName="OuterFace" Property="Style" Value="{DynamicResource DisplayFaceStyle}"/>
+							<Setter TargetName="InnerFace" Property="Style" Value="{DynamicResource RedShapeStyle}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="LEDRadBtnRight" TargetType="{x:Type RadioButton}">
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="FontFamily" Value="Trebuchet MS" />
+		<Setter Property="FontSize" Value="9pt" />
+		<Setter Property="FontStyle" Value="Normal" />
+		<Setter Property="FontWeight" Value="Normal" />
+		<Setter Property="Foreground" Value="Black" />
+		<Setter Property="Padding" Value="0,0,0,0" />
+		<Setter Property="Margin" Value="0,2,2,2" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RadioButton}">
+					<BulletDecorator Background="Transparent">
+										<Grid>
+							<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+
+			<RowDefinition />
+
+		</Grid.RowDefinitions>
+						<Canvas Width="52" Height="12" Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="1" Name="RadBtnContentCanvas" RenderTransformOrigin="0.5,0.5">
+							<Rectangle RadiusX="6" RadiusY="6" Style="{DynamicResource DisplayFaceStyle}" Width="51" Height="11" Canvas.Left="0.5" Canvas.Top="0.5" Name="ContFace" RenderTransformOrigin="0.5,0.5"/>
+							<ContentPresenter Name="RadBtnContentPresenter" RecognizesAccessKey="True"/>
+							<Rectangle RadiusX="6" RadiusY="6" Opacity="0.8" Style="{DynamicResource ButtonHighlightStyle}" Width="51" Height="11" Canvas.Left="0.5" Canvas.Top="0.5" Name="ContHighlight" RenderTransformOrigin="0.5,0.5"/>
+							<Rectangle RadiusX="6" RadiusY="6" StrokeThickness="1" Style="{DynamicResource MainBevelStyle}" Width="52" Height="12" Canvas.Left="0" Canvas.Top="0" Name="ContBevel" RenderTransformOrigin="0.5,0.5"/>
+						</Canvas>
+						<Canvas Margin="3,0,0,0" Width="12" Height="12" Grid.Row="0" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="1" Name="RadBtnCircles" RenderTransformOrigin="0.5,0.5">
+							<Ellipse Style="{DynamicResource DisplayBevelStyle}" Width="12" Height="12" Canvas.Left="0" Canvas.Top="0" Name="OuterBevel" RenderTransformOrigin="0.5,0.5"/>
+							<Ellipse Style="{DynamicResource MainFrameStyle}" Width="11" Height="11" Canvas.Left="0.5" Canvas.Top="0.5" Name="OuterFace" RenderTransformOrigin="0.5,0.5"/>
+							<Ellipse Style="{DynamicResource InvertBtnHighlightStyle}" Width="11" Height="11" Canvas.Left="0.5" Canvas.Top="0.5" Name="OuterHighlight" RenderTransformOrigin="0.5,0.5"/>
+							<Canvas Width="8" Height="8" Canvas.Left="2" Canvas.Top="2" x:Name="InnerCircs" RenderTransformOrigin="0.5,0.5">
+								<Ellipse Style="{DynamicResource MainBevelStyle}" Width="8" Height="8" Canvas.Left="0" Canvas.Top="0" Name="InnerBevel" RenderTransformOrigin="0.5,0.5"/>
+								<Ellipse Style="{DynamicResource DisplayFaceStyle}" Width="7" Height="7" Canvas.Left="0.5" Canvas.Top="0.5" Name="InnerFace" RenderTransformOrigin="0.5,0.5"/>
+								<Ellipse Style="{DynamicResource ButtonHighlightStyle}" Width="7" Height="7" Canvas.Left="0.5" Canvas.Top="0.5" Name="InnerHiglight" RenderTransformOrigin="0.5,0.5"/>
+							</Canvas>
+						</Canvas>
+						</Grid>
+					</BulletDecorator>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsChecked" Value="false">
+							<Setter TargetName="InnerCircs" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="IsPressed" Value="true">
+							<Setter TargetName="InnerCircs" Property="Opacity" Value="0.66" />
+							<Setter TargetName="ContHighlight" Property="Opacity" Value="0"/>
+							<Setter TargetName="OuterHighlight" Property="Opacity" Value="0"/>
+							<Setter TargetName="OuterFace" Property="Style" Value="{DynamicResource DisplayFaceStyle}"/>
+							<Setter TargetName="InnerFace" Property="Style" Value="{DynamicResource RedShapeStyle}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+
+	<ControlTemplate x:Key="FreshBtnTemplate1" TargetType="{x:Type Button}">
+		<Viewbox Stretch="Fill" RenderTransformOrigin="0.5,0.5">
+			<Canvas Width="17" Height="17">
+
+				<Rectangle RadiusX="8.5" RadiusY="8.5" StrokeThickness="1" StrokeLineJoin="Round" Style="{DynamicResource InvertBevelStyle}" Width="17" Height="17" Canvas.Left="0" Canvas.Top="0">
+					<Rectangle.RenderTransform>
+						<TransformGroup/>
+					</Rectangle.RenderTransform>
+				</Rectangle>
+				<Rectangle RadiusX="8" RadiusY="8" Style="{DynamicResource DisplayFaceStyle}" Width="15" Height="15" Canvas.Left="1" Canvas.Top="1">
+					<Rectangle.RenderTransform>
+						<TransformGroup/>
+					</Rectangle.RenderTransform>
+				</Rectangle>
+				
+				<ContentPresenter Name="BtnContentSite">
+					<ContentPresenter.RenderTransform>
+						<TransformGroup/>
+					</ContentPresenter.RenderTransform>
+				</ContentPresenter>
+
+				<Rectangle RadiusX="8" RadiusY="8" Style="{DynamicResource ButtonHighlightStyle}" Width="15" Height="15" Opacity="0.8" Canvas.Left="1" Canvas.Top="1">
+					<Rectangle.RenderTransform>
+						<TransformGroup/>
+					</Rectangle.RenderTransform>
+				</Rectangle>
+			</Canvas>
+		</Viewbox>
+	</ControlTemplate>
+
+
+	<VisualBrush x:Key="CogShapeVisBrush">
+		<VisualBrush.Visual>
+			<Canvas Height="32" Width="32">
+			<Path Canvas.Left='0' Canvas.Top='0' Width='32' Height='32' Stretch='Fill' Data='F1 M 4.58849,21.3452C 4.58849,20.5629 4.64513,19.7937 4.75459,19.0413L 0.107173,15.0298C 0.7521,12.9631 1.70526,11.0295 2.91377,9.28122L 8.98478,10.3606C 9.96279,9.32941 11.0768,8.4252 12.2987,7.67576L 12.586,1.51983C 14.5141,0.732414 16.5821,0.210403 18.7429,7.62939e-006L 21.6288,5.27311C 23.3059,5.345 24.9172,5.66639 26.4257,6.20057L 31.4767,2.59111C 33.2609,3.57036 34.8908,4.78986 36.3214,6.20524L 33.9548,11.6802C 35.0749,13.1474 35.9463,14.8095 36.5072,16.6058L 42.4383,18.2263C 42.5888,19.2445 42.6667,20.2859 42.6667,21.3452C 42.6667,22.2441 42.6106,23.1301 42.5017,24L 36.6505,25.5986C 36.119,27.5145 35.2374,29.2877 34.0775,30.8473L 36.4564,36.3505C 35.087,37.7293 33.5304,38.9268 31.8271,39.9028L 26.8379,36.3376C 25.1384,36.9914 23.3005,37.3724 21.3794,37.4262L 18.5113,42.6667C 16.4422,42.4432 14.4603,41.9338 12.6072,41.1793L 12.3202,35.0278C 10.9402,34.1844 9.69732,33.1437 8.63197,31.9457L 2.64452,33.0102C 1.49653,31.2671 0.598353,29.3494 -6.35783e-007,27.3063L 4.70146,23.2482C 4.62686,22.6241 4.58849,21.9891 4.58849,21.3452 Z M 20.9077,14.1952C 16.902,14.1952 13.6547,17.3964 13.6547,21.3452C 13.6547,25.2941 16.902,28.4952 20.9077,28.4952C 24.9134,28.4952 28.1607,25.2941 28.1607,21.3452C 28.1607,17.3964 24.9134,14.1952 20.9077,14.1952 Z '>
+				<Path.Fill>
+					<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop Color="#FFD01111" Offset="0"/>
+								<GradientStop Color="#FFFF2222" Offset="1"/>
+							</GradientStopCollection>
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Path.Fill>
+			</Path>
+			</Canvas>
+		</VisualBrush.Visual>
+	</VisualBrush>	
+
+
+	<VisualBrush x:Key="ButtonIndentVisBrush">
+		<VisualBrush.Visual>
+			<Canvas Height="16" Width="16">
+				<Rectangle RadiusX="8" RadiusY="8" Opacity="0.66" StrokeThickness="1" StrokeLineJoin="Round" Width="16" Height="16" Canvas.Left="0" Canvas.Top="0" >
+					<Rectangle.Fill>
+						<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+							<LinearGradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop Color="#FF889999" Offset="0"/>
+									<GradientStop Color="#FF334444" Offset="1"/>
+								</GradientStopCollection>
+							</LinearGradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+				<Rectangle RadiusX="7.5" RadiusY="7.5" Width="15" Height="15" Canvas.Left="0.5" Canvas.Top="0.5">
+					<Rectangle.Fill>
+					<LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+						<LinearGradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop Color="#FF001111" Offset="0"/>
+								<GradientStop Color="#FF002222" Offset="1"/>
+							</GradientStopCollection>
+						</LinearGradientBrush.GradientStops>
+					</LinearGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+				<Rectangle RadiusX="7.5" RadiusY="7.5" Width="15" Height="15" Opacity="0.8" Canvas.Left="0.5" Canvas.Top="0.5">
+					<Rectangle.Fill>
+							<RadialGradientBrush RadiusX="1.5" RadiusY="1" Center="0.5,0" GradientOrigin="0.5, 0">
+								<RadialGradientBrush.GradientStops>
+									<GradientStopCollection>
+										<GradientStop Color="#005C0000" Offset="0"/>
+										<GradientStop Color="#12FFFFFF" Offset="0.45"/>
+										<GradientStop Color="#5FFFFFFF" Offset="0.65"/>
+										<GradientStop Color="#C9FFFFFF" Offset="1"/>
+									</GradientStopCollection>
+								</RadialGradientBrush.GradientStops>
+							</RadialGradientBrush>
+					</Rectangle.Fill>
+				</Rectangle>
+			</Canvas>
+		</VisualBrush.Visual>
+	</VisualBrush>
+			
+			<Storyboard x:Key="ShowOptionPane" d:StoryboardName="ShowOptionPane">
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="OptionViewBox" Storyboard.TargetProperty="(FrameworkElement.Height)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="38" KeyTime="00:00:00.5"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="OptionViewBox" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayViewBox" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Hold;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00"/>
+					<DiscreteDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" Value="0" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayViewBox" Storyboard.TargetProperty="(FrameworkElement.Height)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="38" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00.5"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayViewBox" Storyboard.TargetProperty="(Canvas.Top)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="5" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="42" KeyTime="00:00:00.5"/>
+				</DoubleAnimationUsingKeyFrames>
+				<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="OptionViewBox" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+					<DiscreteBooleanKeyFrame d:KeyEase="Linear;Hold;0.5;0.5;0;0" Value="False" KeyTime="00:00:00"/>
+					<DiscreteBooleanKeyFrame d:KeyEase="Linear;Hold;0.5;0.5;0;0" Value="True" KeyTime="00:00:00.5000000"/>
+				</BooleanAnimationUsingKeyFrames>
+			</Storyboard>
+			<Storyboard x:Key="ShowDisplayPane" d:StoryboardName="ShowDisplayPane">
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="OptionViewBox" Storyboard.TargetProperty="(FrameworkElement.Height)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="38" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00.5"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="OptionViewBox" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Hold;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00"/>
+					<DiscreteDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" Value="0" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayViewBox" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00.5"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayViewBox" Storyboard.TargetProperty="(FrameworkElement.Height)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="38" KeyTime="00:00:00.5"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayViewBox" Storyboard.TargetProperty="(Canvas.Top)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="42" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="5" KeyTime="00:00:00.5"/>
+				</DoubleAnimationUsingKeyFrames>
+				<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="OptionViewBox" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+					<DiscreteBooleanKeyFrame d:KeyEase="Linear;Hold;0.5;0.5;0;0" Value="True" KeyTime="00:00:00"/>
+					<DiscreteBooleanKeyFrame d:KeyEase="Linear;Hold;0.5;0.5;0;0" Value="False" KeyTime="00:00:00.5000000"/>
+				</BooleanAnimationUsingKeyFrames>
+
+			</Storyboard>
+			<Storyboard x:Key="ShowDate" d:StoryboardName="ShowDate">
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DateText" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TimeText" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FF000000" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FF990000" KeyTime="00:00:00.5000000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FF110000" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FFAA0000" KeyTime="00:00:00.5000000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[2].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FF441111" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FFFF4444" KeyTime="00:00:00.5000000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[3].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FF992222" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FFEE3333" KeyTime="00:00:00.5000000"/>
+				</ColorAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[2].(GradientStop.Offset)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0.55" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0.85064935064935066" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[1].(GradientStop.Offset)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0.45" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0.59740259740259738" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[0].(GradientStop.Offset)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0.18831168831168832" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+			</Storyboard>
+			<Storyboard x:Key="HideDate" d:StoryboardName="HideDate">
+			
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DateText" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TimeText" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FF990000" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FF000000" KeyTime="00:00:00.5000000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FFAA0000" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FF110000" KeyTime="00:00:00.5000000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[2].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FFFF4444" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FF441111" KeyTime="00:00:00.5000000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[3].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FFEE3333" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="#FF992222" KeyTime="00:00:00.5000000"/>
+				</ColorAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[2].(GradientStop.Offset)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0.85064935064935066" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0.55" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[1].(GradientStop.Offset)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0.59740259740259738" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0.45" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisplayFaceRect" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[0].(GradientStop.Offset)">
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0.18831168831168832" KeyTime="00:00:00"/>
+					<SplineDoubleKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="0" KeyTime="00:00:00.5000000"/>
+				</DoubleAnimationUsingKeyFrames>			
+			</Storyboard>
+
+			<Storyboard x:Key="MEnterClsBtn" d:StoryboardName="MEnterClsBtn">
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Ellipse" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.66, 0, 0, 0" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0, 0, 0" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Ellipse" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0, 1, 1, 1" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.66, 1, 1, 1" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+			</Storyboard>
+			<Storyboard x:Key="MLeaveClsBtn" d:StoryboardName="MLeaveClsBtn">
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Ellipse" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0, 0, 0" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.66, 0, 0, 0" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Ellipse" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.66, 1, 1, 1" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0, 1, 1, 1" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+			</Storyboard>
+
+			<Storyboard x:Key="MEnterOptsBtn" d:StoryboardName="MEnterOptsBtn">
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="OptsButtonContentRect" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.66, 0, 0, 0" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0, 0, 0" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="OptsButtonContentRect" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0, 1, 1, 1" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.8, 1, 1, 1" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+			</Storyboard>
+			<Storyboard x:Key="MLeaveOptsBtn" d:StoryboardName="MLeaveOptsBtn">
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="OptsButtonContentRect" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0, 0, 0" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.66, 0, 0, 0" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="OptsButtonContentRect" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.8, 1, 1, 1" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0, 1, 1, 1" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+			</Storyboard>
+
+			<Storyboard x:Key="MEnterShowTime" d:StoryboardName="MEnterShowTime">
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ShowTimeBtnContent" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.66, 0, 0, 0" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0, 0, 0" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ShowTimeBtnContent" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0, 1, 1, 1" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.8, 1, 1, 1" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+			</Storyboard>
+			<Storyboard x:Key="MLeaveShowTime" d:StoryboardName="MLeaveShowTime">
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ShowTimeBtnContent" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0, 0, 0" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.66, 0, 0, 0" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ShowTimeBtnContent" Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0.8, 1, 1, 1" KeyTime="00:00:00"/>
+					<SplineColorKeyFrame d:KeyEase="Linear;Linear;0.5;0.5;0.5;0.5" KeySpline="0.5,0.5,0.5,0.5" Value="sc#0, 1, 1, 1" KeyTime="00:00:00.7500000"/>
+				</ColorAnimationUsingKeyFrames>
+			</Storyboard>
+
+		
+		<ObjectDataProvider x:Key="ClockFXDS" d:IsDataSource="True" ObjectType="{x:Type ClockMon:ClockFX}"/>
+
+		
+	</Window.Resources>
+
+	<Window.Triggers>
+		<EventTrigger SourceName="DisplayHighlightRect" RoutedEvent="Mouse.MouseEnter">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource ShowDate}" x:Name="ShowDate_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+
+		<EventTrigger SourceName="DisplayHighlightRect" RoutedEvent="Mouse.MouseLeave">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource HideDate}" x:Name="HideDate_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+
+		<EventTrigger RoutedEvent="ButtonBase.Click" SourceName="OptsButton">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource ShowOptionPane}" x:Name="ShowOptionPane_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+		<EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ShowTimeDispBtn">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource ShowDisplayPane}" x:Name="ShowDisplayPane_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+
+		<EventTrigger SourceName="CloseButton" RoutedEvent="Mouse.MouseEnter">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource MEnterClsBtn}" x:Name="MEnterClsBtn_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+		<EventTrigger SourceName="CloseButton" RoutedEvent="Mouse.MouseLeave">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource MLeaveClsBtn}" x:Name="MLeaveClsBtn_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+
+		<EventTrigger SourceName="OptsButton" RoutedEvent="Mouse.MouseEnter">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource MEnterOptsBtn}" x:Name="MEnterOptsBtn_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+		<EventTrigger SourceName="OptsButton" RoutedEvent="Mouse.MouseLeave">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource MLeaveOptsBtn}" x:Name="MLeaveOptsBtn_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+
+		<EventTrigger SourceName="ShowTimeDispBtn" RoutedEvent="Mouse.MouseEnter">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource MEnterShowTime}" x:Name="MEnterShowTime_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+		<EventTrigger SourceName="ShowTimeDispBtn" RoutedEvent="Mouse.MouseLeave">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource MLeaveShowTime}" x:Name="MLeaveShowTime_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+
+	</Window.Triggers>
+
+	<Grid x:Name="RootGrid">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+
+		<Viewbox x:Name="ClockRootViewbox" Width="Auto" Height="Auto" Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
+			<Canvas x:Name="ClockRootCanvas" Width="208" Height="48">
+				<Rectangle x:Name="FrameBevelRect" Style="{DynamicResource MainBevelStyle}" Canvas.Left="0" Canvas.Top="0" Width="208" Height="48" StrokeThickness="2"/>
+				<Rectangle x:Name="FrameBaseRect" Style="{DynamicResource MainFrameStyle}" Canvas.Left="1" Canvas.Top="1" Width="206" Height="46"/>
+				<Rectangle x:Name="FrameHiglightRect" Style="{DynamicResource MainHighlightStyle}" Canvas.Left="1" Canvas.Top="1" Width="206" Height="46" MouseLeftButtonDown="DragAttempt"/>
+				<Canvas Width="32" Height="46" Canvas.Left="175" Canvas.Top="1" x:Name="ButtonsCanvas" RenderTransformOrigin="0.5,0.5">
+					<Viewbox Width="27" Height="27" Canvas.Left="0" Canvas.Top="16.5" x:Name="OptsBtnBox" RenderTransformOrigin="0.5,0.5">
+						<Canvas Width="32" Height="32" x:Name="OptsIndentCanvas" RenderTransformOrigin="0.5,0.5">
+							<Rectangle Fill="{DynamicResource ButtonIndentVisBrush}" Width="32" Height="32" Canvas.Left="0" Canvas.Top="0" x:Name="OptsBtnIndentrect" RenderTransformOrigin="0.5,0.5"/>
+							<Button Width="22" Height="22" Canvas.Left="5" Canvas.Top="5.5" x:Name="OptsButton" Focusable="False" Padding="0,0,0,0" RenderTransformOrigin="0.5,0.5" Click="BtnSwitch1" Template="{DynamicResource FreshBtnTemplate1}" BorderThickness="0,0,0,0" Cursor="Hand">
+								<Rectangle Fill="{DynamicResource CogShapeVisBrush}" Width="12" Height="12" Margin="2.5,2.5,0,0" x:Name="OptsButtonContentRect" RenderTransformOrigin="0.5,0.5">
+									<Rectangle.OpacityMask>
+										<RadialGradientBrush RadiusX="0.66" RadiusY="0.66" Center="0.5,0.66" GradientOrigin="0.5,0.66">
+											<RadialGradientBrush.GradientStops>
+												<GradientStopCollection>
+													<GradientStop Color="sc#0.66, 0, 0, 0" Offset="0"/>
+													<GradientStop Color="sc#0, 1, 1, 1" Offset="1"/>
+												</GradientStopCollection>
+											</RadialGradientBrush.GradientStops>
+										</RadialGradientBrush>
+									</Rectangle.OpacityMask>
+								</Rectangle>
+							</Button>
+							<Button Width="22" Height="22" Visibility="Collapsed" Canvas.Left="5" Canvas.Top="5.5" x:Name="ShowTimeDispBtn" Focusable="False" Padding="0,0,0,0" RenderTransformOrigin="0.5,0.5" Click="BtnSwitch2" Template="{DynamicResource FreshBtnTemplate1}" BorderThickness="0,0,0,0" Cursor="Hand">
+								<Rectangle Fill="{DynamicResource CogShapeVisBrush}" Width="12" Height="12" x:Name="ShowTimeBtnContent" Margin="2.5,2.5,0,0" RenderTransformOrigin="0.5,0.5">
+									<Rectangle.OpacityMask>
+										<RadialGradientBrush RadiusX="0.66" RadiusY="0.66" Center="0.5,0.66" GradientOrigin="0.5,0.66">
+											<RadialGradientBrush.GradientStops>
+												<GradientStopCollection>
+													<GradientStop Color="sc#0.66, 0, 0, 0" Offset="0"/>
+													<GradientStop Color="sc#0, 1, 1, 1" Offset="1"/>
+												</GradientStopCollection>
+											</RadialGradientBrush.GradientStops>
+										</RadialGradientBrush>
+									</Rectangle.OpacityMask>
+								</Rectangle>
+							</Button>
+						</Canvas>
+					</Viewbox>
+					<Viewbox Width="16" Height="16" Canvas.Left="15.5" Canvas.Top="0.5" x:Name="ClsBtnBox" Focusable="False" RenderTransformOrigin="0.5,0.5">
+						<Canvas Width="18" Height="18" x:Name="ClsBtnCanvas" RenderTransformOrigin="0.5,0.5">
+							<Rectangle Fill="{DynamicResource ButtonIndentVisBrush}" Width="18" Height="18" Canvas.Left="0" Canvas.Top="0" x:Name="Rectangle" RenderTransformOrigin="0.5,0.5"/>
+							<Button Width="12" Height="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Canvas.Left="3" Canvas.Top="3.5" x:Name="CloseButton" Click="CloseClick" RenderTransformOrigin="0.5,0.5" Template="{DynamicResource FreshBtnTemplate1}" Cursor="Hand">
+								<Ellipse Style="{DynamicResource RedShapeStyle}" Width="13" Height="13" Margin="2,2,0,0" x:Name="Ellipse" RenderTransformOrigin="0.5,0.5">
+									<Ellipse.OpacityMask>
+										<RadialGradientBrush RadiusX="0.66" RadiusY="0.66" Center="0.5,0.66" GradientOrigin="0.5,0.66">
+											<RadialGradientBrush.GradientStops>
+												<GradientStopCollection>
+													<GradientStop Color="sc#0.66, 0, 0, 0" Offset="0"/>
+													<GradientStop Color="sc#0, 1, 1, 1" Offset="1"/>
+												</GradientStopCollection>
+											</RadialGradientBrush.GradientStops>
+										</RadialGradientBrush>
+									</Ellipse.OpacityMask>
+								</Ellipse>
+							</Button>
+						</Canvas>
+					</Viewbox>
+				</Canvas>
+
+				<Viewbox Width="162" Height="38" Stretch="Fill" Canvas.Left="9" Canvas.Top="5" MinWidth="0" MinHeight="0" x:Name="DisplayViewBox" RenderTransformOrigin="0.5,0.5">
+					<Canvas Width="162" Height="38" x:Name="DisplayCanvas" RenderTransformOrigin="0.5,0.5">
+						<Rectangle Style="{DynamicResource DisplayFaceStyle}" Width="160" Height="36" Canvas.Left="1" Canvas.Top="1" x:Name="DisplayFaceRect"/>
+						<Rectangle Fill="{DynamicResource GhostEights}" Width="150.167" Height="28.666" Canvas.Left="6" Canvas.Top="4.75" x:Name="GhostEightsRect" RenderTransformOrigin="0.5,0.5"/>
+
+						<TextBlock FontSize="44" FontFamily="#Digital" TextAlignment="Right" Style="{DynamicResource RedTextStyle}" Width="156" Height="42" Canvas.Left="2.2" Canvas.Top="-1.4" x:Name="TimeText" RenderTransformOrigin="0.5,0.5" Text="{Binding StrTwelveTime, Mode=OneWay, Source={StaticResource ClockFXDS}}"/>
+
+						<TextBlock FontSize="44" FontFamily="#Digital" TextAlignment="Right" Style="{DynamicResource DateTextStyle}" Width="156" Height="42" Opacity="0" Canvas.Left="2" Canvas.Top="-1.5" x:Name="DateText" RenderTransformOrigin="0.5,0.5">
+							<TextBlock.Text>
+								<Binding Path="StrUSDate" Mode="Default" Source="{StaticResource ClockFXDS}"/>
+							</TextBlock.Text>
+			
+						</TextBlock>
+						<Rectangle Style="{DynamicResource DisplayHighlightStyle}" MouseLeftButtonDown="DragAttempt" Width="160" Height="36" Canvas.Left="1" Canvas.Top="1" x:Name="DisplayHighlightRect"/>
+					</Canvas>
+				</Viewbox>
+				<Viewbox Width="162" Height="1" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill" Canvas.Left="9" Canvas.Top="5" Grid.RowSpan="1" MinWidth="0" MinHeight="0" x:Name="OptionViewBox" RenderTransformOrigin="0.5,0.5" IsEnabled="False">
+					<Canvas Width="162" Height="38" Grid.RowSpan="1" MinWidth="0" MinHeight="0" x:Name="OptionCanvas" RenderTransformOrigin="0.5,0.5">
+
+						<Rectangle Style="{DynamicResource MainFrameStyle}" Width="160" Height="36" Canvas.Left="1" Canvas.Top="1" x:Name="OptionFaceRect">
+							<Rectangle.RenderTransform>
+								<TransformGroup>
+									<TranslateTransform X="0" Y="0"/>
+									<ScaleTransform ScaleX="1" ScaleY="-1"/>
+									<SkewTransform AngleX="0" AngleY="0"/>
+									<RotateTransform Angle="0"/>
+									<TranslateTransform X="0" Y="0"/>
+									<TranslateTransform X="0" Y="36"/>
+								</TransformGroup>
+							</Rectangle.RenderTransform>
+						</Rectangle>
+						<Rectangle Style="{DynamicResource ButtonHighlightStyle}" Width="160" Height="36" Opacity="0.8" Canvas.Left="1" Canvas.Top="1" x:Name="OptionHighlightRect">
+							<Rectangle.RenderTransform>
+								<TransformGroup>
+									<TranslateTransform X="0" Y="0"/>
+									<ScaleTransform ScaleX="1" ScaleY="-1"/>
+									<SkewTransform AngleX="0" AngleY="0"/>
+									<RotateTransform Angle="0"/>
+									<TranslateTransform X="0" Y="0"/>
+									<TranslateTransform X="0" Y="36"/>
+								</TransformGroup>
+							</Rectangle.RenderTransform>
+						</Rectangle>
+						<Grid Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Canvas.Left="11" Canvas.Top="3.5" Margin="0,0,0,0" x:Name="ButtonsGrid" RenderTransformOrigin="0.5,0.5">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<StackPanel Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" MinWidth="0" MinHeight="0" x:Name="TimeOptsStackPanel" RenderTransformOrigin="0.5,0.5">
+								<RadioButton Style="{DynamicResource LEDRadBtnRight}" Width="Auto" Height="Auto" x:Name="Show12HrRadBtn" RenderTransformOrigin="0.5,0.5" IsEnabled="True" Click="Set12HrTime" IsChecked="True">
+									<TextBlock FontSize="9" Style="{DynamicResource RadBtnTextStyle}" Width="Auto" Height="Auto" Margin="6,1,0,0" x:Name="Show12TextBlock" RenderTransformOrigin="0.5,0.5" Text="12HrClock" TextWrapping="Wrap"/>
+								</RadioButton>
+								<RadioButton Style="{DynamicResource LEDRadBtnRight}" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="Show24HrRadBtn" RenderTransformOrigin="0.5,0.5" IsEnabled="True" Click="Set24HrTime">
+									<TextBlock FontSize="9" Style="{DynamicResource RadBtnTextStyle}" Width="Auto" Height="Auto" Margin="6,1,0,0" x:Name="Show24TextBlock" RenderTransformOrigin="0.5,0.5" Text="24HrClock" TextWrapping="Wrap"/>
+								</RadioButton>
+							</StackPanel>
+							<StackPanel Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" Grid.Column="1" MinWidth="0" MinHeight="0" x:Name="DateOptsStackPanel" RenderTransformOrigin="0.5,0.5">
+								<RadioButton Style="{DynamicResource LEDRadBtnLeft}" Width="Auto" Height="Auto" x:Name="DayMonYrRadBtn" RenderTransformOrigin="0.5,0.5" IsEnabled="True" Click="SetEurDate">
+									<TextBlock FontSize="9" Style="{DynamicResource RadBtnTextStyle}" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="7,1,0,0" x:Name="DMYTextBlock" RenderTransformOrigin="0.5,0.5" Text="DD MM YY" TextWrapping="Wrap"/>
+								</RadioButton>
+								<RadioButton Style="{DynamicResource LEDRadBtnLeft}" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="MonDayYrRadBtn" RenderTransformOrigin="0.5,0.5" IsEnabled="True" Click="SetUSDate" IsChecked="True">
+									<TextBlock FontSize="9" Style="{DynamicResource RadBtnTextStyle}" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="7,1,0,0" x:Name="MDYTextBlock" RenderTransformOrigin="0.5,0.5" Text="MM DD YY" TextWrapping="Wrap"/>
+								</RadioButton>
+							</StackPanel>
+						</Grid>
+					</Canvas>
+				</Viewbox>
+				<Rectangle StrokeThickness="1" StrokeLineJoin="Round" Style="{DynamicResource DisplayBevelStyle}" Width="162" Height="38" Canvas.Left="9" Canvas.Top="5" x:Name="DisplayBevelRect"/>
+			</Canvas>
+		</Viewbox>
+	</Grid>
+</Window>

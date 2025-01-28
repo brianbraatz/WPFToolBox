@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>WPF: Animations in XAML and code-behind</title>
+
+
+
+
+  <link rel="Stylesheet" type="text/css" href="Animations%20in%20XAML%20and%20code-behind_files/gslb.css"><link rel="Stylesheet" type="text/css" href="Animations%20in%20XAML%20and%20code-behind_files/gslb_002.css"><link rel="Stylesheet" type="text/css" href="Animations%20in%20XAML%20and%20code-behind_files/manoli.css">
+  
+    <script type="text/javascript" src="Animations%20in%20XAML%20and%20code-behind_files/gslb.js"></script>
+    <script type="text/javascript" src="Animations%20in%20XAML%20and%20code-behind_files/gslb_004.js"></script>
+    <script type="text/javascript" src="Animations%20in%20XAML%20and%20code-behind_files/gslb_002.js"></script>
+    <script type="text/javascript" src="Animations%20in%20XAML%20and%20code-behind_files/gslb_003.js"></script></head><body>
+    <form name="form1" method="post" action="article-2006102701.aspx" id="form1">
+<div>
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTE5MDEwMTE5MWRk" type="hidden">
+</div>
+
+
+      <a id="lnkHome" href="http://www.galasoft.ch/index.html" target="_top" class="gslb_mainLnkHome" style="top: 8px; left: 8px;">
+        <img src="Animations%20in%20XAML%20and%20code-behind_files/vsmallhead.gif" alt="Navigate back home" title="Navigate back home"></a>
+      <script type="text/javascript">
+        new gslb.PositionedNode( document.getElementById( 'lnkHome' ) );
+      </script>
+    
+      <div class="gslb_mainDivImageTitle">
+        <img alt="GalaSoft Laurent Bugnion" title="GalaSoft Laurent Bugnion" src="Animations%20in%20XAML%20and%20code-behind_files/header.gif" class="gslb_mainImgTitle">
+      </div>
+      
+      <div class="gslb_rsbDivPosting" style="margin-top: 2em; width: 60%;">
+        <div class="gslb_rsbDivPostingTitle">
+          WPF: Animations in XAML and code-behind
+        </div>
+
+        <table style="margin: 0pt; width: 100%;">
+          <tbody><tr>
+            <td>
+              <div class="gslb_mainDivSummary">
+                <a href="#intro">Introduction</a> /
+                <a href="#triggerxaml">Trigger in XAML</a> /
+                <a href="#triggercode">Trigger in code</a> /
+                <a href="#definecode">Define in code</a> /
+                <a href="#conclusion">Conclusion</a> /
+                <a href="#resources">Resources</a>
+              </div>
+            </td>
+            <td style="text-align: right; vertical-align: top;">
+              <div class="gslb_mainDivSummary">
+                <a href="http://www.galasoft.ch/mydotnet/GalaSoftLb.Wpf.Demo/">&lt;&lt;&nbsp;Prev</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/articles_en.html#wpf">Index</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/mydotnet/articles/article-2006111301.aspx">Next&nbsp;&gt;&gt;</a>
+              </div>
+            </td>
+          </tr>
+        </tbody></table>
+
+        <div class="gslb_rsbDivFeature">
+
+<p class="gslb_rsbPParagraph">
+<a id="intro"></a>WPF makes it very easy to define animations, by using
+timelines, storyboards and dependency properties. Here are a few simple
+examples and explanations. Additionally, you will find resources to
+download on the <a href="#resources">bottom</a> of this article.
+</p>
+<p class="gslb_rsbPParagraph">
+For example, let's consider the following TextBlock:
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">TextBlock</span> <span class="attr">Name</span><span class="kwrd">="lblHello"</span>
+  <span class="attr">Text</span><span class="kwrd">="Hello world"</span>
+  <span class="attr">Margin</span><span class="kwrd">="0,100,0,0"</span> 
+  <span class="attr">HorizontalAlignment</span><span class="kwrd">="Center"</span>
+  <span class="attr">FontSize</span><span class="kwrd">="36"</span>
+  <span class="attr">Foreground</span><span class="kwrd">="White"</span>
+  <span class="attr">Cursor</span><span class="kwrd">="Hand"</span><span class="kwrd">&gt;</span>
+  <span class="kwrd">&lt;</span><span class="html">TextBlock.RenderTransform</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">RotateTransform</span> <span class="attr">Angle</span><span class="kwrd">="0"</span>
+                     <span class="attr">CenterX</span><span class="kwrd">="95"</span>
+                     <span class="attr">CenterY</span><span class="kwrd">="20"</span> <span class="kwrd">/&gt;</span>
+  <span class="kwrd">&lt;/</span><span class="html">TextBlock.RenderTransform</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">TextBlock</span><span class="kwrd">&gt;</span></div>
+<div class="gslb_rsbDivLegend">
+TextBlock definition
+</div>
+</div>
+<p class="gslb_rsbPParagraph">
+This simply renders the text "Hello world", with a rotation of 0°.
+Since this is the default anyway, it is not necessary to add the
+RenderTransform part for this static object. However, since we want to
+animate this, we need it here. The center point for the rotation is set
+to 95x20, which is near the top left corner of the letter "w". Note
+that units in WPF are not pixels, but are device-independant units.
+</p>
+<p class="gslb_rsbPParagraph">
+Note also that if you want to define more than one transformation for an object, you must include them in a <a href="http://windowssdk.msdn.microsoft.com/en-us/library/system.windows.media.transformgroup.aspx" target="_blank">TransformGroup</a>, which comes between the TextBlock.RenderTransform and the RotateTransform (plus the other tranformations).
+</p>
+<div class="gslb_rsbDivTitle">
+<a id="triggerxaml"></a>Animation triggered in the XAML code
+</div>
+<p class="gslb_rsbPParagraph">The usual way to start animations in XAML
+is by using triggers. There are many types of triggers, and enumerating
+them goes beyond the scope of this post. In this example, we will start
+the animation when the user clicks on the label. Refer to the
+documentation to find the exhaustive list of events.
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">Page.Triggers</span><span class="kwrd">&gt;</span>
+  <span class="kwrd">&lt;</span><span class="html">EventTrigger</span> <span class="attr">RoutedEvent</span><span class="kwrd">="TextBlock.MouseDown"</span>
+                <span class="attr">SourceName</span><span class="kwrd">="lblHello"</span><span class="kwrd">&gt;</span>
+
+    <span class="kwrd">&lt;</span><span class="html">EventTrigger.Actions</span><span class="kwrd">&gt;</span>
+      <span class="kwrd">&lt;</span><span class="html">BeginStoryboard</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span>
+          <span class="kwrd">&lt;</span><span class="html">DoubleAnimation</span>
+            <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="lblHello"</span>
+            <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(TextBlock.RenderTransform).(RotateTransform.Angle)"</span>
+            <span class="attr">From</span><span class="kwrd">="0"</span>
+            <span class="attr">To</span><span class="kwrd">="360"</span>
+            <span class="attr">Duration</span><span class="kwrd">="0:0:0.5"</span>
+            <span class="attr">RepeatBehavior</span><span class="kwrd">="4x"</span> <span class="kwrd">/&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span>
+      <span class="kwrd">&lt;/</span><span class="html">BeginStoryboard</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">EventTrigger.Actions</span><span class="kwrd">&gt;</span>
+
+  <span class="kwrd">&lt;/</span><span class="html">EventTrigger</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">Page.Triggers</span><span class="kwrd">&gt;</span></div>
+<div class="gslb_rsbDivLegend">
+Animation triggered by a click
+</div>
+</div>
+<p class="gslb_rsbPParagraph">What did we do here? It looks a bit
+complicated, but in fact this code can be read like a text: We define
+an Event Trigger, happening when the user clicks the mouse in the
+TextBox. The action defined is to begin a storyboard, which contains an
+animation of type double (in WPF, the animation's type depends on the
+type of the dependency property we want to animate. In our case, the
+rotation angle is of type double, so we use a <a href="http://windowssdk.msdn.microsoft.com/en-us/library/system.windows.media.animation.doubleanimation.aspx" target="_blank">DoubleAnimation</a>).
+
+</p>
+<p class="gslb_rsbPParagraph">
+The animation itself is not too difficult to understand either:
+</p>
+<ul class="gslb_rsbList">
+<li>
+We define the target object of the animation, which is our label lblHello.
+</li>
+<li>
+The dependency property to animate is more difficult to find, I'll come to this later.
+</li>
+<li>
+We define the start and end values of the property animation with the
+From and To attributes (there is also a "By" attribute, which allows to
+define by how much the value of the property must change during the
+animation).
+</li>
+<li>
+The duration is expressed with the syntax "hh:mm:ss,ff" where ff are fractions of seconds.
+</li>
+
+<li>The number of times that the animation must run is defined with the
+"RepeatBehavior" attribute. There are different syntaxes for this
+attribute, for example: "0:0:4" specifies that the animation must run
+only for 4 seconds, whatever else is defined. Another choice is
+"Forever" which is self explaining. In our case, we specify "4x" which
+means 4 times.
+</li>
+</ul>
+<p class="gslb_rsbPParagraph">To sum up, this animation will act on the
+angle, changing it from 0 to 360 degrees in 0.5 seconds, and will be
+repeated 4 times. So the whole duration will be 2 seconds.
+</p>
+<p class="gslb_rsbPParagraph">
+Note that it is also possible to use the <a href="http://windowssdk.msdn.microsoft.com/en-us/library/system.windows.media.animation.timeline.begintime.aspx" target="_blank">BeginTime</a> property of the animation object to delay an animation, for example in order to cascade animations. Another way is to use the <a href="http://windowssdk.msdn.microsoft.com/en-us/library/system.windows.media.animation.timeline.completed.aspx" target="_blank">Completed</a>
+event, which can be set in the XAML code, or in the code-behind. This
+event implies that the corresponding method must be present in the
+code-behind, thus it is not applicable for pure XAML applications.
+</p>
+<p class="gslb_rsbPParagraph">Finding the path to the property to
+animate is in my experience the most difficult thing when you define an
+animation, because there is no support (intellisense, error handling)
+to guide you. In our case it's not that bad, because the animation is
+simple (only a rotation). If you define a complex animation with a
+"TransformGroup", then finding the right path is more difficult. Two
+things to remember:
+</p>
+<ol class="gslb_rsbList">
+<li>The TargetProperty refers to the Class, not to the object. In our
+case, it refers to "TextBlock.RenderTransform", not to
+"lblHello.RenderTransform" (that would be wrong).
+</li>
+<li>
+Use parenthesis to group the expressions. For example, (TextBlock.RenderTransform).
+</li>
+</ol>
+<p class="gslb_rsbPParagraph">In my opinion, the best way to find the
+right path is to look at examples and to understand how they work, and
+then to try and fail until you try and succeed!
+</p>
+<p class="gslb_rsbPParagraph">It's worth mentioning that there are a
+*lot* of properties that you can animate. For example, you can use the
+Opacity to make a fade-in / fade-out effect. Or, you can specify a
+start and an end colors, and then have an animation transitioning from
+one to the other. The possibilities are limited only by imagination!
+</p>
+<div class="gslb_rsbDivTitle">
+
+<a id="triggercode"></a>Triggering animations in code-behind
+</div>
+<p class="gslb_rsbPParagraph">Sometimes, the events exposed in XAML are
+just not enough. For example, if you want to start an animation when a
+certain method is called, you must resort to the code-behind. This is
+when resources come handy.
+</p>
+<p class="gslb_rsbPParagraph">In XAML, you can define styles,
+animations, etc... but instead of applying them to an object, you just
+store them in a storage area called resources. For example, the
+"stored" animation here above becomes:
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">Page.Resources</span><span class="kwrd">&gt;</span>
+  <span class="kwrd">&lt;</span><span class="html">Storyboard</span> <span class="attr">x:Key</span><span class="kwrd">="sbdLabelRotation"</span><span class="kwrd">&gt;</span>
+
+    <span class="kwrd">&lt;</span><span class="html">DoubleAnimation</span>
+      <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="lblHello"</span>
+      <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(TextBlock.RenderTransform).(RotateTransform.Angle)"</span>
+      <span class="attr">From</span><span class="kwrd">="0"</span>
+      <span class="attr">To</span><span class="kwrd">="360"</span>
+      <span class="attr">Duration</span><span class="kwrd">="0:0:0.5"</span>
+      <span class="attr">RepeatBehavior</span><span class="kwrd">="4x"</span> <span class="kwrd">/&gt;</span>
+  <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span>
+
+<span class="kwrd">&lt;/</span><span class="html">Page.Resources</span><span class="kwrd">&gt;</span></div>
+<div class="gslb_rsbDivLegend">
+Animation stored in resources
+</div>
+</div>
+<p class="gslb_rsbPParagraph">
+Note that the storyboard is identified by a key, which allows to retrieve it in the code-behind. It's then possible to use the <a href="http://windowssdk.msdn.microsoft.com/en-us/library/system.windows.media.animation.storyboard.aspx" target="_blank">Storyboard</a> class and its <a href="http://windowssdk.msdn.microsoft.com/en-us/library/system.windows.media.animation.storyboard.begin.aspx" target="_blank">Begin</a> method to trigger the animation "manually".
+
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">public</span> <span class="kwrd">void</span> AnimateLabelRotation( <span class="kwrd">object</span> sender,
+  <span class="type">RoutedEventArgs</span> e )
+{
+  <span class="type">Storyboard</span> sbdLabelRotation
+    = (<span class="type">Storyboard</span>) FindResource( <span class="str">"sbdLabelRotation"</span> );
+
+  sbdLabelRotation.Begin( <span class="kwrd">this</span> );
+}</div>
+<div class="gslb_rsbDivLegend">
+Triggering the animation in the code-behind
+</div>
+</div>
+<div class="gslb_rsbDivTitle">
+<a id="definecode"></a>Defining animations in the code-behind
+</div>
+<p class="gslb_rsbPParagraph">Animations can also be written in C#,
+which becomes handy when you don't have a XAML front-end. For example,
+if you create a WPF custom control, there is no XAML involved. If I had
+to judge, I would say that animations are easier to define in XAML than
+in C#, especially complex animations acting on TransformGroups.
+</p>
+<p class="gslb_rsbPParagraph">Here is however the same animation, this
+time in C#: Note the use of a Timespan to specify the animation
+duration. Note also that because there is only one transformation,
+accessing it is quite straightforward: simply cast the <a href="http://windowssdk.msdn.microsoft.com/en-us/library/system.windows.uielement.rendertransform.aspx" target="_blank">TextBlock.RenderTransform</a> property to a <a href="http://windowssdk.msdn.microsoft.com/en-us/library/system.windows.media.rotatetransform.aspx" target="_blank">RotateTransform</a>.
+
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">public</span> <span class="kwrd">void</span> AnimateLabelRotationInCode( <span class="kwrd">object</span> sender,
+  <span class="type">RoutedEventArgs</span> e )
+{
+  <span class="type">DoubleAnimation</span> oLabelAngleAnimation
+    = <span class="kwrd">new</span> <span class="type">DoubleAnimation</span>();
+
+  oLabelAngleAnimation.From = 0;
+  oLabelAngleAnimation.To = 360;
+  oLabelAngleAnimation.Duration
+    = <span class="kwrd">new</span> <span class="type">Duration</span>( <span class="kwrd">new</span> <span class="type">TimeSpan</span>( 0, 0, 0, 0, 500 ) );
+  oLabelAngleAnimation.RepeatBehavior = <span class="kwrd">new</span> <span class="type">RepeatBehavior</span>( 4 );
+
+  <span class="type">RotateTransform</span> oTransform
+    = (<span class="type">RotateTransform</span>) lblHello.RenderTransform;
+  oTransform.BeginAnimation( <span class="type">RotateTransform</span>.AngleProperty,
+    oLabelAngleAnimation );
+}</div>
+
+<div class="gslb_rsbDivLegend">
+Animation fully defined in code-behind
+</div>
+</div>
+<div class="gslb_rsbDivTitle">
+<a id="conclusion"></a>Conclusion
+</div>
+<p class="gslb_rsbPParagraph">
+In this tutorial, we saw how to get started with WPF animations in XAML
+and also in C#. Animations are crucial in WPF, because of the dynamism
+that they add to the user interface. There are many types of
+animations, including 3D, but everyone has to start somewhere. I hope
+that these examples will help the reader to build knowledge and to
+extend it in order to create complex animations.
+</p>
+<div class="gslb_rsbDivTitle">
+<a id="resources"></a>Resources
+</div>
+<ul class="gslb_rsbList">
+<li>
+<a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2006102701/xbap/GalaSoftLb.Article2006102701.xbap" target="_blank">XBAP</a> application demonstrating the techniques explained here (<span style="color: Red; font-weight: bold;">September CTP or newer edition</span>).
+
+</li>
+<li>
+<a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2006102701/GalaSoftLb.Article2006102701.zip">Zipped</a> project and source code files.
+</li>
+<li>
+<a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2006102701/Page1.xaml.cs.txt">C# source code</a> as a text file.
+</li>
+<li>
+<a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2006102701/Page1.xaml.txt">XAML source code</a> as a text file.
+</li>
+</ul>
+</div>
+</div>
+
+    </form>
+  </body></html>

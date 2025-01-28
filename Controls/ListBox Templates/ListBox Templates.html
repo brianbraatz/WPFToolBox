@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - ListBox Templates</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/260844.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/290357.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/01/290945.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>ListBox Templates</h2></a><p style="text-align: right;">January 29, 2006<br>Weekend in Roscoe, NY</p><p>
+As has been often noted, one of the more interesting and useful
+features of the Windows Presentation Foundation is the use of
+templates, which separate the functionality of a control from its look
+and feel. A <i>ListBox</i>, for example, lets the user pick one item out of many. That much is fixed. But the common default appearance of the <i>ListBox</i> results from its default template. The <i>ListBox</i> is basically a <i>Border</i> element containing a <i>ScrollViewer</i> containing a <i>StackPanel</i>, which presents the items. It is possible for an application to change the look and feel of the <i>ListBox</i> by substituting its own templates.
+</p>
+<p>
+Generally, the definition of templates is done in XAML rather than code, but the <a href="http://www.charlespetzold.com/blog/2006/01/ColorGrid.cs">ColorGrid.cs</a> file shows a <i>ColorGrid</i> control that inherits from <i>ListBox</i>
+and mimics the little color-selection grid found in Microsoft Word in
+the Format Background menu and the Formatting Toolbar. The first few
+statements of the constructor create a <i>FrameworkElementFactory</i> based on a <i>UniformGrid</i> panel.  This becomes the <i>ItemsPanel</i> property of the <i>ListBox</i>. That's all that's necessary to force <i>ListBox</i> to use a <i>UniformGrid</i> for displaying items rather than a <i>StackPanel</i>
+</p>
+<p>
+The constructor continues by creating a template for the items themselves. This template is built around the <i>Rectangle</i> element with a fixed size and margin. Notice the <i>SetBinding</i> call, which indicates that the <i>Fill</i> property of each <i>Rectangle</i> is the <i>ListBox</i> item itself, which is of type <i>Brush</i>. The constructor concludes by assigning the <i>Brush</i> array to the <i>ItemsSource</i> property of the <i>ListBox</i>
+</p>
+<p>
+The <a href="http://www.charlespetzold.com/blog/2006/01/SelectColorFromGrid.cs">SelectColorFromGrid.cs</a> file shows the color grid in action between two do-nothing buttons that let you examine how keyboard tabbing works. (The <a href="http://www.charlespetzold.com/blog/2006/01/SelectColorFromGrid.csproj">SelectColorFromGrid.csproj</a> project file rounds out the project.) Notice the <i>SetBinding</i> call, which binds the selected item to the <i>Background</i> property of the window.
+</p>
+<p>
+Of course, creating such a control with traditional means is considerably more complex. <a href="http://www.charlespetzold.com/winforms">My recent WinForms book</a> does a similar control in 5 pages of code (pages 204-209).
+</p>
+<p>
+What really impressed me, however, was the keyboard interface that mysteriously appears when a <i>UniformGrid</i> is substituted for the <i>StackPanel</i>.
+The Up key moves up, the Down key moves down, the Left key moves left,
+and the Right key moves right, and Home, End, Page Up, and Page Down
+work as well. There must be some generalized keyboard handling that
+looks at the actual relative locations of the items on the screen.
+</p>
+<p>
+ I know the keyboard handling is not based specifically on <i>UniformGrid</i> because I did a custom <i>RadialPanel</i> and stuck that into a <i>ListBox</i>
+and it acquired keyboard handling as well. Each of the arrow keys moved
+the cursor in a semi-circle. For example, if the selected item was on
+the left side of the circle, then Up and Down would move along the left
+semi-circle between the topmost and bottom-most items. To continue
+around the circle from that point, you'd need to switch to the Right
+key.
+</p>
+<p>
+<b>Book Progress:</b>
+</p>
+<p>Yesterday I hit the 400 book pages mark. My goal of 5 books page per
+calendar day starting November 1st implies that I'm about a week
+behind. It appears now that Part 1 of the book (which sticks entirely
+to C# code) will be about 400 pages long. I'll try to post a Table of
+Contents for Part 1 later this week. </p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/260844.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/290357.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

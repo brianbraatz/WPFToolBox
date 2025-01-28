@@ -1,0 +1,415 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional-dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head id="ctl00_ctl00">
+ 
+
+<meta name="description" content="Technology blog about new Microsoft technologies. E.g. WPF, crossbow, .NET framework 3, Live etc. It includes code sources and samples">
+<meta name="keywords" content=".NET Framework, Example, Internals, Microsoft, Programming, Source Code, technology, tutorial, wpf.">
+<meta name="GENERATOR" content="CommunityServer 2007 SP2 (Build: 20611.960)">
+<link rel="pingback" href="http://blogs.microsoft.co.il/blogs/tamir/pingback.aspx">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.microsoft.co.il/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Just code - Tamir Khason (RSS 2.0)" href="http://feeds.feedburner.com/microsft">
+<link rel="alternate" type="application/rss+xml" title="Just code - Tamir Khason - All Comments (RSS 2.0)" href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx">
+<link rel="alternate" type="application/rss+xml" title="Creating fully binded graph control with WPF - Comments for this post (RSS 2.0)" href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx?PostID=5097">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="Creating-fully-binded-graph-control-with-WPF.aspx_files/style.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="Creating-fully-binded-graph-control-with-WPF.aspx_files/print.htm" type="text/css" media="print">
+	<link rel="stylesheet" href="Creating-fully-binded-graph-control-with-WPF.aspx_files/light_sidebar_left_wide.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="Creating-fully-binded-graph-control-with-WPF.aspx_files/DynamicStyle.css" type="text/css" media="screen">
+<script src="Creating-fully-binded-graph-control-with-WPF.aspx_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-486526-1";
+urchinTracker();
+</script><title>Creating fully binded graph control with WPF - Just code - Tamir Khason</title></head><body>
+    <form name="aspnetForm" method="post" action="/blogs/tamir/archive/2006/11/29/Creating-fully-binded-graph-control-with-WPF.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTIwMjk4NDE1MzdkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBS5jdGwwMCRNYWluJGN0bDA4JGN0bDAyJGN0bDAyJGN0bDAyJGNoa1JlbWVtYmVyNnOa7G3ox0C7N39AE+DRj1GRFAw=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="Creating-fully-binded-graph-control-with-WPF.aspx_files/WebResource.js" type="text/javascript"></script>
+
+
+<script src="Creating-fully-binded-graph-control-with-WPF.aspx_files/WebResource_002.axd" type="text/javascript"></script>
+<script src="Creating-fully-binded-graph-control-with-WPF.aspx_files/WebResource_004.axd" type="text/javascript"></script>
+<script src="Creating-fully-binded-graph-control-with-WPF.aspx_files/WebResource_003.axd" type="text/javascript"></script>
+<script src="Creating-fully-binded-graph-control-with-WPF.aspx_files/WebResource.axd" type="text/javascript"></script>
+        
+<script type="text/javascript">
+<!--   
+    function ValidateCaptcha(val, args) {
+      
+        var value = args.Value;
+        var nameEQ = "CAPTCHA=";
+        var captchaNumbers;        	
+        var ca = document.cookie.split(';');
+        
+        for(var i=0;i < ca.length;i++) {
+    	    var c = ca[i];
+    	    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    	    if (c.indexOf(nameEQ) == 0) captchaNumbers =  c.substring(nameEQ.length,c.length);
+	    }
+
+        args.IsValid = captchaNumbers == value;
+
+    }
+-->
+</script>
+
+<script src="Creating-fully-binded-graph-control-with-WPF.aspx_files/WebResource_002.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+
+    			
+
+    <div id="masthead">
+        <div id="welcome" align="right">
+            
+        <a href="http://blogs.microsoft.co.il/login.aspx?ReturnUrl=%2fblogs%2ftamir%2farchive%2f2006%2f11%2f29%2fCreating-fully-binded-graph-control-with-WPF.aspx">Sign in </a>
+         | <a href="http://blogs.microsoft.co.il/user/CreateUser.aspx?ReturnUrl=">Join</a>
+        | <a href="http://communityserver.org/r.ashx?K">Help</a>
+     
+
+
+        </div>
+    </div>
+    <div id="wrapper">
+	        <div id="container">
+		        <div id="header">
+		            <div id="title">	                    
+                        <h1 class="headermaintitle"><a href="http://blogs.microsoft.co.il/blogs/tamir/">Just code - Tamir Khason</a></h1>      
+                        <p id="tagline">Take care of the sense, and the sounds will take care of themselves.</p>
+                    </div>
+                    <div id="SubscriptionsSideBar">
+                        <div id="subscriptions"> 
+                            <ul>
+                                <li><a href="http://feeds.feedburner.com/microsft">RSS</a></li>
+	                            <li><a href="http://feeds.feedburner.com/microsft">Atom</a></li>
+						        <li id="RssComments"><a href="http://blogs.microsoft.co.il/blogs/tamir/rsscomments.aspx">Comments RSS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="nav">                    
+                        <ul>
+                            <li><a href="http://blogs.microsoft.co.il/blogs/tamir/">Home</a></li>
+                            <li><a href="http://blogs.microsoft.co.il/blogs/tamir/contact.aspx">Contact</a></li>
+                            
+                            
+                        </ul>
+                    </div>
+                </div>
+                
+                    <div id="contentwrapper">
+		                <div id="sidebar-a">              
+                            <div id="TasksSideBar">                                
+                                
+                                
+                            </div>
+                            
+                            <div id="SearchSideBar">    
+                                <div id="Search">
+	                                        <h3>Search</h3>
+                                            <ul>
+                                                <li>
+                                                    <input name="ctl00$SideBar$ctl01$ctl00$SearchBox" id="ctl00_SideBar_ctl01_ctl00_SearchBox" class="searchBox" button="SearchButton" onclick="if(this.defaultValue==this.value) this.value='';" onblur="if(this.value=='') this.value=this.defaultValue;" type="text">
+                                                    <a id="ctl00_SideBar_ctl01_ctl00_SearchButton" class="SearchButton" href="javascript:__doPostBack('ctl00$SideBar$ctl01$ctl00$SearchButton','')">Go</a>
+                                                </li>
+                                            </ul>
+                                    </div>
+                            </div>  
+                                
+                                <div id="TagSideBar">
+                                        <h3>Tags</h3>
+                                    <ul class="SidebarTagCloud">
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Accessibility/default.aspx" rel="tag">Accessibility</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/blogging+general/default.aspx" rel="tag">blogging general</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Blogging+rules/default.aspx" rel="tag">Blogging rules</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/blogging+tools/default.aspx" rel="tag">blogging tools</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/C_2300_/default.aspx" rel="tag">C#</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/demos/default.aspx" rel="tag">demos</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/download/default.aspx" rel="tag">download</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/events/default.aspx" rel="tag">events</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/fun/default.aspx" rel="tag">fun</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/help/default.aspx" rel="tag">help</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/jobs/default.aspx" rel="tag">jobs</a></li>
+<li class="Tag4"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Mobile/default.aspx" rel="tag">Mobile</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Performance/default.aspx" rel="tag">Performance</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/promo/default.aspx" rel="tag">promo</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Silverlight/default.aspx" rel="tag">Silverlight</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/SkyDrive/default.aspx" rel="tag">SkyDrive</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/soft/default.aspx" rel="tag">soft</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/source/default.aspx" rel="tag">source</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/thoughts/default.aspx" rel="tag">thoughts</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Tips+and+Tricks/default.aspx" rel="tag">Tips and Tricks</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tools/default.aspx" rel="tag">tools</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tutorial/default.aspx" rel="tag">tutorial</a></li>
+<li class="Tag2"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Vista/default.aspx" rel="tag">Vista</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Vista+Battery+Saver/default.aspx" rel="tag">Vista Battery Saver</a></li>
+<li class="Tag3"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Visual+Studio/default.aspx" rel="tag">Visual Studio</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/VSTS/default.aspx" rel="tag">VSTS</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WCF/default.aspx" rel="tag">WCF</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Web/default.aspx" rel="tag">Web</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Gadgets/default.aspx" rel="tag">Windows Gadgets</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Live/default.aspx" rel="tag">Windows Live</a></li>
+<li class="Tag6"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/Windows+Live+Writer/default.aspx" rel="tag">Windows Live Writer</a></li>
+<li class="Tag1"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF/default.aspx" rel="tag">WPF</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF+crossbow/default.aspx" rel="tag">WPF crossbow</a></li>
+<li class="Tag5"><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF_2F00_E/default.aspx" rel="tag">WPF/E</a></li>
+</ul>
+</div>
+                              
+                                
+                                <div id="NewsSidebar">
+                                        <h3>News</h3>
+                                        <ul>
+                                    <a href="http://www.linkedin.com/in/tamirk"><img src="Creating-fully-binded-graph-control-with-WPF.aspx_files/btn_profile_bluetxt_80x15.gif" alt="View Tamir Khason's profile on LinkedIn" border="0" height="15" width="80"></a>
+
+
+                                        </ul>
+                                    </div>                
+                                                
+                                
+                                <div id="NavSideBar"><h3>Navigation</h3>
+<ul>
+<li><a href="http://blogs.microsoft.co.il/">Home</a></li><li><a href="http://blogs.microsoft.co.il/blogs/">Blogs</a></li><li><a href="http://blogs.microsoft.co.il/blogs/MainFeed.aspx">RSS</a></li>
+</ul></div>
+                                
+                                
+                                
+                                
+                                <div id="ArchiveSideBar"><h3>Archives</h3>
+<ul>
+<li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/10.aspx">October 2007 (15)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/09.aspx">September 2007 (14)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/08.aspx">August 2007 (21)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/07.aspx">July 2007 (32)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/06.aspx">June 2007 (10)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/05.aspx">May 2007 (22)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/04.aspx">April 2007 (21)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/03.aspx">March 2007 (20)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/02.aspx">February 2007 (9)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2007/01.aspx">January 2007 (10)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/12.aspx">December 2006 (11)</a></li><li><a href="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/11.aspx">November 2006 (4)</a></li>
+</ul></div> 
+                                
+                                
+                                
+	                    
+                    </div>
+                    <div id="content"><div id="content2">
+	                    
+    <div class="post">
+        <div class="posthead">
+            Wednesday, November 29, 2006 5:57 PM
+            <a href="http://blogs.microsoft.co.il/members/tamir.aspx">Tamir Khason</a>
+            
+            <h2>
+                Creating fully binded graph control with WPF
+                
+            </h2>
+        </div>        
+            <p>Today
+we'll try to understand&nbsp;how powerfull is&nbsp;data
+binding&nbsp;engine in WPF. We'll&nbsp;create graph control, that works
+without loops,&nbsp;overriding OnPaint events&nbsp;and other dirty
+tricks we were used in&nbsp;GDI+ world. </p><p>So WPF Polyline element looks like useful for us to create some kind of graph. So we'll add this like in our code. 
+</p><div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: blue;"></span>&nbsp;</pre><pre style="margin: 0px;"><span style="color: blue;">&lt;</span><span style="color: rgb(163, 21, 21);">Polyline</span><span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>"<span style="color: blue;">myGraph</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Width</span><span style="color: blue;">=</span>"<span style="color: blue;">Auto</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Height</span><span style="color: blue;">=</span>"<span style="color: blue;">Auto</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Fill</span><span style="color: blue;">=</span>"<span style="color: blue;">Green</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: blue;">&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&lt;/</span><span style="color: rgb(163, 21, 21);">Polyline</span><span style="color: blue;">&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;"></span>&nbsp;</pre></div>
+<p>Now, we have something that might be used
+for&nbsp;drawing&nbsp;lines of our graph. So, now we can start adding
+points to its Points collection and create graph. But stop. Why? Let's
+see how can we bind data directly to this property and let WPF
+rendering engine to work for us.</p>
+<p>In order to do it, we'll need some points collection, that knows to
+tell everyone about it's update. So we have interesting interface
+INotifyPropertyChanged, that can notify subscribers about any changes
+happens.</p>
+<p><span style="color: blue;">class</span> <span style="color: rgb(43, 145, 175);">PointItem</span>:<span style="color: rgb(43, 145, 175);">INotifyPropertyChanged</span></p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; #region</span> INotifyPropertyChanged Members</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">event</span> <span style="color: rgb(43, 145, 175);">PropertyChangedEventHandler</span> PropertyChanged;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">void</span> _points_CollectionChanged(<span style="color: blue;">object</span> sender, System.Collections.Specialized.<span style="color: rgb(43, 145, 175);">NotifyCollectionChangedEventArgs</span> e)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (PropertyChanged != <span style="color: blue;">null</span>)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; PropertyChanged(<span style="color: blue;">this</span>, <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">PropertyChangedEventArgs</span>(<span style="color: rgb(163, 21, 21);">"Points"</span>));</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; #endregion</span></pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; #region</span> Properties</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">ObservableCollection</span>&lt;<span style="color: rgb(43, 145, 175);">Point</span>&gt; _points = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">ObservableCollection</span>&lt;<span style="color: rgb(43, 145, 175);">Point</span>&gt;();</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: rgb(43, 145, 175);">ReadOnlyObservableCollection</span>&lt;<span style="color: rgb(43, 145, 175);">Point</span>&gt; Points</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">get</span> { <span style="color: blue;">return</span> <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">ReadOnlyObservableCollection</span>&lt;<span style="color: rgb(43, 145, 175);">Point</span>&gt;(_points); }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">bool</span> _isFinished = <span style="color: blue;">true</span>;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">bool</span> IsFinished</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">get</span> { <span style="color: blue;">return</span> _isFinished; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">private</span> <span style="color: blue;">set</span> </pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _isFinished = <span style="color: blue;">value</span>;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; PropertyChanged(<span style="color: blue;">this</span>, <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">PropertyChangedEventArgs</span>(<span style="color: rgb(163, 21, 21);">"IsFinished"</span>));</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; #endregion</span></pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">int</span> _maxPoints = 100;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">double</span> _tFactor;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; #region</span> ctor</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> PointItem()</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">//Notify us about the internal collection changed</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _points.CollectionChanged += <span style="color: blue;">new</span> System.Collections.Specialized.<span style="color: rgb(43, 145, 175);">NotifyCollectionChangedEventHandler</span>(_points_CollectionChanged);</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Init();</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; #endregion</span></pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; #region</span> Methods</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">void</span> Init()</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { </pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">//let's init all we have</span></pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">//Here we begin. What we need is range or -PI to PI.</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _tFactor = -<span style="color: rgb(43, 145, 175);">Math</span>.PI;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">//clean up all point;</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _points.Clear();</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">//reset isFinished property, we are in the very begining. We do not want to rise property change event in this case</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _isFinished = <span style="color: blue;">false</span>;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">void</span> GeneratePoint(<span style="color: blue;">double</span> maxWidth, <span style="color: blue;">double</span> maxHeight)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (_tFactor &gt;= <span style="color: rgb(43, 145, 175);">Math</span>.PI)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">//we finished, just return</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IsFinished = <span style="color: blue;">true</span>;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">return</span>;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">//don't bother yourself with math. It's not really important</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">double</span> R = (1 + <span style="color: rgb(43, 145, 175);">Math</span>.Sin(_tFactor)) * (1 + 0.9 * <span style="color: rgb(43, 145, 175);">Math</span>.Cos(8 * _tFactor)) * (1 + 0.1 * <span style="color: rgb(43, 145, 175);">Math</span>.Cos(24 * _tFactor)) * maxWidth / 10;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">Point</span> p = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">Point</span>(</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; maxWidth / 2 + (R * <span style="color: rgb(43, 145, 175);">Math</span>.Cos(_tFactor)),</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; maxHeight / 2 - (R * <span style="color: rgb(43, 145, 175);">Math</span>.Sin(_tFactor)));</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">//Now just add point</span></pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; AddPoint(p);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _tFactor += <span style="color: rgb(43, 145, 175);">Math</span>.PI / _maxPoints;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">void</span> AddPoint(<span style="color: rgb(43, 145, 175);">Point</span> point)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _points.Add(point);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; #endregion</span></pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; }</pre></div>
+<p>&nbsp;</p>
+<p>Very good. Now the only thing we have to do is set this collection
+as data source for our polyline. But how to do it? In order to performs
+such task we'll have to bring the instance of our <span style="color: rgb(43, 145, 175);">PointItem</span> class into XAML</p>
+<p><span style="color: blue;">&lt;</span><span style="color: rgb(163, 21, 21);">Page.Resources</span><span style="color: blue;">&gt;</span></p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &lt;</span><span style="color: rgb(163, 21, 21);">my:PointItem</span><span style="color: blue;"> </span><span style="color: red;">x:Key</span><span style="color: blue;">=</span>"<span style="color: blue;">mySource</span>"<span style="color: blue;">/&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&lt;/</span><span style="color: rgb(163, 21, 21);">Page.Resources</span><span style="color: blue;">&gt;</span></pre></div>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"></div>
+<p>Very good. So, how the last thing to do is bind it.</p>
+<p><span style="color: blue;"></span>&nbsp;</p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: blue;">&lt;</span><span style="color: rgb(163, 21, 21);">Polyline</span><span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>"<span style="color: blue;">myGraph</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Width</span><span style="color: blue;">=</span>"<span style="color: blue;">Auto</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Height</span><span style="color: blue;">=</span>"<span style="color: blue;">Auto</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Fill</span><span style="color: blue;">=</span>"<span style="color: blue;">Green</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Points</span><span style="color: blue;">=</span>"<span style="color: blue;">{Binding Source={StaticResource mySource}, Path=Points}</span>"<span style="color: blue;">&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&lt;/</span><span style="color: rgb(163, 21, 21);">Polyline</span><span style="color: blue;">&gt;</span></pre></div>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"></div>
+<p>Let's compile it and see what happend. Nothing? Really strange... Wait. What data type we have in Points property? Oh, that's <span style="color: rgb(43, 145, 175);">ReadOnlyObservableCollection</span>, but Polyline wants to recieve PointCollection as data source... What to do? We have to convert it somehow.</p>
+<p>One of Binding's properties we have Converter. What is it? Can it be
+helpfull for us? While reading MSDN documentation we'll notice, that
+Converter must implement IValueConverter interface. It has two metods
+Convert and ConvertBack. That's exactly what we need. Let's write
+converter</p>
+<p>&nbsp;</p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: blue;">class</span> <span style="color: rgb(43, 145, 175);">DataPointConverter</span> : <span style="color: rgb(43, 145, 175);">IValueConverter</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">private</span> <span style="color: rgb(43, 145, 175);">Dictionary</span>&lt;<span style="color: rgb(43, 145, 175);">IEnumerable</span>&lt;<span style="color: rgb(43, 145, 175);">Point</span>&gt;, <span style="color: rgb(43, 145, 175);">PointCollection</span>&gt; _collectionAssoc;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">object</span> Convert(<span style="color: blue;">object</span> value, <span style="color: rgb(43, 145, 175);">Type</span> targetType, <span style="color: blue;">object</span> parameter, <span style="color: rgb(43, 145, 175);">CultureInfo</span> culture)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">IEnumerable</span>&lt;<span style="color: rgb(43, 145, 175);">Point</span>&gt; _enumerable = value <span style="color: blue;">as</span> <span style="color: rgb(43, 145, 175);">IEnumerable</span>&lt;<span style="color: rgb(43, 145, 175);">Point</span>&gt;;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (_enumerable == <span style="color: blue;">null</span>)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">throw</span> <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">InvalidOperationException</span>(<span style="color: rgb(163, 21, 21);">"Source collection must be of type IEnumerable&lt;Point&gt;"</span>);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">// Now we'll construct source dictionary if this was not done</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (<span style="color: blue;">this</span>._collectionAssoc == <span style="color: blue;">null</span>)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>._collectionAssoc = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">Dictionary</span>&lt;<span style="color: rgb(43, 145, 175);">IEnumerable</span>&lt;<span style="color: rgb(43, 145, 175);">Point</span>&gt;, <span style="color: rgb(43, 145, 175);">PointCollection</span>&gt;();</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">// Get our point collection back, if the source is already in the dictionary</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">PointCollection</span> _points;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (<span style="color: blue;">this</span>._collectionAssoc.TryGetValue(_enumerable, <span style="color: blue;">out</span> _points))</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">return</span> _points;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">else</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">// Ops, the source is not in the dictionary, so let's create a new point collection and add it to our dictionary.</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _points = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">PointCollection</span>(_enumerable);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>._collectionAssoc.Add(_enumerable, _points);</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">// We have to listen to changes of the collection and fire PointCollection event each time we got List changes</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">// If we can listen to the collection changes, let's do it</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">INotifyCollectionChanged</span> _notifyCollectionChanged = _enumerable <span style="color: blue;">as</span> <span style="color: rgb(43, 145, 175);">INotifyCollectionChanged</span>;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (_notifyCollectionChanged != <span style="color: blue;">null</span>)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; _notifyCollectionChanged.CollectionChanged += <span style="color: blue;">this</span>.Source_CollectionChanged;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">return</span> _points;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">object</span> ConvertBack(<span style="color: blue;">object</span> value, <span style="color: rgb(43, 145, 175);">Type</span> targetType, <span style="color: blue;">object</span> parameter, <span style="color: rgb(43, 145, 175);">CultureInfo</span> culture)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">throw</span> <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">NotSupportedException</span>(<span style="color: rgb(163, 21, 21);">"Why? Why you want to convert it back. There is nothing, that can support it"</span>);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">private</span> <span style="color: blue;">void</span> Source_CollectionChanged(<span style="color: blue;">object</span> sender, <span style="color: rgb(43, 145, 175);">NotifyCollectionChangedEventArgs</span> e)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">IEnumerable</span>&lt;<span style="color: rgb(43, 145, 175);">Point</span>&gt; enumerable = sender <span style="color: blue;">as</span> <span style="color: rgb(43, 145, 175);">IEnumerable</span>&lt;<span style="color: rgb(43, 145, 175);">Point</span>&gt;;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">PointCollection</span> points = <span style="color: blue;">this</span>._collectionAssoc[enumerable];</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (enumerable != <span style="color: blue;">null</span> &amp;&amp; points != <span style="color: blue;">null</span>)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">switch</span> (e.Action)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">case</span> <span style="color: rgb(43, 145, 175);">NotifyCollectionChangedAction</span>.Add:</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">for</span> (<span style="color: blue;">int</span> i = 0; i &lt; e.NewItems.Count; i++)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; points.Insert(e.NewStartingIndex + i, (<span style="color: rgb(43, 145, 175);">Point</span>)e.NewItems[i]);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">break</span>;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">case</span> <span style="color: rgb(43, 145, 175);">NotifyCollectionChangedAction</span>.Move:</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">for</span> (<span style="color: blue;">int</span> i = 0; i &lt; e.NewItems.Count; i++)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; points.RemoveAt(e.OldStartingIndex);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; points.Insert(e.NewStartingIndex + i, (<span style="color: rgb(43, 145, 175);">Point</span>)e.NewItems[i]);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">break</span>;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">case</span> <span style="color: rgb(43, 145, 175);">NotifyCollectionChangedAction</span>.Remove:</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">for</span> (<span style="color: blue;">int</span> i = 0; i &lt; e.OldItems.Count; i++)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; points.RemoveAt(e.OldStartingIndex);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">break</span>;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">case</span> <span style="color: rgb(43, 145, 175);">NotifyCollectionChangedAction</span>.Replace:</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">for</span> (<span style="color: blue;">int</span> i = 0; i &lt; e.NewItems.Count; i++)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; points[e.NewStartingIndex + i] = (<span style="color: rgb(43, 145, 175);">Point</span>)e.NewItems[i];</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">break</span>;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">case</span> <span style="color: rgb(43, 145, 175);">NotifyCollectionChangedAction</span>.Reset:</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; points.Clear();</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">break</span>;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">else</span> </pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">throw</span> <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">InvalidCastException</span>(<span style="color: rgb(163, 21, 21);">"Something gone wrong. It can not be something else then IEnumerable&lt;Point&gt; as sender fot this method"</span>);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; }</pre></div>
+<p>Great. Well done, now we have to bring it into our XAML</p>
+<p>&nbsp;</p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: blue;">&lt;</span><span style="color: rgb(163, 21, 21);">Page.Resources</span><span style="color: blue;">&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp; &lt;</span><span style="color: rgb(163, 21, 21);">my:PointItem</span><span style="color: blue;"> </span><span style="color: red;">x:Key</span><span style="color: blue;">=</span>"<span style="color: blue;">mySource</span>"<span style="color: blue;">/&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp; &lt;</span><span style="color: rgb(163, 21, 21);">my:DataPointConverter</span><span style="color: blue;"> </span><span style="color: red;">x:Key</span><span style="color: blue;">=</span>"<span style="color: blue;">myPointsConverter</span>"<span style="color: blue;">/&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&lt;/</span><span style="color: rgb(163, 21, 21);">Page.Resources</span><span style="color: blue;">&gt;</span></pre></div>
+<p>And connect it to our Points property</p>
+<p>&nbsp;</p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: blue;">&lt;</span><span style="color: rgb(163, 21, 21);">Polyline</span><span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>"<span style="color: blue;">myGraph</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Width</span><span style="color: blue;">=</span>"<span style="color: blue;">Auto</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Height</span><span style="color: blue;">=</span>"<span style="color: blue;">Auto</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Fill</span><span style="color: blue;">=</span>"<span style="color: blue;">Green</span>"</pre><pre style="margin: 0px;"><span style="color: blue;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="color: red;">Points</span><span style="color: blue;">=</span>"<span style="color: blue;">{Binding Source={StaticResource mySource}, Path=Points, Converter={StaticResource myPointsConverter}}</span>"<span style="color: blue;">&gt;</span></pre><pre style="margin: 0px;"><span style="color: blue;">&lt;/</span><span style="color: rgb(163, 21, 21);">Polyline</span><span style="color: blue;">&gt;</span></pre></div>
+<p>Now we can compile it and see the result. Great! That's work! Lets's see what we have in CPU?</p>
+<p><a href="http://blogs.microsoft.co.il/blogs/tamir/WindowsLiveWriter/CreatingfullybindedgraphcontrolwithWPF_FC5B/cpu1%5B1%5D.jpg"><img style="border: 0px none ;" src="Creating-fully-binded-graph-control-with-WPF.aspx_files/cpu1.jpg" border="0" height="229" width="240"></a> </p>
+<p>Oh, my godness! Almost nothing. Let's add some effects to make it looks better.</p>
+<p><a href="http://blogs.microsoft.co.il/blogs/tamir/WindowsLiveWriter/CreatingfullybindedgraphcontrolwithWPF_FC5B/mari1%5B1%5D.jpg"><img style="border: 0px none ;" src="Creating-fully-binded-graph-control-with-WPF.aspx_files/mari1.jpg" border="0" height="235" width="240"></a> </p>
+<p>That's it. Now we have ready to use vector graph page, that can get points and build graph instead of us. Thank you, WPF.</p>
+<p><a title="Douwnload source code" href="http://blogs.microsoft.co.il/files/folders/5096/download.aspx">Application source code</a></p>  
+                  
+            <span id="ctl00_Main_ctl07_ctl01">Filed under: <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/WPF/default.aspx" rel="tag">WPF</a>, <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/tutorial/default.aspx" rel="tag">tutorial</a>, <a href="http://blogs.microsoft.co.il/blogs/tamir/archive/tags/source/default.aspx" rel="tag">source</a></span><input name="ctl00$Main$ctl07$ctl01" id="ctl00_Main_ctl07_ctl01_State" value="value:Filed%20under%3A%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2FWPF%2Fdefault.aspx%22%20rel%3D%22tag%22%3EWPF%3C%2Fa%3E%2C%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2Ftutorial%2Fdefault.aspx%22%20rel%3D%22tag%22%3Etutorial%3C%2Fa%3E%2C%20%3Ca%20href%3D%22%2Fblogs%2Ftamir%2Farchive%2Ftags%2Fsource%2Fdefault.aspx%22%20rel%3D%22tag%22%3Esource%3C%2Fa%3E" type="hidden">
+    </div>
+        <div class="postfoot">
+            	
+      </div>
+    
+            
+                    <a name="Comments">
+                    </a><h3><a name="Comments">Comments</a></h3>
+<a name="Comments">                    </a><div id="comments">
+<a name="Comments">                
+                    </a><p><a name="Comments">No Comments</a></p>
+<a name="Comments">                
+                        </a></div>
+<a name="Comments">                    </a></div>
+<a name="Comments">                
+            
+            
+            
+            
+                    </a><div id="commentform">
+<a name="Comments">                    </a><h3><a name="Comments">Leave a Comment</a></h3>
+<a name="Comments">	                    </a><dl>
+<a name="Comments">                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle">Title</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02" style="color: Red; visibility: hidden;">*</span></dt>
+	                        <dd><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbTitle" value="re: Creating fully binded graph control with WPF" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle" class="smallbox" type="text"></dd>
+
+                            <dt id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_NameTitle"><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName">Name</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10" style="color: Red; visibility: hidden;">*</span></dt>
+                            <dd id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_NameDesc"><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbName" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName" class="smallbox" type="text"></dd>
+
+                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbUrl">Your URL</label> <em>(optional</em>)</dt>
+                            <dd><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbUrl" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbUrl" class="smallbox" type="text"></dd>
+
+                            <dt><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment">Comments</label> <em>(required)</em><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07" style="color: Red; visibility: hidden;">*</span></dt>
+                            <dd><textarea name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$tbComment" rows="5" cols="25" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment"></textarea></dd>
+
+                            <dt><input id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_chkRemember" name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$chkRemember" type="checkbox"><label for="ctl00_Main_ctl08_ctl02_ctl02_ctl02_chkRemember">Remember Me?</label></dt>
+               
+                            <dt><div id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaPanel" class="Captcha_Div">
+	<img src="Creating-fully-binded-graph-control-with-WPF.aspx_files/captcha.jpg" style="border-width: 0px;"><br><span>Enter the numbers above: </span><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$CaptchaTextBox" size="3" id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaTextBox" type="text"><span id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13" style="color: Red; display: none;">*</span>
+</div><input name="ctl00$Main$ctl08$ctl02$ctl02$ctl02$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$Main$ctl08$ctl02$ctl02$ctl02$btnSubmit", "", true, "CreateCommentForm", "", false, false))' id="ctl00_Main_ctl08_ctl02_ctl02_ctl02_btnSubmit" type="submit"></dt>
+	                    </a></dl>
+<a name="Comments">                    </a></div>
+<a name="Comments">                    
+        
+        
+                    </a></div></div>
+<a name="Comments">                    </a><div id="contentfooter"><a name="Comments">&nbsp;</a></div>
+<a name="Comments">		        </a></div>
+<a name="Comments">                </a><div id="footer">
+<a name="Comments">                    
+					    </a><div class="Copyright"><div align="center"><a name="Comments">‎©2006 Microsoft Corporation. All rights reserved.‎  <span></span></a><a href="http://www.microsoft.com/israel/info/cpyright.asp">תנאי שימוש</a> |<span><a href="http://www.microsoft.com/library/toolbar/3.0/trademarks/he-il.mspx">סימנים מסחריים</a> |</span><span><a href="http://www.microsoft.com/info/iw/privacy.mspx">הצהרת פרטיות</a></span></div></div>
+					    
+					    
+
+                        
+					            <a href="http://communityserver.org/r.ashx?j" target="_blank"><img id="ctl00_BodyFooterRegion_ctl02_ctl03_ctl00" src="Creating-fully-binded-graph-control-with-WPF.aspx_files/PoweredByCS_commercial.gif" alt="Powered by Community Server (Commercial Edition), by Telligent Systems " style="border-width: 0px;"></a>
+    						
+    					
+					
+                </div>
+            </div>        
+        
+    
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07"), document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbTitle";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl02.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbName";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl10.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_tbComment";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl07.initialvalue = "";
+var ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13 = document.all ? document.all["ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13"] : document.getElementById("ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13");
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.controltovalidate = "ctl00_Main_ctl08_ctl02_ctl02_ctl02_CaptchaTextBox";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.errormessage = "*";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.display = "Dynamic";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.validationGroup = "CreateCommentForm";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.evaluationfunction = "CustomValidatorEvaluateIsValid";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.clientvalidationfunction = "ValidateCaptcha";
+ctl00_Main_ctl08_ctl02_ctl02_ctl02_ctl13.validateemptytext = "true";
+// -->
+</script>
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/11/29/Creating-fully-binded-graph-control-with-WPF.aspx"
+dc:identifier="http://blogs.microsoft.co.il/blogs/tamir/archive/2006/11/29/Creating-fully-binded-graph-control-with-WPF.aspx"
+dc:title="Creating fully binded graph control with WPF"
+trackback:ping="http://blogs.microsoft.co.il/blogs/tamir/trackback.ashx?PostID=5097" />
+</rdf:RDF>
+-->
+<script src="Creating-fully-binded-graph-control-with-WPF.aspx_files/microsft.js" type="text/javascript" charset="utf-8"></script><script type="text/javascript" charset="utf-8" src="Creating-fully-binded-graph-control-with-WPF.aspx_files/site-tracker.js"></script> <script type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_Main_ctl07_ctl01 = new Telligent_InlineEditorPanel('ctl00_Main_ctl07_ctl01','ctl00_Main_ctl07_ctl01','ctl00_Main_ctl07_ctl01_State','ctl00_Main_ctl07_ctl00',false,null,null,null);
+// ]]>
+</script>
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        </form>
+</body></html>

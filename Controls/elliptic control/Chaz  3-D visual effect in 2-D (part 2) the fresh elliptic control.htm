@@ -1,0 +1,1437 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0066)http://blog.rioterdecker.net/blogs/chaz/archive/2006/02/03/94.aspx -->
+<HTML><HEAD><TITLE>Chaz : 3-D visual effect in 2-D (part 2): the fresh elliptic control</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content=WPF name=keywords>
+<META 
+content="Here is the second part of the post about the control displaying items around the path of an ellipse in order to obtain a visual effect close to 3-D.As promises this post describes a customizable and templatable control with code used for its design on" 
+name=description>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+href="http://blog.rioterdecker.net/blogs/pingback.aspx" rel=pingback><LINK 
+media=screen 
+href="Chaz  3-D visual effect in 2-D (part 2) the fresh elliptic control_files/style.css" 
+type=text/css rel=stylesheet><LINK media=print 
+href="Chaz  3-D visual effect in 2-D (part 2) the fresh elliptic control_files/print.css" 
+type=text/css rel=stylesheet><LINK media=screen 
+href="Chaz  3-D visual effect in 2-D (part 2) the fresh elliptic control_files/right%20sidebar.css" 
+type=text/css rel=stylesheet><LINK href="/favicon.ico" type=image/ico 
+rel="shortcut icon"><LINK title="Chaz (RSS 2.0)" 
+href="http://blog.rioterdecker.net/blogs/chaz/rss.aspx" type=application/rss+xml 
+rel=alternate><LINK title="Chaz (Atom 1.0)" 
+href="http://blog.rioterdecker.net/blogs/chaz/atom.aspx" 
+type=application/atom+xml rel=alternate><LINK 
+title="3-D visual effect in 2-D (part 2): the fresh elliptic control Comment RSS (RSS 2.0)" 
+href="http://blog.rioterdecker.net/blogs/chaz/commentrss.aspx?PostID=94" 
+type=application/rss+xml rel=alternate>
+<SCRIPT 
+src="Chaz  3-D visual effect in 2-D (part 2) the fresh elliptic control_files/global.js" 
+type=text/javascript></SCRIPT>
+</HEAD>
+<BODY>
+<FORM id=__aspnetForm name=__aspnetForm 
+action=/blogs/chaz/archive/2006/02/03/94.aspx method=post><INPUT type=hidden 
+name=__EVENTTARGET> <INPUT type=hidden name=__EVENTARGUMENT> <INPUT type=hidden 
+value=dDwxOTEyODEyMTQ3OztsPF9jdGwwOl86X2N0bDA6XzpCbG9nU2lkZUJhcjE6Xzp3czpfOlNlYXJjaEJveDs+PgUL+f/GgIJK9otucOax//Q380gO 
+name=__VIEWSTATE>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+	function __doPostBack(eventTarget, eventArgument) {
+		var theform;
+		if (window.navigator.appName.toLowerCase().indexOf("microsoft") > -1) {
+			theform = document.__aspnetForm;
+		}
+		else {
+			theform = document.forms["__aspnetForm"];
+		}
+		theform.__EVENTTARGET.value = eventTarget.split("$").join(":");
+		theform.__EVENTARGUMENT.value = eventArgument;
+		theform.submit();
+	}
+// -->
+</SCRIPT>
+
+<SCRIPT language=javascript type=text/javascript>
+var RatingControlAJAX = {
+
+"SaveRating": function(id, rating, clientCallBack) {
+	return Ajax_CallBack('CommunityServer.Blogs.Controls.BlogRatePost', id, 'SaveRating', [rating], clientCallBack, false, false, false, true,'/blogs/chaz/archive/2006/02/03/94.aspx?Ajax_CallBack=true');
+}
+
+};
+</SCRIPT>
+ 
+<DIV id=masthead>
+<DIV id=welcome align=right>Welcome to RioterDeckers' HeadQuarter <A 
+id=_ctl0____ctl0___duw1_ac1___Login 
+href="http://blog.rioterdecker.net/login.aspx?ReturnUrl=/blogs/chaz/archive/2006/02/03/94.aspx">Sign 
+in</A> | <A id=_ctl0____ctl0___duw1_ac1___Register 
+href="http://blog.rioterdecker.net/user/CreateUser.aspx?ReturnUrl=/blogs/chaz/archive/2006/02/03/94.aspx">Join</A> 
+| <A id=_ctl0____ctl0___duw1_Faq1 
+href="http://blog.rioterdecker.net/languages/en-US/docs/faq.aspx">Help</A> 
+</DIV></DIV>
+<DIV id=wrapper>
+<DIV id=container>
+<DIV id=header>
+<DIV id=title>
+<H1><A class=headermaintitle id=_ctl0____ctl0___BlogTitleHeader1___BlogTitle 
+href="http://blog.rioterdecker.net/blogs/chaz/default.aspx">Chaz</A></H1>
+<P id=tagline>WPF underground</P></DIV></DIV>
+<DIV id=contentwrapper>
+<DIV id=sidebar-a>
+<DIV id=WeblogLinks>
+<H3>This Blog</H3>
+<UL>
+  <LI><A href="http://blog.rioterdecker.net/blogs/chaz/about.aspx">About</A> 
+  </LI></UL></DIV>
+<H3>Calendar</H3>
+<DIV id=Cal align=center>
+<UL>
+  <LI>
+  <TABLE class=Calendar id=PostCalendar cellSpacing=0 cellPadding=2 border=0>
+    <TBODY>
+    <TR>
+      <TD colSpan=7>
+        <TABLE class=CalendarTitle cellSpacing=0 border=0>
+          <TBODY>
+          <TR>
+            <TD class=CalendarNextPrev align=middle><A style="COLOR: black" 
+              href="javascript:__doPostBack('_ctl0$_$_ctl0$_$BlogSideBar1$_$Cal$_$PostCalendar','V2192')">Jan</A></TD>
+            <TD align=middle>February 2006</TD>
+            <TD class=CalendarNextPrev align=right><A style="COLOR: black" 
+              href="javascript:__doPostBack('_ctl0$_$_ctl0$_$BlogSideBar1$_$Cal$_$PostCalendar','V2251')">Mar</A></TD></TR></TBODY></TABLE></TD></TR>
+    <TR>
+      <TD class=CalendarDayHeader align=middle>S</TD>
+      <TD class=CalendarDayHeader align=middle>M</TD>
+      <TD class=CalendarDayHeader align=middle>T</TD>
+      <TD class=CalendarDayHeader align=middle>W</TD>
+      <TD class=CalendarDayHeader align=middle>T</TD>
+      <TD class=CalendarDayHeader align=middle>F</TD>
+      <TD class=CalendarDayHeader align=middle>S</TD></TR>
+    <TR>
+      <TD class=CalendarOtherMonth align=middle>29</TD>
+      <TD class=CalendarOtherMonth align=middle>30</TD>
+      <TD class=CalendarOtherMonth align=middle>31</TD>
+      <TD align=middle>1</TD>
+      <TD align=middle>2</TD>
+      <TD align=middle><A title="1 Post" 
+        href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/2/3.aspx">3</A></TD>
+      <TD class=CalendarWeekend align=middle>4</TD></TR>
+    <TR>
+      <TD class=CalendarWeekend align=middle>5</TD>
+      <TD align=middle>6</TD>
+      <TD align=middle>7</TD>
+      <TD align=middle><A title="1 Post" 
+        href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/2/8.aspx">8</A></TD>
+      <TD align=middle>9</TD>
+      <TD align=middle>10</TD>
+      <TD class=CalendarWeekend align=middle>11</TD></TR>
+    <TR>
+      <TD class=CalendarWeekend align=middle>12</TD>
+      <TD align=middle>13</TD>
+      <TD align=middle>14</TD>
+      <TD align=middle>15</TD>
+      <TD align=middle>16</TD>
+      <TD align=middle>17</TD>
+      <TD class=CalendarWeekend align=middle>18</TD></TR>
+    <TR>
+      <TD class=CalendarWeekend align=middle>19</TD>
+      <TD align=middle>20</TD>
+      <TD align=middle>21</TD>
+      <TD align=middle>22</TD>
+      <TD align=middle>23</TD>
+      <TD align=middle><A title="1 Post" 
+        href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/2/24.aspx">24</A></TD>
+      <TD class=CalendarWeekend align=middle>25</TD></TR>
+    <TR>
+      <TD class=CalendarWeekend align=middle>26</TD>
+      <TD align=middle>27</TD>
+      <TD align=middle>28</TD>
+      <TD class=CalendarOtherMonth align=middle>1</TD>
+      <TD class=CalendarOtherMonth align=middle>2</TD>
+      <TD class=CalendarOtherMonth align=middle>3</TD>
+      <TD class=CalendarOtherMonth align=middle>4</TD></TR>
+    <TR>
+      <TD class=CalendarOtherMonth align=middle>5</TD>
+      <TD class=CalendarOtherMonth align=middle>6</TD>
+      <TD class=CalendarOtherMonth align=middle>7</TD>
+      <TD class=CalendarOtherMonth align=middle>8</TD>
+      <TD class=CalendarOtherMonth align=middle>9</TD>
+      <TD class=CalendarOtherMonth align=middle>10</TD>
+      <TD class=CalendarOtherMonth 
+align=middle>11</TD></TR></TBODY></TABLE></LI></UL></DIV>
+<H3>Search</H3>
+<DIV id=Search>
+<UL>
+  <LI><INPUT class=searchBox id=_ctl0____ctl0___BlogSideBar1___ws___SearchBox 
+  onkeydown=KeyDownHandler_ctl0____ctl0___BlogSideBar1___ws___SearchButton(event); 
+  name=_ctl0:_:_ctl0:_:BlogSideBar1:_:ws:_:SearchBox> <A 
+  id=_ctl0____ctl0___BlogSideBar1___ws___SearchButton 
+  href="javascript:__doPostBack('_ctl0$_$_ctl0$_$BlogSideBar1$_$ws$_$SearchButton','')">Go</A> 
+  </LI></UL></DIV>
+<DIV id=Subscriptions>
+<H3>Syndication</H3>
+<UL>
+  <LI><A href="http://blog.rioterdecker.net/blogs/chaz/rss.aspx">RSS 2.0</A> 
+  <LI><A href="http://blog.rioterdecker.net/blogs/chaz/atom.aspx">Atom 1.0</A> 
+  </LI></UL></DIV>
+<H3>Archives</H3>
+<UL>
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2007/04.aspx">April 2007 
+  (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/11.aspx">November 
+  2006 (1)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/10.aspx">October 
+  2006 (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/06.aspx">June 2006 
+  (1)</A> 
+  <LI><A href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/05.aspx">May 
+  2006 (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/04.aspx">April 2006 
+  (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/03.aspx">March 2006 
+  (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/02.aspx">February 
+  2006 (3)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/01.aspx">January 
+  2006 (3)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2005/11.aspx">November 
+  2005 (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/2005/10.aspx">October 
+  2005 (1)</A> </LI></UL>
+<H3>Navigation</H3>
+<DIV id=headertab>
+<UL>
+  <LI id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl0_listItem><A 
+  id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl0_MenuItem 
+  href="http://blog.rioterdecker.net/">Home</A> 
+  <LI id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl1_listItem><A 
+  id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl1_MenuItem 
+  href="http://blog.rioterdecker.net/blogs/default.aspx">Blogs</A> 
+  <LI id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl2_listItem><A 
+  id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl2_MenuItem 
+  href="http://blog.rioterdecker.net/photos/default.aspx">Photos</A> 
+  <LI id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl3_listItem><A 
+  id=_ctl0____ctl0___BlogSideBar1____ctl2___Menu__ctl3_MenuItem 
+  href="http://blog.rioterdecker.net/files/default.aspx">Files</A> 
+</LI></UL></DIV>
+<H3>Post Categories</H3>
+<UL>
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/category/1000.aspx">.Net 
+  Framework 2.0 (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/category/1033.aspx">SilverLight 
+  (2)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/category/1002.aspx">Windows 
+  Vista (4)</A> 
+  <LI><A 
+  href="http://blog.rioterdecker.net/blogs/chaz/archive/category/1001.aspx">WPF 
+  (14)</A> </LI></UL>
+<H3>Useful links</H3>
+<UL>
+  <LI><A 
+  id=_ctl0____ctl0___BlogSideBar1___lcl___Categories__ctl0_Links__ctl1_Link 
+  href="http://blogs.msdn.com/tims/archive/2005/06/10/427565.aspx">WPF 
+  Bloggers</A> 
+  <LI><A 
+  id=_ctl0____ctl0___BlogSideBar1___lcl___Categories__ctl0_Links__ctl2_Link 
+  href="http://spaces.msn.com/rrelyea/">Rob Relyea's blog</A> 
+  <LI><A 
+  id=_ctl0____ctl0___BlogSideBar1___lcl___Categories__ctl0_Links__ctl3_Link 
+  href="http://weblogs.asp.net/bleroy/">One of my buddies' blog</A> 
+  <LI><A 
+  id=_ctl0____ctl0___BlogSideBar1___lcl___Categories__ctl0_Links__ctl4_Link 
+  href="http://www.netfxfactory.org/">The NetFxFactory community</A> </LI></UL>
+<H3>The Massai project</H3>
+<UL>
+  <LI><A 
+  id=_ctl0____ctl0___BlogSideBar1___lcl___Categories__ctl1_Links__ctl1_Link 
+  href="http://blog.rioterdecker.net/photos/chaz_blog_pictures/category1031.aspx">Screenshots</A> 
+  </LI></UL></DIV>
+<DIV id=content>
+<DIV class=post>
+<DIV class=postview>
+<H2>3-D visual effect in 2-D (part 2): the fresh elliptic control</H2>
+<P>Here is the second part of the post about the control displaying items around 
+the path of an ellipse in order to obtain a visual effect close to 3-D.<BR>As 
+promises this post describes a customizable and templatable control with code 
+used for its design on the one hand and its consuming on the other hand.<BR>If 
+you didn't read the preceding post, I advise you to preliminary study it in 
+order to understand each concept. <A 
+href="http://blog.rioterdecker.net/blogs/chaz/archive/2006/01/20/91.aspx">Go and 
+read here</A>.<BR>The figure below gives you a preview of the control.</P>
+<P><A 
+href="http://blog.rioterdecker.net/photos/chaz/images/119/original.aspx"></A></P>
+<P><STRONG><A 
+href="http://blog.rioterdecker.net/photos/chaz_blog_pictures/images/93/original.aspx" 
+target=_blank><IMG 
+src="Chaz  3-D visual effect in 2-D (part 2) the fresh elliptic control_files/625x480.jpg" 
+border=0></A></STRONG></P>
+<P><STRONG>Figure 1: the elliptic control preview</STRONG></P>
+<P>It will be easily consumed using the following Xaml declarations:</P><FONT 
+color=#0000ff size=2>
+<P><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>c:EllipticItemSelector</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>x:Name</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_selector</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>ItemWidth</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>90</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>ItemHeight</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>90</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>EllipticWidth</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>225</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>EllipticHeight</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>40</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>RotationSpeed</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>0:0:4</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Angle</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>-25</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Canvas.Top</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>300</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Canvas.Left</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>225</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>c:EllipticItem</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>x:Name</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_avalonboyItem</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Text</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>AvalonBoy</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Style</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+AvalonBoy_EllipticItem_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2> </FONT><FONT color=#ff0000 size=2>Selected</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_OnSelected</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Unselected</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_OnUnselected</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New"> /&gt;<BR>&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>c:EllipticItem</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>x:Name</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_chazItem</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Text</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Chaz</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2>{StaticResource Chaz_EllipticItem_Style}</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Selected</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>_OnSelected</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Unselected</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>_OnUnselected</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp; </FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT 
+face="Courier New"><FONT color=#800000 size=2>c:EllipticItem</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>x:Name</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_raskalItem</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Text</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>Raskal</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Style</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+Raskal_EllipticItem_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2> </FONT><FONT color=#ff0000 size=2>Selected</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_OnSelected</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Unselected</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_OnUnselected</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New"> /&gt;<BR>&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>c:EllipticItem</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>x:Name</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_thorItem</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Text</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Thor</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2>{StaticResource Thor_EllipticItem_Style}</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Selected</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>_OnSelected</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Unselected</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>_OnUnselected</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp; </FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT 
+face="Courier New"><FONT color=#800000 size=2>c:EllipticItem</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>x:Name</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_wozoiItem</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Text</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>WoZoI</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2>{StaticResource Wozoi_EllipticItem_Style}</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Selected</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>_OnSelected</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Unselected</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>_OnUnselected</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR></FONT><FONT face="Courier New">&lt;/</FONT></FONT><FONT 
+face="Courier New"><FONT color=#800000 size=2>c:EllipticItemSelector</FONT><FONT 
+color=#0000ff size=2>&gt;</FONT></FONT></P>
+<P><FONT color=#0000ff size=2></FONT>&nbsp;</P><SPAN>Creating templatable 
+items</SPAN> 
+<HR>
+
+<P>The items placed on the ellipse are defined by a class derived from the <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref30/html/T_System_Windows_Controls_Control.asp">Control</A> 
+base class. Ths class provides essential properties used to define any visual 
+element and its advantage is the publication of a <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref30/html/T_System_Windows_Controls_ControlTemplate.asp">ControlTemplate</A> 
+used to define the appearance and then the control rendering.</P>
+<P>It's strongly interesting because I gonna be able to define the exact 
+appearance that I need for each item.<BR>Simply notice that I wanted to equip 
+the control of a EllipticItemDefinition class, used to remember its position in 
+the item collection, the position on the ellipse and its associated 
+storyboard.<BR>The EllipticItem control provides two DependencyProperty objects 
+used to set a text and a description in Xaml, defined and registered as 
+follow:</P><FONT size=2>
+<P></FONT><FONT face="Courier New"><FONT color=#0000ff size=2>public</FONT><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>readonly</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>DependencyProperty</FONT></FONT><FONT size=2><FONT 
+face="Courier New"> TextProperty;<BR></FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>public</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> </FONT><FONT 
+color=#0000ff size=2>readonly</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>DependencyProperty</FONT><FONT size=2> 
+DescriptionProperty;</FONT></FONT></P><FONT size=2><FONT size=2>
+<P></FONT><FONT face="Courier New" color=#0000ff size=2>static</FONT><FONT 
+size=2><FONT face="Courier New"> EllipticItem()<BR></FONT><FONT 
+face="Courier New">{<BR>&nbsp; </FONT><FONT face="Courier New">TextProperty = 
+</FONT></FONT><FONT face="Courier New"><FONT color=#008080 
+size=2>DependencyProperty</FONT><FONT size=2>.Register(</FONT><FONT 
+color=#800000 size=2>"Text"</FONT><FONT size=2>, </FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>string</FONT><FONT size=2>), </FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>EllipticItem</FONT><FONT size=2>), </FONT><FONT color=#0000ff 
+size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>FrameworkPropertyMetadata</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>string</FONT></FONT><FONT size=2><FONT 
+face="Courier New">.Empty));<BR>&nbsp; </FONT><FONT 
+face="Courier New">DescriptionProperty = </FONT></FONT><FONT 
+face="Courier New"><FONT color=#008080 size=2>DependencyProperty</FONT><FONT 
+size=2>.Register(</FONT><FONT color=#800000 size=2>"Description"</FONT><FONT 
+size=2>, </FONT><FONT color=#0000ff size=2>typeof</FONT><FONT 
+size=2>(</FONT><FONT color=#0000ff size=2>string</FONT><FONT size=2>), 
+</FONT><FONT color=#0000ff size=2>typeof</FONT><FONT size=2>(</FONT><FONT 
+color=#008080 size=2>EllipticItem</FONT><FONT size=2>), </FONT><FONT 
+color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>FrameworkPropertyMetadata</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>string</FONT><FONT size=2>.Empty));<BR></FONT></FONT><FONT size=2><FONT 
+size=2><FONT face="Courier New">}</FONT></P><FONT size=2>
+<P></FONT><FONT face="Courier New"><FONT color=#0000ff size=2>public</FONT><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>string</FONT></FONT><FONT size=2><FONT 
+face="Courier New"> Text<BR></FONT><FONT face="Courier New">{<BR>&nbsp; 
+</FONT></FONT><FONT face="Courier New"><FONT color=#0000ff 
+size=2>get</FONT><FONT size=2> { </FONT><FONT color=#0000ff 
+size=2>return</FONT><FONT size=2> (</FONT><FONT color=#0000ff 
+size=2>string</FONT><FONT size=2>)</FONT><FONT color=#0000ff 
+size=2>base</FONT></FONT><FONT size=2><FONT 
+face="Courier New">.GetValue(TextProperty); }<BR>&nbsp; </FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>set</FONT><FONT size=2> { 
+</FONT><FONT color=#0000ff size=2>base</FONT><FONT 
+size=2>.SetValue(TextProperty, </FONT><FONT color=#0000ff 
+size=2>value</FONT></FONT><FONT size=2><FONT face="Courier New">); 
+}<BR></FONT><FONT face="Courier New">}<BR></FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>public</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>string</FONT></FONT><FONT size=2><FONT 
+face="Courier New"> Description<BR></FONT><FONT face="Courier New">{<BR>&nbsp; 
+</FONT></FONT><FONT face="Courier New"><FONT color=#0000ff 
+size=2>get</FONT><FONT size=2> { </FONT><FONT color=#0000ff 
+size=2>return</FONT><FONT size=2> (</FONT><FONT color=#0000ff 
+size=2>string</FONT><FONT size=2>)</FONT><FONT color=#0000ff 
+size=2>base</FONT></FONT><FONT size=2><FONT 
+face="Courier New">.GetValue(DescriptionProperty); }<BR>&nbsp; 
+</FONT></FONT><FONT face="Courier New"><FONT color=#0000ff 
+size=2>set</FONT><FONT size=2> { </FONT><FONT color=#0000ff 
+size=2>base</FONT><FONT size=2>.SetValue(DescriptionProperty, </FONT><FONT 
+color=#0000ff size=2>value</FONT></FONT><FONT size=2><FONT face="Courier New">); 
+}<BR></FONT><FONT face="Courier New">}</FONT></P></FONT></FONT></FONT></FONT>
+<P>Now, I add a feature to the elliptic itel to allow notifying when it is 
+selected or unselected, with two events of <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref29/html/T_System_Windows_RoutedEvent.asp">RoutedEvent</A> 
+type: Selected and Unselected.<BR>They are defined and registered in the static 
+constructor:</P><FONT size=2>
+<P></FONT><FONT face="Courier New"><FONT color=#0000ff size=2>public</FONT><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>readonly</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>RoutedEvent</FONT></FONT><FONT size=2><FONT 
+face="Courier New"> SelectedEvent;<BR></FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>public</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> </FONT><FONT 
+color=#0000ff size=2>readonly</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>RoutedEvent</FONT></FONT><FONT size=2><FONT face="Courier New"> 
+UnselectedEvent;</FONT></P>
+<P></FONT><FONT face="Courier New"><FONT color=#0000ff size=2>public</FONT><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>event</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>RoutedEventHandler</FONT></FONT><FONT size=2><FONT 
+face="Courier New"> Selected<BR></FONT><FONT face="Courier New">{<BR>&nbsp; 
+</FONT></FONT><FONT face="Courier New"><FONT color=#0000ff 
+size=2>add</FONT><FONT size=2> { </FONT><FONT color=#0000ff 
+size=2>base</FONT><FONT size=2>.AddHandler(SelectedEvent, </FONT><FONT 
+color=#0000ff size=2>value</FONT></FONT><FONT size=2><FONT face="Courier New">); 
+}<BR>&nbsp; </FONT></FONT><FONT face="Courier New"><FONT color=#0000ff 
+size=2>remove</FONT><FONT size=2> { </FONT><FONT color=#0000ff 
+size=2>base</FONT><FONT size=2>.RemoveHandler(SelectedEvent, </FONT><FONT 
+color=#0000ff size=2>value</FONT></FONT><FONT size=2><FONT face="Courier New">); 
+}<BR></FONT><FONT face="Courier New">}<BR></FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>public</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>event</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>RoutedEventHandler</FONT></FONT><FONT size=2><FONT 
+face="Courier New"> Unselected<BR></FONT><FONT face="Courier New">{<BR>&nbsp; 
+</FONT></FONT><FONT face="Courier New"><FONT color=#0000ff 
+size=2>add</FONT><FONT size=2> { </FONT><FONT color=#0000ff 
+size=2>base</FONT><FONT size=2>.AddHandler(UnselectedEvent, </FONT><FONT 
+color=#0000ff size=2>value</FONT></FONT><FONT size=2><FONT face="Courier New">); 
+}<BR>&nbsp; </FONT></FONT><FONT face="Courier New"><FONT color=#0000ff 
+size=2>remove</FONT><FONT size=2> { </FONT><FONT color=#0000ff 
+size=2>base</FONT><FONT size=2>.RemoveHandler(UnselectedEvent, </FONT><FONT 
+color=#0000ff size=2>value</FONT></FONT><FONT size=2><FONT face="Courier New">); 
+}<BR></FONT><FONT face="Courier New">}</FONT></P><FONT size=2>
+<P></FONT><FONT face="Courier New" color=#0000ff size=2>static</FONT><FONT 
+size=2><FONT face="Courier New"> EllipticItem()<BR></FONT><FONT 
+face="Courier New">{<BR>&nbsp; </FONT></FONT><FONT 
+face="Courier New">...<BR>&nbsp; </FONT><FONT size=2><FONT 
+face="Courier New">SelectedEvent = </FONT></FONT><FONT face="Courier New"><FONT 
+color=#008080 size=2>EventManager</FONT><FONT 
+size=2>.RegisterRoutedEvent(</FONT><FONT color=#800000 
+size=2>"Selected"</FONT><FONT size=2>, </FONT><FONT color=#008080 
+size=2>RoutingStrategy</FONT><FONT size=2>.Bubble, </FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>RoutedEventHandler</FONT><FONT size=2>), </FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>EllipticItem</FONT></FONT><FONT size=2><FONT 
+face="Courier New">));<BR>&nbsp; </FONT><FONT face="Courier New">UnselectedEvent 
+= </FONT></FONT><FONT face="Courier New"><FONT color=#008080 
+size=2>EventManager</FONT><FONT size=2>.RegisterRoutedEvent(</FONT><FONT 
+color=#800000 size=2>"Unselected"</FONT><FONT size=2>, </FONT><FONT 
+color=#008080 size=2>RoutingStrategy</FONT><FONT size=2>.Bubble, </FONT><FONT 
+color=#0000ff size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>RoutedEventHandler</FONT><FONT size=2>), </FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>EllipticItem</FONT></FONT><FONT size=2><FONT 
+face="Courier New">));<BR>&nbsp; </FONT></FONT><FONT face="Courier New"><FONT 
+color=#008080 size=2>EventManager</FONT><FONT 
+size=2>.RegisterClassHandler(</FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>EllipticItem</FONT><FONT size=2>), SelectedEvent, </FONT><FONT 
+color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>RoutedEventHandler</FONT></FONT><FONT size=2><FONT 
+face="Courier New">(_OnSelectedEvent));<BR>&nbsp; </FONT></FONT><FONT 
+face="Courier New"><FONT color=#008080 size=2>EventManager</FONT><FONT 
+size=2>.RegisterClassHandler(</FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>EllipticItem</FONT><FONT size=2>), UnselectedEvent, </FONT><FONT 
+color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>RoutedEventHandler</FONT></FONT><FONT size=2><FONT 
+face="Courier New">(_OnUnselected));<BR></FONT><FONT 
+face="Courier New">}</FONT></P></FONT></FONT>
+<P>The last two lines of code are very useful because they enable to execute 
+methods addressed by the delegate when the corresponding event is raised.<BR>If 
+you're like me, you may already use and also take advantage of triggers. They 
+are very useful to intercept events, behaviors or specific states during the 
+life cycle of controls. So I decide to provide the IsSelected property that is 
+easy-to-use by a trigger in order to define the adequat behavior of the 
+item.<BR>I simply define two coupled fields of <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref29/html/T_System_Windows_DependencyProperty.asp">DependencyProperty</A> 
+and <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref29/html/T_System_Windows_DependencyPropertyKey.asp">DependencyPropertyKey</A> 
+types:</P><FONT size=2>
+<P></FONT><FONT face="Courier New"><FONT color=#0000ff size=2>public</FONT><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>readonly</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>DependencyProperty</FONT></FONT><FONT size=2><FONT 
+face="Courier New"> IsSelectedProperty;<BR></FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>private</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>static</FONT><FONT size=2> </FONT><FONT 
+color=#0000ff size=2>readonly</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>DependencyPropertyKey</FONT><FONT size=2> 
+IsSelectedPropertyKey;</P></FONT></FONT><FONT size=2>
+<P></FONT><FONT face="Courier New" color=#0000ff size=2>static</FONT><FONT 
+size=2><FONT face="Courier New"> EllipticItem()<BR></FONT><FONT 
+face="Courier New">{<BR>&nbsp; </FONT></FONT><FONT 
+face="Courier New">...<BR>&nbsp; </FONT><FONT size=2><FONT 
+face="Courier New">IsSelectedPropertyKey = </FONT></FONT><FONT 
+face="Courier New"><FONT color=#008080 size=2>DependencyProperty</FONT><FONT 
+size=2>.RegisterReadOnly(</FONT><FONT color=#800000 
+size=2>"IsSelected"</FONT><FONT size=2>, </FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>bool</FONT><FONT size=2>), </FONT><FONT color=#0000ff 
+size=2>typeof</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>EllipticItem</FONT><FONT size=2>), </FONT><FONT color=#0000ff 
+size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>FrameworkPropertyMetadata</FONT><FONT size=2>(</FONT><FONT color=#0000ff 
+size=2>false</FONT><FONT size=2>, </FONT><FONT color=#0000ff 
+size=2>new</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>PropertyChangedCallback</FONT><FONT size=2>(</FONT><FONT color=#008080 
+size=2>EllipticItem</FONT></FONT><FONT size=2><FONT 
+face="Courier New">._OnSelected)));<BR>&nbsp; </FONT><FONT 
+face="Courier New">IsSelectedProperty = 
+IsSelectedPropertyKey.DependencyProperty;<BR>&nbsp; </FONT><FONT 
+face="Courier New">...<BR></FONT><FONT size=2><FONT 
+face="Courier New">}</FONT></P><FONT color=#0000ff size=2>
+<P><FONT face="Courier New">public</FONT></FONT><FONT face="Courier New"><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>bool</FONT></FONT><FONT size=2><FONT 
+face="Courier New"> IsSelected<BR></FONT><FONT face="Courier New">{<BR>&nbsp; 
+</FONT></FONT><FONT face="Courier New"><FONT color=#0000ff 
+size=2>get</FONT><FONT size=2> { </FONT><FONT color=#0000ff 
+size=2>return</FONT><FONT size=2> (</FONT><FONT color=#0000ff 
+size=2>bool</FONT><FONT size=2>)</FONT><FONT color=#0000ff 
+size=2>base</FONT></FONT><FONT size=2><FONT 
+face="Courier New">.GetValue(IsSelectedProperty); }<BR></FONT><FONT 
+face="Courier New">}</FONT></P></FONT></FONT></FONT>
+<P>I also decided to publish a ControlTemplate that creates the visual rendering 
+of the control through the templated method GetTemplateContainer. I warn you 
+that a constraint exists. You know, when you want to define a particular 
+rendering of a textbox, you must use a scrollviewer and set a specific name. I 
+followed the same philosophy. So you must explicitly named the root element of 
+the template as <STRONG>PART_Container</STRONG>.</P>
+<P>&nbsp;</P><SPAN>The elliptic control</SPAN> 
+<HR>
+
+<P>The main container is a <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref30/html/T_System_Windows_Controls_ContentControl.asp">ContentControl</A> 
+because it already implements the IAddChild interface enalbing to add items in a 
+collection. It also defines a <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref29/html/T_System_Windows_DataTemplate.asp">DataTemplate</A> 
+but I will explain the data binding mechanism in a next post.<BR>I define the 
+ellipse and declare the template of the <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref34/html/T_System_Windows_Media_Animation_Storyboard.asp">Storyboard</A> 
+later associated to each item.</P><FONT color=#0000ff size=2>
+<P><FONT face="Courier New">&lt;</FONT></FONT><FONT color=#800000 size=2><FONT 
+face="Courier New">ContentControl<BR>&nbsp; </FONT></FONT><FONT 
+face="Courier New"><FONT color=#ff0000 size=2>xmlns</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>http://schemas.microsoft.com/winfx/avalon/2005</FONT><FONT 
+size=2>"<BR>&nbsp; </FONT></FONT><FONT face="Courier New"><FONT color=#ff0000 
+size=2>xmlns:x</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff 
+size=2>http://schemas.microsoft.com/winfx/xaml/2005</FONT><FONT 
+size=2>"<BR>&nbsp; </FONT></FONT><FONT face="Courier New"><FONT color=#ff0000 
+size=2>x:Class</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff 
+size=2>RD.Controls.EllipticItemSelector</FONT><FONT size=2>"<BR>&nbsp; 
+</FONT></FONT><FONT face="Courier New"><FONT color=#ff0000 
+size=2>Loaded</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>_OnLoad</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;</FONT></P>
+<P><FONT face="Courier New">&nbsp; &lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>ContentControl.Resources</FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>EllipseGeometry</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>x:Key</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>EllipseGeometry_Template</FONT><FONT size=2>"</FONT></FONT><FONT 
+color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>EllipseGeometry.Transform</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>RotateTransform</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Angle</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>EllipseGeometry.Transform</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>EllipseGeometry</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;</FONT></P>
+<P><FONT face="Courier New">&nbsp;&nbsp;&nbsp; &lt;</FONT></FONT><FONT 
+face="Courier New"><FONT color=#800000 size=2>Storyboard</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>x:Key</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>SB_Template</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>ParallelTimeline</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>DoubleAnimationUsingPath</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>FillBehavior</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>HoldEnd</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>RepeatBehavior</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>Forever</FONT><FONT 
+size=2>"<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT></FONT><FONT face="Courier New"><FONT color=#ff0000 
+size=2>Storyboard.TargetProperty</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>(Canvas.Left)</FONT><FONT size=2>" 
+</FONT></FONT><FONT face="Courier New"><FONT color=#ff0000 
+size=2>Source</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>X</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>DoubleAnimationUsingPath</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>FillBehavior</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>HoldEnd</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>RepeatBehavior</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>Forever</FONT><FONT 
+size=2>"<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT></FONT><FONT face="Courier New"><FONT color=#ff0000 
+size=2>Storyboard.TargetProperty</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>(Canvas.Top)</FONT><FONT size=2>" 
+</FONT></FONT><FONT face="Courier New"><FONT color=#ff0000 
+size=2>Source</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>Y</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>ParallelTimeline</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>ParallelTimeline</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>DoubleAnimationUsingKeyFrames</FONT><FONT color=#0000ff 
+size=2> </FONT><FONT color=#ff0000 size=2>Storyboard.TargetProperty</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>(Viewbox.Width)</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>RepeatBehavior</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>Forever</FONT><FONT size=2>" <FONT 
+color=#0000ff>/</FONT></FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>DoubleAnimationUsingKeyFrames</FONT><FONT color=#0000ff 
+size=2> </FONT><FONT color=#ff0000 size=2>Storyboard.TargetProperty</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>(Viewbox.Height)</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>RepeatBehavior</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>Forever</FONT><FONT size=2>" <FONT 
+color=#0000ff>/</FONT></FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT></FONT><FONT 
+color=#0000ff size=2><FONT face="Courier New">&lt;/</FONT></FONT><FONT 
+face="Courier New" color=#800000 size=2>ParallelTimeline</FONT><FONT 
+color=#0000ff size=2><FONT face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>Storyboard</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;</FONT></P>
+<P><FONT face="Courier New">&nbsp; &lt;/</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>ContentControl.Resources</FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New">&gt;</FONT></P>
+<P><FONT face="Courier New">&nbsp; &lt;</FONT></FONT><FONT 
+face="Courier New"><FONT color=#800000 size=2>Canvas</FONT><FONT color=#0000ff 
+size=2> </FONT><FONT color=#ff0000 size=2>Name</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>_itemsContainer</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New"> /&gt;</FONT></P>
+<P><FONT face="Courier New"></FONT></P>
+<P><FONT face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>ContentControl</FONT><FONT color=#0000ff 
+size=2>&gt;</FONT></FONT></P>
+<P>Notice that the ContentControl class accept only one root control. So I 
+define a canvas to enable adding and positioning each item around the ellipse. 
+But how is it possible to add elements to canvas and not to the ContentControl 
+?<BR>I simply override the AddChild protected method.</P><FONT color=#0000ff 
+size=2>
+<P><FONT face="Courier New">protected</FONT></FONT><FONT 
+face="Courier New"><FONT size=2> </FONT><FONT color=#0000ff 
+size=2>override</FONT><FONT size=2> </FONT><FONT color=#0000ff 
+size=2>void</FONT><FONT size=2> AddChild(</FONT><FONT color=#0000ff 
+size=2>object</FONT></FONT><FONT size=2><FONT face="Courier New"> 
+value)<BR></FONT><FONT face="Courier New">{<BR>&nbsp; </FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>if</FONT><FONT size=2> 
+(</FONT><FONT color=#0000ff size=2>this</FONT><FONT size=2>.Content == 
+</FONT><FONT color=#0000ff size=2>null</FONT></FONT><FONT size=2><FONT 
+face="Courier New">)<BR>&nbsp;&nbsp;&nbsp; </FONT></FONT><FONT 
+face="Courier New" color=#0000ff size=2>base</FONT><FONT size=2><FONT 
+face="Courier New">.AddChild(value);<BR>&nbsp; </FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New">else<BR>&nbsp; </FONT></FONT><FONT size=2><FONT 
+face="Courier New">{<BR>&nbsp;&nbsp;&nbsp; </FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>if</FONT><FONT size=2> 
+(_isInitialized) </FONT><FONT color=#0000ff size=2>return</FONT></FONT><FONT 
+size=2><FONT face="Courier New">;<BR>&nbsp;&nbsp;&nbsp; </FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>if</FONT><FONT size=2> (value 
+</FONT><FONT color=#0000ff size=2>is</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>EllipticItem</FONT></FONT><FONT size=2><FONT 
+face="Courier New">)<BR>&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT></FONT><FONT 
+face="Courier New"><FONT color=#008080 size=2>EllipticItem</FONT><FONT size=2> 
+__ellipticItem = (</FONT><FONT color=#008080 
+size=2>EllipticItem</FONT></FONT><FONT size=2><FONT 
+face="Courier New">)value;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">__ellipticItem.Width = </FONT></FONT><FONT face="Courier New" 
+color=#0000ff size=2>this</FONT><FONT size=2><FONT 
+face="Courier New">.ItemWidth;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">__ellipticItem.Height = </FONT></FONT><FONT 
+face="Courier New" color=#0000ff size=2>this</FONT><FONT size=2><FONT 
+face="Courier New">.ItemHeight;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT></FONT><FONT face="Courier New" color=#0000ff size=2>this</FONT><FONT 
+size=2><FONT 
+face="Courier New">._AttachToVisualTree(__ellipticItem);<BR>&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">}<BR>&nbsp;&nbsp;&nbsp; </FONT></FONT><FONT 
+color=#0000ff size=2><FONT 
+face="Courier New">else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT></FONT><FONT 
+face="Courier New"><FONT color=#0000ff size=2>throw</FONT><FONT size=2> 
+</FONT><FONT color=#0000ff size=2>new</FONT><FONT size=2> </FONT><FONT 
+color=#008080 size=2>InvalidOperationException</FONT><FONT size=2>(</FONT><FONT 
+color=#800000 size=2>"Incorrect type value"</FONT></FONT><FONT size=2><FONT 
+face="Courier New">);<BR>&nbsp; </FONT><FONT 
+face="Courier New">}<BR></FONT><FONT face="Courier New">}</FONT></FONT></P><FONT 
+size=2><FONT color=#0000ff size=2>
+<P><FONT face="Courier New">private</FONT></FONT><FONT face="Courier New"><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>void</FONT><FONT size=2> 
+_AttachToVisualTree(</FONT><FONT color=#008080 
+size=2>EllipticItem</FONT></FONT><FONT size=2><FONT face="Courier New"> 
+ellipticItem)<BR></FONT><FONT face="Courier New">{<BR>&nbsp; </FONT></FONT><FONT 
+face="Courier New"><FONT color=#008080 size=2>Viewbox</FONT><FONT size=2> 
+__viewbox = </FONT><FONT color=#0000ff size=2>new</FONT><FONT size=2> 
+</FONT><FONT color=#008080 size=2>Viewbox</FONT></FONT><FONT size=2><FONT 
+face="Courier New">();<BR>&nbsp; </FONT><FONT 
+face="Courier New">__viewbox.Height = ellipticItem.Height;<BR>&nbsp; 
+</FONT><FONT face="Courier New">__viewbox.Width = ellipticItem.Width;</FONT></P>
+<P><FONT face="Courier New">&nbsp; __viewbox.Child = ellipticItem;<BR>&nbsp; 
+</FONT><FONT face="Courier New">__viewbox.MouseLeftButtonDown += 
+</FONT></FONT><FONT face="Courier New"><FONT color=#0000ff 
+size=2>new</FONT><FONT size=2> System.Windows.Input.</FONT><FONT color=#008080 
+size=2>MouseButtonEventHandler</FONT></FONT><FONT size=2><FONT 
+face="Courier New">(__ellipticItem_MouseLeftButtonDown);</FONT></P>
+<P><FONT face="Courier New">&nbsp; (</FONT></FONT><FONT face="Courier New"><FONT 
+color=#0000ff size=2>this</FONT><FONT size=2>.Content </FONT><FONT color=#0000ff 
+size=2>as</FONT><FONT size=2> </FONT><FONT color=#008080 
+size=2>Canvas</FONT></FONT><FONT size=2><FONT 
+face="Courier New">).Children.Add(__viewbox);<BR></FONT><FONT 
+face="Courier New">}</FONT></P></FONT></FONT>
+<P>Keep in mind that the canvas itself must be added using this method. The 
+first test ensures it will be correctly connected the first time.<BR>I add 
+several DependencyProperty objects to set the size of the control, the angle, 
+the size of the items and the rotation speed.<BR>I also add two events of 
+RoutedEvent type: Click and SelectionChanged.</P>
+<P>&nbsp;</P>
+<P><SPAN>The consuming</SPAN> 
+<HR>
+<BR>A few of code is now needed for the control to be functional.<BR>The first 
+thing to do is to exactly define the rendering of the items. Very simple using a 
+ControlTemplate within a style tag: <FONT color=#0000ff size=2>
+<P><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>Style</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>TargetType</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{x:Type c:EllipticItem}</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>x:Key</FONT><FONT color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2>Chaz_EllipticItem_Style</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>Setter</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Property</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>Template</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>Setter.Value</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>ControlTemplate</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>StackPanel</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Name</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>PART_Container</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>Image</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Source</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>images/chaz.rd.release.png</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Width</FONT><FONT color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2>70</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Height</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>70</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>Grid</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Name</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>PART_Text</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Text</FONT><FONT color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2>{Binding Path=Text, 
+RelativeSource=/TemplatedParent}</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2> </FONT><FONT color=#ff0000 size=2>Style</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDText_Style}</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>Grid</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>Grid</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Name</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>PART_Abilities</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Visibility</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>Collapsed</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Margin</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>20</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Width</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>225</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>ColumnDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>ColumnDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>RowDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>RowDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>RowDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>RowDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>RowDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>RowDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>RowDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>RowDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>RowDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>RowDefinition</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.ColumnSpan</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>2</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Grid.Row</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>0</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>FontSize</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>14</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Margin</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>0,0,0,10</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>HorizontalAlignment</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>Center</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Text</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{Binding ElementName=PART_Text, 
+Path=Text}</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Text</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> abilities</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>1</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>DotNet drilling</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>1</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>1</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>16</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>HorizontalAlignment</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Right</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>2</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>Analysis gathering</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>1</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>2</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>14</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>HorizontalAlignment</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Right</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>3</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>DataBlaster</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>1</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>3</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>15</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>HorizontalAlignment</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Right</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>4</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>Early adopter</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>1</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>4</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>15</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>HorizontalAlignment</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Right</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>5</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>UI 
+Arts</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>1</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>5</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>18</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>HorizontalAlignment</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Right</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>6</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>Project handling</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>1</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>6</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>15</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>HorizontalAlignment</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Right</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>7</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>Business opportunist</FONT><FONT size=2>"</FONT></FONT><FONT 
+color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>1</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.Row</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>7</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>12</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>HorizontalAlignment</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>Right</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.ColumnSpan</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>2</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Grid.Row</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>8</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Margin</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>0,10,0,0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Text</FONT><FONT color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2>Master in technologeek</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>TextBlock</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Style</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDAbility_Style}</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Grid.Column</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>Grid.ColumnSpan</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>2</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Grid.Row</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff 
+size=2>9</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>Margin</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>0,20,0,0</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>HorizontalAlignment</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>Center</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>FontStyle</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>Italic</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2> </FONT><FONT color=#ff0000 
+size=2>TextWrapping</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>Wrap</FONT><FONT size=2>"</FONT><FONT 
+color=#0000ff size=2> </FONT><FONT color=#ff0000 size=2>Text</FONT><FONT 
+color=#0000ff size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>'I 
+kicked the first, I smashed the second! And I swam!'</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>Grid</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>StackPanel</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT><FONT 
+face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>ControlTemplate.Triggers</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>EventTrigger</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>RoutedEvent</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>c:EllipticItem.MouseEnter</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>EventTrigger.Actions</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>BeginStoryboard</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Storyboard</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDTextAnimation_Enter}</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>EventTrigger.Actions</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>EventTrigger</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>EventTrigger</FONT><FONT color=#0000ff size=2> </FONT><FONT 
+color=#ff0000 size=2>RoutedEvent</FONT><FONT color=#0000ff size=2>=</FONT><FONT 
+size=2>"</FONT><FONT color=#0000ff size=2>c:EllipticItem.MouseLeave</FONT><FONT 
+size=2>"</FONT></FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>EventTrigger.Actions</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>BeginStoryboard</FONT><FONT color=#0000ff size=2> 
+</FONT><FONT color=#ff0000 size=2>Storyboard</FONT><FONT color=#0000ff 
+size=2>=</FONT><FONT size=2>"</FONT><FONT color=#0000ff size=2>{StaticResource 
+RDTextAnimation_Leave}</FONT><FONT size=2>"</FONT></FONT><FONT color=#0000ff 
+size=2><FONT face="Courier New"> 
+/&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>EventTrigger.Actions</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</FONT><FONT face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" 
+color=#800000 size=2>EventTrigger</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>ControlTemplate.Triggers</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>ControlTemplate</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;</FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>Setter.Value</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR>&nbsp;&nbsp;</FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New" color=#800000 
+size=2>Setter</FONT><FONT color=#0000ff size=2><FONT 
+face="Courier New">&gt;<BR></FONT><FONT 
+face="Courier New">&lt;/</FONT></FONT><FONT face="Courier New"><FONT 
+color=#800000 size=2>Style</FONT><FONT color=#0000ff 
+size=2>&gt;</FONT></FONT></P>
+<P>In this sample, the abilities of each RioterDecker member appear in the right 
+panel. These abilities are information define within the template of each item. 
+Therefor, to appear in the appropriate container, I just disconnect from the <A 
+href="http://windowssdk.msdn.microsoft.com/library/en-us/cpref30/html/T_System_Windows_Controls_StackPanel.asp">StackPanel</A> 
+to connect to the right panel (when the corresponding item is selected of 
+course):</P><FONT color=#0000ff size=2>
+<P><FONT face="Courier New">private</FONT></FONT><FONT face="Courier New"><FONT 
+size=2> </FONT><FONT color=#0000ff size=2>void</FONT><FONT size=2> 
+_OnSelected(</FONT><FONT color=#0000ff size=2>object</FONT><FONT size=2> sender, 
+</FONT><FONT color=#008080 size=2>RoutedEventArgs</FONT></FONT><FONT 
+size=2><FONT face="Courier New"> e)<BR></FONT><FONT 
+face="Courier New">{<BR>&nbsp; </FONT></FONT><FONT face="Courier New"><FONT 
+color=#008080 size=2>EllipticItem</FONT><FONT size=2> item = (</FONT><FONT 
+color=#008080 size=2>EllipticItem</FONT></FONT><FONT size=2><FONT 
+face="Courier New">)sender;<BR>&nbsp; </FONT></FONT><FONT 
+face="Courier New"><FONT color=#008080 size=2>StackPanel</FONT><FONT size=2> 
+__panel = item.GetTemplateContainer&lt;</FONT><FONT color=#008080 
+size=2>StackPanel</FONT></FONT><FONT size=2><FONT 
+face="Courier New">&gt;();</FONT></P>
+<P></FONT><FONT face="Courier New"><FONT color=#008080 size=2>&nbsp; 
+Grid</FONT><FONT size=2> __grid = (</FONT><FONT color=#008080 
+size=2>Grid</FONT><FONT size=2>)__panel.FindName(</FONT><FONT color=#800000 
+size=2>"PART_Abilities"</FONT></FONT><FONT size=2><FONT 
+face="Courier New">);<BR>&nbsp; </FONT></FONT><FONT face="Courier New" 
+color=#0000ff size=2>if</FONT><FONT size=2><FONT face="Courier New"> 
+(__panel.Children.Contains(__grid))<BR>&nbsp; </FONT><FONT 
+face="Courier New">{<BR>&nbsp;&nbsp;&nbsp; </FONT><FONT 
+face="Courier New">__panel.Children.Remove(__grid);<BR>&nbsp; </FONT><FONT 
+face="Courier New">}</FONT></P>
+<P><FONT face="Courier New">&nbsp; _rdContent.Children.Add(__grid);<BR>&nbsp; 
+</FONT><FONT face="Courier New">__grid.Visibility = </FONT></FONT><FONT 
+face="Courier New" color=#008080 size=2>Visibility</FONT><FONT size=2><FONT 
+face="Courier New">.Visible;<BR></FONT><FONT face="Courier New">}</FONT></P>
+<P>&nbsp;</P></FONT><SPAN>Conclusion</SPAN> 
+<HR>
+
+<P>As you can see, the control enables many rendering possibilities by 
+exploiting WPF ControlTemplate objects. Even if your 3-D knowledges are limited, 
+you are able to use 2-D visual effects to simulate 3-D.<BR>However I know what 
+you gonna say... You think there are too many Xaml declarations and too many 
+redundancies and I agree. In a next post, I will modify this control to 
+integrate DataBinding and DataTemplate to create the visual items. But step by 
+step...</P>
+<P><A 
+href="http://esnips.com/doc/af35ccc7-2f8f-474c-9cb7-305f743a9fa1/RD.EllipticSample.sources.zip">Download 
+the sources</A><BR><BR>(WinFX January CTP)</P>
+<DIV class=postfoot>Published Friday, February 03, 2006 8:31 AM by <A 
+id=_ctl0____ctl0____ctl1___Entry___AuthorLink 
+href="http://blog.rioterdecker.net/user/Profile.aspx?UserID=2104">Chaz</A> 
+<BR>Filed Under: <A 
+id=_ctl0____ctl0____ctl1___Entry___Tags___Categories__ctl1_Link 
+href="http://blog.rioterdecker.net/blogs/chaz/archive/category/1001.aspx" 
+rel=tag>WPF</A> </DIV></DIV></DIV>
+<H3>Comments </H3>
+<DIV id=comments>
+<DIV class=comment>No Comments </DIV></ASP:REPEATER></DIV><EM>Anonymous comments 
+are disabled</EM> </DIV>
+<DIV id=contentfooter>&nbsp;</DIV></DIV>
+<DIV id=footer>
+<DIV class=Copyright>rioterdecker - 2006</DIV><A 
+href="http://communityserver.org/r.ashx?1" target=_blank><IMG 
+alt="Powered by Community Server, by Telligent Systems " 
+src="Chaz  3-D visual effect in 2-D (part 2) the fresh elliptic control_files/EULA.gif" 
+border=0></A> </DIV></DIV></DIV>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+function KeyDownHandler_ctl0____ctl0___BlogSideBar1___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('_ctl0:_:_ctl0:_:BlogSideBar1:_:ws:_:SearchButton','')	}
+}
+
+//-->
+</SCRIPT>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blog.rioterdecker.net/blogs/chaz/archive/2006/02/03/94.aspx"
+dc:identifier="http://blog.rioterdecker.net/blogs/chaz/archive/2006/02/03/94.aspx"
+dc:title="3-D visual effect in 2-D (part 2): the fresh elliptic control"
+trackback:ping="http://blog.rioterdecker.net/blogs/trackback.aspx?PostID=94" />
+</rdf:RDF>
+--></FORM></BODY></HTML>

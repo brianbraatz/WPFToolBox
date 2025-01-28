@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1"><title>WPF: Synchronizing animations (part 2: Asynchronous by nature)</title>
+
+
+
+
+  
+
+    <style type="text/css">
+    
+      .spanOption
+      {
+        font-weight: bold;        
+      }
+      
+      .spanMethod
+      {
+        font-weight: bold;        
+      }
+      
+      .spanParameter
+      {
+        font-weight: bold;
+      }
+    
+    </style>
+
+    <link rel="Stylesheet" type="text/css" href="Synchronizing%20animations%20Part%201_files/gslb.css"><link rel="Stylesheet" type="text/css" href="Synchronizing%20animations%20Part%201_files/gslb_002.css"><link rel="Stylesheet" type="text/css" href="Synchronizing%20animations%20Part%201_files/manoli.css">
+    
+    <script type="text/javascript" src="Synchronizing%20animations%20Part%201_files/gslb.js"></script>
+    <script type="text/javascript" src="Synchronizing%20animations%20Part%201_files/gslb_004.js"></script>
+    <script type="text/javascript" src="Synchronizing%20animations%20Part%201_files/gslb_002.js"></script>
+    <script type="text/javascript" src="Synchronizing%20animations%20Part%201_files/gslb_003.js"></script></head><body>
+    <form name="frmMain" method="post" action="article-2007061401.aspx" id="frmMain">
+<div>
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTE5MDEwMTE5MWRk" type="hidden">
+</div>
+
+
+      <a id="lnkHome" href="http://www.galasoft.ch/index.html" target="_top" class="gslb_mainLnkHome" style="top: 8px; left: 8px;">
+        <img src="Synchronizing%20animations%20Part%201_files/vsmallhead.gif" alt="Navigate back home" title="Navigate back home">
+      </a>
+      <script type="text/javascript">
+        new gslb.PositionedNode( document.getElementById( 'lnkHome' ) );
+      </script>
+    
+      <div class="gslb_mainDivImageTitle">
+        <img alt="GalaSoft Laurent Bugnion" title="GalaSoft Laurent Bugnion" src="Synchronizing%20animations%20Part%201_files/header.gif" class="gslb_mainImgTitle">
+      </div>
+      
+      <div class="gslb_rsbDivPosting" style="margin-top: 2em; width: 60%;">
+        <div class="gslb_rsbDivPostingTitle">
+          WPF: Synchronizing animations (part 2: Asynchronous by nature)
+        </div>
+
+        <table style="margin: 0pt; width: 100%;">
+          <tbody><tr>
+            <td>
+              <div class="gslb_mainDivSummary">
+                <a href="#intro">Introduction</a> /
+                <a href="#itemscontrol">ItemsControl</a> /
+                <a href="#datalayer">Data layer</a> /
+                <a href="#datatemplate">Data template</a> /
+                <a href="#items">Items, Events</a> /
+                <a href="#conclusion">Demo, download</a>
+              </div>
+            </td>
+            <td style="text-align: right; vertical-align: top;">
+              <div class="gslb_mainDivSummary">
+                <a href="http://www.galasoft.ch/mydotnet/articles/article-2007060701.aspx">&lt;&lt;&nbsp;Prev</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/articles_en.html#wpf">Index</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/mydotnet/articles/article-2007081301.aspx">Next&nbsp;&gt;&gt;</a>
+              </div>
+            </td>
+          </tr>
+        </tbody></table>
+        
+        
+
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="intro"></a>Introduction
+</div>
+<p class="gslb_rsbPParagraph">
+In the first article of this serie, we saw that animations in WPF are
+asynchronous by nature, which means that they will start as soon as the
+start condition (event, data trigger, etc...) is activated, without any
+consideration for other running animations. In this article, we will
+demonstrate that fact first, using a small test application which we
+will modify in the next article to make the animations run
+synchronously.
+</p>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="itemscontrol"></a>ItemsControl to present the UI elements
+</div>
+<p class="gslb_rsbPParagraph">It is very easy to demonstrate the
+asynchronous character of WPF animations. First let's create an
+ItemsControl hosting a number of buttons (for more information about
+ItemsControl and how to bind the content to a collection, <a href="http://www.galasoft.ch/mydotnet/articles/article-2007041201.aspx" target="_blank">see this article</a>).
+The code hereunder creates an ItemsControl looking like a horizontal
+StackPanel, and databound to an ObservableCollection defined in the
+Page class (see below), and named "Data" (original name!!). The
+collection contains instances of a custom objects which I named
+DataItem.
+</p>
+<p class="gslb_rsbPParagraph">Note that we handle the "Click" events of
+all the buttons in a generic way, using the attached "Button.Click"
+event handler. The reason is that I don't recommend defining event
+handlers in a DataTemplate. Templates in WPF are often stored in
+external resource files, and if possible there should be no link to
+methods stored in the code behind.
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">ItemsControl</span> <span class="attr">ItemsSource</span><span class="kwrd">="{Binding ElementName=MyPage, Path=Data}"</span>
+              <span class="attr">ItemTemplate</span><span class="kwrd">="{StaticResource dataTemplate}"</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">ItemsControl.ItemsPanel</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">ItemsPanelTemplate</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">StackPanel</span> <span class="attr">Orientation</span><span class="kwrd">="Horizontal"</span>
+                        <span class="attr">Button</span>.<span class="attr">Click</span><span class="kwrd">="Item_Click"</span><span class="kwrd">/&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">ItemsPanelTemplate</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">ItemsControl.ItemsPanel</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">ItemsControl.ItemContainerStyle</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">Style</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Control.Margin"</span> <span class="attr">Value</span><span class="kwrd">="18"</span><span class="kwrd">/&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">Style</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">ItemsControl.ItemContainerStyle</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">ItemsControl</span><span class="kwrd">&gt;</span>
+</div>
+</div>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="datalayer"></a>Data layer
+</div>
+<p class="gslb_rsbPParagraph">In the code-behind, we populate the
+"Data" collection with 5 DataItem instances. This data object is a very
+simple class with two DependencyProperties (DO): The first DP "IsBlink"
+is the one starting and stopping the animation. The second DP
+"Description" is simply a text which will be displayed in the button
+representing the DataItem (strictly speaking, this second DP could be a
+simple CLR property, since it never changes in that application).
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">public</span> <span class="kwrd">class</span> <span class="type">DataItem</span> : <span class="type">DependencyObject</span>
+{
+    <span class="rem">// Dependency property responsible for starting/stopping the animation.</span>
+    <span class="kwrd">public</span> <span class="kwrd">bool</span> IsBlink
+    {
+        get { <span class="kwrd">return</span> (<span class="kwrd">bool</span>) GetValue(IsBlinkProperty); }
+        set { SetValue(IsBlinkProperty, <span class="kwrd">value</span>); }
+    }
+
+    <span class="kwrd">public</span> <span class="kwrd">static</span> <span class="kwrd">readonly</span> <span class="type">DependencyProperty</span> IsBlinkProperty =
+        <span class="type">DependencyProperty</span>.Register(<span class="str">"IsBlink"</span>,
+            <span class="kwrd">typeof</span>(<span class="kwrd">bool</span>),
+            <span class="kwrd">typeof</span>(<span class="type">DataItem</span>),
+            <span class="kwrd">new</span> <span class="type">UIPropertyMetadata</span>(<span class="kwrd">false</span>));
+
+    <span class="rem">// Just a description for the item.</span>
+    <span class="kwrd">public</span> <span class="kwrd">string</span> Description
+    {
+        get { <span class="kwrd">return</span> (<span class="kwrd">string</span>) GetValue(DescriptionProperty); }
+        set { SetValue(DescriptionProperty, <span class="kwrd">value</span>); }
+    }
+
+    <span class="kwrd">public</span> <span class="kwrd">static</span> <span class="kwrd">readonly</span> <span class="type">DependencyProperty</span> DescriptionProperty =
+        <span class="type">DependencyProperty</span>.Register(<span class="str">"Description"</span>,
+            <span class="kwrd">typeof</span>(<span class="kwrd">string</span>),
+            <span class="kwrd">typeof</span>(<span class="type">DataItem</span>),
+            <span class="kwrd">new</span> <span class="type">UIPropertyMetadata</span>(<span class="str">"-none-"</span>));
+}
+</div>
+</div>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="datatemplate"></a>Data template
+</div>
+<p class="gslb_rsbPParagraph">
+Additionally, we define a DataTemplate making the data item look like a WPF button (again, for more information about this, <a href="http://www.galasoft.ch/mydotnet/articles/article-2007041201.aspx" target="_blank">see this article</a>).
+</p>
+<p class="gslb_rsbPParagraph">The data template's only interest is that
+it defines a ScaleTransform and a DoubleAnimation, which we will
+trigger when the button is clicked. Actually, to make things more
+dynamic, we will start and stop the animation on each click of the
+button. Let's see the transform first. It simply defines the
+ScaleTransform which will be animated later. For the moment, we define
+it with ScaleX = ScaleY = 1, which is the default value:
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">Button.RenderTransform</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">ScaleTransform</span>
+        <span class="attr">ScaleX</span><span class="kwrd">="1"</span>
+        <span class="attr">ScaleY</span><span class="kwrd">="1"</span><span class="kwrd">/&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">Button.RenderTransform</span><span class="kwrd">&gt;</span>
+</div>
+</div>
+<p class="gslb_rsbPParagraph">The next part is more interesting, though
+it's classical WPF: Define a DoubleAnimation triggered by a
+DependencyProperty (DP) exposed by the DataItem instance.
+</p>
+<p class="gslb_rsbPParagraph">The XAML animation is defined in the
+Button style, to allow the triggering. There are multiple ways to
+define animations, and this is just an example. The animation targets
+the following PropertyPath:
+"(Button.RenderTransform).(ScaleTransform.ScaleX)". Note that the
+animation is also stopped using the same DP, by using a StopStoryboard
+class.
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">Button.Style</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">Style</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">Style.Triggers</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">DataTrigger</span>
+                <span class="attr">Binding</span><span class="kwrd">="{Binding Path=IsBlink}"</span>
+                <span class="attr">Value</span><span class="kwrd">="True"</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">DataTrigger.EnterActions</span><span class="kwrd">&gt;</span>
+                    <span class="kwrd">&lt;</span><span class="html">BeginStoryboard</span> <span class="attr">x:Name</span><span class="kwrd">="scaleAnimation"</span><span class="kwrd">&gt;</span>
+                        <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span>
+                            <span class="kwrd">&lt;</span><span class="html">DoubleAnimation</span>
+                                <span class="attr">From</span><span class="kwrd">="1"</span>
+                                <span class="attr">To</span><span class="kwrd">="1.3"</span>
+                                <span class="attr">Duration</span><span class="kwrd">="0:0:1"</span>
+                                <span class="attr">AutoReverse</span><span class="kwrd">="True"</span>
+                                <span class="attr">RepeatBehavior</span><span class="kwrd">="Forever"</span>
+                                <span class="attr">Timeline</span>.<span class="attr">DesiredFrameRate</span><span class="kwrd">="40"</span>
+                                <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(Button.RenderTransform).(ScaleTransform.ScaleX)"</span><span class="kwrd">/&gt;</span>
+                        <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span>
+                    <span class="kwrd">&lt;/</span><span class="html">BeginStoryboard</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;/</span><span class="html">DataTrigger.EnterActions</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">DataTrigger</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">DataTrigger</span>
+                <span class="attr">Binding</span><span class="kwrd">="{Binding Path=IsBlink}"</span>
+                <span class="attr">Value</span><span class="kwrd">="False"</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">DataTrigger.EnterActions</span><span class="kwrd">&gt;</span>
+                    <span class="kwrd">&lt;</span><span class="html">StopStoryboard</span> <span class="attr">BeginStoryboardName</span><span class="kwrd">="scaleAnimation"</span><span class="kwrd">/&gt;</span>
+                <span class="kwrd">&lt;/</span><span class="html">DataTrigger.EnterActions</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">DataTrigger</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">Style.Triggers</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">Style</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">Button.Style</span><span class="kwrd">&gt;</span>
+</div>
+</div>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="items"></a>Creating the items, handling the events
+</div>
+<p class="gslb_rsbPParagraph">The last tasks we need to perform is to
+populate the ObservableCollection with DataItems, and also handle the
+"Click" event. This all takes place in the Page's code behind:
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">public</span> <span class="kwrd">partial</span> <span class="kwrd">class</span> <span class="type">Page0</span> : System.Windows.Controls.<span class="type">Page</span>
+{
+    <span class="rem">// Create the ObservableCollection containing the DataItems</span>
+    <span class="kwrd">private</span> <span class="type">ObservableCollection</span>&lt;<span class="type">DataItem</span>&gt; data
+        = <span class="kwrd">new</span> <span class="type">ObservableCollection</span>&lt;<span class="type">DataItem</span>&gt;();
+    <span class="kwrd">public</span> <span class="type">ObservableCollection</span>&lt;<span class="type">DataItem</span>&gt; Data
+    {
+        get { <span class="kwrd">return</span> data; }
+    }
+
+    <span class="rem">// Populate the ObservableCollection.</span>
+    <span class="kwrd">public</span> Page0()
+    {
+        <span class="kwrd">for</span> (<span class="kwrd">int</span> index = 0; index &lt; 4; index++)
+        {
+            <span class="type">DataItem</span> item = <span class="kwrd">new</span> <span class="type">DataItem</span>();
+            item.Description = <span class="str">"Item # "</span> + index;
+            data.Add(item);
+        }
+
+        InitializeComponent();
+    }
+
+    <span class="rem">// Handle the Click event.</span>
+    <span class="kwrd">private</span> <span class="kwrd">void</span> Item_Click(<span class="kwrd">object</span> sender, <span class="type">RoutedEventArgs</span> e)
+    {
+        <span class="rem">// Get the clicked button.</span>
+        <span class="type">Button</span> source = e.OriginalSource <span class="kwrd">as</span> <span class="type">Button</span>;
+        <span class="rem">// Get the DataItems for this button.</span>
+        <span class="type">DataItem</span> item = source.DataContext <span class="kwrd">as</span> <span class="type">DataItem</span>;
+        <span class="rem">// Start/Stop the animation by setting the DP.</span>
+        item.IsBlink = !item.IsBlink;
+    }
+}
+</div>
+</div>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="conclusion"></a>Demo, download
+</div>
+<p class="gslb_rsbPParagraph">
+The code we just studied is <a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2007061401/GalaSoftLb.Wpf.SynchronizedAnimations.zip">available for download</a>. Additionally, I created and published <a href="http://www.galasoft.ch/mydotnet/articles/resources/article-2007061401/xbap/GalaSoftLb.Wpf.SynchronizedAnimations.Xbap.xbap" target="_blank">an XBAP application</a> where we can see what we just did. After opening the XBAP in <span style="font-weight: bold;">Internet Explorer</span>, try and click on the buttons at random times. You will see that the animations run in an uncoordinated manner.
+</p>
+<p class="gslb_rsbPParagraph">
+The next article in this serie will show how to modify this small application to make animations run in a coordinated manner.
+</p>
+</div>
+      
+    
+    
+  </div></form></body></html>

@@ -1,0 +1,59 @@
+﻿<Window x:Class="AnimatedTextDemo.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Animated Text Demo" Height="300" Width="400"
+    FontSize="40"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    >
+  
+  <Window.Resources>
+    <!-- Makes a character go up and down.-->
+    <DoubleAnimation 
+      x:Key="CharacterWaveAnimation" 
+      x:Shared="False" 
+      To="20"
+      AccelerationRatio="0.5" 
+      AutoReverse="True"
+      DecelerationRatio="0.5"       
+      Duration="0:0:1"
+      RepeatBehavior="Forever"
+      Storyboard.TargetName="textBlk" 
+      />
+
+    <!-- Makes a character spin in a circle. -->
+    <DoubleAnimation 
+      x:Key="CharacterRotationAnimation" 
+      x:Shared="False" 
+      To="360"
+      AccelerationRatio="0.5" 
+      DecelerationRatio="0.5"
+      Duration="0:0:2" 
+      Storyboard.TargetName="textBlk" 
+      />
+
+    <!-- Creates a pause between rotations 
+         of the entire string. -->
+    <DoubleAnimation 
+      x:Key="CharacterRotationPauseAnimation"
+      Duration="0:0:8"
+      Storyboard.TargetProperty="Opacity" 
+      />
+  </Window.Resources>
+
+  <Window.Background>
+    <ImageBrush ImageSource="BACH.jpg" Opacity="0.2" />
+  </Window.Background>
+  
+  <Grid>
+    <TextBlock 
+      x:Name="textBlk" 
+      Foreground="WhiteSmoke"
+      HorizontalAlignment="Center"
+      Loaded="StartTextAnimations"
+      Text="Johann Sebastian Bach" 
+      VerticalAlignment="Center"
+      />
+  </Grid>
+  
+</Window>

@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1"><title>WPF: Synchronizing animations (part 1: Using built-in features)</title>
+
+
+
+
+  
+
+    <style type="text/css">
+    
+      .spanOption
+      {
+        font-weight: bold;        
+      }
+      
+      .spanMethod
+      {
+        font-weight: bold;        
+      }
+      
+      .spanParameter
+      {
+        font-weight: bold;
+      }
+    
+    </style>
+
+    <link rel="Stylesheet" type="text/css" href="Synchronizing%20animations%20Part%202_files/gslb.css"><link rel="Stylesheet" type="text/css" href="Synchronizing%20animations%20Part%202_files/gslb_002.css"><link rel="Stylesheet" type="text/css" href="Synchronizing%20animations%20Part%202_files/manoli.css">
+    
+    <script type="text/javascript" src="Synchronizing%20animations%20Part%202_files/gslb.js"></script>
+    <script type="text/javascript" src="Synchronizing%20animations%20Part%202_files/gslb_004.js"></script>
+    <script type="text/javascript" src="Synchronizing%20animations%20Part%202_files/gslb_002.js"></script>
+    <script type="text/javascript" src="Synchronizing%20animations%20Part%202_files/gslb_003.js"></script></head><body>
+    <form name="frmMain" method="post" action="article-2007060701.aspx" id="frmMain">
+<div>
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTE5MDEwMTE5MWRk" type="hidden">
+</div>
+
+
+      <a id="lnkHome" href="http://www.galasoft.ch/index.html" target="_top" class="gslb_mainLnkHome" style="top: 8px; left: 8px;">
+        <img src="Synchronizing%20animations%20Part%202_files/vsmallhead.gif" alt="Navigate back home" title="Navigate back home">
+      </a>
+      <script type="text/javascript">
+        new gslb.PositionedNode( document.getElementById( 'lnkHome' ) );
+      </script>
+    
+      <div class="gslb_mainDivImageTitle">
+        <img alt="GalaSoft Laurent Bugnion" title="GalaSoft Laurent Bugnion" src="Synchronizing%20animations%20Part%202_files/header.gif" class="gslb_mainImgTitle">
+      </div>
+      
+      <div class="gslb_rsbDivPosting" style="margin-top: 2em; width: 60%;">
+        <div class="gslb_rsbDivPostingTitle">
+          WPF: Synchronizing animations (part 1: Using built-in features)
+        </div>
+
+        <table style="margin: 0pt; width: 100%;">
+          <tbody><tr>
+            <td>
+                <div class="gslb_mainDivSummary">
+                  <a href="#intro">Introduction</a> /
+                  <a href="#begin">BeginTime and Duration</a> /
+                  <a href="#events">Using events</a> /
+                  <a href="#conclusion">Conclusion</a>
+                </div>
+            </td>
+            <td style="text-align: right; vertical-align: top;">
+              <div class="gslb_mainDivSummary">
+                <a href="http://www.galasoft.ch/mydotnet/articles/article-2007041201.aspx">&lt;&lt;&nbsp;Prev</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/articles_en.html#wpf">Index</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/mydotnet/articles/article-2007061401.aspx">Next&nbsp;&gt;&gt;</a>
+              </div>
+            </td>
+          </tr>
+        </tbody></table>
+
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="intro"></a>Introduction
+</div>
+<p class="gslb_rsbPParagraph">
+One of the most exciting features of WPF is the animation system, which
+provides the UI developer with the possibility to create exciting
+effects easily. A <a href="http://www.galasoft.ch/mydotnet/articles/article-2006102701.aspx">previous article</a> explains various ways to define and trigger animations using XAML or code-behind.
+</p>
+<p class="gslb_rsbPParagraph">
+In this article and the nexts, we will see different technique allowing
+to synchronize animations so that they run in a coordinated manner.
+</p>
+<p class="gslb_rsbPParagraph">
+Next article: <a href="http://www.galasoft.ch/mydotnet/articles/article-2007061401.aspx">(2) Asynchronous by nature</a>
+</p>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="begin"></a>BeginTime and Duration
+</div>
+<p class="gslb_rsbPParagraph">Animations in WPF are asynchronous in
+nature. It means that they will be triggered independently from each
+other, and will run without regarding what other animations are
+running. There are built-in ways to coordinate animations, for example
+placing parallel animations in a <a href="http://msdn2.microsoft.com/en-us/library/system.windows.media.animation.storyboard.aspx" target="_blank">Storyboard</a>, and using the <a href="http://msdn2.microsoft.com/en-us/library/system.windows.media.animation.timeline.begintime.aspx" target="_blank">BeginTime</a> property to specify when a given animation must start.
+</p>
+<p class="gslb_rsbPParagraph">
+For example, the animation defined hereunder is a group of 3 animations
+running parallelly. The first animation starts at 0 seconds, runs for 5
+seconds (ScaleX). The second animation starts at 5 seconds, and runs
+for 5 seconds (ScaleY). Additionally, a rotation starts at 0 seconds
+and runs for 12 seconds.
+</p>
+<p class="gslb_rsbPParagraph">
+Since we set <a href="http://msdn2.microsoft.com/en-us/library/system.windows.media.animation.timeline.autoreverse.aspx" target="_blank">AutoReverse</a>
+to "true", we can see that these animations run as a group, because the
+reverse animation starts only after 12 seconds, which is the total
+duration of the animation group. This is one way of coordinating
+animations, in a limited way, but quite elegant since it is pure XAML
+and we didn't write a single line of C# code.
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">Window.Triggers</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">EventTrigger</span> <span class="attr">RoutedEvent</span><span class="kwrd">="Window.MouseLeftButtonDown"</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">EventTrigger.Actions</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">BeginStoryboard</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">Storyboard</span> <span class="attr">AutoReverse</span><span class="kwrd">="True"</span><span class="kwrd">&gt;</span>
+                    <span class="kwrd">&lt;</span><span class="html">DoubleAnimation</span>
+                        <span class="attr">BeginTime</span><span class="kwrd">="00:00:00"</span>
+                        <span class="attr">Duration</span><span class="kwrd">="0:0:5"</span>
+                        <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="scaleTransform"</span>
+                        <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="ScaleX"</span>
+                        <span class="attr">To</span><span class="kwrd">="2"</span><span class="kwrd">/&gt;</span>
+                    <span class="kwrd">&lt;</span><span class="html">DoubleAnimation</span>
+                        <span class="attr">BeginTime</span><span class="kwrd">="00:00:05"</span>
+                        <span class="attr">Duration</span><span class="kwrd">="0:0:5"</span>
+                        <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="scaleTransform"</span>
+                        <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="ScaleY"</span>
+                        <span class="attr">To</span><span class="kwrd">="2"</span><span class="kwrd">/&gt;</span>
+                    <span class="kwrd">&lt;</span><span class="html">DoubleAnimation</span>
+                        <span class="attr">BeginTime</span><span class="kwrd">="00:00:00"</span>
+                        <span class="attr">Duration</span><span class="kwrd">="0:0:12"</span>
+                        <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="rotateTransform"</span>
+                        <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Angle"</span>
+                        <span class="attr">To</span><span class="kwrd">="180"</span><span class="kwrd">/&gt;</span>
+                <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">BeginStoryboard</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">EventTrigger.Actions</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">EventTrigger</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">Window.Triggers</span><span class="kwrd">&gt;</span>
+
+<span class="kwrd">&lt;</span><span class="html">Grid</span> <span class="attr">x:Name</span><span class="kwrd">="LayoutRoot"</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">Button</span>
+        <span class="attr">x:Name</span><span class="kwrd">="myButton"</span>
+        <span class="attr">Width</span><span class="kwrd">="200"</span> 
+        <span class="attr">Height</span><span class="kwrd">="100"</span>
+        <span class="attr">RenderTransformOrigin</span><span class="kwrd">="0.5,0.5"</span>
+        <span class="attr">Margin</span><span class="kwrd">="50,50,50,50"</span>
+        <span class="attr">Content</span><span class="kwrd">="Button"</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">Button.RenderTransform</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">TransformGroup</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">ScaleTransform</span>
+                    <span class="attr">x:Name</span><span class="kwrd">="scaleTransform"</span>
+                    <span class="attr">ScaleX</span><span class="kwrd">="1"</span>
+                    <span class="attr">ScaleY</span><span class="kwrd">="1"</span><span class="kwrd">/&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">RotateTransform</span>
+                    <span class="attr">x:Name</span><span class="kwrd">="rotateTransform"</span>
+                    <span class="attr">Angle</span><span class="kwrd">="0"</span><span class="kwrd">/&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">TransformGroup</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">Button.RenderTransform</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">Button</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">Grid</span><span class="kwrd">&gt;</span>
+</div>
+</div>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="events"></a>Using events
+</div>
+<p class="gslb_rsbPParagraph">In the code behind, there are additional
+ways to synchronize animations, by using events. For example, the
+Completed event will be fired when an animation finishes running. This
+provides a way to cascade animations in a very reliable way, not having
+to use the "BeginTime" property, but instead by observing exactly when
+the animation finishes running. For example, let's define 2 animations:
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">&lt;</span><span class="html">Window.Resources</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">DoubleAnimation</span>
+        <span class="attr">x:Key</span><span class="kwrd">="scaleAnimation"</span>
+        <span class="attr">Duration</span><span class="kwrd">="0:0:5"</span>
+        <span class="attr">To</span><span class="kwrd">="2"</span>
+        <span class="attr">Completed</span><span class="kwrd">="ScaleAnimation_Completed"</span><span class="kwrd">/&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">DoubleAnimation</span>
+        <span class="attr">x:Key</span><span class="kwrd">="rotateAnimation"</span>
+        <span class="attr">Duration</span><span class="kwrd">="0:0:5"</span>
+        <span class="attr">To</span><span class="kwrd">="180"</span><span class="kwrd">/&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">Window.Resources</span><span class="kwrd">&gt;</span>
+
+<span class="kwrd">&lt;</span><span class="html">Grid</span> <span class="attr">x:Name</span><span class="kwrd">="LayoutRoot"</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;</span><span class="html">Button</span>
+        <span class="attr">x:Name</span><span class="kwrd">="myButton"</span>
+        <span class="attr">Width</span><span class="kwrd">="200"</span> 
+        <span class="attr">Height</span><span class="kwrd">="100"</span>
+        <span class="attr">RenderTransformOrigin</span><span class="kwrd">="0.5,0.5"</span>
+        <span class="attr">Margin</span><span class="kwrd">="50,50,50,50"</span>
+        <span class="attr">Content</span><span class="kwrd">="Button"</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;</span><span class="html">Button.RenderTransform</span><span class="kwrd">&gt;</span>
+            <span class="kwrd">&lt;</span><span class="html">TransformGroup</span><span class="kwrd">&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">ScaleTransform</span>
+                    <span class="attr">x:Name</span><span class="kwrd">="scaleTransform"</span>
+                    <span class="attr">ScaleX</span><span class="kwrd">="1"</span>
+                    <span class="attr">ScaleY</span><span class="kwrd">="1"</span><span class="kwrd">/&gt;</span>
+                <span class="kwrd">&lt;</span><span class="html">RotateTransform</span>
+                    <span class="attr">x:Name</span><span class="kwrd">="rotateTransform"</span>
+                    <span class="attr">Angle</span><span class="kwrd">="0"</span><span class="kwrd">/&gt;</span>
+            <span class="kwrd">&lt;/</span><span class="html">TransformGroup</span><span class="kwrd">&gt;</span>
+        <span class="kwrd">&lt;/</span><span class="html">Button.RenderTransform</span><span class="kwrd">&gt;</span>
+    <span class="kwrd">&lt;/</span><span class="html">Button</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">Grid</span><span class="kwrd">&gt;</span>
+</div>
+</div>
+<p class="gslb_rsbPParagraph">In that case, the animations are stored
+as resources in the XAML, and are not combined in a Storyboard. They
+are independant of each other, and we use code to start them
+successively:
+</p>
+<div class="gslb_rsbDivCodeSection">
+<div class="gslb_rsbDivCode"><span class="kwrd">public</span> Window1()
+{
+    InitializeComponent();
+    <span class="kwrd">this</span>.MouseLeftButtonDown
+        += <span class="kwrd">new</span> <span class="type">MouseButtonEventHandler</span>(Window1_MouseLeftButtonDown);
+}
+<span class="kwrd">void</span> Window1_MouseLeftButtonDown(<span class="kwrd">object</span> sender, <span class="type">MouseButtonEventArgs</span> e)
+{
+    <span class="type">DoubleAnimation</span> animation 
+        = FindResource(<span class="str">"scaleAnimation"</span>) <span class="kwrd">as</span> <span class="type">DoubleAnimation</span>;
+    <span class="type">ScaleTransform</span> myTransform 
+        = FindName(<span class="str">"scaleTransform"</span>) <span class="kwrd">as</span> <span class="type">ScaleTransform</span>;
+    myTransform.BeginAnimation(<span class="type">ScaleTransform</span>.ScaleXProperty, animation);
+}
+<span class="kwrd">void</span> ScaleAnimation_Completed(<span class="kwrd">object</span> sender, <span class="type">EventArgs</span> e)
+{
+    <span class="type">DoubleAnimation</span> animation 
+        = FindResource(<span class="str">"rotateAnimation"</span>) <span class="kwrd">as</span> <span class="type">DoubleAnimation</span>;
+    <span class="type">RotateTransform</span> myTransform 
+        = FindName(<span class="str">"rotateTransform"</span>) <span class="kwrd">as</span> <span class="type">RotateTransform</span>;
+    myTransform.BeginAnimation(<span class="type">RotateTransform</span>.AngleProperty, animation);
+}
+</div>
+</div>
+<p class="gslb_rsbPParagraph">By doing so, however, we lose the
+possibility to automatically reverse the animation group, because the
+animations are not linked together. Generally speaking, animations are
+much easier to define than in code-behind!
+</p>
+</div>
+<div class="gslb_rsbDivFeature">
+<div class="gslb_rsbDivTitle">
+<a id="conclusion"></a>Conclusion
+</div>
+<p class="gslb_rsbPParagraph">While these built in features allow some
+level of synchronization, they do not take in account asynchronous
+triggers. For example, if an animation on a button starts when it is
+clicked, and if we have multiple such buttons, the animations will not
+be coordinated and will give an unclean finish to your application. The
+next articles will deal about synchronizing animations in a single
+thread using a controller, and then about synchronizing animations
+across threads.
+</p>
+<p class="gslb_rsbPParagraph">
+Next article: <a href="http://www.galasoft.ch/mydotnet/articles/article-2007061401.aspx">(2) Asynchronous by nature</a>
+</p>
+</div>
+      
+    
+    
+  </div></form></body></html>

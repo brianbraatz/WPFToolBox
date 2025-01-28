@@ -1,0 +1,119 @@
+﻿<Window  
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:DemoDev"
+    xmlns:graphList3D="clr-namespace:DemoDev;assembly=Graph3D"
+    x:Class="StockGraph3D.Window1"
+    Title="StockGraph3D"
+    Loaded="OnLoaded" 
+    Width="1024"
+    Height="768"
+    >
+    
+    <Window.Resources>
+    
+	<!-- ***************************************************************************************************** -->
+	<!-- 3d resources for List3D -->     
+	
+    <Style x:Key="List3DStyle" TargetType="{x:Type graphList3D:List3D}">
+            <Setter Property="Template">
+            <Setter.Value>
+            <ControlTemplate TargetType="{x:Type graphList3D:List3D}">
+				<Grid>
+					<Viewport3D Focusable="true" ClipToBounds="true" x:Name="List3DViewport3D" />
+				</Grid>
+            </ControlTemplate>
+            </Setter.Value>
+            </Setter>
+    </Style>
+			
+			  
+    <Point3D x:Key="CameraPosition" X="0" Y="10" Z="25" />
+    <Vector3D x:Key="CameraLookDirection" X="0" Y="-0.5" Z="-1.0" />
+    <Vector3D x:Key="HaloTranslation" X="0" Y="-2.5" Z="-5.0" />
+    <Vector3D x:Key="HaloScale" X="1.0" Y="1.0" Z="1.0" />
+    			
+    </Window.Resources>
+        
+    <Grid Background="White" Canvas.Top="0" >
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="300"/>
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+        <StackPanel>
+			<StackPanel Orientation="Horizontal" >
+				<TextBlock Width="50">Stock:</TextBlock>
+				<TextBox  Name="StockTextBox" Width="50" />
+				<Button Click="OnAddStock" Height="50" Width="100">Add Stock</Button>
+			</StackPanel>
+			
+			<ComboBox Name="GraphComboBox"  >
+			    <ComboBoxItem>GoldGraphBrush</ComboBoxItem>
+				<ComboBoxItem>GreenGraphBrush</ComboBoxItem>
+				<ComboBoxItem>RedGraphBrush</ComboBoxItem>
+				<ComboBoxItem>BlueGraphBrush</ComboBoxItem>
+			</ComboBox>
+			
+			<StackPanel Orientation="Horizontal" >
+				<TextBlock Width="100">From Date y/m/d/i:</TextBlock>
+				<TextBox  Name="StockFromDateYear" Width="80" Text="2000"/>
+				<TextBox  Name="StockFromDateMonth" Width="40" Text="0"/>
+				<TextBox  Name="StockFromDateDay" Width="40" Text="1"/>
+				<TextBox  Name="StockFromInterval" Width="40" Text="1"/>
+			</StackPanel>
+			
+			<StackPanel Orientation="Horizontal" >
+				<TextBlock Width="100">To Date y/m/d:</TextBlock>
+				<TextBox  Name="StockToDateYear" Width="100" Text="2000"/>
+				<TextBox  Name="StockToDateMonth" Width="50" Text="1"/>
+				<TextBox  Name="StockToDateDay" Width="50" Text="1"/>
+			</StackPanel>
+
+			<ListBox Name="StocksListBox" DataContext="{StaticResource Stocks}" ItemsSource="{Binding Path=StocksItems}" ItemContainerStyle="{DynamicResource ListBoxItemStocks}"  />        			
+			
+			<TextBlock Name="StockItemHitTestText" Width="200" Height="20">Hit Test Data</TextBlock>
+			
+			<StackPanel Orientation="Horizontal" >
+				<Button Click="OnGraphStocks" Height="50" Width="100">Graph Stocks</Button>
+				<Button Click="OnDeleteStock" Height="50" Width="100">Delete Stock</Button>
+				<Button Click="OnClearStocks" Height="50" Width="100">Clear Stocks</Button>
+			</StackPanel>
+			
+			<StackPanel Orientation="Horizontal" >
+				<Button Click="OnAnimateGraphStocks" Height="50" Width="100">Animate Stocks</Button>
+				<Button Click="OnAnimateTo" Height="50" Width="100">Animate To</Button>
+				<Button Click="OnAnimateFrom" Height="50" Width="100">Animate From</Button>
+			</StackPanel>
+			
+			<Canvas Height="200" Width="50"  >
+				<ItemsControl Name="StocksListBoxLabelX" DataContext="{StaticResource Stocks}" ItemsSource="{Binding Path=Graph3DLabelXItems}" ItemTemplate="{DynamicResource LabelXItemStyle}" />
+			</Canvas>
+
+			<Canvas Height="200" Width="50"  >
+				<ItemsControl Name="StocksListBoxLabelY" DataContext="{StaticResource Stocks}" ItemsSource="{Binding Path=Graph3DLabelYItems}" ItemTemplate="{DynamicResource LabelYItemStyle}" />
+			</Canvas>
+
+			<Canvas Height="200" Width="100"  >
+				<ItemsControl Name="StocksListBoxLabelZ" DataContext="{StaticResource Stocks}" ItemsSource="{Binding Path=Graph3DLabelZItems}" ItemTemplate="{DynamicResource LabelZItemStyle}" />
+			</Canvas>
+			
+		</StackPanel>
+        
+        <Grid Background="Black" Grid.Column="1" Grid.Row="0">
+			<graphList3D:List3D Background="Pink" Name="GraphList3D" DataContext="{StaticResource  Stocks}"  ItemsSource="{Binding Path=Graph3DItems}" Style="{DynamicResource List3DStyle}"  ItemSelected="OnList3DItemSelected"  Grid.Column="1" Grid.Row="0"
+							FieldOfView="60" 
+							CameraPosition="{StaticResource CameraPosition}"
+							CameraLookDirection="{StaticResource CameraLookDirection}"
+							HaloXAxisAngle="0"
+							HaloYAxisAngle="-45"
+							HaloZAxisAngle="0"
+							HaloTranslation="{StaticResource HaloTranslation}"
+							HaloScale="{StaticResource HaloScale}"
+						/>
+		</Grid>
+		 
+		
+
+    </Grid>
+
+</Window>

@@ -1,0 +1,110 @@
+<!-- New CheckBox Template by Charles Petzold, 10/19/07 -->
+
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+    <Page.Resources>
+        <ControlTemplate x:Key="chkboxTemplate"
+                         TargetType="CheckBox">
+            <Border Background="#00FFFFFF"
+                    SnapsToDevicePixels="True">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <mwt:BulletChrome 
+                        VerticalAlignment="Top" 
+                        Background="{TemplateBinding Panel.Background}"
+                        BorderBrush="{TemplateBinding Border.BorderBrush}"
+                        RenderMouseOver="{TemplateBinding UIElement.IsMouseOver}"
+                        RenderPressed="{TemplateBinding ButtonBase.IsPressed}"
+                        IsChecked="{TemplateBinding ToggleButton.IsChecked}" />
+
+                    <ContentPresenter Grid.Column="1"
+                        RecognizesAccessKey="True"
+                        Content="{TemplateBinding ContentControl.Content}"
+                        ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                        Margin="{TemplateBinding Control.Padding}"
+                        HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                        SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                </Grid>
+            </Border>
+
+            <!-- Default template visual tree
+
+            <BulletDecorator
+                Background="#00FFFFFF"
+                SnapsToDevicePixels="True">
+                <BulletDecorator.Bullet>
+                    <mwt:BulletChrome
+                        Background="{TemplateBinding Panel.Background}"
+                        BorderBrush="{TemplateBinding Border.BorderBrush}"
+                        RenderMouseOver="{TemplateBinding UIElement.IsMouseOver}"
+                        RenderPressed="{TemplateBinding ButtonBase.IsPressed}"
+                        IsChecked="{TemplateBinding ToggleButton.IsChecked}" />
+                </BulletDecorator.Bullet>
+                <ContentPresenter
+                    RecognizesAccessKey="True"
+                    Content="{TemplateBinding ContentControl.Content}"
+                    ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                    Margin="{TemplateBinding Control.Padding}"
+                    HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                    SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+            </BulletDecorator -->
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="ContentControl.HasContent"
+                         Value="True">
+                    <Setter
+                        Property="FrameworkElement.FocusVisualStyle">
+                        <Setter.Value>
+                            <Style
+                                TargetType="IFrameworkInputElement">
+                                <Setter
+                                    Property="Control.Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Rectangle
+                                                Stroke="#FF000000"
+                                                StrokeThickness="1"
+                                                StrokeDashArray="1 2"
+                                                Margin="14,0,0,0"
+                                                SnapsToDevicePixels="True" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Control.Padding" Value="4 0 0 0" />
+                </Trigger>
+                <Trigger Property="UIElement.IsEnabled" Value="False">
+                    <Setter Property="TextElement.Foreground"
+                            Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Page.Resources>
+
+    <StackPanel Orientation="Horizontal">
+
+        <CheckBox Margin="48">
+            <StackPanel>
+                <Ellipse Width="100" Height="100" Fill="Red" />
+                <TextBlock Text="Click me!" HorizontalAlignment="Center" />
+            </StackPanel>
+        </CheckBox>
+
+        <CheckBox Template="{StaticResource chkboxTemplate}" 
+                  Margin="48">
+            <StackPanel>
+                <Ellipse Width="100" Height="100" Fill="Red" />
+                <TextBlock Text="Click me!" HorizontalAlignment="Center" />
+            </StackPanel>
+        </CheckBox>
+    </StackPanel>
+</Page>

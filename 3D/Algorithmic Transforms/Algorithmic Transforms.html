@@ -1,0 +1,151 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - The Petzold.Media3D Library: Algorithmic Transforms</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/191027.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/240448.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/08/200408.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>The Petzold.Media3D Library: Algorithmic Transforms</h2></a><p style="text-align: right;">August 20, 2007<br>Roscoe, N.Y.</p><p>
+In WPF 3D, it's great to have high-level classes such as <i>TranslateTransform3D</i>, <i>ScaleTransform3D</i>, and <i>RotateTransform3D</i> for performing common types of transforms. It's also great to have <i>MatrixTransform3D</i> that encompasses all those transforms, and also performs skewing. As an extra bonus <i>MatrixTransform3D</i> allows non-affine transforms as well, so you can easily implement 3D taper transforms, as I demonstrated 
+<a href="http://www.charlespetzold.com/blog/2007/08/060605.html">here</a> and 
+<a href="http://www.charlespetzold.com/blog/2007/08/090250.html">here</a>.
+</p>
+<p>
+However, there are times you'd like to apply transforms to 3D figures
+that can't be represented with simple matrices. These I call
+"algorithmic transforms" because they must be expressed an algorithm
+applied to a collection of 3D points. </p>
+<p>
+In the Petzold.Media3D library
+(available <a href="http://www.charlespetzold.com/3D">here</a>), the <i>ModelVisualBase</i> class 
+(described <a href="http://www.charlespetzold.com/blog/2007/08/141144.html">here</a>) has a facility to apply algorithmic transforms to 3D primitives. <i>ModelVisualBase</i> defines a property named <i>AlgorithmicTransforms</i> of type <i>AlgorithmicTransformCollection</i>. This is a freezable collection created simply by deriving from 
+<i>FreezableCollection&lt;AlgorithmicTransform&gt;</i>. The <i>AlgorithmicTransform</i> class inherits from <i>Animatable</i> and defines just one method:
+</p>
+<ul style="font-family: monospace;">
+public abstract void Transform(Point3DCollection points);
+</ul>
+<p>
+Any class that derives from <i>AlgorithmicTransform</i> needs to implement a <i>Transform</i>
+method that performs an in-place transform of the collection of points
+that define the vertices of a figure in 3D space. For example, a
+derived class could override <i>Transform</i> like this:
+</p>
+<ul style="font-family: monospace;">
+public override void Transform(Point3DCollection points)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for (int i = 0; i &lt; points.Count; i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double x = points[i].X;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double y = points[i].Y;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double z = points[i].Z;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points[i] = new Point3D(x * x, y, z); <br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}
+</ul>
+<p>
+That's a transform that squares all the X coordinates, and it cannot be expressed in the standard matrix form.
+</p>
+<p>
+More commonly, a class that derives from <i>AlgorithmicTransform</i>
+will define several properties that serve as parameters for the
+transform. Of course, you'll want to back those properties with
+dependency properties so they can be targets of bindings and
+animations.
+</p>
+<p>
+Notice that the <i>ModelVisualBase</i> class defines the <i>AlgorithmicTransforms</i> property as a <i>collection</i>;
+you can have multiple algorithmic transforms applied to the same figure
+in a chain: The first one gets the collection of vertices normally
+generated for the figure; each transform gets the transformed
+collection from the previous algorithmic-transform object in the
+collection. The final collection is used for the <i>MeshGeometry3D</i>. Because <i>AlgorithmicTransforms</i>
+is a freezable collection, any change to any dependency property in any
+object in the collection signals a property-changed event, and the
+class recalculates the triangle mesh based on the new transform.
+</p>
+<p>
+I wanted the Petzold.Media3D library to have several useful classes that derive from <i>AlgorithmicTransform</i> but I only got one finished, which I called <i>Twister</i>. (I also derived from <i>AlgorithmicTransform</i> to simulate a turning page of a book in the Goblin Market application in Chapter 9 of <i>3D Programming for Windows</i> and runnable from 
+<a href="http://www.charlespetzold.com/3D">this page</a>
+</p>
+<p>
+The <i>Twister</i> class defines a twisting transform, which is
+similar to a rotation transform except that different degrees of
+rotation are applied to the coordinates. The <i>Twister</i> class defines an <i>Angle</i> property (with a default value of 0) and an <i>Axis</i> property that defines the <i>Vector3D</i> object around which the rotation occurs. The default value of <i>Axis</i> is <b>(0, 1, 0)</b>. <i>Twister</i> also defines a <i>Center</i> property with a default value of (0, 0, 0). The plane orthogonal to the <i>Axis</i> vector and which contains the <i>Center</i> point is not transformed at all. All planes parallel to that plane are rotated by a number of degrees equal to the <i>Angle</i> property times the distance of the plane from the center plane.
+</p>
+<p>
+For example, for default values of <i>Axis</i> and <i>Center</i>, the Y=0 plane — that is, the plane of all points (x, 0, z) — is not rotated at all. The Y=1 plane  is rotated <i>Angle</i> degrees; the Y=2 plane is rotated 2 * <i>Angle</i> degrees. the Y=–0.5 plane is rotated –0.5 * <i>Angle</i> degrees.
+</p>
+<p>
+You can run the following XAML file in XamlCruncher 2.0 with the Petzold.Media3D library loaded:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/CuboidTwister.xaml">CuboidTwister.xaml</a>
+</p>
+<p>
+Or, you can just gaze upon the XAML file and run an XBAP created from that XAML file here:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/CuboidTwister/CuboidTwister.xbap">CuboidTwister.xbap</a>
+</p>
+<p>
+The <i>Cuboid</i> class from the Petzold.Media3D library creates a cuboid based on an <i>Origin</i> (the lower-left-rear corner) and <i>Width</i>, <i>Height</i>, and <i>Depth</i> properties. In this example, I've set the <i>Origin</i> to (–1.5, –0.5, –0.5) and <i>Width</i> to 3, but the <i>Height</i> and <i>Depth</i> have default values of 1. The <i>AlgorithmicTransforms</i> collection is set to a <i>Twister</i> object with an <i>Axis</i> of <b>(1, 0, 0)</b>. The <i>Angle</i> property is bound to a <i>Slider</i>
+with a range of –180 to 180. The center of the cuboid on the YZ plane
+isn't rotated, but the ends at X values of 0.5 and –0.5 are rotated
+under control of the <i>Slider</i> up to 270 (that is 1.5 times 180) degrees in either direction:
+</p>
+<p align="center">
+<img src="Algorithmic%20Transforms_files/CuboidTwister.png">
+</p>
+<p>
+This transform is smoothest when the figure is defined by a large number of triangles. In this example, I've left the <i>Slices</i> (divisions along the X dimension), <i>Stacks</i> (Y dimension), and <i>Slivers</i> (Z dimension) properties at their default values of 10. (The <i>Cuboid</i> class has a problem when these values do not equal each other; I'll try to fix that problem shortly.)
+</p>
+<p>
+The second example uses the <i>Cylinder</i> class and covers it
+with a bitmap of my face. The cylinder sits upright on the Y axis and
+is rotated by an animation around the axis <b>(0, 1, 0)</b>:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/CylinderTwister.xaml">CylinderTwister.xaml</a>
+</p>
+<p>
+If you try to run this XAML file in XamlCruncher, you'll also need to
+fix the reference to the PetzoldTattoo.jpg file. (It's included in
+Chapter 5 of the downloadable code for the book.) Here's an XBAP based
+on that same XAML file:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/CylinderTwister/CylinderTwister.xbap">CylinderTwister.xbap</a>
+</p>
+<p>The coordinates are set so that the bottom doesn't rotate at all,
+but the top rotates a total of 1080 degrees in either direction:
+</p>
+<p align="center">
+<img src="Algorithmic%20Transforms_files/CylinderTwister.png">
+</p>
+<p>
+When I first tried this little program, I left the <i>Stacks</i> property for <i>Cylinder</i>
+at its default value of 1 and I thought something was broken because
+the center of the cylinder got very small. But if you work out how the
+coordinates of the triangles are being transformed, that result is
+entirely predicatble.
+</p>
+
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Algorithmic%20Transforms_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+<div id="comments"><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="The Petzold.Media3D Library: Algorithmic Transforms" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/191027.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/240448.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

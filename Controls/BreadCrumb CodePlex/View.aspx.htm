@@ -1,0 +1,698 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="FF"><head id="ctl00_ctl00_HeadTag">
+    
+
+
+
+<link rel="stylesheet" type="text/css" href="View.aspx_files/StyleSheet_002.css"><link rel="stylesheet" type="text/css" href="View.aspx_files/StyleSheet.css"><link rel="SHORTCUT ICON" href="http://www.codeplex.com/wpfcontrib/favicon.ico">
+
+    <script type="text/javascript">
+        var logoImageLoaded=false;
+        function markImages(){
+            logoImageLoaded=true;        
+        }
+        function masterLoad(){
+            if(!logoImageLoaded)document.body.className+=' NoImages';
+            logoImageLoaded=null;
+            delete logoImageLoaded;
+            CodePlex.UpdateProgress.initialize('ctl00_ctl00_UpdateProgressPanel');
+            SmartDate_Load(); // Fixup GMT dates
+            if(document.documentElement.className.indexOf('IE')>-1){
+                fixWidth();
+                //$addHandler(window,'resize',getResizeHandler());
+            }
+        }
+        function fixWidth(){
+            var mainContent=$get('CanvasContent');
+            if(mainContent){
+                var width=mainContent.scrollWidth;
+                var container=mainContent.parentNode;
+                container.style.width=Math.max(container.scrollWidth,container.clientWidth)+'px';
+                //if(container.clientWidth<=container.scrollWidth&&container.currentStyle.width=='auto')container.style.width=(container.scrollWidth)+'px';
+                //else container.style.width='auto';
+            }
+            CodePlex.UpdateProgress.reset();
+        }
+        function getResizeHandler(e){
+            var _timer=0;
+            return function(){
+                if(_timer)clearTimeout(_timer);
+                _timer=setTimeout(fixWidth,250);
+            }
+        }
+        //WebTrends Globals
+        
+        var ProductionDomains="codeplex.com";
+        var gDomain="m.webtrends.com";
+        var gTrackEvents=1;
+        var a=ProductionDomains.split(',');var b=0;for(var i=0;i<a.length;i++){if(window.location.host.indexOf(a[i])!=-1){b++;}}if(b!=0){var gDcsId="dcsnbepko00000c1t09pkmw6c_3y7n";}if(b==0){var gDcsId="dcseyn9uo100004ncoak1iy6c_3p2y";}
+        var gFpc="WT_FPC";if(document.cookie.indexOf(gFpc+"=")==-1){document.write("<SCR"+"IPT TYPE='text/javascript' SRC='"+"http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+gDomain+"/"+gDcsId+"/wtid.js"+"'><\/SCR"+"IPT>");}
+                
+    </script>
+    
+    <meta name="WT.pi" content="wpfcontrib">
+
+    <style type="text/css">.SideBar, .SideBarPadding{display:none;}.MainContent{width:auto;}.SiteContentTable{width:100%;}</style>
+    <style type="text/css">
+        .SiteHeader, .SiteHeaderLeft{
+            height:45px !important;
+            overflow:hidden;
+        }
+        .SiteContent{
+            padding:1em;
+            padding-top:.7em;
+            margin-top:0;
+            min-height:225px;
+            background-color:#fff;
+        }
+        .FF .SiteContentTable{
+            clear:both;
+        }
+        .ProjectContent{
+            padding:.2em .7em;
+            min-height:225px;
+        }
+        .Safari .ProjectContent{
+            padding-top:1.3em;
+        }
+        .IE6 .ProjectTitleControl{
+            position:relative;
+        }
+    </style><!-- ProjectWide.Master -->
+    
+    
+
+<link rel="alternate" type="application/rss+xml" title="WPF Contrib" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx"><link rel="alternate" type="application/rss+xml" title="WPF Contrib-Discussions" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fforum%2fwpfcontrib"><link rel="alternate" type="application/rss+xml" title="WPF Contrib-Issue Tracker" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fworkitem%2fwpfcontrib"><link rel="alternate" type="application/rss+xml" title="WPF Contrib-Releases" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2fwpfcontrib"><link rel="alternate" type="application/rss+xml" title="WPF Contrib-Source Code" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fsourcecontrol%2fwpfcontrib"><link rel="alternate" type="application/rss+xml" title="WPF Contrib-Wiki" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fwiki%2fwpfcontrib"><title>WPF Contrib - Discussions</title></head><body onload="masterLoad();">
+    <form name="aspnetForm" method="post" action="/wpfcontrib/Thread/View.aspx?ThreadId=15078" id="aspnetForm" autocomplete="off" enctype="multipart/form-data">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTIxMzU1MDg4ODMPZBYCZg9kFgJmD2QWBGYPZBYIAgMPFgIeBFRleHQFUDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgdHlwZT0idGV4dC9jc3MiIGhyZWY9Ii9Dc3MvU3R5bGVTaGVldC5hc2h4P2Nzcz1UaHJlYWQiIC8+ZAIGDxYCHwAFH2N0bDAwX2N0bDAwX1VwZGF0ZVByb2dyZXNzUGFuZWxkAggPFgIfAAXpBA0KICAgICAgICB2YXIgUHJvZHVjdGlvbkRvbWFpbnM9ImNvZGVwbGV4LmNvbSI7DQogICAgICAgIHZhciBnRG9tYWluPSJtLndlYnRyZW5kcy5jb20iOw0KICAgICAgICB2YXIgZ1RyYWNrRXZlbnRzPTE7DQogICAgICAgIHZhciBhPVByb2R1Y3Rpb25Eb21haW5zLnNwbGl0KCcsJyk7dmFyIGI9MDtmb3IodmFyIGk9MDtpPGEubGVuZ3RoO2krKyl7aWYod2luZG93LmxvY2F0aW9uLmhvc3QuaW5kZXhPZihhW2ldKSE9LTEpe2IrKzt9fWlmKGIhPTApe3ZhciBnRGNzSWQ9ImRjc25iZXBrbzAwMDAwYzF0MDlwa213NmNfM3k3biI7fWlmKGI9PTApe3ZhciBnRGNzSWQ9ImRjc2V5bjl1bzEwMDAwNG5jb2FrMWl5NmNfM3AyeSI7fQ0KICAgICAgICB2YXIgZ0ZwYz0iV1RfRlBDIjtpZihkb2N1bWVudC5jb29raWUuaW5kZXhPZihnRnBjKyI9Iik9PS0xKXtkb2N1bWVudC53cml0ZSgiPFNDUiIrIklQVCBUWVBFPSd0ZXh0L2phdmFzY3JpcHQnIFNSQz0nIisiaHR0cCIrKHdpbmRvdy5sb2NhdGlvbi5wcm90b2NvbC5pbmRleE9mKCdodHRwczonKT09MD8ncyc6JycpKyI6Ly8iK2dEb21haW4rIi8iK2dEY3NJZCsiL3d0aWQuanMiKyInPjxcL1NDUiIrIklQVD4iKTt9DQogICAgICAgICAgICAgICAgZAIKD2QWAmYPFgIeB1Zpc2libGVnZAIBD2QWBAIED2QWBGYPDxYCHwFoZBYCAgEPZBYCAgQPZBYCZg8PZBYCHgVzdHlsZQUcdG9wOi05cHg7bWFyZ2luLWJvdHRvbTotOXB4OxYCAgEPZBYCAgUPDxYCHwFoZGQCAg9kFgQCAQ8PFgIeC05hdmlnYXRlVXJsBSJodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS93cGZjb250cmliZBYEZg8PFgIeCEltYWdlVXJsBRwvSW1hZ2VzL3Byb2plY3RfaWNvbl9scmcuZ2lmZGQCAw8PFgIfAAULV1BGIENvbnRyaWJkZAIDDxYCHwFoFgJmDw8WAh8DBUJodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS93cGZjb250cmliL1Byb2plY3QvRWRpdFByb2plY3REZXRhaWxzLmFzcHhkZAIGD2QWBAIBDw8WAh8BaGQWAgIED2QWAmYPD2QWAh8CBRx0b3A6LTlweDttYXJnaW4tYm90dG9tOi05cHg7ZAIDD2QWBAIBD2QWEAIBDw8WAh8DBSJodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS93cGZjb250cmliZBYCZg9kFgICBQ9kFgJmDw9kFgIfAgUcdG9wOi01cHg7bWFyZ2luLWJvdHRvbTotNXB4O2QCAw9kFgICAQ8PFgIfAwU/aHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9SZWxlYXNlL1Byb2plY3RSZWxlYXNlcy5hc3B4ZBYCZg9kFgICBQ9kFgJmDw9kFgIfAgUcdG9wOi01cHg7bWFyZ2luLWJvdHRvbTotNXB4O2QCBA9kFgICAQ8PFgIfAwUzaHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9UaHJlYWQvTGlzdC5hc3B4ZBYCZg9kFgICBQ9kFgJmDw9kFgIfAgUcdG9wOi01cHg7bWFyZ2luLWJvdHRvbTotNXB4O2QCBQ9kFgICAQ8PFgIfAwU1aHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9Xb3JrSXRlbS9MaXN0LmFzcHhkFgJmD2QWAgIFD2QWAmYPD2QWAh8CBRx0b3A6LTVweDttYXJnaW4tYm90dG9tOi01cHg7ZAIGD2QWAgIBDw8WAh8DBU1odHRwOi8vd3d3LmNvZGVwbGV4LmNvbS93cGZjb250cmliL1NvdXJjZUNvbnRyb2wvTGlzdERvd25sb2FkYWJsZUNvbW1pdHMuYXNweGQWAmYPZBYCAgUPZBYCZg8PZBYCHwIFHHRvcDotNXB4O21hcmdpbi1ib3R0b206LTVweDtkAggPDxYCHwMFPGh0dHA6Ly93d3cuY29kZXBsZXguY29tL3dwZmNvbnRyaWIvUGVvcGxlL1Byb2plY3RQZW9wbGUuYXNweGQWAmYPZBYCAgUPZBYCZg8PZBYCHwIFHHRvcDotNXB4O21hcmdpbi1ib3R0b206LTVweDtkAgoPDxYCHwMFN2h0dHA6Ly93d3cuY29kZXBsZXguY29tL3dwZmNvbnRyaWIvUHJvamVjdC9MaWNlbnNlLmFzcHhkFgJmD2QWAgIFD2QWAmYPD2QWAh8CBRx0b3A6LTVweDttYXJnaW4tYm90dG9tOi01cHg7ZAIMD2QWBAICD2QWAgIBD2QWBmYPDxYCHwQFFC9JbWFnZXMvaWNvbl9yc3MuZ2lmZGQCAQ8PFgIfAwU6aHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9Qcm9qZWN0L1Byb2plY3RSc3MuYXNweGRkAgIPDxYCHwQFFS9JbWFnZXMvYXJyb3dfZHNjLmdpZmRkAgQPZBYMAgEPZBYCAgEPDxYEHwMFOmh0dHA6Ly93d3cuY29kZXBsZXguY29tL3dwZmNvbnRyaWIvUHJvamVjdC9Qcm9qZWN0UnNzLmFzcHgfAAULV1BGIENvbnRyaWJkZAIDD2QWAgIBDw8WAh8DBW1odHRwOi8vd3d3LmNvZGVwbGV4LmNvbS93cGZjb250cmliL1Byb2plY3QvUHJvamVjdFJzcy5hc3B4P1Byb2plY3RSU1NGZWVkPWNvZGVwbGV4JTNhJTJmJTJmZm9ydW0lMmZ3cGZjb250cmliZGQCBQ9kFgICAQ8PFgIfAwVwaHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9Qcm9qZWN0L1Byb2plY3RSc3MuYXNweD9Qcm9qZWN0UlNTRmVlZD1jb2RlcGxleCUzYSUyZiUyZndvcmtpdGVtJTJmd3BmY29udHJpYmRkAgcPZBYCAgEPDxYCHwMFb2h0dHA6Ly93d3cuY29kZXBsZXguY29tL3dwZmNvbnRyaWIvUHJvamVjdC9Qcm9qZWN0UnNzLmFzcHg/UHJvamVjdFJTU0ZlZWQ9Y29kZXBsZXglM2ElMmYlMmZyZWxlYXNlJTJmd3BmY29udHJpYmRkAgkPZBYCAgEPDxYCHwMFdWh0dHA6Ly93d3cuY29kZXBsZXguY29tL3dwZmNvbnRyaWIvUHJvamVjdC9Qcm9qZWN0UnNzLmFzcHg/UHJvamVjdFJTU0ZlZWQ9Y29kZXBsZXglM2ElMmYlMmZzb3VyY2Vjb250cm9sJTJmd3BmY29udHJpYmRkAgsPZBYCAgEPDxYCHwMFbGh0dHA6Ly93d3cuY29kZXBsZXguY29tL3dwZmNvbnRyaWIvUHJvamVjdC9Qcm9qZWN0UnNzLmFzcHg/UHJvamVjdFJTU0ZlZWQ9Y29kZXBsZXglM2ElMmYlMmZ3aWtpJTJmd3BmY29udHJpYmRkAgMPZBYCAgUPZBYCZg9kFgICAQ9kFgICAQ9kFgYCAQ9kFgYCAg8PFgIfAwUzaHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9UaHJlYWQvTGlzdC5hc3B4ZGQCBA9kFgICAg8PFgIfAwU1aHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9UaHJlYWQvQ3JlYXRlLmFzcHhkZAIGDxYCHwFoFgICAg8PFgIfAwVEaHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9UaHJlYWQvRWRpdERpc2N1c3Npb25EZXRhaWxzLmFzcHhkZAIDDxYCHwFoFgJmDxYCHwFoZAIFD2QWCAIBDxYCHwAFBTE1MDc4ZAIDDxYCHwAFGlVwbG9hZGVkIEJyZWFkQ3J1bWJDb250cm9sZAIFDxYCHwFoFgICAQ8PFgIfAwVOaHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9UaHJlYWQvRWRpdFRocmVhZERldGFpbC5hc3B4P1RocmVhZElkPTE1MDc4ZGQCCg9kFgJmD2QWBgIBD2QWAmYPZBYCAgEPFgIeC18hSXRlbUNvdW50AgIWBGYPZBYCAgEPZBYEZg9kFggCAQ8WAh4EbmFtZQUJUG9zdDQ5MDc2ZAIDDw8WBB8ABQRUb29uHwMFKy9Vc2VyQWNjb3VudC9Vc2VyUHJvZmlsZS5hc3B4P1VzZXJOYW1lPVRvb25kZAIFDw8WAh8AZGRkAgcPDxYCHg1EYXRlVGltZVZhbHVlBnDDsqfbw8kIZGQCAQ9kFgYCAQ9kFgQCAw8PZBYEHgtNZXNzYWdlVGV4dAWkAkhpIEFlbGlqIGFuZCBCcmFnaSwKdGhhbmtzIGZvciB0aGUgcXVpY2sgcmVzcG9uc2UuIEkgaGF2ZSB1cGxvYWRlZCB0aGUgQnJlYWRDcnVtYkNvbnRyb2wsIGkgaGF2ZSBtYWRlIHNvZmFyLiBNYXliZSB5b3UgY2FuIGxvb2sgYXQgaXQuIEkgdGhpbmsgYnJhZ2kgaXMgcmlnaHQgYW5kIGEgZ29vZCBjdXN0b20gdGVtcGxhdGUgb24gdGhlIHRyZWV2aWV3IGdvb2QgZG8gdGhlIHNhbWUgb3IgYmV0dGVyL2Vhc2llci4gSWYgaSBnbyBvbiB3aXRoIGl0LCB5b3UgaGVhciBmcm9tIG1lLiBLaW5kIHJlZ2FyZHMsIFRvb24eBkF1dGhvcgUEVG9vbmQCBQ8PFgQfAwVJaHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9Xb3JrSXRlbS9DcmVhdGUuYXNweD9Gb3J1bVBvc3RJZD00OTA3Nh8BaGRkAgUPZBYCAgEPDxYCHwAFzgI8ZGl2IGNsYXNzPSJ3aWtpZG9jIj4NCkhpIEFlbGlqIGFuZCBCcmFnaSw8YnIgLz50aGFua3MgZm9yIHRoZSBxdWljayByZXNwb25zZS4gSSBoYXZlIHVwbG9hZGVkIHRoZSBCcmVhZENydW1iQ29udHJvbCwgaSBoYXZlIG1hZGUgc29mYXIuIE1heWJlIHlvdSBjYW4gbG9vayBhdCBpdC4gSSB0aGluayBicmFnaSBpcyByaWdodCBhbmQgYSBnb29kIGN1c3RvbSB0ZW1wbGF0ZSBvbiB0aGUgdHJlZXZpZXcgZ29vZCBkbyB0aGUgc2FtZSBvciBiZXR0ZXIvZWFzaWVyLiBJZiBpIGdvIG9uIHdpdGggaXQsIHlvdSBoZWFyIGZyb20gbWUuIEtpbmQgcmVnYXJkcywgVG9vbjxiciAvPg0KPC9kaXY+ZGQCBw9kFgICAQ9kFgICAQ9kFgJmD2QWCAIDD2QWAmYPZBYCAgUPZBYCZg8PZBYCHwIFHHRvcDotM3B4O21hcmdpbi1ib3R0b206LTNweDtkAgUPZBYCZg9kFgICBQ9kFgJmDw9kFgIfAgUcdG9wOi0zcHg7bWFyZ2luLWJvdHRvbTotM3B4O2QCBw9kFgICBQ9kFgJmD2QWAgIBD2QWBgIBDxYCHgV2YWx1ZQUCMTBkAgMPZBYGZg9kFgICAw8PFgIeD1ZhbGlkYXRpb25Hcm91cAUSRWRpdFBvc3RWYWxpZGF0aW9uZGQCAQ8PFgYeBFJvd3MCCh4JTWF4TGVuZ3RoApBOHwAFpAJIaSBBZWxpaiBhbmQgQnJhZ2ksCnRoYW5rcyBmb3IgdGhlIHF1aWNrIHJlc3BvbnNlLiBJIGhhdmUgdXBsb2FkZWQgdGhlIEJyZWFkQ3J1bWJDb250cm9sLCBpIGhhdmUgbWFkZSBzb2Zhci4gTWF5YmUgeW91IGNhbiBsb29rIGF0IGl0LiBJIHRoaW5rIGJyYWdpIGlzIHJpZ2h0IGFuZCBhIGdvb2QgY3VzdG9tIHRlbXBsYXRlIG9uIHRoZSB0cmVldmlldyBnb29kIGRvIHRoZSBzYW1lIG9yIGJldHRlci9lYXNpZXIuIElmIGkgZ28gb24gd2l0aCBpdCwgeW91IGhlYXIgZnJvbSBtZS4gS2luZCByZWdhcmRzLCBUb29uZGQCAw8PFgQfCwUSRWRpdFBvc3RWYWxpZGF0aW9uHgxFcnJvck1lc3NhZ2UFFVBvc3QgY2Fubm90IGJlIGVtcHR5LmRkAgUPZBYCAgEPFgIfAWhkAgkPFgIfAWgWAgIBDxYCHwUC/////w9kAgIPZBYCAgEPFgIeBWNsYXNzBQdBbHRQb3N0FgRmD2QWCAIBDxYCHwYFCVBvc3Q0OTMwMmQCAw8PFgQfAAUFQnJhZ2kfAwUsL1VzZXJBY2NvdW50L1VzZXJQcm9maWxlLmFzcHg/VXNlck5hbWU9QnJhZ2lkZAIFDw8WAh8ABQlEZXZlbG9wZXJkZAIHDw8WAh8HBoB/ny3OxMkIZGQCAQ9kFgYCAQ9kFgQCAw8PZBYEHwgFhgpXb25kZXJmdWxsIHRvIGhlYXIgeW91IGFyZSBtYWtpbmcgcHJvZ3Jlc3MuICBJIGhhdmUgYmVlbiBkb2luZyBzb21lIGZ1cnRoZXIgdGhpbmtpbmcgb24gdGhlIHN1YmplY3QuICBBbmQgSSBoYXZlIGZvdW5kIGEgcG9zc2libGUgcmVhc29uIHRvIG1vdmUgaXQgaW50byBhIHNlcGVyYXRlIGNvbnRyb2w6IElmIHlvdSBsb29rIGF0IGhvdyBpdCBpcyB1c2VkIGluIHRoZSB2aXN0YSBleHBsb3JlciwgeW91IGNhbiBzdGlsbCBnZXQgdGhlIHRleHQgdmFsdWUgYnkgY2xpY2tpbmcgb24gdGhlIHJpY2h0LiAgWW91IGNhbiBhbHNvIGFzc2lnbiBhIG5ldyBkaXJlY3RvcnkgbG9jYXRpb24gYnkgcGFzdGluZyBvciB0eXBpbmcgc29tZXRoaW5nIGluLiAgVGhpcyB0eXBlIG9mIGJlaGF2aW91ciBjYW4gcHJvYmFibHkgYmVzdCBiZSBkb25lIHRocm91Z2ggYSBkZXBlbmRlbmN5IHByb3BlcnR5ICdUZXh0JyBvciBzb21ldGhpbmcuICBUaGUgQ29lcmNlQ2FsbGJhY2sgKGZvciBnZXR0aW5nIHRoZSB2YWx1ZSkgY2FuIGdvIHRocm91Z2ggdGhlIHRyZWUgYW5kIGdldCBlYWNoIG5vZGUncyBTZWxlY3RlZFZhbHVlL0l0ZW0gYXMgYSBzdHJpbmcgdG8gYnVpbGQgdGhlIHBhdGggKHNvbWV0aGluZyByZWN1cnNpdmU/KS4gIFRoZSBWYWx1ZUNoYW5nZWQgY2FsbGJhY2sgY2FuIHBhcnNlIHRoZSBzdHJpbmcgc29tZWhvdyBhbmQgcmUgYXNzaWduIHRoZSBTZWxlY3RlZEl0ZW0gZm9yIGVhY2ggcGFyc2VkIGl0ZW0uClRoaXMgY29udHJvbCB3b3VsZCBiZSBncmF0ZSB0byB3b3JrIHRvZ2V0aGVyIHdpdGggYW5vdGhlciBjbGFzcyBJIGhhZCBiZWVuIHRoaW5raW5nIGFib3V0IGZvciBhIHdoaWxlOiBJJ20gY3VycmVudGx5IGNhbGxpbmcgaXQgJ0RpcmVjdG9yeURhdGFQcm92aWRlcicsIGJhc2ljYWxseSBhIGN1c3RvbSBEYXRhUHJvdmlkZXIsIHNpbWlsYXIgdG8gJ1htbERhdGFQcm92aWRlcicuICBJdCBuZWVkcyBhIHBhdGggdG8gYSBkaXJlY3RvcnksIGFuZCBwcm92aWRlcyBhIGxpc3Qgb2YgYWxsIHRoZSBmaWxlcy9kaXJzIGZvdW5kIGluIHRoYXQgZGlyZWN0b3J5LiAgSSBhbSBzdGlsbCB0aGlua2luZyBvZiB3aGF0IGV4YWN0bHkgdG8gcmV0dXJuIGFzIGRhdGEuICBBIHBvc3NpYmxlIHdheSB0byBpbXBsZW1lbnQgdGhlIGhpZWFyY2hpY2FsIHN0cnVjdHVyZSBsaWtlIG9mIGEgZmlsZSBzeXN0ZW0sIGlzIHRvIHJldHVybiBEaXJlY3RvcnlEYXRhUHJvdmlkZXIgb2JqZWN0cyB0byByZXByZXNlbnQgYSBkaXJlY3RvcnksIGFuZCBzb21ldGhpbmcgZWxzZSBmb3IgZmlsZXMuIB8JBQVCcmFnaWQCBQ8PFgQfAwVJaHR0cDovL3d3dy5jb2RlcGxleC5jb20vd3BmY29udHJpYi9Xb3JrSXRlbS9DcmVhdGUuYXNweD9Gb3J1bVBvc3RJZD00OTMwMh8BaGRkAgUPZBYCAgEPDxYCHwAFsAo8ZGl2IGNsYXNzPSJ3aWtpZG9jIj4NCldvbmRlcmZ1bGwgdG8gaGVhciB5b3UgYXJlIG1ha2luZyBwcm9ncmVzcy4gIEkgaGF2ZSBiZWVuIGRvaW5nIHNvbWUgZnVydGhlciB0aGlua2luZyBvbiB0aGUgc3ViamVjdC4gIEFuZCBJIGhhdmUgZm91bmQgYSBwb3NzaWJsZSByZWFzb24gdG8gbW92ZSBpdCBpbnRvIGEgc2VwZXJhdGUgY29udHJvbDogSWYgeW91IGxvb2sgYXQgaG93IGl0IGlzIHVzZWQgaW4gdGhlIHZpc3RhIGV4cGxvcmVyLCB5b3UgY2FuIHN0aWxsIGdldCB0aGUgdGV4dCB2YWx1ZSBieSBjbGlja2luZyBvbiB0aGUgcmljaHQuICBZb3UgY2FuIGFsc28gYXNzaWduIGEgbmV3IGRpcmVjdG9yeSBsb2NhdGlvbiBieSBwYXN0aW5nIG9yIHR5cGluZyBzb21ldGhpbmcgaW4uICBUaGlzIHR5cGUgb2YgYmVoYXZpb3VyIGNhbiBwcm9iYWJseSBiZXN0IGJlIGRvbmUgdGhyb3VnaCBhIGRlcGVuZGVuY3kgcHJvcGVydHkgJ1RleHQnIG9yIHNvbWV0aGluZy4gIFRoZSBDb2VyY2VDYWxsYmFjayAoZm9yIGdldHRpbmcgdGhlIHZhbHVlKSBjYW4gZ28gdGhyb3VnaCB0aGUgdHJlZSBhbmQgZ2V0IGVhY2ggbm9kZSdzIFNlbGVjdGVkVmFsdWUvSXRlbSBhcyBhIHN0cmluZyB0byBidWlsZCB0aGUgcGF0aCAoc29tZXRoaW5nIHJlY3Vyc2l2ZT8pLiAgVGhlIFZhbHVlQ2hhbmdlZCBjYWxsYmFjayBjYW4gcGFyc2UgdGhlIHN0cmluZyBzb21laG93IGFuZCByZSBhc3NpZ24gdGhlIFNlbGVjdGVkSXRlbSBmb3IgZWFjaCBwYXJzZWQgaXRlbS48YnIgLz5UaGlzIGNvbnRyb2wgd291bGQgYmUgZ3JhdGUgdG8gd29yayB0b2dldGhlciB3aXRoIGFub3RoZXIgY2xhc3MgSSBoYWQgYmVlbiB0aGlua2luZyBhYm91dCBmb3IgYSB3aGlsZTogSSdtIGN1cnJlbnRseSBjYWxsaW5nIGl0ICdEaXJlY3RvcnlEYXRhUHJvdmlkZXInLCBiYXNpY2FsbHkgYSBjdXN0b20gRGF0YVByb3ZpZGVyLCBzaW1pbGFyIHRvICdYbWxEYXRhUHJvdmlkZXInLiAgSXQgbmVlZHMgYSBwYXRoIHRvIGEgZGlyZWN0b3J5LCBhbmQgcHJvdmlkZXMgYSBsaXN0IG9mIGFsbCB0aGUgZmlsZXMvZGlycyBmb3VuZCBpbiB0aGF0IGRpcmVjdG9yeS4gIEkgYW0gc3RpbGwgdGhpbmtpbmcgb2Ygd2hhdCBleGFjdGx5IHRvIHJldHVybiBhcyBkYXRhLiAgQSBwb3NzaWJsZSB3YXkgdG8gaW1wbGVtZW50IHRoZSBoaWVhcmNoaWNhbCBzdHJ1Y3R1cmUgbGlrZSBvZiBhIGZpbGUgc3lzdGVtLCBpcyB0byByZXR1cm4gRGlyZWN0b3J5RGF0YVByb3ZpZGVyIG9iamVjdHMgdG8gcmVwcmVzZW50IGEgZGlyZWN0b3J5LCBhbmQgc29tZXRoaW5nIGVsc2UgZm9yIGZpbGVzLiA8YnIgLz4NCjwvZGl2PmRkAgcPZBYCAgEPZBYCAgEPZBYCZg9kFggCAw9kFgJmD2QWAgIFD2QWAmYPD2QWAh8CBRx0b3A6LTNweDttYXJnaW4tYm90dG9tOi0zcHg7ZAIFD2QWAmYPZBYCAgUPZBYCZg8PZBYCHwIFHHRvcDotM3B4O21hcmdpbi1ib3R0b206LTNweDtkAgcPZBYCAgUPZBYCZg9kFgICAQ9kFgYCAQ8WAh8KBQIxMGQCAw9kFgZmD2QWAgIDDw8WAh8LBRJFZGl0UG9zdFZhbGlkYXRpb25kZAIBDw8WBh8MAgofDQKQTh8ABYYKV29uZGVyZnVsbCB0byBoZWFyIHlvdSBhcmUgbWFraW5nIHByb2dyZXNzLiAgSSBoYXZlIGJlZW4gZG9pbmcgc29tZSBmdXJ0aGVyIHRoaW5raW5nIG9uIHRoZSBzdWJqZWN0LiAgQW5kIEkgaGF2ZSBmb3VuZCBhIHBvc3NpYmxlIHJlYXNvbiB0byBtb3ZlIGl0IGludG8gYSBzZXBlcmF0ZSBjb250cm9sOiBJZiB5b3UgbG9vayBhdCBob3cgaXQgaXMgdXNlZCBpbiB0aGUgdmlzdGEgZXhwbG9yZXIsIHlvdSBjYW4gc3RpbGwgZ2V0IHRoZSB0ZXh0IHZhbHVlIGJ5IGNsaWNraW5nIG9uIHRoZSByaWNodC4gIFlvdSBjYW4gYWxzbyBhc3NpZ24gYSBuZXcgZGlyZWN0b3J5IGxvY2F0aW9uIGJ5IHBhc3Rpbmcgb3IgdHlwaW5nIHNvbWV0aGluZyBpbi4gIFRoaXMgdHlwZSBvZiBiZWhhdmlvdXIgY2FuIHByb2JhYmx5IGJlc3QgYmUgZG9uZSB0aHJvdWdoIGEgZGVwZW5kZW5jeSBwcm9wZXJ0eSAnVGV4dCcgb3Igc29tZXRoaW5nLiAgVGhlIENvZXJjZUNhbGxiYWNrIChmb3IgZ2V0dGluZyB0aGUgdmFsdWUpIGNhbiBnbyB0aHJvdWdoIHRoZSB0cmVlIGFuZCBnZXQgZWFjaCBub2RlJ3MgU2VsZWN0ZWRWYWx1ZS9JdGVtIGFzIGEgc3RyaW5nIHRvIGJ1aWxkIHRoZSBwYXRoIChzb21ldGhpbmcgcmVjdXJzaXZlPykuICBUaGUgVmFsdWVDaGFuZ2VkIGNhbGxiYWNrIGNhbiBwYXJzZSB0aGUgc3RyaW5nIHNvbWVob3cgYW5kIHJlIGFzc2lnbiB0aGUgU2VsZWN0ZWRJdGVtIGZvciBlYWNoIHBhcnNlZCBpdGVtLgpUaGlzIGNvbnRyb2wgd291bGQgYmUgZ3JhdGUgdG8gd29yayB0b2dldGhlciB3aXRoIGFub3RoZXIgY2xhc3MgSSBoYWQgYmVlbiB0aGlua2luZyBhYm91dCBmb3IgYSB3aGlsZTogSSdtIGN1cnJlbnRseSBjYWxsaW5nIGl0ICdEaXJlY3RvcnlEYXRhUHJvdmlkZXInLCBiYXNpY2FsbHkgYSBjdXN0b20gRGF0YVByb3ZpZGVyLCBzaW1pbGFyIHRvICdYbWxEYXRhUHJvdmlkZXInLiAgSXQgbmVlZHMgYSBwYXRoIHRvIGEgZGlyZWN0b3J5LCBhbmQgcHJvdmlkZXMgYSBsaXN0IG9mIGFsbCB0aGUgZmlsZXMvZGlycyBmb3VuZCBpbiB0aGF0IGRpcmVjdG9yeS4gIEkgYW0gc3RpbGwgdGhpbmtpbmcgb2Ygd2hhdCBleGFjdGx5IHRvIHJldHVybiBhcyBkYXRhLiAgQSBwb3NzaWJsZSB3YXkgdG8gaW1wbGVtZW50IHRoZSBoaWVhcmNoaWNhbCBzdHJ1Y3R1cmUgbGlrZSBvZiBhIGZpbGUgc3lzdGVtLCBpcyB0byByZXR1cm4gRGlyZWN0b3J5RGF0YVByb3ZpZGVyIG9iamVjdHMgdG8gcmVwcmVzZW50IGEgZGlyZWN0b3J5LCBhbmQgc29tZXRoaW5nIGVsc2UgZm9yIGZpbGVzLiBkZAIDDw8WBB8LBRJFZGl0UG9zdFZhbGlkYXRpb24fDgUVUG9zdCBjYW5ub3QgYmUgZW1wdHkuZGQCBQ9kFgICAQ8WAh8BaGQCCQ8WAh8BaBYCAgEPFgIfBQL/////D2QCBw9kFgICAQ9kFgICAQ9kFgJmD2QWCAIDD2QWAmYPZBYCAgUPZBYCZg8PZBYCHwIFHHRvcDotM3B4O21hcmdpbi1ib3R0b206LTNweDtkAgUPZBYCZg9kFgICBQ9kFgJmDw9kFgIfAgUcdG9wOi0zcHg7bWFyZ2luLWJvdHRvbTotM3B4O2QCBw9kFgICBQ9kFgJmD2QWAgIBD2QWBgIBDxYCHwoFAjEwZAIDD2QWBmYPZBYCAgMPDxYCHwsFEU5ld1Bvc3RWYWxpZGF0aW9uZGQCAQ8PFgQfDAIKHw0CkE5kZAIDDw8WBB8LBRFOZXdQb3N0VmFsaWRhdGlvbh8OBRVQb3N0IGNhbm5vdCBiZSBlbXB0eS5kZAIFD2QWAgIBDxYCHwFoZAIJDxYCHwFoZAIJDxYCHwFoFgICAQ8PFgIfAWhkZBgBBR5fX0NvbnRyb2xzUmVxdWlyZVBvc3RCYWNrS2V5X18WAQU5Y3RsMDAkY3RsMDAkV2lkZUNvbnRlbnQkUHJvamVjdFNlYXJjaENvbnRyb2wkU2VhcmNoQnV0dG9u/1H2ATRaMvql5a0ZfPg1lhTF/14=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="View.aspx_files/WebResource.js" type="text/javascript"></script>
+
+
+<script src="View.aspx_files/ScriptResource_002.js" type="text/javascript"></script>
+<script src="View.aspx_files/ScriptResource.js" type="text/javascript"></script>
+<script src="View.aspx_files/common.js" type="text/javascript"></script>
+<script src="View.aspx_files/UpdateProgress.js" type="text/javascript"></script>
+<script src="View.aspx_files/SmartDate.js" type="text/javascript"></script>
+<script src="View.aspx_files/Codeplex_webtrends_040706.js" type="text/javascript"></script>
+<script src="View.aspx_files/PromptBox.js" type="text/javascript"></script>
+<script src="View.aspx_files/EnhancedTextBox.js" type="text/javascript"></script>
+<script src="View.aspx_files/ScriptResource_006.axd" type="text/javascript"></script>
+<script src="View.aspx_files/ScriptResource_005.axd" type="text/javascript"></script>
+<script src="View.aspx_files/ScriptResource_004.axd" type="text/javascript"></script>
+<script src="View.aspx_files/ScriptResource_007.axd" type="text/javascript"></script>
+<script src="View.aspx_files/ScriptResource_003.axd" type="text/javascript"></script>
+<script src="View.aspx_files/ScriptResource_002.axd" type="text/javascript"></script>
+<script src="View.aspx_files/ScriptResource.axd" type="text/javascript"></script>
+<script src="View.aspx_files/js.js" type="text/javascript"></script>
+    <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', document.getElementById('aspnetForm'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls(['tctl00$ctl00$Content$TabContentPanel$Content$PostListUpdatePanel','tctl00$ctl00$Content$TabContentPanel$Content$BodyUpdatePanel'], [], [], 90);
+//]]>
+</script>
+
+    <table id="Canvas" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="0">
+        <tbody><tr><td style="height: 100%;" valign="top">
+        <div class="MinWidthDiv"></div>
+        <table class="MinWidthContent" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="0">
+            <tbody><tr>
+                <td class="CanvasMargin"><div class="CanvasMargin"></div></td>
+                <td class="CanvasBackground" style="height: 100%;" valign="top">
+                    <div id="CanvasContent" class="CanvasContent">
+                        <table style="height: 100%; width: 100%;" cellpadding="0" cellspacing="0">
+                            <tbody><tr valign="top"><td>
+                                <div class="SiteHeader">
+                                    <div class="SiteHeaderLeft">
+                                        <a href="http://www.codeplex.com/"><img src="View.aspx_files/banner_logo.jpg" onload="markImages();" alt="CodePlex" height="88" width="231"></a>
+                                    </div>
+                                    <div class="SiteHeaderRight">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody><tr><td class="AlignRight">
+                                                <div id="ctl00_ctl00_SignInControl_ContentPanel" class="ContentPanel SignInPanel Rounded" style="min-width: 16px;">
+	<div class="RoundedContent" style="border-style: none; border-width: 0pt 1px; margin: 0pt; overflow: hidden; background-position: 0px;">
+		<div id="ctl00_ctl00_SignInControl_ContentPanel_contentPanel" class="Content StandardPadding AlignCenter">
+			
+    
+        
+                <div class="NoWrap Centered">
+                    <a href="https://www.codeplex.com/UserAccount/Register.aspx" class="StandardPaddingRight ZoomFix">Register</a>
+                    <a href="https://www.codeplex.com/UserAccount/Login.aspx?ReturnUrl=http%3a%2f%2fwww.codeplex.com%2fThread%2fView.aspx%3fProjectName%3dwpfcontrib%26ThreadId%3d15078" class="StandardPaddingLeft ZoomFix">Sign In</a>
+                </div>
+            
+    
+
+		</div>
+	</div><div class="RoundedCornerContainer Bottom">
+		<div class="RoundedBorder BottomBorder BorderStep8" style="border-style: none; border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 1px; background-position: -6px -5px;"></div>
+		<div class="RoundedBorder BottomBorder BorderStep7" style="border-style: none; border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 2px; background-position: -6px -3px;"></div>
+		<div class="RoundedBorder BottomBorder BorderStep6" style="border-style: none; border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 1px; background-position: -6px -2px;"></div>
+		<div class="RoundedBorder BottomBorder BorderStep5" style="border-style: none; border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 2px; background-position: -6px 0px;"></div>
+		<div class="RoundedBorder BottomBorder BorderStep4" style="border-style: none; border-width: 0pt 2px; margin: 0pt 2px; overflow: hidden; height: 1px; background-position: -4px 0px;"></div>
+		<div class="RoundedBorder BottomBorder BorderStep3" style="border-style: none; border-width: 0pt 1px; margin: 0pt 4px; overflow: hidden; height: 1px; background-position: -3px 0px;"></div>
+		<div class="RoundedBorder BottomBorder BorderStep2" style="border-style: none; border-width: 0pt 2px; margin: 0pt 5px; overflow: hidden; height: 1px; background-position: -1px 0px;"></div>
+		<div class="RoundedBorder BottomBorder BorderStep1" style="border-style: none; border-width: 0pt 1px; margin: 0pt 7px; overflow: hidden; height: 1px; background-position: 0px;"></div>
+		<div class="OuterBorder" style="border-style: none; border-width: 1px 0pt 0pt; margin: 0pt 8px; overflow: hidden; height: 0px;"></div>
+
+	</div>
+</div>
+
+                                            </td></tr>
+                                            <tr><td class="VerticalPadding"></td></tr>
+                                            <tr><td class="AlignRight">
+                                                <div class="SiteHeaderRightShim"></div>
+                                                
+                                            </td></tr>
+                                        </tbody></table>
+                                    </div>
+                                    <div class="SiteHeaderCenter">
+                                        
+                                    </div>
+                                    <div class="ClearBoth"></div>
+                                </div>
+                                <div class="SiteContent">
+                                    
+    <table class="FullWidth" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+            <td class="AlignTop">
+                <div>
+                    
+                    
+                    
+
+<div class="ProjectTitleControl">
+    <a id="ctl00_ctl00_WideContent_ProjectTitleControl1_ProjectTitleLink" class="NoUnderline" href="http://www.codeplex.com/wpfcontrib"><img id="ctl00_ctl00_WideContent_ProjectTitleControl1_ProjectHex" src="View.aspx_files/project_icon_lrg.gif" style="border-width: 0px;">
+        <h1 class="Header StandardPaddingTop StandardPaddingBottom"><span id="ctl00_ctl00_WideContent_ProjectTitleControl1_TitleLabel">WPF Contrib</span></h1>
+    </a>
+</div>
+
+                </div>
+            </td>
+            <td class="AlignTop AlignRight StandardPaddingLeft">
+                <div class="ProjectSearchPanel StandardMarginBottom">
+                    <div id="ctl00_ctl00_WideContent_ProjectSearchControl_ProjectSearchPanel" class="ProjectSearchPanel NoWrap" onkeypress="javascript:return WebForm_FireDefaultButton(event, 'ctl00_ctl00_WideContent_ProjectSearchControl_SearchButton')">
+	
+    <script type="text/javascript">
+        function ProjectSearchButton_Click(input){
+            var textbox=$get('ctl00_ctl00_WideContent_ProjectSearchControl_SearchTextBox');
+            if(textbox&&!textbox.dirty){
+                textbox.value='';
+// Uncomment to prevent empty searches
+//                return false;
+            }
+        }
+    </script>
+    <div class="ProjectSearchPanel">
+        <input name="ctl00$ctl00$WideContent$ProjectSearchControl$SearchTextBox" maxlength="1000" id="ctl00_ctl00_WideContent_ProjectSearchControl_SearchTextBox" class="SingleLineTextBox ProjectSearchTextBox EmptyTextBox" type="text">
+        <input name="ctl00$ctl00$WideContent$ProjectSearchControl$SearchButton" id="ctl00_ctl00_WideContent_ProjectSearchControl_SearchButton" class="AlignMiddle" src="View.aspx_files/forwardbutton.gif" alt="Search" onclick="return ProjectSearchButton_Click(this);" style="border-width: 0px; height: 18px; width: 23px;" align="middle" type="image">
+    </div>
+
+</div>
+
+                <!--        <a href="/Project/ProjectDirectory.aspx" class="BrowseDirectoryLink">Browse Project Directory</a> -->
+                </div>
+            </td>
+        </tr>
+    </tbody></table>
+
+                                    <table class="SiteContentTable" cellpadding="0" cellspacing="0">
+                                        <tbody><tr valign="top">
+                                            <td class="SideBarPadding LeftSideBarPadding"><div></div></td>
+                                            <td class="SideBar LeftSideBar">
+                                                <div class="SideBar LeftSideBar">
+                                                    
+                                                </div>
+                                            </td>
+                                            <td class="SideBarPadding LeftSideBarPadding"><div></div></td>
+                                            <td class="MainContent">
+                                                <div class="MainContentMinWidthDiv"></div>
+                                                <div class="MainContentMinWidthContent">
+                                                    
+    
+    <div id="ctl00_ctl00_Content_ProjectContentPanel" class="ProjectContent">
+	
+        
+
+<div class="TabStrip">
+    <table class="FullWidth Fixed" border="0" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+            <td class="Narrower">
+                <a id="ctl00_ctl00_Content_Tabs_homeTab" class="TabLink" href="http://www.codeplex.com/wpfcontrib"><div id="ctl00_ctl00_Content_Tabs_ContentPanelHome" class="ContentPanel TabPanel Rounded" style="min-width: 10px;">
+		<div class="RoundedCornerContainer Top">
+			<div class="OuterBorder" style="border-width: 1px 0pt 0pt; margin: 0pt 5px; overflow: hidden; height: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep1" style="border-width: 0pt 2px; margin: 0pt 3px; overflow: hidden; height: 1px; background-position: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep2" style="border-width: 0pt 1px; margin: 0pt 2px; overflow: hidden; height: 1px; background-position: -2px 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep3" style="border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 1px; background-position: -2px -1px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep4" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 1px; background-position: -2px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep5" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 2px; background-position: -2px -3px;"></div>
+
+		</div><div class="RoundedContent" style="border-width: 0pt 1px; margin: 0pt; overflow: hidden; background-position: 0px -5px;">
+			<div id="ctl00_ctl00_Content_Tabs_ContentPanelHome_headerPanel" class="HeaderPanel Header" style="top: -5px; margin-bottom: -5px;">
+				
+    Home
+
+			</div>
+		</div>
+	</div></a>
+            </td><td id="ctl00_ctl00_Content_Tabs_releasesTabCell">
+                <a id="ctl00_ctl00_Content_Tabs_releasesTab" class="TabLink" href="http://www.codeplex.com/wpfcontrib/Release/ProjectReleases.aspx"><div id="ctl00_ctl00_Content_Tabs_ContentPanelReleases" class="ContentPanel TabPanel Rounded" style="min-width: 10px;">
+		<div class="RoundedCornerContainer Top">
+			<div class="OuterBorder" style="border-width: 1px 0pt 0pt; margin: 0pt 5px; overflow: hidden; height: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep1" style="border-width: 0pt 2px; margin: 0pt 3px; overflow: hidden; height: 1px; background-position: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep2" style="border-width: 0pt 1px; margin: 0pt 2px; overflow: hidden; height: 1px; background-position: -2px 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep3" style="border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 1px; background-position: -2px -1px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep4" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 1px; background-position: -2px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep5" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 2px; background-position: -2px -3px;"></div>
+
+		</div><div class="RoundedContent" style="border-width: 0pt 1px; margin: 0pt; overflow: hidden; background-position: 0px -5px;">
+			<div id="ctl00_ctl00_Content_Tabs_ContentPanelReleases_headerPanel" class="HeaderPanel Header" style="top: -5px; margin-bottom: -5px;">
+				
+    Releases
+
+			</div>
+		</div>
+	</div></a>
+            </td>
+	<td id="ctl00_ctl00_Content_Tabs_discussionTabCell" class="Wider">
+                <a id="ctl00_ctl00_Content_Tabs_discussionTab" class="TabLink" href="http://www.codeplex.com/wpfcontrib/Thread/List.aspx"><div id="ctl00_ctl00_Content_Tabs_ContentPanelDiscussion" class="ContentPanel TabPanel ActiveTab Rounded" style="min-width: 10px;">
+		<div class="RoundedCornerContainer Top">
+			<div class="OuterBorder" style="border-width: 1px 0pt 0pt; margin: 0pt 5px; overflow: hidden; height: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep1" style="border-width: 0pt 2px; margin: 0pt 3px; overflow: hidden; height: 1px; background-position: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep2" style="border-width: 0pt 1px; margin: 0pt 2px; overflow: hidden; height: 1px; background-position: -2px 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep3" style="border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 1px; background-position: -2px -1px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep4" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 1px; background-position: -2px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep5" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 2px; background-position: -2px -3px;"></div>
+
+		</div><div class="RoundedContent" style="border-width: 0pt 1px; margin: 0pt; overflow: hidden; background-position: 0px -5px;">
+			<div id="ctl00_ctl00_Content_Tabs_ContentPanelDiscussion_headerPanel" class="HeaderPanel Header" style="top: -5px; margin-bottom: -5px;">
+				
+    Discussions
+
+			</div>
+		</div>
+	</div></a> 
+            </td>
+	<td id="ctl00_ctl00_Content_Tabs_workItemsTabCell" class="Widest">
+                <a id="ctl00_ctl00_Content_Tabs_workItemsTab" class="TabLink" href="http://www.codeplex.com/wpfcontrib/WorkItem/List.aspx"><div id="ctl00_ctl00_Content_Tabs_ContentPanelWorkItems" class="ContentPanel TabPanel Rounded" style="min-width: 10px;">
+		<div class="RoundedCornerContainer Top">
+			<div class="OuterBorder" style="border-width: 1px 0pt 0pt; margin: 0pt 5px; overflow: hidden; height: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep1" style="border-width: 0pt 2px; margin: 0pt 3px; overflow: hidden; height: 1px; background-position: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep2" style="border-width: 0pt 1px; margin: 0pt 2px; overflow: hidden; height: 1px; background-position: -2px 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep3" style="border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 1px; background-position: -2px -1px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep4" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 1px; background-position: -2px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep5" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 2px; background-position: -2px -3px;"></div>
+
+		</div><div class="RoundedContent" style="border-width: 0pt 1px; margin: 0pt; overflow: hidden; background-position: 0px -5px;">
+			<div id="ctl00_ctl00_Content_Tabs_ContentPanelWorkItems_headerPanel" class="HeaderPanel Header" style="top: -5px; margin-bottom: -5px;">
+				
+    Issue Tracker
+
+			</div>
+		</div>
+	</div></a>
+            </td>
+	<td id="ctl00_ctl00_Content_Tabs_sourceTabCell" class="Widest">
+                <a id="ctl00_ctl00_Content_Tabs_sourceTab" class="TabLink" href="http://www.codeplex.com/wpfcontrib/SourceControl/ListDownloadableCommits.aspx"><div id="ctl00_ctl00_Content_Tabs_ContentPanelSource" class="ContentPanel TabPanel Rounded" style="min-width: 10px;">
+		<div class="RoundedCornerContainer Top">
+			<div class="OuterBorder" style="border-width: 1px 0pt 0pt; margin: 0pt 5px; overflow: hidden; height: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep1" style="border-width: 0pt 2px; margin: 0pt 3px; overflow: hidden; height: 1px; background-position: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep2" style="border-width: 0pt 1px; margin: 0pt 2px; overflow: hidden; height: 1px; background-position: -2px 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep3" style="border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 1px; background-position: -2px -1px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep4" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 1px; background-position: -2px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep5" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 2px; background-position: -2px -3px;"></div>
+
+		</div><div class="RoundedContent" style="border-width: 0pt 1px; margin: 0pt; overflow: hidden; background-position: 0px -5px;">
+			<div id="ctl00_ctl00_Content_Tabs_ContentPanelSource_headerPanel" class="HeaderPanel Header" style="top: -5px; margin-bottom: -5px;">
+				
+    Source Code
+
+			</div>
+		</div>
+	</div></a>
+            </td>
+	<td>
+                <a id="ctl00_ctl00_Content_Tabs_peopleTab" class="TabLink" href="http://www.codeplex.com/wpfcontrib/People/ProjectPeople.aspx"><div id="ctl00_ctl00_Content_Tabs_ContentPanelPeople" class="ContentPanel TabPanel Rounded" style="min-width: 10px;">
+		<div class="RoundedCornerContainer Top">
+			<div class="OuterBorder" style="border-width: 1px 0pt 0pt; margin: 0pt 5px; overflow: hidden; height: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep1" style="border-width: 0pt 2px; margin: 0pt 3px; overflow: hidden; height: 1px; background-position: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep2" style="border-width: 0pt 1px; margin: 0pt 2px; overflow: hidden; height: 1px; background-position: -2px 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep3" style="border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 1px; background-position: -2px -1px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep4" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 1px; background-position: -2px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep5" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 2px; background-position: -2px -3px;"></div>
+
+		</div><div class="RoundedContent" style="border-width: 0pt 1px; margin: 0pt; overflow: hidden; background-position: 0px -5px;">
+			<div id="ctl00_ctl00_Content_Tabs_ContentPanelPeople_headerPanel" class="HeaderPanel Header" style="top: -5px; margin-bottom: -5px;">
+				
+    People
+
+			</div>
+		</div>
+	</div></a>
+            </td><td>
+                <a id="ctl00_ctl00_Content_Tabs_licenseTab" class="TabLink" href="http://www.codeplex.com/wpfcontrib/Project/License.aspx"><div id="ctl00_ctl00_Content_Tabs_ContentPanelLicense" class="ContentPanel TabPanel Rounded" style="min-width: 10px;">
+		<div class="RoundedCornerContainer Top">
+			<div class="OuterBorder" style="border-width: 1px 0pt 0pt; margin: 0pt 5px; overflow: hidden; height: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep1" style="border-width: 0pt 2px; margin: 0pt 3px; overflow: hidden; height: 1px; background-position: 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep2" style="border-width: 0pt 1px; margin: 0pt 2px; overflow: hidden; height: 1px; background-position: -2px 0px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep3" style="border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 1px; background-position: -2px -1px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep4" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 1px; background-position: -2px;"></div>
+			<div class="RoundedBorder TopBorder BorderStep5" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 2px; background-position: -2px -3px;"></div>
+
+		</div><div class="RoundedContent" style="border-width: 0pt 1px; margin: 0pt; overflow: hidden; background-position: 0px -5px;">
+			<div id="ctl00_ctl00_Content_Tabs_ContentPanelLicense_headerPanel" class="HeaderPanel Header" style="top: -5px; margin-bottom: -5px;">
+				
+    License
+
+			</div>
+		</div>
+	</div></a>
+            </td>
+            <td class="FullWidth">&nbsp;</td>
+            <td class="AlignRight" nowrap="nowrap">
+                
+    
+<div id="ctl00_ctl00_Content_Tabs_rssFeeds_RssLabel" class="StandardPaddingBottom">
+		
+    <span id="ctl00_ctl00_Content_Tabs_rssFeeds_FeedsLabel"><img id="ctl00_ctl00_Content_Tabs_rssFeeds_rssFeedImage" title="RSS Feed" class="StandardMarginRight" src="View.aspx_files/icon_rss.gif" alt="RSS Feed" style="border-width: 0px;" align="absbottom"><a id="ctl00_ctl00_Content_Tabs_rssFeeds_MainRssLink" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx">RSS</a><img id="ctl00_ctl00_Content_Tabs_rssFeeds_rssDownArrow" src="View.aspx_files/arrow_dsc.gif" style="border: 0px none ; height: 9px; width: 9px;" align="absmiddle" hspace="5"></span>
+
+	</div>
+        <ul id="ctl00_ctl00_Content_Tabs_rssFeeds_FeedsPanel" class="RssFeedsPanel" style="display: none; position: absolute;">
+            <li>
+                <div id="ctl00_ctl00_Content_Tabs_rssFeeds_ProjectPanel">
+		
+                    <a id="ctl00_ctl00_Content_Tabs_rssFeeds_ProjectRssLink" title="All project updates" class="ArrowSmall NoUnderline" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx">WPF Contrib</a>
+                
+	</div>
+            </li>
+            <li>
+            <div id="ctl00_ctl00_Content_Tabs_rssFeeds_DiscussionsPanel">
+		
+                <a id="ctl00_ctl00_Content_Tabs_rssFeeds_DiscussionsRssLink" title="New threads and posts" class="ArrowSmall NoUnderline" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fforum%2fwpfcontrib">Discussions</a>
+            
+	</div>
+            </li>
+            <li>
+            <div id="ctl00_ctl00_Content_Tabs_rssFeeds_IssueTrackerPanel">
+		
+                <a id="ctl00_ctl00_Content_Tabs_rssFeeds_IssueTrackerRssLink" title="New and updated work items" class="ArrowSmall NoUnderline" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fworkitem%2fwpfcontrib">Issue Tracker</a>
+            
+	</div>
+            </li>
+            <li>
+            <div id="ctl00_ctl00_Content_Tabs_rssFeeds_ReleasesPanel">
+		
+                <a id="ctl00_ctl00_Content_Tabs_rssFeeds_ReleasesRssLink" title="New and updated releases" class="ArrowSmall NoUnderline" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2fwpfcontrib">Releases</a>
+            
+	</div>            
+            </li>
+            <li>
+            <div id="ctl00_ctl00_Content_Tabs_rssFeeds_SourceControlPanel">
+		
+                <a id="ctl00_ctl00_Content_Tabs_rssFeeds_SourceControlRssLink" title="New check-ins" class="ArrowSmall NoUnderline" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fsourcecontrol%2fwpfcontrib">Source Code</a>
+            
+	</div>
+            </li>
+            <li>
+            <div id="ctl00_ctl00_Content_Tabs_rssFeeds_WikiPanel">
+		
+                <a id="ctl00_ctl00_Content_Tabs_rssFeeds_WikiRssLink" title="New and updated wiki pages" class="ArrowSmall NoUnderline" href="http://www.codeplex.com/wpfcontrib/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fwiki%2fwpfcontrib">Wiki</a>
+            
+	</div>
+            </li>
+        </ul>
+
+            </td>
+            <td class="Narrowest"></td>
+        </tr>
+    </tbody></table>
+</div>
+        <div id="ctl00_ctl00_Content_TabContentPanel" class="ContentPanel Rounded" style="min-width: 18px;">
+		<div class="RoundedContent" style="border-width: 0pt 1px; margin: 0pt; overflow: hidden; background-image: none; background-position: 0px;">
+			<div id="ctl00_ctl00_Content_TabContentPanel_contentPanel" class="Content ProjectContent">
+				
+    
+            
+
+<div class="Threads">
+    <div class="Views">
+<div id="WorkItemNavigation">
+    <div class="Links">
+        <a id="ctl00_ctl00_Content_TabContentPanel_Content_ctl00_BasicLink" href="http://www.codeplex.com/wpfcontrib/Thread/List.aspx">Discussions List</a>
+        <span id="ctl00_ctl00_Content_TabContentPanel_Content_ctl00_CreateControls">| <a id="ctl00_ctl00_Content_TabContentPanel_Content_ctl00_CreateLink" href="http://www.codeplex.com/wpfcontrib/Thread/Create.aspx">Create New Discussion</a></span>
+        
+    </div>
+</div>
+</div>
+    
+    
+        <div style="float: right;"><span style="font-size: 0.9em;" title="Paste this into a wiki page to link to this discussion"><span class="Italic">Wiki Link:</span> [discussion:15078]</span></div>
+        <div class="Title">
+            <span class="CodePlexPageHeader">Uploaded BreadCrumbControl</span>&nbsp;<br>
+            
+        </div>
+        <br style="clear: both;">
+        <div id="ctl00_ctl00_Content_TabContentPanel_Content_PostListUpdatePanel">
+					
+                <div class="Posts">
+                    <div id="ctl00_ctl00_Content_TabContentPanel_Content_BodyUpdatePanel">
+						
+                            <table cellpadding="0" cellspacing="0">
+                                
+                                    <tbody><tr id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl00_PostPanel" class="Post">
+							<td style="border-style: none solid none none; border-color: -moz-use-text-color rgb(187, 187, 187) -moz-use-text-color -moz-use-text-color; border-width: medium 1px medium medium; vertical-align: top;">
+                                        <div class="Details">
+                                            <a id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl00_PostAnchor" name="Post49076"></a>
+                                            <div class="UserName"><a id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl00_UserNameLink" href="http://www.codeplex.com/UserAccount/UserProfile.aspx?UserName=Toon">Toon</a></div>
+                                            <div class="UserRole"><span id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl00_RoleLabel"></span></div>
+                                            <div class="SubText"><span class="smartDate" localtimeticks="1189685480">Sep 13 at 5:11 AM</span></div>
+                                            
+                                        </div>
+                                    </td>
+							<td style="width: 100%; vertical-align: top;">
+                                        <div id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl00_OptionsPanel" class="Options">
+								
+                                            
+                                             
+                                            
+                                            
+                                        
+							</div>
+                                        <div class="Body">
+                                            <input name="ctl00$ctl00$Content$TabContentPanel$Content$PostRepeater$ctl00$PostId" id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl00_PostId" value="49076" type="hidden">
+                                            <div id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl00_BodyPanel">
+								
+                                                <span id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl00_BodyLabel"><div class="wikidoc">
+Hi Aelij and Bragi,<br>thanks
+for the quick response. I have uploaded the BreadCrumbControl, i have
+made sofar. Maybe you can look at it. I think bragi is right and a good
+custom template on the treeview good do the same or better/easier. If i
+go on with it, you hear from me. Kind regards, Toon<br>
+</div></span>
+                                            
+							</div>
+                                            
+                                        </div>
+                                        <br style="clear: both; line-height: 0pt;">
+                                    </td>
+						</tr>
+						
+                                    
+                                        <tr><td colspan="2"><div class="PostSeparator"></div></td></tr>
+                                    
+                                    <tr id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl02_PostPanel" class="AltPost">
+							<td style="border-style: none solid none none; border-color: -moz-use-text-color rgb(187, 187, 187) -moz-use-text-color -moz-use-text-color; border-width: medium 1px medium medium; vertical-align: top;">
+                                        <div class="Details">
+                                            <a id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl02_PostAnchor" name="Post49302"></a>
+                                            <div class="UserName"><a id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl02_UserNameLink" href="http://www.codeplex.com/UserAccount/UserProfile.aspx?UserName=Bragi">Bragi</a></div>
+                                            <div class="UserRole"><span id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl02_RoleLabel">Developer</span></div>
+                                            <div class="SubText"><span class="smartDate" localtimeticks="1189789643">Sep 14 at 10:07 AM</span></div>
+                                            
+                                        </div>
+                                    </td>
+							<td style="width: 100%; vertical-align: top;">
+                                        <div id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl02_OptionsPanel" class="Options">
+								
+                                            
+                                             
+                                            
+                                            
+                                        
+							</div>
+                                        <div class="Body">
+                                            <input name="ctl00$ctl00$Content$TabContentPanel$Content$PostRepeater$ctl02$PostId" id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl02_PostId" value="49302" type="hidden">
+                                            <div id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl02_BodyPanel">
+								
+                                                <span id="ctl00_ctl00_Content_TabContentPanel_Content_PostRepeater_ctl02_BodyLabel"><div class="wikidoc">
+Wonderfull to hear you are making progress. I have been doing some
+further thinking on the subject. And I have found a possible reason to
+move it into a seperate control: If you look at how it is used in the
+vista explorer, you can still get the text value by clicking on the
+richt. You can also assign a new directory location by pasting or
+typing something in. This type of behaviour can probably best be done
+through a dependency property 'Text' or something. The CoerceCallback
+(for getting the value) can go through the tree and get each node's
+SelectedValue/Item as a string to build the path (something
+recursive?). The ValueChanged callback can parse the string somehow and
+re assign the SelectedItem for each parsed item.<br>This
+control would be grate to work together with another class I had been
+thinking about for a while: I'm currently calling it
+'DirectoryDataProvider', basically a custom DataProvider, similar to
+'XmlDataProvider'. It needs a path to a directory, and provides a list
+of all the files/dirs found in that directory. I am still thinking of
+what exactly to return as data. A possible way to implement the
+hiearchical structure like of a file system, is to return
+DirectoryDataProvider objects to represent a directory, and something
+else for files. <br>
+</div></span>
+                                            
+							</div>
+                                            
+                                        </div>
+                                        <br style="clear: both; line-height: 0pt;">
+                                    </td>
+						</tr>
+						
+                                    
+                            </tbody></table>
+                        
+					</div>
+                </div>
+                <br>
+                
+                <div id="ctl00_ctl00_Content_TabContentPanel_Content_LoginPanel">
+						
+                    <a id="ctl00_ctl00_Content_TabContentPanel_Content_LoginLink" href="javascript:__doPostBack('ctl00$ctl00$Content$TabContentPanel$Content$LoginLink','')">Sign in to post message or set email notifications</a>
+                
+					</div>
+                
+                
+            
+				</div>
+</div>
+
+        
+
+			</div>
+		</div><div class="RoundedCornerContainer Bottom">
+			<div class="RoundedBorder BottomBorder BorderStep9" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 2px; background-image: none; background-position: -4px -7px;"></div>
+			<div class="RoundedBorder BottomBorder BorderStep8" style="border-width: 0pt 1px; margin: 0pt 0px; overflow: hidden; height: 1px; background-image: none; background-position: -4px -6px;"></div>
+			<div class="RoundedBorder BottomBorder BorderStep7" style="border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 2px; background-image: none; background-position: -4px;"></div>
+			<div class="RoundedBorder BottomBorder BorderStep6" style="border-width: 0pt 1px; margin: 0pt 1px; overflow: hidden; height: 1px; background-image: none; background-position: -4px -3px;"></div>
+			<div class="RoundedBorder BottomBorder BorderStep5" style="border-width: 0pt 1px; margin: 0pt 2px; overflow: hidden; height: 1px; background-image: none; background-position: -4px -2px;"></div>
+			<div class="RoundedBorder BottomBorder BorderStep4" style="border-width: 0pt 1px; margin: 0pt 3px; overflow: hidden; height: 1px; background-image: none; background-position: -4px -1px;"></div>
+			<div class="RoundedBorder BottomBorder BorderStep3" style="border-width: 0pt 2px; margin: 0pt 4px; overflow: hidden; height: 1px; background-image: none; background-position: -2px -1px;"></div>
+			<div class="RoundedBorder BottomBorder BorderStep2" style="border-width: 0pt 1px; margin: 0pt 6px; overflow: hidden; height: 1px; background-image: none; background-position: -2px 0px;"></div>
+			<div class="RoundedBorder BottomBorder BorderStep1" style="border-width: 0pt 2px; margin: 0pt 7px; overflow: hidden; height: 1px; background-image: none; background-position: 0px;"></div>
+			<div class="OuterBorder" style="border-width: 1px 0pt 0pt; margin: 0pt 9px; overflow: hidden; height: 0px; background-image: none;"></div>
+
+		</div>
+	</div>
+    
+</div>
+
+                                                </div>
+                                            </td>
+                                            <td class="SideBarPadding RightSideBarPadding"><div></div></td>
+                                            <td class="SideBar RightSideBar">
+                                                <div class="SideBar RightSideBar">
+                                                    
+    <div id="ctl00_ctl00_RightSideBar_RightSideBarPanel" class="StandardPaddingTop" style="padding-top: 1.6em;">
+	
+        
+    
+</div>
+
+                                                </div>
+                                            </td>
+                                            <td class="SideBarPadding RightSideBarPadding"><div></div></td>
+                                        </tr>
+                                    </tbody></table>
+                                </div>
+                            </td></tr>
+                            <tr><td class="SiteFooter Centered">
+                                <span class="NoWrap AlignMiddle">© 2006-2007 Microsoft</span>
+                                <span class="VerticalBar">|</span>
+                                <span class="NoWrap AlignMiddle"><a href="http://privacy.microsoft.com/">Privacy Statement</a></span>
+                                <span class="VerticalBar">|</span>
+                                <span class="NoWrap AlignMiddle"><a href="http://www.codeplex.com/Legal/Terms.aspx">Terms of Use</a></span>
+                                <span class="VerticalBar">|</span>
+                                <span class="NoWrap AlignMiddle"><a href="http://www.codeplex.com/Legal/Conduct.aspx">Code of Conduct</a></span>
+                                <span class="VerticalBar">|</span>
+                                <span class="NoWrap AlignMiddle">Version 7.9.26.11512</span>
+                            </td></tr>
+                        </tbody></table>
+                    </div>
+                </td>
+                <td class="CanvasMargin"><div class="CanvasMargin"></div></td>
+            </tr>
+        </tbody></table>
+        <div class="UpdateProgressPanel FullPanel" id="ctl00_ctl00_UpdateProgressPanel" style="visibility: hidden; display: block;">
+	
+                <div class="FullPanel">
+                    <div class="ModalBackground FullPanel"></div>
+                    <table id="UpdateProgressTable" class="FullPanel">
+                        <tbody><tr>
+                            <td align="center" valign="middle">
+                                <div id="UpdateProgressMessage" class="UpdateProgress"><span class="UpdateProgressText">Updating...</span></div>
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </div>
+            
+</div>
+       </td></tr>
+    </tbody></table>     
+    
+<div>
+
+	<input name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWBgK5rdm1AwKU6pTACAKj7tCtBgKkx+eNBgKkx//ZBwLIzKODAgSbNAxqSurdwyLjJyKxILdM2Kxh" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+new CodePlex.PromptBox('Search Projects').initialize('ctl00_ctl00_WideContent_ProjectSearchControl_SearchTextBox');Sys.Application.initialize();
+Sys.Application.add_init(function() {
+    $create(AjaxControlToolkit.HoverMenuBehavior, {"DynamicServicePath":"/Thread/View.aspx","OffsetY":18,"id":"ctl00_ctl00_Content_Tabs_rssFeeds_HoverMenu","popupElement":$get("ctl00_ctl00_Content_Tabs_rssFeeds_FeedsPanel")}, null, null, $get("ctl00_ctl00_Content_Tabs_rssFeeds_RssLabel"));
+});
+Sys.Application.add_init(function() {
+    $create(Sys.UI._UpdateProgress, {"associatedUpdatePanelId":null,"displayAfter":0,"dynamicLayout":false}, null, null, $get("ctl00_ctl00_UpdateProgressPanel"));
+});
+// -->
+</script>
+</form>
+
+    <script type="text/javascript">
+        if(typeof(SmartDate_Load)=='function')
+        {    
+            SmartDate_Load();
+            Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(SmartDate_Load);
+        }    
+    </script>
+    
+    <noscript>
+<img alt="" id="DCSIMG" width="1" height="1"
+src="http://m.webtrends.com/dcsnbepko00000c1t09pkmw6c_3y7n/njs.gif?dcsuri=/nojavascript&amp;WT.js=No"
+/> </noscript>
+    
+</body></html>

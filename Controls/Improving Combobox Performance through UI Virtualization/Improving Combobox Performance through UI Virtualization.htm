@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head profile="http://gmpg.org/xfn/11">
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>kirupaBlog
+- If it isn’t broken, take it apart and fix it! » Blog Archive »
+Improving Combobox Performance through UI Virtualization</title>
+
+
+
+<meta name="generator" content="WordPress 2.0.7"><!-- leave this for stats --> 
+
+<link rel="stylesheet" href="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/style.css" type="text/css" media="screen">
+<link rel="alternate" type="application/rss+xml" title="kirupaBlog - If it isn’t broken, take it apart and fix it! RSS Feed" href="http://blog.kirupa.com/?feed=rss2">
+<link rel="pingback" href="http://blog.kirupa.com/xmlrpc.php">
+
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.kirupa.com/xmlrpc.php?rsd">
+
+<script src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1952673-1";
+urchinTracker();
+</script></head><body>
+
+<div id="wrap">
+<div id="header">
+<table border="0" cellpadding="5" cellspacing="0" width="100%">
+	<tbody><tr>
+		<td width="4">
+		<img src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/kirupaAvatar4.png" border="0"></td>
+		<td><h1><a href="http://blog.kirupa.com/">KIRUPA.CHINNATHAMBI</a></h1>
+<p class="description"> If it isn't broken, take it apart and fix it!</p></td>
+	</tr>
+</tbody></table>
+</div>
+<div id="content">
+									<div class="entry entry-1">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=115" rel="bookmark" title="Permanent Link to Improving Combobox Performance through UI Virtualization">Improving Combobox Performance through UI Virtualization</a></h2> 
+			<h3>July 21st, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+		</div>
+		<div class="entrybody">
+			<p>A while ago, I wrote&nbsp;a small <a href="http://www.kirupa.com/forum/showthread.php?t=253038" target="_blank"><u>Font Previewer</u></a>
+application to learn more about data binding with CLR objects. The
+combobox is bound to a collection of font objects, and each combobox
+item displays the font's name. Beyond just displaying the font name,
+the font name is displayed in the same font style also (<a href="http://www.kirupafx.com/FontPreview/publish.htm" target="_blank"><u>click here to run application</u></a>):</p>
+<p align="center"><a href="http://www.kirupafx.com/FontPreview/publish.htm" target="_blank" atomicselection="true"><img alt="fontpreview" src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/fontpreview.png" border="0"></a> </p>
+<p>In the original version I posted in the <a href="http://www.kirupa.com/forum/showthread.php?t=253038" target="_blank"><u>kForum thread</u></a>,
+there was a noticeable delay when you expand the combobox for the first
+time. Subsequent combobox accesses display all of your fonts in their
+respective styles almost instantaneously (yay!), but there was still
+the problem of the initial delay (boo!).</p>
+<p>The initial delay existed because <strong>all</strong> of
+the&nbsp;combobox items needed to be&nbsp;drawn&nbsp;when the combobox
+was displayed. After they were drawn the first time, they became
+cached, so subsequent accesses were made faster. Initially, I worked
+around this problem by simply avoiding styling each combobox item in
+the same font as the one it was displaying. Because I wasn't doing
+anything complex anymore, the initial delay was not noticeable. This
+simple font combobox is what you saw in <a href="http://blog.kirupa.com/?p=108" target="_blank"><u>kWordpad</u></a>, but it isn't the cool font combobox you see in applications such as Office 2007 or Blend.</p>
+<p><strong>Solution - UI Virtualization</strong><br>The actual, less
+lazy&nbsp;solution&nbsp;involves what is known as UI virtualization.
+With UI virtualization, only the content that is displayed is drawn. In
+other words, your combobox may&nbsp;contain thousands of elements, but
+only the five elements that are displayed are what get drawn! This
+results in a huge boost in performance.</p>
+<p>You can implement UI virtualization by using a <a href="http://msdn2.microsoft.com/en-us/library/system.windows.controls.virtualizingstackpanel.aspx" target="_blank"><u>VirtualizingStackPanel</u></a>&nbsp;in conjunction with an ItemsControl. To do this in WPF, add the following code inside your Window.Resources block:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHop">&lt;</span><span class="kASHwrd">ItemsPanelTemplate</span> <span class="kASHidn">x</span><span class="kASHop">:</span><span class="kASHidn">Key</span><span class="kASHop">=</span><span class="kASHqt">"ItemsTemplate"</span><span class="kASHop">&gt;</span>
+</dt><dt><span class="kASHop">&nbsp;&nbsp; &lt;</span><span class="kASHwrd">VirtualizingStackPanel</span><span class="kASHop">/</span><span class="kASHop">&gt;</span>
+</dt><dt><span class="kASHop">&lt;</span><span class="kASHop">/</span><span class="kASHwrd">ItemsPanelTemplate</span><span class="kASHop">&gt;</span></dt>
+</dl>
+<p>What you are creating is an ItemsPanelTemplate with the main content
+being just a VirtualizingStackPanel. Notice that the name/key for this
+is called ItemsTemplate. </p>
+<p>The next step is to assign this ItemsPanelTemplate to&nbsp;your control's ItemsPanel:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHwrd">ItemsPanel</span><span class="kASHop">=</span><span class="kASHqt">"{DynamicResource ItemsTemplate}"</span></dt>
+</dl>
+<p>With the case of our combobox, here is how the full XAML declaration looks with the above ItemsPanel information:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHop">&lt;</span><span class="kASHwrd">ComboBox</span> <span class="kASHwrd">HorizontalAlignment</span><span class="kASHop">=</span><span class="kASHqt">"Left"</span> <span class="kASHwrd">Margin</span><span class="kASHop">=</span><span class="kASHqt">"13,45,0,0"</span> <span class="kASHwrd">VerticalAlignment</span><span class="kASHop">=</span><span class="kASHqt">"Top"</span> <span class="kASHwrd">Width</span><span class="kASHop">=</span><span class="kASHqt">"150"</span> <span class="kASHwrd">MaxDropDownHeight</span><span class="kASHop">=</span><span class="kASHqt">"100"</span> <span class="kASHwrd">SelectedIndex</span><span class="kASHop">=</span><span class="kASHqt">"0"</span> <span class="kASHwrd">ItemTemplate</span><span class="kASHop">=</span><span class="kASHqt">"{DynamicResource FontComboLabel}"</span> <span class="kASHwrd">ItemsSource</span><span class="kASHop">=</span><span class="kASHqt">"{Binding Mode=OneWay, Source={StaticResource FontLabelDS}}"</span> <span class="kASHidn">x</span><span class="kASHop">:</span><span class="kASHwrd">Name</span><span class="kASHop">=</span><span class="kASHqt">"ComboBox"</span> <span class="kASHwrd">Height</span><span class="kASHop">=</span><span class="kASHqt">"26"</span> <span class="kASHwrd"><span style="background-color: rgb(255, 255, 0);">ItemsPanel</span></span><span class="kASHop" style="background-color: rgb(255, 255, 0);">=</span><span class="kASHqt"><span style="background-color: rgb(255, 255, 0);">"{DynamicResource ItemsTemplate}"</span></span><span class="kASHop">/</span><span class="kASHop">&gt;</span></dt>
+</dl>
+<p>When you run your application again, you will find that your
+ItemsPanel now refers to the template referred to&nbsp;as
+ItemsTemplate. I am not sure why comboboxes do not use a
+VritualizingStackPanel by default, for it seems like an ideal layout
+control for what comboboxes are good at - displaying a smaller set of
+information from a larger set.</p>
+<p><strong>Credits</strong><br>I originally posted this issue on the MSDN WPF forums, and it was Carole Snyder (part of the <a href="http://blogs.msdn.com/wpfsdk/" target="_blank"><u>WPF SDK team</u></a>) who was able to guide me in the right direction. See thread <a href="http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=1891014&amp;SiteID=1" target="_blank"><u>here</u></a>.</p>
+<p>Cheers!<br>Kirupa <img src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D115&amp;title=Improving+Combobox+Performance+through+UI+Virtualization" title="del.icio.us:Improving Combobox Performance through UI Virtualization"><img src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Improving Combobox Performance through UI Virtualization"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D115&amp;title=Improving+Combobox+Performance+through+UI+Virtualization" title="digg:Improving Combobox Performance through UI Virtualization"><img src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/digg.png" class="wp-notable_image" alt="digg:Improving Combobox Performance through UI Virtualization"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D115&amp;title=Improving+Combobox+Performance+through+UI+Virtualization" title="reddit:Improving Combobox Performance through UI Virtualization"><img src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/reddit.png" class="wp-notable_image" alt="reddit:Improving Combobox Performance through UI Virtualization"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D115&amp;new_comment=Improving+Combobox+Performance+through+UI+Virtualization&amp;linktype=" title="fark:Improving Combobox Performance through UI Virtualization"><img src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/fark.png" class="wp-notable_image" alt="fark:Improving Combobox Performance through UI Virtualization"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D115&amp;t=Improving+Combobox+Performance+through+UI+Virtualization" title="Y!:Improving Combobox Performance through UI Virtualization"><img src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/yahoo.png" class="wp-notable_image" alt="Y!:Improving Combobox Performance through UI Virtualization"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+		
+<!-- You can start editing here. -->
+
+	<h3 id="comments">One Response to “Improving Combobox Performance through UI Virtualization”</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-24003">
+			<cite><a href="http://mbrownchicago.spaces.live.com/" rel="external nofollow">Michael Brown</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-24003" title="">September 14th, 2007 at 11:50 am</a> </small>
+
+			<p>Great find! Wish I had thought of it first <img src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/icon_wink.gif" alt=";)" class="wp-smiley"> 
+</p>
+
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://blog.kirupa.com/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input name="author" id="author" value="" size="22" tabindex="1" type="text">
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input name="email" id="email" value="" size="22" tabindex="2" type="text">
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input name="url" id="url" value="" size="22" tabindex="3" type="text">
+<label for="url"><small>Website</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100" rows="10" tabindex="4"></textarea></p>
+
+<p><input name="submit" id="submit" tabindex="5" value="Submit Comment" type="submit">
+<input name="comment_post_ID" value="115" type="hidden">
+</p>
+
+</form>
+
+
+	</div>
+			<div class="navigation">
+			<div class="alignleft"></div>
+			<div class="alignright"></div>
+		</div>
+		
+	</div>
+<div id="sidebar">
+<br>
+<h2>Search</h2>
+<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" id="blogsearch" align="middle" height="35" width="190">
+<param name="allowScriptAccess" value="sameDomain">
+<param name="movie" value="http://blog.kirupa.com/wp-content/blogsearch.swf"><param name="quality" value="high"><param name="bgcolor" value="#ffffff"><embed src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/blogsearch.swf" quality="high" bgcolor="#ffffff" name="blogsearch" allowscriptaccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="35" width="190">
+</object>
+<br>
+<br>
+<h2>Pages</h2>
+<ul>
+<li><a href="http://blog.kirupa.com/">Home</a></li>
+<li class="page_item"><a href="http://blog.kirupa.com/?page_id=2" title="About Me">About Me</a></li>
+ 
+</ul>
+<h2>Categories</h2>
+<ul>
+	<li><a href="http://blog.kirupa.com/?cat=9" title="View all posts filed under Design">Design</a> (15)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=12" title="View all posts filed under Flash/Actionscript">Flash/Actionscript</a> (13)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=11" title="View all posts filed under kirupa.com">kirupa.com</a> (13)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=14" title="View all posts filed under Life at Microsoft">Life at Microsoft</a> (1)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=5" title="View all posts filed under Nerdy">Nerdy</a> (49)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=10" title="View all posts filed under Programming">Programming</a> (58)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=1" title="View all posts filed under Random">Random</a> (47)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=13" title="View all posts filed under WPF / Blend / C#">WPF / Blend / C#</a> (42)
+</li>
+</ul>
+<h2>Popular</h2>
+<ul>
+<li><a href="http://blog.kirupa.com/?p=30" title="Dynamic Movie Clips and the ScrollPane in Flash">Dynamic Movie Clips and the ScrollPane in Flash</a> (57)</li><li><a href="http://blog.kirupa.com/?p=85" title="Fixing Error 2739 When Installing Adobe CS3 on Vista 32">Fixing Error 2739 When Installing Adobe CS3 on Vista 32</a> (39)</li><li><a href="http://blog.kirupa.com/?p=70" title="Run/Emulate Windows Mobile 6 on your Computer">Run/Emulate Windows Mobile 6 on your Computer</a> (39)</li><li><a href="http://blog.kirupa.com/?p=33" title="Answers to my Interview regarding kirupaForum">Answers to my Interview regarding kirupaForum</a> (21)</li><li><a href="http://blog.kirupa.com/?p=101" title="And So it Goes...Graduation @ MIT!">And So it Goes...Graduation @ MIT!</a> (17)</li></ul>
+<ul>
+	<li id="linkcat-1"><h2>Blogroll</h2>
+	<ul>
+<li><a href="http://blogs.zdnet.com/Stewart/">Ryan Stewart</a></li>
+<li><a href="http://www.senocular.com/" title="Trevor McCauley's site filled with useful Fireworks and Flash tips!">Senocular</a></li>
+<li><a href="http://weblogs.asp.net/scottgu" title="A great blog covering the .NET-related changes!">Scott Guthrie</a></li>
+<li><a href="http://www.istartedsomething.com/" title="A great place for up-to-date tech news by Long Zheng">istartedsomething</a></li>
+<li><a href="http://blogs.msdn.com/jensenh/" title="A great blog on UI related topics.">Jensen Harris</a></li>
+<li><a href="http://blogs.msdn.com/oldnewthing/" title="Raymond Chen's technical, yet entertaining, blog!">OldNewThing</a></li>
+
+	</ul>
+</li>
+	<li id="linkcat-2"><h2>Silverlight/WPF</h2>
+	<ul>
+<li><a href="http://blogs.msdn.com/tims/" title="A great source for updates on silverlight, wpf, and other technologies.">Tim Sneath</a></li>
+<li><a href="http://blogs.msdn.com/expression/" title="Updates from the Expression team.">Expression Blog</a></li>
+<li><a href="http://rrelyea.spaces.live.com/" title="Rob frequently provides useful WPF information from around the web.">Rob Relyea</a></li>
+<li><a href="http://blogs.msdn.com/mharsh/" title="Mike provides great coverage and insightful information concerning all things Silverlight.">Mike Harsh's Silverlight Blog</a></li>
+
+	</ul>
+</li>
+</ul>
+</div></div>
+<div id="footer">
+<!-- 27 queries. 0.485 seconds. -->
+</div>
+
+<div align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="850">
+			<tbody><tr>
+				<td>
+				<div align="center">
+					<hr color="#d3d2cb" size="1">
+					<table id="table1" border="0" cellpadding="10" cellspacing="0" width="850">
+						<tbody><tr>
+							<td>
+							<div align="center">
+								<table id="table3" background="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/blue_large_bg_gif6.gif" border="0" cellpadding="0" cellspacing="0" height="113" width="753">
+									<tbody><tr>
+										<td width="7">
+										<font face="Arial" size="2">
+										<img src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/projec1.gif" border="0" height="70" hspace="3" width="1"></font></td>
+										<td width="746">
+										<script type="text/javascript"><!--
+		google_ad_client = "pub-0633423995889665";
+		google_ad_width = 728;
+		google_ad_height = 90;
+		google_ad_format = "728x90_as";
+		google_ad_type = "text";
+		google_ad_channel ="6505164574";
+		google_color_border = "EFF4FA";
+		google_color_bg = "EFF4FA";
+		google_color_link = "0066CC";
+		google_color_url = "336699";
+		google_color_text = "333333";
+		//--></script>
+										<script type="text/javascript" src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/show_ads.js">
+										
+		</script><iframe name="google_ads_frame" src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="90" scrolling="no" width="728"></iframe>
+										</td>
+									</tr>
+								</tbody></table>
+							</div>
+							</td>
+						</tr>
+					</tbody></table>
+				</div>
+				<table border="0" cellspacing="0" width="100%">
+					<tbody><tr>
+						<td><hr color="#d3d2cb" size="1"></td>
+					</tr>
+				</tbody></table>
+				<div align="center">
+					<table id="tblFooter" border="0" cellpadding="3" cellspacing="0" width="850">
+						<tbody><tr>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="44">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/">
+							<font color="#0066cc">Home</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="137">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/index.htm"><font color="#0066cc">About 
+							kirupa.com</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="154">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/mods.htm">
+							<font color="#0066cc">Meet the Moderators</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="69">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/ad.htm">
+							<font color="#0066cc">Advertise</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="78">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/link.htm"><font color="#0066cc">Link 
+						to Us</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="70">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/credits.htm"><font color="#0066cc">Credits</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="24">
+							<font face="Verdana">
+							<a href="http://www.kirupa.com/modular/rss.htm">
+							<img src="Improving%20Combobox%20Performance%20through%20UI%20Virtualization_files/rssfeed.gif" border="0" height="16" width="16"></a></font></td>
+							<td height="15" width="219">
+							Copyright <span class="homeLinkSM">
+							<font face="Times New Roman">©</font></span> 
+							1999-2007</td>
+						</tr>
+						</tbody></table>
+				</div>
+				</td>
+			</tr>
+		</tbody></table>
+<br>
+<br>
+
+
+</div>
+
+
+
+</body></html>

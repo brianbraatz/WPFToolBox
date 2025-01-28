@@ -1,0 +1,65 @@
+<!-- =======================================================
+      AnotherTeapotTwister.xaml (c) 2007 by Charles Petzold
+     ======================================================= -->
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:cp="http://schemas.charlespetzold.com/2007/xaml"
+      WindowTitle="Another Teapot Twister"
+      Title="Another Teapot Twister">
+    <Viewport3D>
+
+        <!-- ModelVisual with TeapotMesh generator. -->
+        <cp:ModelVisual>
+            <cp:ModelVisual.MeshGenerator>
+                <cp:TeapotMesh />
+            </cp:ModelVisual.MeshGenerator>
+
+            <cp:ModelVisual.Material>    
+                <DiffuseMaterial Brush="Pink" />
+            </cp:ModelVisual.Material>
+
+            <cp:ModelVisual.BackMaterial>    
+                <DiffuseMaterial Brush="Blue" />
+            </cp:ModelVisual.BackMaterial>
+
+            <cp:ModelVisual.AlgorithmicTransforms>
+                <cp:Twister x:Name="twister" Axis="0 0 1" Center="0 -1 0" />
+            </cp:ModelVisual.AlgorithmicTransforms>
+        </cp:ModelVisual>
+
+        <!-- Light sources. -->
+        <ModelVisual3D>
+            <ModelVisual3D.Content>
+                <Model3DGroup>
+                    <AmbientLight Color="#404040" />
+                    <DirectionalLight Color="#C0C0C0" Direction="2 -3 -1" />
+                </Model3DGroup>
+            </ModelVisual3D.Content>
+        </ModelVisual3D>
+
+        <!-- Camera. -->
+        <Viewport3D.Camera>
+            <PerspectiveCamera Position="0 0 5"
+                               LookDirection="0 0 -1"
+                               UpDirection="0 1 0"
+                               FieldOfView="45" />
+        </Viewport3D.Camera>
+    </Viewport3D>
+
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard TargetName="twister"
+                            TargetProperty="Angle"
+                            RepeatBehavior="Forever">
+                    <DoubleAnimationUsingKeyFrames>
+                        <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0" />
+                        <LinearDoubleKeyFrame KeyTime="0:0:5" Value="180" />
+                        <LinearDoubleKeyFrame KeyTime="0:0:15" Value="-180" />
+                        <LinearDoubleKeyFrame KeyTime="0:0:20" Value="0" />
+                    </DoubleAnimationUsingKeyFrames>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
+</Page>

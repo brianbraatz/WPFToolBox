@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - The “Vertigo” Effect in 3D</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/050139.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/081224.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/03/070716.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>The “Vertigo” Effect in 3D</h2></a><p style="text-align: right;">March 7, 2007<br>New York, N.Y.</p><p>
+The story goes something like this:  When Alfred Hitchcock was filming <i>Vertigo</i>
+he wanted to build a staircase structure that would expand in depth to
+simulate the acrophobia of the main character, played by James Stewart.
+But 2nd unit cameraman Irmin Roberts suggested it could be done with an
+optical effect. If a camera moves in on a subject, everything gets
+larger, of course, but the perspective also changes so that the
+distance between the foreground and the background seems to grow. If at
+the same time the camera zooms out at precisely the right pace, the
+foreground can remain the same size while the background seems to
+recede from the viewer.
+</p>
+<p>
+This combination dolly-in/zoom-out effect was used five times in <i>Vertigo</i>
+(released in 1958), each time accompanied by the same music: In the
+opening sequence (chapter 2 on the DVD), twice in the bell tower
+(chapter 20), and twice more at the end (chapter 33). Thereafter it was
+called the <i>Vertigo</i> effect or the dolly zoom or several other
+terms, and has since been used in a number of movies, probably to the
+point where it's now a cliche.
+</p>
+<p>
+(Wikipedia has a 
+<a href="http://en.wikipedia.org/wiki/Dolly_zoom">Dolly Zoom</a> article that indicates the technique "appeared earlier at the climax to [Hitchcock's] film <i>Spellbound</i>," which dates from 1945.  This is just plain wrong: The relevant scene in <i>Spellbound</i>
+is at 1:38:22 on the DVD and only looks like a dolly zoom if you don't
+know the boy is moving relative to the background. The camera is
+following the moving boy, so of course the background recedes, and
+there's nothing special about it. I suspect this particular shot was
+done with rear-screen projection.)
+</p>
+<p>
+The following WPF program demonstrates the <i>Vertigo</i> effect with 3D graphics:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/VertigoEffect/VertigoEffect.xbap">VertigoEffect.xbap</a>
+</p>
+<p>Move the slider at the bottom to change the perspective. (Towards
+the rear of the "room" you'll sometimes see some rippling that results
+from lines changing width in combination with anti-aliasing.)
+</p>
+<p>I struggled to find a way to do this effect entirely in XAML, but
+eventually gave up. Instead, I used a binding converter. The markup for
+the camera looks like this:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;PerspectiveCamera&nbsp;x:Name="cam"<br>&nbsp;&nbsp;&nbsp;&nbsp;FieldOfView="{Binding&nbsp;ElementName=slider,&nbsp;Path=Value}"<br>&nbsp;&nbsp;&nbsp;&nbsp;Position="{Binding&nbsp;ElementName=cam,&nbsp;Path=FieldOfView,&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mode=OneWay,&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Converter={StaticResource&nbsp;conv},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ConverterParameter={StaticResource&nbsp;param}}"&nbsp;/&gt;<br>
+</ul>
+<p>
+The <i>FieldOfView</i> property (which corresponds to a zoom) is controlled by the <i>Slider</i> and can be adjusted between 15 degrees and 120 degrees. (It starts at 45.)  The <i>Position</i> property of the camera is a data binding with the <i>FieldOfView</i> but with a converter involved. The "conv" resource refers to a class that contains the following conversion method:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+public&nbsp;object&nbsp;Convert(object&nbsp;value,&nbsp;Type&nbsp;typeTarget,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;object&nbsp;param,&nbsp;CultureInfo&nbsp;culture)<br>{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;fieldOfView&nbsp;=&nbsp;(double)value;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;CameraParameters&nbsp;camParam&nbsp;=&nbsp;param&nbsp;as&nbsp;CameraParameters;<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Calculate&nbsp;the&nbsp;new&nbsp;distance.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;distance&nbsp;=&nbsp;camParam.ViewWidth&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2&nbsp;*&nbsp;Math.Tan(Math.PI&nbsp;*&nbsp;fieldOfView&nbsp;/&nbsp;360));<br><br>&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Move&nbsp;the&nbsp;camera.<br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;camParam.BasePosition&nbsp;+&nbsp;distance&nbsp;*&nbsp;camParam.DollyTrack;<br>}<br>
+</ul>
+<p>
+The <i>param</i> argument is an object of type <i>CameraParameters</i>, also defined as a resource, which keeps the conversion routine generalized.  The <i>CameraParameters</i>
+class simply contains three properties that indicate the desired width
+of the foreground object (which should stay the same regardless of the <i>FieldOfView</i>), a reference point for the camera, and the vector along which the camera will move.
+</p>
+<p>
+You can download all source code
+<a href="http://www.charlespetzold.com/blog/2007/03/VertigoEffect.zip">here</a>.
+Before compiling, you'll have to bring up Project Properties, select
+the Signing tab and click the Create Test Certificate button.
+</p>
+<p>
+What's that you say?  You've never seen <i>Vertigo</i>??  Well, could you add it to your queue, please?  And while you're at it, add <i>Rear Window</i>
+(1954) as well. Both films are among Hitchcock's finest. Both films are
+in color. Both are widescreen. Both star James Stewart. <i>Rear Window</i> takes place in a single set supposedly on the same street where I live in New York City.  <i>Vertigo</i> is set in San Francisco and has some wonderful location footage.  <i>Rear Window</i> stars a divine (but pre-royal) Grace Kelly.  <i>Vertigo</i> stars Kim Novak but also features Barbara Bel Geddes, who concluded her acting career as Miss Ellie in <i>Dallas</i>.  (And let's not forget that gorgeous <i>Vertigo</i> score by one of the greatest film composers of all time, Bernard Herrmann.)
+</p>
+
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/050139.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/081224.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

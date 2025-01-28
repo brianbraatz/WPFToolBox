@@ -1,0 +1,546 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Greg Schechter's Blog : Enter The Planerator - Dead-simple 3D in WPF, with a stupid name</title>
+ 
+
+
+
+
+<meta name="keywords" content="WPF">
+<meta name="description" content="When incorporating 3D support into WPF, we strived for integration with the rest of the system, and sufficient flexibility that will support lots of different scenarios. So, even though 3D in WPF is typically far easier to use and higher-level than other">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/greg_schechter/pingback.aspx">
+<link rel="stylesheet" href="enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx_files/print.css" type="text/css" media="print">
+<link rel="stylesheet" href="enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx_files/brown.css" type="text/css" media="screen">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Greg Schechter's Blog (RSS 2.0)" href="http://blogs.msdn.com/greg_schechter/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Greg Schechter's Blog (Atom 1.0)" href="http://blogs.msdn.com/greg_schechter/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Enter The Planerator - Dead-simple 3D in WPF, with a stupid name Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/greg_schechter/commentrss.aspx?PostID=5687221">
+
+	<script src="enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx_files/global.js" type="text/javascript"></script></head><body>
+<form name="aspnetForm" method="post" action="/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgIFJGN0bDAwJF8kY3RsMDAkXyRiczEkXyR3cyRfJFNlYXJjaEJveAUqY3RsMDAkXyRjdGwwMCRfJGN0bDAxJF8kZm9ybSRfJGNoa1JlbWVtYmVyetbgL05dT3qARv9YZVXdkX7N3Z0=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx_files/WebResource_002.js" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript" src="enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script>
+<script src="enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx_files/WebResource.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Welcome to MSDN Blogs
+<a id="ctl00___ctl00___duw1_ac1___Login" href="http://blogs.msdn.com/login.aspx?ReturnUrl=%2fgreg_schechter%2farchive%2f2007%2f10%2f26%2fenter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx">Sign in</a> | <a id="ctl00___ctl00___duw1_ac1___Register" href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx">Join</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="wrapper">
+	<div id="container">
+		<div id="header">
+			
+<div id="title">
+<h1><a id="ctl00___ctl00___bth___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/greg_schechter/default.aspx">Greg Schechter's Blog</a></h1>
+<p id="tagline"><a href="http://msdn.microsoft.com/windowsvista">Windows Vista</a> and <a href="http://msdn.microsoft.com/Longhorn/understanding/pillars/avalon/default.aspx">Windows Presentation Foundation (Avalon)</a> -- Graphics, Media, Animation, Programming Model and other goodies.</p></div>
+
+		</div>
+		<div id="contentwrapper">
+			<div id="sidebar-a">
+				
+<div id="BlogLinksSideBar">
+	
+<div id="WeblogLinks">
+<h3>This Blog</h3>
+<ul>
+    
+	
+	<li><a id="ctl00___ctl00___bs1___wl___Contactlink1" href="http://blogs.msdn.com/greg_schechter/contact.aspx">Email</a></li>
+</ul>
+</div>
+</div>
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="SubscriptionsSideBar">
+	
+<div id="Subscriptions">
+ <h3>Syndication</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs1___bs___rss" href="http://blogs.msdn.com/greg_schechter/rss.xml">RSS 2.0</a></li>
+        <li><a id="ctl00___ctl00___bs1___bs___atom" href="http://blogs.msdn.com/greg_schechter/atom.xml">Atom 1.0</a></li>
+    </ul>
+ </div>
+</div>
+
+<div id="SearchSideBar">
+	
+	
+<div id="Search">
+<h3>Search</h3>
+<ul><li>
+<input name="ctl00$_$ctl00$_$bs1$_$ws$_$SearchBox" id="ctl00___ctl00___bs1___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bs1___ws___SearchButton(event);" type="text"> <a id="ctl00___ctl00___bs1___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bs1$_$ws$_$SearchButton','')">Go</a>
+</li></ul>
+</div>
+	
+</div>
+
+<div id="NewsSideBar">
+	
+</div>
+
+<div id="LinkSideBar">
+	
+
+	
+</div>
+			</div>
+			<div id="sidebar-b">
+				<div id="TagSideBar">
+					<h3>Tags</h3>
+					<ul>
+					<ul class="SidebarTagCloud">
+<li class="Tag4"><a href="http://blogs.msdn.com/greg_schechter/archive/tags/DWM/default.aspx" rel="tag">DWM</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/greg_schechter/archive/tags/Silverlight/default.aspx" rel="tag">Silverlight</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/greg_schechter/archive/tags/WPF/default.aspx" rel="tag">WPF</a></li>
+</ul>
+
+					</ul>
+				</div>
+				
+				<div id="RecentPostsSideBar">
+					
+	
+<h3>Recent Posts</h3>	
+<ul>
+        <li><a id="ctl00___ctl00___rp___PostList_ctl01_Link" href="http://blogs.msdn.com/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx">Enter The Planerator - Dead-simple 3D in WPF, with a stupid name</a></li>
+    
+        <li><a id="ctl00___ctl00___rp___PostList_ctl02_Link" href="http://blogs.msdn.com/greg_schechter/archive/2007/09/26/making-use-of-multiprocessing-in-wpf.aspx">Making use of multiprocessing in WPF</a></li>
+    
+        <li><a id="ctl00___ctl00___rp___PostList_ctl03_Link" href="http://blogs.msdn.com/greg_schechter/archive/2007/08/21/silverlight-1-1-virtualearth-viewer.aspx">Silverlight 1.1 VirtualEarth Viewer</a></li>
+    
+        <li><a id="ctl00___ctl00___rp___PostList_ctl04_Link" href="http://blogs.msdn.com/greg_schechter/archive/2007/05/19/wpf-silverlight-and-c-3-0-object-initializers.aspx">WPF, Silverlight and C# 3.0 object initializers</a></li>
+    
+        <li><a id="ctl00___ctl00___rp___PostList_ctl05_Link" href="http://blogs.msdn.com/greg_schechter/archive/2007/04/15/making-parallaxui-look-right-field-of-view-selection.aspx">Making ParallaxUi look right - field of view selection</a></li>
+    </ul>
+    
+	
+
+				</div>
+
+				<div id="ArchiveSideBar">
+					
+	
+<h3>Archives</h3>
+<ul>
+
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2007/10.aspx">October 2007 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2007/09.aspx">September 2007 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2007/08.aspx">August 2007 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2007/05.aspx">May 2007 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2007/04.aspx">April 2007 (3)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2007/03.aspx">March 2007 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2007/01.aspx">January 2007 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2006/10.aspx">October 2006 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2006/09.aspx">September 2006 (3)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2006/08.aspx">August 2006 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2006/06.aspx">June 2006 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2006/05.aspx">May 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2006/04.aspx">April 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2006/03.aspx">March 2006 (5)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2005/06.aspx">June 2005 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2004/05.aspx">May 2004 (4)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/greg_schechter/archive/2003/12.aspx">December 2003 (3)</a>
+        </li>
+    
+</ul>
+	
+				</div>
+
+			</div>
+			<div id="content"><div id="content2">
+				
+        
+
+<br>
+<div class="post">
+	<div class="postsub">			
+		<h2>Enter The Planerator - Dead-simple 3D in WPF, with a stupid name</h2>
+		<p>When
+incorporating 3D support into WPF, we strived for integration with the
+rest of the system, and sufficient flexibility that will support lots
+of different scenarios.&nbsp; So, even though 3D in WPF is typically
+far easier to use and higher-level than other 3D platform APIs, there
+are still a whole bunch of concepts and object model you need to learn
+to effectively use it.</p>
+<p>But what about the developer that just wants to "make this thing
+tilt backwards into 3D"?&nbsp; Or "give this element a 3D
+perspective"?&nbsp; Currently, to do that, you need to know about
+Viewport3D, cameras, lights, models, meshes, texture coordinates,
+triangle indices, materials, visual brushes, quaternions (maybe), and
+caching hints.&nbsp; (And yes, this <u>still</u> is substantially
+easier than most 3D platform APIs.)&nbsp; And you also need to
+understand, re-derive, or steal the math necessary for aligning 3D
+frontal projections with 2D (as described in <a href="http://blogs.msdn.com/greg_schechter/archive/2007/04/03/camera-construction-in-parallaxui.aspx" mce_href="http://blogs.msdn.com/greg_schechter/archive/2007/04/03/camera-construction-in-parallaxui.aspx">this previous blog entry</a>).&nbsp; Just for these very simple, constrained scenarios, it shouldn't be that difficult to do.</p>
+<p>Those thoughts motivate construction of the custom WPF control I'll
+describe here.&nbsp; I'm calling it the Planerator control, because it
+takes a WPF element and puts it on a flat plane that you can manipulate
+in 3D.&nbsp; The original element remains interactive as it's
+transformed in 3D.&nbsp; (This is thanks to our WPF 3.5 - Orcas -
+feature called Viewport2DVisual3D... <a href="http://blogs.msdn.com/llobo/archive/2007/08/30/3-5-features-viewport2dvisual3d.aspx" mce_href="http://blogs.msdn.com/llobo/archive/2007/08/30/3-5-features-viewport2dvisual3d.aspx">Lester shows a usage of it here</a>.)</p>
+<p>All you need to do to use the Planerator is wrap it around some
+other WPF element, and set (or animate, or databind) its exposed
+RotationX, RotationY, and RotationZ properties, and you're done.&nbsp;
+The element is now living in 3D, still fully interactive, and the
+Planerator itself will participate in 2D layout.&nbsp; Here's a simple
+example:</p>
+<p mce_keep="true">&nbsp;</p>
+<p class="MsoNormal" style="margin-bottom: 0pt; line-height: normal;"><span style="font-size: 10pt; color: green; font-family: 'Courier New';">&nbsp;&nbsp;&nbsp; &lt;!-- Excluding backgrounds and list box items for brevity --&gt; 
+<p mce_keep="true"></p></span><strong><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">pl</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">:</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">Planerator</span><span style="font-size: 10pt;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="color: red;"><span style="">&nbsp;</span>RotationY</span><span style="color: blue;">="35"</span></span></strong><span style="font-size: 10pt;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="color: blue;"><strong>&gt; </strong></span></span></p>
+<p><strong></strong></p>
+<p><strong></strong></p>
+<p class="MsoNormal" style="margin-bottom: 0pt; line-height: normal;"><strong></strong><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"></span></p><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&lt;</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">StackPanel</span><span style="font-size: 10pt; color: red;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"> Height</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">="290"</span><span style="font-size: 10pt; color: red;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"> Width</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">="580"</span><span style="font-size: 10pt; color: red;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"> Orientation</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">="Horizontal"</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&gt; </span>
+<p class="MsoNormal" style="margin-bottom: 0pt; line-height: normal;"><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&lt;</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">StackPanel</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&gt; </span>
+</p><p mce_keep="true"><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&lt;</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">Label</span><span style="font-size: 10pt;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&nbsp;<span style="color: red;"> FontSize</span><span style="color: blue;">="24"</span><span style="color: red;"> Content</span><span style="color: blue;">=" "</span><span style="color: red;"> Foreground</span><span style="color: blue;">="#FF000000"/&gt; </span></span></p>
+<p mce_keep="true"><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&lt;</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">Border</span><span style="font-size: 10pt; color: red;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"> ...</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"> &gt; </span></p>
+<p mce_keep="true"><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&lt;</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">MediaElement</span><span style="font-size: 10pt; color: red;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"> x</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">:</span><span style="font-size: 10pt; color: red;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">Name</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">="myMediaElement" /&gt; </span></p>
+<p mce_keep="true"><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&lt;/</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">Border</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&gt; </span></p>
+<p mce_keep="true"><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&lt;/</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">StackPanel</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&gt; </span></p>
+<p mce_keep="true"><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&lt;</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">ListBox ... /&gt;</span> </p>
+<p class="MsoNormal" style="margin-bottom: 0pt; line-height: normal;"><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"></span>
+</p><p mce_keep="true"><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&lt;/</span><span style="font-size: 10pt; color: rgb(163, 21, 21);" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">StackPanel</span><span style="font-size: 10pt; color: blue;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&gt; </span></p>
+<p mce_keep="true"><strong><span style="font-size: 10pt; color: rgb(163, 21, 21); line-height: 115%;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: blue; line-height: 115%;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&lt;/</span><span style="font-size: 10pt; color: rgb(163, 21, 21); line-height: 115%;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">pl</span><span style="font-size: 10pt; color: blue; line-height: 115%;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">:</span><span style="font-size: 10pt; color: rgb(163, 21, 21); line-height: 115%;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">Planerator</span><span style="font-size: 10pt; color: blue; line-height: 115%;" courier="courier" new?;="new?;" mso-no-proof:="mso-no-proof:" yes?="yes?">&gt;</span></strong></p>
+<p>The above results in this:</p>
+<p><a href="http://blogs.msdn.com/blogfiles/greg_schechter/WindowsLiveWriter/EnterThePlaneratorDeadsimple3DinWPF_D5E0/image_6.png" mce_href="http://blogs.msdn.com/blogfiles/greg_schechter/WindowsLiveWriter/EnterThePlaneratorDeadsimple3DinWPF_D5E0/image_6.png"><img style="border: 0px none ;" alt="image" src="enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx_files/image_thumb_2.png" mce_src="http://blogs.msdn.com/blogfiles/greg_schechter/WindowsLiveWriter/EnterThePlaneratorDeadsimple3DinWPF_D5E0/image_thumb_2.png" border="0" height="409" width="498"></a> </p>
+<p>Again, no cameras or meshes or lights to set up, and no complicated
+math to align the 3D projection with the original 2D sources.&nbsp;
+Drop dead simple perspective projections into 3D (that remain
+interactive, too!)</p>
+<p>By the way, in case you were wondering what it looks like behind this plane... it's just what you'd expect :-)&nbsp; :</p>
+<p><a href="http://blogs.msdn.com/blogfiles/greg_schechter/WindowsLiveWriter/EnterThePlaneratorDeadsimple3DinWPF_D5E0/image_8.png" mce_href="http://blogs.msdn.com/blogfiles/greg_schechter/WindowsLiveWriter/EnterThePlaneratorDeadsimple3DinWPF_D5E0/image_8.png"><img style="border: 0px none ;" alt="image" src="enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx_files/image_thumb_3.png" mce_src="http://blogs.msdn.com/blogfiles/greg_schechter/WindowsLiveWriter/EnterThePlaneratorDeadsimple3DinWPF_D5E0/image_thumb_3.png" border="0" height="420" width="506"></a> </p>
+<h2>Get Yours</h2>
+<p>I've <a class="" title="Planerator Solution" href="http://blogs.msdn.com/greg_schechter/attachment/5687221.ashx" target="_blank" mce_href="http://blogs.msdn.com/greg_schechter/attachment/5687221.ashx">attached a Visual Studio solution</a>
+to this blog post that contains the Planerator custom control, and two
+sample apps -- one a windowed application, and the other an XBAP.&nbsp;
+Both apps demonstrate the video browser demo panel shown above with
+controls for changing the angles ("field of view" can also be modified
+on the Planerator, to change the amount of perspective).&nbsp; Note
+that the solution is for Visual Studio 2008, and uses C# 3.0 features
+and WPF 3.5 features.&nbsp; I built it on Visual Studio 2008 Beta 2.</p>
+<p>Have fun... if you create some cool uses, send 'em along...</p>
+<p>I'll make a subsequent post that talks about some of the more interesting aspects of getting the Planerator working.</p>
+		<div class="postfoot">
+			Published Friday, October 26, 2007 1:02 AM
+			by
+			<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=2944">Greg Schechter</a>
+			
+			
+			<div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/greg_schechter/archive/tags/WPF/default.aspx" rel="tag">WPF</a></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+			
+	
+<br>
+<b>Attachment(s): </b><a id="ctl00___ctl00___ctl01___Entry___Attachment___DownLoadLink" href="http://blogs.msdn.com/greg_schechter/attachment/5687221.ashx">PlaneratorSolution.zip</a>							
+		</div>
+	</div>
+</div>
+
+
+<div id="postToolbar">
+<h2 class="CommonSubTitle">Comment Notification</h2>
+<p>
+	If you would like to receive an email when updates are made to this post, please register <a id="ctl00___ctl00___ctl01___DetailedSubBar___RegisterLink" href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx">here</a>
+	
+</p>
+<p>
+	Subscribe to this post's comments using
+	<a id="ctl00___ctl00___ctl01___DetailedSubBar___CommentRssLink" href="http://blogs.msdn.com/greg_schechter/commentrss.aspx?PostID=5687221">RSS</a>
+</p>
+</div>
+
+<h3>
+	Comments
+</h3>
+<div id="comments">
+
+		<div class="comment">
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Friday, October 26, 2007 4:11 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl00_NameLink" rel="nofollow" title="TrackBack" href="http://www.soundpages.net/computers/?p=5032" target="_blank">Computers » Enter The Planerator - Dead-simple 3D in WPF, with a stupid name</a>
+			</div>
+			<h4><a id="ctl00___ctl00___ctl01___Comments___Comments_ctl00_PermaLink" title="permalink" href="http://blogs.msdn.com/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx#5687356">#</a>
+				<span>Computers &amp;raquo; Enter The Planerator - Dead-simple 3D in WPF, with a stupid name<a name="5687356"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>PingBack from <a rel="nofollow" target="_new" href="http://www.soundpages.net/computers/?p=5032">http://www.soundpages.net/computers/?p=5032</a></p>
+
+			</div>
+		</div>
+	
+		<div class="altcomment">
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Friday, October 26, 2007 6:09 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_NameLink" title="FKruesch" href="http://www.planet-xaml.net/" target="_blank">FKruesch</a>
+			</div>
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_PermaLink" title="permalink" href="http://blogs.msdn.com/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx#5688882">#</a>
+				<span>re: Enter The Planerator - Dead-simple 3D in WPF, with a stupid name<a name="5688882"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Great stuff! I think you'll see this in almost every WPF app, now you made it so dead simple.</p>
+<p>Wouldn't make sense to expose FieldOfView as well for more fine-grained control?</p>
+
+			</div>
+		</div>
+	
+		<div class="comment">
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Friday, October 26, 2007 12:17 PM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_NameLink" title="BBowers" target="_blank">BBowers</a>
+			</div>
+			<h4><a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_PermaLink" title="permalink" href="http://blogs.msdn.com/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx#5693063">#</a>
+				<span>re: Enter The Planerator - Dead-simple 3D in WPF, with a stupid name<a name="5693063"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>3D so simple even I can do it! &nbsp;This is so cool!</p>
+<p>Is there a way to make this work with more dynamic content though?
+&nbsp;For example, it seems like the size of the content needs to be
+hard-coded (can't use HorizontalAlignment="Stretch", for example).
+&nbsp;</p>
+
+			</div>
+		</div>
+	
+		<div class="altcomment">
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Friday, October 26, 2007 12:17 PM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_NameLink" title="BBowers" target="_blank">BBowers</a>
+			</div>
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_PermaLink" title="permalink" href="http://blogs.msdn.com/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx#5693064">#</a>
+				<span>re: Enter The Planerator - Dead-simple 3D in WPF, with a stupid name<a name="5693064"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>3D so simple even I can do it! &nbsp;This is so cool!</p>
+<p>Is there a way to make this work with more dynamic content though?
+&nbsp;For example, it seems like the size of the content needs to be
+hard-coded (can't use HorizontalAlignment="Stretch", for example).
+&nbsp;</p>
+
+			</div>
+		</div>
+	
+		<div class="comment">
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Friday, October 26, 2007 12:18 PM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_NameLink" title="Marlon Smith" target="_blank">Marlon Smith</a>
+			</div>
+			<h4><a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_PermaLink" title="permalink" href="http://blogs.msdn.com/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx#5693079">#</a>
+				<span>re: Enter The Planerator - Dead-simple 3D in WPF, with a stupid name<a name="5693079"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>This
+is sweet, just finished some 3D flips myself using Viewport2DVisual3D
+and you are right. &nbsp;Question: With your control how would I put
+elements on the back of the plane?</p>
+
+			</div>
+		</div>
+	
+</div>
+
+	
+
+
+	
+<div id="commentform">
+<h3>Leave a Comment</h3>
+
+    <dl>
+        <dt><label for="ctl00___ctl00___ctl01___form___tbTitle">Title</label> <em>(required)</em><span id="ctl00___ctl00___ctl01___form___Requiredfieldvalidator1" style="color: Red; visibility: hidden;">*</span></dt>
+        <dd><input name="ctl00$_$ctl00$_$ctl01$_$form$_$tbTitle" value="re: Enter The Planerator - Dead-simple 3D in WPF, with a stupid name" id="ctl00___ctl00___ctl01___form___tbTitle" class="smallbox" type="text"></dd>
+        
+        <dt id="ctl00___ctl00___ctl01___form___NameTitle"><label for="ctl00___ctl00___ctl01___form___tbName">Name</label> <em>required</em><span id="ctl00___ctl00___ctl01___form___Requiredfieldvalidator2" style="color: Red; visibility: hidden;">*</span></dt><dd id="ctl00___ctl00___ctl01___form___NameDesc"><input name="ctl00$_$ctl00$_$ctl01$_$form$_$tbName" id="ctl00___ctl00___ctl01___form___tbName" class="smallbox" type="text"></dd>
+        
+        <dt><label for="ctl00___ctl00___ctl01___form___tbUrl">Your URL</label> </dt>
+        <dd><input name="ctl00$_$ctl00$_$ctl01$_$form$_$tbUrl" id="ctl00___ctl00___ctl01___form___tbUrl" class="smallbox" type="text"></dd>
+        
+        <dt><label for="ctl00___ctl00___ctl01___form___tbComment">Comments</label> <em>(required)</em><span id="ctl00___ctl00___ctl01___form___Requiredfieldvalidator3" style="color: Red; visibility: hidden;">*</span></dt>
+        <dd><textarea name="ctl00$_$ctl00$_$ctl01$_$form$_$tbComment" rows="5" cols="25" id="ctl00___ctl00___ctl01___form___tbComment"></textarea></dd>
+
+        <dt><input id="ctl00___ctl00___ctl01___form___chkRemember" name="ctl00$_$ctl00$_$ctl01$_$form$_$chkRemember" type="checkbox"><label for="ctl00___ctl00___ctl01___form___chkRemember">Remember Me?</label></dt>
+
+        <dt><input name="ctl00$_$ctl00$_$ctl01$_$form$_$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$_$ctl00$_$ctl01$_$form$_$btnSubmit", "", true, "", "", false, false))' id="ctl00___ctl00___ctl01___form___btnSubmit" type="submit"></dt>
+    </dl>
+</div>
+
+
+
+	
+   
+    
+			</div></div>
+			<div id="contentfooter">&nbsp;</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator1"), document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator2"), document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator3"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00___ctl00___ctl01___form___Requiredfieldvalidator1 = document.all ? document.all["ctl00___ctl00___ctl01___form___Requiredfieldvalidator1"] : document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator1");
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.controltovalidate = "ctl00___ctl00___ctl01___form___tbTitle";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.errormessage = "*";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.initialvalue = "";
+var ctl00___ctl00___ctl01___form___Requiredfieldvalidator2 = document.all ? document.all["ctl00___ctl00___ctl01___form___Requiredfieldvalidator2"] : document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator2");
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator2.controltovalidate = "ctl00___ctl00___ctl01___form___tbName";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator2.errormessage = "*";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator2.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator2.initialvalue = "";
+var ctl00___ctl00___ctl01___form___Requiredfieldvalidator3 = document.all ? document.all["ctl00___ctl00___ctl01___form___Requiredfieldvalidator3"] : document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator3");
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.controltovalidate = "ctl00___ctl00___ctl01___form___tbComment";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.errormessage = "*";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.initialvalue = "";
+// -->
+</script>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bs1___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bs1$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx"
+dc:identifier="http://blogs.msdn.com/greg_schechter/archive/2007/10/26/enter-the-planerator-dead-simple-3d-in-wpf-with-a-stupid-name.aspx"
+dc:title="Enter The Planerator - Dead-simple 3D in WPF, with a stupid name"
+trackback:ping="http://blogs.msdn.com/greg_schechter/trackback.aspx?PostID=5687221" />
+</rdf:RDF>
+-->
+
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        </form>
+</body></html>

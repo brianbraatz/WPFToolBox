@@ -1,0 +1,108 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - The Petzold.Media3D Library: Uniting the Two Triangulation Strategies</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/200408.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/240915.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/08/240448.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>The Petzold.Media3D Library: Uniting the Two Triangulation Strategies</h2></a><p style="text-align: right;">August 24, 2007<br>Roscoe, N.Y.</p><p>
+In the section "Using Type Visibility and Member Accessibility Intelligently" of the modern classic <i>CLR via C#</i>
+(pages 169-172), Jeffrey Richter discusses why he believes that most
+classes should be defined as sealed. The Microsoft developers behind
+the <i>System.Windows.Media.Media3D</i> namespace seem to agree:  In this namespace, every class is either <i>abstract</i> or <i>sealed</i> with just one exception: <i>ModelVisual3D</i>. 
+</p>
+<p>
+This architecture creates challenges for the programmer wishing to
+write classes that generate triangle meshes algorithmically. The most
+straightforward approach would be deriving from <i>MeshGeometry3D</i> but you just can't do it. As I discuss in Chapter 6 of my new book 
+<a href="http://www.charlespetzold.com/3D"><i>3D Programming for Windows</i></a>, you have two good alternatives that let you reference your mesh-generation classes in XAML: 
+</p>
+<ol>
+<li>
+Write a class that has a public property of type <i>MeshGeometry3D</i>. Instantiate this class as a resource in a XAML file. Define a binding between the property of this resource and the <i>Geometry</i> property of a <i>GeometryModel3D</i> element.
+</li>
+<p>
+</p><li>
+Derive from <i>ModelVisual3D</i>, and reference the class directly in markup.
+</li>
+</ol>
+<p>
+In the Petzold.Media3D library 
+(available <a href="http://www.charlespetzold.com/3D">here</a>) I have used both strategies, with base classes named <i>MeshGeneratorBase</i> and <i>ModelVisualBase</i>, respectively.  Because classes that derive from <i>MeshGeneratorBase</i>
+are usually defined as resources and can be shared, these classes are
+often simpler and have fewer properties than the classes that derive
+from <i>ModelVisualBase</i>.  For example, the <i>CylinderMesh</i> class that derives from <i>MeshGeneratorBase</i> lets you specify <i>Radius</i> and <i>Length</i>
+properties but always positions the cylinder sitting at the XZ plane
+centered around the positive Y axis. You'll use transforms to position
+the cylinder elsewhere. But the <i>Cylinder</i> class that derives from <i>ModelVisualBase</i> has <i>Point1</i> and <i>Point2</i> properties that let you specify the beginning and end positions of the cylinder, and also <i>Radius1</i> and <i>Radius2</i> properties to give the cylinder a non-uniform radius.
+</p>
+<p>
+There may perhaps come a time when you wish that a class that derived from <i>MeshGeneratorBase</i> actually derived from <i>ModelVisualBase</i> so you can do something implemented only in <i>ModelVisualBase</i>, for example, the algorithmic transforms that I discussed
+<a href="http://www.charlespetzold.com/blog/2007/08/200408.html">a few days ago</a>.
+</p>
+<p align="center">
+<img src="Uniting%20the%20Two%20Triangulation%20Strategies_files/AnotherTeapotTwister.png">
+</p>
+<p>
+The solution is a class named <i>ModelVisual</i>. This class derives from <i>ModelVisualBase</i> but has a property named <i>MeshGenerator</i> that you can set to a object of type <i>MeshGeneratorBase</i>.  Here's how it might look in XAML:
+</p>
+<ul style="font-family: monospace;">
+&lt;cp:ModelVisual&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cp:ModelVisual.MeshGenerator&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cp:TeapotMesh /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cp:ModelVisual.MeshGenerator&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&lt;/cp:ModelVisual&gt;
+</ul>
+<p>
+<i>TeapotMesh</i> is a class that derives from <i>MeshGeneratorBase</i> and generates the <i>MeshGeometry3D</i> for the famous Utah teapot.
+</p>
+<p>
+That markup is part of the following XAML file that applies an animated algorithmic transform known as <i>Twister</i> to the teapot. You can run the following XAML file in XamlCruncher 2.0 with the Petzold.Media3D library loaded:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/AnotherTeapotTwister.xaml">AnotherTeapotTwister.xaml</a>
+</p>
+<p>
+Or, you can run an XBAP based on this same XAML file:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/AnotherTeapotTwister/AnotherTeapotTwister.xbap">AnotherTeapotTwister.xbap</a>
+</p>
+<p>
+I'm calling this <i>Another</i>TeapotTwister because I showed a different approach to animating triangle meshes in the July 2007 issue of <i>MSDN Magazine</i> referenced in
+<a href="http://www.charlespetzold.com/blog/2007/06/190516.html">this blog entry</a>.
+</p>
+
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Uniting%20the%20Two%20Triangulation%20Strategies_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+<div id="comments"><hr><p><b>Comments:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>
+I want to know how you can learn WPF without much of maths
+</p>
+<p>
+coz math made me and my freinds sleep .... y there is so much math in
+this world , I think world has this abmiguity because of math.........
+</p>
+<p>
+come on u also know math is tough and for class rooms
+</p>
+<p>
+— HOOO-HAAAAAA, Tue, 18 Sep 2007 04:56:27 -0400 (EDT)
+</p>
+</div><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="The Petzold.Media3D Library: Uniting the Two Triangulation Strategies" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/200408.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/240915.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

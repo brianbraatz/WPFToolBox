@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Content Properties</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/060619.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/080609.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/02/070922.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Content Properties</h2></a><p style="text-align: right;">February 7, 2006<br>New York City</p><p>
+Consider the following simple <i>Style</i> definition:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;Style&nbsp;x:Key="normal"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter&nbsp;Property="Control.FontSize"&nbsp;Value="24"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter&nbsp;Property="Control.Margin"&nbsp;Value="24"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style.Triggers&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger&nbsp;Property="Control.IsMouseOver"&nbsp;Value="true"&nbsp;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter&nbsp;Property="Control.FontStyle"&nbsp;Value="Italic"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter&nbsp;Property="Control.Foreground"&nbsp;Value="Blue"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger&nbsp;Property="Button.IsPressed"&nbsp;Value="true"&nbsp;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter&nbsp;Property="Control.Foreground"&nbsp;Value="Red"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style.Triggers&gt;<br>&lt;/Style&gt;<br>
+</ul>
+<p>
+<i>Style</i> has two similar properties named <i>Setters</i> and <i>Triggers</i>. <i>Setters</i> is basically a collection of <i>Setter</i> objects, and <i>Triggers</i> is basically a collection of <i>Trigger</i> objects. Yet, in the XAML these two collections are treated very differently. The  <i>Setter</i> elements are simple children of <i>Style</i>. Yet the <i>Trigger</i> elements must be enclosed in the property element <i>Style.Triggers</i>. Within each <i>Trigger</i> definition, the <i>Setter</i> elements are also simple child elements.
+</p>
+<p>
+Why is the <i>Setters</i> collection treated differently from the <i>Triggers</i> collection? If you check the documentation of the <i>Style</i> class, you won't get a hint. The answer is that the <i>Style</i> class definition is marked with a <i>ContentProperty</i> attribute, which looks something like this:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+[ContentProperty("Setters")]<br>
+public class Style<br> 
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...
+</ul>
+<p>
+The <i>Trigger</i> class has an identical <i>ContentProperty</i> attribute. This attribute indicates to the XAML parser that elements that are children of <i>Style</i> in the markup are to be treated as members of the <i>Setters</i> property collection.
+</p>
+<p>
+You would think that these content properties would be well documented,
+but they are not. I have been foced to write a program named <a href="http://www.charlespetzold.com/blog/2006/02/DumpContentPropertyAttributes.cs">DumpContentPropertyAttributes.cs</a> (with  the <a href="http://www.charlespetzold.com/blog/2006/02/DumpContentPropertyAttributes.csproj">DumpContentPropertyAttributes.csproj</a> project file) to list them. (Good grief!  It's a console app!)
+</p>
+<p>
+Many of these will be obvious. Often the content property is named <i>Children</i> or <i>Child</i> or <i>Content</i>. But it's nice to see a complete list.
+</p>
+<p>
+I was first alerted to the existence of the <i>ContentProperty</i> attribute in <a href="http://www.removingalldoubt.com/CategoryView.aspx/XAML">Chuck Jazdzewski's XAML Tours</a>. Tours are nice but documentation is even better. 
+</p>
+<p>
+Someday XAML <i>will</i> be documented, and we will no longer be forced to stumble around in confusion.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/060619.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/080609.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

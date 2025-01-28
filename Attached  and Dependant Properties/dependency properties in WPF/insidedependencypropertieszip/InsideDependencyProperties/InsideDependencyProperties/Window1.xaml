@@ -1,0 +1,83 @@
+﻿<Window x:Class="InsideDependencyProperties.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:InsideDependencyProperties" 
+    Title="Inside Dependency Properties" Height="300" Width="300"
+    FontSize="13" WindowStartupLocation="CenterScreen"
+    >
+  <Grid Margin="4">
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    
+    <Grid.Resources>
+      
+      <Style x:Key="TestStyle" TargetType="TextBlock">
+        <Setter 
+          Property="Text" 
+          Value="This is the Style's Setter-supplied value" 
+          />
+        <Style.Triggers>
+          <Trigger Property="IsMouseOver" Value="True">
+            <Setter 
+              Property="Text" 
+              Value="This is the Style's Trigger-Supplied Value" 
+              />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      
+    </Grid.Resources>
+
+    <TextBlock 
+      x:Name="textBlk" 
+      Background="LightGreen" 
+      HorizontalAlignment="Center" 
+      VerticalAlignment="Center" 
+      />
+
+    <StackPanel Grid.Row="1">
+      <CheckBox 
+        x:Name="chkLocalValue"
+        Checked="chkLocalValue_Checked" 
+        Unchecked="chkLocalValue_Unchecked"
+        Margin="4" 
+        IsChecked="True"
+        >
+        Set Text property (apply a local value)
+      </CheckBox>
+
+      <CheckBox 
+        x:Name="chkApplyStyle"
+        Checked="chkApplyStyle_Checked" 
+        Unchecked="chkApplyStyle_Unchecked"
+        Margin="4"
+        IsChecked="True"
+        >
+        Apply a Style which sets the Text property
+      </CheckBox>
+
+      <TextBlock Margin="4">
+        <Run>Text property source: </Run>
+        <TextBlock>
+          <TextBlock.Text>
+            <MultiBinding>
+              <MultiBinding.Converter>
+                <local:TextBlockToTextPropertySourceConverter />
+              </MultiBinding.Converter>
+              <MultiBinding.Bindings>
+                <Binding ElementName="textBlk" />
+                <!-- Bind to the Text property so that when the text changes
+                     the MultiBinding will be reevaluated and the new property 
+                     source can be displayed. -->
+                <Binding ElementName="textBlk" Path="Text" />
+              </MultiBinding.Bindings>
+            </MultiBinding>
+          </TextBlock.Text>
+        </TextBlock>
+      </TextBlock>
+
+    </StackPanel>
+  </Grid>
+</Window>

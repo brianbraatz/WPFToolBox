@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="http://www.movabletype.org/" />
+
+<title>dotnet mania: PanelLayoutAnimator and data-bound ItemsControls</title>
+
+<link rel="stylesheet" href="http://eric.burke.name/dotnetmania/styles-site.css" type="text/css" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://eric.burke.name/dotnetmania/index.rdf" />
+<link rel="alternate" type="application/atom+xml" title="Atom" href="http://eric.burke.name/dotnetmania/atom.xml" />
+
+<link rel="start" href="http://eric.burke.name/dotnetmania/" title="Home" />
+
+<link rel="prev" href="http://eric.burke.name/dotnetmania/2006/07/20/13.49.40" title="TreeView and item widths" />
+
+
+<link rel="next" href="http://eric.burke.name/dotnetmania/2006/08/12/22.53.46" title="PanelLayoutAnimator, part 2" />
+
+
+<script type="text/javascript" language="javascript">
+<!--
+
+var HOST = 'eric.burke.name';
+
+// Copyright (c) 1996-1997 Athenia Associates.
+// http://www.webreference.com/js/
+// License is granted if and only if this entire
+// copyright notice is included. By Tomer Shiran.
+
+function setCookie (name, value, expires, path, domain, secure) {
+    var curCookie = name + "=" + escape(value) + (expires ? "; expires=" + expires : "") + (path ? "; path=" + path : "") + (domain ? "; domain=" + domain : "") + (secure ? "secure" : "");
+    document.cookie = curCookie;
+}
+
+function getCookie (name) {
+    var prefix = name + '=';
+    var c = document.cookie;
+    var nullstring = '';
+    var cookieStartIndex = c.indexOf(prefix);
+    if (cookieStartIndex == -1)
+        return nullstring;
+    var cookieEndIndex = c.indexOf(";", cookieStartIndex + prefix.length);
+    if (cookieEndIndex == -1)
+        cookieEndIndex = c.length;
+    return unescape(c.substring(cookieStartIndex + prefix.length, cookieEndIndex));
+}
+
+function deleteCookie (name, path, domain) {
+    if (getCookie(name))
+        document.cookie = name + "=" + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + "; expires=Thu, 01-Jan-70 00:00:01 GMT";
+}
+
+function fixDate (date) {
+    var base = new Date(0);
+    var skew = base.getTime();
+    if (skew > 0)
+        date.setTime(date.getTime() - skew);
+}
+
+function rememberMe (f) {
+    var now = new Date();
+    fixDate(now);
+    now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+    if (f.author != undefined)
+       setCookie('mtcmtauth', f.author.value, now, '/', '', '');
+    if (f.email != undefined)
+       setCookie('mtcmtmail', f.email.value, now, '/', '', '');
+    if (f.url != undefined)
+       setCookie('mtcmthome', f.url.value, now, '/', '', '');
+}
+
+function forgetMe (f) {
+    deleteCookie('mtcmtmail', '/', '');
+    deleteCookie('mtcmthome', '/', '');
+    deleteCookie('mtcmtauth', '/', '');
+    f.email.value = '';
+    f.author.value = '';
+    f.url.value = '';
+}
+
+//-->
+</script>
+
+
+
+
+
+</head>
+
+<body>
+
+<div id="container">
+
+<div id="banner">
+<h1><a href="http://eric.burke.name/dotnetmania/" accesskey="1">dotnet mania</a></h1>
+<h2></h2>
+</div>
+
+<div class="content">
+
+<p align="right">
+
+<a href="http://eric.burke.name/dotnetmania/2006/07/20/13.49.40">? TreeView and item widths</a> |
+
+<a href="http://eric.burke.name/dotnetmania/">Main</a>
+
+| <a href="http://eric.burke.name/dotnetmania/2006/08/12/22.53.46">PanelLayoutAnimator, part 2 ?</a>
+
+</p>
+
+<h2>July 28, 2006</h2>
+
+<h3>PanelLayoutAnimator and data-bound ItemsControls</h3>
+
+<p>you may have read <a href="http://blogs.msdn.com/dancre/archive/2006/03/04/543854.aspx">Dan Crevier's blog post that contained the PanelLayoutAnimator class</a>, which allows you to have any panel animate its children from one location to another when the layout changes.  this works very well in many instances.</p>
+
+<p>one instance where it does NOT work well, however, is when you have a panel which is hosting items for a databound ItemsControl:  once you do this, you are often limited to changing the layout solely by reordering your data.  for example, i have an ItemsControl bound to a CollectionViewSource, and i want to animate my items to their new location when the sort order changes.</p>
+
+<p>using the PanelLayoutAnimator class as-is, you get no animation.  why?  it's because the PanelLayoutAnimator stores the original position of each child of the Panel as an attached property on each child UIElement of the panel.  the problem with this is that there's no way to tell when the underlying data has been reordered because we only have information stored about the original position of the ContentPresenter, *not* the data item itself.  i'm not exactly sure what's going on under the hood, but my guess is that the ContentPresenters never move, but rather have different data items associated with them.</p>
+
+<p>after some digging and trial-and-error, it dawned on me that if we make a few minor changes we can make it work for the data-bound ItemsControl case as well.  first, we make sure that our data items derive from DependencyObject because we really want to save our state on the data item rather than the UIElement.  second, we modify PanelLayoutAnimator to set the SavedArrangePositionProperty on the data item instead of on the child of the panel.  we do this by first checking whether the "child" is a ContentPresenter (in the case of a plain ItemsControl) or a ContentControl (in the case of a ListBox).</p>
+
+<p>i've attached sample code to this post which illustrates this.  clicking any button will reverse the sort order of the data by modifying the SortDescriptions of the CollectionViewSource.  notice how the first ItemsControl (which uses Dan's PanelLayoutAnimator as-is) simply "jumps" its children to the new location, and the second ItemsControl (using my code) animates it.</p>
+
+<p>NOTE: i have not attacked the problem of the case when your data item is an XmlElement (when you are binding to XML data).  one possible solution is to add an attribute to the XML element which is the saved position.  however, this would break any validation that you might be doing.  i'll continue to think on this and post a follow-up if i come up with anything.</p>
+
+<p>you can download the code <a href="http://eric.burke.name/dotnetmania/code/AnimatedItemsControl.zip">here</a>.  look at the difference between PanelLayoutAnimator.cs and PanelLayoutAnimator2.cs.</p>
+
+<div id="a002961more"><div id="more">
+
+</div></div>
+
+<p class="posted">Posted by eburke at July 28, 2006  3:48 AM</p>
+
+
+<h2 id="trackbacks">Trackback Pings</h2>
+<p class="techstuff">TrackBack URL for this entry:<br />
+</p>
+
+
+
+
+
+
+<h2 id="comments"><a name="comments"></a>Comments</h2>
+
+
+<div class="comments-body">
+<a name="79527"></a>
+
+<p>I hope you don&#8217;t get this comment twice. I think I forgot to do the spam thing when trying to post last time&#8230;</p>
+
+<p>The original implementation will actually work with simple inserts, deletes and moves because ItemsControl will leave the original items bound to the same children. But, in the re-sort case, the collection must be sending a reset event.</p>
+
+<p>One variation you can use to not have to derive data from DependencyObject is to attach a Dictionary to the panel to track the saved arrange positions. You can just replace the array with a new one each time through so it won&#8217;t bet stuck with any stale data.</p>
+
+<span class="comments-post">Posted by: <a title="http://blogs.msdn.com" href="http://blogs.msdn.com" rel="nofollow">Dan Crevier</a> on July 29, 2006 10:37 PM EDT</span>
+</div>
+
+
+
+
+<h2>Post a Comment</h2>
+
+<div class="comments-body">
+<form method="post" action="http://eric.burke.name/mt/mt-comments.cgi" name="comments_form" onsubmit="if (this.bakecookie[0].checked) rememberMe(this)">
+<input type="hidden" name="static" value="1" />
+<input type="hidden" name="entry_id" value="2961" />
+
+<table border="0">
+   <tr>
+      <td valign="top">
+         <label for="author">Your Name:</label><br />
+         <input id="author" name="author" /> <span class="comments-note">(Required)</span><br /><br />
+
+         <label for="email">Your E-mail Address:</label><br />
+         <input id="email" name="email" /> <span class="comments-note">(Required, Hidden)</span><br /><br />
+
+         <label for="url">Your Web Site URL:</label><br />
+         <input id="url" name="url" /> <span class="comments-note">(Optional)</span><br /><br />
+      </td>
+      <td width="10" class="comments-spacer">&nbsp;</td>
+      <td width="10">&nbsp;</td>
+      <td valign="top">
+         Remember personal info?<br />
+         <input type="radio" id="bakecookie" name="bakecookie" /><label for="bakecookie">Yes</label><input type="radio" id="forget" name="bakecookie" onclick="forgetMe(this.form)" value="Forget Info" style="margin-left: 15px;" /><label for="forget">No</label><br style="clear: both;" />
+      </td>
+   </tr>
+</table>
+
+<label for="text">Comments:</label><br />
+<textarea id="text" name="text" rows="10" cols="50"></textarea><br /><br />
+
+<div id="comments-open-captcha">Verification:<br/><div id="recaptcha_script"><script type="text/javascript" src="http://api.recaptcha.net/challenge?k=6LeISQAAAAAAAC3jX0Ev6BKMCatEJYdgUvWBG0gH"></script><noscript>   <iframe src="http://api.recaptcha.net/noscript?k=6LeISQAAAAAAAC3jX0Ev6BKMCatEJYdgUvWBG0gH" height="300" width="500" frameborder="0"></iframe><br>   <textarea name="recaptcha_challenge_field" rows="3" cols="40">   </textarea>   <input type="hidden" name="recaptcha_response_field" value="manual_challenge"></noscript></div></div>
+
+
+<input style="font-weight: bold;" type="submit" name="post" value="&nbsp;Post&nbsp;" /> <input type="submit" name="preview" value="&nbsp;Preview&nbsp;" /><br /><br />
+
+</form>
+
+<script type="text/javascript" language="javascript">
+<!--
+document.comments_form.email.value = getCookie("mtcmtmail");
+document.comments_form.author.value = getCookie("mtcmtauth");
+document.comments_form.url.value = getCookie("mtcmthome");
+document.comments_form.bakecookie[0].checked = true;
+//-->
+</script>
+</div>
+
+
+
+
+
+</div>
+</div>
+
+</body>
+</html>

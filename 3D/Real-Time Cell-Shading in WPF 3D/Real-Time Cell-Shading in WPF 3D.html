@@ -1,0 +1,93 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Real-Time Cell-Shading in WPF 3D</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/040724.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/060521.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/09/060416.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Real-Time Cell-Shading in WPF 3D</h2></a><p style="text-align: right;">September 6, 2007<br>New York, N.Y.</p><p>
+Of course I couldn't mention a technique of possible real-time cell-shading
+<a href="http://www.charlespetzold.com/blog/2007/09/040724.html">yesterday</a> without actually trying it out. No, I didn't attempt to derive from <i>BitmapEffect</i>. (I'd love to take a crack at <i>BitmapEffect</i> but I simply cannot justify the expenditure of time.)
+</p>
+<p>
+Instead, I tried the <i>RenderTargetBitmap</i> approach. Here's a rough outline:
+</p>
+<ul><li>
+Lay out your <i>Page</i> or <i>Window</i> normally but instead of defining a <i>Viewport3D</i> element, use a <i>Border</i> instead. The <i>Border</i> is perhaps the simplest <i>FrameworkElement</i> derivative that has a <i>Background</i> property. Give the <i>Background</i> property an object of type <i>ImageBrush</i>.
+</li></ul>
+<ul><li>
+Whatever you would have put into your <i>Viewport3D</i> put into a <i>Viewport3DVisual</i> instead. Set the  <i>Viewport</i> property of the <i>Viewport3DVisual</i> to the actual size of the <i>Border</i> element. You'll need a handler for the <i>SizeChanged</i> event of the <i>Border</i> to keep this <i>Viewport</i> property updated when the <i>Border</i> size changes.
+</li></ul>
+<ul><li>
+In that same <i>SizeChanged</i> event handler for the <i>Border</i>, create an object of type <i>RenderTargetBitmap</i> the same size as the <i>Border</i> and the <i>Viewport3DVisual</i>. You'll be recreating this bitmap whenever the size of the <i>Border</i> changes.
+</li></ul>
+<ul><li>
+Insteall event handlers for anything else (such as scrollbars) that affect the 3D scene defined within the <i>Viewport3DVisual</i>. 
+</li></ul>
+<ul><li>
+Whenever anything happens that affects the appearance of the <i>Viewport3DVisual</i> perform the following actions:
+<ul><li>
+Clear the <i>RenderTargetBitmap</i> by calling the <i>Clear</i> method.
+</li></ul>
+<ul><li>
+Render the <i>Viewport3DVisual</i> on the bitmap by calling the <i>Render</i> method.
+</li></ul>
+<ul><li>
+Dump the pixel bits of the <i>RenderTargetBitmap</i> into an array by calling <i>CopyPixels</i>.
+</li></ul>
+<ul><li>
+Do whatever processing you want on the pixel bits. (For cell-shading, I just AND-ed each 32-bit ARGB pixel with 0xFFC0C0C0.)
+</li></ul>
+<ul><li>
+Create a new bitmap based on the altered pixel bits by calling <i>BitmapSource.Create</i>.
+</li></ul>
+<ul><li>
+Set that new bitmap to the <i>ImageSource</i> property of the <i>ImageBrush</i> object set to the <i>Background</i> property of the <i>Border</i>.
+</li></ul>
+</li></ul>
+<p>
+Here's the 
+<a href="http://www.charlespetzold.com/blog/2007/09/RealTimeCellShading.zip">RealTimeCellShading source code</a>.  Sorry I can't give you an XBAP, but apparently <i>Clear</i> and <i>CopyPixels</i> are prohibited methods for partial trust. (But <i>Render</i> and <i>BitmapSource.Create</i> are mysteriously OK. Hey — I don't make up the XBAP rules!)
+</p>
+<p>
+I've used an <i>AmbientLight</i> at 1/4 white and <i>DirectionalLight</i> of 3/4 white with a direction of <b>(2, –3 –1)</b>.
+I've provided a pair of scrollbars to rotate the camera relative to the
+teapot, and a pair of sliders to rotate the teapot relative to the
+camera and light sources. Here's a view with the teapot slightly
+rotated:
+</p>
+<p align="center">
+<img src="Real-Time%20Cell-Shading%20in%20WPF%203D_files/RealTimeCellShading.png">
+</p>
+<p>
+It still looks rather rough and of course the performance is terrible, but it kind of actually works, almost.
+</p>
+
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Real-Time%20Cell-Shading%20in%20WPF%203D_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+
+
+<div id="comments"><hr><p><b>Comments:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>Awesome!
+Now for the outlines ;) Could WPF [2D] be fast enough for that? If you
+don't try it, I think I might feel compelled to ;)
+</p>
+<p>
+— <a href="http://chriscavanagh.wordpress.com/">Chris Cavanagh</a>, Thu, 6 Sep 2007 16:12:52 -0400 (EDT)
+</p>
+</div><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="Real-Time Cell-Shading in WPF 3D" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/040724.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/060521.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

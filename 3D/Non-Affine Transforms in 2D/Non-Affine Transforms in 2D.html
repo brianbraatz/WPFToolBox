@@ -1,0 +1,207 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Non-Affine Transforms in 2D?</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/240915.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/270644.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/08/250638.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Non-Affine Transforms in 2D?</h2></a><p style="text-align: right;">August 25, 2007<br>Roscoe, N.Y.</p><p>
+<a href="http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2029259&amp;SiteID=1">A recent query on the MSDN Forum for WPF</a> asked if it's possible to apply a non-affine transform to two-dimensional graphics.  The simple answer is <i>No</i>. The 3×3 <i>Matrix</i> structure in the <i>System.Windows.Media</i> namespace does not allow setting the third column of the matrix required for non-affine transforms.
+</p>
+<p>
+However, non-affine transforms <i>are</i> allowed in WPF 3D and, indeed, you might be able to get the effect you want without getting involved with transforms at all.
+</p>
+<p>
+The two programs presented here both display a photo of myself in a
+square. Using the mouse, you can grab any one of the corners and drag
+it. <i>You must click within the image!</i>
+The nearest corner will jump to the mouse position and then you can
+drag the corner somewhere else. As you drag a corner, the other corners
+remain fixed. Here's the first version:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/NonAffineImageTransform1/NonAffineImageTransform1.xbap">NonAffineImageTransform1.xbap</a>
+</p>
+<p>
+This is the simple approach:  It uses WPF 3D to display a square on the XY plane. The 3D coordinates defined in the <i>Positions</i> collection of the <i>MeshGeometry3D</i>
+are (0, 0, 0), (0, 1, 0), (1, 0, 0), and (1, 1, 0). Whenever the image
+is clicked or dragged, the program gets the two-dimensional mouse
+point, converts it to 3D coordinates (with a simple method that only
+works with <i>OrthographicCamera</i> pointed straight back along the Z axis), and sets the proper item in the <i>Positions</i> collection. Here's the 
+<a href="http://www.charlespetzold.com/blog/2007/08/NonAffineImageTransform1.zip">source code</a>.
+</p>
+<p>
+The problem with this technique is that the image is divided into two
+triangles, one on the lower left and the other on the upper right, and
+if you drag the bottom-left or top-right corner, only half the image is
+stretched, like this:
+</p>
+<p align="center">
+<img src="Non-Affine%20Transforms%20in%202D_files/NonAffineImageTransform1.png"> 
+</p>
+<p>
+You can practically see the diagonal from the upper-left corner to the lower-right. Nothing below that diagonal is distorted.
+</p>
+<p>
+Perhaps a better approach is to apply an actual non-affine transform to the <i>GeometryModel3D</i>. This is done in the following program:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/NonAffineImageTransform2/NonAffineImageTransform2.xbap">NonAffineImageTransform2.xbap</a>
+</p>
+<p>Yes, you can easily drag a corner to a place where the transform
+breaks down and the image flips over in strange ways. But, as you can
+see, whenever any corner is dragged, the entire image is affected:
+</p>
+<p align="center">
+<img src="Non-Affine%20Transforms%20in%202D_files/NonAffineImageTransform2.png">
+</p>
+<p>
+Here's the 
+<a href="http://www.charlespetzold.com/blog/2007/08/NonAffineImageTransform2.zip">source code</a>
+for this second version. For the theoretical analysis that follows,
+I'll be assuming that we're just working with two dimensions.
+Converting to a flat surface in three dimensions where Z equals 0 is
+trivial.
+</p>
+<p>
+The transform we want produces the following mappings (and I hope you're seeing arrows between the pairs of points):
+</p>
+<ul>
+(0, 0) → (x<sub>0</sub>, y<sub>0</sub>)<br>
+(0, 1) → (x<sub>1</sub>, y<sub>1</sub>)<br>
+(1, 0) → (x<sub>2</sub>, y<sub>2</sub>)<br>
+(1, 1) → (x<sub>3</sub>, y<sub>3</sub>)
+</ul>
+<p>The coordinates on the left of each line are the original
+coordinates of the corners of the image; the coordinates on the right
+are the four points we want for those corners. In general, this is a
+non-affine transform between it maps a square to an arbitrary
+quadrilateral. Affine transforms always map squares to parallelograms.
+The transform we desire will be much easier to derive if we break it
+down into two transforms:
+</p>
+<ul>
+(0, 0) → (0, 0) → (x<sub>0</sub>, y<sub>0</sub>)<br>
+(0, 1) → (0, 1) → (x<sub>1</sub>, y<sub>1</sub>)<br>
+(1, 0) → (1, 0) → (x<sub>2</sub>, y<sub>2</sub>)<br>
+(1, 1) → (a, b) → (x<sub>3</sub>, y<sub>3</sub>)
+</ul>
+<p>
+The first transform is obviously a non-affine transform that I'll call <b>B</b>. The second transform is something that I'll force to be an affine transform called <b>A</b> (for "affine"). The composite transform is <b>B</b>×<b>A</b>. The task here is to derive the two transforms plus the point (a, b). Let's derive the affine transform first. 
+</p>
+<p>An affine transform always maps a square to a parallelogram, so it
+is completely determined by the mappings of three points. I'll use the
+first three in the list:
+</p>
+<ul>
+(0, 0) → (x<sub>0</sub>, y<sub>0</sub>)<br>
+(0, 1) → (x<sub>1</sub>, y<sub>1</sub>)<br>
+(1, 0) → (x<sub>2</sub>, y<sub>2</sub>)
+</ul>
+<p>
+A 3×3 affine matrix can be represented like this (using the property names of the <i>Matrix</i> structure):
+</p>
+<table align="center" cellpadding="4" frame="vsides" rules="none">
+<tbody><tr><td>M11</td><td>M12</td><td>0</td></tr>
+<tr><td>M21</td><td>M22</td><td>0</td></tr>
+<tr><td>OffsetX</td><td>OffsetY</td><td>1</td></tr>
+</tbody></table>
+<p>
+The transform formulas are:
+</p>
+<ul>
+x' = M11•x + M21•y + OffsetX<br>
+y' = M12•x + M22•y + OffsetY
+</ul>
+<p>
+It is easy to apply the transform to the points (0, 0), (0, 1), and (1, 0), and solve for the elements of the matrix:
+</p>
+<ul>
+M11 = x<sub>2</sub> – x<sub>0</sub><br>
+M12 = y<sub>2</sub> – y<sub>0</sub><br>
+M21 = x<sub>1</sub> – x<sub>0</sub><br>
+M22 = y<sub>1</sub> – y<sub>0</sub><br>
+OffsetX = x<sub>0</sub><br>
+OffsetY = y<sub>0</sub>
+</ul>
+<p>It's not necessary to know this, but the fourth point of the square,
+which is (1, 1), is mapped to (M11 + M21 + OffsetX, M12 + M22 +
+OffsetY), which is the fourth point of the parallelogram. But we're not
+actually concerned with this point in this exercise. Instead, we want
+this affine transform to map a point (a, b) to the point (x<sub>3</sub>, y<sub>3</sub>). What is this point (a, b)? If we apply the affine transform to (a, b) and solve for a and b, we get:
+</p>
+<ul>
+a = M22•x<sub>3</sub> – M21•y<sub>3</sub> + M21•OffsetY – M22•OffsetX) / (M11•M22 – M12•M21)<br>
+b = M11•y<sub>3</sub> – M12•x<sub>3</sub> + M12•OffsetX – M11•OffsetY) / (M11•M22 – M12•M21)
+</ul>
+<p>
+Now let's take a shot at the non-affine transform, which needs to yield the following mappings:
+</p>
+<ul>
+(0, 0) → (0, 0)<br>
+(0, 1) → (0, 1)<br>
+(1, 0) → (1, 0)<br>
+(1, 1) → (a, b)
+</ul>
+<p>
+The generalized non-affine transform (using property names that are <i>not</i> defined in the <i>Matrix</i> structure) is:
+</p>
+<table align="center" cellpadding="4" frame="vsides" rules="none">
+<tbody><tr><td>M11</td><td>M12</td><td>M13</td></tr>
+<tr><td>M21</td><td>M22</td><td>M23</td></tr>
+<tr><td>OffsetX</td><td>OffsetY</td><td>M33</td></tr>
+</tbody></table>
+<p>
+And the transform formulas are:
+</p>
+<ul>
+x' = M11•x + M21•y + OffsetX / (M13•x + M23•y + M33)<br>
+y' = M12•x + M22•y + OffsetY / (M13•x + M23•y + M33)
+</ul>
+<p>
+The point (0, 0) is mapped to (0, 0), which tells us that OffsetX and
+OffsetY are zero, and M33 is non-zero. Let's go out on a limb and say
+that M33 is 1.
+</p>
+<p>
+The point (0, 1) is mapped to (0, 1), which tells us that M21 is zero and M23 = M22 – 1.
+</p>
+<p>
+The point (1, 0) is mapped to (1, 0), which tells us that M12 is zero and M13 = M11 – 1.
+</p>
+<p>
+The point (1, 1) is mapped to (a, b), which requires a bit of algebra to derive the following:
+</p>
+<ul>
+M11 = a / (a + b – 1)<br>
+M22 = b / (a + b – 1)
+</ul>
+<p>
+The a and b values have already been calculated in connection with the affine transform.
+</p>
+<p>
+The derivations of the affine matrix <b>A</b> and the non-affine matrix <b>B</b> are implemented in the <i>CalculateNonAffineTransform</i> method in the NonAffineImageTransform2.cs file. Of course, the method actually returns a <i>Matrix3D</i> object that is applied to the <i>GeometryModel3D</i> containing the image.
+</p>
+<p>
+Using 3D graphics to implement a two-dimensional non-affine transform may sound a bit extravagant, but keep in mind that <i>Viewport3D</i> is a WPF element much like any other. You can easily mix it in with panels, <i>TextBlock</i> elements, controls, et cetera. In particular, it's very easy to determine the required size of the <i>Viewport3D</i> based on the size of figures viewed with <i>OrthographicCamera</i>, and to convert between the two coordinate systems.
+</p>
+
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Non-Affine%20Transforms%20in%202D_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+<div id="comments"><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="Non-Affine Transforms in 2D?" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/240915.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/270644.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

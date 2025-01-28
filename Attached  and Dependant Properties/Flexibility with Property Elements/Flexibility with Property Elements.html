@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Flexibility with Property Elements</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/130117.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/190146.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/01/150754.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Flexibility with Property Elements</h2></a><p style="text-align: right;">January 15, 2007<br>New York, NY</p><p>
+Quite by accident, I discovered something interesting about XAML
+property elements that I did not know, and which might be useful in
+some special circumstances.
+</p>
+<p>Normally you need a property element when you can't set an attribute
+to a simple string. For example, in this (complete) XAML file, <i>Button.Foreground</i> is broken out from the <i>Button</i> tag as a property element because it needs to be set to a <i>LinearGradientBrush</i>, and that requires additional markup:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;Button&nbsp;xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content="Click&nbsp;me!"&nbsp;FontSize="48"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HorizontalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VerticalAlignment="Center"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button.Foreground&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LinearGradientBrush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="0"&nbsp;Color="Red"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="1"&nbsp;Color="Blue"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/LinearGradientBrush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Button.Foreground&gt;<br>&lt;/Button&gt;<br>
+</ul>
+<p>
+What I discovered is that instead of <i>Button.Foreground</i> you can use any class that <i>Button</i> derives from that has a <i>Foreground</i> property, for example:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;Button&nbsp;xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content="Click&nbsp;me!"&nbsp;FontSize="48"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HorizontalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VerticalAlignment="Center"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ButtonBase.Foreground&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LinearGradientBrush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="0"&nbsp;Color="Red"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="1"&nbsp;Color="Blue"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/LinearGradientBrush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ButtonBase.Foreground&gt;<br>&lt;/Button&gt;<br>
+</ul>
+<p>
+And this will also work:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;Button&nbsp;xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content="Click&nbsp;me!"&nbsp;FontSize="48"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HorizontalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VerticalAlignment="Center"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Control.Foreground&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LinearGradientBrush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="0"&nbsp;Color="Red"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="1"&nbsp;Color="Blue"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/LinearGradientBrush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Control.Foreground&gt;<br>&lt;/Button&gt;<br>
+</ul>
+<p>
+What's interesting as well is that you can use <i>TextBlock</i> as the class in the property element:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;Button&nbsp;xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content="Click&nbsp;me!"&nbsp;FontSize="48"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HorizontalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VerticalAlignment="Center"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock.Foreground&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LinearGradientBrush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="0"&nbsp;Color="Red"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="1"&nbsp;Color="Blue"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/LinearGradientBrush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TextBlock.Foreground&gt;<br>&lt;/Button&gt;<br>
+</ul>
+<p>
+If you look at the class documentation, it seems like both <i>Control</i> and <i>TextBlock</i> independently define their own <i>Foreground</i>
+properties. But they're not actually as independent as they may seem.
+If you use the handy ExploreDependencyProperties program from Chapter
+16 of <a href="http://www.charlespetzold.com/wpf"><i>Applications = Code + Markup</i></a>, you'll find that the <i>Foreground</i> dependency property is registered by <i>TextElement</i>, and that's the class that owns the property. Sure enough, you can use <i>TextElement</i> as the class:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;Button&nbsp;xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content="Click&nbsp;me!"&nbsp;FontSize="48"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HorizontalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VerticalAlignment="Center"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextElement.Foreground&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LinearGradientBrush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="0"&nbsp;Color="Red"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GradientStop&nbsp;Offset="1"&nbsp;Color="Blue"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/LinearGradientBrush&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TextElement.Foreground&gt;<br>&lt;/Button&gt;<br>
+</ul>
+<p>
+In general, it seems like you can use any ancestral class up to the
+class that defines the property, or you can use the class that
+registered the dependency property. The use of <i>TextBlock.Foreground</i> seems like an anomaly here, because <i>TextBlock</i> falls into either of those categories. (Moreover, with a <i>TextBlock</i> element, you can't use <i>Control.Foreground</i> as a property element.) I suspect that <i>TextBlock</i> is allowed because the <i>Button</i> is using a <i>TextBlock</i> to display the button's text.
+</p>
+<p>
+Where might exploiting this be useful? Perhaps if you're creating some
+XAML snippets for pasting into code, it might help if you didn't need
+to match the class name exactly. Also, if you're changing an element
+from one class to a derivative class, you only need to change the start
+and end tags, and not any child property elements. (That's how I
+discovered this.)
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/130117.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/190146.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

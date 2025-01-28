@@ -1,0 +1,104 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    
+    >
+
+  <Page.Resources>
+    <Storyboard x:Key="myAnim">
+      <ParallelTimeline>
+        <DoubleAnimation
+          Name="myAnimWidth"
+          Storyboard.TargetName="myRect"
+          Storyboard.TargetProperty="Width"
+          From="{Binding ElementName=slFrom, Path=Value}"
+          To="{Binding ElementName=slTo, Path=Value}"
+          Duration="0:0:5"
+          AccelerationRatio="{Binding ElementName=slAcc, Path=Value}"
+          
+          RepeatBehavior="Forever"
+          AutoReverse="True"
+                />
+        <DoubleAnimation
+          Name="myAnimHeight"
+          Storyboard.TargetName="myRect"
+          Storyboard.TargetProperty="Height"
+          From="{Binding ElementName=slFrom, Path=Value}"
+          To="{Binding ElementName=slTo, Path=Value}"
+          Duration="0:0:5"
+          AccelerationRatio="{Binding ElementName=slAcc, Path=Value}"
+          
+          RepeatBehavior="Forever"
+          AutoReverse="True"
+                />
+      </ParallelTimeline>
+    </Storyboard>
+    <BooleanToVisibilityConverter x:Key="conv"/>
+  </Page.Resources>
+  <Page.Triggers>
+    <EventTrigger RoutedEvent="Page.Loaded">
+      <EventTrigger.Actions>
+        <BeginStoryboard Storyboard="{StaticResource myAnim}"/>
+      </EventTrigger.Actions>
+    </EventTrigger>
+  </Page.Triggers>
+  <StackPanel>
+    <UniformGrid Columns="3">
+      <TextBlock>From:</TextBlock>
+      <Slider Name="slFrom" Value="50" Width="150" Minimum="50" Maximum="600">
+        <Slider.Triggers>
+          <EventTrigger RoutedEvent="Slider.ValueChanged">
+            <EventTrigger.Actions>
+              <BeginStoryboard Storyboard="{StaticResource myAnim}"/>
+            </EventTrigger.Actions>
+          </EventTrigger>
+        </Slider.Triggers>
+      </Slider>
+      <TextBlock Text="{Binding ElementName=slFrom, Path=Value}"/>
+
+      <TextBlock>To:</TextBlock>
+      <Slider Name="slTo" Value="300" Minimum="50" Width="150" Maximum="600">
+        <Slider.Triggers>
+          <EventTrigger RoutedEvent="Slider.ValueChanged">
+            <EventTrigger.Actions>
+              <BeginStoryboard Storyboard="{StaticResource myAnim}"/>
+            </EventTrigger.Actions>
+          </EventTrigger>
+        </Slider.Triggers>
+      </Slider>
+      <TextBlock Text="{Binding ElementName=slTo, Path=Value}"/>
+
+      <TextBlock>Acceleration:</TextBlock>
+      <Slider Name="slAcc" Value="1" Minimum="0.1" Width="150" Maximum="1">
+        <Slider.Triggers>
+          <EventTrigger RoutedEvent="Slider.ValueChanged">
+            <EventTrigger.Actions>
+              <BeginStoryboard Storyboard="{StaticResource myAnim}"/>
+            </EventTrigger.Actions>
+          </EventTrigger>
+        </Slider.Triggers>
+      </Slider>
+      <TextBlock Text="{Binding ElementName=slAcc, Path=Value}"/>
+
+      <TextBlock>Show current rect size (CPU intensive)</TextBlock>
+      <CheckBox Name="showVal" IsChecked="True" Width="150"/>
+    </UniformGrid>
+
+
+    <Rectangle Name="myRect" Stroke="Blue" Width="100" Height="100">
+      <Rectangle.Fill>
+        <VisualBrush>
+          <VisualBrush.Visual>
+            <StackPanel Orientation="Vertical" Visibility="{Binding ElementName=showVal, Path=IsChecked, Converter={StaticResource conv}}">
+              <TextBlock FontSize="10" Text="{Binding ElementName=myRect, Path=ActualWidth}"/>
+              <TextBlock FontSize="10" Text="X" HorizontalAlignment="Center"/>
+              <TextBlock FontSize="10" Text="{Binding ElementName=myRect, Path=ActualHeight}"/>
+            </StackPanel>
+          </VisualBrush.Visual>
+        </VisualBrush>
+      </Rectangle.Fill>
+    </Rectangle>
+
+    
+  </StackPanel>
+</Page>

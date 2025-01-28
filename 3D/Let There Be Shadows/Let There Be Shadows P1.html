@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Let There Be Shadows</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/110157.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/150155.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/03/120326.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Let There Be Shadows</h2></a><p style="text-align: right;">March 12, 2007<br>New York, N.Y.</p><p>
+I want to have an example of rendering shadows in my WPF 3D book, and I've been exploring some techniques.
+</p>
+<p align="center">
+<img src="Let%20There%20Be%20Shadows%20P1_files/ShadowsFeasibilityStudy1.png">
+</p>
+<p>
+This one, however, I'm going to have to classify as a failure.  You can try it out here:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/ShadowsFeasibilityStudy1/ShadowsFeasibilityStudy1.xbap">ShadowsFeasibilityStudy1.xbap</a>
+</p>
+<p>
+I don't want to make the source code available because it's rather
+sloppy and way too specific to this particular program, but I can
+describe how it works:
+</p>
+<p>The "chopper" is just two 8-vertex boxes stuck together and moved
+around with three animations: rotating around its axis, revolving
+around the Y axis, and moving up and down.
+</p>
+<p>The "ground" is a plane surface composed of 200 by 200 rectangles,
+or 80,000 triangles. Interestingly, even without the shadow logic,
+increasing the number of triangles in the ground made the animation of
+the chopper increasingly choppy.
+</p>
+<p>
+The illumination is a combination of <i>AmbientLight</i> with a color of 40-40-40 and <i>DirectionalLight</i> with a color of C0-C0-C0 and a direction of <b>(2, -3, -1)</b>.
+</p>
+<p>
+I render the shadow by manipulating the <i>Normals</i> collection of the ground during a <i>CompositionTarget.Rendering</i>
+event. For each vertex on the ground, I set the vertex normal as
+follows: If no shadow is to appear at a vertex, I set the normal to the
+vector <b>(0, 1, 0)</b>, which is the default straight-up surface normal for the floor. For a shadow, I set the normal to <b>(3, 2, -1)</b>,
+which is at right angles to the directional light. The setting of this
+normal eliminates the directional light but not the ambient light from
+the shadow.
+</p>
+<p>
+Originally, I called the 3D version of <i>VisualTreeHelper.HitTest</i> for every vertex on the floor, using a <i>RayHitTestParameters</i> object based on the vertex and the negative <i>Direction</i> vector of the <i>DirectionalLight</i>.
+If the ray from the floor in the negative direction of the directional
+light hit the chopper, then that vertex was part of the shadow. At that
+point I could set the vertex normal.
+</p>
+<p>
+I then realized I could reduce the calls to <i>VisualTreeHelper.HitTest</i>
+considerably by first determining a 2D bounding box for the shadow. I
+did this by looking at rays from the vertices of the chopper — and
+there are only 16 of those — to the floor using the positive <i>Direction</i> vector of the <i>DirectionalLight</i>.
+Because this particular hit-test calculation only involves an
+intersection of a line and a plane, I did it in code rather than
+calling <i>VisualTreeHelper.HitTest</i>. This bounding box establishes
+minimum and maximum X and Z coordinates on the floor within which the
+shadow appears. The calls to <i>VisualTreeHelper.HitTest</i> are then restricted to that box.
+</p>
+<p>
+I thought this was an interesting approach, and I was disappointed it
+didn't work better. The jaggies on the shadow can be eliminated only by
+increasing the resolution of the floor, but, of course, that tends to
+slow down the whole show.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/110157.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/150155.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

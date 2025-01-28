@@ -1,0 +1,158 @@
+<Page 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+  x:Class="SDKSamples.KeyFramesAnimationPage" 
+  Title="Key Frame Animations"
+  Loaded="pageLoaded">
+  <StackPanel>
+    <FlowDocumentScrollViewer HorizontalAlignment="Left">
+      <FlowDocument>
+        <Paragraph>
+          <Span Style="{StaticResource MyHeadingSpanStyle}">Key Frame Animations</Span><LineBreak/>
+          Like a From/To/By animation, a key-frame animation animates the
+          value of a target property. It creates a transition among its target
+          values over its Duration. However, while a From/To/By animation
+          creates a transition between two values, a single key-frame animation
+          can create transitions among any number of target values. Unlike a
+          From/To/By animation, a key frame animation has no From, To, or By
+          properties with which to set its target values.
+        </Paragraph>
+      </FlowDocument>
+    </FlowDocumentScrollViewer>
+
+      <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="20">
+        <Canvas Width="600" Height="300" Background="White" LayoutUpdated="exampleCanvasLayoutUpdated">
+
+          <Image Width="600" Height="300" Name="myImage"
+            Source="{StaticResource myDrawingImageResource}" />
+
+
+          <!-- The position of this rectangle is animated using a key frame animation. -->
+          <Rectangle Name="myRectangle"
+            Canvas.Top="100"
+            Canvas.Left="10"
+            Height="100"
+            Width="100"
+            Stroke="Black"
+            StrokeThickness="5">
+            <Rectangle.Fill>
+              <DrawingBrush>
+                <DrawingBrush.Drawing>
+                  <DrawingGroup>
+                      <GeometryDrawing Brush="#3333FF">
+                        <GeometryDrawing.Geometry>
+                          <RectangleGeometry Rect="0,0,100,100" />
+                        </GeometryDrawing.Geometry>
+                      </GeometryDrawing>
+                      <GeometryDrawing>
+                        <GeometryDrawing.Geometry>
+                          <RectangleGeometry Rect="0,0,100,100" />
+                        </GeometryDrawing.Geometry>
+                        <GeometryDrawing.Brush>
+                          <VisualBrush x:Name="myVisualBrush" ViewboxUnits="Absolute">
+                            <VisualBrush.Transform>
+                              <ScaleTransform ScaleX="1.5" ScaleY="1.5" CenterX="0.5" CenterY="0.5" />
+                            </VisualBrush.Transform>
+                          </VisualBrush>
+                        </GeometryDrawing.Brush>
+                      </GeometryDrawing>
+                  </DrawingGroup>
+                </DrawingBrush.Drawing>
+              </DrawingBrush>
+            </Rectangle.Fill>
+
+            <Rectangle.Triggers>
+              <EventTrigger RoutedEvent="Rectangle.Loaded">
+                <BeginStoryboard>
+                  <Storyboard RepeatBehavior="Forever">
+                    <DoubleAnimationUsingKeyFrames
+                      Storyboard.TargetName="myRectangle"
+                      Storyboard.TargetProperty="(Canvas.Left)">
+                      <DoubleAnimationUsingKeyFrames.KeyFrames>
+                        <LinearDoubleKeyFrame Value="500" KeyTime="0:0:5" />
+                        <SplineDoubleKeyFrame KeySpline="0.25,0.5 0.75,1" Value="200" KeyTime="0:0:10" />
+                        <LinearDoubleKeyFrame Value="290" KeyTime="0:0:12" />
+                        <LinearDoubleKeyFrame Value="300" KeyTime="0:0:13.5" />
+                        <SplineDoubleKeyFrame KeySpline="0.25,0.5 0.75,1" Value="0" KeyTime="0:0:15" />
+                      </DoubleAnimationUsingKeyFrames.KeyFrames>
+                    </DoubleAnimationUsingKeyFrames>
+
+                    <!-- Animate the first TextBlock -->
+                    <DoubleAnimation Storyboard.TargetName="FirstLinearTextBlock" Storyboard.TargetProperty="FontSize"
+                    From="12" To="16" Duration="0:0:0.2" />
+                    <DoubleAnimation Storyboard.TargetName="FirstLinearTextBlock" Storyboard.TargetProperty="FontSize"
+                    From="16" To="12" BeginTime="0:0:5" Duration="0:0:0.2" />
+
+                    <!-- Animate the second TextBlock -->
+                    <DoubleAnimation Storyboard.TargetName="FirstSplineTextBlock" Storyboard.TargetProperty="FontSize"
+                    From="12" To="16" BeginTime="0:0:5" Duration="0:0:0.2" />
+                    <DoubleAnimation Storyboard.TargetName="FirstSplineTextBlock" Storyboard.TargetProperty="FontSize"
+                    From="16" To="12" BeginTime="0:0:10" Duration="0:0:0.2" />
+
+                    <!-- Animate the third TextBlock -->
+                    <DoubleAnimation Storyboard.TargetName="SecondLinearTextBlock" Storyboard.TargetProperty="FontSize"
+                    From="12" To="16" BeginTime="0:0:10" Duration="0:0:0.2" />
+                    <DoubleAnimation Storyboard.TargetName="SecondLinearTextBlock" Storyboard.TargetProperty="FontSize"
+                    From="16" To="12" BeginTime="0:0:12" Duration="0:0:0.2" />
+
+                    <!-- Animate the fourth TextBlock -->
+                    <DoubleAnimation Storyboard.TargetName="ThirdLinearTextBlock" Storyboard.TargetProperty="FontSize"
+                    From="12" To="16" BeginTime="0:0:12" Duration="0:0:0.2" />
+                    <DoubleAnimation Storyboard.TargetName="ThirdLinearTextBlock" Storyboard.TargetProperty="FontSize"
+                    From="16" To="12" BeginTime="0:0:13.5" Duration="0:0:0.2" />
+
+                    <!-- Animate the fifth TextBlock -->
+                    <DoubleAnimation Storyboard.TargetName="SecondSplineTextBlock" Storyboard.TargetProperty="FontSize"
+                    From="12" To="16" BeginTime="0:0:13.5" Duration="0:0:0.2" />
+                    <DoubleAnimation Storyboard.TargetName="SecondSplineTextBlock" Storyboard.TargetProperty="FontSize"
+                    From="16" To="12" BeginTime="0:0:15" Duration="0:0:0.2" />
+                  </Storyboard>
+                </BeginStoryboard>
+              </EventTrigger>
+            </Rectangle.Triggers>
+
+            <Rectangle.BitmapEffect>
+              <DropShadowBitmapEffect ShadowDepth="5" />
+            </Rectangle.BitmapEffect>
+          </Rectangle>
+        </Canvas>
+      </Border>
+
+      <TextBlock HorizontalAlignment="Left"  xml:space="preserve">
+                    &lt;DoubleAnimationUsingKeyFrames
+                    Storyboard.TargetName="myRectangle"
+                    Storyboard.TargetProperty="(Canvas.Left)"&gt;
+                      &lt;DoubleAnimationUsingKeyFrames.KeyFrames&gt;
+                        <TextBlock Name="FirstLinearTextBlock">&lt;LinearDoubleKeyFrame Value="500" KeyTime="0:0:5" /&gt;</TextBlock>
+                        <TextBlock Name="FirstSplineTextBlock">&lt;SplineDoubleKeyFrame KeySpline="0.25,0.5 0.75,1" Value="200" KeyTime="0:0:10" /&gt;</TextBlock>
+                        <TextBlock Name="SecondLinearTextBlock">&lt;LinearDoubleKeyFrame Value="290" KeyTime="0:0:12" /&gt;</TextBlock>
+                        <TextBlock Name="ThirdLinearTextBlock">&lt;LinearDoubleKeyFrame Value="300" KeyTime="0:0:13.5" /&gt;</TextBlock>
+                        <TextBlock Name="SecondSplineTextBlock">&lt;SplineDoubleKeyFrame KeySpline="0.25,0.5 0.75,1" Value="0" KeyTime="0:0:15" /&gt;</TextBlock>
+                      &lt;/DoubleAnimationUsingKeyFrames.KeyFrames&gt;
+                    &lt;/DoubleAnimationUsingKeyFrames&gt;
+          </TextBlock>
+
+    <FlowDocumentScrollViewer HorizontalAlignment="Left">
+      <FlowDocument>
+        <Paragraph>
+          A Key Frame animation consists of one or more individual key frames. Each Key Frame specifies a 
+          part of an animation. The example above has five key frames. Each of these key frames specifies
+          a value and time to interpolate the animation to. For example, the first key frame looks like this:
+        </Paragraph>
+        <BlockUIContainer>
+          <TextBlock Style="{StaticResource CodeSnippetParagraph}" xml:space="preserve">
+  &lt;LinearDoubleKeyFrame Value="500" KeyTime="0:0:5" /&gt;
+          </TextBlock>
+        </BlockUIContainer>
+        <Paragraph>
+          So this key frame says to animate the Canvas.Left property to the value of 500 over the first
+          five seconds of the animation. Note that this key frame is what is called a Linear Key Frame
+          (LinearDoubleKeyFrame). Linear key frames animate at a constant rate (linearly). There are also
+          spline key frames in the example above. Spline key frames use the KeySpline property to specify
+          a more flexible, non-linear interpolation. The next page shows how to use the KeySpline property
+          to effect an animation.
+        </Paragraph>
+      </FlowDocument>
+    </FlowDocumentScrollViewer>
+  </StackPanel>
+</Page>

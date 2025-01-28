@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Dante's blog : Repeating an animation</title>
+ 
+
+
+
+
+<meta name="keywords" content="Blend">
+<meta name="description" content="It may not be a huge revelation for other folks, but with some of the testing I've been doing, I really started getting frustrated with some stuff. Specifically, I've got a fairly complex animation, and I want it to repeat forever. However, setting the">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/danteg/pingback.aspx">
+<link rel="stylesheet" href="repeating-an-animation.aspx_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="repeating-an-animation.aspx_files/print.htm" type="text/css" media="print">
+<link rel="stylesheet" href="repeating-an-animation.aspx_files/fire.css" type="text/css" media="screen">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Dante's blog (RSS 2.0)" href="http://blogs.msdn.com/danteg/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Dante's blog (Atom 1.0)" href="http://blogs.msdn.com/danteg/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Repeating an animation Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/danteg/commentrss.aspx?PostID=4210383">
+
+	<script src="repeating-an-animation.aspx_files/global.js" type="text/javascript"></script>
+<style>
+.DoNotDisplay { display: none; }
+</style></head><body>
+<form name="aspnetForm" method="post" action="/danteg/archive/2007/08/03/repeating-an-animation.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFI2N0bDAwJF8kY3RsMDAkXyRidCRfJHdzJF8kU2VhcmNoQm94OF9SPxZcTrUZtH+KlInBIuHdXL8=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="repeating-an-animation.aspx_files/WebResource.js" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript" src="repeating-an-animation.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script language="javascript" type="text/javascript">
+var RatingControlAJAX = {
+"SaveRating":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Blogs.Controls.BlogRatePost',id,'SaveRating',[p0],cb,0,0,0,1);}};
+</script><script language="javascript" type="text/javascript">
+var ThreadSubscribeLinkButton = {
+"ToggleEmailReplies":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Controls.ThreadSubscribeLinkButton',id,'ToggleEmailReplies',[p0],cb,0,0,0,0);}};
+</script><script type="text/javascript" src="repeating-an-animation.aspx_files/ratingcontrol.js"></script><script language="JavaScript" type="text/javascript">var ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackWorking = false;var ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus = false;function updateSubscriptionText() {if(ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus == true) {document.getElementById('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton').innerHTML = 'Stop sending me email alerts for this post';} else {document.getElementById('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton').innerHTML = 'Send me email alerts for new comments to this post';}}function toggleSubscription() {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackWorking = true;document.getElementById('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton').innerHTML = 'Updating email notifications...';ThreadSubscribeLinkButton.ToggleEmailReplies('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton',528152, toggleSubscriptionCallback);}function toggleSubscriptionCallback(response) {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackWorking = false;if((response.error == null) && (response.value == true)) {if(ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus == true) {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus = false;} else {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus = true;}updateSubscriptionText();} else {updateSubscriptionText();alert('An error happened while processing your request.  Please notify an administrator and try again later.');}}</script>
+<script src="repeating-an-animation.aspx_files/WebResource_002.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Signed in as <a href="http://blogs.msdn.com/user/EditProfile.aspx?ReturnUrl=/blogs/post.aspx?App=danteg&amp;y=2007&amp;m=08&amp;d=03&amp;PostName=repeating-an-animation">bbraatz</a>
+ | <a id="ctl00___ctl00___duw1_rc1___logout" href="http://blogs.msdn.com/logout.aspx">Sign out</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="wrapper">
+	<div id="container">
+		<div id="header">
+			
+<div id="title">
+	<div id="SearchSideBar">
+		
+<div id="search">
+	<input name="ctl00$_$ctl00$_$bt$_$ws$_$SearchBox" id="ctl00___ctl00___bt___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bt___ws___SearchButton(event);" type="text">
+	<a id="ctl00___ctl00___bt___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bt$_$ws$_$SearchButton','')">Search</a>
+</div>	
+	</div>
+	<h1><a id="ctl00___ctl00___bt___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/danteg/default.aspx">Dante's blog</a></h1>
+	<p id="tagline"></p>
+</div>
+<div id="nav">
+	<div id="SubscriptionsSideBar">
+		
+<div id="subscriptions">
+<ul>
+	<li><a id="ctl00___ctl00___bt___s___rss" href="http://blogs.msdn.com/danteg/rss.xml">RSS 2.0</a></li>
+	<li><a id="ctl00___ctl00___bt___s___atom" href="http://blogs.msdn.com/danteg/atom.xml">Atom 1.0</a></li>
+	<li><a id="ctl00___ctl00___bt___s___email" href="http://blogs.msdn.com/danteg/emailsubscriptions.aspx">Email alerts</a></li>
+</ul></div>
+	</div>
+	<ul>
+		<li><a id="ctl00___ctl00___bt___home" href="http://blogs.msdn.com/danteg/default.aspx">Home</a></li>
+		<li><a id="ctl00___ctl00___bt___Aboutlink1" href="http://blogs.msdn.com/danteg/about.aspx">About</a></li>
+		<li><a id="ctl00___ctl00___bt___Contactlink1" href="http://blogs.msdn.com/danteg/contact.aspx">Email</a></li>
+	</ul>
+</div></div>
+		<div id="contentmargin"></div>
+		<div id="contentwrapper">
+			<div id="sidebar-a">
+				
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul>
+	<ul class="SidebarTagCloud">
+<li class="Tag1"><a href="http://blogs.msdn.com/danteg/archive/tags/Blend/default.aspx" rel="tag">Blend</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/danteg/archive/tags/Code/default.aspx" rel="tag">Code</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/danteg/archive/tags/Databinding/default.aspx" rel="tag">Databinding</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/danteg/archive/tags/Gaming/default.aspx" rel="tag">Gaming</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/danteg/archive/tags/MyGame/default.aspx" rel="tag">MyGame</a></li>
+<li class="Tag3"><a href="http://blogs.msdn.com/danteg/archive/tags/Personal/default.aspx" rel="tag">Personal</a></li>
+</ul>
+
+	</ul>
+</div>
+
+<div id="NewsSideBar">
+	
+</div>
+
+<div id="ArchiveSideBar">
+	
+
+<h3>Archives</h3>
+<ul>
+
+	<li><a href="http://blogs.msdn.com/danteg/archive/2007/10.aspx">October 2007 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/danteg/archive/2007/08.aspx">August 2007 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/danteg/archive/2007/07.aspx">July 2007 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/danteg/archive/2007/06.aspx">June 2007 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/danteg/archive/2007/03.aspx">March 2007 (5)</a></li>
+
+	<li><a href="http://blogs.msdn.com/danteg/archive/2006/10.aspx">October 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/danteg/archive/2006/06.aspx">June 2006 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/danteg/archive/2006/03.aspx">March 2006 (2)</a></li>
+
+</ul>
+</div>
+
+<div id="LinkSideBar">
+	
+
+</div>
+			</div>
+			<div id="content"><div id="content2">
+				
+			
+
+
+
+
+<div class="post">
+	<div class="posthead">
+		<div class="postviewhead">
+			Friday, August 03, 2007 8:29 PM
+			by
+			<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=23987">DanteG</a> 
+			<span class="CommonRateControl" id="ctl00___ctl00___ctl01___Entry___Ratings" title="Not yet rated"><img title="Poor" src="repeating-an-animation.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Poor" src="repeating-an-animation.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Fair" src="repeating-an-animation.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Fair" src="repeating-an-animation.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Average" src="repeating-an-animation.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Average" src="repeating-an-animation.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Good" src="repeating-an-animation.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Good" src="repeating-an-animation.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Excellent" src="repeating-an-animation.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Excellent" src="repeating-an-animation.aspx_files/star-right-off.gif" align="absmiddle" border="0"></span><input value="0" id="ctl00___ctl00___ctl01___Entry___Ratings_Value" type="hidden">
+		</div>
+		<h2>Repeating an animation</h2>
+	</div>
+	<div class="postcontent">
+		<p>It
+may not be a huge revelation for other folks, but with some of the
+testing I've been doing, I really started getting frustrated with some
+stuff.</p>
+<p>Specifically, I've got a fairly complex animation, and I want it to
+repeat forever. However, setting the repeat count on each and every
+property that I'm animating is rather tedious. "Set the repeat count on
+the X Rotation... set the repeat count on the Y Rotation... set the
+repeat count on the X Skew... *sigh*... Set the repeat count on the Y
+Skew..." etc...</p>
+<p>Now, you can't set the repeat count on a composite keyframe in the
+hopes that the RepeatCount will be propogated downward inside Blend
+(Yes, I've asked my PMs for that feature, and MAYBE it will make it
+into the product some day, but who knows...). </p>
+<p>So, how do you handle this? Now, I'm sure the XAML experts already
+knew this, but if you go into the XAML, you can just add
+RepeatBehavior="Forever" to the Storyboard. The XAML now looks like:</p>
+<p>&lt;Window.Resources&gt;<br>&nbsp;&nbsp;&lt;Storyboard x:Key="Timeline1" RepeatBehavior="Forever"&gt;</p>
+<p>And that's it. Now, the animation will start at the beginning, run
+until the time when all the existing animations have ended, then start
+over again. </p>
+<p>Again, most of the XAML folks probably already knew this, but I thought it was pretty cool.</p>
+	</div>
+	<div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/danteg/archive/tags/Blend/default.aspx" rel="tag">Blend</a></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+							
+</div>            
+
+
+<div id="postToolbar">
+<h2 class="CommonSubTitle">Comment Notification</h2>
+<p>
+	
+	<a href="javascript:toggleSubscription();" id="ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton" trackingresourcename="Weblogs_UnTrack" nottrackingresourcename="Weblogs_Track" workingresourcename="Weblogs_TrackWorking">Send me email alerts for new comments to this post</a>
+</p>
+<p>
+	Subscribe to this post's comments using
+	<a id="ctl00___ctl00___ctl01___DetailedSubBar___CommentRssLink" href="http://blogs.msdn.com/danteg/commentrss.aspx?PostID=4210383">RSS</a>
+</p>
+</div>
+
+
+	<h3>
+	Comments
+</h3>
+	<div id="comments">
+
+	<div class="commentssubhead">
+		No Comments
+	</div>
+
+	</div>
+
+
+
+
+
+<div id="commentform">
+<h3>Leave a Comment</h3>
+<dl>
+	
+	<dt><label for="ctl00___ctl00___ctl01___form___tbUrl">Your URL</label> <em>(optional</em>)</dt>
+	<dd><input name="ctl00$_$ctl00$_$ctl01$_$form$_$tbUrl" id="ctl00___ctl00___ctl01___form___tbUrl" class="smallbox" type="text"></dd>
+	<dt><label for="ctl00___ctl00___ctl01___form___tbComment">Comments</label> <em>(required)</em><span id="ctl00___ctl00___ctl01___form___Requiredfieldvalidator3" style="color: Red; visibility: hidden;">*</span></dt>
+	<dd><textarea name="ctl00$_$ctl00$_$ctl01$_$form$_$tbComment" rows="5" cols="25" id="ctl00___ctl00___ctl01___form___tbComment"></textarea></dd>
+	<dt></dt>
+	<dt><input name="ctl00$_$ctl00$_$ctl01$_$form$_$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$_$ctl00$_$ctl01$_$form$_$btnSubmit", "", true, "", "", false, false))' id="ctl00___ctl00___ctl01___form___btnSubmit" type="submit"></dt>
+</dl>
+</div>
+
+
+
+	
+<h2 class="CommonSubTitle">About DanteG</h2>
+Well, I've been in the industry in one form or another since about
+1997, when I graduated from Oakland University in Rochester, Michigan.
+I worked with Cimlinc as an intern on the now defunct Envelop project
+when I got laid off and spent some time as a furniture salesman (Yeah,
+I know...)
+Before I finished my degree, I started working for Thedra, writing UI
+in Tcl/Tk primarily for Sun Solaric and some ancient little Unix boxes
+that I can't even remember the names.
+I moved to tech support for Altair Engineering, where I stayed until
+they discovered that I knew how to code. I was there as a developer for
+a couple years until the auto industry led to rounds of layoffs at
+Altair, and I was one of them.
+Then, after 3 months, Microsoft decided that they wanted to give me a
+shot, so in November of 2002, I went out to be one of the few testers
+on the newly built "Code Name: Sparkle" project. Sparkle eventually
+became the Expression Interactive Designer, and finally Expression
+Blend. Now, almost 5 years later, I'm still a tester with Microsoft on
+Expression Blend, but my 'reach' is extended through my Total Training
+series and here on my blog.
+Personally, I'm married (2007 was 10 years), and I have one son who is
+a Viva Pinata addict. </div></div>
+			<div id="contentfooter">&nbsp;</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator3"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00___ctl00___ctl01___form___Requiredfieldvalidator3 = document.all ? document.all["ctl00___ctl00___ctl01___form___Requiredfieldvalidator3"] : document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator3");
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.controltovalidate = "ctl00___ctl00___ctl01___form___tbComment";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.errormessage = "*";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.initialvalue = "";
+// -->
+</script>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bt___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bt$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+<script language="javascript">var ctl00___ctl00___ctl01___Entry___Ratings=new RateControl('ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings_Value', 5, '/Themes/default/images/common/', false, 'CommonRateControl','CommonRateControlActive','CommonRateControlReadOnly',['Terrible','Poor','Fair','Average','Good','Excellent'],false,true);</script>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/danteg/archive/2007/08/03/repeating-an-animation.aspx"
+dc:identifier="http://blogs.msdn.com/danteg/archive/2007/08/03/repeating-an-animation.aspx"
+dc:title="Repeating an animation"
+trackback:ping="http://blogs.msdn.com/danteg/trackback.aspx?PostID=4210383" />
+</rdf:RDF>
+-->
+
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        </form>
+</body></html>

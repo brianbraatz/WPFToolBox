@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - The Petzold.Media3D Library: Fun with the Teapot</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/140157.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/141144.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/08/140230.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>The Petzold.Media3D Library: Fun with the Teapot</h2></a><p style="text-align: right;">August 14, 2007<br>Roscoe, N.Y.</p><p>
+Back in February, I wrote a little hack that extracted the vertices, indices, and normals from the DirectX 3D static method <i>Mesh.Teapot</i> (an implementation of the famous
+<a href="http://en.wikipedia.org/wiki/Utah_teapot">Utah Teapot</a>)
+and converted them into XAML. This XAML teapot then found its way into a couple XAML animations in the following blog entries:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/02/220220.html">3D Teapot Tragedy</a>
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/03/011056.html">Asexual Reproduction of Teapots</a>
+</p>
+<p>
+The Petzold.Media3D library 
+(available 
+<a href="http://www.charlespetzold.com/3D">here</a>)
+includes a <i>TeapotMesh</i>
+class that lets you use the teapot in your WPF 3D programs. If you're
+running XamlCruncher 2.0 with Petzold.Media3D.dll loaded, you can
+download and run the following XAML file:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/PlainTeapot.xaml">PlainTeapot.xaml</a>
+</p>
+<p>
+Or you can just run the following XBAP to see what it looks like:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/PlainTeapot/PlainTeapot.xbap">PlainTeapot.xbap</a>
+</p>
+<p>
+Notice that an instance of the <i>TeapotMesh</i> class is defined as a resource, and it's later referenced in a <i>GeometryModel3D</i>
+element through a binding. The exterior is colored Cyan; the interior
+is Red. You can use the scrollbars at the bottom and right of the page
+to view it from different angles.
+</p>
+<p>As the earlier animations made evident, I took some time to figure
+out which triangles corresponded to the pot itself and which to the
+lid. As I was putting the <i>TeapotMesh</i> class together, I decided to generalize this concept and allow any consecutive series of triangles to be selected.
+</p>
+<p>
+The teapot consists of 2,256 triangles that can be numbered 0 through 2,255. The <i>TeapotMesh</i> class defines a property named <i>TriangleRange</i> that you can set to an object of type <i>TeapotTriangleRange</i>, which has two properties of type <i>int</i> named <i>Begin</i> and <i>End</i>, which have default values of 0 and 2255.
+</p>
+<p>
+Of course there's also a <i>TeaportTriangleRangeConverter</i> class that makes things easy in XAML. Just set the <i>TriangleRange</i> property to two integers. Try this in PlainTeapot.xaml loaded in XamlCruncher:
+</p>
+<ul style="font-family: monospace;">
+&lt;cp:TeapotMesh x:Key="teapot" TriangleRange="500 1200" /&gt;
+</ul>
+<p>
+You'll see part of the base and sides of the teapot and part of the handle.
+</p>
+<p>
+In addition, the <i>TeapotTriangleRange</i> class also defines six static properties of type <i>TeapotTriangleRange</i>: <i>All</i> (for 0 through 2255), <i>Pot</i> (0 through 1703), <i>Body</i> (0 through 1127), <i>Handle</i> (1128 through 1415), <i>Spout</i> (1416 through 1703), and <i>Lid</i> (1704 through 2255). Of course, the <i>TeapotTriangleRangeConverter</i> class lets you use these property names directly in your XAML file:
+</p>
+<ul style="font-family: monospace;">
+&lt;cp:TeapotMesh x:Key="teapot" TriangleRange="Spout" /&gt;
+</ul>
+<p>
+This little feature is exploited in the next program, which defines four separate <i>TeapotMesh</i> resources for the <i>Body</i>, <i>Handle</i>, <i>Spout</i> and <i>Lid</i>,
+the latter three of which have three different types of transforms that
+are animated. Like the previous XAML file, this one must be run in
+XamlCruncher with the Petzold.Media3D library loaded, or you can just
+run the XBAP:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/TeapotAnimations.xaml">TeapotAnimations.xaml</a>
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/TeapotAnimations/TeapotAnimations.xbap">TeapotAnimations.xbap</a>
+</p>
+<p>
+Of course, the <i>TriangleRange</i> property in <i>TeapotMesh</i> is backed by a dependency property, and so are the <i>Begin</i> and <i>End</i> properties of <i>TeapotTriangleRange</i>, which means that the actual ranges can be animated. I'm pretty sure this the first occasion I've had to use the <i>Int32Animation</i> class:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/SweepThroughTeapot.xaml">SweepThroughTeapot.xaml</a>
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/SweepThroughTeapot/SweepThroughTeapot.xbap">SweepThroughTeapot.xbap</a>
+</p>
+<p>At any time, only 101 consecutive triangles are visible, but the
+animated range effectively sweeps through the teapot from beginning to
+end and then back, repeating forever.
+</p>
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Fun%20with%20the%20Teapot_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+<div id="comments"><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="The Petzold.Media3D Library: Fun with the Teapot" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/140157.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/141144.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

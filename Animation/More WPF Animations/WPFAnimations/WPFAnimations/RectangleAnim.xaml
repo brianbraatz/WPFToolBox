@@ -1,0 +1,38 @@
+﻿<Window x:Class="WPFAnimations.RectangleAnim"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="WPFAnimations" Height="322" Width="355"
+    >
+	<Grid>
+		<Rectangle Width="30" Height="30">
+			<Rectangle.Fill>
+				<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+					<GradientStop Color="Navy" Offset="0.0" />
+					<GradientStop  Color="Blue" Offset="0.30" />
+					<GradientStop Color="CornflowerBlue" Offset="0.60" />
+				</LinearGradientBrush>
+			</Rectangle.Fill>
+			<Rectangle.RenderTransform>
+				<RotateTransform x:Name="RectRotate" />
+			</Rectangle.RenderTransform>
+			<Rectangle.Triggers>
+				<EventTrigger RoutedEvent="Rectangle.Loaded">
+					<EventTrigger.Actions>
+						<BeginStoryboard>
+							<Storyboard RepeatBehavior="Forever">
+								<DoubleAnimationUsingPath Storyboard.TargetName="RectRotate"
+														  Storyboard.TargetProperty="Angle"
+														  Source="X"
+														  Duration="0:0:20">
+									<DoubleAnimationUsingPath.PathGeometry>
+										<PathGeometry Figures="M0,0 H359" />
+									</DoubleAnimationUsingPath.PathGeometry>
+								</DoubleAnimationUsingPath>
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger.Actions>
+				</EventTrigger>
+			</Rectangle.Triggers>
+		</Rectangle>
+	</Grid>
+</Window>

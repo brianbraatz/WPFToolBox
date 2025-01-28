@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Dynamically Changing TreeView Contents</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/06/240233.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/06/251051.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/06/250705.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Dynamically Changing TreeView Contents</h2></a><p style="text-align: right;">June 25, 2006<br>Roscoe, NY</p><p>
+I received an email from someone who had seen 
+<a href="http://www.charlespetzold.com/blog/2006/02/170442.html">an earlier blog posting</a> on using <i>HierarchicalDataTemplate</i> in connection with a <i>TreeView</i>
+control to display the directory structure of a disk drive. The
+question is: How do you get this code to respond dynamically to changes
+in the directories, such as new directories, deleted directories, etc?
+</p>
+<p>
+A brief overview on the <i>TreeView</i> control and templates:  When you create a WPF <i>TreeView</i> control, normally you fill it with objects of type <i>TreeViewItem</i>. You set the <i>Header</i> property of each <i>TreeViewItem</i> to what you want displayed (customarily this is a text string but it can be anything that derives from <i>UIElement</i> for much fancier effects) and you set the <i>Items</i> property of each <i>TreeViewItem</i> to a collection of sub-items of that item.
+</p>
+<p>
+However, you can alternatively put an object of any type into the <i>TreeView</i>, perhaps an object of type <i>Whatsit</i>. The <i>TreeView</i> will then search through the program's resources for a <i>HierarchicalDataTemplate</i> that has a <i>DataType</i> property indicating the <i>Whatsit</i> class. (Or, the <i>HierarchicalDataTemplate</i> object might be set directly to the <i>ItemTemplate</i> property of the <i>TreeViewItem</i>.) The <i>TreeView</i> then uses the <i>VisualTree</i> property of that template to display the item based on properties of <i>Whatsit</i>, and it uses the <i>ItemsSource</i> property of the template to obtain sub-items from <i>Whatsit</i>. These sub-items don't necessarily have to be objects of type <i>Whatsit</i>; if they are objects of other types, those other types would probably also be associated with <i>HierarchicalDataTemplate</i> objects defined as resources.
+</p>
+<p>
+The earlier blog entry cited above (which used a program from Chapter 16 of 
+<a href="http://www.charlespetzold.com/wpf">my book</a>) contains a small class named <i>DiskDirectory</i> that is basically a wrapper around a .NET <i>DirectoryInfo</i> object. <i>DiskDirectory</i> exposes the <i>Name</i> property of <i>DirectoryInfo</i> as a property also named <i>Name</i>. <i>DiskDirectory</i> also includes a read-only property named <i>Subdirectories</i> that returns a <i>List&lt;DiskDirectory&gt;</i> collection of subdirectories of that directory. If an object of type <i>DiskDirectory</i> is put into the root of a <i>TreeView</i>, the <i>HierarchicalDataTemplate</i> for <i>DiskDirectory</i> does the rest.
+</p>
+<p>
+If you want a <i>TreeView</i> to respond to changes in the underlying data, you must provide a mechanism for the underlying data  to notify the <i>TreeView</i> when the data has changed. For updating disk directories, the <i>DiskDirectory</i> object must certainly create an object of type <i>FileSystemWatcher</i>
+so it can be notified of changes in the directory, but how it conveys
+these changes to the outside world can be done in a couple different
+ways.
+</p>
+<p>
+The revised 
+<a href="http://www.charlespetzold.com/blog/2006/06/DiskDirectory.cs">DiskDirectory.cs</a> file shows one approach. The class's constructor now installs a <i>FileSystemWatcher</i> and processes three events in a single handler. (To be sure, this is an <i>extremely</i> simple-minded approach to <i>FileSystemWatcher</i>, but I wanted to focus more on mechanisms here.) The class also implements the <i>INotifyPropertyChanged</i> interface, which means it defines an event named <i>PropertyChanged</i> that it fires to indicate that a property in the class has changed. The <i>PropertyChanged</i> event is accompanied by a <i>PropertyChangedEventArgs</i> containing the text name of the event. So, when one of the <i>FileSystemWatcher</i> events comes through, <i>DiskDirectory</i> fires a <i>PropertyChanged</i> event indicating that the <i>Subdirectories</i> property has changed. Anybody making use of <i>DiskDirectory</i> objects can then access the <i>Subdirectories</i> property again to obtain the updated subdirectory list.
+</p>
+<p>
+A <i>HierarchicalDataTemplate</i> for objects of type <i>DiskDirectory</i> is defined in this
+<a href="http://www.charlespetzold.com/blog/2006/06/DynamicDirectoryTreeViewWindow.xaml">DynamicDirectoryTreeViewWindow.xaml</a> file. Notice that the <i>DataType</i> of the template is set to the <i>DiskDirectory</i> class. The template displays the <i>Name</i> property of the <i>DiskDirectory</i> object in a <i>TextBlock</i>, and it obtains sub-items from the <i>Subdirectories</i> property. The <i>TreeView</i> itself is defined down at the bottom of the file.
+</p>
+<p>
+The <a href="http://www.charlespetzold.com/blog/2006/06/DynamicDirectoryTreeViewWindow.cs">DynamicDirectoryTreeViewWindow.cs</a> code-behind file simply sets a single <i>DiskDirectory</i> item in the <i>TreeView</i>
+corresponding to the root directory of the system drive. Everything
+else is handled through the template in conjunction with the <i>DiskDirectory</i> class. (The <a href="http://www.charlespetzold.com/blog/2006/06/DynamicDirectoryTreeView.csproj">DynamicDirectoryTreeView.csproj</a> project file completes the project.)
+</p>
+<p>
+The <i>INotifyPropertyChanged</i> interface is one way a class such as <i>DiskDirectory</i> can provide a notification of changes in properties. In this example, a simpler approach would have been for <i>DiskDirectory</i> to define an event named <i>SubdirectoriesChanged</i> that it fired in response to changes in the monitored directory. A somewhat more difficult approach is backing <i>Subdirectories</i> with a <i>DependencyProperty</i> object named <i>SubdirectoriesProperty</i>.
+</p>
+<p>
+Another approach would be for <i>DiskDirectory</i> to implement its <i>Subdirectories</i> property not as an object of type  <i>List&lt;DiskDirectory&gt;</i> but of type <i>ObservableCollection&lt;DiskDirectory&gt;</i>. This collection class has its own built-in mechanism for change notification. The <i>DiskDirectory</i> class would create an object of type <i>ObservableCollection&lt;DiskDirectory&gt;</i> once (rather than each time the <i>Subdirectories</i> property is called), and then directly modify the members of this collection based on the <i>FileSystemWatcher</i> events. This is probably a <i>much</i> more difficult approach, and I'm not sure it can even be implemented successfully in this particular case.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/06/240233.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/06/251051.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

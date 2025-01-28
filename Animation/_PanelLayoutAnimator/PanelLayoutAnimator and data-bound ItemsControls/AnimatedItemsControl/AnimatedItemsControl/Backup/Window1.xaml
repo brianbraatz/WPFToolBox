@@ -1,0 +1,60 @@
+﻿<Window x:Class="WindowsApplication9.Window1"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:local="clr-namespace:WindowsApplication9" 
+		xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase" 
+		x:Name="TheWindow"
+		Title="WindowsApplication9"
+		Height="300"
+		Width="300"
+    >
+	<Window.Resources>
+		<CollectionViewSource
+			x:Key="cvs"
+			Source="{Binding ElementName=TheWindow,Path=DataCollection}">
+		</CollectionViewSource>
+	</Window.Resources>
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<ItemsControl
+			Grid.Column="0"
+			Margin="5" 
+			x:Name="ic"
+			ItemsSource="{Binding Source={StaticResource cvs}}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel IsItemsHost="True"
+							   local:PanelLayoutAnimator.IsAnimationEnabled="True"/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Button Click="OnClick"
+							Content="{Binding Path=Name}"/>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		<ItemsControl
+			Grid.Column="1"
+			Margin="5" 
+			x:Name="ic2"
+			ItemsSource="{Binding Source={StaticResource cvs}}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel IsItemsHost="True"
+							   local:PanelLayoutAnimator2.IsAnimationEnabled="True"/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Button Click="OnClick"
+							Content="{Binding Path=Name}"/>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</Grid>
+</Window>

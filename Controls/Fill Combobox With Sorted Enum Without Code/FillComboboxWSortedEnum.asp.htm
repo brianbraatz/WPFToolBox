@@ -1,0 +1,849 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Fill Combobox With Sorted Enum Without Code - The Code Project - Windows Presentation Foundation</title>
+
+
+
+
+<!-- base -->
+<meta http-equiv="Reply-to" content="mailto:webmaster@codeproject.com">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="MS.LOCALE" content="en-US">
+<meta name="Description" content="This article demonstrates how to bind a combobox with sorted names from an enum.  This can all be accomplished in XAML without code in the XAML code behind page.">
+<meta name="Search.TopicType" content="kbArticle">
+<meta name="Author" content="Karl_Shifflett">
+<meta name="Search.PublishDate" content="18 Jun 2007 14:00:00 GMT">
+<meta name="Search.RevisedDate" content="18 Jun 2007 14:00:00 GMT">
+
+<meta name="keywords" content="Free source code, , Visual C++, MFC, Windows, Article">
+<meta name="Copyright" content="Article content copyright Karl_Shifflett, 2007, everthing else Copyright © CodeProject, 1999-2007, All Rights Reserved.">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Lounge Postings" href="http://www.codeproject.com/webservices/LoungeRSS.aspx">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - All topics" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=1">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - MFC / C++" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=2">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - C#" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=3">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - ASP.NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=4">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - .NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=5">
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - VB.NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=6">
+<link rel="search" type="application/opensearchdescription+xml" title="The Code Project" href="http://www.codeproject.com/info/OpenSearch.xml">
+<link rel="icon" href="http://www.codeproject.com/favicon.ico" type="image/ico">
+<link rel="SHORTCUT ICON" href="http://www.codeproject.com/favicon.ico">
+<link rel="stylesheet" type="text/css" href="FillComboboxWSortedEnum.asp_files/global.css">
+
+<link rel="stylesheet" type="text/css" href="FillComboboxWSortedEnum.asp_files/netscape6.css">
+
+<script language="javascript" src="FillComboboxWSortedEnum.asp_files/oncopy.js"></script>
+<script language="javascript">
+if (top != self) top.location.href = location.href;
+if (typeof(DemoUrl) != "undefined")
+	document.write('<me' + 'ta http' + '-equiv="re' + 'fresh" con' + 'tent="1;url=' + DemoUrl + '">');
+</script></head><body style="margin: 0pt; background-color: rgb(255, 255, 255);" oncopy="return copyCode();" alink="red" bgcolor="white" link="blue" text="black" vlink="navy">
+
+<script src="FillComboboxWSortedEnum.asp_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1735123-1";
+urchinTracker();
+</script>
+
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+<tbody><tr>
+	<td class="HeaderLogo"><a href="http://www.codeproject.com/"><img alt="Home" src="FillComboboxWSortedEnum.asp_files/codeproject225x90.gif" border="0" height="90"></a></td>
+	<td class="HeaderBanner"><span id="AdBanner4"><script language="javascript">document.write("<a href=\"/script/admentor/admentorredir.asp?id=4300&way=ban\" target=_blank><img src=\"/script/ann/ServeImg.aspx?File=%2Fscript%2Fadmentor%2Fimages%2FIronSpeed%5F728x90%5F4%2Egif&C=False&id=4300&cb=5732629\" alt=\"\" border=0 width=728 height=90></a>");</script><a href="http://www.codeproject.com/script/admentor/admentorredir.asp?id=4300&amp;way=ban" target="_blank"><img src="FillComboboxWSortedEnum.asp_files/ServeImg_004.htm" alt="" border="0" height="90" width="728"></a></span></td>
+</tr>
+<tr><td colspan="2">
+<table class="MemberNavBar" border="0" cellpadding="5" cellspacing="0" width="100%">
+<tbody><tr valign="middle">
+
+<td class="smallText" style="font-weight: bold;">4,631,962 members and growing! &nbsp;
+11,156 now online.
+</td>
+
+
+<td class="userNavText" align="right">
+
+
+
+<a href="http://www.codeproject.com/script/profile/whos_who.asp?id=3574032">
+brianbrtz
+</a> |
+<a href="http://www.codeproject.com/script/profile/modify.asp?ct=/WPF/FillComboboxWSortedEnum.asp"><b>My Settings</b></a> |
+<a href="http://www.codeproject.com/script/profile/bookmark_list.asp">My Bookmarks</a> |
+<a href="http://www.codeproject.com/script/articles/list_articles.asp?userid=3574032">My Articles</a> |
+
+<a href="http://www.codeproject.com/script/profile/logoff.asp?ct=/WPF/FillComboboxWSortedEnum.asp">Sign out</a>
+
+
+</td>
+</tr>
+</tbody></table></td></tr>
+<tr><td colspan="2">
+<table class="SiteNavBar" id="tblSiteToolbar" cellpadding="0" cellspacing="0">
+<tbody><tr>
+<td><a href="http://www.codeproject.com/">Home</a></td>
+<td nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=2">MFC/C++</a></td>
+<td><a href="http://www.codeproject.com/index.asp?cat=3">C#</a></td>
+<td nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=4">ASP.NET</a></td>
+<td nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=6">VB.NET</a></td>
+<td nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=8">Architect</a></td>
+<td nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=9">SQL</a></td>
+<td class="SelCat" nowrap="nowrap"><a href="http://www.codeproject.com/index.asp?cat=1">All Topics</a></td>
+<td width="100%">&nbsp;</td>
+<td>
+	<div id="MenuPos" style="position: relative; width: 300px; height: 22px; top: 1px;">
+	<table id="MPH" style="border-width: 0pt; height: 20px; display: none;" cellpadding="0" cellspacing="0" width="300">
+	<tbody><tr valign="middle">
+		<td style="border-width: 0pt;" nowrap="nowrap"><a href="http://www.codeproject.com/info/faq.asp">Help!</a></td>
+		<td style="border-width: 0pt;" nowrap="nowrap"><a href="http://www.codeproject.com/info/latest.asp">Articles</a></td>
+		<td style="border-width: 0pt;" nowrap="nowrap"><a href="http://www.codeproject.com/script/comments/forums.asp">Message Boards</a></td>
+		
+		<td style="border-width: 0pt;" nowrap="nowrap"><a href="http://www.codeproject.com/lounge.asp">Lounge</a></td>
+	</tr>
+	</tbody></table>
+	</div>
+</td>
+</tr>
+</tbody></table>
+<script type="text/javascript">function Go(){return}</script>
+<script type="text/javascript" src="FillComboboxWSortedEnum.asp_files/cpmenu_var.js"></script>
+<script type="text/javascript" src="FillComboboxWSortedEnum.asp_files/menu10_com.js"></script>
+<script type="text/javascript">
+var MPH = document.getElementById("MPH");
+if (MPH) MPH.style.display='none';
+</script>
+</td></tr>
+
+
+<tr><td colspan="2">
+
+	<table class="ArticleHeader" cellpadding="3" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+		<td class="smallText" style="padding-right: 10px;"><a href="http://www.codeproject.com/?cat=1">All Topics</a>, <a href="http://www.codeproject.com/?cat=2">MFC/C++</a>, <a href="http://www.codeproject.com/?cat=3">C#</a>, <a href="http://www.codeproject.com/?cat=4">ASP.NET</a>, <a href="http://www.codeproject.com/?cat=5">.NET</a>, <a href="http://www.codeproject.com/?cat=6">VB.NET</a> &gt;&gt; <a href="http://www.codeproject.com/WPF/">Windows Presentation Foundation</a> &gt;&gt; <a href="http://www.codeproject.com/WPF/#Data+Binding">Data Binding</a><br>
+			
+			<br>
+			<div style="font-weight: bold; font-size: 16pt;">Fill Combobox With Sorted Enum Without Code</div>
+			<b>By <a href="http://www.codeproject.com/script/Articles/list_articles.asp?userid=271234">Karl_Shifflett</a></b>.
+			
+			<br><br><div style="font-size: 12px;">This
+article demonstrates how to bind a combobox with sorted names from an
+enum. This can all be accomplished in XAML without code in the XAML
+code behind page.</div>
+		</td>
+		<td class="smallText" style="width: 200px;">
+			C# (C# 2.0), VB (VB 8.0)<br> Windows (WinXP, Win2003, Vista), .NET (.NET 3.0)<br> Win32, VS (VS2005), XAML, WPF<br> Arch, Dev, Design<br>
+			<span style="padding-right: 2ex;">Posted</span>: <b>19 Jun 2007</b><br>
+			<span style="padding-right: 3ex;">Views</span>: <b>10,106</b>
+		</td>
+	</tr>
+	
+	
+
+	
+
+
+</tbody></table>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody><tr valign="top">
+
+	
+	<td rowspan="2" class="LHNavBar">
+	
+	<!-- Yes, there are IE hacks that will allow us to create a min-width DIV 
+	     (eg http://www.webreference.com/programming/min-width/) but I couldn't
+	     be arsed. Wait for it in v2.0 -->
+	
+	<div class="FeatureBlockHeader">Announcements</div>
+<div class="FeatureBlockContent RHFeatureBar">
+
+
+<div style="padding-top: 5px;"><img src="FillComboboxWSortedEnum.asp_files/VS2008_sm.gif" alt="VS 2008" style="margin: 12px 3px 12px 0pt; float: left; padding-right: 10px;" height="12" width="20">
+<a href="http://www.codeproject.com/Feature/VS2008/">Visual Studio 2008<br>competition.<br>$25,000 in prizes</a></div>
+
+
+<div style="padding-top: 3px;"><img src="FillComboboxWSortedEnum.asp_files/staff_sm.gif" alt="Jobs" style="margin-left: 2px; margin-right: 5px;" align="absmiddle" height="16" width="12"> <a href="http://www.codeproject.com/info/jobs/">Jobs @ CodeProject</a></div>
+
+<div style="padding-top: 3px;"><img src="FillComboboxWSortedEnum.asp_files/prize_winner_sm.gif" alt="Comp" style="margin-left: 2px; margin-right: 5px;" align="absmiddle" height="20" width="10"> <a href="http://www.codeproject.com/script/competitions/monthly/">Monthly Competition</a></div>
+
+</div>	<center>
+<script language="javascript">document.write("<a href=\"/script/admentor/admentorredir.asp?id=4438&way=ban\" target=_blank><img src=\"/script/ann/ServeImg.aspx?File=%2Fscript%2Fadmentor%2Fimages%2FRedgateSQL%5FSpecialReport%5F160x600v2%2Ejpg&C=False&id=4438&cb=5732641\" alt=\"\" border=0 width=160 height=600></a>");</script><a href="http://www.codeproject.com/script/admentor/admentorredir.asp?id=4438&amp;way=ban" target="_blank"><img src="FillComboboxWSortedEnum.asp_files/ServeImg.htm" alt="" border="0" height="600" width="160"></a>
+</center>
+<br><br>
+
+	
+	<img src="FillComboboxWSortedEnum.asp_files/t.gif" height="1" width="160">
+	
+	</td>
+	
+
+	<td width="100%">
+
+		<table class="SearchHeaderBar" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="right" nowrap="nowrap" valign="middle" width="60%">
+
+	<form method="post" action="/info/search.asp" name="Search" style="margin: 0pt;">
+	<b>Search &nbsp;</b><input class="smallText" name="target" style="width: 200px;">
+	<select style="font-weight: bold; font-size: 8pt;" name="st">
+		<option value="kw">Articles</option>
+		<option value="au">Authors</option>
+	</select>
+	<input style="font-weight: bold; font-size: 8pt;" value=" Go! " type="submit"> &nbsp;
+	</form>
+</td>
+
+<td class="tinyText" nowrap="nowrap">
+<a href="http://www.codeproject.com/info/search.asp">Advanced Search</a><br>
+<a href="http://www.codeproject.com/script/articles/sections.asp">Sitemap</a> 
+
+
+</td>
+</tr>
+</tbody></table>
+		
+		<table width="100%">
+		<tbody><tr valign="top">
+		<td class="SmallText" nowrap="nowrap"><table><tbody><tr><td class="smallText" nowrap="nowrap"><img src="FillComboboxWSortedEnum.asp_files/print.gif" align="absmiddle"> <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?print=true" target="_print">Print</a></td><td class="smallText" nowrap="nowrap"><img src="FillComboboxWSortedEnum.asp_files/sitebuild_icon.gif" align="absmiddle"><a href="http://www.codeproject.com/script/submit/ReportProblem.asp?GUID=FillComboboxWSortedEnum%2Fuseritems6%2F19%2F2007">Broken Article?</a></td><td class="smallText" nowrap="nowrap"><img src="FillComboboxWSortedEnum.asp_files/link.gif" align="absmiddle"><a href="http://www.codeproject.com/script/profile/add_bookmark.asp?t=0&amp;ct=%2FWPF%2FFillComboboxWSortedEnum%2Easp&amp;guid=FillComboboxWSortedEnum%2Fuseritems6%2F19%2F2007">Bookmark</a></td><td class="smallText" nowrap="nowrap"><img src="FillComboboxWSortedEnum.asp_files/mail_small.gif" align="absmiddle"> <a href="#__comments">Discuss</a></td><td class="smallText" nowrap="nowrap"><img src="FillComboboxWSortedEnum.asp_files/mail.gif" align="absmiddle"> <a href="http://www.codeproject.com/script/recommend/form.asp?guid=FillComboboxWSortedEnum%2Fuseritems6%2F19%2F2007">Send to a friend</a></td></tr></tbody></table>
+		</td>
+		<td align="right" nowrap="nowrap"><a name="__top"></a><table><tbody><tr><td class="smallText" align="right">3 votes  for this article.</td><td>
+<table border="2" cellpadding="0" cellspacing="0"><tbody><tr>
+<td><img src="FillComboboxWSortedEnum.asp_files/red.gif" border="0" height="5" width="20"></td>
+<td><img src="FillComboboxWSortedEnum.asp_files/red.gif" border="0" height="5" width="13"><img src="FillComboboxWSortedEnum.asp_files/white.gif" border="0" height="5" width="7"></td>
+<td><img src="FillComboboxWSortedEnum.asp_files/white.gif" border="0" height="5" width="20"></td>
+<td><img src="FillComboboxWSortedEnum.asp_files/white.gif" border="0" height="5" width="20"></td>
+<td><img src="FillComboboxWSortedEnum.asp_files/white.gif" border="0" height="5" width="20"></td>
+</tr></tbody></table>
+</td></tr><tr><td colspan="2" class="smallText" align="right"><a href="http://www.codeproject.com/script/articles/top_articles.asp?st=2" title="Calculated as rating x Log10(# votes)">Popularity: 0.8</a>. Rating: <b>1.67</b> out of 5.</td></tr></tbody></table></td></tr>
+		</tbody></table>
+		
+			
+	</td>
+</tr>
+
+<tr>
+	<td class="ArticlePane">
+
+<span id="intelliTXT">
+<div id="contentdiv">
+
+
+<!-- Article Starts -->
+
+
+
+<ul class="download">
+<li><a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum/FillComboboxWithSortedEnum.zip">Download source files - 27.7 KB</a> </li>
+</ul>
+
+<p>
+
+</p><h2>Introduction</h2>
+
+<p>This article demonstrates how to bind a combobox with sorted names from an <code><span class="cpp-keyword">enum</span></code>. This can all be accomplished in XAML without code in the XAML code behind page. </p>
+
+<h2>Background</h2>
+
+<p>I'm in the middle of preparing for a Code Camp presentation this
+weekend and was reviewing all my code. I noticed an opportunity to
+refactor some code and then got the idea to just loosen the code and
+data bind using XAML. </p>
+
+<p>I had previously read Beatriz Costa's great article, <a href="http://www.beacosta.com/2006/06/how-can-i-bind-itemscontrol-to-values.html">How can I bind an ItemsControl to the values of an enumeration?</a> so I knew binding to the names of an <code>enum </code>was real simple.</p>
+
+<p>Question was, how can I sort the names, keep my simple data binding "AND make the code reusable"?</p>
+
+<h2>Scenario</h2>
+
+<p>Below is an <code>Enum </code>that has been declared. The order of the members in this <code>enum </code>is not friendly to a user using a combobox. We want to use the <code>Enum</code>, but display the member names sorted alphabetically.</p>
+
+<pre lang="cs">Public Enum ZooCreatures
+    Zebra
+    Snake
+    Tiger
+    Rabbit
+    Hamster
+    Mouse
+    Cat
+    Dog
+    Turtle
+    Lion
+    Cow
+End Enum
+</pre>
+
+<p>
+
+</p><h2>Reusable Helper Function</h2>
+
+<p>We first need to crank up a reusable helper function that will take an <code>enum </code>type and return a sorted <code>string </code>array that we can use as an <code>ItemsSource </code>for our comboboxes. </p>
+
+<p>For this really simple demo, I've just added the class shown below
+to the project. Normally, you would put this in your own helper class
+or help class project where you put all your other helper functions.</p>
+
+<pre lang="cs">Public Class Helpers
+
+    Public Function GetSortedEnumNames(ByVal t As Type) As String()
+
+        'first do a sanity check, make sure the developer 
+        'is passing us an enum
+        If t.BaseType.FullName = <span class="cpp-string">"System.Enum"</span> Then
+            Dim strOut() As String = [Enum].GetNames(t)
+            Array.Sort(strOut)
+            Return strOut
+        Else
+            Throw New ArgumentException(<span class="cpp-string">"Must be an enum"</span>, <span class="cpp-string">"t"</span>)
+        End If
+    End Function
+
+    Public Sub New()
+
+    End Sub
+
+End Class
+</pre>
+
+<h2>How Does It Work</h2>
+
+<p>
+
+</p><ul>
+<li>Sanity Check: use the <code>BaseType.FullName</code> property of the passed in type to ensure that the calling code actually passed in an <code>Enum</code>, if not, <code>Throw New ArgumentException</code>. </li>
+
+<li>Get An <code>Array </code>Of Names From The <code>Enum </code>: use the <code>GetNames</code> shared (<code>static </code>for the C#'ers) method to return an unsorted list of the names in the <code>Enum </code>type. Actually, the names are returned in the order that the <code>Enum </code>type is declared. </li>
+
+<li>Sort Array : use the <code>Array.Sort</code> shared method to sort the <code>string array </code>of names. </li>
+
+<li>Return Sorted Names Array : how easy is this? {remember the old days?} </li>
+</ul>
+
+<p>
+
+</p><h2>Let's Do Some Binding!</h2>
+
+<p>Here is our very simple, no code WPF Databinding in action. Entire XAML file:</p>
+
+<div class="smallText" id="premain2" style="width: 100%;"><img preid="2" src="FillComboboxWSortedEnum.asp_files/minus.gif" id="preimg2" height="9" width="9"><span preid="2" style="margin-bottom: 0pt;" id="precollapse2"> Collapse</span></div><pre style="margin-top: 0pt;" id="pre2" lang="xml">&lt;Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:local="clr-namespace:FillComboboxWithSortedEnum"
+    x:Class="FillComboboxWithSortedEnumDemo"
+    Title="Fill Combobox With Sorted Enum"
+    Height="100"
+    Width="285"
+    &gt;
+    &lt;Window.Resources&gt;
+        &lt;ObjectDataProvider x:Key="zooCreatureHelpersDS" 
+        d:IsDataSource="True" MethodName="GetSortedEnumNames" 
+        ObjectType="{x:Type local:Helpers}"&gt;
+            &lt;ObjectDataProvider.MethodParameters&gt;
+                &lt;x:Type TypeName="local:ZooCreatures"/&gt;
+            &lt;/ObjectDataProvider.MethodParameters&gt;
+        &lt;/ObjectDataProvider&gt;
+    &lt;/Window.Resources&gt;
+
+    &lt;StackPanel&gt;
+        &lt;ComboBox x:Name="cboZooCreatures" 
+        IsSynchronizedWithCurrentItem="True" Width="Auto" 
+        ItemsSource="{Binding Mode=OneWay, 
+        Source={StaticResource zooCreatureHelpersDS}}"/&gt;
+    &lt;/StackPanel&gt;
+&lt;/Window&gt;
+</pre>
+
+<p>
+
+</p><h2>Breaking It Down</h2>
+
+<p>
+
+</p><h3>Provider</h3>
+
+<p>
+
+</p><ul>
+<li>Really important to get your namespaces correct and you'll need
+them all or else you won't be compiling your project any time soon. </li>
+
+<li>Need to set up an <code>ObjectDataProvider</code> for each <code>Enum </code>type that you want to data bind to. In our project we only have one combobox that needs to data bind to an <code>Enum</code>, so we'll just set up one <code>ObjectDataProvider</code>. </li>
+
+<li>The <code>ObjectDataProvider</code> resource needs a key so that we can reference this resource in the XAML code. In this case, I named the key <code>zooCreatureHelpersDS</code>. </li>
+
+<li>The <code>MethodName=<span class="cpp-string">"GetSortedEnumNames"</span></code> property instructs the <code>ObjectDataProvider</code> resource to use the <code>GetSortedEnumNames</code> method. This is the name of our above helper method. </li>
+
+<li>The <code>ObjectType=<span class="cpp-string">"{x:Type local:Helpers}"</span></code> property instructs the <code>ObjectDataProvider</code> resource to use the class <code>Helpers </code>from the name space, <code>FillComboboxWithSortedEnum</code>. Notice how "local" is mapped to our class, <code>FillComboboxWithSortedEnum</code>. </li>
+
+<li>Now we need to pass in the correct parameter to the <code>GetSortedEnumNames</code> method. This is easily accomplished using the <code>&lt;ObjectDataProvider.MethodParameters&gt;</code> </li>
+
+<li>The <code>&lt;x:Type TypeName=<span class="cpp-string">"local:ZooCreatures"</span>/&gt;</code> property instructs the <code>&lt;ObjectDataProvider.MethodParameters&gt;</code> resource to pass the <code>Type ZooCreatures</code> to our helper. </li>
+</ul>
+
+<p>
+
+</p><h3>Consumer</h3>
+
+<p>
+
+</p><ul>
+<li>Utilizing our new sorted <code>array </code>of <code>Enum </code>element names is super easy in XAML! </li>
+
+<li>The <code>ItemsSource=<span class="cpp-string">"{Binding Mode=OneWay, Source={StaticResource zooCreatureHelpersDS}}"</span></code> property of our combobox is bound to the <code>StaticResource zooCreatureHelpersDS</code> we just created. </li>
+</ul>
+
+<p>
+
+</p><h2>History</h2>
+
+<p>
+
+</p><ul>
+<li>19 June 2007 : Initial Release </li>
+</ul>
+
+<p>
+
+
+
+<!-- Article Ends -->
+
+
+
+</p></div>
+</span>
+
+<script type="text/javascript" src="FillComboboxWSortedEnum.asp_files/togglePre.js"></script>
+
+<h2>About Karl_Shifflett</h2>
+<div style="overflow: hidden;"><table border="0"><tbody><tr valign="top"><td class="smallText" nowrap="nowrap"><img src="FillComboboxWSortedEnum.asp_files/4FDC2433-F70B-4B37-92D2-FC6037308F9B.jpg"><br></td><td class="smallText"><strong>Current Title</strong> : .Net Architect &amp; Programmer for emGovPower<br><br><strong>Additional Hats</strong> :  Systems Administrator, Exchange Administrator, Web Master and DBA.  <br><br>Senior
+Information Technology Professional with proven expertise in computer
+software design, programming and project management. Microsoft .NET
+MCAD. Recognized for technical excellence, strategic thinking, creative
+solutions, strong analytical skills and sound business logic. Excellent
+at soliciting requirements form stakeholders and users alike.
+Inspirational leader, self starter, quick learner dedicated to quality
+results. Extensive experience with multi-platform heterogeneous
+environments (UNIX, VMS, MAC, DOS, Windows workstations, NT Servers,
+W2K Servers, W2003 Servers, Vista). Experience designing and
+integrating business requirements with technology solutions. <br><br><strong>Programming Languages</strong>:<br>VB.NET,
+ProIV, T-SQL, DTS, Access VBA, ASP.NET, ASP, XML, VBScript, HTML,
+JavaScript, Visual Basic 1-6, VAX BASIC, UNIX BASIC, UNIX C, DCL, UNIX
+Shell Scripting, Norand RF, MEQ BASIC, QB45, BC7<br><br><strong>Programming Technologies</strong> :<br>WPF,
+.NET Framework, .NET Compact Framework, ADO.NET, Microsoft SQL Server
+2000/2005 Reporting Services, .NET Web Services, ADO, ActiveX,
+COM/COM+, Windows Message Queuing MSMQ, Windows Services, .Net Remoting<br><br><strong>Databases</strong> :<br>Microsoft
+SQL Server 2005, Microsoft SQL Server 2000, Microsoft SQL Server 7,
+Microsoft OLAP, Microsoft Access 95/97/2000/XP/2003/2007, VMS RMS,
+ProIV, UNIX C-ISAM, BTRIEVE<br><br>Click <a href="http://karlshifflett.wordpress.com/"><strong>Here</strong></a> to check out my WPF Blog.<br><br><font color="#c0943f">Just a grain of sand on the worlds beaches.</font><br><p class="smallText">Click <a href="http://www.codeproject.com/script/profile/whos_who.asp?vt=arts&amp;id=271234">here</a> to view Karl_Shifflett's online profile.</p></td></tr></tbody></table></div><br>
+<table border="0" cellpadding="4" width="100%"><tbody><tr valign="top">
+<td width="100%"><h2>Other popular Windows Presentation Foundation articles:</h2><ul><li><a href="http://www.codeproject.com/WPF/TheWpfThoughtProcess.asp">The WPF Thought Process</a><div class="smallText">An introspective journey of solving problems using WPF</div></li><li><a href="http://www.codeproject.com/WPF/SkinningInWPF.asp">Creating a Skinned User Interface in WPF</a><div class="smallText">Reviews the basics of creating a WPF user interface with various visual styles.</div></li><li><a href="http://www.codeproject.com/useritems/FlashvsWPF.asp">Comparing Flash and WPF</a><div class="smallText">Comparing Flash and WPF</div></li><li><a href="http://www.codeproject.com/WPF/AdvancedCustomTreeViewLyt.asp">Advanced Custom TreeView Layout in WPF</a><div class="smallText">Reviews an advanced layout customization for the WPF TreeView.</div></li></ul></td>
+<td width="360">
+<script language="javascript">document.write("<a href=\"/script/admentor/admentorredir.asp?id=4440&way=ban\" target=_blank><img src=\"/script/ann/ServeImg.aspx?File=%2Fscript%2Fadmentor%2Fimages%2FRedgateSQL%5Fzone%5F300x250v4%2Ejpg&C=False&id=4440&cb=5732647\" alt=\"\" border=0 width=300 height=250></a>");</script><a href="http://www.codeproject.com/script/admentor/admentorredir.asp?id=4440&amp;way=ban" target="_blank"><img src="FillComboboxWSortedEnum.asp_files/ServeImg_002.htm" alt="" border="0" height="250" width="300"></a>
+</td>
+</tr></tbody></table>
+
+<br>
+<script language="JavaScript" src="FillComboboxWSortedEnum.asp_files/addto.js" type="text/javascript"></script>
+<script language="JavaScript" type="text/javascript">
+var addtoMethod=1;
+var AddURL = document.location.href;
+var AddTitle = escape(document.title);
+DrawLinks(100, 0, "smallText", "addto") 
+</script><span class="smallText">Add this article to: </span> <a class="addto" title="Add this page to Del.icio.us" onclick="return addto(0);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Delicious.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Digg" onclick="return addto(1);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Digg.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Google" onclick="return addto(2);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Google.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Spurl" onclick="return addto(3);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Spurl.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Blink" onclick="return addto(4);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Blink.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Furl" onclick="return addto(5);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Furl.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Simpy" onclick="return addto(6);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Simpy.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Yahoo! MyWeb" onclick="return addto(7);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Yahoo.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Technorati" onclick="return addto(8);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Technorati.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Reddit" onclick="return addto(9);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Reddit.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Windows Live" onclick="return addto(10);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Live.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Newsvine" onclick="return addto(11);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_Newsvine.png" align="absmiddle" border="0" height="16" width="16"></a>  <a class="addto" title="Add this page to Stumbleupon" onclick="return addto(12);" href="#"><img src="FillComboboxWSortedEnum.asp_files/AddTo_stumbleupon.png" align="absmiddle" border="0" height="16" width="16"></a>  
+<br><br>
+
+		<form action="/script/rating/code/app/insert_vote.asp" method="post">
+		<input name="vote_name" value="FillComboboxWSortedEnum/useritems6/19/2007" type="hidden">
+		<input name="goal" value="/WPF/FillComboboxWSortedEnum.asp" type="hidden">
+
+<table bgcolor="#ff9900" border="0" cellpadding="1" cellspacing="0" width="100%">
+<tbody><tr><td width="100%">
+<table bgcolor="#fbedbb" border="0" cellpadding="4" cellspacing="0" width="100%"><tbody><tr>
+<td class="smalltext" valign="middle">[<a href="#__top">Top</a>]</td>
+<td align="right" nowrap="nowrap" valign="middle">
+<i><b>Rate this Article for us!</b></i>&nbsp;&nbsp;&nbsp;&nbsp; <i>Poor</i><input value="1" name="rate" type="radio"><input value="2" name="rate" type="radio"><input value="3" name="rate" type="radio"><input value="4" name="rate" type="radio"><input value="5" name="rate" type="radio"><i>Excellent</i>&nbsp;&nbsp;<input value="Vote" class="FormButton" type="submit">
+</td></tr>
+</tbody></table></td></tr></tbody></table>
+</form>
+<center><div style="margin: 10px;"><span id="AdBanner5"><script language="javascript">document.write("<a href=\"/script/admentor/admentorredir.asp?id=4229&way=ban\" target=_blank><img src=\"/script/ann/ServeImg.aspx?File=%2Fscript%2Fadmentor%2Fimages%2Fcompuware%5Fleads%5F468x60%2Egif&C=False&id=4229&cb=5732635\" alt=\"\" border=0 width=468 height=60></a>");</script><a href="http://www.codeproject.com/script/admentor/admentorredir.asp?id=4229&amp;way=ban" target="_blank"><img src="FillComboboxWSortedEnum.asp_files/ServeImg_003.htm" alt="" border="0" height="60" width="468"></a></span></div></center>
+
+<a name="__comments"></a>
+
+<script language="JavaScript">
+
+function MsgVoteForm(MemberID, MsgID)
+{
+	document.write("<span id=\"MVF" + MsgID + "\">");
+	document.write("Rate this message: ");
+	for (var i=1; i<=5;i++)
+	{
+		document.write("<a href='#xx" + MsgID.toString() + "xx' title='give this message a vote of " + i.toString());
+		document.write("' onclick='return RateMsg(" + MemberID.toString() + ", " + MsgID.toString() + ", ");
+		document.write(i.toString() + ")'><b>" + i.toString() + "</b></a> ");
+	}
+	document.write(" (out of 5)");
+	document.writeln("</span>");
+	
+	
+}
+
+function RetypeForm(MemberID, MsgID)
+{
+	var types = [
+				 {pic:'news_general.gif',  id: 1},
+	             {pic:'news_info.gif',     id: 2},
+	             {pic:'news_question.gif', id: 4},
+	             {pic:'news_answer.gif',   id: 8},
+	             {pic:'news_game.gif',     id: 16},
+	             {pic:'news_spam.gif',     id: 32}
+	            ];
+	
+	document.write("<span id=\"RTF" + MsgID + "\">");
+	for (var i=0;i<types.length;i++)
+	{
+		document.write("<a href='/script/comments/retype?msg=" + MsgID.toString());
+		document.write("&mid=" + MemberID.toString() + "&type=" + types[i].id + "'>");
+		document.write("<img border=0 src='/script/images/" + types[i].pic + "'></a><br />");
+	}
+	document.writeln("</span>");
+}
+
+function ReportMsg(userid, msgid, score)
+{
+	if (confirm("Are you sure you want to report this message?") == true)
+		return RateMsg(userid, msgid, score);
+	else return false;
+}
+
+
+function RateMsg(userid, msgid, score)
+{
+
+   var req = new XMLHttpRequest();
+
+   req.onreadystatechange = function()
+   {
+      if ( req.readyState == 4 )
+      {
+         if ( req.status == 200 )
+         {
+         	var respText = req.responseText;
+         	var re = new RegExp("\<div\>([^\<]*)\</div\>", "g");
+         	var match = re.exec(respText);
+         	status.innerHTML = "<b>" + (match)?match[1]:"An error occured" + "</b>";
+         }
+         else
+         {
+            status.innerHTML = "<b style='color:red'>Failed!" + req.statusText + "</b>";
+         }
+      }
+   }
+   
+   var status = document.getElementById("MVF" + msgid);
+   if (!status) return;  // should never happen...   
+   status.innerHTML = "<b style='color:green'>Voting...</b>";
+   
+   var strAction = "/script/comments/vote.asp?js=1&user="+userid+"&msg="+msgid+"&score="+score;
+   req.open("GET", strAction, true);
+   req.send(null);
+   return false;
+}
+
+</script>
+
+
+<script language="JavaScript">
+var Selected = "";
+
+var AdTime = new Date();
+
+
+// Ensures the expanded message appears reasonably close to where 
+// it should appear: on screen, and if possible, under the mouse cursor.
+function SwitchMessage(e)
+{
+   if ( !e ) e = window.event;
+   var target = e.target ? e.target : e.srcElement;
+
+   // is it a post?
+   while ( target && target.id != 'DynMessLink' )
+      target = target.parentNode;
+   if ( !target || target.id != 'DynMessLink' )
+      return;
+
+   if (Selected)
+   {
+      var body = document.getElementById(Selected + "_h1");
+      if (body)
+         body.style.display = 'none';
+      var head = document.getElementById(Selected + "_h0");
+      if (head)
+         head.bgColor = '#FEF9E7';
+   }
+
+   if (Selected == target.name) // just collapse
+      Selected="";
+   else
+   {
+      Selected = target.name;
+      var body = document.getElementById(Selected + "_h1");
+      if (body)
+      {
+         if (body.style.display=='none')
+            body.style.display='';
+         else
+            body.style.display = 'none';
+      }
+      var head = document.getElementById(Selected + "_h0");
+      if (head)
+         head.bgColor = '#99CCFF';
+
+      if ( body && head && body.style.display != 'none' )
+      {
+         // the bit that keeps the post on-screen and under the cursor
+         //var dif = (getRealPos(head, "Top") + head.offsetHeight/2) - (document.body.scrollTop+e.clientY);
+         //document.body.scrollTop += dif;
+         document.body.scrollTop = getRealPos(head, "Top") - document.body.clientHeight/10;
+         EnsureMessageVisible(target.name, true);
+      }
+   }
+
+   if ( e.preventDefault )
+      e.preventDefault();
+   else
+      e.returnValue = false;
+   return false;
+}
+
+// does its best to make a message visible on-screen (vs. scrolled off somewhere).
+function EnsureMessageVisible(msgID, bShowTop) {
+   var msgHeader = document.getElementById(msgID + "_h0");
+   var msgBody = document.getElementById(msgID + "_h1");
+
+   // determine scroll position of top and bottom
+   var scrollContainer = document.body;
+   var top = getRealPos(msgHeader, 'Top');
+   var bottom = getRealPos(msgBody, 'Top') + msgBody.offsetHeight;
+
+   // if not already visible, scroll to make it so
+   if ( scrollContainer.scrollTop > top && !bShowTop)
+      scrollContainer.scrollTop = top - document.body.clientHeight/10;
+   if ( scrollContainer.scrollTop+scrollContainer.clientHeight < bottom )
+      scrollContainer.scrollTop = bottom-scrollContainer.clientHeight;
+   if ( scrollContainer.scrollTop > top && bShowTop)
+      scrollContainer.scrollTop = top - document.body.clientHeight/10;
+}
+
+// utility
+function getRealPos(i,which)
+{
+   iPos = 0
+   while (i!=null)
+   {
+      iPos += i["offset" + which];
+      i = i.offsetParent;
+   }
+   return iPos
+}
+
+
+</script>
+<div id="_MessageBoard" onclick="SwitchMessage(event)"><table bgcolor="#ff9900" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td width="100%"><table id="ForumTable" bgcolor="#ff9900" border="0" cellpadding="0" cellspacing="1" width="100%"><form action="/script/comments/app/do_filtermessages.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274" method="post"></form><tbody><tr><td><table bgcolor="white" border="0" cellpadding="3" cellspacing="0" width="100%"><tbody><tr bgcolor="#fbedbb"><td class="smalltext" nowrap="nowrap"><a href="http://www.codeproject.com/script/comments/faq.asp"><img src="FillComboboxWSortedEnum.asp_files/forum_faq.GIF" align="absmiddle" border="0" height="16" width="16"> <b>FAQ</b></a>&nbsp;</td><td class="smalltext" align="right" nowrap="nowrap" valign="top">Message score threshold <select size="1" name="noise" class="smalltext"><option value="1">1.0 </option>
+<option value="2">2.0</option>
+<option selected="selected" value="3">3.0</option>
+<option value="4">4.0</option>
+<option value="5">5.0</option>
+</select>&nbsp;&nbsp;</td><td class="smalltext" colspan="2" align="right" nowrap="nowrap" valign="middle"><a href="http://www.codeproject.com/script/comments/search_comments.asp?forumid=430274"><img src="FillComboboxWSortedEnum.asp_files/forum_search.gif" border="0" height="15" width="16"> Search comments</a> &nbsp;</td><td align="right" valign="top"><input value="Set Options" name="submit" class="FormButton" type="submit"></td></tr><tr bgcolor="#ff9900"><td width="100%">&nbsp;</td><td class="smalltext" align="right" nowrap="nowrap" valign="top">View <select size="1" name="expand" class="smalltext"><option value="0">Normal (slow)</option>
+<option value="2">Preview (slow)</option>
+<option selected="selected" value="5">Message View</option>
+<option value="6">Topic View</option>
+<option value="1">Thread View</option>
+<option value="3">Expanded</option>
+</select>&nbsp;&nbsp;</td><td class="smalltext" nowrap="nowrap" valign="top">Per page <select size="1" name="perpage" class="smalltext"><option value="10">10</option>
+<option selected="selected" value="25">25</option>
+<option value="50">50</option>
+</select></td><td colspan="2">&nbsp;</td></tr></tbody></table>
+</td></tr><tr bgcolor="#fbedbb"><td><a name="xx0xx"></a><table bgcolor="#fbedbb" border="0" cellpadding="2" width="100%"><tbody><tr><td class="messagetitle"><img src="FillComboboxWSortedEnum.asp_files/forum_newmsg.gif" align="top" border="0" height="16" width="16"><a href="http://www.codeproject.com/script/comments/user_new.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274" class="HoverLink" target="_top" name="HoverNL" title="Add a new message to the discussions"><b>New Message</b></a></td><td class="messagetitle">Msgs 1 to 20 of 20 (Total: 20) (<a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274">Refresh</a>)</td><td align="right" nowrap="nowrap"><font class="messagetitle"><span class="HoverLink">First</span> <span class="HoverLink">Prev</span> <span class="HoverLink">Next</span> <span class="HoverLink">&nbsp;&nbsp;&nbsp;&nbsp;</span> </font></td></tr></tbody></table>
+</td></tr><tr bgcolor="white"><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2" bgcolor="#fbedbb" width="70%"><table border="0" cellpadding="2" cellspacing="0" width="100%"><tbody><tr><td class="messagetitle">Subject&nbsp;</td></tr></tbody></table></td><td bgcolor="#fbedbb" width="140"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="1" width="1"></td></tr><tr><td class="messagetitle">Author&nbsp;</td></tr><tr><td><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="1" width="1"></td></tr></tbody></table></td><td bgcolor="#fbedbb" width="12%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="1" width="1"></td></tr><tr><td class="messagetitle" align="right">Date&nbsp;</td></tr><tr><td><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="1" width="1"></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="5" width="1"></td></tr><tr id="2091979_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2091979xx"></a><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2091979" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2091979#xx2091979xx"><b>What about localization?</b></a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=597946"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle"><b>axelriet</b>&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle"><b>16:00 20 Jun '07</b>&nbsp;</font></td></tr>
+<tr id="2091979_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">This approach just creates a non-localizable app. Very bad. <br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091979" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091979" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2091979&amp;forumid=430274&amp;select=2091979#xx2091979xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091979#xx2091979xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091979#xx2091979xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(597946,2091979);</script><span id="MVF2091979">Rate this message: <a href="#xx2091979xx" title="give this message a vote of 1" onclick="return RateMsg(597946, 2091979, 1)"><b>1</b></a> <a href="#xx2091979xx" title="give this message a vote of 2" onclick="return RateMsg(597946, 2091979, 2)"><b>2</b></a> <a href="#xx2091979xx" title="give this message a vote of 3" onclick="return RateMsg(597946, 2091979, 3)"><b>3</b></a> <a href="#xx2091979xx" title="give this message a vote of 4" onclick="return RateMsg(597946, 2091979, 4)"><b>4</b></a> <a href="#xx2091979xx" title="give this message a vote of 5" onclick="return RateMsg(597946, 2091979, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2092028_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2092028xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2092028" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2092028#xx2092028xx">Re: What about localization?</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">16:59 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2092028_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Actually, this approach lends itself to localization with a single point of translation for the enum.<br><br>Just
+spitballing here, but you could modify the helper function to look up
+the localized text, using the enum name as the key and return an array
+of these localized values.<br><br>Or - simply not use enum's in your combobox<br><br>Or - come up with another way.<br><br>Purpose
+of the article was not to be a, "one size fits all solution", but
+rather show the capabilities of WPF and a possible method of using an
+eunum.<br><br> <br><br><div class="ForumSig">Cheers,  Karl<br><br>Just a grain of sand on the beach.</div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2092028" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2092028" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2091979&amp;forumid=430274&amp;select=2092028#xx2092028xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2092028#xx2092028xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091979#xx2091979xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2092028);</script><span id="MVF2092028">Rate this message: <a href="#xx2092028xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2092028, 1)"><b>1</b></a> <a href="#xx2092028xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2092028, 2)"><b>2</b></a> <a href="#xx2092028xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2092028, 3)"><b>3</b></a> <a href="#xx2092028xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2092028, 4)"><b>4</b></a> <a href="#xx2092028xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2092028, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="5" width="1"></td></tr><tr height="1"><td colspan="4" bgcolor="#ff9900"><img src="FillComboboxWSortedEnum.asp_files/t.gif" height="1" width="1"></td></tr><tr id="2091077_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2091077xx"></a><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2091077" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2091077#xx2091077xx"><b>Possible improvement</b></a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=247684"><img src="FillComboboxWSortedEnum.asp_files/MVP_sm.gif" title="CodeProject MVP" border="0" height="16" width="16"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle"><b>Josh Smith</b>&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle"><b>8:15 20 Jun '07</b>&nbsp;</font></td></tr>
+<tr id="2091077_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Karl,<br><br>Thanks
+for taking the time to write this article!&nbsp;&nbsp;This is a very
+practical subject matter, which I'm sure will be useful for many people
+through the years.<br><br>I don't mean to rain on your parade, but
+there is actually another way to implement this functionality which is
+truly 100% XAML-only.&nbsp;&nbsp;It is possible to remove the method in
+the code-behind which sorts the enum values.&nbsp;&nbsp;Here is a
+XAML-only solution:<br><br>The unsorted enum:<br><br>public enum Animals<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;Zebra,<br>&nbsp;&nbsp;&nbsp;&nbsp;Antelope,<br>&nbsp;&nbsp;&nbsp;&nbsp;Ox,<br>&nbsp;&nbsp;&nbsp;&nbsp;Mouse<br>}<br><br>The XAML which displays the enum values, sorted, in a ComboBox:<br><br>&lt;Grid <br>&nbsp;&nbsp;xmlns:local="clr-namespace:WPF_Test"<br>&nbsp;&nbsp;xmlns:sys="clr-namespace:System;assembly=mscorlib" <br>&nbsp;&nbsp;xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"<br>&nbsp;&nbsp;&gt;<br>&nbsp;&nbsp;&lt;Grid.Resources&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource x:Key="SortedAnimalsView"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource.SortDescriptions&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cm:SortDescription /&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource.SortDescriptions&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource.Source&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MethodName="GetNames" <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ObjectType="{x:Type sys:Enum}"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ObjectDataProvider.MethodParameters&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;x:Type TypeName="local:Animals"/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider.MethodParameters&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ObjectDataProvider&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource.Source&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource&gt;<br>&nbsp;&nbsp;&lt;/Grid.Resources&gt;<br><br>&nbsp;&nbsp;&lt;ComboBox <br>&nbsp;&nbsp;&nbsp;&nbsp;DataContext="{StaticResource SortedAnimalsView}" <br>&nbsp;&nbsp;&nbsp;&nbsp;ItemsSource="{Binding}" <br>&nbsp;&nbsp;&nbsp;&nbsp;VerticalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;/&gt;<br>&lt;/Grid&gt;<br><br>As
+you can see above, the CollectionViewSource which the ComboBox binds to
+can have a SortDescription added to it.&nbsp;&nbsp;That will take care
+of sorting the enum values for us.<br><br>Thanks again for posting this article! :) <br><br>Josh <br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091077" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091077" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2091077&amp;forumid=430274&amp;select=2091077#xx2091077xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091077#xx2091077xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091077#xx2091077xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(247684,2091077);</script><span id="MVF2091077">Rate this message: <a href="#xx2091077xx" title="give this message a vote of 1" onclick="return RateMsg(247684, 2091077, 1)"><b>1</b></a> <a href="#xx2091077xx" title="give this message a vote of 2" onclick="return RateMsg(247684, 2091077, 2)"><b>2</b></a> <a href="#xx2091077xx" title="give this message a vote of 3" onclick="return RateMsg(247684, 2091077, 3)"><b>3</b></a> <a href="#xx2091077xx" title="give this message a vote of 4" onclick="return RateMsg(247684, 2091077, 4)"><b>4</b></a> <a href="#xx2091077xx" title="give this message a vote of 5" onclick="return RateMsg(247684, 2091077, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2091108_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2091108xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2091108" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2091108#xx2091108xx">Re: Possible improvement</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">8:30 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2091108_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Josh,<br><br>Thank you for a very detailed insite into WPF.  Really appreicate your teaching.<br><br>Have a great day!<br><br>Karl <br><br><div class="ForumSig">Just a grain of sand on the beach.</div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091108" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091108" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2091077&amp;forumid=430274&amp;select=2091108#xx2091108xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091108#xx2091108xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091077#xx2091077xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2091108);</script><span id="MVF2091108">Rate this message: <a href="#xx2091108xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2091108, 1)"><b>1</b></a> <a href="#xx2091108xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2091108, 2)"><b>2</b></a> <a href="#xx2091108xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2091108, 3)"><b>3</b></a> <a href="#xx2091108xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2091108, 4)"><b>4</b></a> <a href="#xx2091108xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2091108, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2091117_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2091117xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="36"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2091117" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2091117#xx2091117xx">Re: Possible improvement</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=247684"><img src="FillComboboxWSortedEnum.asp_files/MVP_sm.gif" title="CodeProject MVP" border="0" height="16" width="16"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Josh Smith&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">8:35 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2091117_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="36"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent"><blockquote class="FQ"><div class="FQA">Karl_Shifflett wrote:</div>Thank you for a very detailed insite into WPF. Really appreicate your teaching.</blockquote><br><br>It's my pleasure, Karl. <img src="FillComboboxWSortedEnum.asp_files/smiley_smile.gif" align="absmiddle"> <br><br><div class="ForumSig">:josh:<br><a href="http://joshsmithonwpf.wordpress.com/" rel="nofollow">My WPF Blog</a>[<a href="http://joshsmithonwpf.wordpress.com/" target="_blank" rel="nofollow" title="New Window">^</a>]<br><small>FYI - Bob is a scarecrow who keeps Chuck Norris away from CodeProject.</small></div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091117" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091117" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2091077&amp;forumid=430274&amp;select=2091117#xx2091117xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091117#xx2091117xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091077#xx2091077xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(247684,2091117);</script><span id="MVF2091117">Rate this message: <a href="#xx2091117xx" title="give this message a vote of 1" onclick="return RateMsg(247684, 2091117, 1)"><b>1</b></a> <a href="#xx2091117xx" title="give this message a vote of 2" onclick="return RateMsg(247684, 2091117, 2)"><b>2</b></a> <a href="#xx2091117xx" title="give this message a vote of 3" onclick="return RateMsg(247684, 2091117, 3)"><b>3</b></a> <a href="#xx2091117xx" title="give this message a vote of 4" onclick="return RateMsg(247684, 2091117, 4)"><b>4</b></a> <a href="#xx2091117xx" title="give this message a vote of 5" onclick="return RateMsg(247684, 2091117, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2091271_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2091271xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="36"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2091271" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2091271#xx2091271xx">Re: Possible improvement</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=247684"><img src="FillComboboxWSortedEnum.asp_files/MVP_sm.gif" title="CodeProject MVP" border="0" height="16" width="16"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Josh Smith&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">9:34 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2091271_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="36"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Karl,<br><br>I decided to blog about your article and my alternate implementation <a href="http://joshsmithonwpf.wordpress.com/2007/06/20/displaying-sorted-enum-values-in-a-combobox/">here</a>[<a href="http://joshsmithonwpf.wordpress.com/2007/06/20/displaying-sorted-enum-values-in-a-combobox/" target="_blank" title="New Window">^</a>]. <br><br></font><div class="ForumSig"><font class="messagecontent">:josh:<br><a href="http://joshsmithonwpf.wordpress.com/" rel="nofollow">My WPF Blog</a>[<a href="http://joshsmithonwpf.wordpress.com/" target="_blank" rel="nofollow" title="New Window">^</a>]<br><small>FYI - Bob is a scarecrow who keeps Chuck Norris away from CodeProject.</small></font></div><font class="messagecontent"><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091271" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091271" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2091077&amp;forumid=430274&amp;select=2091271#xx2091271xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091271#xx2091271xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091077#xx2091077xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(247684,2091271);</script><span id="MVF2091271">Rate this message: <a href="#xx2091271xx" title="give this message a vote of 1" onclick="return RateMsg(247684, 2091271, 1)"><b>1</b></a> <a href="#xx2091271xx" title="give this message a vote of 2" onclick="return RateMsg(247684, 2091271, 2)"><b>2</b></a> <a href="#xx2091271xx" title="give this message a vote of 3" onclick="return RateMsg(247684, 2091271, 3)"><b>3</b></a> <a href="#xx2091271xx" title="give this message a vote of 4" onclick="return RateMsg(247684, 2091271, 4)"><b>4</b></a> <a href="#xx2091271xx" title="give this message a vote of 5" onclick="return RateMsg(247684, 2091271, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2091491_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2091491xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="54"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2091491" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2091491#xx2091491xx">Re: Possible improvement</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">11:02 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2091491_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="54"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Josh,<br><br>Thank you!  <img src="FillComboboxWSortedEnum.asp_files/smiley_smile.gif" align="absmiddle"><br><br> <br><br><div class="ForumSig">Just a grain of sand on the beach.</div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091491" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091491" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2091077&amp;forumid=430274&amp;select=2091491#xx2091491xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091491#xx2091491xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091077#xx2091077xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2091491);</script><span id="MVF2091491">Rate this message: <a href="#xx2091491xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2091491, 1)"><b>1</b></a> <a href="#xx2091491xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2091491, 2)"><b>2</b></a> <a href="#xx2091491xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2091491, 3)"><b>3</b></a> <a href="#xx2091491xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2091491, 4)"><b>4</b></a> <a href="#xx2091491xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2091491, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="5" width="1"></td></tr><tr height="1"><td colspan="4" bgcolor="#ff9900"><img src="FillComboboxWSortedEnum.asp_files/t.gif" height="1" width="1"></td></tr><tr id="2090612_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2090612xx"></a><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2090612" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2090612#xx2090612xx"><b>What's does xaml bring me?</b></a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=1125002"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle"><b>wout de zeeuw</b>&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle"><b>4:30 20 Jun '07</b>&nbsp;</font></td></tr>
+<tr id="2090612_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">In
+C# code this would be an order of magnitude shorter and more readable,
+why use xaml? Just curious, since I haven't really played with xaml
+yet. <br><br><div class="ForumSig">Wout<br></div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090612" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090612" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090612&amp;forumid=430274&amp;select=2090612#xx2090612xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090612#xx2090612xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090612#xx2090612xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(1125002,2090612);</script><span id="MVF2090612">Rate this message: <a href="#xx2090612xx" title="give this message a vote of 1" onclick="return RateMsg(1125002, 2090612, 1)"><b>1</b></a> <a href="#xx2090612xx" title="give this message a vote of 2" onclick="return RateMsg(1125002, 2090612, 2)"><b>2</b></a> <a href="#xx2090612xx" title="give this message a vote of 3" onclick="return RateMsg(1125002, 2090612, 3)"><b>3</b></a> <a href="#xx2090612xx" title="give this message a vote of 4" onclick="return RateMsg(1125002, 2090612, 4)"><b>4</b></a> <a href="#xx2090612xx" title="give this message a vote of 5" onclick="return RateMsg(1125002, 2090612, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2090853_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2090853xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2090853" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2090853#xx2090853xx">Re: What's does xaml bring me?</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">6:35 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2090853_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Yes, you can do the same thing in VB.Net with a shared method in the code behind page, one line of .Net code.<br><br>The idea here is, you can do it without code in .xaml.<br><br>Depending on the project..<br> <br><br></font><div class="ForumSig"><font class="messagecontent">Just a grain of sand on the beach.</font></div><font class="messagecontent"><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090853" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090853" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090612&amp;forumid=430274&amp;select=2090853#xx2090853xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090853#xx2090853xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090612#xx2090612xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2090853);</script><span id="MVF2090853">Rate this message: <a href="#xx2090853xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2090853, 1)"><b>1</b></a> <a href="#xx2090853xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2090853, 2)"><b>2</b></a> <a href="#xx2090853xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2090853, 3)"><b>3</b></a> <a href="#xx2090853xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2090853, 4)"><b>4</b></a> <a href="#xx2090853xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2090853, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="5" width="1"></td></tr><tr height="1"><td colspan="4" bgcolor="#ff9900"><img src="FillComboboxWSortedEnum.asp_files/t.gif" height="1" width="1"></td></tr><tr id="2090505_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2090505xx"></a><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2090505" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2090505#xx2090505xx"><b>Without code?</b></a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=1100981"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle"><b>SimesA</b>&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle"><b>3:36 20 Jun '07</b>&nbsp;</font></td></tr>
+<tr id="2090505_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Why do you entitle the article "...without code"? If you look carefully, I think you'll see that some code is being used.<br><br>Perhaps a name change is in order. <br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090505" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090505" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090505&amp;forumid=430274&amp;select=2090505#xx2090505xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090505#xx2090505xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090505#xx2090505xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(1100981,2090505);</script><span id="MVF2090505">Rate this message: <a href="#xx2090505xx" title="give this message a vote of 1" onclick="return RateMsg(1100981, 2090505, 1)"><b>1</b></a> <a href="#xx2090505xx" title="give this message a vote of 2" onclick="return RateMsg(1100981, 2090505, 2)"><b>2</b></a> <a href="#xx2090505xx" title="give this message a vote of 3" onclick="return RateMsg(1100981, 2090505, 3)"><b>3</b></a> <a href="#xx2090505xx" title="give this message a vote of 4" onclick="return RateMsg(1100981, 2090505, 4)"><b>4</b></a> <a href="#xx2090505xx" title="give this message a vote of 5" onclick="return RateMsg(1100981, 2090505, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2090857_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2090857xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2090857" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2090857#xx2090857xx">Re: Without code?</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">6:38 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2090857_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Idea being, without code in the code behind page.<br><br>Same
+idea as "no code data binding to a sql database." Using the object data
+source you can data bind without code to a sql server database.
+However, the method, that the object data source binds to, has code in
+it.<br><br>Basically, a developer "could" write the helper code and the "designer" could use the method "without code."<br><br> <br><br><div class="ForumSig">Just a grain of sand on the beach.</div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090857" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090857" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090505&amp;forumid=430274&amp;select=2090857#xx2090857xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090857#xx2090857xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090505#xx2090505xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2090857);</script><span id="MVF2090857">Rate this message: <a href="#xx2090857xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2090857, 1)"><b>1</b></a> <a href="#xx2090857xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2090857, 2)"><b>2</b></a> <a href="#xx2090857xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2090857, 3)"><b>3</b></a> <a href="#xx2090857xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2090857, 4)"><b>4</b></a> <a href="#xx2090857xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2090857, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="5" width="1"></td></tr><tr height="1"><td colspan="4" bgcolor="#ff9900"><img src="FillComboboxWSortedEnum.asp_files/t.gif" height="1" width="1"></td></tr><tr id="2090340_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2090340xx"></a><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2090340" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2090340#xx2090340xx"><b>My thoughts</b></a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=1027789"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle"><b>Moim Hossain</b>&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle"><b>2:07 20 Jun '07</b>&nbsp;</font></td></tr>
+<tr id="2090340_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">in
+real life scenario, this would not help much i believe. cause we often
+need to display a user readable text rather displaying an Enum value.
+for example, if an enum is like <br><br><code><br>enum IssueStatus<br>{<br>      Initiated,<br>      Active,<br>      InProgress<br>      Finished<br>}<br></code><br><br>Now
+a combox box on UI should display "In progress" (notice the whitespace
+between In and progress) rather displaying the InProgress - which is
+not intuitive.<br>Therefore, you can create some sort of custom
+Attribute to define the alias for a enum value and bind those alias
+value rather binding with the enum value.<br><br>Keep up good works!<img src="FillComboboxWSortedEnum.asp_files/smiley_smile.gif" align="absmiddle"> <br><br> <br><br><div class="ForumSig">Moim Hossain<br>Sr. Software Engineer<br>Onirban Orion Technologies.</div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090340" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090340" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090340&amp;forumid=430274&amp;select=2090340#xx2090340xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090340#xx2090340xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090340#xx2090340xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(1027789,2090340);</script><span id="MVF2090340">Rate this message: <a href="#xx2090340xx" title="give this message a vote of 1" onclick="return RateMsg(1027789, 2090340, 1)"><b>1</b></a> <a href="#xx2090340xx" title="give this message a vote of 2" onclick="return RateMsg(1027789, 2090340, 2)"><b>2</b></a> <a href="#xx2090340xx" title="give this message a vote of 3" onclick="return RateMsg(1027789, 2090340, 3)"><b>3</b></a> <a href="#xx2090340xx" title="give this message a vote of 4" onclick="return RateMsg(1027789, 2090340, 4)"><b>4</b></a> <a href="#xx2090340xx" title="give this message a vote of 5" onclick="return RateMsg(1027789, 2090340, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2090870_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2090870xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2090870" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2090870#xx2090870xx">Re: My thoughts</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">6:49 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2090870_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Good points.  This is not a one size fits all solution.<br><br>Here is where this came from :<br><br>Public Enum MaritalStatuses<br>    [Single]<br>    Married<br>End Enum<br><br>Public Enum PayFrequencies<br>    Monthly = 12<br>    Weekly = 52<br>    BiWeekly = 26<br>End Enum<br><br>My demo this weekend is a TaxCalculator developed using Blend.  I needed to referece a .dll with the above enums.<br><br>In this case, the solution allows data binding to these enums without requiring code behind.<br><br>Let me think about a way to render a more user friendly version of "InProgress" or in my case "BiWeekly"<br><br>You
+"could" change InProgress to In_Progress and then replace the "_", but
+then, when you convert the value back to an enum, you would need to
+replace the space with an "_".<br><br>I was also thinking about this the other day.<br><br>I
+spitbally here, another solution could be, instead of returning an
+array of strings, return instead an array of objects that represent the
+enum in a very usable way.<br><br>The objects could have the following
+properties, Title, Name, Value. Then use logic or your attribute to set
+the Title propety the user friendly way.<br><br>Have a great day and thank you for the comments.<br><br>Karl<br><br> <br><br><div class="ForumSig">Just a grain of sand on the beach.</div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090870" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090870" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090340&amp;forumid=430274&amp;select=2090870#xx2090870xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090870#xx2090870xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090340#xx2090340xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2090870);</script><span id="MVF2090870">Rate this message: <a href="#xx2090870xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2090870, 1)"><b>1</b></a> <a href="#xx2090870xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2090870, 2)"><b>2</b></a> <a href="#xx2090870xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2090870, 3)"><b>3</b></a> <a href="#xx2090870xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2090870, 4)"><b>4</b></a> <a href="#xx2090870xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2090870, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="5" width="1"></td></tr><tr height="1"><td colspan="4" bgcolor="#ff9900"><img src="FillComboboxWSortedEnum.asp_files/t.gif" height="1" width="1"></td></tr><tr id="2090289_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2090289xx"></a><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2090289" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2090289#xx2090289xx"><b>Suggestion</b></a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=183178"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle"><b>mav.northwind</b>&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle"><b>1:32 20 Jun '07</b>&nbsp;</font></td></tr>
+<tr id="2090289_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Hi!<br><br>Don't you think <code>GetSortedEnumNames </code>makes more sense as a static method (shared in VB.NET)?<br><br>P.S.:<br>Oh, and isn't there a way to determine the type of an object in VB.NET without having to use <code>GetType().ToString()</code> and a literal string comparison? Something like the "is" keyword in C#?<br> <br><br></font><div class="ForumSig"><font class="messagecontent">Regards,<br>mav<br><br>--<br><i>Black holes are the places where God divided by 0...</i></font></div><font class="messagecontent"><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090289" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090289" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090289&amp;forumid=430274&amp;select=2090289#xx2090289xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090289#xx2090289xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090289#xx2090289xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(183178,2090289);</script><span id="MVF2090289">Rate this message: <a href="#xx2090289xx" title="give this message a vote of 1" onclick="return RateMsg(183178, 2090289, 1)"><b>1</b></a> <a href="#xx2090289xx" title="give this message a vote of 2" onclick="return RateMsg(183178, 2090289, 2)"><b>2</b></a> <a href="#xx2090289xx" title="give this message a vote of 3" onclick="return RateMsg(183178, 2090289, 3)"><b>3</b></a> <a href="#xx2090289xx" title="give this message a vote of 4" onclick="return RateMsg(183178, 2090289, 4)"><b>4</b></a> <a href="#xx2090289xx" title="give this message a vote of 5" onclick="return RateMsg(183178, 2090289, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2090901_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2090901xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2090901" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2090901#xx2090901xx">Re: Suggestion</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">7:04 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2090901_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">mav,<br><br>Yes,
+you are correct, this function could be shared, then any VB.NET or C#
+code could use it as such and the object data source also.<br><br>The code :   <code>If t.BaseType.FullName = "System.Enum" Then</code> doesn't use the <code>.ToString</code> method.  It's just a property.<br><br>I'm like you.  I don't like string comparisions in my code (if possible).<br><br>However,
+I tried hard before I chose this method, however I do not think it's
+possible. I went through the object browser and used the debugger to
+see my options and <code>t.BaseType.FullName</code> was my best option.<br><br>Cheers,<br> <br><br><div class="ForumSig">Just a grain of sand on the beach.</div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090901" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2090901" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090289&amp;forumid=430274&amp;select=2090901#xx2090901xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090901#xx2090901xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090289#xx2090289xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2090901);</script><span id="MVF2090901">Rate this message: <a href="#xx2090901xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2090901, 1)"><b>1</b></a> <a href="#xx2090901xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2090901, 2)"><b>2</b></a> <a href="#xx2090901xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2090901, 3)"><b>3</b></a> <a href="#xx2090901xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2090901, 4)"><b>4</b></a> <a href="#xx2090901xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2090901, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2091957_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2091957xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="36"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2091957" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2091957#xx2091957xx">Re: Suggestion</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=1898777"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Bohicette&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">15:39 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2091957_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="36"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">I think you missed the point here with the <code>ToString()</code> thing.  This is still doing a string comparison to check the equivalence of two object types, whether it is using the <code>FullName</code> property or not.  <br><br>In c# you have a <code>typeof()</code> operator (sorry I am primarily a C# developer).  So in C# this would be done as:<br><br><code>if (t.BaseType == typeof(System.Enum))</code><br><br>I looked it up in VB.Net and you can do this:<br><br><code>If TypeOf t.BaseType is System.Enum Then</code><br><br>...
+which compares the actual System.Type objects for the two expressions
+instead of doing a string compare. Although I will have to take someone
+else's word for it that this works since I haven't developed in VB
+since VB6.<br><br>Boh <br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091957" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091957" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090289&amp;forumid=430274&amp;select=2091957#xx2091957xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091957#xx2091957xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090289#xx2090289xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(1898777,2091957);</script><span id="MVF2091957">Rate this message: <a href="#xx2091957xx" title="give this message a vote of 1" onclick="return RateMsg(1898777, 2091957, 1)"><b>1</b></a> <a href="#xx2091957xx" title="give this message a vote of 2" onclick="return RateMsg(1898777, 2091957, 2)"><b>2</b></a> <a href="#xx2091957xx" title="give this message a vote of 3" onclick="return RateMsg(1898777, 2091957, 3)"><b>3</b></a> <a href="#xx2091957xx" title="give this message a vote of 4" onclick="return RateMsg(1898777, 2091957, 4)"><b>4</b></a> <a href="#xx2091957xx" title="give this message a vote of 5" onclick="return RateMsg(1898777, 2091957, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2092088_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2092088xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="54"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2092088" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2092088#xx2092088xx">Re: Suggestion</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">18:29 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2092088_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="54"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">boh,<br><br>Thank
+you for continuing the thread. I had to make a slight adjustment to
+your suggestion for the VB.NET syntax, but this is a better solution.<br><br>Thank you!  <img src="FillComboboxWSortedEnum.asp_files/smiley_cool.gif" align="absmiddle"><br><pre><br>Public Shared Function GetSortedEnumNames(ByVal t As Type) As String()<br>    'first do a sanity check, make sure the developer is passing us an enum<br><br>    If t.BaseType Is GetType(System.Enum) Then<br>        Dim strOut() As String = [Enum].GetNames(t)<br>        Array.Sort(strOut)<br>        Return strOut<br>    Else<br>        Throw New ArgumentException("Must be an enum", "t")<br>    End If<br>End Function<br></pre> <br><br><div class="ForumSig">Cheers,  Karl<br><br>Just a grain of sand on the beach.</div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2092088" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2092088" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090289&amp;forumid=430274&amp;select=2092088#xx2092088xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2092088#xx2092088xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090289#xx2090289xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2092088);</script><span id="MVF2092088">Rate this message: <a href="#xx2092088xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2092088, 1)"><b>1</b></a> <a href="#xx2092088xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2092088, 2)"><b>2</b></a> <a href="#xx2092088xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2092088, 3)"><b>3</b></a> <a href="#xx2092088xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2092088, 4)"><b>4</b></a> <a href="#xx2092088xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2092088, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2119154_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2119154xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="72"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2119154" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2119154#xx2119154xx">Re: Suggestion</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=195100"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Neal Andrews&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">13:01 8 Jul '07&nbsp;</font></td></tr>
+<tr id="2119154_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="72"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Why not just use the IsEnum method?<br><br> </font><pre><font class="messagecontent"><br>Public Shared Function GetSortedEnumNames(ByVal t As Type) As String()    <br>  'first do a sanity check, make sure the developer is passing us an enum    <br>  If t.IsEnum Then        <br>    Dim strOut() As String = [Enum].GetNames(t)        <br>    Array.Sort(strOut)        <br>    Return strOut    <br>  Else        <br>    Throw New ArgumentException("Must be an enum", "t")    <br>  End If<br>End Function<br><br>Regards<br>Neal<br></font></pre><font class="messagecontent"> <br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2119154" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2119154" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090289&amp;forumid=430274&amp;select=2119154#xx2119154xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2119154#xx2119154xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090289#xx2090289xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(195100,2119154);</script><span id="MVF2119154">Rate this message: <a href="#xx2119154xx" title="give this message a vote of 1" onclick="return RateMsg(195100, 2119154, 1)"><b>1</b></a> <a href="#xx2119154xx" title="give this message a vote of 2" onclick="return RateMsg(195100, 2119154, 2)"><b>2</b></a> <a href="#xx2119154xx" title="give this message a vote of 3" onclick="return RateMsg(195100, 2119154, 3)"><b>3</b></a> <a href="#xx2119154xx" title="give this message a vote of 4" onclick="return RateMsg(195100, 2119154, 4)"><b>4</b></a> <a href="#xx2119154xx" title="give this message a vote of 5" onclick="return RateMsg(195100, 2119154, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2119155_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2119155xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="90"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2119155" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2119155#xx2119155xx">Re: Suggestion</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">13:05 8 Jul '07&nbsp;</font></td></tr>
+<tr id="2119155_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="90"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">Neal,<br><br>You are the Man!<br><br>Love to learn new things about .Net everyday.  <br><br>Thank you for sharing your knowledge.<br><br>Cheers,<br><br>Karl <br><br></font><div class="ForumSig"><font class="messagecontent">Cheers,  Karl<br><br><font color="#c0943f">Just a grain of sand on the worlds beaches.</font></font></div><font class="messagecontent"><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2119155" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2119155" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090289&amp;forumid=430274&amp;select=2119155#xx2119155xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2119155#xx2119155xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090289#xx2090289xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2119155);</script><span id="MVF2119155">Rate this message: <a href="#xx2119155xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2119155, 1)"><b>1</b></a> <a href="#xx2119155xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2119155, 2)"><b>2</b></a> <a href="#xx2119155xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2119155, 3)"><b>3</b></a> <a href="#xx2119155xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2119155, 4)"><b>4</b></a> <a href="#xx2119155xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2119155, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="6" width="1"></td></tr><tr id="2091008_h0" bgcolor="#fef9e7"><td width="70%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td bgcolor="white"><a name="xx2091008xx"></a><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle">&nbsp;</td>
+<td class="messagetitle" width="100%"><a class="messagetitle" id="DynMessLink" name="2091008" href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;forumid=430274&amp;select=2091008#xx2091008xx">Re: Suggestion</a></td></tr></tbody></table></td><td nowrap="nowrap" valign="bottom"><a href="http://www.codeproject.com/script/profile/whos_who.asp?id=271234"><img src="FillComboboxWSortedEnum.asp_files/userinfo.gif" title="Click for User Profile" border="0" height="15" width="14"></a>&nbsp;</td><td nowrap="nowrap" width="140"><font class="messagetitle">Karl_Shifflett&nbsp;</font></td><td align="right" nowrap="nowrap" width="12%"><font class="messagetitle">7:49 20 Jun '07&nbsp;</font></td></tr>
+<tr id="2091008_h1" style="display: none;"><td colspan="4" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><img src="FillComboboxWSortedEnum.asp_files/ind.gif" height="1" width="18"><img src="FillComboboxWSortedEnum.asp_files/news_blank.gif" align="absmiddle">&nbsp;</td><td bgcolor="#d5eaff" width="100%"><table border="0" cellpadding="0" cellspacing="5" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2"><font class="messagecontent">mav,<br><br>Here
+is a the code behind version. Without any doubt, this one line of code
+is shorter and easier too. This below code assumes the function is
+changed to a shared function. Basically, I was demonstrating that this
+could be done.<br><br><pre>Private Sub FillComboboxWithSortedEnumDemo_Loaded(ByVal sender As Object, ByVal e As System.Windows.RoutedEventArgs) Handles Me.Loaded<br>    Me.cboZooCreatures.ItemsSource = Helpers.GetSortedEnumNames(GetType(ZooCreatures))<br>End Sub</pre><br><b>Shared Function Version Of Helpers</b><br><pre>Public Class Helpers<br><br>    Public Shared Function GetSortedEnumNames(ByVal t As Type) As String()<br>        'first do a sanity check, make sure the developer is passing us an enum<br>        If t.BaseType.FullName = "System.Enum" Then<br>            Dim strOut() As String = [Enum].GetNames(t)<br>            Array.Sort(strOut)<br>            Return strOut<br>        Else<br>            Throw New ArgumentException("Must be an enum", "t")<br>        End If<br>    End Function<br><br>    Public Sub New()<br><br>    End Sub<br><br>End Class</pre><br>Cheers and thank you!<br><br> <br><br><div class="ForumSig">Just a grain of sand on the beach.</div><br>&nbsp;</font></td></tr><tr valign="top"><td class="messagetitle">[<a href="http://www.codeproject.com/script/comments/user_reply.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091008" title="Reply to this current thread">Reply</a> | <a href="http://www.codeproject.com/script/comments/user_mail.asp?main=/WPF/FillComboboxWSortedEnum.asp&amp;df=100&amp;forumid=430274&amp;select=2091008" title="Email a reply to the author of this message">Email</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?df=100&amp;tid=2090289&amp;forumid=430274&amp;select=2091008#xx2091008xx" title="View only messages within this thread">View Thread</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2091008#xx2091008xx" title="Get the URL for this message">PermaLink</a> | <a href="http://www.codeproject.com/WPF/FillComboboxWSortedEnum.asp?msg=2090289#xx2090289xx" title="Go to Thread Start">Go to Thread Start</a>]</td><td class="messagetitle" align="right"> <script language="Javascript">MsgVoteForm(271234,2091008);</script><span id="MVF2091008">Rate this message: <a href="#xx2091008xx" title="give this message a vote of 1" onclick="return RateMsg(271234, 2091008, 1)"><b>1</b></a> <a href="#xx2091008xx" title="give this message a vote of 2" onclick="return RateMsg(271234, 2091008, 2)"><b>2</b></a> <a href="#xx2091008xx" title="give this message a vote of 3" onclick="return RateMsg(271234, 2091008, 3)"><b>3</b></a> <a href="#xx2091008xx" title="give this message a vote of 4" onclick="return RateMsg(271234, 2091008, 4)"><b>4</b></a> <a href="#xx2091008xx" title="give this message a vote of 5" onclick="return RateMsg(271234, 2091008, 5)"><b>5</b></a>  (out of 5)</span>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+<tr><td colspan="4"><img src="FillComboboxWSortedEnum.asp_files/t.gif" border="0" height="5" width="1"></td></tr></tbody></table></td></tr><tr bgcolor="#fbedbb"><td><table cellpadding="2" width="100%"><tbody><tr><td class="messagetitle">Last Visit: 18:36 Friday 19th October, 2007</td><td align="right" nowrap="nowrap"><font class="messagetitle"><span class="HoverLink">First</span> <span class="HoverLink">Prev</span> <span class="HoverLink">Next</span> <span class="HoverLink">&nbsp;&nbsp;&nbsp;&nbsp;</span> </font></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>
+</div><p class="smallText"><img src="FillComboboxWSortedEnum.asp_files/news_general.gif" align="absmiddle"> General comment &nbsp;&nbsp; <img src="FillComboboxWSortedEnum.asp_files/news_info.gif" align="absmiddle"> News / Info &nbsp;&nbsp; <img src="FillComboboxWSortedEnum.asp_files/news_question.gif" align="absmiddle"> Question &nbsp;&nbsp; <img src="FillComboboxWSortedEnum.asp_files/news_answer.gif" align="absmiddle"> Answer &nbsp;&nbsp; <img src="FillComboboxWSortedEnum.asp_files/news_game.gif" align="absmiddle"> Joke / Game &nbsp;&nbsp; <img src="FillComboboxWSortedEnum.asp_files/news_sticky.gif" align="absmiddle"> Admin message</p>
+<br>
+
+
+<table cellspacing="5" width="100%">
+<tbody><tr valign="top"><td class="smallText">
+
+Updated: 19 Jun 2007
+</td><td class="SmallText" align="right">
+Article content copyright Karl_Shifflett, 2007<br>
+everything else Copyright © <a href="mailto:webmaster@codeproject.com">CodeProject</a>, 1999-2007.
+
+<br>
+Web16 |
+<a href="http://www.codeproject.com/info/MediaKit">Advertise on The Code Project</a> | <a href="http://www.codeproject.com/info/privacy.asp">Privacy</a>
+
+</td></tr>
+</tbody></table>
+
+</td></tr></tbody></table>
+
+
+<script type="text/javascript" src="FillComboboxWSortedEnum.asp_files/front.js"></script>
+<br>
+<center>
+<table border="0" cellpadding="0" cellspacing="0" width="95%">
+<tbody><tr><td bgcolor="#ff9900" height="1"><img src="FillComboboxWSortedEnum.asp_files/space.gif" height="1"></td></tr>
+<tr>
+<td align="center"><font size="1">
+
+<a href="http://www.theultimatetoolbox.com/">The Ultimate Toolbox</a> &#8226;
+<a href="http://aspalliance.com/">ASP Alliance</a> &#8226;
+<a href="http://www.developerfusion.co.uk/">Developer Fusion</a> &#8226;
+<a href="http://www.developersdex.com/">Developersdex</a> &#8226;
+<a href="http://www.devguru.com/">DevGuru</a> &#8226;
+<a href="http://www.programmersheaven.com/">Programmers Heaven</a> &#8226;
+<a href="http://www.planet-source-code.com/">Planet Source Code</a> &#8226;
+<a href="http://www.tek-tips.com/">Tek-Tips Forums</a> &#8226;
+
+</font>	
+</td>
+</tr>
+</tbody></table>
+</center>
+</td></tr></tbody></table><div style="position: absolute; visibility: visible; background-color: rgb(72, 142, 0); z-index: 101; width: 298px; height: 22px; top: 115px; left: 956px;"><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 40px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 2px;">Help!</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 55px; height: 16px; padding-left: 5px; padding-top: 2px; left: 50px; top: 2px;">Articles</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 115px; height: 16px; padding-left: 5px; padding-top: 2px; left: 113px; top: 2px;">Message Boards</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 55px; height: 16px; padding-left: 5px; padding-top: 2px; left: 236px; top: 2px;">Lounge</div></div><div style="position: absolute; visibility: hidden; background-color: rgb(72, 142, 0); z-index: 102; width: 194px; height: 98px; top: 0pt; left: 0pt;"><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 185px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 2px;">What is 'The Code Project'?</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 185px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 21px;">General FAQ</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 185px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 40px;">Post a Question</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 185px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 59px;">Site Directory</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 185px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 78px;">About Us</div></div><div style="position: absolute; visibility: hidden; background-color: rgb(72, 142, 0); z-index: 102; width: 154px; height: 136px; top: 0pt; left: 0pt;"><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 2px;">Latest</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 21px;">Most Popular</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 40px;">Search</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 59px;">Site Directory</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 78px;">Submit an Article</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 97px;">Update an Article</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 145px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 116px;">Article Competition</div></div><div style="position: absolute; visibility: hidden; background-color: rgb(72, 142, 0); z-index: 102; width: 174px; height: 459px; top: 0pt; left: 0pt;"><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 2px;">Windows Vista</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 21px;">Visual C++</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 40px;">ATL / WTL / STL</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 59px;">COM</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 78px;">C++/CLI</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 97px;">C#</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 116px;">ASP.NET</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 135px;">VB.NET</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 154px;">Web Development</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 173px;">.NET Framework</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 192px;">Mobile Development</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 211px;">SQL / ADO / ADO.NET</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 230px;">XML / XSL</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 249px;">OS / SysAdmin</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 268px;">Work Issues</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 287px;">Article Requests</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 306px;">Collaboration</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 325px;">General Discussions</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 344px;">Hardware</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 363px;">Algorithms / Math</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 382px;">Design and Architecture</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 401px;">Subtle Bugs</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 420px;">Suggestions</div><div style="overflow: hidden; position: absolute; visibility: inherit; cursor: pointer; background-color: rgb(72, 142, 0); color: rgb(255, 255, 255); font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; font-style: normal; text-align: left; width: 165px; height: 16px; padding-left: 5px; padding-top: 2px; left: 2px; top: 439px;">The Soapbox</div></div></body></html>

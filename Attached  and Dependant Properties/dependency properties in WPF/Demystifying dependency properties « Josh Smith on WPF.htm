@@ -1,0 +1,455 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0082)http://joshsmithonwpf.wordpress.com/2007/05/16/demystifying-dependency-properties/ -->
+<HTML lang=en dir=ltr xmlns="http://www.w3.org/1999/xhtml"><HEAD 
+profile=http://gmpg.org/xfn/11><TITLE>Demystifying dependency properties « Josh Smith on WPF</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats --><LINK media=screen 
+href="Demystifying dependency properties « Josh Smith on WPF_files/style.css" 
+type=text/css rel=stylesheet><LINK title="RSS 2.0" 
+href="http://joshsmithonwpf.wordpress.com/feed/" type=application/rss+xml 
+rel=alternate><LINK href="http://joshsmithonwpf.wordpress.com/xmlrpc.php" 
+rel=pingback><LINK 
+href="Demystifying dependency properties « Josh Smith on WPF_files/global.css" 
+type=text/css rel=stylesheet><LINK title=RSD 
+href="http://joshsmithonwpf.wordpress.com/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI>
+<SCRIPT type=text/javascript>
+
+function addLoadEvent(func) {
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      oldonload();
+      func();
+    }
+  }
+}
+</SCRIPT>
+
+<SCRIPT 
+src="Demystifying dependency properties « Josh Smith on WPF_files/urchin.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+_uacct = "UA-52447-2";
+
+_udn = "wordpress.com";
+urchinTracker();
+</SCRIPT>
+<LINK title="Atom API" href="http://joshsmithonwpf.wordpress.com/wp-app.php" 
+type=application/atomserv+xml rel=introspection><LINK 
+href="http://joshsmithonwpf.wordpress.com/?openidserver=1" rel=openid.server>
+<STYLE type=text/css>#headerimg {
+	BACKGROUND: url(http://joshsmithonwpf.files.wordpress.com/2007/01/joshsmithonwpf_banner1.JPG) no-repeat
+}
+#header H1 {
+	DISPLAY: none
+}
+#header .description {
+	DISPLAY: none
+}
+</STYLE>
+<LINK 
+href="Demystifying dependency properties « Josh Smith on WPF_files/SyntaxHighlighter.css" 
+type=text/css rel=stylesheet></LINK></HEAD>
+<BODY 
+style="BACKGROUND-POSITION: center top; BACKGROUND-ATTACHMENT: fixed; BACKGROUND-IMAGE: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/bg.jpg); BACKGROUND-REPEAT: repeat-y">
+<DIV id=page>
+<DIV id=header>
+<DIV id=headerimg style="CURSOR: pointer" 
+onclick="location.href='http://joshsmithonwpf.wordpress.com';">
+<H1><A href="http://joshsmithonwpf.wordpress.com/">Josh Smith on WPF</A></H1>
+<DIV class=description>Thoughts about the Windows Presentation 
+Foundation</DIV></DIV></DIV>
+<UL id=pagebar 
+style="BACKGROUND: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/pagebar.jpg)">
+  <LI class="page_item "><A href="http://joshsmithonwpf.wordpress.com/">Home</A> 
+
+  <LI class="page_item page-item-73"><A title="A Guided Tour of&nbsp;WPF" 
+  href="http://joshsmithonwpf.wordpress.com/a-guided-tour-of-wpf/">A Guided Tour 
+  of&nbsp;WPF</A> 
+  <LI class="page_item page-item-2"><A title=About 
+  href="http://joshsmithonwpf.wordpress.com/about/">About</A> 
+  <LI class="page_item page-item-255"><A title=Presentation&nbsp;App 
+  href="http://joshsmithonwpf.wordpress.com/presentation-app/">Presentation&nbsp;App</A> 
+
+  <LI class="page_item page-item-19"><A title="WPF Challenge&nbsp;Submissions" 
+  href="http://joshsmithonwpf.wordpress.com/xbap-submissions/">WPF 
+  Challenge&nbsp;Submissions</A> </LI></UL>
+<DIV id=grad 
+style="BACKGROUND: url(http://s.wordpress.com/wp-content/themes/pub/contempt/images/blue_flower/topgrad.jpg); WIDTH: 100%; HEIGHT: 65px"></DIV>
+<DIV class=widecolumn id=content>
+<DIV class=post id=post-102>
+<H2><A title="Permanent Link: Demystifying dependency&nbsp;properties" 
+href="http://joshsmithonwpf.wordpress.com/2007/05/16/demystifying-dependency-properties/" 
+rel=bookmark>Demystifying dependency&nbsp;properties</A></H2>
+<DIV class=entry>
+<DIV class=snap_preview>
+<P>There is something very important to know about dependency properties.&nbsp; 
+Once you understand this fundamental point, much of WPF becomes more 
+intuitive.</P>
+<P><STRONG><EM>The value of a dependency property is 
+resolved.</EM></STRONG>&nbsp;</P>
+<P>Normal CLR properties (i.e. not dependency properties) typically provide a 
+getter and/or setter with which the value of a private field can be retrieved 
+and/or modified.&nbsp; When you set a normal CLR property, you might usually 
+think of it as assigning a value to a field.&nbsp; Usually whatever value you 
+set a property to is the value which is returned when you access its 
+getter.&nbsp; Of course, properties can contain other logic which executes 
+before and after the field is modified or returned.&nbsp; That’s a major reason 
+why they exist.</P>
+<P>Dependency properties are a different animal altogether.&nbsp;&nbsp;They 
+never represent a private field in your class.&nbsp;&nbsp;You can assign a DP a 
+specific value, but that is not necessarily the value which will be returned 
+when you access its getter.&nbsp; Even if your DP has no validation or value 
+coercion logic, you still might not get back the same value you put 
+in.&nbsp;</P>
+<P>There is a well-defined set of rules which is used internally by WPF to 
+figure out what the real value of a DP is.&nbsp; Here is a brief summary of the 
+rules of precedence used when resolving the value of a DP (read more about it <A 
+title="The rules of DP value resolution" 
+href="http://msdn2.microsoft.com/en-us/library/ms743230.aspx#listing" 
+target=_blank>here</A>):</P>
+<OL>
+  <LI>Property system coercion 
+  <LI>Active animations, or animations with a Hold behavior 
+  <LI>Local value 
+  <LI>TemplatedParent template 
+  <LI>Style triggers 
+  <LI>Template triggers 
+  <LI>Style setters 
+  <LI>Theme style 
+  <LI>Inheritance 
+  <LI>Default value from dependency property metadata </LI></OL>
+<P>As that list suggests, there is a lot more going on when the value of a DP is 
+determined than simply using the value of a field.&nbsp; When you explicitly set 
+a DP to a value (ex. this.Height = 123;), you are assigning it a “local 
+value.”&nbsp; As you can see above, a DP’s local value is the third place the 
+system will look when resolving the property’s value.&nbsp;</P>
+<P>If the DP was registered with a callback to coerce the value to which it is 
+set, the value returned by the callback is returned the next time you access the 
+property.&nbsp; If the DP is being animated, or was animated by an Animation 
+which “holds” its value after it completes, the Animation’s value is 
+returned.&nbsp; If neither of those conditions is met, the DP will resolve to 
+the value which you assigned to the property (the local value).&nbsp; Failing 
+that, the DP resolution keeps walking down that list looking for an applicable 
+value to use.&nbsp; If it reaches the end of the list and discovers that the DP 
+was not registered with a default value, then the property’s getter returns null 
+or zero (which are the default values for a reference type or value type, 
+respectively).</P>
+<P>On a side note, this explains how a trigger is able to “magically” revert the 
+value of a DP back to the original value, once the trigger is no longer 
+active.&nbsp; Since the value applied by a trigger is part of the value 
+resolution algorithm, as soon as a trigger stops applying a value to a DP, the 
+DP’s value is taken from somewhere further down the list.&nbsp; The DP’s value 
+is never actually reverted, because it does not have a value in the first 
+place!</P>
+<P>Remember, a DP never really “has” a value…its value <EM>depends</EM> on 
+various external factors.&nbsp; That’s why they are called <EM>dependency</EM> 
+properties.</P>
+<P>In my <A title="Further demystification of dependency properties" 
+href="http://joshsmithonwpf.wordpress.com/2007/05/17/further-demystification-of-dependency-properties/">next 
+post</A> we take a look at an example of the DP value resolution process being 
+used, to gain a clearer understanding of how it works.</P></DIV>
+<P class="postmetadata alt"><SMALL>This entry was posted on Wednesday, May 16th, 
+2007 at 11:08 pm and is filed under <A title="View all posts in Theoria" 
+href="http://wordpress.com/tag/theoria/" rel="category tag">Theoria</A>. You can 
+follow any responses to this entry through the <A 
+href="http://joshsmithonwpf.wordpress.com/2007/05/16/demystifying-dependency-properties/feed/">RSS 
+2.0</A> feed. You can <A 
+href="http://joshsmithonwpf.wordpress.com/2007/05/16/demystifying-dependency-properties/#respond">leave 
+a response</A>, or <A 
+href="http://joshsmithonwpf.wordpress.com/2007/05/16/demystifying-dependency-properties/trackback/" 
+rel=trackback>trackback</A> from your own site. </SMALL></P></DIV></DIV><!-- You can start editing here. -->
+<H3 id=comments>3 Responses to “Demystifying dependency&nbsp;properties”</H3>
+<OL class=commentlist>
+  <LI class=alt id=comment-1246><CITE>arkhivania</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/16/demystifying-dependency-properties/#comment-1246">May 
+  17th, 2007 at 10:45 pm</A> </SMALL>
+  <P>Thanks, Josh. I have some troubles with UserControl dependency property 
+  declaration of arrays. There is inner trouble in WPF. It’s ok when i declare 
+  Collection instead.</P>
+  <LI id=comment-1247><CITE><A 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/17/further-demystification-of-dependency-properties/" 
+  rel="external nofollow">Further demystification of dependency properties « 
+  Josh Smith on WPF</A></CITE> Says: <BR><SMALL class=commentmetadata><A 
+  title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/16/demystifying-dependency-properties/#comment-1247">May 
+  17th, 2007 at 11:21 pm</A> </SMALL>
+  <P>[…] demystification of dependency&nbsp;properties In my previous blog 
+  post&nbsp;we examined how a dependency property can be given a value by 
+  multiple entities, but its actual […]</P>
+  <LI class=alt id=comment-2723><CITE>Anonymous</CITE> Says: <BR><SMALL 
+  class=commentmetadata><A title="" 
+  href="http://joshsmithonwpf.wordpress.com/2007/05/16/demystifying-dependency-properties/#comment-2723">July 
+  10th, 2007 at 12:46 pm</A> </SMALL>
+  <P>This is great. Thanks a lot for this kind of post which explains the 
+  fundamentals. Please keep the good work ….</P></LI></OL>
+<H3 id=respond>Leave a Reply</H3>
+<FORM id=commentform 
+action=http://joshsmithonwpf.wordpress.com/wp-comments-post.php method=post>
+<P><INPUT id=author tabIndex=1 size=22 name=author> <LABEL 
+for=author><SMALL>Name (required)</SMALL></LABEL></P>
+<P><INPUT id=email tabIndex=2 size=22 name=email> <LABEL for=email><SMALL>Mail 
+(will not be published) (required)</SMALL></LABEL></P>
+<P><INPUT id=url tabIndex=3 size=22 name=url> <LABEL 
+for=url><SMALL>Website</SMALL></LABEL></P><!--<p><small><strong>XHTML:</strong> You can use these tags: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p>-->
+<P><TEXTAREA id=comment tabIndex=4 name=comment rows=10 cols=100></TEXTAREA></P>
+<P><INPUT id=submit tabIndex=5 type=submit value="Submit Comment" name=submit> 
+<INPUT type=hidden value=102 name=comment_post_ID> </P></FORM></DIV>
+<DIV id=sidebar>
+<UL>
+  <LI>
+  <LI class="widget widget_text" id=text-1>
+  <H2 class=widgettitle>RSS Feed</H2>
+  <DIV class=textwidget><A href="http://joshsmithonwpf.wordpress.com/feed"><IMG 
+  src="Demystifying dependency properties « Josh Smith on WPF_files/u14.png"></A> 
+  Feed the hungry with WPF</DIV>
+  <LI class="widget widget_text" id=text-5>
+  <H2 class=widgettitle>MY MVP PROFILE</H2>
+  <DIV class=textwidget>
+  <P align=center><A href="http://mvp.support.microsoft.com/default.aspx"><IMG 
+  src="Demystifying dependency properties « Josh Smith on WPF_files/mvp_fullcolor_forscreen_small.thumbnail.png"></A></P><BR>My 
+  Microsoft MVP profile can be viewed <A 
+  href="https://mvp.support.microsoft.com/profile=5F7EC527-FEBC-4A5D-A11F-EEF73467D3D5">here</A>.</DIV>
+  <LI class="widget widget_text" id=text-3>
+  <H2 class=widgettitle>Sponsor</H2>
+  <DIV class=textwidget>
+  <P><SPAN style="FONT-SIZE: 8pt">Infragistics <B>NetAdvantage for WPF</B> is 
+  the world's first business-grade developer components for WPF, including 
+  datagrids, carousels, and editors, with built-in visual themes including 
+  Windows Vista Aero and Office 2007.&nbsp; Take advantage of our pure WPF 
+  platform features; including exciting high resolution graphics, rich styling 
+  and animation capabilities, and integrated UI virtualization technology. 
+  </SPAN><B><SPAN style="FONT-SIZE: 8pt; COLOR: black">Everything is all 
+  NEW!!</SPAN></B><SPAN style="FONT-SIZE: 8pt; COLOR: black"> This release gives 
+  developers the first opportunity to experience the next generation in 
+  NetAdvantage controls, designed and developed specifically for the WPF 
+  platform. </SPAN><SPAN style="FONT-SIZE: 8pt"></SPAN></P>
+  <P><SPAN style="FONT-SIZE: 8pt; COLOR: #1f497d"><A 
+  href="http://www.infragistics.com/adcounter/webads.aspx?adid=JSWPFBLOG&amp;utm_source=WPFBlog&amp;utm_date=Apr07&amp;utm_type=WPF&amp;utm_size=textandlogo">TRY 
+  IT NOW!</A></SPAN></P></DIV>
+  <LI class="widget widget_search" id=search>
+  <FORM id=searchform action=http://joshsmithonwpf.wordpress.com method=get>
+  <DIV><INPUT id=s size=15 name=s><BR><INPUT type=submit value=Search> 
+  </DIV></FORM>
+  <LI class="widget widget_text" id=text-4>
+  <H2 class=widgettitle>The WPF Challenge Winners</H2>
+  <DIV class=textwidget><A 
+  href="http://joshsmithonwpf.wordpress.com/2007/03/22/the-wpf-challenge-winners/">Check 
+  out who won the grandest competition in human history...</A></DIV>
+  <LI class="widget widget_recent_entries" id=recent-posts>
+  <H2 class=widgettitle>Recent Harangues</H2>
+  <UL>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/16/the-danger-of-assigning-event-handlers-in-xaml/">The 
+    Danger of Assigning Event Handlers in&nbsp;XAML </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/13/an-article-about-the-wpf-thought-process/">An 
+    article about the WPF thought&nbsp;process </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/07/binding-to-the-file-system/">Binding 
+    to the file&nbsp;system </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/01/data-binding-the-splitbuttonâs-contextmenu/">Data 
+    binding the SplitButton’s&nbsp;ContextMenu </A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/30/upcoming-wpf-presentations/">Upcoming 
+    WPF&nbsp;Presentations </A></LI></UL>
+  <LI class="widget widget_categories" id=categories-1>
+  <H2 class=widgettitle>Divide and Conquer</H2>
+  <UL>
+    <LI class="cat-item cat-item-217"><A 
+    title="View all posts filed under Announcements" 
+    href="http://joshsmithonwpf.wordpress.com/category/announcements/">Announcements</A> 
+    (36) 
+    <LI class="cat-item cat-item-1002883"><A 
+    title="View all posts filed under Data Grids" 
+    href="http://joshsmithonwpf.wordpress.com/category/data-grids/">Data 
+    Grids</A> (2) 
+    <LI class="cat-item cat-item-70886"><A 
+    title="View all posts filed under Debugging" 
+    href="http://joshsmithonwpf.wordpress.com/category/debugging/">Debugging</A> 
+    (5) 
+    <LI class="cat-item cat-item-5264"><A 
+    title="View all posts filed under General Info" 
+    href="http://joshsmithonwpf.wordpress.com/category/general-info/">General 
+    Info</A> (11) 
+    <LI class="cat-item cat-item-731906"><A 
+    title="View all posts filed under Gotchas" 
+    href="http://joshsmithonwpf.wordpress.com/category/gotchas/">Gotchas</A> (1) 
+
+    <LI class="cat-item cat-item-17966"><A 
+    title="View all posts filed under Intermezzo" 
+    href="http://joshsmithonwpf.wordpress.com/category/intermezzo/">Intermezzo</A> 
+    (7) 
+    <LI class="cat-item cat-item-116238"><A 
+    title="View all posts filed under Orcas" 
+    href="http://joshsmithonwpf.wordpress.com/category/orcas/">Orcas</A> (1) 
+    <LI class="cat-item cat-item-30585"><A 
+    title="View all posts filed under Praxis" 
+    href="http://joshsmithonwpf.wordpress.com/category/praxis/">Praxis</A> (40) 
+    <LI class="cat-item cat-item-1548"><A 
+    title="View all posts filed under Public Speaking" 
+    href="http://joshsmithonwpf.wordpress.com/category/public-speaking/">Public 
+    Speaking</A> (6) 
+    <LI class="cat-item cat-item-287"><A title="View all posts filed under Rant" 
+    href="http://joshsmithonwpf.wordpress.com/category/rant/">Rant</A> (2) 
+    <LI class="cat-item cat-item-66841"><A 
+    title="View all posts filed under Reading Material" 
+    href="http://joshsmithonwpf.wordpress.com/category/reading-material/">Reading 
+    Material</A> (24) 
+    <LI class="cat-item cat-item-984139"><A 
+    title="View all posts filed under Silverlight" 
+    href="http://joshsmithonwpf.wordpress.com/category/silverlight/">Silverlight</A> 
+    (1) 
+    <LI class="cat-item cat-item-96136"><A 
+    title="View all posts filed under Snooping" 
+    href="http://joshsmithonwpf.wordpress.com/category/snooping/">Snooping</A> 
+    (3) 
+    <LI class="cat-item cat-item-714521"><A 
+    title="View all posts filed under The WPF Challenge" 
+    href="http://joshsmithonwpf.wordpress.com/category/the-wpf-challenge/">The 
+    WPF Challenge</A> (13) 
+    <LI class="cat-item cat-item-893962"><A 
+    title="View all posts filed under Theoria" 
+    href="http://joshsmithonwpf.wordpress.com/category/theoria/">Theoria</A> 
+    (13) 
+    <LI class="cat-item cat-item-3882"><A 
+    title="View all posts filed under Unit Testing" 
+    href="http://joshsmithonwpf.wordpress.com/category/unit-testing/">Unit 
+    Testing</A> (2) 
+    <LI class="cat-item cat-item-772681"><A 
+    title="View all posts filed under WPF.JoshSmith" 
+    href="http://joshsmithonwpf.wordpress.com/category/wpfjoshsmith/">WPF.JoshSmith</A> 
+    (1) 
+    <LI class="cat-item cat-item-814915"><A 
+    title="View all posts filed under XAML Madness" 
+    href="http://joshsmithonwpf.wordpress.com/category/xaml-madness/">XAML 
+    Madness</A> (11) </LI></UL>
+  <LI class="widget widget_archives" id=archives>
+  <H2 class=widgettitle>Blog Log</H2>
+  <UL>
+    <LI><A title="October 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/">October 
+    2007</A>&nbsp;(4) 
+    <LI><A title="September 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/">September 
+    2007</A>&nbsp;(5) 
+    <LI><A title="August 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/08/">August 2007</A>&nbsp;(9) 
+
+    <LI><A title="July 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/07/">July 2007</A>&nbsp;(10) 
+    <LI><A title="June 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/06/">June 2007</A>&nbsp;(14) 
+    <LI><A title="May 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/05/">May 2007</A>&nbsp;(15) 
+    <LI><A title="April 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/04/">April 2007</A>&nbsp;(15) 
+
+    <LI><A title="March 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/03/">March 2007</A>&nbsp;(14) 
+
+    <LI><A title="February 2007" 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/">February 
+    2007</A>&nbsp;(19) </LI></UL>
+  <LI class="widget widget_text" id=text-2>
+  <H2 class=widgettitle>The WPF.JoshSmith Library</H2>
+  <DIV class=textwidget>
+  <P align=center><A 
+  href="http://www.codeproject.com/useritems/WPFJoshSmith.asp"><IMG 
+  src="Demystifying dependency properties « Josh Smith on WPF_files/cpbob.png"></A> 
+  </P>
+  <P>Download my free WPF library from the CodeProject.</P></DIV>
+  <LI class="widget widget_links" id=links>
+  <H2 class=widgettitle>Blogroll</H2>
+  <UL>
+    <LI><A title="Great practical advice on databinding in WPF." 
+    href="http://www.beacosta.com/">Beatriz Costa</A> 
+    <LI><A 
+    title="A great series of blog posts about a design pattern tailored to WPF, by Dan Crevier." 
+    href="http://blogs.msdn.com/dancre/archive/2006/10/11/datamodel-view-viewmodel-pattern-series.aspx">DM-V-VM 
+    Pattern Series</A> 
+    <LI><A title="Insights from a member of the WPF team at Microsoft." 
+    href="http://blogs.msdn.com/mikehillberg/default.aspx">Mike Hillberg on 
+    WPF</A> 
+    <LI><A title="The rants and raves of The WPF Hickster." 
+    href="http://www.nickthuesen.com/">Nick Thuesen</A> 
+    <LI><A title="Interesting and useful information about WPF." 
+    href="http://pavanpodila.spaces.live.com/blog/">Pavan Podila</A> 
+    <LI><A title="Words from a WPF Program Manager at Microsoft." 
+    href="http://rrelyea.spaces.live.com/">Rob Relyea</A> 
+    <LI><A 
+    title="Lee Brimelow’s excellent blog about WPF, with a focus on graphical design." 
+    href="http://www.thewpfblog.com/">The WPF Blog</A> 
+    <LI><A title="Great content by the folks who write the WPF docs." 
+    href="http://blogs.msdn.com/wpfsdk/">The WPF SDK Blog</A> 
+    <LI><A title="A comprehensive list of WPF blogs." 
+    href="http://blogs.msdn.com/tims/articles/475132.aspx">Tim Sneath’s WPF Blog 
+    Roll</A> </LI></UL>
+  <LI class="widget widget_stats_topposts" id=top-posts>
+  <H2 class=widgettitle>The posts people really like</H2>
+  <UL>
+    <LI><A href="http://joshsmithonwpf.wordpress.com/a-guided-tour-of-wpf/">A 
+    Guided Tour of WPF</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/24/stretching-content-in-an-expander-header/">Stretching 
+    Content in an Expander Header</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/presentation-app/">Presentation 
+    App</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/05/05/binding-a-treeview-to-a-dataset/">Binding 
+    a TreeView to a DataSet</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/02/10/the-wpf-challenge/">The 
+    WPF Challenge</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/09/05/wpf-vs-windows-forms/">WPF 
+    vs. Windows Forms</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/03/29/tips-on-how-to-debug-and-learn-about-wpf/">Tips 
+    on how to debug and learn about WPF</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/10/16/the-danger-of-assigning-event-handlers-in-xaml/">The 
+    Danger of Assigning Event Handlers in XAML</A>
+    <LI><A href="http://joshsmithonwpf.wordpress.com/xbap-submissions/">WPF 
+    Challenge Submissions</A>
+    <LI><A 
+    href="http://joshsmithonwpf.wordpress.com/2007/06/12/searching-for-items-in-a-listbox/">Searching 
+    for items in a ListBox</A></LI></UL></LI></UL></DIV>
+<DIV id=footer>
+<P>Theme: Contempt by <A href="http://www.vault9.net/" 
+rel=designer>Vault9</A>.<BR><A href="http://wordpress.com/" rel=generator>Blog 
+at WordPress.com</A>. </P></DIV></DIV>
+<SCRIPT 
+src="Demystifying dependency properties « Josh Smith on WPF_files/quant.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>_qmeta="qc:adt=0;bti=Josh+Smith+on+WPF;lan=en;dat=20070517;pti=Demystifying+dependency+properties;own=joshsmith";_qacct="p-18-mFEk4J448M";quantserve();</SCRIPT>
+<NOSCRIPT>
+<P><IMG style="DISPLAY: none" height=1 alt="" 
+src="Demystifying dependency properties « Josh Smith on WPF_files/p-18-mFEk4J448M.gif" 
+width=1></P></NOSCRIPT>
+<SCRIPT src="Demystifying dependency properties « Josh Smith on WPF_files/w.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+st_go({blog:'737883',v:'wpcom',post:'102',subd:'joshsmithonwpf'});
+ex_go({x_theme:'contempt',x_lang:'en',x_dc:'luv',x_adt:'0',x_public:'1',x_mapped:'0',x_loggedin:'0',x_noads:'seen,notsearch',x_ads:'no',x_pagetype:'permalink',x_postage:'30to365'});
+addLoadEvent(function(){linktracker_init(737883,102);});
+</SCRIPT>
+<!-- SyntaxHighlighter Stuff -->
+<SCRIPT 
+src="Demystifying dependency properties « Josh Smith on WPF_files/shCore.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+	dp.SyntaxHighlighter.ClipboardSwf = 'http://s.wordpress.com/wp-content/plugins/highlight/clipboard.swf';
+	dp.SyntaxHighlighter.HighlightAll('code');
+</SCRIPT>
+</BODY></HTML>

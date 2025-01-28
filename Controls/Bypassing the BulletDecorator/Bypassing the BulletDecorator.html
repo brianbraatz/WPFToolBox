@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Bypassing the BulletDecorator</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/10/181238.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/10/230324.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/10/190306.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Bypassing the BulletDecorator</h2></a><p style="text-align: right;">October 19, 2007<br>New York, N.Y.</p><p>
+Got an email this morning from someone trying to make the WPF <i>CheckBox</i> control look a little different.  When you set an image or drawing as the content of a <i>CheckBox</i>, the checkmark box is vertically centered, like in the image on the left:
+</p>
+<p align="center">
+<img src="Bypassing%20the%20BulletDecorator_files/UpperLeftCheckBoxTemplate.png">
+</p>
+<p>
+He wanted the checkmark box positioned on the upper left, as in the second image.
+</p>
+<p>
+The default template for the <i>CheckBox</i> is basically a <i>BulletDecorator</i>; its <i>Bullet</i> property is set to a <i>BulletChrome</i> object (that's the checkmark box) and its <i>Child</i> property is set to a <i>ContentPresenter</i>
+(that's for the content of the control). After fooling around setting a
+few alignment properties, I couldn't get that checkmark box to budge. I
+suspect the vertical positioning is hard-coded in the <i>ArrangeOverride</i> method in <i>BulletDecorator</i>.
+</p>
+<p>
+So I re-thought the template's visual tree: Rather than a <i>BulletDecorator</i> I began with a <i>Border</i>. I set the <i>Child</i> to a <i>Grid</i> with two auto-width columns. The first column contains a <i>BulletChrome</i> object with its <i>VerticalAlignment</i> property set to <i>Top</i>. The second column is the <i>ContentPresenter</i>. Everything else in the template is identical to the default <i>CheckBox</i> template (which I snagged using the DumpControlTemplate program from Chapter 25 of my book 
+<a href="http://www.charlespetzold.com/wpf"><i>Applications = Code + Markup</i></a>).  This new template doesn't use a <i>BulletDecorator</i> element at all.
+</p>
+<p>
+Here's the XAML file that produced the screen shot shown above:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/10/UpperLeftCheckBoxTemplate.xaml">UpperLeftCheckBoxTemplate.xaml</a>
+</p>
+<p>
+The new template is in the Resources section. I cleaned up some of the
+syntax of the default template and just commented out the old visual
+tree.
+</p>
+
+
+
+<div id="comments"><hr><p><b>Comments:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>
+I am "someone". I am flattered to see a blog entry about my question. Thank you for your reply.
+</p>
+<p>
+Actually I did try to 'Grid' it, but I forgot why I gave up keeping going this way.
+</p>
+<p>
+I have one more question: why the outer Border is needed?
+</p>
+<p>
+— Vincent Cheng, Fri, 19 Oct 2007 13:15:15 -0400 (EDT)
+</p>
+</div><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>
+The original template set the <i>Background</i> of the <i>BulletDecorator</i>
+to white, presumably because the bullet needs to show up against the
+background, so I figured I should add something to replace it. I see
+now I could have left out the <i>Border</i> and just set the <i>Background</i> of the <i>Grid</i>. — Charles
+</p></div><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="Bypassing the BulletDecorator" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/10/181238.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/10/230324.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

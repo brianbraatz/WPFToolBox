@@ -1,0 +1,162 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Assembling 3D Figures with Translation and Rotation</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/270644.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/310158.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/08/290236.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Assembling 3D Figures with Translation and Rotation</h2></a><p style="text-align: right;">August 29, 2007<br>Roscoe, N.Y.</p><p>
+With two-dimensional graphics, it's usually fairly easy to specify the
+coordinates that govern the location and size of a graphical figure.
+With 3D graphics, you might not have this convenience: Often you're
+working with primitives that have a fixed location and size, and you
+must use transforms to move and resize the figures.
+</p>
+<p>
+In Chapter 2 of my new book
+<a href="http://www.charlespetzold.com/3D"><i>3D Programming for Windows</i></a> I show how to use <i>TranslateTransform3D</i> and <i>ScaleTransform3D</i>
+to assemble simple figures from unit cubes. (A unit cube has a width,
+height, and depth of 1 unit and is centered on the origin of the 3D
+coordinate system.) In Chapter 3 I continue those demonstrations with
+rotation, and Chapter 7 has some more advanced math behind deriving
+complex rotations in 3D space.
+</p>
+<p>I'd like to show another demonstration here using unit cubes to
+construct a fairly simple figure (a 7-pointed star) in 3D space.
+Fortunately all the trigonometry involved will be in two dimensions on
+the XY plane. </p>
+<p>
+Here's a seven-pointed star with a radius of 1 centered on the origin
+of a conventional 2D Cartesian coordinate system. Each point of the
+start is associated with an angle measured counter-clockwise from the
+positive X axis:
+</p>
+<p align="center">
+<img src="Assembling%203D%20Figures%20with%20Translation%20and%20Rotation_files/SevenPointedStarFigure1.png">
+</p>
+<p>I started with 90° at the top and then just incremented by 51-3/7°
+(360 ÷ 7) going counter-clockwise. Each of the points of the star is
+also associated with a coordinate point whose X value is the cosine of
+the angle and whose Y value is the sine:
+</p>
+<p align="center">
+<img src="Assembling%203D%20Figures%20with%20Translation%20and%20Rotation_files/SevenPointedStarFigure2.png">
+</p>
+<p>The seven lines that form the star are the same lengths, which can
+be calculated using the Pythagorean theorem. Here's the calculation of
+the length of the line from the upper-right of the star to the
+bottom-left.
+</p>
+<ul>
+((–0.434 – 0.782)<sup>2</sup> + (–0.901 – 0.623)<sup>2</sup>)<sup>0.5</sup> = 1.950
+</ul>
+<p>I'm going to build the seven-pointed star from unit cubes, and the
+first step is to turn a unit cube into a "plank" that is 1.95 units
+long, (let's say) 1 unit deep, and (let's say also) 0.05 units thick.
+Here's the XAML file that performs this very first step:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/SevenPointedStarStep1.xaml">SevenPointedStarStep1.xaml</a>
+</p>
+<p>
+The unit cube is defined as a resource, and a <i>GeometryModel3D</i> based on this cube is also defined as a resource. This <i>GeometryModel3D</i> resource has a <i>ScaleTransform3D</i> applied with a <i>ScaleX</i> factor of 1.95 and a <i>ScaleY</i> of 0.05. The resource is named "plank" and Step 1 creates just one <i>ModelVisual3D</i> based on this resource. The figure is still centered on the origin:
+</p>
+<p align="center">
+<img src="Assembling%203D%20Figures%20with%20Translation%20and%20Rotation_files/SevenPointedStarStep1.png">
+</p>
+<p>The objective now is to create seven figures based on this resource,
+and apply translation and rotation transforms to them so they form the
+seven legs of the star. By default, rotations occur around the origin,
+so in this case it's easier to rotate the plank first and then
+translate it to its proper location. As an example, let's look at the
+leg from the upper-right point (0.782, 0.623) to the lower-left point
+(–0.434, –0.901). The angle this leg makes with the X axis can be
+calculated as the inverse tangent of the ratio of the difference
+between the Y and X coordinates:
+</p>
+<ul>
+tan<sup>-1</sup>((0.623 + 0.901) / (0.782 + 0.434)) = tan<sup>-1</sup>(1.524 / 1.216) = 51.4°
+</ul>
+<p>The center of the plank at the origin must be translated to the
+mid-point of that leg, which is the average of the points at the ends,
+or:
+</p>
+<ul>
+((0.782 – 0.434) / 2, (0.623 – 0.901) / 2) = (0.174, –0.139)
+</ul>
+<p>
+The plank can thus be positioned with an <i>AxisAngleRotation3D</i> element with an <i>Axis</i> property of <b>(0, 0, 1)</b> and an <i>Angle</i> of 51.4, followed by a <i>TranslateTransform3D</i> with <i>OffsetX</i> and <i>OffsetY</i> properties of 0.174 and –0.139, respectively.
+</p>
+<p>Continue with the other legs. Of course, you can take advantage of
+symmetry to reduce the calculations. Here's the resultant XAML file:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/SevenPointedStarStep2.xaml">SevenPointedStarStep2.xaml</a>
+</p>
+<p>
+And it looks like this:
+</p>
+<p align="center">
+<img src="Assembling%203D%20Figures%20with%20Translation%20and%20Rotation_files/SevenPointedStarStep2.png">
+</p>
+<p>Of course, once you have a figure like this completed, it's always
+fun to animate it, if only to verify that the sides actually change
+shade as they make different angles with the light source. Here's a
+version that rotates the star around the Z axis:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/SevenPointedStarStep3.xaml">SevenPointedStarStep3.xaml</a>
+</p>
+<p>And then I thought: Wouldn't it be fun to animate the seven planks
+so they started in a kind of stack and then moved to their proper
+positions in the star? Each of the <i>TranslateTransform3D</i> and <i>AxisAngleRotation3D</i> elements would need to have <i>x:Name</i> attributes, and I'd need another 13 <i>DoubleAnimation</i>
+elements. (It's not 14 because one of the legs has no rotation.) But
+the animations would be fairly simple because they'd have only simple <i>From</i> attributes and no <i>To</i> attributes. So here it is:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/SevenPointedStar.xaml">SevenPointedStar.xaml</a>
+</p>
+
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Assembling%203D%20Figures%20with%20Translation%20and%20Rotation_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="comments"><hr><p><b>Comments:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>
+I really like your .NET books! You're my hero!
+</p>
+<p>
+— Boris, Thu, 30 Aug 2007 15:44:28 -0400 (EDT)
+</p>
+</div><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="Assembling 3D Figures with Translation and Rotation" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/270644.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/310158.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

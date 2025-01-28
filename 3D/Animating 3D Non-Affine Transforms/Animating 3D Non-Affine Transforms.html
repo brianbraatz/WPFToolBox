@@ -1,0 +1,199 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Animating 3D Non-Affine Transforms</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/091221.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/100209.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/08/090250.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Animating 3D Non-Affine Transforms</h2></a><p style="text-align: right;">August 9, 2007<br>Roscoe, N.Y.</p><p>
+I woke up this morning thinking that I'd be writing a <i>Matrix3DAnimation</i> class today, and it turned out I didn't have to. (Not today, anyway.)
+</p>
+<p>
+For several days now, I've had a graphics animation rolling around in
+my head. It involved a square cuboid that would be normal size on both
+ends, but pinched somewhere between those ends, rather like this:
+</p>
+<p align="center">
+<img src="Animating%203D%20Non-Affine%20Transforms_files/ItsEasierToPassASquareCuboidThroughTheEyeOfANeedle.png">
+</p>
+<p>
+But the pinched part would move back and forth, almost as if the square cuboid were being passed through the eye of a needle.
+</p>
+<p>
+I wanted to use a
+<a href="http://www.charlespetzold.com/blog/2007/08/060605.html">3D non-affine transform</a>
+for this job, but I knew I couldn't simply apply it to a single figure
+to achieve the effect I wanted. The non-affine transforms possible with
+a 4×4 transform matrix can only taper from one end to the other. The
+taper can't be reversed in the middle. I knew I'd need two adjacent
+cubes animated oppositely to achieve this particular effect.
+</p>
+<p>I figured I'd be determining a couple of non-affine transforms for
+the extreme positions of the animation, and then I'd need to animate
+between two <i>Matrix3D</i> objects. That would require a <i>Matrix3DAnimation</i>
+class, which doesn't exist in the Windows Presentation Foundation. But
+when I actually sat down to do the math, I discovered I could do it
+entirely in XAML.
+</p>
+<p>Let's begin with two adjacent unit cubes, one to the right of the YZ
+plane and one to the left, but centered on the X axis, so the Y and Z
+coordinates of the vertices are 0.5 and -0.5, and X coordinates are 0
+and -1 (for the cube on the left) and 0 and 1 (for the cube on the
+right). The "eye of the needle" is the origin of the 3D axis.
+</p>
+<p>Let's look at the cube to the right of the YZ axis. At the beginning
+of the animation, I want it to look like the right tapered section of
+the figure shown above. The right edge of the cube is at an X
+coordinate of 2, and the left edge of the cube is 1/10th the normal
+size. Here's a little chart showing the desired numeric transforms for
+combinations of the vertices. (Notice that Y and Z coordinates can be
+handled similarly.)
+</p>
+<table align="center" cellpadding="4" rules="all">
+  <caption>Beginning of Animation</caption>
+  <tbody><tr><td>&nbsp;</td><th>x = 0</th><th>x = 1</th></tr>
+  <tr><th>y&amp;z = -0.5</th><td>x' = 0<br>y' = -0.05<br>z' = -0.05</td><td>x' = 2<br>y' = -0.5<br>z' = -0.5</td></tr>
+  <tr><th>y&amp;z = 0.5</th><td>x' = 0<br>y' = 0.05<br>z' = 0.05</td><td>x' = 2<br>y' = 0.5<br>z' = 0.5</td></tr>
+</tbody></table>
+<p>
+Keep in mind that the generalized non-affine transforms are (using property names of the <i>Matrix3D</i> structure):
+</p>
+<ul>
+x' = (M11•x + M21•y + M31•z + OffsetX) / (M14•x + M24•y + M34•z + M44)<br>
+y' = (M12•x + M22•y + M32•z + OffsetY) / (M14•x + M24•y + M34•z + M44)<br>
+z' = (M13•x + M23•y + M33•z + OffsetZ) / (M14•x + M24•y + M34•z + M44)
+</ul>
+<p>
+The denominator must be the same for the three formulas. In this case, it's easiest to begin with y' and z':
+</p>
+<ul>
+y' = y / (10 - 9x)<br>
+z' = z / (10 - 9x)<br>
+</ul>
+<p>
+That means that the formula for x' must have the same denominator, so:
+</p>
+<ul>
+x' = 2x / (10 - 9x)
+</ul>
+<p>
+At the end of the animation, I wanted the cube to be very short along the X axis, so I set up a table like this:
+</p>
+<table align="center" cellpadding="4" rules="all">
+  <caption>End of Animation</caption>
+  <tbody><tr><td>&nbsp;</td><th>x = 0</th><th>x = 1</th></tr>
+  <tr><th>y&amp;z = -0.5</th><td>x' = 0<br>y' = -0.05<br>z' = -0.05</td><td>x' = 0.25<br>y' = -0.5<br>z' = -0.5</td></tr>
+  <tr><th>y&amp;z = 0.5</th><td>x' = 0<br>y' = 0.05<br>z' = 0.05</td><td>x' = 0.25<br>y' = 0.5<br>z' = 0.5</td></tr>
+</tbody></table>
+<p>
+The transform formulas are:
+</p>
+<ul>
+x' = 0.25x / (10 - 9x)<br>
+y' = y / (10 - 9x)<br>
+z' = z / (10 - 9x)
+</ul>
+<p>It is now obvious that only one element of the matrix is changing
+during the animation. Let's call it K. Here's the 4×4 transform matrix:
+</p>
+<table align="center" cellpadding="4" frame="vsides" rules="none">
+<tbody><tr><td>K</td><td>0</td><td>0</td><td>-9</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>10</td></tr>
+</tbody></table>
+<p>
+Wouldn't it be nice to set up a <i>DoubleAnimation</i> targetting the <i>M11</i> property of a <i>Matrix3D</i>
+element?. You can't do it! Animation targets must be dependency
+properties, and any class that implements dependency properties must
+derive from <i>DependencyObject</i>, and <i>Matrix3D</i> can't derive from <i>DependencyObject</i> because it's not even a class — it's a structure.
+</p>
+<p>
+That's why I figured I'd need to target the <i>Matrix</i> property of a <i>MatrixTransform3D</i> element, and that I'd need to do this job by writing a <i>Matrix3DAnimation</i> class to interpolate between two <i>Matrix3D</i> objects. Of course, like virtually all properties in the WPF 3D classes, the <i>Matrix</i> property itself <i>is</i> a dependency property.
+</p>
+<p>
+But wait! That matrix I just derived can actually be expressed as the product of two matrices:
+</p>
+<table align="center" cellpadding="4">
+  <tbody><tr><td>
+<table cellpadding="4" frame="vsides" rules="none">
+<tbody><tr><td>1</td><td>0</td><td>0</td><td>-9</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>10</td></tr>
+</tbody></table>
+  </td>
+  <td>×</td>
+  <td>
+<table cellpadding="4" frame="vsides" rules="none">
+<tbody><tr><td>K</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+</tbody></table>
+  </td>
+  <td>=</td>
+  <td>
+<table cellpadding="4" frame="vsides" rules="none">
+<tbody><tr><td>K</td><td>0</td><td>0</td><td>-9</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>10</td></tr>
+</tbody></table>
+  </td></tr>
+</tbody></table>
+<p>
+The matrix on the left is still a non-affine transform, but all the
+elements are constant. The matrix on the right of the times sign is a
+simple scale transform. To animate the composite transform, all that
+needs to be done is to use a <i>DoubleAnimation</i> to animate the <i>ScaleX</i> property of a <i>ScaleTransform3D</i> element! 
+</p>
+<p>
+And when you think about it like that, it's obvious: You need a
+non-affine transform to taper the figure, but then only a simple <i>ScaleTransform3D</i> to scale it along the X axis.
+</p>
+<p>
+When constructing the XAML file, I decided to add a third transform: A <i>TranslateTransform3D</i>
+that shifts a unit cube centered on the origin to a unit cube sitting
+to the right of the YZ plane. This transform is applied first, followed
+by the <i>MatrixTransform3D</i> followed by the <i>ScaleTransform3D</i>.
+</p>
+<p>
+The left section of the figure is constructed similarly, except that the <i>TranslateTransform3D</i> shifts the unit cube to the left of the YZ plane, and the <i>MatrixTransform3D</i> has an <i>M14</i> property of 9 rather than a -9 to taper in the other direction. The two <i>ScaleX</i>
+animations have to go in opposite directions: for the cube on the
+right, the animation is from 2 to 0.25, and for the cube on the left,
+from 0.25 to 2. The animations can then reverse and repeat forever. </p>
+<p>
+Because both figures begin with a unit cube centered around the origin,
+I decided to define it as a shareable resource, along with the material
+that colors both cubes. The complete XAML file is here:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/ItsEasierToPassASquareCuboidThroughTheEyeOfANeedle.xaml">ItsEasierToPassASquareCuboidThroughTheEyeOfANeedle.xaml</a>
+</p>
+<p>
+And now, a program and blog entry that I figured would occupy much of the day is finished before 2:00 PM EDT.
+</p>
+<p>And that's why I love XAML.  
+</p>
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Animating%203D%20Non-Affine%20Transforms_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+
+
+<div id="comments"><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="Animating 3D Non-Affine Transforms" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/091221.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/100209.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

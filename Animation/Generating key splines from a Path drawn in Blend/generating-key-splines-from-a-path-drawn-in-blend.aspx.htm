@@ -1,0 +1,489 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Expression Blend and Design : Generating key splines from a Path drawn in Blend</title>
+ 
+
+
+
+
+<meta name="keywords" content="Expression Interactive Designer,Expression,Designer Tools,Windows Presentation Foundation,Expression Blend">
+<meta name="description" content="In Blend you can author keyframes with ease out and ease in interpolation to give your animations acceleration and deceleration: in other words, life. You can also draw a motion path and animate an element along it. A value curve is a graph of the change">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/expression/pingback.aspx">
+<link rel="stylesheet" href="generating-key-splines-from-a-path-drawn-in-blend.aspx_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="generating-key-splines-from-a-path-drawn-in-blend.aspx_files/print.htm" type="text/css" media="print">
+<link rel="stylesheet" href="generating-key-splines-from-a-path-drawn-in-blend.aspx_files/customcss.css" type="text/css" media="screen">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Expression Blend and Design (RSS 2.0)" href="http://blogs.msdn.com/expression/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Expression Blend and Design (Atom 1.0)" href="http://blogs.msdn.com/expression/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Generating key splines from a Path drawn in Blend Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/expression/commentrss.aspx?PostID=1395593">
+
+	<script src="generating-key-splines-from-a-path-drawn-in-blend.aspx_files/global.js" type="text/javascript"></script>
+<style>
+.DoNotDisplay { display: none; }
+</style></head><body>
+<form name="aspnetForm" method="post" action="/expression/archive/2007/01/01/generating-key-splines-from-a-path-drawn-in-blend.aspx" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFI2N0bDAwJF8kY3RsMDAkXyRidCRfJHdzJF8kU2VhcmNoQm94OF9SPxZcTrUZtH+KlInBIuHdXL8=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script language="javascript" type="text/javascript" src="generating-key-splines-from-a-path-drawn-in-blend.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script>
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Welcome to MSDN Blogs
+<a id="ctl00___ctl00___duw1_ac1___Login" href="http://blogs.msdn.com/login.aspx?ReturnUrl=%2fexpression%2farchive%2f2007%2f01%2f01%2fgenerating-key-splines-from-a-path-drawn-in-blend.aspx">Sign in</a> | <a id="ctl00___ctl00___duw1_ac1___Register" href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/expression/archive/2007/01/01/generating-key-splines-from-a-path-drawn-in-blend.aspx">Join</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="wrapper">
+	<div id="container">
+		<div id="header">
+			
+<div id="title">
+	<div id="SearchSideBar">
+		
+<div id="search">
+	<input name="ctl00$_$ctl00$_$bt$_$ws$_$SearchBox" id="ctl00___ctl00___bt___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bt___ws___SearchButton(event);" type="text">
+	<a id="ctl00___ctl00___bt___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bt$_$ws$_$SearchButton','')">Search</a>
+</div>	
+	</div>
+	<h1><a id="ctl00___ctl00___bt___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/expression/default.aspx">Expression Blend and Design</a></h1>
+	<p id="tagline">The team blog of the Microsoft Expression Blend and Design products.</p>
+</div>
+<div id="nav">
+	<div id="SubscriptionsSideBar">
+		
+<div id="subscriptions">
+<ul>
+	<li><a id="ctl00___ctl00___bt___s___rss" href="http://blogs.msdn.com/expression/rss.xml">RSS 2.0</a></li>
+	<li><a id="ctl00___ctl00___bt___s___atom" href="http://blogs.msdn.com/expression/atom.xml">Atom 1.0</a></li>
+	
+</ul></div>
+	</div>
+	<ul>
+		<li><a id="ctl00___ctl00___bt___home" href="http://blogs.msdn.com/expression/default.aspx">Home</a></li>
+		
+		
+	</ul>
+</div></div>
+		<div id="contentmargin"></div>
+		<div id="contentwrapper">
+			<div id="sidebar-a">
+				
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul>
+	<ul class="SidebarTagCloud">
+<li class="Tag2"><a href="http://blogs.msdn.com/expression/archive/tags/Designer+Tools/default.aspx" rel="tag">Designer Tools</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/expression/archive/tags/Expression/default.aspx" rel="tag">Expression</a></li>
+<li class="Tag3"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Blend/default.aspx" rel="tag">Expression Blend</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Design/default.aspx" rel="tag">Expression Design</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Graphic+Designer/default.aspx" rel="tag">Expression Graphic Designer</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Interactive+Designer/default.aspx" rel="tag">Expression Interactive Designer</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Web/default.aspx" rel="tag">Expression Web</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/expression/archive/tags/Expression+Web+Designer/default.aspx" rel="tag">Expression Web Designer</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/expression/archive/tags/Microsoft+Silverlight/default.aspx" rel="tag">Microsoft Silverlight</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/expression/archive/tags/MSDN/default.aspx" rel="tag">MSDN</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/expression/archive/tags/survey/default.aspx" rel="tag">survey</a></li>
+<li class="Tag3"><a href="http://blogs.msdn.com/expression/archive/tags/Windows+Presentation+Foundation/default.aspx" rel="tag">Windows Presentation Foundation</a></li>
+</ul>
+
+	</ul>
+</div>
+
+<div id="NewsSideBar">
+	
+</div>
+
+<div id="ArchiveSideBar">
+	
+
+<h3>Archives</h3>
+<ul>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/10.aspx">October 2007 (4)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/09.aspx">September 2007 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/08.aspx">August 2007 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/07.aspx">July 2007 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/06.aspx">June 2007 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/05.aspx">May 2007 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/04.aspx">April 2007 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/03.aspx">March 2007 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2007/01.aspx">January 2007 (4)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/12.aspx">December 2006 (7)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/09.aspx">September 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/08.aspx">August 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/07.aspx">July 2006 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/06.aspx">June 2006 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/05.aspx">May 2006 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/04.aspx">April 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/03.aspx">March 2006 (10)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/02.aspx">February 2006 (21)</a></li>
+
+	<li><a href="http://blogs.msdn.com/expression/archive/2006/01.aspx">January 2006 (14)</a></li>
+
+</ul>
+</div>
+
+<div id="LinkSideBar">
+	
+    <h3>Article Categories</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl01_Link" href="http://blogs.msdn.com/expression/pages/samples-and-tutorials-gallery-expression-design.aspx">Design : Samples and Tutorials</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl02_Link" href="http://blogs.msdn.com/expression/articles/517022.aspx">Blend : Community Samples</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl03_Link" href="http://blogs.msdn.com/expression/articles/543834.aspx">Blend : Samples and Tutorials</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl04_Link" href="http://blogs.msdn.com/expression/pages/community-samples-gallery-expression-design.aspx">Design : Community Samples</a></li>
+    </ul>
+
+    <h3>Blend Team Bloggers</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl01_Link" href="http://blogs.msdn.com/adamu/">Adam Ulrich</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl02_Link" href="http://blogs.msdn.com/alanga/">Alan Gasperini</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl04_Link" href="http://blogs.msdn.com/jeremykuhne/">Jeremy Kuhne</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl06_Link" href="http://www.aisto.com/roeder/frontier">Lutz Roeder</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl07_Link" href="http://blogs.msdn.com/micahel">Michael J Hunter</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl09_Link" href="http://blogs.msdn.com/stevewhitepsfd/">Steve White</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl11_Link" href="http://blogs.msdn.com/unnir">Unni Ravindranathan</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl13_Link" href="http://blogs.msdn.com/mariogu">Mario Guzzi</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl14_Link" href="http://blogs.msdn.com/adrianma">Adrian Mascarenhas</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl15_Link" href="http://rhizohm.net/irhetoric/">Karsten Januszewski</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl16_Link" href="http://blogs.msdn.com/adrianvinca/">Adrian Vinca</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl17_Link" href="http://blogs.msdn.com/jrowe/">Jen Rowe</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl18_Link" href="http://blogs.msdn.com/danteg">Dante Gagne</a></li>
+    
+        
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl21_Link" href="http://blogs.msdn.com/lingesh">Lingesh Palaniappan</a></li>
+    
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl23_Link" href="http://blog.kirupa.com/">Kirupa Chinnathambi</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl24_Link" href="http://www.blois.us/blog/">Peter Blois</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl25_Link" href="http://blog.nibblestutorials.net/">Celso Gomes</a></li>
+    </ul>
+
+    <h3>Need Help?</h3>
+    <ul>
+        
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl02_Links_ctl02_Link" href="http://www.microsoft.com/communities/newsgroups/en-us/default.aspx?dg=microsoft.public.expression.interactivedesigner&amp;lang=en&amp;cr=US">Expression Blend Discussion</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl02_Links_ctl03_Link" href="http://www.microsoft.com/communities/newsgroups/en-us/default.aspx?dg=microsoft.public.expression.graphicdesigner&amp;lang=en&amp;cr=US">Expression Design Discussion</a></li>
+    
+        
+    </ul>
+
+    <h3>Related Expression Sites</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl01_Link" href="http://blogs.msdn.com/xWeb">Expression Web Team Blog</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl02_Link" href="http://channel9.msdn.com/tags/Expression">C9 Expression Videos</a></li>
+    </ul>
+
+
+</div>
+			</div>
+			<div id="content"><div id="content2">
+				
+			
+
+
+
+
+<div class="post">
+	<div class="posthead">
+		<div class="postviewhead">
+			Monday, January 01, 2007 3:35 PM
+			by
+			<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=15719">xprblog</a> 
+			
+		</div>
+		<h2>Generating key splines from a Path drawn in Blend</h2>
+	</div>
+	<div class="postcontent">
+		<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">In Blend you can author keyframes with <i style="">ease out</i> and <i style="">ease in</i>
+interpolation to give your animations acceleration and deceleration: in
+other words, life. You can also draw a motion path and animate an
+element along it. A <i style="">value curve</i> is a graph of the
+change in a property value over time, and the combination of different
+value curves for different properties allows fine control over advanced
+scenarios such as acceleration along a curved trajectory.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">The previous post </font><a href="http://blogs.msdn.com/expression/archive/2006/12/30/keyframe-easing-and-key-splines.aspx"><font face="Calibri" size="3">Keyframe easing and key splines</font></a><font face="Calibri" size="3"> explains the string of numbers in a XAML KeySpline attribute such as those generated by Blend’s <i style="">ease out</i> and <i style="">ease in</i>
+settings. In a nutshell, the numbers are one keyframe’s worth of
+control points on a value curve. You can draw a value curve in Blend
+using the Pen tool and if you associate that curve with an element, a
+double property, and scales for the axes, then it’s a simple task to
+generate a set of keyframes and key splines. There are some scenarios
+where doing this is more appropriate than using Blend’s timeline so
+here’s a sample application which will get you started. The sample is
+unsupported but it is offered in the hope that it will be useful,
+instructive, or interesting.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><a class="" href="http://www.xamlshare.com/sparkle/samplesbeta1/ValueCurve2KeySplines.zip" mce_href="http://www.xamlshare.com/sparkle/samplesbeta1/ValueCurve2KeySplines.zip"><font face="Calibri" size="3">Download the ValueCurve2KeySplines source code</font></a><font face="Calibri" size="3"> (Blend Beta 1).</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">Once
+you’ve downloaded and unzipped the sample project files, open and test
+(F5) the application. After building, the message on the artboard will
+disappear and the scene will display correctly. In the running
+application you can see three different-colored value curves, each of
+which targets a different property of the red plus sign-shaped element.
+When you click the ‘Generate’ button, an animation is generated from
+each of the value curves and these animations are saved in XAML format
+into the build folder in a file named Storyboard.xaml. The animations
+are also inserted into the application and previewed. The animation
+generated from the value curves included in the sample resembles an
+object spring-mounted on a surface and set in motion with a twang. If
+you’d like to know how the value curves and parameters were assembled
+then you can recreate it with the following procedure.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">First,
+you need to delete the value curves and parameters so you can recreate
+them. Expand LayoutRoot &gt; Graph &gt; ValueCurves and delete the Path
+elements named X, Y and Angle. Expand LayoutRoot &gt; LegendBd &gt;
+[StackPanel] &gt; LegendLB and delete the ValueCurveParameters elements
+named XParms, YParms and AngleParms. On the artboard you’ll notice that
+the Legend list box is now empty. Running and clicking ‘Generate’ now
+will have no effect.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">The
+‘spring twang’ animation happens over a small area and time period so
+let’s scale everything up while we’re designing it and then we can set
+the correct scale later without having to change any curves. Find the
+TextBlock element LayoutRoot &gt; Graph &gt; Axes &gt; TimeAxis &gt;
+TimeMax and set the Text property to ‘10’ so that the animation has a
+duration of ten seconds.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">To
+recreate the value curve which controls the element’s X coordinate,
+first double-click ValueCurves to activate it; the yellow border
+confirms the activated state. Click the Pen tool (or press P) and draw
+a curve like the one in the diagram:</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><img style="width: 381px; height: 336px;" src="generating-key-splines-from-a-path-drawn-in-blend.aspx_files/ValueCurve2KeySplines001.jpg" mce_src="http://www.xamlshare.com/sparkle/images/Posts07/ValueCurve2KeySplines001.jpg" align="absmiddle" height="336" width="381"></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">Make
+the first point with a click-drag toward the top-right of the screen to
+set the control point in that direction. Click-drag to the right to
+draw each of the subsequent points which will set horizontal tangents
+at the same time. In the previous post I mentioned that it is not valid
+for a control point to fall outside the bounding box of the spline
+which owns it. But some of the tangents shown above (and likely some of
+the tangents you will draw) are not perfectly horizontal so the control
+point on one end of the tangent will be breaking the rule. The
+ValueCurve2KeySplines sample will silently tolerate such errors up to a
+configurable limit (by default, 5% of the corresponding side-length of
+the bounding box) and will correct the control point. Any error greater
+than this tolerance will still be corrected but will provoke a warning
+message when the ‘Generate’ button is clicked. If you don’t want any
+automatic correction to take place then set the
+Window1.controlPointWarningTolerance member to zero and correct your
+control points manually until no warning message is shown. You can
+manipulate the control points individually with ALT and the Direct
+Selection tool (A). In the object tree, name the Path ‘X’ and set its
+Stroke to DarkSeaGreen and its Fill to <i style="">No brush</i>.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">Now
+the value curve needs parameters so you need to create a parameter
+object which refers by name to the Path element representing the value
+curve. Make sure the ListBox named LegendLB is visible in the object
+tree. Click the Asset Library tool (the bottom tool in the Toolbox),
+click User Controls, and drag ValueCurveParameters out of the library.
+Be aware that the Asset Library will close as soon as your drag begins,
+but keep the mouse button pressed and drop the object onto LegendLB in
+the object tree to create a new ValueCurveParameters item in the
+ListBox. Name the object ‘XParms’ and then, in the Property Inspector,
+expand the Miscellaneous category and set the following property
+values: MaxValue = 350, MinValue = 50, set PathBrush to a
+SolidColorBrush with the Color DarkSeaGreen, TargetName = ‘Plus’,
+TargetProperty =
+’(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)’,
+and ValueCurveName = ‘X’. An easy way to determine the TargetProperty
+and to make sure any necessary property elements exist on the target
+element is to create a new timeline and animate that property. You can
+copy the correct property path from the Storyboard.TargetProperty
+attribute in the XAML. Then you can delete the timeline and the
+necessary property elements will remain on the element.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">For
+the element’s Y coordinate, draw a similar curve to the first but out
+of phase with it. Name the curve ‘Y’ and color it Navy with no Fill.
+Add a second parameter object (named ‘YParms’) to the ListBox and set
+the following property values: MaxValue = 350, MinValue = 50, PathBrush
+= ‘Navy’, TargetName = ‘Plus’, TargetProperty =
+’(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)’,
+and ValueCurveName = ‘Y’.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">Finally,
+for the element’s angle, draw a third curve out of phase with the other
+two. Name the curve ‘Angle’ and color it Orange with no Fill. Add a
+third parameter object (named ‘AngleParms’) to the ListBox and set the
+following property values: MaxValue = 30, MinValue = -30, PathBrush =
+‘Orange’, TargetName = ‘Plus’, TargetProperty =
+’(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)’,
+and ValueCurveName = ‘Angle’.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">The finished application should look similar to this:</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><img style="width: 380px; height: 272px;" src="generating-key-splines-from-a-path-drawn-in-blend.aspx_files/ValueCurve2KeySplines002.jpg" mce_src="http://www.xamlshare.com/sparkle/images/Posts07/ValueCurve2KeySplines002.jpg" align="absmiddle" height="272" width="380"></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">Test
+the animation and make any adjustments to the value curves to get the
+behavior you want. Essentially the frequency should be increasing while
+the amplitude is decreasing. When you’re happy, scale the whole
+animation down. Set TimeMax to ‘1.5’, set the MinValue and MaxValue of
+the X and Y parameter objects to 220 and 230 respectively, and set the
+MinValue and MaxValue of the Angle parameter object to -20 and 20
+respectively. Now test the animation again. If you want to use the
+animation in another application then make sure a target element with
+the correct name and property elements exist and paste the contents of
+Storyboard.xaml into Window.Resources. You’ll also have to change the
+xmlns attribute into an x:Key attribute.</font></p>
+<p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Calibri" size="3">For
+another example set of value curves and parameters, you’ll find a file
+called Example2.txt in the zip file along with the source code. Replace
+the ValueCurves and LegendLB element in Window1.xaml with the ones in
+Example2.txt and give the result a try. It’s an example of an element
+moving along a circular path with increasing speed.</font></p><span style="font-size: 11pt; line-height: 115%; font-family: 'Calibri','sans-serif';">Happy animating!</span>
+	</div>
+	<div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/expression/archive/tags/Expression+Interactive+Designer/default.aspx" rel="tag">Expression Interactive Designer</a>, <a href="http://blogs.msdn.com/expression/archive/tags/Expression/default.aspx" rel="tag">Expression</a>, <a href="http://blogs.msdn.com/expression/archive/tags/Designer+Tools/default.aspx" rel="tag">Designer Tools</a>, <a href="http://blogs.msdn.com/expression/archive/tags/Windows+Presentation+Foundation/default.aspx" rel="tag">Windows Presentation Foundation</a>, <a href="http://blogs.msdn.com/expression/archive/tags/Expression+Blend/default.aspx" rel="tag">Expression Blend</a></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+							
+</div>            
+
+
+
+	<h3>
+	Comments
+</h3>
+	<div id="comments">
+
+	<div class="comment">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_PermaLink" title="permalink" href="http://blogs.msdn.com/expression/archive/2007/01/01/generating-key-splines-from-a-path-drawn-in-blend.aspx#1914987">#</a>
+		Samples and Tutorials Gallery - Expression Blend<a name="1914987"></a>
+	</h4>
+	<div class="commentssubhead">
+		Monday, March 19, 2007 5:51 PM 
+		by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_NameLink" rel="nofollow" title="TrackBack" href="http://blogs.msdn.com/expression/pages/samples-and-tutorials-gallery-expression-blend.aspx" target="_blank">Microsoft Expression</a>
+		<span class="commentspan"></span>
+	</div>
+	<div class="commentsbody">
+		<p>To view a sample or tutorial, click on one of thumbnails or links below. Some samples also have supporting</p>
+
+	</div>
+	</div>
+
+	</div>
+
+
+
+
+
+<em>New Comments to this post are disabled</em>
+
+   
+    
+			</div></div>
+			<div id="contentfooter">&nbsp;</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bt___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bt$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/expression/archive/2007/01/01/generating-key-splines-from-a-path-drawn-in-blend.aspx"
+dc:identifier="http://blogs.msdn.com/expression/archive/2007/01/01/generating-key-splines-from-a-path-drawn-in-blend.aspx"
+dc:title="Generating key splines from a Path drawn in Blend"
+trackback:ping="http://blogs.msdn.com/expression/trackback.aspx?PostID=1395593" />
+</rdf:RDF>
+-->
+</form>
+</body></html>

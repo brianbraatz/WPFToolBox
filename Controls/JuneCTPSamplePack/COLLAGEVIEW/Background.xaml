@@ -1,0 +1,243 @@
+﻿<?Mapping XmlNamespace="Local" ClrNamespace="Ribbon" ?>
+<UserControl  
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="Local"
+    x:Class="Ribbon.Background3D"
+    Loaded="OnLoaded" 
+    >
+
+	<UserControl.Resources>
+
+	</UserControl.Resources>
+
+	<UserControl.Template>
+		<ControlTemplate >
+			
+			<ControlTemplate.Resources>
+				
+				<Storyboard x:Key="ImageBrushOne">
+					<ParallelTimeline RepeatBehavior="Forever"  Storyboard.TargetName="myViewport3D" Storyboard.TargetProperty="Children[0].Content.Children[0].Children[0].Material.Children[0].Brush.Transform.Children[0].Angle" >
+						<DoubleAnimation From="0" To="360" Duration="0:0:10"/>
+					</ParallelTimeline>
+				</Storyboard>
+
+				<Storyboard x:Key="ImageBrushTwo">
+					<ParallelTimeline RepeatBehavior="Forever"  Storyboard.TargetName="myViewport3D" Storyboard.TargetProperty="Children[0].Content.Children[0].Children[0].Material.Children[1].Brush.Transform.Children[0].Angle" >
+						<DoubleAnimation From="0" To="360" Duration="0:0:23"/>
+					</ParallelTimeline>
+				</Storyboard>
+
+				<Storyboard x:Key="ImageBrushThree">
+					<ParallelTimeline RepeatBehavior="Forever"  Storyboard.TargetName="myViewport3D" Storyboard.TargetProperty="Children[0].Content.Children[0].Children[0].Material.Children[2].Brush.Transform.Children[0].Angle" >
+						<DoubleAnimation From="0" To="360" Duration="0:0:41"/>
+					</ParallelTimeline>
+				</Storyboard>
+
+				<Storyboard x:Key="ImageBrushFour">
+					<ParallelTimeline RepeatBehavior="Forever"  Storyboard.TargetName="myViewport3D" Storyboard.TargetProperty="Children[0].Content.Children[0].Children[0].Material.Children[3].Brush.Transform.Children[0].Angle" >
+						<DoubleAnimation From="0" To="360" Duration="0:0:57"/>
+					</ParallelTimeline>
+				</Storyboard>
+				
+				<MeshGeometry3D x:Key="PlaneMesh"
+					Positions="-1 -1 0  1 -1 0  -1 1 0  1 1 0"
+					Normals="0 0 1  0 0 1  0 0 1  0 0 1"
+					TextureCoordinates="0 1  1 1  0 0  1 0   "
+					TriangleIndices="0 1 2  1 3 2" />
+					
+			</ControlTemplate.Resources>
+			
+			<Grid x:Name="myGrid">
+				<Viewport3D Focusable="true" x:Name="myViewport3D" ClipToBounds="true" Grid.Column="1" Grid.Row="0">
+					<Viewport3D.Camera>
+						<PerspectiveCamera 
+						Position="0,0,0.5" 
+						LookDirection="0,0,-1"
+						UpDirection="0,1,0"
+						NearPlaneDistance="0.25"
+						FarPlaneDistance="20"
+						FieldOfView="60" />
+					</Viewport3D.Camera>
+					<Viewport3D.Children>
+
+						<ModelVisual3D>
+
+							<ModelVisual3D.Transform>
+								<Transform3DGroup>
+									<Transform3DGroup.Children>
+										<Transform3DCollection >
+
+											<ScaleTransform3D ScaleX="1" ScaleY="1"  ScaleZ="1" />
+											<RotateTransform3D>
+												<RotateTransform3D.Rotation>
+													<AxisAngleRotation3D Axis="0 1 0" Angle="0" />
+												</RotateTransform3D.Rotation>
+											</RotateTransform3D>
+											<TranslateTransform3D OffsetX="0" OffsetY="0" OffsetZ="0" />
+
+										</Transform3DCollection>
+									</Transform3DGroup.Children>
+								</Transform3DGroup>
+							</ModelVisual3D.Transform>
+
+							<ModelVisual3D.Content>
+
+								<Model3DGroup >
+									<Model3DGroup.Transform>
+										<Transform3DGroup>
+											<Transform3DGroup.Children>
+												<Transform3DCollection >
+
+													<ScaleTransform3D ScaleX="1" ScaleY="1"  ScaleZ="1" />
+													<RotateTransform3D>
+														<RotateTransform3D.Rotation>
+															<AxisAngleRotation3D Axis="0 1 0" Angle="0" />
+														</RotateTransform3D.Rotation>
+													</RotateTransform3D>
+													<TranslateTransform3D OffsetX="0" OffsetY="0" OffsetZ="0" />
+
+												</Transform3DCollection>
+											</Transform3DGroup.Children>
+										</Transform3DGroup>
+									</Model3DGroup.Transform>
+
+									<Model3DGroup.Children>
+
+
+										<Model3DGroup >
+											<Model3DGroup.Transform>
+												<Transform3DGroup>
+													<Transform3DGroup.Children>
+														<Transform3DCollection >
+
+															<ScaleTransform3D ScaleX="1" ScaleY="1"  ScaleZ="1" />
+
+															<RotateTransform3D >
+																<RotateTransform3D.Rotation >
+																	<AxisAngleRotation3D Axis="0 1 0" Angle="45" />
+																</RotateTransform3D.Rotation>
+															</RotateTransform3D>
+
+															<TranslateTransform3D OffsetX="0" OffsetY="0" OffsetZ="0" />
+
+														</Transform3DCollection>
+													</Transform3DGroup.Children>
+												</Transform3DGroup>
+											</Model3DGroup.Transform>
+
+											<Model3DGroup.Children>
+
+
+												<GeometryModel3D Geometry="{DynamicResource PlaneMesh}" >
+													<GeometryModel3D.Material>
+														<MaterialGroup>
+															<MaterialGroup.Children>
+																<EmissiveMaterial>
+																	<EmissiveMaterial.Brush>
+																		<ImageBrush ImageSource="images\star.png">
+																			<ImageBrush.Transform>
+																				<TransformGroup>
+																					<TransformGroup.Children>
+																						<RotateTransform CenterX="0.5" CenterY="0.5" Angle="0" />
+																					</TransformGroup.Children>
+																				</TransformGroup>
+																			</ImageBrush.Transform>
+																		</ImageBrush>
+																	</EmissiveMaterial.Brush>
+																</EmissiveMaterial>
+
+																<EmissiveMaterial>
+																	<EmissiveMaterial.Brush>
+																		<ImageBrush ImageSource="images\star.png">
+																			<ImageBrush.Transform>
+																				<TransformGroup>
+																					<TransformGroup.Children>
+																						<RotateTransform CenterX="0.5" CenterY="0.5" Angle="0" />
+																					</TransformGroup.Children>
+																				</TransformGroup>
+																			</ImageBrush.Transform>
+																		</ImageBrush>
+																	</EmissiveMaterial.Brush>
+																</EmissiveMaterial>
+
+																<EmissiveMaterial>
+																	<EmissiveMaterial.Brush>
+																		<ImageBrush ImageSource="images\star.png">
+																			<ImageBrush.Transform>
+																				<TransformGroup>
+																					<TransformGroup.Children>
+																						<RotateTransform CenterX="0.5" CenterY="0.5" Angle="0" />
+																					</TransformGroup.Children>
+																				</TransformGroup>
+																			</ImageBrush.Transform>
+																		</ImageBrush>
+																	</EmissiveMaterial.Brush>
+																</EmissiveMaterial>
+
+																<EmissiveMaterial>
+																	<EmissiveMaterial.Brush>
+																		<ImageBrush ImageSource="images\star.png">
+																			<ImageBrush.Transform>
+																				<TransformGroup>
+																					<TransformGroup.Children>
+																						<RotateTransform CenterX="0.5" CenterY="0.5" Angle="0" />
+																					</TransformGroup.Children>
+																				</TransformGroup>
+																			</ImageBrush.Transform>
+																		</ImageBrush>
+																	</EmissiveMaterial.Brush>
+																</EmissiveMaterial>
+
+															</MaterialGroup.Children>
+														</MaterialGroup>
+													</GeometryModel3D.Material>
+													<GeometryModel3D.Transform>
+														<Transform3DGroup>
+															<Transform3DGroup.Children>
+																<Transform3DCollection>
+
+																	<ScaleTransform3D ScaleX="1" ScaleY=" 0.75"  ScaleZ="1" />
+																	<RotateTransform3D >
+																		<RotateTransform3D.Rotation>
+																			<AxisAngleRotation3D Axis="1 0 0" Angle="0" />
+																		</RotateTransform3D.Rotation>
+																	</RotateTransform3D>
+																	<TranslateTransform3D OffsetX="0" OffsetY="0" OffsetZ="0" />
+
+																</Transform3DCollection>
+															</Transform3DGroup.Children>
+														</Transform3DGroup>
+													</GeometryModel3D.Transform>
+												</GeometryModel3D>
+
+
+											</Model3DGroup.Children>
+										</Model3DGroup>
+
+
+										<Model3DGroup>
+											<Model3DGroup.Children>
+
+												<AmbientLight Color="#ffcccccc"/>
+												<DirectionalLight Color="LightGray" Direction="-1,-1,-1" />
+											</Model3DGroup.Children>
+										</Model3DGroup>
+
+
+									</Model3DGroup.Children>
+								</Model3DGroup>
+
+							</ModelVisual3D.Content>
+						</ModelVisual3D>
+
+					</Viewport3D.Children>
+				</Viewport3D>
+			</Grid>
+
+		</ControlTemplate>
+	</UserControl.Template>
+		
+	
+
+</UserControl>

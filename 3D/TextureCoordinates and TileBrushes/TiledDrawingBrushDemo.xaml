@@ -1,0 +1,78 @@
+<!-- ========================================================
+      TiledDrawingBrushDemo.xaml (c) 2006 by Charles Petzold
+     ======================================================== -->
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      WindowTitle="Tiled DrawingBrush Demo"
+      Title="Tiled DrawingBrush Demo">
+    <Page.Resources>
+
+        <!-- Define tile pattern as GeometryDrawing resource -->
+        <GeometryDrawing x:Key="drawing" Brush="White">
+            <GeometryDrawing.Pen>
+                <Pen Brush="Black" />
+            </GeometryDrawing.Pen>
+            <GeometryDrawing.Geometry>
+                <RectangleGeometry Rect="0 0 10 10" />
+            </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+    </Page.Resources>
+
+    <Viewport3D>
+        <ModelVisual3D>
+            <ModelVisual3D.Content>
+                <Model3DGroup>
+
+                    <!-- TextureCoordinates normalized to (0, 1) -->
+                    <GeometryModel3D>
+                        <GeometryModel3D.Geometry>
+                            <MeshGeometry3D Positions="-2.5 0 0, -0.5 0 0, -2.5 0 -4, -0.5 0 -4"
+                                            TriangleIndices="0 1 2, 1 3 2"
+                                            TextureCoordinates="0 1, 1 1, 0 0, 1 0" />
+                        </GeometryModel3D.Geometry>
+    
+                        <GeometryModel3D.Material>
+                            <DiffuseMaterial>
+                                <DiffuseMaterial.Brush>
+                                    <DrawingBrush Drawing="{StaticResource drawing}"
+                                                  TileMode="Tile"
+                                                  Viewport="0 0 0.1 0.05" />
+                                </DiffuseMaterial.Brush>
+                            </DiffuseMaterial>
+                        </GeometryModel3D.Material>
+                    </GeometryModel3D>
+
+                    <!-- TextureCoordinates of (0,0) to (100, 50) -->
+                    <GeometryModel3D>
+                        <GeometryModel3D.Geometry>
+                            <MeshGeometry3D Positions="0.5 0 0, 2.5 0 0, 0.5 0 -4, 2.5 0 -4"
+                                            TriangleIndices="0 1 2, 1 3 2"
+                                            TextureCoordinates="0 50, 100 50, 0 0, 100 0" />
+                        </GeometryModel3D.Geometry>
+    
+                        <GeometryModel3D.Material>
+                            <DiffuseMaterial>
+                                <DiffuseMaterial.Brush>
+                                    <DrawingBrush Drawing="{StaticResource drawing}"
+                                                  TileMode="Tile"
+                                                  Viewport="0 0 10 2.5"
+                                                  ViewportUnits="Absolute" />
+                                </DiffuseMaterial.Brush>
+                            </DiffuseMaterial>
+                        </GeometryModel3D.Material>
+                    </GeometryModel3D>
+
+                    <AmbientLight Color="White" />
+
+                </Model3DGroup>
+            </ModelVisual3D.Content>
+        </ModelVisual3D>
+
+        <Viewport3D.Camera>
+            <PerspectiveCamera Position="0 3.5 5"
+                               LookDirection="0 -1 -2"
+                               UpDirection="0 1 0"
+                               FieldOfView="45" />
+        </Viewport3D.Camera>
+    </Viewport3D>
+</Page>

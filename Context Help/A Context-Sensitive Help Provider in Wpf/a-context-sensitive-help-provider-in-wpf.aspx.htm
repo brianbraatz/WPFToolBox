@@ -1,0 +1,736 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Mike Hillberg's Blog on Wpf : A Context-Sensitive Help Provider in Wpf</title>
+ 
+
+
+
+
+<meta name="keywords" content="Tips and Tricks,Concepts">
+<meta name="description" content="Here's an example of a way to add context-sensitive help to your application. The main idea is to simply use the built-in ApplicationCommands.Help command. This command is already tied to the F1 key, and so executes when you hit F1, and tells your command">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/mikehillberg/pingback.aspx">
+<link rel="stylesheet" href="a-context-sensitive-help-provider-in-wpf.aspx_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="a-context-sensitive-help-provider-in-wpf.aspx_files/print.css" type="text/css" media="print">
+<link rel="stylesheet" href="a-context-sensitive-help-provider-in-wpf.aspx_files/customcss.css" type="text/css" media="screen">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Mike Hillberg's Blog on Wpf (RSS 2.0)" href="http://blogs.msdn.com/mikehillberg/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Mike Hillberg's Blog on Wpf (Atom 1.0)" href="http://blogs.msdn.com/mikehillberg/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="A Context-Sensitive Help Provider in Wpf Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/mikehillberg/commentrss.aspx?PostID=4075384">
+
+	<script src="a-context-sensitive-help-provider-in-wpf.aspx_files/global.js" type="text/javascript"></script></head><body>
+<form name="aspnetForm" method="post" action="/mikehillberg/archive/2007/07/26/a-context-sensitive-help-provider-in-wpf.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFI2N0bDAwJF8kY3RsMDAkXyRicyRfJHdzJF8kU2VhcmNoQm94rkRXbV1z5ohWybmugg6l5bfTy3M=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="a-context-sensitive-help-provider-in-wpf.aspx_files/WebResource_002.js" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript" src="a-context-sensitive-help-provider-in-wpf.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script language="javascript" type="text/javascript">
+var RatingControlAJAX = {
+"SaveRating":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Blogs.Controls.BlogRatePost',id,'SaveRating',[p0],cb,0,0,0,1);}};
+</script><script language="javascript" type="text/javascript">
+var ThreadSubscribeLinkButton = {
+"ToggleEmailReplies":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Controls.ThreadSubscribeLinkButton',id,'ToggleEmailReplies',[p0],cb,0,0,0,0);}};
+</script><script type="text/javascript" src="a-context-sensitive-help-provider-in-wpf.aspx_files/ratingcontrol.js"></script><script language="JavaScript" type="text/javascript">var ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackWorking = false;var ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus = false;function updateSubscriptionText() {if(ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus == true) {document.getElementById('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton').innerHTML = 'Stop sending me email alerts for this post';} else {document.getElementById('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton').innerHTML = 'Send me email alerts for new comments to this post';}}function toggleSubscription() {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackWorking = true;document.getElementById('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton').innerHTML = 'Updating email notifications...';ThreadSubscribeLinkButton.ToggleEmailReplies('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton',526615, toggleSubscriptionCallback);}function toggleSubscriptionCallback(response) {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackWorking = false;if((response.error == null) && (response.value == true)) {if(ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus == true) {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus = false;} else {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus = true;}updateSubscriptionText();} else {updateSubscriptionText();alert('An error happened while processing your request.  Please notify an administrator and try again later.');}}</script>
+<script src="a-context-sensitive-help-provider-in-wpf.aspx_files/WebResource.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Signed in as <a href="http://blogs.msdn.com/user/EditProfile.aspx?ReturnUrl=/blogs/post.aspx?App=mikehillberg&amp;y=2007&amp;m=07&amp;d=26&amp;PostName=a-context-sensitive-help-provider-in-wpf">bbraatz</a>
+ | <a id="ctl00___ctl00___duw1_rc1___logout" href="http://blogs.msdn.com/logout.aspx">Sign out</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="content">
+	<div id="top">
+		
+<h1><a id="ctl00___ctl00___bt___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/mikehillberg/default.aspx">Mike Hillberg's Blog on Wpf</a></h1>
+<div id="tagline">Random, interesting things about Wpf.</div>
+
+
+	</div>        
+	<div id="leftmenu">
+		
+
+<div id="BlogLinksSideBar">
+	
+<div id="WeblogLinks">
+<h3>This Blog</h3>
+<ul>
+    <li><a id="ctl00___ctl00___bs___wl___email" href="http://blogs.msdn.com/mikehillberg/emailsubscriptions.aspx">Email alerts</a></li>
+	
+	<li><a id="ctl00___ctl00___bs___wl___Contactlink1" href="http://blogs.msdn.com/mikehillberg/contact.aspx">Email</a></li>
+</ul>
+</div>
+</div>
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="SubscriptionsSideBar">
+	
+<div id="Subscriptions">
+ <h3>Syndication</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___bs___rss" href="http://blogs.msdn.com/mikehillberg/rss.xml">RSS 2.0</a></li>
+        <li><a id="ctl00___ctl00___bs___bs___atom" href="http://blogs.msdn.com/mikehillberg/atom.xml">Atom 1.0</a></li>
+    </ul>
+ </div>
+</div>
+
+<div id="SearchSideBar">
+	
+	
+<div id="Search">
+<h3>Search</h3>
+<ul><li>
+<input name="ctl00$_$ctl00$_$bs$_$ws$_$SearchBox" id="ctl00___ctl00___bs___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event);" type="text"> <a id="ctl00___ctl00___bs___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')">Go</a>
+</li></ul>
+</div>
+	
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul>
+	<ul class="SidebarTagCloud">
+<li class="Tag4"><a href="http://blogs.msdn.com/mikehillberg/archive/tags/Concepts/default.aspx" rel="tag">Concepts</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/mikehillberg/archive/tags/Tips+and+Tricks/default.aspx" rel="tag">Tips and Tricks</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/mikehillberg/archive/tags/Xaml/default.aspx" rel="tag">Xaml</a></li>
+</ul>
+
+	</ul>
+</div>
+
+<div id="NewsSideBar">
+	
+<div id="news">
+<h3>News</h3>
+<p><small>All postings are provided "As Is" with no warranties, and
+confers no rights. Opinions and views expressed here are not
+necessarily those of Microsoft Corporation.</small></p><br>
+</div>
+</div>
+ 
+<div id="LinkSideBar">
+	
+
+	
+</div>
+	</div>
+	<div id="main"><div id="main2">
+		
+        
+
+<div class="post">
+	<h5>A Context-Sensitive Help Provider in Wpf <span class="CommonRateControl" id="ctl00___ctl00___ctl01___Entry___Ratings" title="Not yet rated"><img title="Poor" src="a-context-sensitive-help-provider-in-wpf.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Poor" src="a-context-sensitive-help-provider-in-wpf.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Fair" src="a-context-sensitive-help-provider-in-wpf.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Fair" src="a-context-sensitive-help-provider-in-wpf.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Average" src="a-context-sensitive-help-provider-in-wpf.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Average" src="a-context-sensitive-help-provider-in-wpf.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Good" src="a-context-sensitive-help-provider-in-wpf.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Good" src="a-context-sensitive-help-provider-in-wpf.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Excellent" src="a-context-sensitive-help-provider-in-wpf.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Excellent" src="a-context-sensitive-help-provider-in-wpf.aspx_files/star-right-off.gif" align="absmiddle" border="0"></span><input value="0" id="ctl00___ctl00___ctl01___Entry___Ratings_Value" type="hidden"></h5>
+	<p>Here's an example of a way to add context-sensitive help to your application.&nbsp; </p>
+<p>The main idea is to simply use the built-in ApplicationCommands.Help
+command.&nbsp; This command is already tied to the F1 key, and so
+executes when you hit F1, and tells your command handler what element
+the user was on when it was hit.</p>
+<p>First, start with this little application:</p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Window</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">x:Class</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">ContextSensitiveHelp.Window1</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">xmlns</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">http://schemas.microsoft.com/winfx/2006/xaml/presentation</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">xmlns:x</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">http://schemas.microsoft.com/winfx/2006/xaml</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Title</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">Window1</span>"<span style="color: blue;"> </span><span style="color: red;">Height</span><span style="color: blue;">=</span>"<span style="color: blue;">300</span>"<span style="color: blue;"> </span><span style="color: red;">Width</span><span style="color: blue;">=</span>"<span style="color: blue;">300</span>"<span style="color: blue;"> &gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.ColumnDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">ColumnDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Width</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">ColumnDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Width</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">*</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.ColumnDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.RowDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">RowDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Height</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">RowDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Height</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.RowDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBlock</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">0</span>'<span style="color: blue;"> &gt;</span>Name:<span style="color: blue;">&lt;/</span><span style="color: maroon;">TextBlock</span><span style="color: blue;">&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBlock</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">1</span>'<span style="color: blue;"> &gt;</span>Address<span style="color: blue;">&lt;/</span><span style="color: maroon;">TextBlock</span><span style="color: blue;">&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBox</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>'<span style="color: blue;">NameField</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBox</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>'<span style="color: blue;">AddressField</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Window</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p>... which looks like this: 
+</p><p><a href="http://blogs.msdn.com/blogfiles/mikehillberg/WindowsLiveWriter/AContextSensitiveHelpProviderinWpf_14037/image.png" mce_href="http://blogs.msdn.com/blogfiles/mikehillberg/WindowsLiveWriter/AContextSensitiveHelpProviderinWpf_14037/image.png" atomicselection="true"><img style="border-width: 0px;" alt="image" src="a-context-sensitive-help-provider-in-wpf.aspx_files/image_thumb.png" mce_src="http://blogs.msdn.com/blogfiles/mikehillberg/WindowsLiveWriter/AContextSensitiveHelpProviderinWpf_14037/image_thumb.png" border="0" height="279" width="279"></a> </p>
+<p mce_keep="true">Now add some help text.&nbsp; I'll add specific help
+text to the NameField text box, and general help text to the Window,
+but nothing to the AddressField, just to show how that behaves:</p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Window</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">x:Class</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">ContextSensitiveHelp.Window1</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">xmlns</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">http://schemas.microsoft.com/winfx/2006/xaml/presentation</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">xmlns:x</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">http://schemas.microsoft.com/winfx/2006/xaml</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Title</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">Window1</span>"<span style="color: blue;"> </span><span style="color: red;">Height</span><span style="color: blue;">=</span>"<span style="color: blue;">300</span>"<span style="color: blue;"> </span><span style="color: red;">Width</span><span style="color: blue;">=</span>"<span style="color: blue;">300</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: red; font-family: 'Courier New';">xmlns:h</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';">=</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; font-family: 'Courier New';">"<span style="color: blue;">clr-namespace:ContextSensitiveHelp</span>"</span><span style="font-size: 10pt; font-family: 'Courier New';"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: red; font-family: 'Courier New';">h:HelpProvider.HelpString</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';">=</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; font-family: 'Courier New';">'<span style="color: blue;">This form is for your name and address</span>'</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.ColumnDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">ColumnDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Width</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">ColumnDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Width</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">*</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.ColumnDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.RowDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">RowDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Height</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">RowDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Height</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.RowDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBlock</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">0</span>'<span style="color: blue;"> &gt;</span>Name:<span style="color: blue;">&lt;/</span><span style="color: maroon;">TextBlock</span><span style="color: blue;">&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBlock</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">1</span>'<span style="color: blue;"> &gt;</span>Address<span style="color: blue;">&lt;/</span><span style="color: maroon;">TextBlock</span><span style="color: blue;">&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBox</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>'<span style="color: blue;">NameField</span>'<span style="color: blue;"> <o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: red; font-family: 'Courier New';">h:HelpProvider.HelpString</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';">=</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; font-family: 'Courier New';">"<span style="color: blue;">Enter your name here</span>"</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">/&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBox</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>'<span style="color: blue;">AddressField</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Window</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p>So you see here that the help text is being provided by attached
+properties defined by a class named HelpProvider.&nbsp; Here's the
+attached property definition: </p><p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">static</span><span style="font-size: 10pt; font-family: 'Courier New';"> <span style="color: blue;">class</span> HelpProvider<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">static</span> <span style="color: blue;">string</span> GetHelpString(DependencyObject obj)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">return</span> (<span style="color: blue;">string</span>)obj.GetValue(HelpStringProperty);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">static</span> <span style="color: blue;">void</span> SetHelpString(DependencyObject obj, <span style="color: blue;">string</span> value)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>obj.SetValue(HelpStringProperty, value);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">static</span> <span style="color: blue;">readonly</span> DependencyProperty HelpStringProperty =<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>DependencyProperty.RegisterAttached(</span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">"HelpString"</span><span style="font-size: 10pt; font-family: 'Courier New';">, <span style="color: blue;">typeof</span>(<span style="color: blue;">string</span>), <span style="color: blue;">typeof</span>(HelpProvider));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';">}<o:p></o:p></span></p>
+<p>I made this a help string property, but you could have a HelpKeyword
+property that held a help topic ID, or a HelpURI property that
+referenced online documentation, etc. </p><p>Now we just need to respond to the command.&nbsp; The way you
+respond to commands is with event listeners registered to handle the
+command.&nbsp; You can simply set up a command handler on a particular
+element by setting a CommandBinding like this: </p><p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Window</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">x:Class</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">ContextSensitiveHelp.Window1</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">xmlns</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">http://schemas.microsoft.com/winfx/2006/xaml/presentation</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">xmlns:x</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">http://schemas.microsoft.com/winfx/2006/xaml</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Title</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">Window1</span>"<span style="color: blue;"> </span><span style="color: red;">Height</span><span style="color: blue;">=</span>"<span style="color: blue;">300</span>"<span style="color: blue;"> </span><span style="color: red;">Width</span><span style="color: blue;">=</span>"<span style="color: blue;">300</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">xmlns:h</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">clr-namespace:ContextSensitiveHelp</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">h:HelpProvider.HelpString</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">This form is for your name and address</span>'<span style="color: blue;"><span style="">&nbsp; </span>&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span><span style="background: yellow none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">&lt;</span></span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: maroon; font-family: 'Courier New';">Window.CommandBindings</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: maroon; font-family: 'Courier New';">CommandBinding</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';"> </span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: red; font-family: 'Courier New';">Command</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';">=</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; font-family: 'Courier New';">'<span style="color: blue;">ApplicationCommands.Help</span>'<span style="color: blue;"> </span><span style="color: red;">Executed</span><span style="color: blue;">=</span>'<span style="color: blue;">Window_Help_Executed</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&lt;/</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: maroon; font-family: 'Courier New';">Window.CommandBindings</span><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';">&gt;</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.ColumnDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">ColumnDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Width</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">ColumnDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Width</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">*</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.ColumnDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.RowDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">RowDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Height</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">RowDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Height</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.RowDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBlock</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">0</span>'<span style="color: blue;"> &gt;</span>Name:<span style="color: blue;">&lt;/</span><span style="color: maroon;">TextBlock</span><span style="color: blue;">&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBlock</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">1</span>'<span style="color: blue;"> &gt;</span>Address<span style="color: blue;">&lt;/</span><span style="color: maroon;">TextBlock</span><span style="color: blue;">&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp; </span><span style="">&nbsp;</span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBox</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>'<span style="color: blue;">NameField</span>'<span style="color: blue;"> <o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">h:HelpProvider.HelpString</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">Enter your name here</span>"<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBox</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>'<span style="color: blue;">AddressField</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Window</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p>... and then respond to the command like this: 
+</p><p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">private</span><span style="font-size: 10pt; font-family: 'Courier New';"> <span style="color: blue;">void</span> Window_Help_Executed(<span style="color: blue;">object</span> sender, ExecutedRoutedEventArgs e)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>FrameworkElement source = e.Source <span style="color: blue;">as</span> FrameworkElement;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (source != <span style="color: blue;">null</span>)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">string</span> helpString = HelpProvider.GetHelpString(source);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (helpString != <span style="color: blue;">null</span>)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>System.Windows.MessageBox.Show(<span style="color: maroon;">"Help: "</span> + helpString);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';">} <o:p></o:p></span></p>
+<p>The problem with that is that you'd really rather not implement the
+handling as part of your application, but rather as part of the
+HelpProvider (following the WinForms model).&nbsp; Also, the code above
+finds the HelpString on NameField, which has a HelpString set, but it
+doesn't find anything for the AddressField, because it doesn't have a
+good way to find the more general HelpString set on the Window. </p><p>So instead of putting the command handler in the Window, we'll
+put it in the HelpProvider itself.&nbsp; We can do this by registering
+a command handler directly against the FrameworkElement class; now
+we'll get called for any FrameworkElement instance in the
+application.&nbsp; We'll also register for the command's CanExecute
+handler.&nbsp; This allows us to decide if we should handle a command
+at an element, or let it bubble up to a higher handler.&nbsp; That is,
+this will allow the Help command to bubble up from AddressField, which
+has no HelpString, to Window which does. </p><p>The HelpProvider class is then updated with these new members: 
+</p><p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">static</span><span style="font-size: 10pt; font-family: 'Courier New';"> <span style="color: blue;">class</span> HelpProvider<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">static</span> HelpProvider()<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>CommandManager.RegisterClassCommandBinding(<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">typeof</span>(FrameworkElement),<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">new</span> CommandBinding(<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>ApplicationCommands.Help,<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">new</span> ExecutedRoutedEventHandler(Executed),<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">new</span> CanExecuteRoutedEventHandler(CanExecute)));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>} <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">static</span> <span style="color: blue;">private</span> <span style="color: blue;">void</span> CanExecute(<span style="color: blue;">object</span> sender, CanExecuteRoutedEventArgs e)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>{ <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>FrameworkElement senderElement = sender <span style="color: blue;">as</span> FrameworkElement; <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (HelpProvider.GetHelpString(senderElement) != <span style="color: blue;">null</span>)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>e.CanExecute = <span style="color: blue;">true</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>} <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">static</span> <span style="color: blue;">private</span> <span style="color: blue;">void</span> Executed(<span style="color: blue;">object</span> sender, ExecutedRoutedEventArgs e)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>MessageBox.Show(<span style="color: maroon;">"Help: "</span> + HelpProvider.GetHelpString(sender <span style="color: blue;">as</span> FrameworkElement));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>} <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>... <o:p></o:p></span></p>
+<p>... and we can remove the CommandBindings from the Window: 
+</p><p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Window</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">x:Class</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">ContextSensitiveHelp.Window1</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">xmlns</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">http://schemas.microsoft.com/winfx/2006/xaml/presentation</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">xmlns:x</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">http://schemas.microsoft.com/winfx/2006/xaml</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Title</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">Window1</span>"<span style="color: blue;"> </span><span style="color: red;">Height</span><span style="color: blue;">=</span>"<span style="color: blue;">300</span>"<span style="color: blue;"> </span><span style="color: red;">Width</span><span style="color: blue;">=</span>"<span style="color: blue;">300</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">xmlns:h</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">clr-namespace:ContextSensitiveHelp</span>"<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">h:HelpProvider.HelpString</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">This form is for your name and address</span>'<span style="color: blue;"><span style="">&nbsp; </span>&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><s><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span><span style="background: yellow none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">&lt;</span></span></s><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: maroon; font-family: 'Courier New';">Window.CommandBindings</span></s><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></s></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span></s><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: maroon; font-family: 'Courier New';">CommandBinding</span></s><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';"> </span></s><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: red; font-family: 'Courier New';">Command</span></s><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';">=</span></s><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; font-family: 'Courier New';">'<span style="color: blue;">ApplicationCommands.Help</span>'<span style="color: blue;"> </span><span style="color: red;">Executed</span><span style="color: blue;">=</span>'<span style="color: blue;">Window_Help_Executed</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></s></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&lt;/</span></s><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: maroon; font-family: 'Courier New';">Window.CommandBindings</span></s><s><span style="background: yellow none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: blue; font-family: 'Courier New';">&gt;</span></s><s><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p></o:p></span></s></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.ColumnDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">ColumnDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Width</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">ColumnDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Width</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">*</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.ColumnDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.RowDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">RowDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Height</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">RowDefinition</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Height</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">auto</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid.RowDefinitions</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBlock</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">0</span>'<span style="color: blue;"> &gt;</span>Name:<span style="color: blue;">&lt;/</span><span style="color: maroon;">TextBlock</span><span style="color: blue;">&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBlock</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">1</span>'<span style="color: blue;"> &gt;</span>Address<span style="color: blue;">&lt;/</span><span style="color: maroon;">TextBlock</span><span style="color: blue;">&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBox</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">0</span>'<span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>'<span style="color: blue;">NameField</span>'<span style="color: blue;"> <o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">h:HelpProvider.HelpString</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">"<span style="color: blue;">Enter your name here</span>"<span style="color: blue;">/&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">TextBox</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"> </span><span style="font-size: 10pt; color: red; font-family: 'Courier New';">Grid.Column</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">=</span><span style="font-size: 10pt; font-family: 'Courier New';">'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Grid.Row</span><span style="color: blue;">=</span>'<span style="color: blue;">1</span>'<span style="color: blue;"> </span><span style="color: red;">Name</span><span style="color: blue;">=</span>'<span style="color: blue;">AddressField</span>'<span style="color: blue;"> /&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';"><span style="">&nbsp; </span>&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Grid</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&lt;/</span><span style="font-size: 10pt; color: maroon; font-family: 'Courier New';">Window</span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">&gt;<o:p></o:p></span></p>
+<p>... and now F1 on NameField displays&nbsp;"Enter your name here",
+and F1 on the AddressField displays "This form is for your name and
+address". </p><p>Finally, note that you can also do more exciting things in the
+help handler, like load a chm file with the System.Windows.Forms.Help
+class: </p><p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">static</span><span style="font-size: 10pt; font-family: 'Courier New';"> <span style="color: blue;">private</span> <span style="color: blue;">void</span> Executed(<span style="color: blue;">object</span> sender, ExecutedRoutedEventArgs e)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';"><span style="">&nbsp;&nbsp;&nbsp; </span>System.Windows.Forms.Help.ShowHelp(<span style="color: blue;">null</span>, <span style="color: maroon;">@"MyHelp.chm"</span>); <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt; background: rgb(238, 236, 225) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 10pt; font-family: 'Courier New';">} <o:p></o:p></span></p>
+<p mce_keep="true">&nbsp;</p>
+	<p class="postfoot">
+		Published Thursday, July 26, 2007 10:56 PM
+		by
+		<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=48665">MikeHillberg</a>
+		
+		</p><div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/mikehillberg/archive/tags/Tips+and+Tricks/default.aspx" rel="tag">Tips and Tricks</a>, <a href="http://blogs.msdn.com/mikehillberg/archive/tags/Concepts/default.aspx" rel="tag">Concepts</a></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+		
+	
+</div>            
+
+
+<div id="postToolbar">
+<h2 class="CommonSubTitle">Comment Notification</h2>
+<p>
+	
+	<a href="javascript:toggleSubscription();" id="ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton" trackingresourcename="Weblogs_UnTrack" nottrackingresourcename="Weblogs_Track" workingresourcename="Weblogs_TrackWorking">Send me email alerts for new comments to this post</a>
+</p>
+<p>
+	Subscribe to this post's comments using
+	<a id="ctl00___ctl00___ctl01___DetailedSubBar___CommentRssLink" href="http://blogs.msdn.com/mikehillberg/commentrss.aspx?PostID=4075384">RSS</a>
+</p>
+</div>
+
+
+<div id="comments">
+	<h2>
+	Comments
+</h2>
+	
+		<div class="comment">
+		<h4>
+			<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl00_PermaLink" title="permalink" href="http://blogs.msdn.com/mikehillberg/archive/2007/07/26/a-context-sensitive-help-provider-in-wpf.aspx#4118114">#</a>
+			<span>WPF Articles<a name="4118114"></a> @ Sunday, July 29, 2007 10:28 AM</span>
+		</h4>
+		<p>Dr Tim Sneath gives a overview of what is new in WPF 3.5 <a rel="nofollow" target="_new" href="http://blogs.msdn.com/tims/archive/2007/07/27">http://blogs.msdn.com/tims/archive/2007/07/27</a></p>
+
+		
+		<p class="posteds">	
+			<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl00_NameLink" rel="nofollow" title="TrackBack" href="http://dotnet.org.za/rudi/archive/2007/07/29/wpf-articles.aspx" target="_blank">Rudi Grobler</a>
+		</p>
+		</div>
+	
+		<div class="comment">
+		<h4>
+			<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_PermaLink" title="permalink" href="http://blogs.msdn.com/mikehillberg/archive/2007/07/26/a-context-sensitive-help-provider-in-wpf.aspx#4380322">#</a>
+			<span>re: A Context-Sensitive Help Provider in Wpf<a name="4380322"></a> @ Tuesday, August 14, 2007 3:32 AM</span>
+		</h4>
+		<p>Any ideas on how to make this appear based on mouseover and not just focus?</p>
+<p>Attempting to create office 2007 style super tooltips with the F1 for more help.</p>
+<p>Andreas</p>
+
+		
+		<p class="posteds">	
+			<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_NameLink" title="andemann" href="http://blogs.msdn.com/user/Profile.aspx?UserID=95217" target="_blank">andemann</a>
+		</p>
+		</div>
+	
+		<div class="comment">
+		<h4>
+			<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_PermaLink" title="permalink" href="http://blogs.msdn.com/mikehillberg/archive/2007/07/26/a-context-sensitive-help-provider-in-wpf.aspx#4397023">#</a>
+			<span>re: A Context-Sensitive Help Provider in Wpf<a name="4397023"></a> @ Wednesday, August 15, 2007 3:17 AM</span>
+		</h4>
+		<p>I found the answer. Use CommandBinding in the custom toolTip contructor.</p>
+<p>Andreas</p>
+
+		
+		<p class="posteds">	
+			<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_NameLink" title="andemann" href="http://blogs.msdn.com/user/Profile.aspx?UserID=95217" target="_blank">andemann</a>
+		</p>
+		</div>
+	
+		<div class="comment">
+		<h4>
+			<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_PermaLink" title="permalink" href="http://blogs.msdn.com/mikehillberg/archive/2007/07/26/a-context-sensitive-help-provider-in-wpf.aspx#4663901">#</a>
+			<span>re: A Context-Sensitive Help Provider in Wpf<a name="4663901"></a> @ Friday, August 31, 2007 5:21 AM</span>
+		</h4>
+		<p>I've created a full code for HelpProvider:</p>
+<p>using System.Windows;</p>
+<p>using System.Windows.Forms;</p>
+<p>using System.Windows.Input;</p>
+<p>using System.Windows.Media;</p>
+<p>namespace Diginesis.Presentation.Controls</p>
+<p>{</p>
+<p> &nbsp; &nbsp;public static class DiginesisHelpProvider</p>
+<p> &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#region Fields</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;private static string mHelpNamespace = null;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;private static bool mShowHelp = false;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;private static string mNotFoundTopic;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static readonly DependencyProperty HelpKeywordProperty =</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;DependencyProperty.RegisterAttached("HelpKeyword", typeof
+(string), typeof (DiginesisHelpProvider));</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static readonly DependencyProperty HelpNavigatorProperty =</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;DependencyProperty.RegisterAttached("HelpNavigator", typeof
+(HelpNavigator), typeof (DiginesisHelpProvider),</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;new
+PropertyMetadata(HelpNavigator.TableOfContents));</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static readonly DependencyProperty ShowHelpProperty =</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;DependencyProperty.RegisterAttached("ShowHelp", typeof (bool),
+typeof (DiginesisHelpProvider));</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#endregion</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#region Constructors</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;static DiginesisHelpProvider()</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;CommandManager.RegisterClassCommandBinding(</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;typeof (FrameworkElement),</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;new
+CommandBinding(ApplicationCommands.Help, OnHelpExecuted,
+OnHelpCanExecute));</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#endregion</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#region Public Properties</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static string HelpNamespace</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;get { return mHelpNamespace; }</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;set { mHelpNamespace = value; }</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static bool ShowHelp</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;get { return mShowHelp; }</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;set { mShowHelp = value; }</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static string NotFoundTopic</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;get { return mNotFoundTopic; }</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;set { mNotFoundTopic = value; }</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#endregion</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#region Public Methods</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#region HelpKeyword</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static string GetHelpKeyword(DependencyObject obj)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return (string) obj.GetValue(HelpKeywordProperty);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static void SetHelpKeyword(DependencyObject obj, string value)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;obj.SetValue(HelpKeywordProperty, value);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#endregion</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#region HelpNavigator</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static HelpNavigator GetHelpNavigator(DependencyObject obj)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return (HelpNavigator) obj.GetValue(HelpNavigatorProperty);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static void SetHelpNavigator(DependencyObject obj, HelpNavigator value)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;obj.SetValue(HelpNavigatorProperty, value);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#endregion</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#region ShowHelp</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static bool GetShowHelp(DependencyObject obj)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return (bool) obj.GetValue(ShowHelpProperty);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;public static void SetShowHelp(DependencyObject obj, bool value)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;obj.SetValue(ShowHelpProperty, value);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#endregion</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#endregion</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#region Private Members</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;private static void OnHelpCanExecute(object sender, CanExecuteRoutedEventArgs e)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;e.CanExecute = CanExecuteHelp((DependencyObject) sender) || ShowHelp;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;private static bool CanExecuteHelp(DependencyObject sender)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (sender != null)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (GetShowHelp(sender))</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return true;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return CanExecuteHelp(VisualTreeHelper.GetParent(sender));</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return false;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;private static DependencyObject GetHelp(DependencyObject sender)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (sender != null)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (GetShowHelp(sender))</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return sender;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return GetHelp(VisualTreeHelper.GetParent(sender));</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return null;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;private static void OnHelpExecuted(object sender, ExecutedRoutedEventArgs e)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DependencyObject ctl = GetHelp(sender as DependencyObject);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (ctl != null &amp;&amp; GetShowHelp(ctl))</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;string parameter = GetHelpKeyword(ctl);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;HelpNavigator command = GetHelpNavigator(ctl);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (!e.Handled &amp;&amp; !string.IsNullOrEmpty(HelpNamespace))</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (!string.IsNullOrEmpty(parameter))</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;Help.ShowHelp(null, HelpNamespace, command,
+parameter);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;e.Handled = true;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (!e.Handled)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Help.ShowHelp(null, HelpNamespace, command);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;e.Handled = true;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (!e.Handled &amp;&amp; !string.IsNullOrEmpty(HelpNamespace))</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Help.ShowHelp(null, HelpNamespace);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;e.Handled = true;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;else if (ShowHelp)</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (!string.IsNullOrEmpty(NotFoundTopic))</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Help.ShowHelp(null, HelpNamespace, NotFoundTopic);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;else</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Help.ShowHelp(null, HelpNamespace);</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;e.Handled = true;</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp;#endregion</p>
+<p> &nbsp; &nbsp;}</p>
+<p>}</p>
+
+		
+		<p class="posteds">	
+			<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_NameLink" title="black_nm" href="http://blogs.msdn.com/user/Profile.aspx?UserID=85702" target="_blank">black_nm</a>
+		</p>
+		</div>
+	
+		<div class="comment">
+		<h4>
+			<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_PermaLink" title="permalink" href="http://blogs.msdn.com/mikehillberg/archive/2007/07/26/a-context-sensitive-help-provider-in-wpf.aspx#4663939">#</a>
+			<span>re: A Context-Sensitive Help Provider in Wpf<a name="4663939"></a> @ Friday, August 31, 2007 5:24 AM</span>
+		</h4>
+		<p>How to use it!?!?!</p>
+<p>Add this to the App startup or constructor</p>
+<p>DiginesisHelpProvider.HelpNamespace = "Help.chm";</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DiginesisHelpProvider.ShowHelp = true;</p>
+<p>And set on a control the properties:</p>
+<p>c:DiginesisHelpProvider.ShowHelp="True"</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; c:DiginesisHelpProvider.HelpKeyword="HelpTest2.htm"</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; c:DiginesisHelpProvider.HelpNavigator="Topic"</p>
+
+		
+		<p class="posteds">	
+			<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_NameLink" title="black_nm" href="http://blogs.msdn.com/user/Profile.aspx?UserID=85702" target="_blank">black_nm</a>
+		</p>
+		</div>
+	
+</div>
+
+	
+
+
+	
+<div id="commentform">
+<h3>Leave a Comment</h3>
+
+    <dl>
+        <dt><label for="ctl00___ctl00___ctl01___form___tbTitle">Title</label> <em>(required)</em><span id="ctl00___ctl00___ctl01___form___Requiredfieldvalidator1" style="color: Red; visibility: hidden;">*</span></dt>
+        <dd><input name="ctl00$_$ctl00$_$ctl01$_$form$_$tbTitle" value="re: A Context-Sensitive Help Provider in Wpf" id="ctl00___ctl00___ctl01___form___tbTitle" class="smallbox" type="text"></dd>
+        
+        
+        
+        <dt><label for="ctl00___ctl00___ctl01___form___tbUrl">Your URL</label> </dt>
+        <dd><input name="ctl00$_$ctl00$_$ctl01$_$form$_$tbUrl" id="ctl00___ctl00___ctl01___form___tbUrl" class="smallbox" type="text"></dd>
+        
+        <dt><label for="ctl00___ctl00___ctl01___form___tbComment">Comments</label> <em>(required)</em><span id="ctl00___ctl00___ctl01___form___Requiredfieldvalidator3" style="color: Red; visibility: hidden;">*</span></dt>
+        <dd><textarea name="ctl00$_$ctl00$_$ctl01$_$form$_$tbComment" rows="5" cols="25" id="ctl00___ctl00___ctl01___form___tbComment"></textarea></dd>
+
+        <dt></dt>
+
+        <dt><input name="ctl00$_$ctl00$_$ctl01$_$form$_$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$_$ctl00$_$ctl01$_$form$_$btnSubmit", "", true, "", "", false, false))' id="ctl00___ctl00___ctl01___form___btnSubmit" type="submit"></dt>
+    </dl>
+</div>
+
+
+
+	
+   
+    
+	</div></div>
+	<div id="footer">
+		
+	</div>
+</div>
+
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator1"), document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator3"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00___ctl00___ctl01___form___Requiredfieldvalidator1 = document.all ? document.all["ctl00___ctl00___ctl01___form___Requiredfieldvalidator1"] : document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator1");
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.controltovalidate = "ctl00___ctl00___ctl01___form___tbTitle";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.errormessage = "*";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.initialvalue = "";
+var ctl00___ctl00___ctl01___form___Requiredfieldvalidator3 = document.all ? document.all["ctl00___ctl00___ctl01___form___Requiredfieldvalidator3"] : document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator3");
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.controltovalidate = "ctl00___ctl00___ctl01___form___tbComment";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.errormessage = "*";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.initialvalue = "";
+// -->
+</script>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+<script language="javascript">var ctl00___ctl00___ctl01___Entry___Ratings=new RateControl('ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings_Value', 5, '/Themes/default/images/common/', false, 'CommonRateControl','CommonRateControlActive','CommonRateControlReadOnly',['Terrible','Poor','Fair','Average','Good','Excellent'],false,true);</script>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/mikehillberg/archive/2007/07/26/a-context-sensitive-help-provider-in-wpf.aspx"
+dc:identifier="http://blogs.msdn.com/mikehillberg/archive/2007/07/26/a-context-sensitive-help-provider-in-wpf.aspx"
+dc:title="A Context-Sensitive Help Provider in Wpf"
+trackback:ping="http://blogs.msdn.com/mikehillberg/trackback.aspx?PostID=4075384" />
+</rdf:RDF>
+-->
+
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        </form>
+</body></html>

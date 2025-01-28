@@ -1,0 +1,114 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Animating WPF Resources</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/250416.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/280150.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/03/250918.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Animating WPF Resources</h2></a><p style="text-align: right;">March 25, 2007<br>Roscoe, N.Y.</p><p>
+In most common WPF and XAML applications, you don't often find yourself
+needing to animate a resource. Generally you define resources (such as
+brushes) so that you can share them among multiple elements in the XAML
+file, and it's not often necessary to animate something that's shared
+in this way. Moreover, if you really wanted to animate the shared
+brush, you could do so indirectly through one of the elements that use
+that brush.
+</p>
+<p>However, there are cases where you need to define an object as a
+resource not because you need to share that object, but because you
+can't put that object directly in the markup. The resource is then
+referenced by an element in markup through a data binding. If you then
+need to animate that resource, some special considerations come into
+play.
+</p>
+<p>
+For example, suppose you wanted to create a graphical animation of a <i>Polyline</i> that looks something like this:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/03/CurlAround/CurlAround.xbap">CurlAround.xbap</a>
+</p>
+<p>
+The actual pattern isn't important: What's probably obvious is that a bunch of points in a <i>PointCollection</i> are being generated algorithmically, and the <i>Polyline</i>
+is redrawing itself based on those changing points. It's possible for a
+class generating these points to do so in response to a <i>DispatcherTimer</i> or <i>VisualTarget</i> event. But it's probably best to have the whole point-generation process controlled by the WPF animation system. 
+</p>
+<p>
+The algorithm to generate the <i>PointCollection</i> is implemented in a class named <i>Curler</i>. <i>Curler</i> has a property named <i>Angle</i> that indicates the degree that the points are curled. Of course, it would be most convenient to derive <i>Curler</i> from <i>PointCollection</i> and put <i>Curler</i> directly in a <i>Polyline</i> element in XAML using a <i>Polyline.Points</i> property element.
+</p>
+<p>
+The problem with that brilliant idea is that <i>PointCollection</i> is sealed. You cannot derive from it. Instead, you need to give <i>Curler</i> a get-only property of type <i>Points</i> of type <i>PointCollection</i> and include <i>Curler</i> in your XAML file as a resource.  You can define a resource of type <i>Curler</i> like this (assuming the XML namespace "src" has been set to the namespace and perhaps assembly containing the <i>Curler</i> class):
+</p>
+<ul style="font-family: monospace; font-size: smaller;">
+&lt;src:Curler x:Key="curler" ... /&gt;
+</ul>
+<p>
+You can then reference that resource in a <i>Polyline</i> element like so:
+</p>
+<ul style="font-family: monospace; font-size: smaller;">
+&lt;Polyline ... Points="{Binding Source={StaticResource curler},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path=Points}"
+/&gt;
+</ul>
+<p>
+That's probably sufficient if <i>Curler</i> animates itself using <i>DispatcherTimer</i> or <i>VisualTarget</i>. But you probably want to use WPF animation with <i>Curler</i>. I mentioned that <i>Curler</i> has a property named <i>Angle</i> that governs the amount of curl, so that's the property that you'll be animating, and the property you'll reference by the <i>Storyboard.TargetProperty</i> attached property. But you also need to set the <i>Storyboard.TargetName</i> attached property, and therein lies a problem: The <i>Curler</i> resource needs an <i>x:Name</i> attribute, and you can define an <i>x:Name</i> for <i>Curler</i> but it won't be found, and, indeed, the documentation of <i>x:Name</i> essentially says that it'll be ignored:
+</p>
+<ul>x:Name cannot be applied in certain scopes. For instance, items in
+a ResourceDictionary cannot have names, because they already have the
+x:Key Attribute as their unique identifier.
+</ul>
+<p>
+Can you instead use the <i>x:Key</i> name itself for the <i>Storyboard.TargetName</i> property? No, you cannot. So what do you do?
+</p>
+<p>
+This problem drove me nuts until I realized the not-so-obvious solution: Define a <i>Name</i> property in the <i>Curler</i> class. You can actually give this property any name you want, but you have to indicate that name in an attribute for the <i>Curler</i> class:
+</p>
+<ul style="font-family: monospace; font-size: smaller;">
+[RuntimeNameProperty("Name")]
+</ul>
+<p>
+You'll also need a <i>using</i> directive for <i>System.Windows.Markup</i> or precede <i>RuntimeNameProperty</i> with that namespace. 
+</p>
+<p>
+In the XAML resource, you can use the same name for <i>x:Key</i> and <i>Name</i>,
+and if you get a compiler error that says "Because 'Curler" is
+implemented in the same assembly, you must set the x:Name attribute
+rather than the Name attribute," that's OK. Just use <i>x:Name</i> in the resource and it'll work:
+</p>
+<ul style="font-family: monospace; font-size: smaller;">
+&lt;src:Curler x:Key="curler"  x:Name="curler"  /&gt;
+</ul>
+<p>
+If <i>Curler</i> has an property named <i>Angle</i> that you want to animate, <i>Angle</i> must be backed by a dependency property and at the very least, <i>Curler</i> must derive from <i>DependencyObject</i>. For the binding between the <i>Points</i> property of <i>Curler</i> and the <i>Points</i> property of <i>Polyline</i>, you'll also want to back <i>Points</i> with a dependency property, and set <i>Points</i> from the <i>PropertyChangedCallback</i> method for <i>Angle</i>.  (Don't worry: Downloadable source code is coming up.) The CLR property for <i>Points</i> can have a public <i>get</i> accessor and a protected or private <i>set</i> accessor so the <i>Points</i> property can't be set from outside the class.
+</p>
+<p>
+The structure of the <i>Angle</i> and <i>Points</i> properties in the <i>Curler</i>
+class is characteristic of classes that have animatable properties, and
+it's vital to get the hang of it, and to understand how it's different
+from code you might write for WinForms. In a WinForms program, if you
+have one property (<i>Angle</i>) whose value affects a get-only property (<i>Points</i>), the set-accessor of the <i>Angle</i> property would respond to changes in the <i>Angle</i> value by firing a notification event named <i>PointsChanged</i>. Anybody using the class would then access the <i>Points</i> property to obtain the new value, and the <i>Points</i>
+get-accessor would perform the calculation. This is a type of "pull"
+architecture. WPF implements a "push" architecture: When the <i>Angle</i> property changes (which the <i>Curler</i> class is aware of through the <i>PropertyChangedCallback</i> method set through the <i>PropertyMetadata</i> of the <i>Angle</i> dependency property), the <i>Curler</i> class sets the resultant <i>Points</i> property at that time. 
+</p>
+<p>
+The <i>PropertyChangedCallback</i> method that sets the <i>Points</i> property when the <i>Angle</i> property changes will be frequently called when the <i>Angle</i>
+property is animated, which means it shouldn't make any memory
+allocations, which means that all objects that it needs should be
+created in advance as fields. (Realistically speaking, the method can
+certainly make a <i>few</i> memory allocations when the animation is
+starting up, such as those involved with allocating sufficient space
+for something like a <i>PointCollection</i> but it definitely must not
+automatically allocate something on each call; the last thing you want
+is for the CLR garbage collector to interfere with your animations.)
+It's also best when animating the items in a freezable collection (like
+<i>PointCollection</i>) to avoid notifications with each new object added in a <i>for</i> loop. For this reason, the method in <i>Curler</i> that fills the <i>PointCollection</i> begins by getting a reference to the collection from <i>Points</i> and then sets the <i>Points</i> property to <i>null</i> so the collection can be filled in peace.  When the collection is ready, then it's set to the <i>Points</i> property.
+</p>
+<p>
+If all the properties in a class such as <i>Curler</i> are dependency properties (remember to back <i>Name</i> with a dependency property as well!) then you can derive the class from <i>Animatable</i>.  Because <i>Animatable</i> inherits from <i>Freezable</i> you need to override the <i>CreateInstanceCore</i>
+method and just call the class's constructor and return the value. If
+you have properties that aren't packed by dependency properties, then
+deriving from <i>Freezable</i> is much more difficult than just providing <i>CreateInstanceCore</i>.  
+</p>
+<p>
+Deriving <i>Curler</i> from <i>Animatable</i> gives the class <i>ApplyAnimationClock</i> and <i>BeginAnimation</i> methods which make the class usable from code in a non-storyboard animation.
+</p>
+<p>
+Source code for the <i>CurlAround</i> project is downloadable
+<a href="http://www.charlespetzold.com/blog/2007/03/CurlAround.zip">here</a>. Before compiling, select project properties, then the Signing tab, and click the Create Test Certificate button.
+</p>
+
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/250416.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/280150.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>
