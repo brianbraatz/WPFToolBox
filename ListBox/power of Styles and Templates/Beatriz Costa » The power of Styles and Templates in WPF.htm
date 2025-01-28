@@ -1,0 +1,1168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » The power of Styles and Templates in WPF</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">April 1, 2007</div>
+					<h2 id="post-40"><a id="postTitle" href="http://www.beacosta.com/blog/?p=40" rel="bookmark" title="The power of Styles and Templates in WPF">The power of Styles and Templates in WPF</a></h2>
+					<p><span id="text">In
+WPF, there is a very clean separation between the behavior of a Control
+and the look of a Control. For example, a Button’s behavior consists
+only of listening to Click events, but its look can be anything - you
+can make a Button look like an arrow, a fish, or whatever else suits
+your application. Redefining the look of a Control is very easy to do
+in VS with Styles and Templates, and even easier if you have Blend. In
+this sample, I will show you how I redefined the look of a ListBox
+representing a list of planets.</span></p>
+<p><span id="text">I started out by implementing a data source with
+planets and the sun. I defined a class called “SolarSystemObject” with
+several properties (Name, Orbit, Diameter, Image and Details). I
+overrode the ToString(…) method in this class to return the name of the
+solar system object. Then I added a class called “SolarSystem” with a
+property called “SolarSystemObjects” of type
+ObservableCollection&lt;SolarSystemObject&gt;. In the constructor for
+the “SolarSystem” class, I added the sun and the nine planets to the
+“SolarSystemObjects” collection.</span></p>
+<p><span id="text">Once I had my source defined, I was ready to add a ListBox to the Window, bound to this collection:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:SolarSystem x:Key=”solarSystem” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox ItemsSource=”{Binding Source={StaticResource solarSystem}, Path=SolarSystemObjects}” /&gt;</span></p>
+<p><span id="text">The ListBox displays the planets, but visually this is still a little plain:</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/37PlanetsListBox1.PNG" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text">At this point, I started brainstorming ways to
+display the planets in a more realistic way - my goal was to achieve a
+look similar to the solar system diagrams in school books. The first
+step was to change the layout of the ListBoxItems. The default layout
+for a ListBox is a StackPanel, which causes the ListBoxItems to be
+displayed one above another (to be more precise, it’s a
+VirtualizingStackPanel, which adds virtualization to the traditional
+StackPanel). In order to display the planets the way I wanted, I needed
+a Canvas, which allows me to position the items within it by specifying
+the number of pixels to the Top and Left of that Canvas. There is an
+ItemsPanel property on ListBox of type ItemsPanelTemplate that can be
+used to change the layout of the ListBox, which is what I used in my
+sample. Here is how I did that:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style TargetType=”ListBox”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter Property=”ItemsPanel”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ItemsPanelTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Canvas
+Width=”590″ Height=”590″ Background=”Black” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ItemsPanelTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</span></p>
+<p><span id="text">My next step was to define the look of each planet,
+which I did by using a DataTemplate. I decided to represent each planet
+by its image, with a white ellipse simulating its orbit around the sun.
+I also added a tooltip with more information about the planet, which
+appears when you hover over the image.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate DataType=”{x:Type local:SolarSystemObject}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Canvas Width=”20″ Height=”20″ &gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Ellipse<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Canvas.Left=”{Binding
+Path=Orbit, Converter={StaticResource convertOrbit},
+ConverterParameter=-1.707}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Canvas.Top=”{Binding
+Path=Orbit, Converter={StaticResource convertOrbit},
+ConverterParameter=-0.293}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width=”{Binding
+Path=Orbit, Converter={StaticResource convertOrbit},
+ConverterParameter=2}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Height=”{Binding
+Path=Orbit, Converter={StaticResource convertOrbit},
+ConverterParameter=2}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stroke=”White”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StrokeThickness=”1″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image
+Source=”{Binding Path=Image}” Width=”20″ Height=”20″&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image.ToolTip&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel
+Width=”250″ TextBlock.FontSize=”12″&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+FontWeight=”Bold” Text=”{Binding Path=Name}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel
+Orientation=”Horizontal”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Text=”Orbit: ” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Text=”{Binding Path=Orbit}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Text=” AU” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Text=”{Binding Path=Details}” TextWrapping=”Wrap”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Image.ToolTip&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Image&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Canvas&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style TargetType=”ListBoxItem”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter
+Property=”Canvas.Left” Value=”{Binding Path=Orbit,
+Converter={StaticResource convertOrbit}, ConverterParameter=0.707}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter
+Property=”Canvas.Bottom” Value=”{Binding Path=Orbit,
+Converter={StaticResource convertOrbit}, ConverterParameter=0.707}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</span></p>
+<p><span id="text">As you can see in the template and style above, the
+properties that specify the position of the ListBoxItem and the
+position and size of the Ellipse depend on the orbit of the planet, and
+all use the same converter with different parameters. The converter’s
+job is to transform distances between solar system objects to distances
+in device independent pixels within the canvas. My original
+implementation of this converter simply multiplied the orbit value by a
+constant, but I found that the inner planets were too crowded together,
+so I changed the math a little to make it non-linear. I also decided to
+have the converter take a parameter that scales the result by a factor,
+so I could reuse this logic.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;public class ConvertOrbit : IValueConverter<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public object
+Convert(object value, Type targetType, object parameter, CultureInfo
+culture)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double orbit = (double)value;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double factor = System.Convert.ToDouble(parameter);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return Math.Pow(orbit / 40, 0.4) * 770 * factor;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public object
+ConvertBack(object value, Type targetType, object parameter,
+CultureInfo culture)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw
+new NotSupportedException(”This method should never be called”);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">If you run the application now, you will see that
+the planets are all correctly positioned in relation to the sun. If you
+hover over them, you will get more detailed information about the
+planet. If you click on a planet, the default ListBoxItem template
+assigns a blue background to the selected item, which shows a little
+bit around the image. This is not the effect I was looking for, so I
+decided to change the look of the selected item.</span></p>
+<p><span id="text">In order to change that style, I figured it would be
+easier to use Expression Blend to look at the default template, and
+then tweak it to the look I had in mind. I started by selecting the
+ListBox in Blend, then I went to the “Object” menu, selected “Edit
+Other Styles”, “Edit ItemContainerStyle”, and “Edit a Copy”. Then I
+gave the style a name, and clicked “OK”. If you go to the XAML tab at
+this point, you will see the full default Style for the ListBoxItems,
+which includes the following template:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter Property=”Template”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate
+TargetType=”{x:Type ListBoxItem}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Border
+SnapsToDevicePixels=”true” x:Name=”Bd” Background=”{TemplateBinding
+Background}” BorderBrush=”{TemplateBinding BorderBrush}”
+BorderThickness=”{TemplateBinding BorderThickness}”
+Padding=”{TemplateBinding Padding}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentPresenter
+SnapsToDevicePixels=”{TemplateBinding SnapsToDevicePixels}”
+HorizontalAlignment=”{TemplateBinding HorizontalContentAlignment}”
+VerticalAlignment=”{TemplateBinding VerticalContentAlignment}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Border&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger
+Property=”IsSelected” Value=”true”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter
+Property=”Background” TargetName=”Bd” Value=”{DynamicResource {x:Static
+SystemColors.HighlightBrushKey}}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter
+Property=”Foreground” Value=”{DynamicResource {x:Static
+SystemColors.HighlightTextBrushKey}}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MultiTrigger&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MultiTrigger.Conditions&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Condition
+Property=”IsSelected” Value=”true”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Condition
+Property=”Selector.IsSelectionActive” Value=”false”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/MultiTrigger.Conditions&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter
+Property=”Background” TargetName=”Bd” Value=”{DynamicResource {x:Static
+SystemColors.ControlBrushKey}}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter
+Property=”Foreground” Value=”{DynamicResource {x:Static
+SystemColors.ControlTextBrushKey}}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/MultiTrigger&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger
+Property=”IsEnabled” Value=”false”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter
+Property=”Foreground” Value=”{DynamicResource {x:Static
+SystemColors.GrayTextBrushKey}}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;</span></p>
+<p><span id="text">Using this as a base, I came up with a simpler template that adds a yellow ellipse around a planet when selected:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style TargetType=”ListBoxItem”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter Property=”Template”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate
+TargetType=”{x:Type ListBoxItem}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Grid&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Ellipse
+x:Name=”selectedPlanet” Margin=”-10″ StrokeThickness=”2″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ContentPresenter
+SnapsToDevicePixels=”{TemplateBinding SnapsToDevicePixels}”
+HorizontalAlignment=”{TemplateBinding HorizontalContentAlignment}”
+VerticalAlignment=”{TemplateBinding VerticalContentAlignment}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Grid&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger
+Property=”IsSelected” Value=”true”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter
+Property=”Stroke” TargetName=”selectedPlanet” Value=”Yellow”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</span></p>
+<p><span id="text">Below is a screenshot of the final application. If
+you hover over the images of the planets, you will get more information
+about them. If you click on a planet, a yellow ellipse will encircle it.</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/37PlanetsListBox2.PNG" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/37PlanetsListBox.zip">Here</a> you can find the VS project with this sample code. This works with RTM WPF bits. </span></p>
+<p><span id="text">This sample is part of a talk I presented last
+Tuesday, in an event here at Microsoft in Redmond where several
+customers came to learn more about WPF. It was a lot of fun to talk
+directly to customers and reply to their questions. <a href="http://www.beacosta.com/Zips/37DataBindingPresenter.zip">Here</a> you can find my slides for this talk (all done in WPF).</span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=14" title="View all posts in ListBox" rel="category">ListBox</a>, <a href="http://www.beacosta.com/blog/?cat=11" title="View all posts in Styles and Templates" rel="category">Styles and Templates</a>, <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=40"
+    dc:identifier="http://www.beacosta.com/blog/?p=40"
+    dc:title="The power of Styles and Templates in WPF"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=40" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=40"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=40">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">16 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-26" class="comment">
+				<a name="comment-26" id="comment-26"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-26")'>
+					<cite>Comment by Kent boogaart<a href="#comment-26"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-02 16:07:02 						
+					</div>					
+					<div class="content">
+						<p>Very cool Beatriz - thanks.</p>
+<p>A little off topic, but do you know of a canvas-like panel that
+autosizes to its content? That way you wouldn’t need to hard code the
+width and height of the canvas.</p>
+<p>PS. Hey, what’s Pluto doing on there? Wasn’t he demoted? <img src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/icon_smile.gif" alt=":)" class="wp-smiley"></p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-26", 26, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-27" class="comment odd">
+				<a name="comment-27" id="comment-27"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-27")'>
+					<cite>Comment by Bea<a href="#comment-27"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-03 22:28:08 						
+					</div>					
+					<div class="content">
+						<p>Hi Kent,</p>
+<p>Grid autosizes to its content. However, for this example, I wanted
+only a quarter of the ellipses to be showing, so autosizing to content
+would not work for me. For the presentation, I added this ListBox to a
+Viewbox, so that it scales to fit the screen size, independently of the
+resolution of the screen.</p>
+<p>About Pluto… I thought Wikipedia was never wrong!! <img src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/icon_smile.gif" alt=":)" class="wp-smiley"> <a href="http://en.wikipedia.org/wiki/Pluto" rel="nofollow">http://en.wikipedia.org/wiki/Pluto</a></p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-27", 27, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-28" class="comment">
+				<a name="comment-28" id="comment-28"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-28")'>
+					<cite>Comment by Olivier Dewit<a href="#comment-28"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-03 13:49:14 						
+					</div>					
+					<div class="content">
+						<p>CQFD, excellente présentation !</p>
+<p>Just a little problem in ConvertOrbit.Convert() with the decimal
+separator for countries outside US (or perhaps other planets :), which
+can be fixed by using the NumberFormatInfo from the culture argument : </p>
+<p>double factor = System.Convert.ToDouble(parameter, culture.NumberFormat);</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-28", 28, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-29" class="comment odd">
+				<a name="comment-29" id="comment-29"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-29")'>
+					<cite>Comment by Bea<a href="#comment-29"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-03 22:14:16 						
+					</div>					
+					<div class="content">
+						<p>Merci Olivier. You would think that being from a non-english speaking country I would catch that <img src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+<p>I made the correction and updated the zip.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-29", 29, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-30" class="comment">
+				<a name="comment-30" id="comment-30"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-30")'>
+					<cite>Comment by Anonymous<a href="#comment-30"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-04 14:10:00 						
+					</div>					
+					<div class="content">
+						<p>Thanks
+for including those slides from a “this talk”. Does this mean there was
+a presentation at some point, if so, is it available for download
+somewhere? (or do you mean that these slides are further samples of the
+blog post talk)</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-30", 30, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-31" class="comment odd">
+				<a name="comment-31" id="comment-31"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-31")'>
+					<cite>Comment by Bea<a href="#comment-31"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-04 22:16:43 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>The slides are from an internal presentation I did at Microsoft for
+a customer event, a couple of weeks ago. Fortunately yes, the
+presentation was video taped and I will be able to share it on my blog
+as soon as I get the OK from our technical evangelists. So stay tuned…</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-31", 31, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-32" class="comment">
+				<a name="comment-32" id="comment-32"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-32")'>
+					<cite>Comment by Ondrej<a href="#comment-32"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-05 13:49:26 						
+					</div>					
+					<div class="content">
+						<p>Hello,<br>
+I have a question, maybe it’s a bit off topic… I have a template for
+ListViewHeader because I want the header to have a Label and
+TextBox(for sorting a content of the column). It’s not a problem to
+make this, but I’d like to have only 1 template for more columns, it’s
+a problem because I need to have diferent Name property of TextBox, for
+each column… I really don’t know how to do that, I’m lost.<br>
+If you can help pleas help, thank you Ondrej</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-32", 32, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-37" class="comment odd">
+				<a name="comment-37" id="comment-37"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-37")'>
+					<cite>Comment by Bea<a href="#comment-37"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-06 18:18:27 						
+					</div>					
+					<div class="content">
+						<p>Hi Ondrej,</p>
+<p>You can use a DataTemplateSelector to have a similar DataTemplate
+for each column that only varies by a property (in this case Name).</p>
+<p>I made a sample for you that shows how to use HeaderTemplateSelector. You can find it here.</p>
+<p>Thanks!<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-37", 37, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-33" class="comment">
+				<a name="comment-33" id="comment-33"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-33")'>
+					<cite>Comment by RN<a href="#comment-33"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-05 18:42:06 						
+					</div>					
+					<div class="content">
+						<p>A
+question on using templates in ResourceDictionary. How can I access
+elements in my DataTemplate which is part of a ResourceDictionary from
+a Page’s code-behind (The DataTemplate is used by the Page’s Content
+Control)</p>
+<p>From a little bit of research I did, I found that I can use the following<br>
+this.ContentControl.Template.LoadContent()<br>
+which will give me the root element and then use FindName to get the
+element that I’m interested in. The problem with this approach is that
+I’m able to access the DataTemplate but not the instance of that
+DataTemplate because of which all my Elements’ properties return null
+or empty.</p>
+<p>The reason why I need to do is because myTextBox element in the
+DataTemplate has Binding with UpdateSourceTrigger = Explicit and I need
+to call BindingExpression.UpdateSource(0 from my Page’s code-behind.
+Any help would be appreciated.</p>
+<p>- RN</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-33", 33, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-36" class="comment odd">
+				<a name="comment-36" id="comment-36"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-36")'>
+					<cite>Comment by Bea<a href="#comment-36"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-07 20:09:59 						
+					</div>					
+					<div class="content">
+						<p>Hi RN,</p>
+<p>Did you post <a href="http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=1556449&amp;SiteID=1&amp;mode=1" rel="nofollow">this </a>in the forum? My answer to this questions sort of replies to your question.</p>
+<p>The instance you need to pass as a parameter to the FindName method
+is the ContentPresenter. This is an element within the ControlTemplate
+that serves as the link between the ControlTemplate and the
+DataTemplate. Unfortunately there is no simple method you can call on
+the ControlTemplate to get to the ContentPresenter. In the sample I
+showed in the forum, I simply walk the visual tree manually because I
+know it’s really small for that particular scenario. If you have a more
+complicated ControlTemplate, I recommend writing a simple utility
+method that walks the tree until it finds an element of type
+ContentPresenter.</p>
+<p>We know that this is quite hard to do, it should be much simpler. I
+have an item on my “wishlist” about simplifying this scenario, but
+unfortunately we weren’t able to get to it for the next version. </p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-36", 36, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-34" class="comment">
+				<a name="comment-34" id="comment-34"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-34")'>
+					<cite>Comment by Anonymous<a href="#comment-34"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-05-06 14:03:57 						
+					</div>					
+					<div class="content">
+						<p>Bea,
+I have been struggling with the Master-Details Scenario with one of the
+objects using UpdateSourceTrigger=Explicit. Could you please take a
+look at this post and give me some insight on what I could be doing
+wrong. </p>
+<p><a href="http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=1509250&amp;SiteID=1" rel="nofollow">http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=1509250&amp;SiteID=1</a></p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-34", 34, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-35" class="comment odd">
+				<a name="comment-35" id="comment-35"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-35")'>
+					<cite>Comment by Bea<a href="#comment-35"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-04-06 17:37:57 						
+					</div>					
+					<div class="content">
+						<p>Hi,<br>
+I replied to your forum question directly in the forum.<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-35", 35, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-38" class="comment">
+				<a name="comment-38" id="comment-38"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-38")'>
+					<cite>Comment by Anonymous<a href="#comment-38"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-07-08 15:34:21 						
+					</div>					
+					<div class="content">
+						<p>Please
+post Beatriz, there is so much wealth of information in this blog that
+it’s a shame to only see 1 post every 1.5/2 months…</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-38", 38, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-39" class="comment odd">
+				<a name="comment-39" id="comment-39"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-39")'>
+					<cite>Comment by Bea<a href="#comment-39"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-07-08 22:31:17 						
+					</div>					
+					<div class="content">
+						<p>Thanks for your comment. </p>
+<p>Yeah, I know I should be posting more often. Lately my job has been
+taking over my life and I find myself with little free time to do
+anything else. But you’re right, I should bump the priority of the
+blog. This blog is the coolest, most fun work related activity I have
+going on and I should keep myself and my readers happy <img src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+<p>Thanks!<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-39", 39, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-40" class="comment">
+				<a name="comment-40" id="comment-40"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-40")'>
+					<cite>Comment by Anonymous<a href="#comment-40"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-08-13 23:58:00 						
+					</div>					
+					<div class="content">
+						<p>Is
+there a way to freeze WPF ListView columns (make a specified column and
+it’s header stay in place when the user scrolls horizontally)?</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-40", 40, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-349" class="comment odd">
+				<a name="comment-349" id="comment-349"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-349")'>
+					<cite>Comment by Bea<a href="#comment-349"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-17 17:23:55 						
+					</div>					
+					<div class="content">
+						<p>Hello,</p>
+<p>Unfortunately we don’t support that feature. I can’t think of a
+relatively simple workaround either. That would be a good feature to
+support when we release a DataGrid Control.</p>
+<p>Thanks for your comment!<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-349", 349, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1433" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1433" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20The%20power%20of%20Styles%20and%20Templates%20in%20WPF_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="40" type="hidden">
+		<input name="redirect_to" value="/blog/?p=40" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="9f9b8e81fc9d07df07158a26bc9b3fb1" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>7735</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 7735;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

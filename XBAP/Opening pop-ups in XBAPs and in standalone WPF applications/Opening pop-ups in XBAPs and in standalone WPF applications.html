@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Opening pop-ups in XBAPs and in standalone WPF applications</title>
+
+  
+    
+    <link type="text/css" rel="Stylesheet" href="Opening%20pop-ups%20in%20XBAPs%20and%20in%20standalone%20WPF%20applications_files/gslb.css"></head><body>
+    <div class="gslb_mainDivPosting" style="margin-top: 24px;">
+      <div class="gslb_mainDivPostingTitle">
+        Opening pop-ups in XBAPs and in standalone WPF applications
+      </div>
+      
+        <table style="margin: 0pt; width: 100%;">
+          <tbody><tr>
+            <td>
+              <div class="gslb_mainDivSummary">
+                <a href="#abstract">Abstract</a> /
+                <a href="#problem">Problem</a> /
+                <a href="#solution">Proposed solution</a> /
+                <a href="#inconvenients">Inconvenients</a> /
+                <a href="#todo">To do list</a> /
+                <a href="#screenshot">Screenshot</a> /
+                <a href="#demo">Prototype</a> /
+                <a href="#history">History</a>
+              </div>
+            </td>
+            <td style="text-align: right; vertical-align: top;">
+              <div class="gslb_mainDivSummary">
+                &lt;&lt;&nbsp;Prev&nbsp;|&nbsp;<a href="http://www.galasoft.ch/articles.html#wpf">Index</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/mydotnet/WpfTests.TestOpenWindow/index.html">Next&nbsp;&gt;&gt;</a>
+              </div>
+            </td>
+          </tr>
+        </tbody></table>
+      
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="abstract"></a>Abstract:
+        </div>
+        <div class="gslb_mainDivParagraph">
+          This <a href="#demo">prototype</a> demonstrates a possible way to abstract pop-ups
+          in WPF standalone and XBAP applications.
+        </div>
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="problem"></a>Problem:
+        </div>
+        <ul class="gslb_mainList">
+          <li>XBAP applications may not open new windows (this is prevented by the sandbox.</li>
+          <li>According to Microsoft, this functionality will be implemented in V2 only.</li>
+          <li>Even if it was possible, I recommend against opening new windows in XBAP applications.
+            The reason is that web applications in general are more and more trying to avoid
+            opening new windows, and replace them with inline DIVs. I won't go into the problems
+            of opening new windows here. See <a href="http://developer.mozilla.org/en/docs/DOM:window.open#Avoid_resorting_to_window.open.28.29">
+              Mozilla's "Avoid resorting to window.open()"</a></li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          <a id="solution"></a>Proposed solution:
+        </div>
+        <ul class="gslb_mainList">
+          <li>This prototype uses <a href="http://scorbs.com/">Karen Corby</a>'s Flexible Application
+            Template, allowing to switch between XBAP and standalone using Visual Studio's configuration
+            manager.</li>
+          <li>For the moment, I use a switch in the code, which detects if the application runs
+            standalone or XBAP. If the application is standalone, I use a normal WPF window
+            to present the user control. If it runs as XBAP, I use a StackPanel placed in the
+            main page, with a higher ZIndex. In normal mode, this StackPanel is hidden.</li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          <a id="inconvenients"></a>Inconvenients:
+        </div>
+        <ul class="gslb_mainList">
+          <li>The content of the pop-up must be placed in a user content. There is an additional
+            PopUp.xaml file acting as a container. That's not really a problem, it just makes
+            the application's structure slightly more complicated.</li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          <a id="todo"></a>To do list:
+        </div>
+        <ul class="gslb_mainList">
+          <li>Abstract the mechanism using a PopUp class derived from Window. This PopUp class
+            must detect the running mode, and act accordingly. This removes the mode detection
+            from the Page.</li>
+          <li>The StackPanel placed in the main page should be added dynamically on runtime
+            using the XAML DOM. This would avoid modifying the Page on design time.</li>
+          <li>Add drag, minimize, and close functionality to the XBAP mode popup.</li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          <a id="screenshot"></a>Screenshot:
+        </div>
+        <img src="Opening%20pop-ups%20in%20XBAPs%20and%20in%20standalone%20WPF%20applications_files/screenshot.gif" alt="Opening windows" title="Opening windows">
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="demo"></a>Prototype:
+        </div>
+        <ul class="gslb_mainList">
+          <li><a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestPopUps/PublishedExe/WpfTests.TestPopUps.zip">
+            Download</a> the standalone mode (Zip) <span style="color: Red; font-weight: bold;">September CTP or newer edition</span></li>
+          <li><a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestPopUps/PublishedXbap/WpfTests.TestPopUps.xbap" target="_blank">Run</a> the XBAP mode <span style="color: Red; font-weight: bold;">September CTP or newer edition</span></li>
+          <li><a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestPopUps/WpfTests.TestPopUps.Project.zip">
+            Download</a> the project files (Zip)</li>
+        </ul>
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="history"></a>History:
+        </div>
+        <ul class="gslb_mainList">
+          <li>06.12.2006 (LBu): Checked for .NET 3.0 final.</li>
+          <li>04.10.2006 (LBu): Updated for RC1.</li>
+          <li>16.08.2006 (LBu): Published first version</li>
+        </ul>
+      </div>
+    </div>
+  </body></html>

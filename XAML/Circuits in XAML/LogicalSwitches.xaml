@@ -1,0 +1,404 @@
+<!-- ==================================================
+      LogicalSwitches.xaml (c) 2007 by Charles Petzold
+
+      Based on "Code: The Hidden Language of Compuer
+                  Hardware and Software," pages 95-100
+     ================================================== -->
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      WindowTitle="Logical Switches"
+      Title="Logical Switches">
+    <Page.Resources>
+
+        <!-- Style for expandable Viewbox -->
+    
+        <Style TargetType="Viewbox" x:Key="vbExpand">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard TargetProperty="Width">
+                            <DoubleAnimation To="1000" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard TargetProperty="Width">
+                            <DoubleAnimation To="100" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Styles for SPST CheckBox -->
+
+        <Style TargetType="CheckBox">
+            <Setter Property="RenderTransform" Value="1.1 0 0 1 -10 -40" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <ControlTemplate.Resources>
+                            <Style TargetType="Ellipse">
+                                <Setter Property="Width" Value="15" />
+                                <Setter Property="Height" Value="15" />
+                                <Setter Property="Fill" Value="Black" />
+                            </Style>
+                        </ControlTemplate.Resources>
+
+                        <Border Width="100" Height="50" 
+                                Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+                            <Grid>
+                                <ContentPresenter Content="{TemplateBinding Content}"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Top" />
+                                <Canvas>
+                                    <Ellipse Canvas.Left="0" Canvas.Top="30"
+                                             Width="20" Height="20"
+                                             Fill="{TemplateBinding Foreground}" />
+                                    <Ellipse Canvas.Left="80" Canvas.Top="30"
+                                             Width="20" Height="20"
+                                             Fill="{TemplateBinding Foreground}" />
+                                    <Line x:Name="switch" 
+                                          X1="10" Y1="40" X2="98" Y2="10"
+                                          Stroke="{TemplateBinding Foreground}" 
+                                          StrokeThickness="6" />
+                                </Canvas>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="switch" Property="Y2" Value="30" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Common data -->
+
+        <PathGeometry x:Key="battery" 
+                      Figures="M 350 700 H 525 V 800 H 350 Z
+                               M 525 725 H 550 V 775 H 525" />
+
+        <PathGeometry x:Key="bulb" 
+                      Figures="M -30   0 L  30   0 L 30 -20 L -30 -20 Z
+                               M -30 -20 L -30 -60 A 80 80 270 1 1 30 -60
+                               L  30 -20" />
+
+        <PathGeometry x:Key="filament" 
+                      Figures="M -10    0 L -10  -70 L -40 -140 L -30 -180 L -20 -140 
+                               L -10 -180 L   0 -140 L  10 -180 L  20 -140 L  30 -180 
+                               L  40 -140 L  10  -70 L  10    0" />
+        
+        <!-- Control style for AND demonstration -->
+
+        <Style TargetType="Control" x:Key="AndStyle">
+            <Setter Property="Foreground" Value="Black" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <ControlTemplate.Resources>
+                            <Style TargetType="Path">
+                                <Setter Property="Stroke" Value="Black" />
+                                <Setter Property="StrokeThickness" Value="3" />
+                            </Style>
+
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Style>
+                        </ControlTemplate.Resources>
+
+                        <Canvas Background="White">
+                            <CheckBox Name="cb1"
+                                      Canvas.Left="250" Canvas.Top="400" />
+                            <CheckBox Name="cb2"
+                                      Canvas.Left="500" Canvas.Top="400" />
+
+                            <Path Name="wire1" Data="M 250 400 H 50 V 750 H 350" 
+                                  Stroke="{TemplateBinding Foreground}" />
+                            <Path Name="wire2" Data="M 550 750 H 910 V 150" 
+                                  Stroke="{TemplateBinding Foreground}" />
+                            <Path Name="wire3" Data="M 600 400 H 890 V 150" 
+                                  Stroke="{TemplateBinding Foreground}" />
+                            <Path Name="wire4" Data="M 350 400 H 500" 
+                                  Stroke="{TemplateBinding Foreground}" />
+
+                            <Path Data="{StaticResource battery}" />
+
+                            <Path Name="bulb" Data="{StaticResource bulb}" 
+                                  Fill="LightGray" StrokeThickness="1"
+                                  RenderTransform="1 0 0 1 900 250" />
+
+                            <Path Data="{StaticResource filament}" 
+                                  Stroke="{TemplateBinding Foreground}"
+                                  RenderTransform="1 0 0 1 900 250" />
+                        </Canvas>
+
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition SourceName="cb1" Property="IsChecked" Value="True" />
+                                    <Condition SourceName="cb2" Property="IsChecked" Value="True" />
+                                </MultiTrigger.Conditions>
+
+                                <Setter Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cb1" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cb2" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="bulb" Property="Path.Fill" Value="Yellow" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Control style for OR demonstration -->
+
+        <Style TargetType="Control" x:Key="OrStyle">
+            <Setter Property="Foreground" Value="Black" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <ControlTemplate.Resources>
+                            <Style TargetType="Path">
+                                <Setter Property="Stroke" Value="Black" />
+                                <Setter Property="StrokeThickness" Value="3" />
+                            </Style>
+
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Style>
+                        </ControlTemplate.Resources>
+
+                        <Canvas Background="White">
+                            <CheckBox Name="cb1"
+                                      Canvas.Left="400" Canvas.Top="300" />
+                            <CheckBox Name="cb2"
+                                      Canvas.Left="400" Canvas.Top="500" />
+
+                            <Path Name="wireT1" Data="M 300 400 V 300 H 400" />
+                            <Path Name="wireT2" Data="M 500 300 H 600 V 400" />
+                            <Path Name="wireB1" Data="M 300 400 V 500 H 400" />
+                            <Path Name="wireB2" Data="M 500 500 H 600 V 400" />
+
+                            <Path Name="wire1" Data="M 300 400 H 50 V 750 H 350" 
+                                  Stroke="{TemplateBinding Foreground}" />
+                            <Path Name="wire2" Data="M 550 750 H 910 V 150" 
+                                  Stroke="{TemplateBinding Foreground}" />
+                            <Path Name="wire3" Data="M 600 400 H 890 V 150" 
+                                  Stroke="{TemplateBinding Foreground}" />
+
+                            <Path Data="{StaticResource battery}" />
+
+                            <Path Name="bulb" Data="{StaticResource bulb}" 
+                                  Fill="LightGray" StrokeThickness="1"
+                                  RenderTransform="1 0 0 1 900 250" />
+
+                            <Path Data="{StaticResource filament}" 
+                                  Stroke="{TemplateBinding Foreground}"
+                                  RenderTransform="1 0 0 1 900 250" />
+                        </Canvas>
+
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition SourceName="cb1" Property="IsChecked" Value="True" />
+                                </MultiTrigger.Conditions>
+
+                                <Setter Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cb1" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="wireT1" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireT2" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="bulb" Property="Path.Fill" Value="Yellow" />
+                            </MultiTrigger>
+
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition SourceName="cb2" Property="IsChecked" Value="True" />
+                                </MultiTrigger.Conditions>
+
+                                <Setter Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cb2" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="wireB1" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireB2" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="bulb" Property="Path.Fill" Value="Yellow" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Control style for Kitten demonstration -->
+
+        <Style TargetType="Control" x:Key="KittenStyle">
+            <Setter Property="Foreground" Value="Black" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <ControlTemplate.Resources>
+                            <Style TargetType="Path">
+                                <Setter Property="Stroke" Value="Black" />
+                                <Setter Property="StrokeThickness" Value="3" />
+                            </Style>
+
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Style>
+                        </ControlTemplate.Resources>
+
+                        <Canvas Background="White">
+                            <CheckBox Name="cbM" Content="M"
+                                      Canvas.Left="200" Canvas.Top="200" />
+                            <CheckBox Name="cbN1" Content="N"
+                                      Canvas.Left="400" Canvas.Top="200" />
+                            <CheckBox Name="cbW" Content="W" 
+                                      Canvas.Left="600" Canvas.Top="100" />
+                            <CheckBox Name="cbT" Content="T"
+                                      Canvas.Left="600" Canvas.Top="300" />
+                            <CheckBox Name="cbF" Content="F"
+                                      Canvas.Left="200" Canvas.Top="400" />
+                            <CheckBox Name="cbN2" Content="N"
+                                      Canvas.Left="400" Canvas.Top="400"
+                                      IsChecked="{Binding ElementName=cbN1, Path=IsChecked, Mode=TwoWay}" />
+                            <CheckBox Name="cbxW" Content="~W"
+                                      Canvas.Left="600" Canvas.Top="400" />
+                            <CheckBox Name="cbB" Content="B"
+                                      Canvas.Left="400" Canvas.Top="600" />
+
+                            <Path Name="wireT1" Data="M 100 400 V 200 H 200" />
+                            <Path Name="wireT2" Data="M 300 200 H 400" />
+                            <Path Name="wireT3" Data="M 500 200 H 550" />
+                            <Path Name="wireTT1" Data="M 550 200 V 100 H 600" />
+                            <Path Name="wireTB1" Data="M 550 200 V 300 H 600" />
+                            <Path Name="wireTT2" Data="M 700 100 H 750 V 200" />
+                            <Path Name="wireTB2" Data="M 700 300 H 750 V 200" />
+                            <Path Name="wireT4" Data="M 750 200 H 800 V 400" />
+
+                            <Path Name="wireM1" Data="M 100 400 H 200" />
+                            <Path Name="wireM2" Data="M 300 400 H 400" />
+                            <Path Name="wireM3" Data="M 500 400 H 600" />
+                            <Path Name="wireM4" Data="M 700 400 H 800" />
+
+                            <Path Name="wireB1" Data="M 100 400 V 600 H 400" />
+                            <Path Name="wireB2" Data="M 500 600 H 800 V 400" />
+
+                            <Path Name="wire1" Data="M 100 400 H 50 V 750 H 350" 
+                                  Stroke="{TemplateBinding Foreground}" />
+                            <Path Name="wire2" Data="M 550 750 H 910 V 150" 
+                                  Stroke="{TemplateBinding Foreground}" />
+                            <Path Name="wire3" Data="M 800 400 H 890 V 150" 
+                                  Stroke="{TemplateBinding Foreground}" />
+
+                            <Path Data="{StaticResource battery}" />
+
+                            <Path Name="bulb" Data="{StaticResource bulb}" 
+                                  Fill="LightGray" StrokeThickness="1"
+                                  RenderTransform="1 0 0 1 900 250" />
+
+                            <Path Data="{StaticResource filament}" 
+                                  Stroke="{TemplateBinding Foreground}"
+                                  RenderTransform="1 0 0 1 900 250" />
+                        </Canvas>
+
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition SourceName="cbM" Property="IsChecked" Value="True" />
+                                    <Condition SourceName="cbN1" Property="IsChecked" Value="True" />
+                                    <Condition SourceName="cbW" Property="IsChecked" Value="True" />
+                                </MultiTrigger.Conditions>
+
+                                <Setter Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cbM" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cbN1" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cbW" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="wireT1" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireT2" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireTT1" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireTT2" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireT3" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireT4" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="bulb" Property="Path.Fill" Value="Yellow" />
+                            </MultiTrigger>
+
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition SourceName="cbM" Property="IsChecked" Value="True" />
+                                    <Condition SourceName="cbN1" Property="IsChecked" Value="True" />
+                                    <Condition SourceName="cbT" Property="IsChecked" Value="True" />
+                                </MultiTrigger.Conditions>
+
+                                <Setter Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cbM" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cbN1" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cbT" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="wireT1" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireT2" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireTB1" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireTB2" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireT3" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireT4" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="bulb" Property="Path.Fill" Value="Yellow" />
+                            </MultiTrigger>
+
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition SourceName="cbF" Property="IsChecked" Value="True" />
+                                    <Condition SourceName="cbN2" Property="IsChecked" Value="True" />
+                                    <Condition SourceName="cbxW" Property="IsChecked" Value="True" />
+                                </MultiTrigger.Conditions>
+
+                                <Setter Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cbF" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cbN2" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cbxW" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="wireM1" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireM2" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireM3" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireM4" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="bulb" Property="Path.Fill" Value="Yellow" />
+                            </MultiTrigger>
+
+                            <Trigger SourceName="cbB" Property="IsChecked" Value="True">
+                                <Setter Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="cbB" Property="Control.Foreground" Value="Red" />
+                                <Setter TargetName="wireB1" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="wireB2" Property="Path.Stroke" Value="Red" />
+                                <Setter TargetName="bulb" Property="Path.Fill" Value="Yellow" />
+                            </Trigger>                                
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    
+    <Viewbox>
+        <StackPanel Orientation="Horizontal">
+
+            <Viewbox Style="{StaticResource vbExpand}" Width="100">
+                <Control Style="{StaticResource AndStyle}" Width="1000" Height="850"/>
+            </Viewbox>
+
+            <Viewbox Style="{StaticResource vbExpand}" Width="100">
+                <Control Style="{StaticResource OrStyle}" Width="1000" Height="850"/>
+            </Viewbox>
+
+            <Viewbox Style="{StaticResource vbExpand}" Width="100">
+                <Control Style="{StaticResource KittenStyle}" Width="1000" Height="850"/>
+            </Viewbox>
+
+        </StackPanel>
+    </Viewbox>
+</Page>

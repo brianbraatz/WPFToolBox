@@ -1,0 +1,438 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:r="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Reveal;assembly=WPFSamplesLib"
+    xmlns:local="clr-namespace:FeatureMontage"
+
+    xmlns:transition="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Transition;assembly=WPFSamplesLib" 
+        xmlns:lib="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Zap;assembly=WPFSamplesLib"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+
+    x:Class="FeatureMontage.Controls2"
+
+    Title="Custom Controls"
+    >
+  <Grid>
+
+
+
+    <Viewbox Margin="30,60,30,30">
+      <Border>
+        <Canvas Width="400" Height="300">
+          <TreeView x:Name="treeView" Canvas.Top="1" Canvas.Left="1" Margin="5" Width="150" Height="250">
+            <TreeView.Resources>
+              <PathGeometry x:Key="TreeArrow">
+                <PathGeometry.Figures>
+                  <PathFigureCollection>
+                    <PathFigure IsFilled="True"
+                                StartPoint="0 0"
+                                IsClosed="True">
+                      <PathFigure.Segments>
+                        <PathSegmentCollection>
+                          <LineSegment Point="0 6"/>
+                          <LineSegment Point="6 0"/>
+                        </PathSegmentCollection>
+                      </PathFigure.Segments>
+                    </PathFigure>
+                  </PathFigureCollection>
+                </PathGeometry.Figures>
+              </PathGeometry>
+              <Style x:Key="ExpandCollapseToggleStyle"
+                     TargetType="{x:Type ToggleButton}">
+                <Setter Property="Focusable"
+                        Value="False"/>
+                <Setter Property="Width"
+                        Value="16"/>
+                <Setter Property="Height"
+                        Value="16"/>
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                      <Border Width="16"
+                              Height="16"
+                              Background="Transparent"
+                              Padding="5,5,5,5">
+                        <Path x:Name="ExpandPath"
+                              Fill="Transparent"
+                              Stroke="#FF989898"
+                              Data="{StaticResource TreeArrow}">
+                          <Path.RenderTransform>
+                            <RotateTransform Angle="135"
+                                             CenterX="3"
+                                             CenterY="3"/>
+                          </Path.RenderTransform>
+                        </Path>
+                      </Border>
+                      <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                          <Setter TargetName="ExpandPath"
+                                  Property="Stroke"
+                                  Value="#FF1BBBFA"/>
+                          <Setter TargetName="ExpandPath"
+                                  Property="Fill"
+                                  Value="Transparent"/>
+                        </Trigger>
+
+                        <Trigger Property="IsChecked"
+                                 Value="True">
+                          <Setter TargetName="ExpandPath"
+                                  Property="RenderTransform">
+                            <Setter.Value>
+                              <RotateTransform Angle="180"
+                                               CenterX="3"
+                                               CenterY="3"/>
+                            </Setter.Value>
+                          </Setter>
+                          <Setter TargetName="ExpandPath"
+                                  Property="Fill"
+                                  Value="#FF595959"/>
+                          <Setter TargetName="ExpandPath"
+                                  Property="Stroke"
+                                  Value="#FF262626"/>
+                        </Trigger>
+                      </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+              <Style x:Key="{x:Type TreeViewItem}"
+                     TargetType="{x:Type TreeViewItem}">
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition MinWidth="19"
+                                            Width="Auto"/>
+                          <ColumnDefinition Width="Auto"/>
+                          <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                          <RowDefinition Height="Auto"/>
+                          <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <ToggleButton x:Name="Expander"
+                                      Style="{StaticResource ExpandCollapseToggleStyle}"
+                                      IsChecked="{Binding Path=IsExpanded,RelativeSource={RelativeSource TemplatedParent}}"
+                                      ClickMode="Press"/>
+                        <Border Name="Bd"
+                                Grid.Column="1"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="true">
+                          <ContentPresenter x:Name="PART_Header"
+                                            ContentSource="Header"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                        <r:Reveal Grid.Row="1"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan="2"
+                                  HorizontalAlignment="Left" 
+                                  VerticalAlignment="Top" 
+                                  VerticalReveal="FromBottomToTop" 
+                                  IsExpanded="{TemplateBinding IsExpanded}">
+                          <ItemsPresenter />
+
+                        </r:Reveal>
+                      </Grid>
+                      <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems"
+                                 Value="false">
+                          <Setter TargetName="Expander"
+                                  Property="Visibility"
+                                  Value="Hidden"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected"
+                                 Value="true">
+                          <Setter TargetName="Bd"
+                                  Property="Background"
+                                  Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                          <Setter Property="Foreground"
+                                  Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                          <MultiTrigger.Conditions>
+                            <Condition Property="IsSelected"
+                                       Value="true"/>
+                            <Condition Property="IsSelectionActive"
+                                       Value="false"/>
+                          </MultiTrigger.Conditions>
+                          <Setter TargetName="Bd"
+                                  Property="Background"
+                                  Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                          <Setter Property="Foreground"
+                                  Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                          <Setter Property="Foreground"
+                                  Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                      </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </TreeView.Resources>
+
+            <TreeViewItem IsSelected="True" Header="The Power of ItemsControl">
+              <TreeViewItem Header="Zap Scroller">
+                <TreeViewItem Header="Text"  Selected="treeViewItemSelected" />
+              </TreeViewItem>
+              <TreeViewItem Header="Transitions">
+                <TreeViewItem Header="Melt"  Selected="treeViewItemSelected"/>
+                <TreeViewItem Header="RotateWipe"  Selected="treeViewItemSelected"/>
+                <TreeViewItem Header="Diamonds"  Selected="treeViewItemSelected"/>
+                <TreeViewItem Header="Checkerboard"  Selected="treeViewItemSelected"/>
+                <TreeViewItem Header="3D Door"  Selected="treeViewItemSelected"/>
+                <TreeViewItem Header="3D Explosion"  Selected="treeViewItemSelected"/>
+                <TreeViewItem Header="Page"  Selected="treeViewItemSelected"/>
+                <TreeViewItem Header="Cloth"  Selected="treeViewItemSelected"/>
+              </TreeViewItem>
+            </TreeViewItem>
+          </TreeView>
+          <DockPanel x:Name="dp1"  Canvas.Top="-72.5" Canvas.Left="70" Width="419" Height="432"  ClipToBounds="True" Visibility="Hidden" RenderTransformOrigin="0.5,0.5">
+          	<DockPanel.RenderTransform>
+          		<TransformGroup>
+          			<ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
+          			<SkewTransform AngleX="0" AngleY="0"/>
+          			<RotateTransform Angle="0"/>
+          			<TranslateTransform X="0" Y="0"/>
+          		</TransformGroup>
+          	</DockPanel.RenderTransform>
+            <lib:ZapItemsControl >
+
+              <lib:ZapItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Viewbox>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding}" FontFamily="Monotype Corsiva"  VerticalAlignment="Center" Margin="5" Width="250" Height="250"/>
+                  </Viewbox>
+                </DataTemplate>
+              </lib:ZapItemsControl.ItemTemplate>
+              <sys:String>Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof; or abridging the freedom of speech, or of the press; or the right of the people peaceably to assemble, and to petition the Government for a redress of grievances.</sys:String>
+              <sys:String>A well regulated Militia, being necessary to the security of a free State, the right of the people to keep and bear Arms, shall not be infringed.</sys:String>
+              <sys:String>No Soldier shall, in time of peace be quartered in any house, without the consent of the Owner, nor in time of war, but in a manner to be prescribed by law.</sys:String>
+              <sys:String>The right of the people to be secure in their persons, houses, papers, and effects, against unreasonable searches and seizures, shall not be violated, and no Warrants shall issue, but upon probable cause, supported by Oath or affirmation, and particularly describing the place to be searched, and the persons or things to be seized.</sys:String>
+              <sys:String>No person shall be held to answer for a capital, or otherwise infamous crime, unless on a presentment or indictment of a Grand Jury, except in cases arising in the land or naval forces, or in the Militia, when in actual service in time of War or public danger; nor shall any person be subject for the same offence to be twice put in jeopardy of life or limb; nor shall be compelled in any criminal case to be a witness against himself, nor be deprived of life, liberty, or property, without due process of law; nor shall private property be taken for public use, without just compensation.</sys:String>
+              <sys:String>In all criminal prosecutions, the accused shall enjoy the right to a speedy and public trial, by an impartial jury of the State and district wherein the crime shall have been committed, which district shall have been previously ascertained by law, and to be informed of the nature and cause of the accusation; to be confronted with the witnesses against him; to have compulsory process for obtaining witnesses in his favor, and to have the Assistance of Counsel for his defence.</sys:String>
+              <sys:String>In Suits at common law, where the value in controversy shall exceed twenty dollars, the right of trial by jury shall be preserved, and no fact tried by a jury, shall be otherwise re-examined in any Court of the United States, than according to the rules of the common law.</sys:String>
+              <sys:String>Excessive bail shall not be required, nor excessive fines imposed, nor cruel and unusual punishments inflicted.</sys:String>
+              <sys:String>The enumeration in the Constitution, of certain rights, shall not be construed to deny or disparage others retained by the people.</sys:String>
+              <sys:String>The powers not delegated to the United States by the Constitution, nor prohibited by it to the States, are reserved to the States respectively, or to the people.</sys:String>
+
+
+            </lib:ZapItemsControl>
+          </DockPanel>
+
+          <DockPanel x:Name="dp3" Canvas.Top="28" Canvas.Left="165" Width="230" Height="230"  ClipToBounds="True" Visibility="Hidden">
+            <DockPanel.Resources>
+
+              <Style x:Key="DataListBoxStyle" TargetType="ListBox">
+                <Setter Property="Background" Value="transparent"/>
+                <Setter Property="BorderThickness" Value="0,0,0,0"/>
+                <Setter Property="SelectedIndex" Value="0"/>
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+                <Setter Property="ItemsPanel">
+                  <Setter.Value>
+                    <ItemsPanelTemplate>
+                      <VirtualizingStackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+
+              <transition:StoryboardTransition x:Key="melt"  TextSearch.Text="Melt">
+                <transition:StoryboardTransition.NewContentStyle>
+                  <Style TargetType="ContentPresenter">
+                    <Setter Property="OpacityMask">
+                      <Setter.Value>
+                        <LinearGradientBrush EndPoint="1,0">
+                          <GradientStop Offset="0"/>
+                          <GradientStop Offset="0.1"/>
+                          <GradientStop Offset="0.2"/>
+                          <GradientStop Offset="0.3"/>
+                          <GradientStop Offset="0.4"/>
+                          <GradientStop Offset="0.5"/>
+                          <GradientStop Offset="0.6"/>
+                          <GradientStop Offset="0.7"/>
+                          <GradientStop Offset="0.8"/>
+                          <GradientStop Offset="0.9"/>
+                          <GradientStop Offset="1"/>
+                        </LinearGradientBrush>
+                      </Setter.Value>
+                    </Setter>
+                  </Style>
+                </transition:StoryboardTransition.NewContentStyle>
+                <transition:StoryboardTransition.NewContentStoryboard>
+                  <Storyboard>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[0].Color" To="White" Duration="0:0:0.2" BeginTime="0:0:0.14"/>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[1].Color" To="White" Duration="0:0:0.3" BeginTime="0:0:0.2"/>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[2].Color" To="White" Duration="0:0:0.5" BeginTime="0:0:0.031"/>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[3].Color" To="White" Duration="0:0:0.3" BeginTime="0:0:0.02"/>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[4].Color" To="White" Duration="0:0:0.45" BeginTime="0:0:0.3"/>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[5].Color" To="White" Duration="0:0:0.25" BeginTime="0:0:0.12"/>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[6].Color" To="White" Duration="0:0:0.3" BeginTime="0:0:0.19"/>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[7].Color" To="White" Duration="0:0:0.4" BeginTime="0:0:0"/>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[8].Color" To="White" Duration="0:0:0.13" BeginTime="0:0:0.081"/>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[9].Color" To="White" Duration="0:0:0.34" BeginTime="0:0:0.331"/>
+                    <ColorAnimation Storyboard.TargetProperty="OpacityMask.GradientStops[10].Color" To="White" Duration="0:0:0.42" BeginTime="0:0:.0121"/>
+                  </Storyboard>
+                </transition:StoryboardTransition.NewContentStoryboard>
+              </transition:StoryboardTransition>
+
+              <transition:ClothTransition x:Key="cloth"  TextSearch.Text="Cloth"/>
+
+
+
+              <transition:StoryboardTransition x:Key="Diamonds" >
+                <transition:StoryboardTransition.NewContentStyle>
+                  <Style TargetType="ContentPresenter">
+                    <Setter Property="OpacityMask">
+                      <Setter.Value>
+                        <DrawingBrush TileMode="FlipXY" ViewboxUnits="Absolute" Viewport="0,0,30,30" ViewportUnits="Absolute">
+                          <DrawingBrush.Drawing>
+                            <GeometryDrawing Brush="White">
+                              <GeometryDrawing.Geometry>
+                                <RectangleGeometry Rect="-1,-1,2,2">
+                                  <RectangleGeometry.Transform>
+                                    <RotateTransform Angle="90" CenterX="1" CenterY="1"/>
+                                  </RectangleGeometry.Transform>
+                                </RectangleGeometry>
+                              </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                          </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                      </Setter.Value>
+                    </Setter>
+                  </Style>
+                </transition:StoryboardTransition.NewContentStyle>
+                <transition:StoryboardTransition.NewContentStoryboard>
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="OpacityMask.Drawing.Geometry.Transform.Angle" To="0" Duration="0:0:0.5"/>
+                  </Storyboard>
+                </transition:StoryboardTransition.NewContentStoryboard>
+              </transition:StoryboardTransition>
+
+              <transition:StoryboardTransition x:Key="Checkerboard">
+                <transition:StoryboardTransition.NewContentStyle>
+                  <Style TargetType="ContentPresenter">
+                    <Setter Property="OpacityMask">
+                      <Setter.Value>
+                        <DrawingBrush TileMode="Tile" ViewboxUnits="Absolute" Viewbox="0,0,2,2" Viewport="0,0,60,60" ViewportUnits="Absolute">
+                          <DrawingBrush.Drawing>
+                            <GeometryDrawing Brush="White">
+                              <GeometryDrawing.Geometry>
+                                <GeometryGroup>
+                                  <RectangleGeometry Rect="0,0,0,1" />
+                                  <RectangleGeometry Rect="0,1,0,1"/>
+                                  <RectangleGeometry Rect="1,1,0,1"/>
+                                </GeometryGroup>
+                              </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                          </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                      </Setter.Value>
+                    </Setter>
+                  </Style>
+                </transition:StoryboardTransition.NewContentStyle>
+                <transition:StoryboardTransition.NewContentStoryboard>
+                  <Storyboard>
+                    <RectAnimation Storyboard.TargetProperty="OpacityMask.Drawing.Geometry.Children[0].Rect" To="0,0,2,1" Duration="0:0:0.8" BeginTime="0:0:0"/>
+                    <RectAnimation Storyboard.TargetProperty="OpacityMask.Drawing.Geometry.Children[1].Rect" To="0,1,1,1" Duration="0:0:0.4" BeginTime="0:0:0.4"/>
+                    <RectAnimation Storyboard.TargetProperty="OpacityMask.Drawing.Geometry.Children[2].Rect" To="1,1,1,1" Duration="0:0:0.4" BeginTime="0:0:0"/>
+                  </Storyboard>
+                </transition:StoryboardTransition.NewContentStoryboard>
+              </transition:StoryboardTransition>
+
+              <transition:DoorTransition x:Key="3D Door" Duration="0:0:0.5" FieldOfView="40"/>
+              <transition:ExplosionTransition x:Key="3D Explosion"/>
+              <transition:PageTransition x:Key="Page" FieldOfView="10" ClipToBounds="true"/>
+
+
+
+              <transition:StoryboardTransition TextSearch.Text="Rotate Wipe" x:Key="rotateWipe" >
+                <transition:StoryboardTransition.NewContentStyle>
+                  <Style TargetType="ContentPresenter">
+                    <Setter Property="OpacityMask">
+                      <Setter.Value>
+                        <LinearGradientBrush EndPoint="1,0">
+                          <LinearGradientBrush.Transform>
+                            <RotateTransform Angle="10"/>
+                          </LinearGradientBrush.Transform>
+                          <GradientStop Offset="0" Color="White"/>
+                          <GradientStop Offset="0.1" />
+                        </LinearGradientBrush>
+                      </Setter.Value>
+                    </Setter>
+                  </Style>
+                </transition:StoryboardTransition.NewContentStyle>
+                <transition:StoryboardTransition.NewContentStoryboard>
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="OpacityMask.Transform.Angle" To="-90" Duration="0:0:0.5"/>
+                  </Storyboard>
+                </transition:StoryboardTransition.NewContentStoryboard>
+              </transition:StoryboardTransition>
+
+
+
+            </DockPanel.Resources>
+
+
+
+            <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center">Click a cat to see the effect</TextBlock>
+
+            <ListBox Name="_data"
+        DockPanel.Dock="Top" 
+         Style="{StaticResource DataListBoxStyle}">
+              <ListBox.Resources>
+
+                <DataTemplate DataType="{x:Type local:Picture}">
+                  <Border Width="32" Height="32" Margin="2">
+                    <Image Source="{Binding Uri}"  />
+                  </Border>
+                </DataTemplate>
+
+
+                <DataTemplate DataType="{x:Type local:Video}">
+                  <Border Width="32" Height="32" Margin="2">
+                    <MediaElement Source="{Binding Uri}" LoadedBehavior="Pause"/>
+                  </Border>
+                </DataTemplate>
+
+              </ListBox.Resources>
+            </ListBox>
+
+
+
+            <transition:TransitionPresenter x:Name="transitionElement" 
+              Canvas.Top="1" Canvas.Left="170" Width="230" Height="230"  
+                           Transition="{StaticResource cloth}"
+                           Content="{Binding ElementName=_data, Path=SelectedItem}"
+                           MouseLeftButtonDown="OnMouseLeftDown"
+                           MouseRightButtonDown="OnMouseRightDown"  >
+
+              <transition:TransitionPresenter.Resources>
+
+                <DataTemplate DataType="{x:Type local:Picture}">
+                  <Border >
+                    <Image Source="{Binding Uri}" Margin="2"  Stretch="UniformToFill"/>
+                  </Border>
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type local:Video}">
+                    <MediaElement Source="{Binding Uri}" LoadedBehavior="Pause"/>
+                </DataTemplate>
+
+
+              </transition:TransitionPresenter.Resources>
+            </transition:TransitionPresenter>
+          </DockPanel>
+        </Canvas>
+      </Border>
+    </Viewbox> 
+      </Grid>
+</Page>

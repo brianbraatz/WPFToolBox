@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Tablet PC Programming under WPF</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/040914.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/050404.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/01/051134.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Tablet PC Programming under WPF</h2></a><p style="text-align: right;">January 5, 2006<br>NYC</p><p>
+Avalon Tablet guy Shawn A. Van Ness noted that a certain WPF book
+already on the streets has nothing to say about Tablet PC programming,
+so he put together a <a href="http://www.windojitsu.com/blog/tictactoefx.html">tic-tac-toe using <i>InkCanvas</i></a>.
+</p>
+<p>
+Because it handles rendering and stroke retention, <i>InkCanvas</i>
+certainly ranks as the high-level approach to collecting ink in WPF
+programs. WPF also has a facility to use stylus plug-ins, allowing the
+low-level stylus stuff we can do with the Tablet under WinForms and
+which I discussed in my <a href="http://msdn.microsoft.com/msdnmag/issues/05/12/TabletPC/">MSDN article on Real-Time Stylus programming</a>.
+</p>
+<p>
+However, WPF also has a middle way that I've come to like very much. The <i>UIElement</i> class defines a whole bunch of stylus events (and related <i>On</i> methods and a few properties) that are very, very similar to mouse events. Thus, <i>StylusEnter</i>, <i>StylusDown</i>, <i>StylusMove</i>, <i>StylusUp</i>, <i>StylusLeave</i>,
+to name only the most common. These are all routed events, of course,
+so you have the same flexibility that you have with handling keyboard
+and mouse events. To use the stylus events, a program must be running
+on a Tablet PC and (very important) make a call to <i>Stylus.Enable()</i>.
+(Although the stylus generates mouse events as well as stylus events on
+the Tablet PC, the opposite is not true. The mouse does not generate
+stylus events on a non-Tablet PC. <i>InkCanvas</i> works with both the stylus and the mouse because it specifically traps both types of events.)
+</p>
+<p>
+A year or so ago, I became obsessed with rendering drop-shadow on stylus input and wrote an <a href="http://www.charlespetzold.com/etc/RealTimeDropShadow/">online article about it</a>.
+I have now returned to that crazy task for my WPF book and found the
+whole job much, much easier. As with most WPF graphics jobs, the
+minimal-redraw retained-graphics system helps out enormously.
+</p>
+<p>
+The <a href="http://www.charlespetzold.com/blog/2006/01/ShadowTheStylus.csproj">ShadowTheStylus.csproj</a> and <a href="http://www.charlespetzold.com/blog/2006/01/ShadowTheStylus.cs">ShadowTheStylus.cs</a> files were developed under the December CTP. The program creates a <i>Canvas</i> panel for the window content, and the window overrides the <i>OnStylusDown</i>, <i>OnStylusMove</i>, and <i>OnStylusUp</i>
+methods rather than installing event handlers. Because these are routed
+events, the canvas gets notified of the events first, and then the
+window if the canvas doesn't handle the event. (Actually, after you've
+drawn on the window, there will likely be various <i>Polyline</i> elements that have first dibs on these events.) And, of course, as with the keyboard and mouse, there are <i>Preview</i> versions of these events that begin at the window and go down the tree. 
+</p>
+<p>
+In response to an <i>OnStylusDown</i> call, the program creates two <i>Polyline</i>
+objects — one for the foreground stroke and the other for the shadow.
+These are given rounded ends and joins for smoother rendering. The two
+elements are then added to the <i>Children</i> collection of the <i>Canvas</i>.
+But for proper composite rendering, these children must be ordered in a
+specific manner. Children early in the collection get drawn first, and
+are possibly obscured by children later in the collection. For this
+program, the collection must contain all the shadows first, followed by
+all the foreground strokes.
+</p>
+<p>The program manages this feat by inserting the shadow polyline in
+the middle of the collection (which will always have an even number of
+elements at this point):
+</p>
+<ul>
+<pre>canv.Children.Insert(canv.Children.Count / 2, polyShadow);
+</pre>
+</ul>
+<p>
+The foreground stroke can then go on the end:
+</p>
+<ul>
+<pre>canv.Children.Add(polyStylus);
+</pre>
+</ul>
+<p>
+Once that's done, everything else is a snap. Notice that the program captures the stylus by calling <i>CaptureStylus</i> (so the stylus can drift outside the window) and sets its own <i>isDrawing</i> flag to <i>true</i>. The <i>OnStylusMove</i>
+method simply adds an additional point each to the foreground and
+shadow polyline, and lets WPF worry about the flicker-free redraw. I've
+allowed the stroke to be aborted with a press of the Escape key, and
+the override of <i>OnLostStylusCapture</i> is then reponsible for removing the two polylines from the <i>Children</i> collection in that case.
+</p>
+<p>
+And now, a confession: Because I much prefer programming on a 21"
+monitor with an ergonomic keyboard, I first wrote the program on my
+desktop machine to use the mouse, and then converted it to the stylus
+for my Tablet PC. The conversion wasn't quite a search-and-replace from
+"Mouse" to "Stylus" but it was nearly so, clearly demonstrating the
+similarity between the mouse and stylus event APIs.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/040914.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/01/050404.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

@@ -1,0 +1,1514 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How can I propagate changes across threads?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">September 23, 2006</div>
+					<h2 id="post-34"><a id="postTitle" href="http://www.beacosta.com/blog/?p=34" rel="bookmark" title="How can I propagate changes across threads?">How can I propagate changes across threads?</a></h2>
+					<p><span id="text">I
+hope you didn’t get your hopes up too much when you read the title for
+this post. This time, instead of showing off what we support in our
+platform, I will explain to you what we don’t. <img src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/icon_smile.gif" alt=":)" class="wp-smiley">
+The scenario I have in mind is when you want to bind a control in the
+UI thread to a collection or property that is modified in a different
+worker thread. My goal for this post is to tell you what works today
+and what doesn’t, and although no good workaround exists, I will
+discuss some ideas around this topic. </span></p>
+<p><span id="text">Here is the quick version of this post:<br>
+- We do not support collection change notifications across threads.<br>
+- We support property change notifications across threads.</span></p>
+<p><span id="text">Now the long version:</span></p>
+<p><span id="text">(Disclaimer: I will try to make the content as easy
+to read as possible, but you will only take full advantage of this post
+if you’re comfortable with multithreading, the Avalon Dispatcher and
+some basic data binding.)</span></p>
+<p><span id="text">- <b>Collection change notifications</b></span></p>
+<p><span id="text">In this scenario, I have a ListBox that is data bound to a collection of Place objects:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox Name="lb"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Click="Throw_Click"&gt;Throw&lt;/Button&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ObservableCollection&lt;Place&gt; throwPlaces;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void Throw_Click(object sender, RoutedEventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throwPlaces = new ObservableCollection&lt;Place&gt;();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AddPlaces(throwPlaces);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb.ItemsSource = throwPlaces;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb.DisplayMemberPath = "Name";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void AddPlaces(ObservableCollection&lt;Place&gt; places)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;places.Add(new Place("Seattle", "WA"));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;places.Add(new Place("Redmond", "WA"));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;places.Add(new Place("Bellevue", "WA"));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">Pretty simple. Next, I want to make sure that any
+changes to my collection are propagated to the UI. Typically, if you
+are using ObservableCollection&lt;T&gt;, this comes for free because it
+already implements INotifyCollectionChanged. However, this time I want
+to change the collection from a different thread:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;Thread workerThread1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void Throw_Click(object sender, RoutedEventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread1 = new Thread(new ThreadStart(CrashMe));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread1.Start();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void CrashMe()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throwPlaces.RemoveAt(0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">Unfortunately, this code results in an exception:
+“NotSupportedException - This type of CollectionView does not support
+changes to its SourceCollection from a thread different from the
+Dispatcher thread.” I understand this error message leads people to
+think that, if the CollectionView they’re using doesn’t support
+cross-thread changes, then they have to find the one that does. Well,
+this error message is a little misleading: none of the CollectionViews
+we provide out of the box supports cross-thread collection changes. And
+no, unfortunately we can not fix the error message at this point, we
+are very much locked down. </span></p>
+<p><span id="text">If you understand the Avalon Dispatcher, you’re
+probably already working on a master plan to delegate all collection
+change operations to the UI thread. You can do this by deriving from
+ObservableCollection, making sure your constructor takes a dispatcher
+as a parameter, and overriding all collection change operations. Here
+is my implementation of this collection:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;public class BeginInvokeOC&lt;T&gt; : ObservableCollection&lt;T&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private Dispatcher dispatcherUIThread;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private delegate void SetItemCallback(int index, T item);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private delegate void RemoveItemCallback(int index);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private delegate void ClearItemsCallback();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private delegate void InsertItemCallback(int index, T item);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private delegate void MoveItemCallback(int oldIndex, int newIndex);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public BeginInvokeOC(Dispatcher dispatcher)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dispatcherUIThread = dispatcher;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protected override void SetItem(int index, T item)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (dispatcherUIThread.CheckAccess())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base.SetItem(index, item);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dispatcherUIThread.BeginInvoke(DispatcherPriority.Send,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new
+SetItemCallback(SetItem), index, new object[] { item });<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Similar code for RemoveItem, ClearItems, InsertItem and MoveItem<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">When you create this collection, make sure you pass
+the dispatcher from the UI thread as a parameter to the constructor.
+Now imagine you change this collection from a worker thread. The first
+time SetItem is called, CheckAccess will return false because we are
+not in the UI thread. We will then add a call to this same method to
+the UI thread’s dispatcher queue, at priority Send. Once the dispatcher
+finishes processing the current job (and any other higher priority
+jobs), it picks up the one we added and SetItem is called again, this
+time on the UI thread. CheckAccess is called again, but this time it
+returns true, and we call SetItem on the collection. In plain english,
+this code means “Use the UI thread to set an item in the collection.”</span></p>
+<p><span id="text">Here is the code that uses this collection:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox Name="lb"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Click="DelegateUIThread_Click"&gt;DelegateUIThread&lt;/Button&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;BeginInvokeOC&lt;Place&gt; beginInvokePlaces;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void DelegateUIThread_Click(object sender, RoutedEventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beginInvokePlaces = new BeginInvokeOC&lt;Place&gt;(lb.Dispatcher);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AddPlaces(beginInvokePlaces);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb.ItemsSource = beginInvokePlaces;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb.DisplayMemberPath = "Name";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread1 = new Thread(new ThreadStart(DontCrashMe));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread1.Start();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void DontCrashMe()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beginInvokePlaces.RemoveAt(0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">If you click this button, you will see that the data
+will actually be changed (the item at index 0 will be removed) without
+any crashes. This will probably work OK if you only have the UI thread
+and a worker thread, but it may get you into trouble if you have two or
+more worker threads. This has nothing to do with Avalon, it’s just a
+plain multithreading problem. Let’s take a look at this same solution,
+but with two worker threads this time:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;private void DelegateUIThreadNotWorking_Click(object sender, RoutedEventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beginInvokePlaces = new BeginInvokeOC&lt;Place&gt;(lb.Dispatcher);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AddPlaces(beginInvokePlaces);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb.ItemsSource = beginInvokePlaces;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb.DisplayMemberPath = "Name";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread1 = new Thread(new ThreadStart(DelegateUIThreadNotWorking_Thread1));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread1.Start();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread2 = new Thread(new ThreadStart(DelegateUIThreadNotWorking_Thread2));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread2.Start();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void DelegateUIThreadNotWorking_Thread1()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int count = beginInvokePlaces.Count;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thread.Sleep(500); //
+do a bunch of work (or be really unlucky to be interrupted by another
+thread here)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Place newPlace = beginInvokePlaces[count - 1];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void DelegateUIThreadNotWorking_Thread2()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thread.Sleep(100); // do a little work<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beginInvokePlaces.RemoveAt(0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">Look at the DelegateUIThreadNotWorking_Thread1()
+method. If you are unlucky enough to have execution switch from thread
+1 to thread 2 between the calculation of the count and the use of
+indexer, and if you’re even more unlucky to have thread 2 change your
+collection, you’re in trouble. In this particular scenario, count is
+initially 11 in thread 1, then thread 2 removes an item and it becomes
+10. However, when execution goes back to thread 1, the indexer still
+thinks count is 11, and will look for the item in index 11 - 1, which
+will throw an ArgumentOutOfRangeException. In a real world scenario,
+the probability of this happening would increase with the amount of
+work you would do in place of the Thread.Sleep(500) call.</span></p>
+<p><span id="text">If we’re getting synchronization problems, the next
+logical step is to lock any atomic operations on these threads. Here is
+how I did that:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox Name="lb"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;Button Click="LockingOperations_Click"&gt;LockingOperations&lt;/Button&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;InvokeOC&lt;Place&gt; invokePlaces;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;object lockObject;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;public Window1()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitializeComponent();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lockObject = new object();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void LockingOperations_Click(object sender, RoutedEventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;invokePlaces = new InvokeOC&lt;Place&gt;(lb.Dispatcher);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AddPlaces(invokePlaces);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb.ItemsSource = invokePlaces;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb.DisplayMemberPath = "Name";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread1 = new Thread(new ThreadStart(LockingOperations_Thread1));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread1.Start();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread2 = new Thread(new ThreadStart(LockingOperations_Thread2));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workerThread2.Start();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void LockingOperations_Thread1()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lock (lockObject)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int count = invokePlaces.Count;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thread.Sleep(500); // do a bunch of work<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Place newPlace = invokePlaces[count - 1];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void LockingOperations_Thread2()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lock (lockObject)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thread.Sleep(100); // do a little work<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;invokePlaces.RemoveAt(0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">Because I am locking all atomic sequences of
+operations and all changes to the collection, I know that the logic in
+the worker threads will never lead to the synchronization problem in
+the previous example. The code that does the item generation in
+ItemsControl has a handle to the collection, but I can tell you for
+sure that it never modifies the collection (it only reads it), so there
+should be no conflicts with the UI thread either. I also couldn’t think
+of a scenario where this code would lead to a deadlock (although it’s
+easier to prove the existence of a deadlock than the lack of one…)
+There was one possible problem I was able to identify: if the last
+operation of a locked block does a BeginInvoke to the UI thread, but
+the execution is transfered to the other worker thread before that
+operation is able to execute, we could get in a bad state. I solved
+this by replacing all BeginInvoke calls (asynchronous) with Invoke
+calls (synchronous). This way, we guarantee that, by the time we exit
+the lock on one thread, all operations inside that lock have finished
+executing in the UI thread. </span></p>
+<p><span id="text">This solution sounds pretty good, but I can think of
+a couple of reasons why you should NOT change your million dollar
+application to use it:</span></p>
+<p><span id="text">- Imagine the current job in the dispatcher is a
+lengthy layout pass, followed by several input operations (which have
+high priority). The dispatcher will not interrupt the current job, not
+even for a higher priority job, so we will have to let the layout pass
+finish. Also, since the worker threads are delegating to the dispatcher
+with priority Send, we will have to wait for all higher priority
+dispatcher items before the change operations are allowed to run.
+Delegating the worker thread operations at a priority higher than Send
+is not a good idea because your UI may become unresponsive. Basically,
+the worker thread needs to wait for the UI to catch up, and this is not
+efficient.</span></p>
+<p><span id="text">- It hasn’t been tested. I make absolutely no guarantees about a solution that I have only seen running on my machine.</span></p>
+<p><span id="text">If you do decide to go ahead and use this solution (at your own risk), there are a few things for you to keep in mind:</span></p>
+<p><span id="text">- You should never add thread-bound objects to the
+ObservableCollection (such as UIElements). This solution can only be
+used with your usual data items (and frozen Freezables) because they
+are not thread-bound.</span></p>
+<p><span id="text">- The one advantage this solution provides is
+parallelism between the UI thread and one of the worker threads.
+Because the UI thread doesn’t take any locks, it can be running at the
+same time as one other thread that takes locks. This is a big advantage
+if you have lengthy computations in the place of the Sleep calls that
+don’t require delegating to the UI thread. However, if most of the work
+you do in the worker threads is collection change operations (which
+delegate to the UI thread), then this solution will not provide any
+advantage to you. If this is your scenario, you should start by asking
+yourself whether you really need a multithreaded solution. If you
+realize you do need it, then you should consider delegating the
+sequence of change operations as a whole, instead of delegating one by
+one like in my solution. </span></p>
+<p><span id="text">- With great power comes great responsibility. Feel
+free to use the ObservableCollection that delegates all operations to
+the UI thread, but you are still responsible for locking all critical
+operations.</span></p>
+<p><span id="text">We really wanted to make it easier to develop
+multithreaded applications that use data binding, but unfortunately we
+ran out of time in V1. We do realize that it shouldn’t be so complex.
+Hopefully we will be able to revisit this topic in V2.</span></p>
+<p><span id="text">- <b>Property change notifications</b></span></p>
+<p><span id="text">Property change notifications across multiple
+threads work pretty well. When a UI element is data bound to a property
+that gets changed by a worker thread, Avalon will receive notification
+of the property change on the UI thread. One thing that may surprise
+you is that if there are many property changes happening very quickly
+in your data source, Avalon won’t update your target dependency
+property at the same rate. This was a conscious decision. Although this
+behavior may prevent you from creating an accurate graph of all data
+changes over time, it has the advantage of keeping the UI responsive.
+The UI will always get updated when the data has changed, just not for
+every single change.</span></p>
+<p><span id="text">This is common sense, but I’ll mention it anyway: if
+your setter is not atomic, don’t forget to use a lock around your
+operations. Typically this is not a problem because most setters are
+atomic.</span></p>
+<p><span id="text">Talking about the one work item I so wished we had
+finished for V1 is tough. Thanks to all the customers who have asked me
+this question in the past. Thanks to <a href="http://www.interact-sw.co.uk/iangblog/">Ian Griffiths</a>
+for getting me to stop procrastinating and write this blog post about
+it. Thanks to David Jenni and Dwayne Need for listening to me ramble
+about multithreading when they had better things to do. Thanks to Sam
+Bent and Eric Stollnitz for going the extra mile of reviewing my sample
+code. </span></p>
+<p><span id="text">The screenshot for today’s post isn’t all that interesting, but here it is anyway:</span></p>
+<p><img style="margin: 0px auto 10px; display: block; text-align: center;" alt="" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/31ChangesMultithreading.png" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/31ChangesMultithreading.zip">Here</a> you can find the VS project with this sample code. This works with RC1 WPF bits. </span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=34"
+    dc:identifier="http://www.beacosta.com/blog/?p=34"
+    dc:title="How can I propagate changes across threads?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=34" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=34"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=34">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">23 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-82" class="comment">
+				<a name="comment-82" id="comment-82"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-82")'>
+					<cite>Comment by Mitsu<a href="#comment-82"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-24 03:28:19 						
+					</div>					
+					<div class="content">
+						<p>Good
+sample once again Bea. I can notice something nice in your code. When a
+conflict occurs, a managed exception is raised ! Modifying the UI from
+a separated thread in win32 apps create hazardous bugs that crash the
+process. Thanks to WPF, we now live in a more secure .Net world where
+everything can be catched.<br>
+Even if multithreaded scenarios remain complicated, this is really a very nice change.<br>
+Mitsu, waiting for the Concur project..</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-82", 82, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-83" class="comment odd">
+				<a name="comment-83" id="comment-83"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-83")'>
+					<cite>Comment by Bea<a href="#comment-83"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-24 13:25:11 						
+					</div>					
+					<div class="content">
+						<p>Thanks for your comment Mitsu. I hope all is going well for you in MS France.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-83", 83, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-84" class="comment">
+				<a name="comment-84" id="comment-84"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-84")'>
+					<cite>Comment by Sam<a href="#comment-84"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-25 06:01:54 						
+					</div>					
+					<div class="content">
+						<p>This
+got nothing to do with threads, sorry for intruding, but I don’t know
+where to ask this question (managed newsgroups provide no answer)</p>
+<p>When you navigate back in a browser-like WPF application, the pages are re-created (at least the constructor is called).<br>
+And somehow, magically, the content for Textbox(es) in the page will be
+filled with whatever had been in there when the page had been left.</p>
+<p>Since the page is created anew on navigating ‘Back’, where does this
+content come from? Is it bound to some kind of session storage as
+default?</p>
+<p>And how do I get my own values back (as content for Listboxes for example are lost on navigating)?</p>
+<p>thanks, Sam!</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-84", 84, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-85" class="comment odd">
+				<a name="comment-85" id="comment-85"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-85")'>
+					<cite>Comment by Bea<a href="#comment-85"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-25 11:04:42 						
+					</div>					
+					<div class="content">
+						<p>Hi Sam,</p>
+<p>That question is a little bit outside of my area of expertise, but I mentioned it to <a href="http://www.laurenlavoie.com/" rel="nofollow">Lauren</a>, and she said she will blog about this next.</p>
+<p>Sorry no one replied to you in the newsgroups.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-85", 85, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-86" class="comment">
+				<a name="comment-86" id="comment-86"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-86")'>
+					<cite>Comment by Lauren<a href="#comment-86"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-26 16:04:36 						
+					</div>					
+					<div class="content">
+						<p>Sam, I posted a response to your question here: <a href="http://laurenlavoie.com/avalon/191" rel="nofollow">http://laurenlavoie.com/avalon/191</a></p>
+<p>I also posted a follow-up question for you: I did not understand the
+last part of your question, about ListBox. Could you elaborate or send
+me an example of some source code that is not behaving as expected?</p>
+<p>Thanks!<br>
+Lauren<br>
+<a href="http://laurenlavoie.com/" rel="nofollow">http://laurenlavoie.com</a></p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-87" class="comment odd">
+				<a name="comment-87" id="comment-87"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-87")'>
+					<cite>Comment by Sam<a href="#comment-87"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-27 07:47:33 						
+					</div>					
+					<div class="content">
+						<p>Bea,</p>
+<p>I just stumbled upon Laurens post, thanks a lot to you two for your support!</p>
+<p>I’ll post further questions/stuff on this part on Laurens Post.</p>
+<p>Thanks a lot!<br>
+Sam</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-86", 86, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-88" class="comment">
+				<a name="comment-88" id="comment-88"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-88")'>
+					<cite>Comment by YesKay<a href="#comment-88"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-29 17:14:24 						
+					</div>					
+					<div class="content">
+						<p>QUESTION: Button on a ListView row and animation.</p>
+<p>Every row in my ListView has ’select’ button. I would like to make the size of the button bigger on MouseOver event.</p>
+<p>The bitmap effects are working as expected. But setting the width and height property is not working. </p>
+<p>Looks like, the row settings of the ListView are overriding these setter properties.</p>
+<p>Is there any way I can work around this and make those buttons bigger when user hovers mouse on it.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-88", 88, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-91" class="comment odd">
+				<a name="comment-91" id="comment-91"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-91")'>
+					<cite>Comment by Bea<a href="#comment-91"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-11 01:20:58 						
+					</div>					
+					<div class="content">
+						<p>Hi YesKay,</p>
+<p>I am able to animate a Button’s Width inside a ListView. You can find my sample <a href="http://www.beacosta.com/BlogComments/12AnimateButtonListView.zip" rel="nofollow">here</a>. Is this what you were trying to do?</p>
+<p>Let me know.<br>
+Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-91", 91, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-89" class="comment">
+				<a name="comment-89" id="comment-89"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-89")'>
+					<cite>Comment by Sam<a href="#comment-89"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-30 06:55:21 						
+					</div>					
+					<div class="content">
+						<p>Bea, somewhere down in my ‘unresolved’ stuff I found a question regarding a problem using Databinding:</p>
+<p>Assume a simple Page, containing just one Textbox and one Button.</p>
+<p>The Textbox is bound to some data item. The Button is the default Button of the Page.</p>
+<p>Now enter the Text “Hello World” in the Textbox, use the mouse to
+click the button: everythings fine, just like it should be: reading the
+variable does return “Hello World” just like it should.</p>
+<p>Go back, Change “Hello World” to “Hello Bea!”, press ENTER *without
+leaving the Textbox* and everythings a mess: reading the variable still
+returns “Hello World” instead of “Hello Bea!” since the source had not
+been Updated.</p>
+<p>Very nasty in my opinion! Is this behaviour known and accepted? Or is it an unknown bug?</p>
+<p>Oh, and any idea for a workaround?</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-89", 89, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-90" class="comment odd">
+				<a name="comment-90" id="comment-90"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-90")'>
+					<cite>Comment by Bea<a href="#comment-90"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-09-30 11:03:06 						
+					</div>					
+					<div class="content">
+						<p>Hi Sam,</p>
+<p>Currently, updating the data from the target to the source is
+controlled by a property called “UpdateSourceTrigger” on Binding. There
+are 3 possible values for this property: LostFocus, Explicit or
+PropertyChanged. By default, this property is set to LostFocus, which
+means the data is only transfered from the TextBox to the source when
+the TextBox loses focus.</p>
+<p>You can certainly change this behavior. If you want the data to be
+updated everytime you click on a button (by going there with the mouse,
+pressing enter, etc), you probably want to set your UpdateSourceTrigger
+to Explicit. Then, in the button’s Click handler, you can call the
+UpdateToSource method of BindingExpression to update the data.</p>
+<p>This is our story for V1. We are planning to do some improvements
+around this area for V2, so it may be that this scenario will be
+improved. We’ve discussed before implementing what you expected (which
+would be consistent with WinForms): when the Default button on the page
+is clicked, all bindings are updated to the source. It’s definetely a
+possibility we’ll go in this direction.</p>
+<p>Thanks for your feedback. We are now starting to plan V2, so any
+feedback around features you guys may have is very welcome, and very
+timely.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-90", 90, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-93" class="comment">
+				<a name="comment-93" id="comment-93"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-93")'>
+					<cite>Comment by Sam<a href="#comment-93"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-10-02 06:49:55 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,</p>
+<p>explicit updating the source is ok for my cute ‘lil exsample with
+one TextBox, but for a page with a lot of TextBox, ComboBox and Whatnot
+this is very much work to add an explicit updatesource for every single
+XAML-UI-item in every button that might be invoked by a keyboard
+shortcut.</p>
+<p>Additionally it is very error-prone, since it is easy to forget the
+updatesource for a Textbox in a click-handler when changing something
+in the UI/XAML.</p>
+<p>A workaround might be to call MyDefaultButton.Focus() whenever a
+click event is invoked (by keyboard). This is ugly, too, but at least
+not as easy to forget.</p>
+<p>Hope this will get better next release!<br>
+Sam</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-93", 93, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-94" class="comment odd">
+				<a name="comment-94" id="comment-94"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-94")'>
+					<cite>Comment by Bea<a href="#comment-94"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-10-03 09:15:55 						
+					</div>					
+					<div class="content">
+						<p>Sam,<br>
+Yes, I completely agree with you about this solution not scaling well.
+That is why we will discuss this scenario again for V2, and hopefully
+we will be able to improve it.<br>
+Thanks for your feedback,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-94", 94, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-92" class="comment">
+				<a name="comment-92" id="comment-92"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-92")'>
+					<cite>Comment by Sheva<a href="#comment-92"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-10-04 16:41:25 						
+					</div>					
+					<div class="content">
+						<p>Hi, Beatriz, you may think I am bit pedantic, but I want to point out one mistake you made in your orginal article:<br>
+you said:”we will then add a call to this same method to the UI
+thread’s dispatcher queue, at priority Send. Once the dispatcher
+finishes processing the current job (and any other higher priority
+jobs)”.<br>
+actually DispatcherPriority.Send is the highest possible priority, so
+if there is no work item which is marked with Send priority, and which
+is added to the queue before our data updating worker item, our worker
+item should be proccessed immediately after the UI thread finishes
+processing the current running worker item.</p>
+<p>Sheva</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-92", 92, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-95" class="comment odd">
+				<a name="comment-95" id="comment-95"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-95")'>
+					<cite>Comment by Bea<a href="#comment-95"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-10-05 09:18:03 						
+					</div>					
+					<div class="content">
+						<p>Hi Sheva,</p>
+<p>Good catch, you are correct. Other work items of priority Send that
+were added previously to the dispatcher will be executed before ours,
+but no higher priority work item exists.</p>
+<p>Thanks for pointing it out.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-95", 95, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-96" class="comment">
+				<a name="comment-96" id="comment-96"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-96")'>
+					<cite>Comment by Brett<a href="#comment-96"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-10-05 15:34:23 						
+					</div>					
+					<div class="content">
+						<p>Bea,</p>
+<p>I’ve been busy working on other parts of .NET 3.0, but I am back on
+WPF. I’m sorry to pollute your comments, but like Sam I have an off
+topic question for which I am not able to find an answer (asked on WPF
+forums with no takers). If you can help, I would greatly appreciate it.</p>
+<p>Is there any support for creating DataTemplates where the DataType is generic? Using the MyClass<int>
+format creates invalid XML, and MyClass`1[[System.Int32, etc.]] seems a
+bit of a stretch. Is this something that is simply not possible in XAML?</int></p>
+<p>Thanks in advance,</p>
+<p>Brett</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-96", 96, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-97" class="comment odd">
+				<a name="comment-97" id="comment-97"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-97")'>
+					<cite>Comment by Bea<a href="#comment-97"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-10-06 22:48:28 						
+					</div>					
+					<div class="content">
+						<p>Hi Brett,</p>
+<p>Welcome back to WPF.<br>
+I am not an expert on the parser, but as far as I know there is no
+escaping mechanism that allows you to do that. I think it’s not
+possible to do what you want, for V1.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-97", 97, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-98" class="comment">
+				<a name="comment-98" id="comment-98"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-98")'>
+					<cite>Comment by Brett<a href="#comment-98"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-10-07 14:03:44 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,</p>
+<p>Thanks for responding! My thread on the forums still goes unanswered. <img src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/icon_smile.gif" alt=":-)" class="wp-smiley"> </p>
+<p>Best,</p>
+<p>Brett</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-98", 98, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-99" class="comment">
+				<a name="comment-99" id="comment-99"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-99")'>
+					<cite>Comment by Anonymous<a href="#comment-99"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-10-08 17:15:35 						
+					</div>					
+					<div class="content">
+						<p>You
+could also use the Avalon supplied SynchronizationContext from the UI
+thread to accomplish the Send/Post of worker delegates to the UI
+thread. I am not sure if it accomplishes much in this situation apart
+from changing the type of the constructor argument from Dispatcher to
+SynchronizationContext, eliminating the ability to set priority (it
+uses Normal priority) and eliminating the kind of ugly
+Dispatcher.BeginInvoke call. It could gain you a more generic type of
+collection, one in which constructor arguments could dictate the
+threading context in which operations occured, so by creating it with
+the Avalon supplied SynchronizationContext all operations would happen
+on the UI thread and by supplying a default one all operations would
+either occur on the invoking thread or on a threadpool thread
+(depending on if you did a Post or Send).</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-99", 99, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-100" class="comment">
+				<a name="comment-100" id="comment-100"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-100")'>
+					<cite>Comment by Kent boogaart<a href="#comment-100"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-11-09 02:59:50 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>Great post. I thought you might be interested in my take on the subject: <a href="http://kentb.blogspot.com/2006/11/cross-thread-collection-binding-in-wpf.html" rel="nofollow">http://kentb.blogspot.com/2006/11/cross-thread-collection-binding-in-wpf.html</a></p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-100", 100, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-101" class="comment odd">
+				<a name="comment-101" id="comment-101"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-101")'>
+					<cite>Comment by Bea<a href="#comment-101"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-11-10 13:10:55 						
+					</div>					
+					<div class="content">
+						<p>Hi Kent,</p>
+<p>Once again, I love seing people thinking about the same issues I
+think about and coming up with alternative approaches. I’m a big fan of
+solutions that improve the separation of UI and data - I love the
+improvements in your solution!</p>
+<p>(And btw, yes, it is *SHE* and not he <img src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/icon_smile.gif" alt=":)" class="wp-smiley"> )</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-101", 101, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-102" class="comment">
+				<a name="comment-102" id="comment-102"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-102")'>
+					<cite>Comment by Bea<a href="#comment-102"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-11-15 17:36:25 						
+					</div>					
+					<div class="content">
+						<p>Hi Kent,</p>
+<p>Sam Bent (from the data team) and I see at least one serious bug in
+your solution and in Chong’s solution
+(http://itchong.blogspot.com/2007/01/how-can-i-propagate-changes-across.html).
+It applies to all operations, but let’s take Insert as an example. Your
+method inserts the new item into the data structure on the worker
+thread, then raises the change notifcation on the dispatcher thread
+(blocking the worker thread until the dispatcher thread is available).
+So there’s an interval of time where the item has been added, but the
+dispatcher thread doesn’t know it yet. If the dispatcher thread reads
+the collection during this interval, it will get the wrong information.
+This can lead to incorrect display, or even a crash.</p>
+<p>The solution in my blog does both the actual insertion and the
+notification on the dispatcher thread, so it doesn’t have the problem.</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-102", 102, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-103" class="comment">
+				<a name="comment-103" id="comment-103"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-103")'>
+					<cite>Comment by tony<a href="#comment-103"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-11-20 18:18:53 						
+					</div>					
+					<div class="content">
+						<p>Bea,<br>
+I guess your email box would get full often and quickly if you published it.</p>
+<p>But (sigh) that leaves me with no other option but to comment here.</p>
+<p>I asked this question in many forums and never got any response so you are my last hope.</p>
+<p>Basically, I want to create a new dependency property (DP), the
+value of which would depend on calculation involving several other DPs
+(custom or existing). </p>
+<p>For ex. custom Canvas DP called Center would depend on Canvas’
+existing Top, Left, Width and Height (or ActualWidth and ActualHeight)
+DPs.</p>
+<p>Like: Center.X=Left+ActualWidth/2.0</p>
+<p>I want to bind to this new Center DP and be sure that, whatever
+changes Canvas goes through, dragging, resizing, scaling, rotation,
+re-layout, ecc. it will always update the target with fresh Center
+coordinates.</p>
+<p>What is the best way to do that without resorting to MultiBinding and Converters (if possible)?</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-103", 103, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-104" class="comment odd">
+				<a name="comment-104" id="comment-104"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-104")'>
+					<cite>Comment by Bea<a href="#comment-104"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-11-21 20:24:45 						
+					</div>					
+					<div class="content">
+						<p>Hi Tony,</p>
+<p>There are a few ways you can do that.</p>
+<p>1) You can override the metadata of the DPs that affect your new DP
+and add a change handler that changes your new DP too. However, I can’t
+get this solution to work with your particular scenario because
+ActualWidth and ActualHeight are read only. I don’t know if it’s
+possible to override metadata of read only properties - I had trouble
+doing that.</p>
+<p>2) You can override the PropertyChanged method and, if the DPs
+passed in the event args are ActualWidth or ActualHeight, you
+recalculate Center. </p>
+<p>3) You can override OnRenderSizeChanged and recalculate Center
+within this method. This is the solution I implemented, which you can
+find <a href="http://www.beacosta.com/BlogComments/23UpdatableDPs.zip" rel="nofollow">here</a>.</p>
+<p>Here is the part of the code that matters:</p>
+<p>protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)<br>
+{<br>
+base.OnRenderSizeChanged(sizeInfo);<br>
+this.MyCenter = new Point(sizeInfo.NewSize.Width / 2.0, sizeInfo.NewSize.Height / 2.0);<br>
+}<br>
+Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-104", 104, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1469" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1469" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20can%20I%20propagate%20changes%20across%20threads_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="34" type="hidden">
+		<input name="redirect_to" value="/blog/?p=34" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="2a354329f68ad04b368dbfc2dfb9e6d0" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>5328</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 5328;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

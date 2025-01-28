@@ -1,0 +1,1 @@
+document.write("<a href=\"http://a.lakequincy.com/c.ashx?channel=1&format=5&pageid=C2AC0396-CF25-F109-609D-04DF8F32379E&publisher=110&zone=1&country=US&placement=1694&creative=470&\" target=\"_top\" ><img src=\"http://a.lakequincy.com/img/cyscape_BH_Hawk_button_125x125.gif\" border=\"0\" /></a>");

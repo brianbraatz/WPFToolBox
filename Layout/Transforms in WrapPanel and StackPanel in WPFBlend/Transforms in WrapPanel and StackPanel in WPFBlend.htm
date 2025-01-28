@@ -1,0 +1,1196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head profile="http://gmpg.org/xfn/11">
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>kirupaBlog - If it isn’t broken, take it apart and fix it!</title>
+
+
+
+<meta name="generator" content="WordPress 2.0.7"><!-- leave this for stats --> 
+
+<link rel="stylesheet" href="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/style.css" type="text/css" media="screen">
+<link rel="alternate" type="application/rss+xml" title="kirupaBlog - If it isn’t broken, take it apart and fix it! RSS Feed" href="http://blog.kirupa.com/?feed=rss2">
+<link rel="pingback" href="http://blog.kirupa.com/xmlrpc.php">
+
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.kirupa.com/xmlrpc.php?rsd">
+
+<script src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1952673-1";
+urchinTracker();
+</script></head><body>
+
+<div id="wrap">
+<div id="header">
+<table border="0" cellpadding="5" cellspacing="0" width="100%">
+	<tbody><tr>
+		<td width="4">
+		<img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/kirupaAvatar4.png" border="0"></td>
+		<td><h1><a href="http://blog.kirupa.com/">KIRUPA.CHINNATHAMBI</a></h1>
+<p class="description"> If it isn't broken, take it apart and fix it!</p></td>
+	</tr>
+</tbody></table>
+</div>
+<div id="content">
+									<div class="entry entry-1">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=124" rel="bookmark" title="Permanent Link to Transforms in WrapPanel and StackPanel in WPF/Blend">Transforms in WrapPanel and StackPanel in WPF/Blend</a></h2> 
+			<h3>August 30th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=124#comments" class="commentslink" title="Comment on Transforms in WrapPanel and StackPanel in WPF/Blend">5 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>Two
+layout controls you can use for displaying your UI elements are
+WrapPanel and StackPanel. They are both very straightforward to use,
+but there are some subtle details that&nbsp;you need to be aware of
+when using them in Expression Blend. This post will highlight those
+subtle details and how to deal with them.</p>
+<p><strong>Introducing WrapPanel and StackPanel</strong><br>As their
+name implies, WrapPanels wrap any content stored within its boundaries,
+and StackPanels stack content. That seems pretty simple, but just to
+highlight what&nbsp;makes them useful,&nbsp;let's look at quick
+examples of both layout controls in action.</p>
+<p>A WrapPanel allows you to place content inside it, and as its name
+implies, wraps the content over new rows and columns if there isn't
+enough space.The following shows you some square shapes placed inside a
+WrapPanel whose orientation is Horizontal where rows are filled first:</p>
+<p align="center"><img alt="wrapPanel" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/wrapPanel.png" border="0"> </p>
+<p>The WrapPanel ensures that no elements stored inside it go beyond
+the panel's boundaries. That is why you see some of our squares
+starting on a second line instead of extending the first line of
+squares indefinitely. </p>
+<p>You can also set the orientation to be Vertical, and our WrapPanel fills columns first:</p>
+<p align="center"><img alt="verticalWrapPanel" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/verticalWrapPanel.png" border="0"> </p>
+<p>The StackPanel is similar to WrapPanel, but a major difference is
+that it doesn't wrap the content. Instead,&nbsp;it allows you to add
+stack contents to stack either&nbsp;horizontally or vertically. The
+following image shows you&nbsp;some green squares placed inside&nbsp;a
+StackPanel whose orientation is Horizontal:</p>
+<p align="center"><img alt="stackPanelHorizontal" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/stackPanelHorizontal.png" border="0"> </p>
+<p>Likewise, if we change our above StackPanel to have a Vertical
+orientation, our green squares are stacked as shown in the following
+image:</p>
+<p align="center"><img alt="stackPanelVertical" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/stackPanelVertical.png" border="0"> </p>
+<p>These panels are great because they take care of the positioning of
+the individual content inside them automatically. You add your content,
+and <em>poof</em>, everything works.</p>
+<p><strong>Beyond Default: Transforms</strong><br>In a nutshell,
+transforms are modifications you make to your element such as scaling,
+rotating, skewing, etc. With our StackPanel and WrapPanel, any
+transforms you apply to your element cause it to shift neighboring
+elements to accommodate any changes to the layout caused by the
+transformed element.</p>
+<p>For example, the following image shows you how&nbsp;our WrapPanel looks like with no transforms applied to any elements:</p>
+<p align="center"><img alt="before" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/before.png" border="0" height="183" width="215"> </p>
+<p>Now, let's say you rotated one of the center squares. The following is what your WrapPanel will now look like:</p>
+<p align="center"><img alt="after" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/after.png" border="0"> </p>
+<p>Notice that all of the neighboring squares shifted to accommodate
+our rebellious, transformed square. Like I mentioned before, both the
+WrapPanel and StackPanel take care of shifting neighboring elements as
+needed automatically.</p>
+<p><strong>Let's Bring Blend Into the Mix<br></strong>You can do all of
+the above in Expression Blend - which is what I did. You can add your
+Stack/WrapPanels, create the content to go inside them, etc. There is
+one hitch though. Let's say you have a StackPanel with a few green
+rectangles as shown below:</p>
+<p align="center"><img alt="fourGreenRectangles" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fourGreenRectangles.png" border="0"> </p>
+<p>In Blend, let's rotate the second rectangle. Ideally, based on what
+we've seen and explained, rotating the second rectangle should cause
+the other rectangles to shift to make room for the newly rotated
+rectangle. Instead, the following is what you see:</p>
+<p align="center"><img alt="rotatingRectangles" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/rotatingRectangles.png" border="0"> </p>
+<p>When you rotate the rectangle in Blend using the rotate handles,
+notice that the rectangle is actually overlapping with its neighbors.
+That shouldn't be happening!</p>
+<p>The reason why the above rotation doesn't shift the content is
+because of the type of transform involved. When&nbsp;you transform an
+element by&nbsp;selecting it and manipulating its handles, you are
+altering your selected element's&nbsp;RenderTransform properties.
+While&nbsp;using the element's handles is a quick/easy way to apply
+transforms,&nbsp;when it comes to this scenario, this approach is less
+useful because the&nbsp;RenderTransform properties are what get
+altered.&nbsp;What you need to adjust is the LayoutTransform
+properties&nbsp;instead.</p>
+<p>Unfortunately,&nbsp;and please let&nbsp;me know if I am wrong, you
+cannot use the&nbsp;handles around a selected element to alter the
+LayoutTransform.&nbsp;You need to go directly to the LayoutTransform
+panel found in the Transform panel under Properties and make your
+changes there:</p>
+<p align="center"><img alt="transformPanel" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/transformPanel.png" border="0">&nbsp;</p>
+<p>For example, when I alter the Rotation Angle via the LayoutTransform
+panel, notice how my transformed rectangle and its neighboring
+rectangles look like:</p>
+<p align="center"><img alt="rotationLayoutTransform" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/rotationLayoutTransform.png" border="0"> </p>
+<p>This time, there is no overlap, but instead, there is a shifting of
+the neighboring elements to accommodate the rotation by our selected
+rectangle. </p>
+<p>While this solution works well without you having to manually edit
+the XAML, there is room for improvement. From a usability point of
+view, you and I are probably very comfortable using the transform
+handles directly located on the selected element.&nbsp;It feels a bit
+unnatural manipulating an element on your Artboard by making changes to
+sliders and textboxes located in the LayoutTransform panel.</p>
+<p>EDIT: This post was in the pipeline as a draft&nbsp;for a while, but it was a <a href="http://www.kirupa.com/forum/showthread.php?t=273738" target="_blank"><u>question on the forums</u></a> that prompted me to finish it up and publish it much earlier than expected <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_razz.gif" alt=":P" class="wp-smiley"> </p>
+<p>Cheers!<br>Kirupa <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=124#comments" class="commentslink2" title="Comment on Transforms in WrapPanel and StackPanel in WPF/Blend">5 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D124&amp;title=Transforms+in+WrapPanel+and+StackPanel+in+WPF%2FBlend" title="del.icio.us:Transforms in WrapPanel and StackPanel in WPF/Blend"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Transforms in WrapPanel and StackPanel in WPF/Blend"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D124&amp;title=Transforms+in+WrapPanel+and+StackPanel+in+WPF%2FBlend" title="digg:Transforms in WrapPanel and StackPanel in WPF/Blend"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/digg.png" class="wp-notable_image" alt="digg:Transforms in WrapPanel and StackPanel in WPF/Blend"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D124&amp;title=Transforms+in+WrapPanel+and+StackPanel+in+WPF%2FBlend" title="reddit:Transforms in WrapPanel and StackPanel in WPF/Blend"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reddit.png" class="wp-notable_image" alt="reddit:Transforms in WrapPanel and StackPanel in WPF/Blend"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D124&amp;new_comment=Transforms+in+WrapPanel+and+StackPanel+in+WPF%2FBlend&amp;linktype=" title="fark:Transforms in WrapPanel and StackPanel in WPF/Blend"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fark.png" class="wp-notable_image" alt="fark:Transforms in WrapPanel and StackPanel in WPF/Blend"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D124&amp;t=Transforms+in+WrapPanel+and+StackPanel+in+WPF%2FBlend" title="Y!:Transforms in WrapPanel and StackPanel in WPF/Blend"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/yahoo.png" class="wp-notable_image" alt="Y!:Transforms in WrapPanel and StackPanel in WPF/Blend"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-2">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=123" rel="bookmark" title="Permanent Link to Value Converters, ConvertBack, and Two-way Data Binding">Value Converters, ConvertBack, and Two-way Data Binding</a></h2> 
+			<h3>August 27th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=123#comments" class="commentslink" title="Comment on Value Converters, ConvertBack, and Two-way Data Binding">2 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>In the most recent tutorial, I wrote about <a href="http://www.kirupa.com/blend_wpf/value_converters_pg1.htm" target="_blank"><u>value converters</u></a>,
+why they are needed, and how to create/use them. In the tutorial,
+I&nbsp;only covered a simple case where the data binding existed only
+from the source to the target. The means, modifications to the source
+result in a modification to the target. In many cases, your data
+binding will be bi-directional where an update to the target causes an
+update to the source also. My tutorial does not address that case, so
+in this post, I'll briefly cover how to use&nbsp;value&nbsp;converters
+for two-way data bindings.</p>
+<p>For example, here is a simple application that I wrote (<a href="http://www.kirupa.com/blend_wpf/code/SliderRoundedValue.zip" target="_blank"><u>download VS2005/C# Express&nbsp;source files</u></a>) that displays the <em>rounded</em> slider value position in a textbox as I scroll the slider thumb:</p>
+<p align="center"><img alt="vc_sliderValueNumber" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/vc_sliderValueNumber.png" border="0"> </p>
+<p>While it doesn't look like it, I am actually using my own value converter. By default, your slider's values are of type <strong>Double</strong>.
+Since I don't feel like displaying the large number of decimal values
+that would appear by default, my value converter takes the input
+and&nbsp;rounds it into an integer. The end result is that you see nice
+round numbers such as&nbsp;54 instead of something like 54.1337000.</p>
+<p>The slider updating our textbox is one part of our data binding. The
+second part, which makes our binding two-way, is having our textbox
+update our slider. Getting back to our example,&nbsp;if I were to enter
+a number (1-100)&nbsp;in our textbox, the slider's thumb will position
+itself based on the number you entered:</p>
+<p align="center"><img alt="vc_editing_number" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/vc_editing_number.png" border="0"> </p>
+<p>The above is an example of two-way data binding where the
+distinction between the source and the target varies depending on what
+I am modifying. </p>
+<p>In our tutorial, you saw that creating a value converter requires
+you to use a class that implements the IValueConverter interface. When
+you implement IValueConverter, two methods are created for you -
+Convert and ConvertBack. Whether you actually write code for both of
+those methods depends on the type of data binding involved.</p>
+<p>For one-way data binding, you only need to implement the Convert
+method. For two-way data binding, which is what we have now,&nbsp; our
+value converter needs to implement both the Convert method as well as
+the ConvertBack method because our value converter is converting both
+ways between the target and the source.</p>
+<p>The following diagram, expanded on what I <a href="http://www.kirupa.com/blend_wpf/value_converters_pg1.htm" target="_blank"><u>showed in the tutorial</u></a>,&nbsp;illustrates that point:</p>
+<p align="center"><img alt="convert_diagram_TWOWAY2" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/convert_diagram_TWOWAY2.png" border="0"> </p>
+<p>In the standard one-way binding, the Convert method kicks in. When
+doing two-way binding, when the Target updates the Source, the
+ConvertBack method is used instead. While this seems complicated, it
+really isn't at all.&nbsp;To prove to you that this is straightforward,
+let's look at the code&nbsp;for my value converter called RoundValue.cs:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHkwrd">using</span> <span class="kASHwrd">System</span>;
+</dt><dt><span class="kASHkwrd">using</span> <span class="kASHwrd">System</span>.<span class="kASHwrd">Collections</span>.<span class="kASHwrd">Generic</span>;
+</dt><dt><span class="kASHkwrd">using</span> <span class="kASHwrd">System</span>.<span class="kASHwrd">Text</span>;
+</dt><dt><span class="kASHkwrd">using</span> <span class="kASHwrd">System</span>.<span class="kASHwrd">Windows</span>.<span class="kASHwrd">Data</span>;
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHkwrd">namespace</span> <span class="kASHwrd">SliderRoundedValue</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHkwrd">class</span> <span class="kASHwrd">RoundValue</span> <span class="kASHop">:</span> <span class="kASHwrd">IValueConverter</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHop">#</span><span class="kASHkwrd">region</span> <span class="kASHwrd">IValueConverter</span> <span class="kASHwrd">Members</span>
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHkwrd">public</span> <span class="kASHkwrd">object</span> <span class="kASHwrd">Convert</span><span class="kASHop">(</span><span class="kASHkwrd">object</span> <span class="kASHwrd">value</span>, <span class="kASHidn">Type</span> <span class="kASHwrd">targetType</span>, <span class="kASHkwrd">object</span> <span class="kASHwrd">parameter</span>, <span class="kASHwrd">System</span>.<span class="kASHwrd">Globalization</span>.<span class="kASHidn">CultureInfo</span> <span class="kASHwrd">culture</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHkwrd">double</span> <span class="kASHwrd">inputValue</span> <span class="kASHop">=</span> <span class="kASHwrd">Math</span>.<span class="kASHwrd">Round</span><span class="kASHop">(</span><span class="kASHwrd">Double</span>.<span class="kASHwrd">Parse</span><span class="kASHop">(</span><span class="kASHwrd">value</span>.<span class="kASHwrd">ToString</span><span class="kASHop">(</span><span class="kASHop">)</span><span class="kASHop">)</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">return</span> <span class="kASHwrd">inputValue</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHkwrd">public</span> <span class="kASHkwrd">object</span> <span class="kASHwrd">ConvertBack</span><span class="kASHop">(</span><span class="kASHkwrd">object</span> <span class="kASHwrd">value</span>, <span class="kASHidn">Type</span> <span class="kASHwrd">targetType</span>, <span class="kASHkwrd">object</span> <span class="kASHwrd">parameter</span>, <span class="kASHwrd">System</span>.<span class="kASHwrd">Globalization</span>.<span class="kASHidn">CultureInfo</span> <span class="kASHwrd">culture</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHkwrd">try</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHkwrd">double</span> <span class="kASHwrd">inputValue</span> <span class="kASHop">=</span> <span class="kASHwrd">Math</span>.<span class="kASHwrd">Round</span><span class="kASHop">(</span><span class="kASHwrd">Double</span>.<span class="kASHwrd">Parse</span><span class="kASHop">(</span><span class="kASHwrd">value</span>.<span class="kASHwrd">ToString</span><span class="kASHop">(</span><span class="kASHop">)</span><span class="kASHop">)</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">return</span> <span class="kASHwrd">inputValue</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt><span class="kASHkwrd">catch</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHwrd">return</span> <span class="kASHnum">0</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHop">#</span><span class="kASHkwrd">endregion</span></dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<p>Notice that both my Convert and ConvertBack methods use the same <strong>value</strong>
+variable for dealing with data passed into it. The Convert method deals
+with displaying the rounded value based on my slider's position. The
+ConvertBack method&nbsp;deals with taking input from our textbox and
+positioning our slider accordingly. Because you have a textbox, you are
+not limited to entering only numbers. When you enter any non-numeric
+value, your application will crash, so I placed that code in a
+try/catch statement to avoid that. Beyond using the try/catch
+statements, there is no difference in the code used in both of these
+methods. Not all scenarios will be this simple, but at least you have a
+good idea on how easy this can be.</p>
+<p>There really isn't much more left&nbsp;to elaborate. The tricky part
+is wrapping your mind around the idea of two-way data binding and when
+the Convert and ConvertBack methods are used. To test out what I
+explained, you can download the Visual C# Expression 2005-based source
+files by clicking the following link: <a title="http://www.kirupa.com/blend_wpf/code/SliderRoundedValue.zip" href="http://www.kirupa.com/blend_wpf/code/SliderRoundedValue.zip"><u>http://www.kirupa.com/blend_wpf/code/SliderRoundedValue.zip</u></a></p>
+<p>Cheers!<br>Kirupa <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=123#comments" class="commentslink2" title="Comment on Value Converters, ConvertBack, and Two-way Data Binding">2 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D123&amp;title=Value+Converters%2C+ConvertBack%2C+and+Two-way+Data+Binding" title="del.icio.us:Value Converters, ConvertBack, and Two-way Data Binding"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Value Converters, ConvertBack, and Two-way Data Binding"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D123&amp;title=Value+Converters%2C+ConvertBack%2C+and+Two-way+Data+Binding" title="digg:Value Converters, ConvertBack, and Two-way Data Binding"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/digg.png" class="wp-notable_image" alt="digg:Value Converters, ConvertBack, and Two-way Data Binding"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D123&amp;title=Value+Converters%2C+ConvertBack%2C+and+Two-way+Data+Binding" title="reddit:Value Converters, ConvertBack, and Two-way Data Binding"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reddit.png" class="wp-notable_image" alt="reddit:Value Converters, ConvertBack, and Two-way Data Binding"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D123&amp;new_comment=Value+Converters%2C+ConvertBack%2C+and+Two-way+Data+Binding&amp;linktype=" title="fark:Value Converters, ConvertBack, and Two-way Data Binding"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fark.png" class="wp-notable_image" alt="fark:Value Converters, ConvertBack, and Two-way Data Binding"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D123&amp;t=Value+Converters%2C+ConvertBack%2C+and+Two-way+Data+Binding" title="Y!:Value Converters, ConvertBack, and Two-way Data Binding"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/yahoo.png" class="wp-notable_image" alt="Y!:Value Converters, ConvertBack, and Two-way Data Binding"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-3">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=122" rel="bookmark" title="Permanent Link to Debugging: Go Beyond Trace() in Flash CS3 / AS3">Debugging: Go Beyond Trace() in Flash CS3 / AS3</a></h2> 
+			<h3>August 20th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=122#comments" class="commentslink" title="Comment on Debugging: Go Beyond Trace() in Flash CS3 / AS3">9 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>When
+debugging your Flash application, my favorite way to take a peek
+at&nbsp;some data is by using the trace() function. In case you are not
+familiar with trace, it is a simple function that prints to the
+screen&nbsp;any text-based data. Almost all languages provide
+trace-like functionality, and some that&nbsp;you can relate to&nbsp;are
+<em>printf</em>, <em>Console.WriteLine</em>, <em>System.Out.println</em>, etc.</p>
+<p>The nice thing about trace() is that it is a&nbsp;quick way&nbsp;for
+displaying text-based information from a variable. Therein lies the
+problem. I mentioned that it is "a quick way&nbsp;for displaying <strong><em>text-based</em></strong>
+information". Not all data that you are interested in displaying is
+text-based. For example, you may be interested in viewing the contents
+of a Dictionary. You can't simply do trace(DictionaryObject) and expect
+to see something meaningful.</p>
+<p>This problem becomes more apparent when tracing the contents of
+something we have all used, an array. As long as your array contains
+strings, doing a trace on the entire array displays the string-based
+values. For example, let's say you have the following code:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHkwrd">var</span> <span class="kASHwrd">stringArray</span><span class="kASHop">:</span><span class="kASHidn">Array</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHidn">Array</span><span class="kASHop">(</span><span class="kASHqt">"What's"</span>, <span class="kASHqt">"up"</span>, <span class="kASHqt">"doc?"</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHidn">trace</span><span class="kASHop">(</span><span class="kASHwrd">stringArray</span><span class="kASHop">)</span>;</dt>
+</dl>
+<p>When you run the above code, you see the following displayed in your Output Window:</p>
+<p align="center"><img alt="whatsupdoc" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/whatsupdoc.png" border="0"> </p>
+<p>That's great. Of course, you won't have text-based information
+stored in your array all the time.&nbsp;To continue my previous
+example, you could store&nbsp;a series of Dictionary objects, XML
+nodes, etc. These are all objects that have internal methods that
+return text-based values, but when they are placed in an array,
+accessing those internal methods&nbsp;is difficult. Micromanaging a
+single object is much easier than dealing with a&nbsp;collection of
+those same&nbsp;objects in an array.</p>
+<p>For example, take a look at the following code where I create objects of type Person and send them to our array:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHkwrd">var</span> <span class="kASHwrd">mysteryOne</span><span class="kASHop">:</span><span class="kASHwrd">Person</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHwrd">Person</span><span class="kASHop">(</span><span class="kASHqt">"Sherlock"</span>, <span class="kASHqt">"Holmes"</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHkwrd">var</span> <span class="kASHwrd">mysteryTwo</span><span class="kASHop">:</span><span class="kASHwrd">Person</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHwrd">Person</span><span class="kASHop">(</span><span class="kASHqt">"James"</span>, <span class="kASHqt">"Watson"</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHkwrd">var</span> <span class="kASHwrd">mysteryThree</span><span class="kASHop">:</span><span class="kASHwrd">Person</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHwrd">Person</span><span class="kASHop">(</span><span class="kASHqt">"Mycroft"</span>, <span class="kASHqt">"Holmes"</span><span class="kASHop">)</span>;
+</dt><dt>&nbsp;
+</dt><dt><span class="kASHkwrd">var</span> <span class="kASHwrd">peopleArray</span><span class="kASHop">:</span><span class="kASHidn">Array</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHidn">Array</span><span class="kASHop">(</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">peopleArray</span>.<span class="kASHidn">push</span><span class="kASHop">(</span><span class="kASHwrd">mysteryOne</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">peopleArray</span>.<span class="kASHidn">push</span><span class="kASHop">(</span><span class="kASHwrd">mysteryTwo</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">peopleArray</span>.<span class="kASHidn">push</span><span class="kASHop">(</span><span class="kASHwrd">mysteryThree</span><span class="kASHop">)</span>; <font style="background-color: rgb(246, 251, 255);" color="#003366" face="Courier New"></font></dt>
+</dl>
+<p>When you trace your peopleArray, the following is what you see:</p>
+<p align="center"><img alt="peopleObjects" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/peopleObjects.png" border="0"> </p>
+<p>The above output is not quite as informative, for you don't actually
+know any specifics about the data your array is storing beyond the
+type.&nbsp;The reason for the generic information&nbsp;is, like I've
+mentioned several times, our trace function only prints text-based
+information. Tracing an object returns only its type name, which in our
+case, is&nbsp;Person. It is times like this where some of the debugging
+features in Flash CS3 come in handy.</p>
+<p><strong>Breakpoints and the Debugger<br></strong>An alternate
+approach to using trace is by using breakpoints. Breakpoints mark a
+line in your code, and when played back in the Flash Debugger, allow
+you to analyze all of the data Flash is juggling at that particular
+point. To see this in action, let's say I specify a breakpoint at the
+line where I am about to add my third Person object to my peopleArray:</p>
+<p align="center"><img alt="peopleArrayBreakpoint" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/peopleArrayBreakpoint.png" border="1"> </p>
+<p>The breakpoint is designated by the red circle that is displayed to
+the left of the line number. Once the breakpoint has been specified, go
+to Debug | Debug Movie (Ctrl + Shift + Enter) to display the Flash
+Debugger (click on below&nbsp;thumbnail for larger image):</p>
+<p align="center"><a href="http://img375.imageshack.us/my.php?image=debuggerwindowyt2.png" target="_blank"><img alt="Free Image Hosting at www.ImageShack.us" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/debuggerwindowyt2.png" border="0"></a></p>
+<p>When your application hits the line marked with the breakpoint, your
+Debugger will stop and allow you to analyze&nbsp;all public&nbsp;data
+stored at that point in the application's life. The part we are most
+interested in can be found in the Variables panel:</p>
+<p align="center"><img alt="variablesPanel" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/variablesPanel.png" border="1"> </p>
+<p>In the Variables panel, you see all of the variables currently
+initialized and stored in memory. Beyond just seeing the variables, you
+can expand any objects and access any of the public
+variables/properties/etc. that get exposed:</p>
+<p align="center"><img alt="expandedMysteryPeople" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/expandedMysteryPeople.png" border="1"> </p>
+<p>Notice that I expanded our Person objects, and as shown in the above
+image, internally our Person objects contain public&nbsp;variables
+called firstName and lastName. These variables display the data I
+passed to the constructor when I initialized my Person objects in the
+code I posted earlier. Anyhoo,&nbsp;let's address the
+problem&nbsp;displaying non-string data&nbsp;in arrays.</p>
+<p>When you expand&nbsp;the&nbsp;peopleArray node, we see the two array
+cells as well as the length property. Looking deeper, each array cell
+contains our Person objects mysteryOne and mysteryTwo. Like before, you
+can expand your mysteryOne and mysteryTwo Person objects to see what
+its firstName and lastName values are:</p>
+<p align="center"><img alt="expandedPeopleArray" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/expandedPeopleArray.png" border="1"> </p>
+<p>As you can see, using the debugger with well-placed breakpoints
+provides you with greater access to interesting data beyond what the
+trace function can show you. The debugger is especially useful when you
+are trying to view data&nbsp;that is layered, as in, the information
+you&nbsp;want is stored in a series of nested objects and variables as
+was the case with our Person objects located in our Array.</p>
+<p>Cheers!<br>Kirupa <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=122#comments" class="commentslink2" title="Comment on Debugging: Go Beyond Trace() in Flash CS3 / AS3">9 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=12" title="View all posts in Flash/Actionscript" rel="category tag">Flash/Actionscript</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D122&amp;title=Debugging%3A+Go+Beyond+Trace%28%29+in+Flash+CS3+%2F+AS3" title="del.icio.us:Debugging: Go Beyond Trace() in Flash CS3 / AS3"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Debugging: Go Beyond Trace() in Flash CS3 / AS3"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D122&amp;title=Debugging%3A+Go+Beyond+Trace%28%29+in+Flash+CS3+%2F+AS3" title="digg:Debugging: Go Beyond Trace() in Flash CS3 / AS3"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/digg.png" class="wp-notable_image" alt="digg:Debugging: Go Beyond Trace() in Flash CS3 / AS3"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D122&amp;title=Debugging%3A+Go+Beyond+Trace%28%29+in+Flash+CS3+%2F+AS3" title="reddit:Debugging: Go Beyond Trace() in Flash CS3 / AS3"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reddit.png" class="wp-notable_image" alt="reddit:Debugging: Go Beyond Trace() in Flash CS3 / AS3"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D122&amp;new_comment=Debugging%3A+Go+Beyond+Trace%28%29+in+Flash+CS3+%2F+AS3&amp;linktype=" title="fark:Debugging: Go Beyond Trace() in Flash CS3 / AS3"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fark.png" class="wp-notable_image" alt="fark:Debugging: Go Beyond Trace() in Flash CS3 / AS3"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D122&amp;t=Debugging%3A+Go+Beyond+Trace%28%29+in+Flash+CS3+%2F+AS3" title="Y!:Debugging: Go Beyond Trace() in Flash CS3 / AS3"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/yahoo.png" class="wp-notable_image" alt="Y!:Debugging: Go Beyond Trace() in Flash CS3 / AS3"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-4">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=121" rel="bookmark" title="Permanent Link to Interesting Links: WebServices in AS3, Vista Fixes, HDMI…">Interesting Links: WebServices in AS3, Vista Fixes, HDMI…</a></h2> 
+			<h3>August 16th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=121#comments" class="commentslink" title="Comment on Interesting Links: WebServices in AS3, Vista Fixes, HDMI…">8 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>After
+a few months of vacationing in India, I'm back home. Gotta love
+airplane delays and jetlag. In the meantime, here are some interesting
+links I found across the net:</p>
+<ul>
+<li><a href="http://weblogs.macromedia.com/jd/archives/2007/07/flash_cs3_web_s.cfm" target="_blank"><u>Web Service Components in Flash CS3</u></a><br>Adobe
+blogger John Dowdell provides a reason why Flash CS3 contains no
+out-of-the-box support for web&nbsp;services.&nbsp;What I would like to
+see&nbsp;beyond components are&nbsp;access to&nbsp;the&nbsp;classes
+that take care of handling web services. I'm not&nbsp;a big fan of
+components (<a href="http://blog.kirupa.com/?p=120" target="_blank">see my interview</a>), and I'd rather have&nbsp;the class files&nbsp;<strike>now</strike> <em>when Flash CS3 was first released</em>&nbsp;instead of&nbsp;still waiting on documentation.<br>&nbsp;
+</li><li><a href="http://www.fool.com/investing/high-growth/2007/07/30/make-up-your-mind-cramer.aspx?source=iflfollnk0000003" target="_blank"><u>Make Up Your Mind Jim Cramer</u></a><br>One
+of my favorite TV shows is Jim Cramer's Mad Money. While entertaining
+and often insightful, Jim has a tendency to change recommendations on
+the same stock frequently. For investors who rely on his insight, that
+isn't helpful. It's good to see that I wasn't the only one who felt he
+was being inconsistent in the short-term on his stock picks.<br>&nbsp;
+</li><li><a href="http://blogs.zdnet.com/microsoft/?p=628" target="_blank"><u>Microsoft Posts Two major Vista fix Packs for Download</u></a><br>These
+fixes seem to fix some long-standing issues many Vista users have had
+with performance and reliability. I installed them, and everything
+seems to be working fine. Though, I can't say I was actually
+experiencing the problems the fixes claim to resolve.
+<p><strong>EDIT (Revised):</strong>&nbsp;According to <a title="Chakkaradeep" href="http://chakkaradeep.wordpress.com/"><u><strong>Chakkaradeep</strong></u></a>&nbsp;in
+the comments,&nbsp;be sure to install&nbsp;(along with these) the other
+updates that were released&nbsp;on Automatic Updates on August 14th.<br>&nbsp;
+</p></li><li><a href="http://msdn2.microsoft.com/en-us/library/aa969767.aspx" target="_blank"><u>Performance Profiling Tools for WPF</u></a><br>If
+you are looking to optimize your WPF applications, these tools are
+quite helpful. They analyze your application during run-time and
+provide valuable feedback on details such as how much memory and how
+long parts of your application take.<br>&nbsp;
+</li><li><a href="http://en.wikipedia.org/wiki/HDMI#Versions" target="_blank"><u>HDMI Versions</u></a><br>It
+turns&nbsp;out that simply having&nbsp;HDMI ports doesn't make you
+cool.&nbsp;Having HDMI ports simply gets you into the club, and it is
+having HDMI&nbsp;version 1.3 ports that makes you cool.<br>&nbsp;
+</li><li><a href="http://fakesteve.blogspot.com/2007/07/freetards-in-deep-denial.html" target="_blank"><u>Freetards in Deep Denial</u></a><br>Fake
+Steve Jobs aka Dan Lyons of Forbes, writes a provocatively titled but
+interesting&nbsp;post describing the uphill struggle for Linux adoption
+in developing countries. I know from visiting family across India, all
+of the computers I saw ran Windows. While that is just anecdotal
+evidence, to me&nbsp;it&nbsp;adds some real-world validity to Dan's
+claims.<br>&nbsp;
+</li><li><a href="http://www.youtube.com/watch?v=Hxx2KcPWWZg" target="_blank"><u>Microsoft's New Image Editor</u></a><br>While this wasn't featured at <a href="http://www.visitmix.com/" target="_blank"><u>MIX</u></a>, I think this is the Photoshop-killer Adobe should be on the lookout for.<br>&nbsp;
+</li><li><a title="How Now to Write a Technical Book" href="http://www.codinghorror.com/blog/archives/000846.html"><u>How Now to Write a Technical Book</u></a><br>Jeff
+Atwood reviews my&nbsp;two&nbsp;favorite&nbsp;WPF
+books&nbsp;and&nbsp;talks quite favorably about Adam Nathan's book
+while talking less favorably&nbsp;about Charles Petzold's book.<br>&nbsp;
+</li><li><a title="The Future of Writing-" href="http://www.charlespetzold.com/blog/2007/04/270433.html"><u>The Future of Writing</u></a><br>Charles Petzold responds to Jeff's criticism of his book.<br>&nbsp;
+</li><li><a title="Musings About How Not Write a Technical Book" href="http://scottonwriting.net/sowblog/posts/12461.aspx"><u>Musings About How Not Write a Technical Book</u></a><br>Scott Mitchell's take on the debate between Jeff and Charles's posts.<br>&nbsp;</li>
+</ul>
+<p>That's all for now. I still have a few more weeks before I move to
+Seattle, so hopefully I'll have some time to wrap up some long-standing
+articles covering AS3 Classes, Creating Another Simple WPF Application,
+and more.</p>
+<p>Cheers!<br>Kirupa <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_smile.gif" alt=":-)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=121#comments" class="commentslink2" title="Comment on Interesting Links: WebServices in AS3, Vista Fixes, HDMI…">8 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=1" title="View all posts in Random" rel="category tag">Random</a>,  <a href="http://blog.kirupa.com/?cat=5" title="View all posts in Nerdy" rel="category tag">Nerdy</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D121&amp;title=Interesting+Links%3A+WebServices+in+AS3%2C+Vista+Fixes%2C+HDMI..." title="del.icio.us:Interesting Links: WebServices in AS3, Vista Fixes, HDMI..."><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Interesting Links: WebServices in AS3, Vista Fixes, HDMI..."></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D121&amp;title=Interesting+Links%3A+WebServices+in+AS3%2C+Vista+Fixes%2C+HDMI..." title="digg:Interesting Links: WebServices in AS3, Vista Fixes, HDMI..."><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/digg.png" class="wp-notable_image" alt="digg:Interesting Links: WebServices in AS3, Vista Fixes, HDMI..."></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D121&amp;title=Interesting+Links%3A+WebServices+in+AS3%2C+Vista+Fixes%2C+HDMI..." title="reddit:Interesting Links: WebServices in AS3, Vista Fixes, HDMI..."><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reddit.png" class="wp-notable_image" alt="reddit:Interesting Links: WebServices in AS3, Vista Fixes, HDMI..."></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D121&amp;new_comment=Interesting+Links%3A+WebServices+in+AS3%2C+Vista+Fixes%2C+HDMI...&amp;linktype=" title="fark:Interesting Links: WebServices in AS3, Vista Fixes, HDMI..."><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fark.png" class="wp-notable_image" alt="fark:Interesting Links: WebServices in AS3, Vista Fixes, HDMI..."></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D121&amp;t=Interesting+Links%3A+WebServices+in+AS3%2C+Vista+Fixes%2C+HDMI..." title="Y!:Interesting Links: WebServices in AS3, Vista Fixes, HDMI..."><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/yahoo.png" class="wp-notable_image" alt="Y!:Interesting Links: WebServices in AS3, Vista Fixes, HDMI..."></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-5">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=120" rel="bookmark" title="Permanent Link to Interview: I (and others) Answer Questions About Flash">Interview: I (and others) Answer Questions About Flash</a></h2> 
+			<h3>August 8th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=120#comments" class="commentslink" title="Comment on Interview: I (and others) Answer Questions About Flash">7 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>A few months ago, I was requested by Mark Angeletti from <a href="http://www.search-this.com/" target="_blank"><u>search-this</u></a>&nbsp;to
+answer five questions about Flash both from a technical as well as
+a&nbsp;non-technical/business point of view. You can read my answers as
+well as those by well known developers&nbsp;Bartek Drozdz
+(Fantasy&nbsp;Interactive)&nbsp;and Keith Peters (bit-101) in the
+following location: <a title="http://www.search-this.com/2007/08/08/3-flash-masters-answer-5-flash-questions/" href="http://www.search-this.com/2007/08/08/3-flash-masters-answer-5-flash-questions/"><u>http://www.search-this.com/2007/08/08/3-flash-masters-answer-5-flash-questions/</u></a>&nbsp;(my answers are the ones flagged in red)</p>
+<p>For easy access to just my answers, I have pasted them below:</p>
+<ol>
+<li><strong>What do you see as Flash’s key asset(s)?<br></strong>The
+main asset of Flash is how easy it is to go from launching the IDE,
+creating the content, and publishing the content to the web for others
+to access. As long as the user has the Flash plug-in installed, the
+content displays consistently with little variation across browsers,
+platforms, etc. If the user does not have the Flash plug-in,
+downloading and installing it is very straightforward.<br>&nbsp;<br>It
+is this, usually hassle-free, experience that makes Flash unique when
+compared to a host of other development platforms. This focus on
+simplicity on the deployment side help it to gain a lot of trust both
+with regular users and designers/developers who want an easy way to
+create and distribute interactive content.<br><strong>&nbsp;</strong>
+</li><li><strong>What do you think is Flash’s biggest weakness?</strong><br>Macromedia
+(and now Adobe) spent and continue to spend a great deal of effort
+trying to make the lives of designers easier. With each subsequent
+release, the integration between Flash and other applications such as
+Fireworks, Photoshop, etc. sees marked improvements. Beyond integration
+with other designer applications, features centering round drawing
+become much better also.<br>&nbsp;<br>Despite the improvements made for
+designers, I feel that Flash could offer a lot more for developers. The
+introduction of ActionScript 3 is great, but the tools for writing and
+debugging the code are very rudimentary. Even with Flash CS3, the code
+editor provides very limited functionality for developers who are
+accustomed to features found in other popular IDEs.<br><strong>&nbsp;</strong>
+</li><li><strong>If you could change one thing about Flash what would it be?<br></strong>The
+one thing I would change is how the components are loaded in Flash.
+Right now, using components greatly increases the file size of an
+animation. A blank Flash SWF file is around 40 bytes, and adding, for
+example, a simple Button component inflates the file size to 15kb.
+Creating your own simple button from scratch with Up, Over, and Down
+states takes up less than 300 bytes. The Button component isn’t alone,
+for you experience similar file size increases when using the other
+components also.<br>&nbsp;<br>Part of the reason is that large parts of
+these components are defined and stored within the SWF itself. My
+solution to this problem would be to store the component parts in the
+Flash Player instead with the SWF, storing only the component parts the
+user modifies. With this change, adding components will no longer
+increase the SWF file size as rapidly as it does now.<br>&nbsp;<br>While
+the SWF size will decrease, this solution will increase the Flash
+Player’s file size. In the end, I think the benefit of having smaller
+SWF files sizes when using components offsets the gain in file size
+found in the one-time download of the Flash Player.<br>&nbsp;
+</li><li><strong>Has Flash’s popularity peaked?<br></strong>No, I do
+not think the popularity of Flash for end-users has peaked. A few years
+ago, nobody outside of a few individuals would have guessed how
+extensively Flash would be used to deliver videos on the web. As you
+are reading this right now, I am sure somebody out there is working on
+something else (maybe using Flex or Apollo) that will push Flash in a
+new direction.<br>&nbsp;<br>To take a broader view by looking at
+developers, unlike in the past, the RIA space has gotten more
+interesting with technologies ranging from Silverlight, JavaFX,
+OpenLaslo, JavaScript, etc. competing for user and developer attention.
+Developers now have a choice in picking the right tool for the right
+job, and the tool chosen may or may not be based on Flash.<br>&nbsp;<br>I
+believe this increased competition gets a lot of developers familiar
+with non-ActionScript languages to target the web. This is not a
+zero-sum game, so while the percentage of RIA projects using Flash
+might decrease, the quantity of developers who target Flash will
+continue to increase at the same rate as it has since Flash was first
+introduced. To look at it another way, Flashers in the future will have
+a smaller piece of a much, Much, MUCH larger RIA-flavored pie.<br>&nbsp;
+</li><li><strong>What will Flash look like in 3 years?<br></strong>In
+three years, I think Flash will feature hardware graphics acceleration.
+Right now, even the lowest-end computers feature graphics cards capable
+of breezing through fairly complex visuals, but Flash’s lack of
+hardware acceleration leaves such functionality beyond the reach of
+developers.<br>&nbsp;<br>Ideally, Flash will combine some of the best
+elements of the Shockwave Player. The Shockwave Player features
+hardware acceleration by default with support for DirectX and OpenGL,
+and the Xtras extensibility model allowed developers to provide more
+functionality to users on an as-needed basis. </li>
+</ol>
+<hr>
+<p>Thanks to Mark Angeletti for giving me the chance to talk more
+candidly about Flash. There is some extra discussion of this
+on&nbsp;a&nbsp;<a href="http://www.kirupa.com/forum/showthread.php?t=271370" target="_blank"><u>kForum thread covering the interview</u></a>.</p>
+<p>Cheers!<br>Kirupa <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=120#comments" class="commentslink2" title="Comment on Interview: I (and others) Answer Questions About Flash">7 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=1" title="View all posts in Random" rel="category tag">Random</a>,  <a href="http://blog.kirupa.com/?cat=5" title="View all posts in Nerdy" rel="category tag">Nerdy</a>,  <a href="http://blog.kirupa.com/?cat=12" title="View all posts in Flash/Actionscript" rel="category tag">Flash/Actionscript</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D120&amp;title=Interview%3A+I+%28and+others%29+Answer+Questions+About+Flash" title="del.icio.us:Interview: I (and others) Answer Questions About Flash"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Interview: I (and others) Answer Questions About Flash"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D120&amp;title=Interview%3A+I+%28and+others%29+Answer+Questions+About+Flash" title="digg:Interview: I (and others) Answer Questions About Flash"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/digg.png" class="wp-notable_image" alt="digg:Interview: I (and others) Answer Questions About Flash"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D120&amp;title=Interview%3A+I+%28and+others%29+Answer+Questions+About+Flash" title="reddit:Interview: I (and others) Answer Questions About Flash"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reddit.png" class="wp-notable_image" alt="reddit:Interview: I (and others) Answer Questions About Flash"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D120&amp;new_comment=Interview%3A+I+%28and+others%29+Answer+Questions+About+Flash&amp;linktype=" title="fark:Interview: I (and others) Answer Questions About Flash"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fark.png" class="wp-notable_image" alt="fark:Interview: I (and others) Answer Questions About Flash"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D120&amp;t=Interview%3A+I+%28and+others%29+Answer+Questions+About+Flash" title="Y!:Interview: I (and others) Answer Questions About Flash"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/yahoo.png" class="wp-notable_image" alt="Y!:Interview: I (and others) Answer Questions About Flash"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-6">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=119" rel="bookmark" title="Permanent Link to Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms">Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms</a></h2> 
+			<h3>August 7th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=119#comments" class="commentslink" title="Comment on Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms">2 Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>In my most recent <a href="http://www.kirupa.com/net/using_open_file_dialog_pg1.htm" target="_blank"><u>tutorial</u></a>, I explain how to allow your applications to open single or multiple files using the Open File dialog window.&nbsp;In the <a href="http://www.kirupa.com/net/using_open_file_dialog_pg4.htm" target="_blank"><u>last page</u></a>
+of this tutorial, I discuss a problem associated with using the
+OpenFileDialog found in WPF's
+(PresentationFramework.dll)&nbsp;Microsoft.Win32 namespace. </p>
+<p>In a nutshell, the problem is that, in Windows Vista, calling the
+Win32 version of OpenFileDialog displays the dialog window in the wrong
+style:</p>
+<p align="center"><img alt="oldopenfiledialog" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/oldopenfiledialog.jpg" border="0"> </p>
+<p>The correct style should be the version shown in the image below:</p>
+<p align="center"><img alt="vistaOpenFileDialog" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/vistaOpenFileDialog.jpg" border="0" height="383" width="496"> </p>
+<p>As you can tell, there is a drastic aesthetic and functional
+difference between both of the dialog boxes. In the tutorial, I gave
+only&nbsp;a brief overview of the problem and described how to use the
+WinForms version of OpenFileDialog to solve the problem. In this post,
+let's look in detail why the Win32 version displays the wrong dialog
+window, and more importantly, why WinForms displays the correct version.</p>
+<p><strong>Using .NET Reflector</strong><br>One of the best tools for digging through an application's dependencies and implementation&nbsp;is <a href="http://www.aisto.com/roeder/dotnet" target="_blank"><u>Lutz Roeder's .NET Reflector</u></a>.
+Using .NET Reflector, you can select any assembly /&nbsp;EXE, DLL, etc.
+and look through the guts of the application without even having access
+to the original source code*:</p>
+<p align="center"><img alt="reflectorExample" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reflectorExample.png" border="0"> </p>
+<p>For seeing why the wrong version of OpenFileDialog is displayed in
+Vista, I created two versions of my application. One version used the
+Microsoft.Win32.OpenFileDialog class, and my second version used
+the&nbsp;System.Windows.Forms.OpenFileDialog class. Let's look at the
+Win32 version first.</p>
+<p>The Win32 OpenFileDialog is based on FileDialog which, in turn, is based on CommonDialog:</p>
+<p align="center"><img alt="reflected_OpenFileDialog" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reflected_OpenFileDialog.png" border="1"> </p>
+<p>When I call my Win32&nbsp;OpenFileDialog's ShowDialog method in my
+C# code, internally, I am being routed from our ShowDialog method in
+the&nbsp;CommonDialog class&nbsp;to&nbsp;a RunDialog method&nbsp;in
+the&nbsp;FileDialog class. Let's look at the code in our RunDialog
+method, and you are not expected to understand much/any of it:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHop">[</span><span class="kASHwrd">SecurityCritical</span><span class="kASHop">]</span>
+</dt><dt><span class="kASHwrd">protected</span> <span class="kASHwrd">override</span> <span class="kASHwrd">bool</span> <span class="kASHwrd">RunDialog</span><span class="kASHop">(</span><span class="kASHwrd">IntPtr</span> <span class="kASHwrd">hwndOwner</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHwrd">bool</span> <span class="kASHwrd">flag</span>;
+</dt><dt><span class="kASHwrd">NativeMethods</span>.<span class="kASHwrd">WndProc</span> <span class="kASHwrd">proc</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHwrd">NativeMethods</span>.<span class="kASHwrd">WndProc</span><span class="kASHop">(</span><span class="kASHkwrd">this</span>.<span class="kASHwrd">HookProc</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">NativeMethods</span>.<span class="kASHwrd">OPENFILENAME_I</span> <span class="kASHwrd">ofn</span> <span class="kASHop">=</span> <span class="kASHkwrd">new</span> <span class="kASHwrd">NativeMethods</span>.<span class="kASHwrd">OPENFILENAME_I</span><span class="kASHop">(</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHkwrd">try</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHkwrd">this</span>.<span class="kASHwrd">_charBuffer</span> <span class="kASHop">=</span> <span class="kASHwrd">NativeMethods</span>.<span class="kASHwrd">CharBuffer</span>.<span class="kASHwrd">CreateBuffer</span><span class="kASHop">(</span><span class="kASHnum">0x2000</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHkwrd">if</span> <span class="kASHop">(</span><span class="kASHkwrd">this</span>.<span class="kASHwrd">_fileNames</span> <span class="kASHop">!=</span> <span class="kASHwrd">null</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHkwrd">this</span>.<span class="kASHwrd">_charBuffer</span>.<span class="kASHwrd">PutString</span><span class="kASHop">(</span><span class="kASHkwrd">this</span>.<span class="kASHwrd">_fileNames</span><span class="kASHop">[</span><span class="kASHnum">0</span><span class="kASHop">]</span><span class="kASHop">)</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">lStructSize</span> <span class="kASHop">=</span> <span class="kASHwrd">Marshal</span>.<span class="kASHwrd">SizeOf</span><span class="kASHop">(</span><span class="kASHwrd">typeof</span><span class="kASHop">(</span><span class="kASHwrd">NativeMethods</span>.<span class="kASHwrd">OPENFILENAME_I</span><span class="kASHop">)</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">hwndOwner</span> <span class="kASHop">=</span> <span class="kASHwrd">hwndOwner</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">hInstance</span> <span class="kASHop">=</span> <span class="kASHwrd">IntPtr</span>.<span class="kASHwrd">Zero</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">lpstrFilter</span> <span class="kASHop">=</span> <span class="kASHwrd">MakeFilterString</span><span class="kASHop">(</span><span class="kASHkwrd">this</span>.<span class="kASHwrd">_filter</span>, <span class="kASHkwrd">this</span>.<span class="kASHwrd">DereferenceLinks</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">nFilterIndex</span> <span class="kASHop">=</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">_filterIndex</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">lpstrFile</span> <span class="kASHop">=</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">_charBuffer</span>.<span class="kASHwrd">AllocCoTaskMem</span><span class="kASHop">(</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">nMaxFile</span> <span class="kASHop">=</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">_charBuffer</span>.<span class="kASHwrd">Length</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">lpstrInitialDir</span> <span class="kASHop">=</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">_initialDirectory</span>.<span class="kASHwrd">Value</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">lpstrTitle</span> <span class="kASHop">=</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">_title</span>.<span class="kASHwrd">Value</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">Flags</span> <span class="kASHop">=</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">Options</span> <span class="kASHop">|</span> <span class="kASHnum">0x880020</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">lpfnHook</span> <span class="kASHop">=</span> <span class="kASHwrd">proc</span>;
+</dt><dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">FlagsEx</span> <span class="kASHop">=</span> <span class="kASHnum">0x1000000</span>;
+</dt><dt><span class="kASHkwrd">if</span> <span class="kASHop">(</span><span class="kASHop">(</span><span class="kASHkwrd">this</span>.<span class="kASHwrd">_defaultExtension</span> <span class="kASHop">!=</span> <span class="kASHwrd">null</span><span class="kASHop">)</span> <span class="kASHop">&amp;&amp;</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">AddExtension</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHwrd">ofn</span>.<span class="kASHwrd">lpstrDefExt</span> <span class="kASHop">=</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">_defaultExtension</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt><span class="kASHwrd">flag</span> <span class="kASHop">=</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">RunFileDialog</span><span class="kASHop">(</span><span class="kASHwrd">ofn</span><span class="kASHop">)</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt><span class="kASHwrd">finally</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHkwrd">this</span>.<span class="kASHwrd">_charBuffer</span> <span class="kASHop">=</span> <span class="kASHwrd">null</span>;
+</dt><dt><span class="kASHkwrd">if</span> <span class="kASHop">(</span><span class="kASHwrd">ofn</span>.<span class="kASHwrd">lpstrFile</span> <span class="kASHop">!=</span> <span class="kASHwrd">IntPtr</span>.<span class="kASHwrd">Zero</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHwrd">Marshal</span>.<span class="kASHwrd">FreeCoTaskMem</span><span class="kASHop">(</span><span class="kASHwrd">ofn</span>.<span class="kASHwrd">lpstrFile</span><span class="kASHop">)</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt><span class="kASHwrd">return</span> <span class="kASHwrd">flag</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<p>If you look over the code, you'll get a basic idea of what it does
+even if you are not certain of the implementation details associated
+with this method. Let's compare and contrast the above code with what
+you will see in the WinForms version of RunDialog.&nbsp;After you see
+what the WinForms implementation looks like, you'll have an idea of
+what to look for, and more importantly,&nbsp;what isn't found in the
+above code.</p>
+<p>In the WinForms implementation, let's jump directly to the RunDialog
+method. The code for RunDialog&nbsp;in&nbsp;System.Windows.Forms is:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHwrd">protected</span> <span class="kASHwrd">override</span> <span class="kASHwrd">bool</span> <span class="kASHwrd">RunDialog</span><span class="kASHop">(</span><span class="kASHwrd">IntPtr</span> <span class="kASHwrd">hWndOwner</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHkwrd">if</span> <span class="kASHop">(</span><span class="kASHwrd">Control</span>.<span class="kASHwrd">CheckForIllegalCrossThreadCalls</span> <span class="kASHop">&amp;&amp;</span> <span class="kASHop">(</span><span class="kASHwrd">Application</span>.<span class="kASHwrd">OleRequired</span><span class="kASHop">(</span><span class="kASHop">)</span> <span class="kASHop">!=</span> <span class="kASHwrd">ApartmentState</span>.<span class="kASHwrd">STA</span><span class="kASHop">)</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHwrd">throw</span> <span class="kASHkwrd">new</span> <span class="kASHwrd">ThreadStateException</span><span class="kASHop">(</span><span class="kASHwrd">SR</span>.<span class="kASHwrd">GetString</span><span class="kASHop">(</span><span class="kASHqt">"DebuggingExceptionOnly"</span>, <span class="kASHkwrd">new</span> <span class="kASHkwrd">object</span><span class="kASHop">[</span><span class="kASHop">]</span> <span class="kASHop">{</span> <span class="kASHwrd">SR</span>.<span class="kASHwrd">GetString</span><span class="kASHop">(</span><span class="kASHqt">"ThreadMustBeSTA"</span><span class="kASHop">)</span> <span class="kASHop">}</span><span class="kASHop">)</span><span class="kASHop">)</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt><span class="kASHkwrd">this</span>.<span class="kASHwrd">EnsureFileDialogPermission</span><span class="kASHop">(</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHkwrd">if</span> <span class="kASHop">(</span><span class="kASHkwrd">this</span>.<span class="kASHwrd">UseVistaDialogInternal</span><span class="kASHop">)</span>
+</dt><dt><span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHwrd">return</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">RunDialogVista</span><span class="kASHop">(</span><span class="kASHwrd">hWndOwner</span><span class="kASHop">)</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span>
+</dt><dt><span class="kASHwrd">return</span> <span class="kASHkwrd">this</span>.<span class="kASHwrd">RunDialogOld</span><span class="kASHop">(</span><span class="kASHwrd">hWndOwner</span><span class="kASHop">)</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<p>
+</p><p>Notice that you branch your code to use either RunDialogVista if
+you are on&nbsp;Vista or RunDialogOld if you are running something
+pre-Vista such as XP. The implementations of RunDialogVista and
+RunDialogOld take care of displaying the appropriate dialog windows and
+the style associated with it.</p>
+<p>Because Win32 doesn't seem to check for the OS version when
+attempting to display the dialog window, you run into the UI
+incompatibility that&nbsp;I described both in this post and in my
+tutorial. According to <a href="http://www.danielmoth.com/Blog/2007/05/winforms-1-wpf-0.html" target="_blank"><u>Daniel Moth</u></a>, the chances of the final version of WPF 3.5 fixing this issue seem high.</p>
+<p><strong>EDIT: According to Daniel's comment to this post, the final version of WPF 3.5 will not include this fix.</strong></p>
+<p>* You can always obfuscate your code to confuse .NET Reflector, but
+like all disassembly tools found for many languages, truly hiding the
+implementation of your application isn't a perfect science.</p>
+<p>Cheers!<br>Kirupa <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_wink.gif" alt=";)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=119#comments" class="commentslink2" title="Comment on Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms">2 Comments</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=5" title="View all posts in Nerdy" rel="category tag">Nerdy</a>,  <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D119&amp;title=Reflector-ing+on+OpenFileDialog+in+WPF%2FWin32+and+WinForms" title="del.icio.us:Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D119&amp;title=Reflector-ing+on+OpenFileDialog+in+WPF%2FWin32+and+WinForms" title="digg:Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/digg.png" class="wp-notable_image" alt="digg:Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D119&amp;title=Reflector-ing+on+OpenFileDialog+in+WPF%2FWin32+and+WinForms" title="reddit:Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reddit.png" class="wp-notable_image" alt="reddit:Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D119&amp;new_comment=Reflector-ing+on+OpenFileDialog+in+WPF%2FWin32+and+WinForms&amp;linktype=" title="fark:Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fark.png" class="wp-notable_image" alt="fark:Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D119&amp;t=Reflector-ing+on+OpenFileDialog+in+WPF%2FWin32+and+WinForms" title="Y!:Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/yahoo.png" class="wp-notable_image" alt="Y!:Reflector-ing on OpenFileDialog in WPF/Win32 and WinForms"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-7">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=118" rel="bookmark" title="Permanent Link to Updates to Visual Studio, .NET, Blend, and Silverlight!">Updates to Visual Studio, .NET, Blend, and Silverlight!</a></h2> 
+			<h3>August 4th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=118#respond" class="commentslink" title="Comment on Updates to Visual Studio, .NET, Blend, and Silverlight!">No Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>Last
+week,&nbsp;there&nbsp;were quite a number of updates to many of
+Microsoft's&nbsp;developer-related offerings. Even though these
+products are beta, I've been using them extensively for the past week
+or so without running into any major issues. In a nutshell, all of
+these updates are related to developing content for Windows or for the
+web using Silverlight.</p>
+<p>With that said, here are the download links along with a summary of what the downloads are:</p>
+<ul>
+<li><a href="http://www.microsoft.com/downloads/details.aspx?familyid=d2f74873-c796-4e60-91c8-f0ef809b09ee" target="_blank"><u>.NET Framework 3.5</u></a><br>The
+.NET Framework provides the basic functionality along with a host of
+libraries for creating .NET applications. This version contains updates
+to various components including&nbsp;WCF, WF,&nbsp;CLR, and more. For
+you WPF developers out there, here is a <a href="http://blogs.msdn.com/tims/archive/2007/07/27/what-s-new-in-wpf-3-5-here-s-fifteen-cool-features.aspx" target="_blank"><u>list of 15 cool new features</u></a> in WPF 3.5.<br>&nbsp;</li>
+<li><a href="http://go.microsoft.com/?linkid=7175498" target="_blank"><u>Visual Studio 2008 Beta 2</u></a><br>In
+this latest release, Visual Studio provides much better integration
+among all of the various new languages and technologies Microsoft has
+introduced since Visual Studio 2005. Among numerous other things,
+there&nbsp;much better support for developing WPF applications, access
+to the new language features in C# and VB, and you have built-in
+support for newly released technologies such as ASP.NET Ajax and
+Silverlight.<br>&nbsp;</li>
+<li><a href="http://msdn2.microsoft.com/express/future/bb421473.aspx" target="_blank"><u>Visual Studio 2008 Express Beta 2</u></a><br>Same
+as the regular Visual Studio, except the final versions will remain
+free. The catch is that some features found in the full version are
+missing. Despite that, this is a great way to explore building
+applications&nbsp;using Visual Studio, and for the most part, you won't
+be severely hindered by the missing features. For example, all of the
+.NET tutorials on this site are based on the Express versions of Visual
+Studio unless explicitly mentioned.<br>&nbsp;</li>
+<li><a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=69540337-B619-4A47-AC27-52D8AF3A7830&amp;displaylang=en" target="_blank"><u>Expression Blend 2 August 2 Preview</u></a><br>The
+designer-oriented IDE now provides built-in support for creating
+Silverlight 1.0 and Silverlight 1.1 content. Because Silverlight uses a
+subset of WPF, the UI for creating Silverlight content is very similar
+to creating WPF-only applications for the desktop.<br>&nbsp;</li>
+<li><a href="http://www.microsoft.com/silverlight/downloads.aspx" target="_blank"><u>Silverlight 1.0 Release Candidate</u></a><br>This is the media-oriented version of Silverlight that uses JavaScript for handling the logic of your application.<br>&nbsp;</li>
+<li><a href="http://www.microsoft.com/silverlight/downloads.aspx" target="_blank"><u>Silverlight 1.1 Alpha Refresh</u></a><br>This
+is the version that has received a lot of press attention because of
+its support for .NET and languages such as C#, VB, and dynamic
+languages such as Ruby and Python.<br>&nbsp;</li>
+<li><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=B52AEB39-1F10-49A6-85FC-A0A19CAC99AF&amp;displaylang=en" target="_blank"><u>Silverlight Tools for Visual Studio 2008 Beta 2</u></a><br>This
+download provides better&nbsp;support&nbsp;for creating Silverlight 1.1
+content inside Visual Studio along with better integration with
+Expression Blend 2.</li>
+</ul>
+<p>In total, all of the above downloads are quite hefty, and
+installation of Visual Studio can take a while. In my case, I forgot to
+uninstall an earlier version of Visual Studio 2008, so I had to go
+through the long uninstallation process before embarking on the long
+installation process. It was all good in the end though.</p>
+<p></p><p><strong>External Resources<br></strong>For getting a good overview of many of the new features, check out <a href="http://weblogs.asp.net/scottgu/" target="_blank"><u>Scott Guthrie's blog</u></a>&nbsp;as well as his <a href="http://channel9.msdn.com/Showpost.aspx?postid=329443" target="_blank"><u>Channel9 Video with S. Somasegar</u></a>. For WPF-specific information, I really like <a href="http://rrelyea.spaces.live.com/" target="_blank"><u>Rob Relyea's</u></a> and <a href="http://blogs.msdn.com/tims/default.aspx" target="_blank"><u>Tim Sneath's</u></a> blogs. For <a href="http://blogs.msdn.com/mharsh/" target="_blank"><u>Silverlight</u></a> information, Mike Harsh is gold...or is it silver?</p>
+<p>Cheers!<br>Kirupa <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=118#respond" class="commentslink2" title="Comment on Updates to Visual Studio, .NET, Blend, and Silverlight!">No Comments;</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D118&amp;title=Updates+to+Visual+Studio%2C+.NET%2C+Blend%2C+and+Silverlight%21" title="del.icio.us:Updates to Visual Studio, .NET, Blend, and Silverlight!"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Updates to Visual Studio, .NET, Blend, and Silverlight!"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D118&amp;title=Updates+to+Visual+Studio%2C+.NET%2C+Blend%2C+and+Silverlight%21" title="digg:Updates to Visual Studio, .NET, Blend, and Silverlight!"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/digg.png" class="wp-notable_image" alt="digg:Updates to Visual Studio, .NET, Blend, and Silverlight!"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D118&amp;title=Updates+to+Visual+Studio%2C+.NET%2C+Blend%2C+and+Silverlight%21" title="reddit:Updates to Visual Studio, .NET, Blend, and Silverlight!"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reddit.png" class="wp-notable_image" alt="reddit:Updates to Visual Studio, .NET, Blend, and Silverlight!"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D118&amp;new_comment=Updates+to+Visual+Studio%2C+.NET%2C+Blend%2C+and+Silverlight%21&amp;linktype=" title="fark:Updates to Visual Studio, .NET, Blend, and Silverlight!"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fark.png" class="wp-notable_image" alt="fark:Updates to Visual Studio, .NET, Blend, and Silverlight!"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D118&amp;t=Updates+to+Visual+Studio%2C+.NET%2C+Blend%2C+and+Silverlight%21" title="Y!:Updates to Visual Studio, .NET, Blend, and Silverlight!"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/yahoo.png" class="wp-notable_image" alt="Y!:Updates to Visual Studio, .NET, Blend, and Silverlight!"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-8">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=117" rel="bookmark" title="Permanent Link to CSS for Styling a Search Box + Thinking Like a Computer">CSS for Styling a Search Box + Thinking Like a Computer</a></h2> 
+			<h3>July 30th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=117#comments" class="commentslink" title="Comment on CSS for Styling a Search Box + Thinking Like a Computer">1 Comment</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>One
+of the many minor changes on kirupa.com of late&nbsp;was the removal of
+all Flash content from the site headers. This change ensures that
+almost all non-Flash tutorial sites are purely HTML requiring no extra
+plug-ins.&nbsp;I briefly outlined the reasons why&nbsp;this change was
+made in a bug-report <a href="http://www.kirupa.com/forum/showthread.php?t=265947" target="_blank"><u>thread</u></a>.
+Instead, in&nbsp;this post, I will describe the CSS code used to
+implement the following&nbsp;custom search box and wrap up by
+explaining how to figure things out in a new language:</p>
+<p align="center"><img alt="searchField" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/searchField.png" border="1"> </p>
+<p>The CSS code I used is the following:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt>.<span class="kASHwrd">InputTextStyle</span> <span class="kASHop">{</span>
+</dt><dl>
+<dt><span class="kASHidn">background</span><span class="kASHop">-</span><span class="kASHwrd">image</span><span class="kASHop">:</span> <span class="kASHidn">url</span><span class="kASHop">(</span><span class="kASHqt">'http://www.kirupa.com/mini_icons/magnifier.gif'</span><span class="kASHop">)</span>;
+</dt><dt><span class="kASHidn">background</span><span class="kASHop">-</span><span class="kASHwrd">repeat</span><span class="kASHop">:</span> <span class="kASHwrd">no</span><span class="kASHop">-</span><span class="kASHwrd">repeat</span>;
+</dt><dt><span class="kASHidn">background</span><span class="kASHop">-</span><span class="kASHidn">position</span><span class="kASHop">:</span> <span class="kASHnum">3px</span> <span class="kASHnum">2px</span>;
+</dt><dt><span class="kASHidn">font</span><span class="kASHop">-</span><span class="kASHwrd">family</span><span class="kASHop">:</span> <span class="kASHwrd">Arial</span>, <span class="kASHwrd">Helvetica</span>, <span class="kASHwrd">sans</span><span class="kASHop">-</span><span class="kASHwrd">serif</span>;
+</dt><dt><span class="kASHidn">font</span><span class="kASHop">-</span><span class="kASHidn">size</span><span class="kASHop">:</span> <span class="kASHnum">12px</span>;
+</dt><dt><span class="kASHidn">font</span><span class="kASHop">-</span><span class="kASHwrd">weight</span><span class="kASHop">:</span> <span class="kASHwrd">normal</span>;
+</dt><dt><span class="kASHidn">color</span><span class="kASHop">:</span> <span class="kASHop">#</span><span class="kASHnum">333333</span>;
+</dt><dt><span class="kASHidn">border</span><span class="kASHop">-</span><span class="kASHidn">width</span><span class="kASHop">:</span> <span class="kASHnum">1px</span>;
+</dt><dt><span class="kASHidn">border</span><span class="kASHop">-</span><span class="kASHidn">color</span><span class="kASHop">:</span> <span class="kASHop">#</span><span class="kASHnum">999999</span>;
+</dt><dt><span class="kASHidn">padding</span><span class="kASHop">-</span><span class="kASHidn">left</span><span class="kASHop">:</span> <span class="kASHnum">20px</span>;</dt>
+</dl>
+<dt><span class="kASHop">}</span></dt>
+</dl>
+<p>One of the tricks associated with styling in CSS is understanding
+the CSS quirks and taking advantage of them. For example, there is no
+property for specifying a text field's icon, yet&nbsp;our search field
+seems to have an icon associated with it.&nbsp;There is, though, a
+property for setting the background image (<font color="#0000ff">background-image</font>)&nbsp;of a control. By setting the background image to what we want and preventing that image from repeating (<font color="#0000ff">background-repeat: no-repeat</font>), you are able to achieve your original goal of displaying an icon inside your text field.</p>
+<p>Likewise, another feature found in this search field is starting the text only after our background image:</p>
+<p align="center"><img alt="keyword" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/keyword.png" border="1"> </p>
+<p>There are no layout managers that automatically prevent content from
+flowing on top of each other. Instead, to figure that out, all you need
+to know is what properties control spacing.&nbsp;In almost all
+languages, spacing relating to an object's&nbsp;position is based on
+the <strong>margin</strong> and <strong>padding</strong> properties.
+Margin always refers to the spacing around the outside edges of the
+control, while padding refers to the spacing around the inside edges of
+the control.</p>
+<p>Based on that definition of margin and padding, it seems that
+padding is what we want. We want to specify the spacing inside the
+edges of our control, and we can do that by specifying the spacing
+between the left edge of the control and the content inside it.
+Fortunately,&nbsp;a&nbsp;specific property called <font color="#0000ff">padding-left</font>
+exists in CSS for that very purpose. By setting a pixel offset value
+for padding-left, you ensure that your textbox's cursor begins only
+after the pixel value you specify.</p>
+<p><strong>On Learning a new Language</strong><br>Part of this post
+was&nbsp;designed to emphasize how&nbsp;knowing how to approach
+programming problems can help you to solve them even if you don't know
+the syntax behind that language. It wasn't imperative for you
+to&nbsp;know the exact formation of background-image and padding-left,
+but as long as you&nbsp;had an idea that the properties you needed to
+modify involved background and padding, you could browse through
+the&nbsp;CSS documentation to figure out the rest.</p>
+<p>Knowing how to represent the problem in computer-think&nbsp;is far
+more important than knowing the syntax behind things, for learning
+syntax is fairly simple. Knowing how to represent problems, though, is
+more difficult. One thing to&nbsp;lookout for is that this
+approach&nbsp;can help you to find a solution, but it may not lead to
+an optimal solution. In programming, there are many roads that lead to
+a solution, and it often takes experience to know what the best road is.</p>
+<p>Cheers!<br>Kirupa <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=117#comments" class="commentslink2" title="Comment on CSS for Styling a Search Box + Thinking Like a Computer">1 Comment</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=9" title="View all posts in Design" rel="category tag">Design</a>,  <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D117&amp;title=CSS+for+Styling+a+Search+Box+%2B+Thinking+Like+a+Computer" title="del.icio.us:CSS for Styling a Search Box + Thinking Like a Computer"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/delicious.png" class="wp-notable_image" alt="del.icio.us:CSS for Styling a Search Box + Thinking Like a Computer"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D117&amp;title=CSS+for+Styling+a+Search+Box+%2B+Thinking+Like+a+Computer" title="digg:CSS for Styling a Search Box + Thinking Like a Computer"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/digg.png" class="wp-notable_image" alt="digg:CSS for Styling a Search Box + Thinking Like a Computer"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D117&amp;title=CSS+for+Styling+a+Search+Box+%2B+Thinking+Like+a+Computer" title="reddit:CSS for Styling a Search Box + Thinking Like a Computer"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reddit.png" class="wp-notable_image" alt="reddit:CSS for Styling a Search Box + Thinking Like a Computer"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D117&amp;new_comment=CSS+for+Styling+a+Search+Box+%2B+Thinking+Like+a+Computer&amp;linktype=" title="fark:CSS for Styling a Search Box + Thinking Like a Computer"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fark.png" class="wp-notable_image" alt="fark:CSS for Styling a Search Box + Thinking Like a Computer"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D117&amp;t=CSS+for+Styling+a+Search+Box+%2B+Thinking+Like+a+Computer" title="Y!:CSS for Styling a Search Box + Thinking Like a Computer"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/yahoo.png" class="wp-notable_image" alt="Y!:CSS for Styling a Search Box + Thinking Like a Computer"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-9">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=116" rel="bookmark" title="Permanent Link to Interesting Links #3: Write Better Code, AK-47, Webcams…">Interesting Links #3: Write Better Code, AK-47, Webcams…</a></h2> 
+			<h3>July 26th, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=116#respond" class="commentslink" title="Comment on Interesting Links #3: Write Better Code, AK-47, Webcams…">No Comments</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>I'm
+currently on a vacation within a vacation*, so I have been finishing up
+some overdue content for kirupa.com. In the mean time, here are some
+links I found interesting:</p>
+<ul>
+<li><a href="http://blogs.msdn.com/coding4fun/archive/2006/10/31/912546.aspx" target="_blank"><u>WebCam Info</u></a><br>Learn how to create an application that periodically takes still pictures from a webcam and uploads/stores them.<br>&nbsp;
+</li><li><a title="Wallpaper Cycler" href="http://blogs.msdn.com/coding4fun/archive/2006/11/13/1067250.aspx"><u>Wallpaper Cycler</u></a><br>If you wanted to know how to periodically change your computer's background, the code in this link should help.<br>&nbsp;
+</li><li><a href="http://blogs.msdn.com/wpfsdk/archive/2007/04/03/centering-wpf-windows-with-wpf-and-non-wpf-owner-windows.aspx" target="_blank"><u>Centering WPF and non-WPF Windows</u></a><br>Interesting information how to center windows.<br>&nbsp;
+</li><li><a title="The Non-Maximizing Maximize Button" href="http://www.codinghorror.com/blog/archives/000912.html"><u>The Non-Maximizing Maximize Button</u></a><br>Interesting post and discussion on the ideas behind maximizing windows.<br>&nbsp;
+</li><li><a href="http://rant.blackapache.net/2007/07/20/avoid-writing-unintuitive-code/" target="_blank"><u>Writing Intuitive Code</u></a><br>A nice article extending the comments made in my <a href="http://blog.kirupa.com/?p=111" target="_blank"><em>Randomizing Elements in a List</em></a> post on how code readability and maintainability can be improved.<br>&nbsp;
+</li><li><a href="http://www.baychi.org/calendar/20060808a/#2" target="_blank"><u>The First 100k Users Are Always the Hardest</u></a><br>A good speech/presentation by one of the developers behind Wordpress.<br>&nbsp;
+</li><li><a href="http://www.neowin.net/index.php?act=view&amp;id=41561" target="_blank"><u>Efficient WMA / MP3 Converter</u></a><br>One
+of the better applications I have used for converting audio between
+formats. In the world of codec packs, it seems unnecessary to even have
+to use such an application, but many frameworks are still limited in
+what audio formats they allow you to use in your programs.<br>&nbsp;
+</li><li><a href="http://en.wikipedia.org/wiki/Ak_47" target="_blank"><u>AK-47</u></a><br>When
+discussing the best weapon one can use&nbsp;in Counter Strike, I and
+others had no idea what the "A" in AK-47 stood for. Well, it stands for
+Avtomat. Aren't you glad you know that now?<br>&nbsp;
+</li><li><a href="http://www.istockphoto.com/user_view.php?id=704336" target="_blank"><u>Cool fonts / Wallpapers / More</u></a><br>Like
+the heading says, some cool fonts, wallpapers, and other design-related
+stuff from one of the designers of the Pownce application.<br>&nbsp;
+</li><li><a href="http://www.reuters.com/article/reutersEdge/idUSDIS54857020070725" target="_blank"><u>Amazon's Profits Triple</u></a><br>Great
+news from the company that changed the way I purchase books, music,
+software, hardware, and pretty much any non-clothing and non-food goods.<br>&nbsp;
+</li><li><a href="http://dondodge.typepad.com/the_next_big_thing/2007/07/why-google-and-.html" target="_blank"><u>Why Google and Microsoft are Building $500 Million Datacenters</u></a><br>A
+quick but informative look at why a major SF-based datacenter failed
+and why companies like Google and Microsoft invest heavily in their own
+solutions in remote locations.</li>
+</ul>
+<p>That about wraps up this post. Expect to see some large and
+not-so-large WPF/Blend tutorials on kirupa.com in the upcoming few days.</p>
+<p>Cheers!<br>Kirupa <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+<p>* Wouldn't a vacation within a vacation be....work?</p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=116#respond" class="commentslink2" title="Comment on Interesting Links #3: Write Better Code, AK-47, Webcams…">No Comments;</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=1" title="View all posts in Random" rel="category tag">Random</a>,  <a href="http://blog.kirupa.com/?cat=5" title="View all posts in Nerdy" rel="category tag">Nerdy</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D116&amp;title=Interesting+Links+%233%3A+Write+Better+Code%2C+AK-47%2C+Webcams..." title="del.icio.us:Interesting Links #3: Write Better Code, AK-47, Webcams..."><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Interesting Links #3: Write Better Code, AK-47, Webcams..."></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D116&amp;title=Interesting+Links+%233%3A+Write+Better+Code%2C+AK-47%2C+Webcams..." title="digg:Interesting Links #3: Write Better Code, AK-47, Webcams..."><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/digg.png" class="wp-notable_image" alt="digg:Interesting Links #3: Write Better Code, AK-47, Webcams..."></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D116&amp;title=Interesting+Links+%233%3A+Write+Better+Code%2C+AK-47%2C+Webcams..." title="reddit:Interesting Links #3: Write Better Code, AK-47, Webcams..."><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reddit.png" class="wp-notable_image" alt="reddit:Interesting Links #3: Write Better Code, AK-47, Webcams..."></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D116&amp;new_comment=Interesting+Links+%233%3A+Write+Better+Code%2C+AK-47%2C+Webcams...&amp;linktype=" title="fark:Interesting Links #3: Write Better Code, AK-47, Webcams..."><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fark.png" class="wp-notable_image" alt="fark:Interesting Links #3: Write Better Code, AK-47, Webcams..."></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D116&amp;t=Interesting+Links+%233%3A+Write+Better+Code%2C+AK-47%2C+Webcams..." title="Y!:Interesting Links #3: Write Better Code, AK-47, Webcams..."><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/yahoo.png" class="wp-notable_image" alt="Y!:Interesting Links #3: Write Better Code, AK-47, Webcams..."></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+					<div class="entry entry-10">
+		<div class="entrytitle">
+			<h2><a href="http://blog.kirupa.com/?p=115" rel="bookmark" title="Permanent Link to Improving Combobox Performance through UI Virtualization">Improving Combobox Performance through UI Virtualization</a></h2> 
+			<h3>July 21st, 2007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://blog.kirupa.com/?p=115#comments" class="commentslink" title="Comment on Improving Combobox Performance through UI Virtualization">1 Comment</a></h3>
+		</div>
+		<div class="entrybody">
+			<p>A while ago, I wrote&nbsp;a small <a href="http://www.kirupa.com/forum/showthread.php?t=253038" target="_blank"><u>Font Previewer</u></a>
+application to learn more about data binding with CLR objects. The
+combobox is bound to a collection of font objects, and each combobox
+item displays the font's name. Beyond just displaying the font name,
+the font name is displayed in the same font style also (<a href="http://www.kirupafx.com/FontPreview/publish.htm" target="_blank"><u>click here to run application</u></a>):</p>
+<p align="center"><a href="http://www.kirupafx.com/FontPreview/publish.htm" target="_blank" atomicselection="true"><img alt="fontpreview" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fontpreview.png" border="0"></a> </p>
+<p>In the original version I posted in the <a href="http://www.kirupa.com/forum/showthread.php?t=253038" target="_blank"><u>kForum thread</u></a>,
+there was a noticeable delay when you expand the combobox for the first
+time. Subsequent combobox accesses display all of your fonts in their
+respective styles almost instantaneously (yay!), but there was still
+the problem of the initial delay (boo!).</p>
+<p>The initial delay existed because <strong>all</strong> of
+the&nbsp;combobox items needed to be&nbsp;drawn&nbsp;when the combobox
+was displayed. After they were drawn the first time, they became
+cached, so subsequent accesses were made faster. Initially, I worked
+around this problem by simply avoiding styling each combobox item in
+the same font as the one it was displaying. Because I wasn't doing
+anything complex anymore, the initial delay was not noticeable. This
+simple font combobox is what you saw in <a href="http://blog.kirupa.com/?p=108" target="_blank"><u>kWordpad</u></a>, but it isn't the cool font combobox you see in applications such as Office 2007 or Blend.</p>
+<p><strong>Solution - UI Virtualization</strong><br>The actual, less
+lazy&nbsp;solution&nbsp;involves what is known as UI virtualization.
+With UI virtualization, only the content that is displayed is drawn. In
+other words, your combobox may&nbsp;contain thousands of elements, but
+only the five elements that are displayed are what get drawn! This
+results in a huge boost in performance.</p>
+<p>You can implement UI virtualization by using a <a href="http://msdn2.microsoft.com/en-us/library/system.windows.controls.virtualizingstackpanel.aspx" target="_blank"><u>VirtualizingStackPanel</u></a>&nbsp;in conjunction with an ItemsControl. To do this in WPF, add the following code inside your Window.Resources block:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHop">&lt;</span><span class="kASHwrd">ItemsPanelTemplate</span> <span class="kASHidn">x</span><span class="kASHop">:</span><span class="kASHidn">Key</span><span class="kASHop">=</span><span class="kASHqt">"ItemsTemplate"</span><span class="kASHop">&gt;</span>
+</dt><dt><span class="kASHop">&nbsp;&nbsp; &lt;</span><span class="kASHwrd">VirtualizingStackPanel</span><span class="kASHop">/</span><span class="kASHop">&gt;</span>
+</dt><dt><span class="kASHop">&lt;</span><span class="kASHop">/</span><span class="kASHwrd">ItemsPanelTemplate</span><span class="kASHop">&gt;</span></dt>
+</dl>
+<p>What you are creating is an ItemsPanelTemplate with the main content
+being just a VirtualizingStackPanel. Notice that the name/key for this
+is called ItemsTemplate. </p>
+<p>The next step is to assign this ItemsPanelTemplate to&nbsp;your control's ItemsPanel:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHwrd">ItemsPanel</span><span class="kASHop">=</span><span class="kASHqt">"{DynamicResource ItemsTemplate}"</span></dt>
+</dl>
+<p>With the case of our combobox, here is how the full XAML declaration looks with the above ItemsPanel information:</p>
+<p>
+</p><dl class="kASHglobal">
+<dt><span class="kASHop">&lt;</span><span class="kASHwrd">ComboBox</span> <span class="kASHwrd">HorizontalAlignment</span><span class="kASHop">=</span><span class="kASHqt">"Left"</span> <span class="kASHwrd">Margin</span><span class="kASHop">=</span><span class="kASHqt">"13,45,0,0"</span> <span class="kASHwrd">VerticalAlignment</span><span class="kASHop">=</span><span class="kASHqt">"Top"</span> <span class="kASHwrd">Width</span><span class="kASHop">=</span><span class="kASHqt">"150"</span> <span class="kASHwrd">MaxDropDownHeight</span><span class="kASHop">=</span><span class="kASHqt">"100"</span> <span class="kASHwrd">SelectedIndex</span><span class="kASHop">=</span><span class="kASHqt">"0"</span> <span class="kASHwrd">ItemTemplate</span><span class="kASHop">=</span><span class="kASHqt">"{DynamicResource FontComboLabel}"</span> <span class="kASHwrd">ItemsSource</span><span class="kASHop">=</span><span class="kASHqt">"{Binding Mode=OneWay, Source={StaticResource FontLabelDS}}"</span> <span class="kASHidn">x</span><span class="kASHop">:</span><span class="kASHwrd">Name</span><span class="kASHop">=</span><span class="kASHqt">"ComboBox"</span> <span class="kASHwrd">Height</span><span class="kASHop">=</span><span class="kASHqt">"26"</span> <span class="kASHwrd"><span style="background-color: rgb(255, 255, 0);">ItemsPanel</span></span><span class="kASHop" style="background-color: rgb(255, 255, 0);">=</span><span class="kASHqt"><span style="background-color: rgb(255, 255, 0);">"{DynamicResource ItemsTemplate}"</span></span><span class="kASHop">/</span><span class="kASHop">&gt;</span></dt>
+</dl>
+<p>When you run your application again, you will find that your
+ItemsPanel now refers to the template referred to&nbsp;as
+ItemsTemplate. I am not sure why comboboxes do not use a
+VritualizingStackPanel by default, for it seems like an ideal layout
+control for what comboboxes are good at - displaying a smaller set of
+information from a larger set.</p>
+<p><strong>Credits</strong><br>I originally posted this issue on the MSDN WPF forums, and it was Carole Snyder (part of the <a href="http://blogs.msdn.com/wpfsdk/" target="_blank"><u>WPF SDK team</u></a>) who was able to guide me in the right direction. See thread <a href="http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=1891014&amp;SiteID=1" target="_blank"><u>here</u></a>.</p>
+<p>Cheers!<br>Kirupa <img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+		</div>
+		
+		<div class="entrymeta">
+		<div class="postinfo">
+<a href="http://blog.kirupa.com/?p=115#comments" class="commentslink2" title="Comment on Improving Combobox Performance through UI Virtualization">1 Comment</a>			<span class="postedby">Posted by kirupa</span>
+			<span class="filedto">Filed in <a href="http://blog.kirupa.com/?cat=10" title="View all posts in Programming" rel="category tag">Programming</a>,  <a href="http://blog.kirupa.com/?cat=13" title="View all posts in WPF / Blend / C#" rel="category tag">WPF / Blend / C#</a> </span>
+		</div>
+<hr>
+                <span id="wp-notable-line" class="wp-notable-line"><span class="wp-notable" id="wp-notable-delicious"><a href="http://del.icio.us/post?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D115&amp;title=Improving+Combobox+Performance+through+UI+Virtualization" title="del.icio.us:Improving Combobox Performance through UI Virtualization"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/delicious.png" class="wp-notable_image" alt="del.icio.us:Improving Combobox Performance through UI Virtualization"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-digg"><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D115&amp;title=Improving+Combobox+Performance+through+UI+Virtualization" title="digg:Improving Combobox Performance through UI Virtualization"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/digg.png" class="wp-notable_image" alt="digg:Improving Combobox Performance through UI Virtualization"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-reddit"><a href="http://reddit.com/submit?url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D115&amp;title=Improving+Combobox+Performance+through+UI+Virtualization" title="reddit:Improving Combobox Performance through UI Virtualization"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/reddit.png" class="wp-notable_image" alt="reddit:Improving Combobox Performance through UI Virtualization"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-fark"><a href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D115&amp;new_comment=Improving+Combobox+Performance+through+UI+Virtualization&amp;linktype=" title="fark:Improving Combobox Performance through UI Virtualization"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/fark.png" class="wp-notable_image" alt="fark:Improving Combobox Performance through UI Virtualization"></a></span>&nbsp;<span class="wp-notable" id="wp-notable-yahoo"><a href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http%3A%2F%2Fblog.kirupa.com%2F%3Fp%3D115&amp;t=Improving+Combobox+Performance+through+UI+Virtualization" title="Y!:Improving Combobox Performance through UI Virtualization"><img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/yahoo.png" class="wp-notable_image" alt="Y!:Improving Combobox Performance through UI Virtualization"></a></span></span>
+		
+                
+                </div>
+		
+	</div>
+	<div class="commentsblock">
+			</div>
+			<div class="navigation">
+			<div class="alignleft"><a href="http://blog.kirupa.com/index.php?paged=3">« Previous Entries</a></div>
+			<div class="alignright"><a href="http://blog.kirupa.com/index.php">Next Entries »</a></div>
+		</div>
+		
+	</div>
+<div id="sidebar">
+<br>
+<h2>Search</h2>
+<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" id="blogsearch" align="middle" height="35" width="190">
+<param name="allowScriptAccess" value="sameDomain">
+<param name="movie" value="http://blog.kirupa.com/wp-content/blogsearch.swf"><param name="quality" value="high"><param name="bgcolor" value="#ffffff"><embed src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/blogsearch.swf" quality="high" bgcolor="#ffffff" name="blogsearch" allowscriptaccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="35" width="190">
+</object>
+<br>
+<br>
+<h2>Pages</h2>
+<ul>
+<li><a href="http://blog.kirupa.com/">Home</a></li>
+<li class="page_item"><a href="http://blog.kirupa.com/?page_id=2" title="About Me">About Me</a></li>
+ 
+</ul>
+<h2>Categories</h2>
+<ul>
+	<li><a href="http://blog.kirupa.com/?cat=9" title="View all posts filed under Design">Design</a> (15)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=12" title="View all posts filed under Flash/Actionscript">Flash/Actionscript</a> (13)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=11" title="View all posts filed under kirupa.com">kirupa.com</a> (13)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=14" title="View all posts filed under Life at Microsoft">Life at Microsoft</a> (1)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=5" title="View all posts filed under Nerdy">Nerdy</a> (49)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=10" title="View all posts filed under Programming">Programming</a> (58)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=1" title="View all posts filed under Random">Random</a> (47)
+</li>
+	<li><a href="http://blog.kirupa.com/?cat=13" title="View all posts filed under WPF / Blend / C#">WPF / Blend / C#</a> (42)
+</li>
+</ul>
+<h2>Popular</h2>
+<ul>
+<li><a href="http://blog.kirupa.com/?p=30" title="Dynamic Movie Clips and the ScrollPane in Flash">Dynamic Movie Clips and the ScrollPane in Flash</a> (57)</li><li><a href="http://blog.kirupa.com/?p=85" title="Fixing Error 2739 When Installing Adobe CS3 on Vista 32">Fixing Error 2739 When Installing Adobe CS3 on Vista 32</a> (39)</li><li><a href="http://blog.kirupa.com/?p=70" title="Run/Emulate Windows Mobile 6 on your Computer">Run/Emulate Windows Mobile 6 on your Computer</a> (39)</li><li><a href="http://blog.kirupa.com/?p=33" title="Answers to my Interview regarding kirupaForum">Answers to my Interview regarding kirupaForum</a> (21)</li><li><a href="http://blog.kirupa.com/?p=101" title="And So it Goes...Graduation @ MIT!">And So it Goes...Graduation @ MIT!</a> (17)</li></ul>
+<ul>
+	<li id="linkcat-1"><h2>Blogroll</h2>
+	<ul>
+<li><a href="http://blogs.msdn.com/oldnewthing/" title="Raymond Chen's technical, yet entertaining, blog!">OldNewThing</a></li>
+<li><a href="http://weblogs.asp.net/scottgu" title="A great blog covering the .NET-related changes!">Scott Guthrie</a></li>
+<li><a href="http://www.istartedsomething.com/" title="A great place for up-to-date tech news by Long Zheng">istartedsomething</a></li>
+<li><a href="http://blogs.msdn.com/jensenh/" title="A great blog on UI related topics.">Jensen Harris</a></li>
+<li><a href="http://blogs.zdnet.com/Stewart/">Ryan Stewart</a></li>
+<li><a href="http://www.senocular.com/" title="Trevor McCauley's site filled with useful Fireworks and Flash tips!">Senocular</a></li>
+
+	</ul>
+</li>
+	<li id="linkcat-2"><h2>Silverlight/WPF</h2>
+	<ul>
+<li><a href="http://rrelyea.spaces.live.com/" title="Rob frequently provides useful WPF information from around the web.">Rob Relyea</a></li>
+<li><a href="http://blogs.msdn.com/expression/" title="Updates from the Expression team.">Expression Blog</a></li>
+<li><a href="http://blogs.msdn.com/mharsh/" title="Mike provides great coverage and insightful information concerning all things Silverlight.">Mike Harsh's Silverlight Blog</a></li>
+<li><a href="http://blogs.msdn.com/tims/" title="A great source for updates on silverlight, wpf, and other technologies.">Tim Sneath</a></li>
+
+	</ul>
+</li>
+</ul>
+</div></div>
+<div id="footer">
+<!-- 42 queries. 0.549 seconds. -->
+</div>
+
+<div align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="850">
+			<tbody><tr>
+				<td>
+				<div align="center">
+					<hr color="#d3d2cb" size="1">
+					<table id="table1" border="0" cellpadding="10" cellspacing="0" width="850">
+						<tbody><tr>
+							<td>
+							<div align="center">
+								<table id="table3" background="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/blue_large_bg_gif6.gif" border="0" cellpadding="0" cellspacing="0" height="113" width="753">
+									<tbody><tr>
+										<td width="7">
+										<font face="Arial" size="2">
+										<img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/projec1.gif" border="0" height="70" hspace="3" width="1"></font></td>
+										<td width="746">
+										<script type="text/javascript"><!--
+		google_ad_client = "pub-0633423995889665";
+		google_ad_width = 728;
+		google_ad_height = 90;
+		google_ad_format = "728x90_as";
+		google_ad_type = "text";
+		google_ad_channel ="6505164574";
+		google_color_border = "EFF4FA";
+		google_color_bg = "EFF4FA";
+		google_color_link = "0066CC";
+		google_color_url = "336699";
+		google_color_text = "333333";
+		//--></script>
+										<script type="text/javascript" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/show_ads.js">
+										
+		</script><iframe name="google_ads_frame" src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="90" scrolling="no" width="728"></iframe>
+										</td>
+									</tr>
+								</tbody></table>
+							</div>
+							</td>
+						</tr>
+					</tbody></table>
+				</div>
+				<table border="0" cellspacing="0" width="100%">
+					<tbody><tr>
+						<td><hr color="#d3d2cb" size="1"></td>
+					</tr>
+				</tbody></table>
+				<div align="center">
+					<table id="tblFooter" border="0" cellpadding="3" cellspacing="0" width="850">
+						<tbody><tr>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="44">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/">
+							<font color="#0066cc">Home</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="137">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/index.htm"><font color="#0066cc">About 
+							kirupa.com</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="154">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/mods.htm">
+							<font color="#0066cc">Meet the Moderators</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="69">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/ad.htm">
+							<font color="#0066cc">Advertise</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="78">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/link.htm"><font color="#0066cc">Link 
+						to Us</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="70">
+							<span class="homeLinkSM">
+							<a href="http://www.kirupa.com/me/credits.htm"><font color="#0066cc">Credits</font></a></span></td>
+							<td style="border-right: 1px solid rgb(211, 210, 203);" align="center" height="15" width="24">
+							<font face="Verdana">
+							<a href="http://www.kirupa.com/modular/rss.htm">
+							<img src="Transforms%20in%20WrapPanel%20and%20StackPanel%20in%20WPFBlend_files/rssfeed.gif" border="0" height="16" width="16"></a></font></td>
+							<td height="15" width="219">
+							Copyright <span class="homeLinkSM">
+							<font face="Times New Roman">©</font></span> 
+							1999-2007</td>
+						</tr>
+						</tbody></table>
+				</div>
+				</td>
+			</tr>
+		</tbody></table>
+<br>
+<br>
+
+
+</div>
+
+
+
+</body></html>

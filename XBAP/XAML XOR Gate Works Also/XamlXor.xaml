@@ -1,0 +1,253 @@
+<!-- ==========================================
+      XamlXor.xaml (c) 2007 by Charles Petzold
+     ========================================== -->
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      WindowTitle="Xaml Xor"
+      Title="Xaml Xor">
+    <Page.Resources>
+
+        <!-- Style and template for the CheckBox/switch -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <ControlTemplate.Resources>
+                            <Style TargetType="Ellipse">
+                                <Setter Property="Width" Value="15" />
+                                <Setter Property="Height" Value="15" />
+                                <Setter Property="Fill" Value="Black" />
+                            </Style>
+                        </ControlTemplate.Resources>
+
+                        <Canvas>
+                            <Rectangle Width="50" Height="100" Fill="LightGray"
+                                       Stroke="Black" StrokeThickness="4" />
+                            <Ellipse Canvas.Left="18" Canvas.Top="-6" />
+                            <Ellipse Canvas.Left="41" Canvas.Top="70" />
+                            <Line x:Name="switch" 
+                                  Stroke="Black"
+                                  X1="25" Y1="0" X2="25" Y2="90"
+                                  StrokeThickness="6" />
+                        </Canvas>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="switch" Property="X2" Value="40" />
+                                <Setter TargetName="switch" Property="Stroke" Value="Red" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <!-- Style for Wires and Junctions -->
+        <!-- (Turns red if Focusable is true) -->
+        <Style TargetType="Path">
+            <Setter Property="Stroke" Value="Black" />
+            <Setter Property="StrokeThickness" Value="3" />
+            <Style.Triggers>
+                <Trigger Property="Focusable" Value="True">
+                    <Setter Property="Stroke" Value="Red" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Data for Junctions -->
+        <!-- (Just a little circle) -->
+        <EllipseGeometry x:Key="junction"
+                         RadiusX="5" RadiusY="5" />
+
+        <!-- AND Gate: Inputs are ForceCursor and AllowDrop
+                        Output is Focusable -->
+        
+        <Style x:Key="AndGate" TargetType="Control">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <Path Data="M 0 0 L 0 50 L 30 50
+                                    A 25 25 180 0 0 30 0 Z" 
+                                    Stroke="Black" 
+                                    StrokeThickness="2" />
+
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="ForceCursor" Value="True" />
+                                    <Condition Property="AllowDrop" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Focusable" Value="True" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- NAND Gate: Inputs are ForceCursor and AllowDrop
+                        Output is Focusable -->
+        
+        <Style x:Key="NandGate" TargetType="Control">
+            <Setter Property="Focusable" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <Path Data="M 0 0 L 0 50 L 30 50
+                                    A 25 25 180 0 0 30 0 Z M 55 25 A 5 5 359 1 0 55 24" 
+                                    Stroke="Black" 
+                                    StrokeThickness="2" />
+
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="ForceCursor" Value="True" />
+                                    <Condition Property="AllowDrop" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Focusable" Value="False" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- OR Gate: Inputs are ForceCursor and AllowDrop
+                        Output is Focusable -->
+        
+        <Style x:Key="OrGate" TargetType="Control">
+            <Setter Property="Focusable" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <Path Data="M 0 0 A 40 40 45 0 1 0 50
+                                    L 20 50
+                                    A 25 25 180 0 0 20 0 Z" 
+                                    Stroke="Black" 
+                                    StrokeThickness="2" />
+
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="ForceCursor" Value="False" />
+                                    <Condition Property="AllowDrop" Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Focusable" Value="False" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Canvas>
+        <TextBlock Text="V" FontSize="20" FontWeight="Bold"
+                   Canvas.Left="50" Canvas.Top="45" />
+
+        <TextBlock Text="V" FontSize="20" FontWeight="Bold"
+                   Canvas.Left="50" Canvas.Top="220" />
+       
+        <CheckBox Name="switch1" 
+                  Canvas.Left="125" Canvas.Top="150" />
+
+        <CheckBox Name="switch2"
+                  Canvas.Left="125" Canvas.Top="325" />
+
+        <!-- Wires from V to switches -->
+        <Path Data="M 57 75 L 57 125 L 150 125 L 150 150"
+              Focusable="{Binding ElementName=switch1, Path=IsChecked}" />
+
+        <Path Data="M 57 250 L 57 300 L 150 300 L 150 325" 
+              Focusable="{Binding ElementName=switch2, Path=IsChecked}" />
+
+        <!-- Wires from switches to OR gate -->
+        <Path Name="wire1" 
+              Data="M 166 227 L 300 227"
+              Focusable="{Binding ElementName=switch1, Path=IsChecked}" />
+
+        <Path Name="wire2"
+              Data="M 166 402 L 210 402 L 210 250 L 300 250"
+              Focusable="{Binding ElementName=switch2, Path=IsChecked}" />
+
+        <Control Name="or"
+                 Style="{StaticResource OrGate}" 
+                 Canvas.Top="215" Canvas.Left="294"
+                 ForceCursor="{Binding ElementName=wire1, Path=Focusable}"
+                 AllowDrop="{Binding ElementName=wire2, Path=Focusable}" />
+
+        <!-- junctions and wires to NAND gate -->
+        <Path Name="junction1" Canvas.Left="240" Canvas.Top="227"
+              Data="{StaticResource junction}" 
+              Fill="{Binding ElementName=junction1, Path=Stroke}"
+              Focusable="{Binding ElementName=wire1, Path=Focusable}" />
+
+        <Path Name="junction2" Canvas.Left="270" Canvas.Top="250"
+              Data="{StaticResource junction}" 
+              Fill="{Binding ElementName=junction2, Path=Stroke}"
+              Focusable="{Binding ElementName=wire2, Path=Focusable}" />
+
+        <Path Name="wire3"
+              Data="M240 227 L 240 350 L 295 350"
+              Focusable="{Binding ElementName=junction1, Path=Focusable}" />
+
+        <Path Name="wire4"
+              Data="M270 250 L 270 330 L 295 330"
+              Focusable="{Binding ElementName=junction2, Path=Focusable}" />
+
+        <Control Name="nand"
+                 Style="{StaticResource NandGate}"
+                 Canvas.Top="315" Canvas.Left="294"
+                 ForceCursor="{Binding ElementName=wire3, Path=Focusable}"
+                 AllowDrop="{Binding ElementName=wire4, Path=Focusable}" />
+
+        <!-- Wires to AND gate -->
+        <Path Name="wire5"
+              Data="M 340 240 L 380 240 L 380 275 L 430 275"
+              Focusable="{Binding ElementName=or, Path=Focusable}" />
+
+        <Path Name="wire6"
+              Data="M 360 340 L 380 340 L 380 295 L 430 295"
+              Focusable="{Binding ElementName=nand, Path=Focusable}" />
+
+        <Control Name="and"
+                 Style="{StaticResource AndGate}"
+                 Canvas.Left="430" Canvas.Top="260"
+                 ForceCursor="{Binding ElementName=wire5, Path=Focusable}"
+                 AllowDrop="{Binding ElementName=wire6, Path=Focusable}" />
+
+        <!-- Light bulb glass -->
+        <Path Canvas.Left="234" Canvas.Top="124"
+              Data="M 305 150 L 335 150 L 335 140 L 305 140 Z
+                    M 305 140 L 305 120 A 40 40 270 1 1 335 120
+                    L 335 140" 
+              Focusable="{Binding ElementName=and, Path=Focusable}"
+              Stroke="Black"
+              StrokeThickness="1">
+            <Path.Style>
+                <Style TargetType="Path">
+                    <Setter Property="Fill" Value="LightGray" />
+                    <Style.Triggers>
+                        <Trigger Property="Focusable" Value="True">
+                            <Setter Property="Fill" Value="Yellow" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Path.Style>
+        </Path>
+
+        <!-- Light bulb internals -->
+        <Path Canvas.Left="234" Canvas.Top="124"
+              Data="M 250 160 L 305 160 A 10 10 90 0 0 315 150
+                    L 315 115 L 300 80 L 305 60 L 310 80 L 315 60
+                    L 320 80 L 325 60 L 330 80 335 60 340 80
+                    L 325 115 L 325 150 A 10 10 90 0 0 335 160 
+                    L 415 160 A 10 10 90 0 1 425 170 L 425 230
+                    M 410 230 L 440 230
+                    M 415 235 L 435 235
+                    M 420 240 L 430 240"
+                    Focusable="{Binding ElementName=and, Path=Focusable}" />
+    </Canvas>
+</Page>

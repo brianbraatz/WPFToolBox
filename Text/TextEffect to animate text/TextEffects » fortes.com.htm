@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head profile="http://gmpg.org/xfn/11"><title>TextEffects » fortes.com</title>
+
+	
+		
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta name="generator" content="WordPress 2.2"><!-- LEAVE FOR STATS -->
+		<meta name="description" content="Typed live in front of a studio audience in Seattle">
+				<link rel="alternate" type="application/rss+xml" href="http://fortes.com/feed/" title="fortes.com RSS 2.0 Feed">
+			<link rel="alternate" type="application/rss+xml" href="http://fortes.com/comments/feed/" title="fortes.com Comments RSS 2.0 Feed">
+			<link rel="pingback" href="http://fortes.com/xmlrpc.php">
+		<link rel="start" href="http://fortes.com/" title="fortes.com">
+		<link rel="stylesheet" type="text/css" media="all" href="TextEffects%20%BB%20fortes.com_files/multigrid.css" title="Multigrid">
+		<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://fortes.com/xmlrpc.php?rsd"><!-- OpenID -->
+	
+	<link rel="openid.server" href="http://fortes.wordpress.com/?openidserver=1">
+	<link rel="openid.delegate" href="http://fortes.wordpress.com/"></head><body class="wordpress y2007 m10 d24 h02 single s-y2007 s-m03 s-d16 s-h08 s-category-work s-author-fil hasJS browserwidth-1000">
+			<script src="TextEffects%20%BB%20fortes.com_files/dynamiclayout.js" type="text/javascript"></script>
+	<script type="text/javascript">document.body.className += " hasJS " ; checkBrowserWidth();</script>
+
+		<div id="wrapper">
+
+			<div id="header">
+				<h1 id="blog-title"><a href="http://fortes.com/" title="fortes.com">fortes.com</a></h1>
+				<div id="blog-description">Typed live in front of a studio audience in Seattle</div>
+			</div><!--  #header -->
+			
+			<p class="access uichrome"><a href="#content">Skip past navigation, straight to the content</a></p>
+
+			<div id="header-nav">
+				<ul id="navigation" class="uichrome">
+					<li class="page_item"><a href="http://fortes.com/archives/" title="Archives">Archives</a></li>
+<li class="page_item"><a href="http://fortes.com/contact/" title="Contact">Contact</a></li>
+					<li id="navigation-search"><form id="searchform" method="get" action="http://fortes.com">
+							<label for="s">Search</label>
+							<input name="s" id="s" size="15" type="text">
+							<input value="&gt;" class="submit" type="submit">
+					</form></li>
+				</ul>	
+			</div>
+		
+
+	<div id="container">
+		<div id="content" class="hfeed">
+
+
+			<div id="nav-above" class="navigation">
+				<div class="nav-previous">« <a href="http://fortes.com/2007/03/15/collapsed-spaces-around-run/">Collapsed Spaces Around &lt;Run /&gt;</a></div>
+				<div class="nav-next"><a href="http://fortes.com/2007/03/18/filling-things/">Filling things</a> »</div>
+			</div>
+
+			<div id="post-454" class="hentry p1 post publish author-fil category-work y2007 m03 d16 h08">
+				<h2 class="entry-title">TextEffects</h2>
+				<div class="entry-content">
+<p><a href="http://msdn2.microsoft.com/en-us/library/system.windows.controls.textblock.texteffects.aspx">TextEffects</a> is a poorly-documented property that allows you to apply an effect to <em>a portion</em>
+of text. It’s not the best of name for the property (at least in this
+first version of WPF), because the only “effects” supported in the
+current version are <code>Clip</code>, <code>Foreground</code>, and <code>Transform</code>.</p>
+<p>There are four important things to know about <code>TextEffects</code>:</p>
+<ol>
+<li>They’re really only interesting when you’re working with a
+substring of text. In other words, if you want to affect the entire
+content of a <code>TextBlock</code>, you’re better off using properties exposed directly on <code>TextBlock</code>: <code>Clip</code>, <code>Foreground</code>, and <code>RenderTransform</code> (or its cousin, <code>LayoutTransform</code>).</li>
+<li>The <code>Clip</code> and <code>Transform</code> effects are always relative to the beginning of the line. In other words, the default <code>CenterX</code> and <code>CenterY</code> of a <code>RotateTransform</code> are at the beginning of the line — not at the beginning of the text being affected (see the screenshots below).</li>
+<li>Just like <code>RenderTransform</code>, any size and position
+changes caused will not affect the layout of text. This is good for
+animation, since you don’t want to performance penalty caused by
+re-layout. It does, however, mean that you can easily end up with
+overlapping text.</li>
+<li>They’re a little quirky and frustrating to use (at least in this
+version of the platform). With the exception of a few narrow scenarios,
+you’re better off using <code>Clip</code>, <code>Foreground</code>, or <code>RenderTransform</code>.</li>
+</ol>
+<p>Let’s start with a basic example and the screenshot:</p>
+<pre><code class="xaml"><span class="sc3"></span><span class="re1">&lt;Border</span> <span class="re0">xmlns</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span> <span class="re0">xmlns:x</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml"</span>
+        <span class="re0">VerticalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">HorizontalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">BorderThickness</span>=<span class="st0">"1"</span> <span class="re0">BorderBrush</span>=<span class="st0">"#ccc"</span> <span class="re0">Padding</span>=<span class="st0">"20"</span> <span class="re0">SnapsToDevicePixels</span>=<span class="st0">"True"</span><span class="re2">&gt;</span>
+  <span class="sc3"></span><span class="re1">&lt;TextBlock</span> <span class="re0">FontFamily</span>=<span class="st0">"Calibri"</span> <span class="re0">FontSize</span>=<span class="st0">"30"</span> <span class="re0">TextWrapping</span>=<span class="st0">"Wrap"</span><span class="re2">&gt;</span>
+    <span class="sc3"></span><span class="re1">&lt;TextBlock</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;TextEffect</span> <span class="re0">PositionStart</span>=<span class="st0">"5"</span> <span class="re0">PositionCount</span>=<span class="st0">"10"</span><span class="re2">&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+          <span class="sc3"></span><span class="re1">&lt;TranslateTransform</span> <span class="re0">Y</span>=<span class="st0">"-5"</span> <span class="re2">/&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;/TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;/TextEffect</span><span class="re2">&gt;</span>
+    <span class="sc3"></span><span class="re1">&lt;/TextBlock</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+    Clap Your Hands Say Yeah!
+  <span class="sc3"></span><span class="re1">&lt;/TextBlock</span><span class="re2">&gt;</span>
+<span class="sc3"></span><span class="re1">&lt;/Border</span><span class="re2">&gt;</span></code></pre>
+<p class="img screenshot"><img src="TextEffects%20%BB%20fortes.com_files/texteffects-basic.png" alt="The text 'Clap Your Hands Say Yeah!' with the words 'Your Hands' elevated 10 pixels"></p>
+<p>The markup is pretty straightforward: <code>TextEffect.PositionStart</code> and <code>TextEffect.PositionCount</code> properties indicate the substring for the effect, while <code>TextEffect.Transform</code> is a standard <code>Transform</code>.</p>
+<p>When we resize, notice how the effect applies even across a line break:</p>
+<p class="img screenshot"><img src="TextEffects%20%BB%20fortes.com_files/texteffects-basic-wrapping.png" alt="The text 'Clap Your Hands Say Yeah!' with the words 'Your Hands' elevated 10 pixels, with a line break between 'Your' and 'Hands'"></p>
+<p>That was simple enough, now let’s switch to a <code>RotateTransform</code> and see how that works:</p>
+<pre><code class="xaml"><span class="sc3"></span><span class="re1">&lt;Border</span> <span class="re0">xmlns</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span> <span class="re0">xmlns:x</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml"</span>
+        <span class="re0">VerticalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">HorizontalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">BorderThickness</span>=<span class="st0">"1"</span> <span class="re0">BorderBrush</span>=<span class="st0">"#ccc"</span> <span class="re0">Padding</span>=<span class="st0">"20"</span> <span class="re0">SnapsToDevicePixels</span>=<span class="st0">"True"</span><span class="re2">&gt;</span>
+  <span class="sc3"></span><span class="re1">&lt;TextBlock</span> <span class="re0">FontFamily</span>=<span class="st0">"Calibri"</span> <span class="re0">FontSize</span>=<span class="st0">"30"</span> <span class="re0">TextWrapping</span>=<span class="st0">"Wrap"</span><span class="re2">&gt;</span>
+    <span class="sc3"></span><span class="re1">&lt;TextBlock</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;TextEffect</span> <span class="re0">PositionStart</span>=<span class="st0">"5"</span> <span class="re0">PositionCount</span>=<span class="st0">"4"</span><span class="re2">&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+          <span class="sc3"></span><span class="re1">&lt;RotateTransform</span> <span class="re0">Angle</span>=<span class="st0">"-5"</span> <span class="re2">/&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;/TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;/TextEffect</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;TextEffect</span> <span class="re0">PositionStart</span>=<span class="st0">"16"</span> <span class="re0">PositionCount</span>=<span class="st0">"3"</span><span class="re2">&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+          <span class="sc3"></span><span class="re1">&lt;RotateTransform</span> <span class="re0">Angle</span>=<span class="st0">"-5"</span> <span class="re2">/&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;/TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;/TextEffect</span><span class="re2">&gt;</span>
+    <span class="sc3"></span><span class="re1">&lt;/TextBlock</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+    Clap Your Hands Say Yeah!
+  <span class="sc3"></span><span class="re1">&lt;/TextBlock</span><span class="re2">&gt;</span>
+<span class="sc3"></span><span class="re1">&lt;/Border</span><span class="re2">&gt;</span></code></pre>
+<p>Now we have two identical <code>RotateTransform</code> effects being applied to two different portions of the text. Here’s the screenshot:</p>
+<p class="img screenshot"><img src="TextEffects%20%BB%20fortes.com_files/texteffects-rotate.png" alt="The text 'Clap Your Hands Say Yeah!' with the words 'Your' and 'Say' rotated 5 degrees counter-clockwise"></p>
+<p>Is that what you expected? Let’s add some lines to make it clearer:</p>
+<p class="img screenshot"><img src="TextEffects%20%BB%20fortes.com_files/texteffects-rotate-angleline.png" alt="The text 'Clap Your Hands Say Yeah!' with the words 'Your' and 'Say' rotated 5 degrees counter-clockwise, with guide lines showing the 5 degree angle"></p>
+<p>As I mentioned earlier, effects are always relative to the <em>beginning of the line</em>. Look what happens when the text wraps:</p>
+<p class="img screenshot"><img src="TextEffects%20%BB%20fortes.com_files/texteffects-rotate-wrapping.png" alt="The text 'Clap Your Hands Say Yeah!' with the words 'Your' and 'Say' rotated 5 degrees counter-clockwise, with a line break between 'Hands' and 'Say'"></p>
+<p>Notice how “Say” is now rotated with respect to the beginning of the line it occurs on.</p>
+<p>Unfortunately, there’s no foolproof way to make the rotation
+relative to the position of the text. You can manually set the rotation
+center through the <code>RotateTransform.CenterX</code> and <code>RotateTransform.CenterY</code>
+properties — but to get the desired effect you’d have to calculate the
+distance from the word to the beginning of the line (which will end up
+being incorrect if the text breaks across lines).</p>
+<h3>&lt;Run&gt;ning into Trouble</h3>
+<p>Honestly, I had never done much with <code>TextEffects</code> until I started writing this post. I discovered a few tricky issues while constructing the following markup:</p>
+<pre><code class="xaml"><span class="sc3"></span><span class="re1">&lt;Border</span> <span class="re0">xmlns</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span> <span class="re0">xmlns:x</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml"</span>
+        <span class="re0">VerticalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">HorizontalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">BorderThickness</span>=<span class="st0">"1"</span> <span class="re0">BorderBrush</span>=<span class="st0">"#ccc"</span> <span class="re0">Padding</span>=<span class="st0">"20"</span> <span class="re0">SnapsToDevicePixels</span>=<span class="st0">"True"</span><span class="re2">&gt;</span>
+  <span class="sc3"></span><span class="re1">&lt;TextBlock</span> <span class="re0">FontFamily</span>=<span class="st0">"Calibri"</span> <span class="re0">FontSize</span>=<span class="st0">"30"</span> <span class="re0">TextWrapping</span>=<span class="st0">"Wrap"</span><span class="re2">&gt;</span>
+    <span class="sc3"></span><span class="re1">&lt;TextBlock</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;TextEffect</span> <span class="re0">PositionStart</span>=<span class="st0">"5"</span> <span class="re0">PositionCount</span>=<span class="st0">"4"</span><span class="re2">&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+          <span class="sc3"></span><span class="re1">&lt;RotateTransform</span> <span class="re0">Angle</span>=<span class="st0">"-5"</span> <span class="re2">/&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;/TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;/TextEffect</span><span class="re2">&gt;</span>
+    <span class="sc3"></span><span class="re1">&lt;/TextBlock</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+    Clap <span class="sc3"></span><span class="re1">&lt;Bold</span><span class="re2">&gt;</span>Your<span class="sc3"></span><span class="re1">&lt;/Bold</span><span class="re2">&gt;</span> Hands Say Yeah!
+  <span class="sc3"></span><span class="re1">&lt;/TextBlock</span><span class="re2">&gt;</span>
+<span class="sc3"></span><span class="re1">&lt;/Border</span><span class="re2">&gt;</span></code></pre>
+<p>This is the markup used in our rotation example, with the second effect removed and a <code>Bold</code> tag added around the word “Your.” If you load this <abbr title="eXtensible Application Markup Lanaguage">XAML</abbr>, you’ll see the following:</p>
+<p class="img screenshot"><img src="TextEffects%20%BB%20fortes.com_files/texteffects-issues-bold.png" alt="The text 'Clap Your Hands Say Yeah!' with the word 'Your' in bold."></p>
+<p>It was a little tricky to realize what’s going on here. First, it turns out that <code>TextEffects</code> only works with a simple string of content. Let’s try fix this by applying the <code>TextEffect</code> to the <code>Bold</code> instead of the <code>TextBlock</code> (note that we also change the <code>PositionStart</code> to <code>0</code>):</p>
+<pre><code class="xaml"><span class="sc3"></span><span class="re1">&lt;Border</span> <span class="re0">xmlns</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span> <span class="re0">xmlns:x</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml"</span>
+        <span class="re0">VerticalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">HorizontalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">BorderThickness</span>=<span class="st0">"1"</span> <span class="re0">BorderBrush</span>=<span class="st0">"#ccc"</span> <span class="re0">Padding</span>=<span class="st0">"20"</span> <span class="re0">SnapsToDevicePixels</span>=<span class="st0">"True"</span><span class="re2">&gt;</span>
+  <span class="sc3"></span><span class="re1">&lt;TextBlock</span> <span class="re0">FontFamily</span>=<span class="st0">"Calibri"</span> <span class="re0">FontSize</span>=<span class="st0">"30"</span> <span class="re0">TextWrapping</span>=<span class="st0">"Wrap"</span><span class="re2">&gt;</span>
+    Clap
+    <span class="sc3"></span><span class="re1">&lt;Bold</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;Bold</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;TextEffect</span> <span class="re0">PositionStart</span>=<span class="st0">"0"</span> <span class="re0">PositionCount</span>=<span class="st0">"4"</span><span class="re2">&gt;</span>
+          <span class="sc3"></span><span class="re1">&lt;TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+            <span class="sc3"></span><span class="re1">&lt;RotateTransform</span> <span class="re0">Angle</span>=<span class="st0">"-5"</span> <span class="re2">/&gt;</span>
+          <span class="sc3"></span><span class="re1">&lt;/TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;/TextEffect</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;/Bold</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+      Your
+    <span class="sc3"></span><span class="re1">&lt;/Bold</span><span class="re2">&gt;</span>
+    Hands Say Yeah!
+  <span class="sc3"></span><span class="re1">&lt;/TextBlock</span><span class="re2">&gt;</span>
+<span class="sc3"></span><span class="re1">&lt;/Border</span><span class="re2">&gt;</span></code></pre>
+<p>Load this up and we get:</p>
+<p class="img screenshot"><img src="TextEffects%20%BB%20fortes.com_files/texteffects-issues-bold.png" alt="The text 'Clap Your Hands Say Yeah!' with the word 'Your' in bold."></p>
+<p>Well, we’re missing yet another thing! As you <a href="http://fortes.com/2007/03/14/hidden-run/">may already know</a>, <code>Run</code>
+elements are used behind the scenes when we’re constructing element
+trees with text. It seems that the effect isn’t applying to the <code>Run</code> inside the <code>Bold</code>. Let’s switch the <code>Bold</code> to a <code>Run</code> and set the <code>FontWeight</code> property:</p>
+<pre><code class="xaml"><span class="sc3"></span><span class="re1">&lt;Border</span> <span class="re0">xmlns</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span> <span class="re0">xmlns:x</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml"</span>
+        <span class="re0">VerticalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">HorizontalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">BorderThickness</span>=<span class="st0">"1"</span> <span class="re0">BorderBrush</span>=<span class="st0">"#ccc"</span> <span class="re0">Padding</span>=<span class="st0">"20"</span> <span class="re0">SnapsToDevicePixels</span>=<span class="st0">"True"</span><span class="re2">&gt;</span>
+  <span class="sc3"></span><span class="re1">&lt;TextBlock</span> <span class="re0">FontFamily</span>=<span class="st0">"Calibri"</span> <span class="re0">FontSize</span>=<span class="st0">"30"</span> <span class="re0">TextWrapping</span>=<span class="st0">"Wrap"</span><span class="re2">&gt;</span>
+    Clap
+    <span class="sc3"></span><span class="re1">&lt;Run</span> <span class="re0">FontWeight</span>=<span class="st0">"Bold"</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;Run</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;TextEffect</span> <span class="re0">PositionStart</span>=<span class="st0">"0"</span> <span class="re0">PositionCount</span>=<span class="st0">"4"</span><span class="re2">&gt;</span>
+          <span class="sc3"></span><span class="re1">&lt;TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+            <span class="sc3"></span><span class="re1">&lt;RotateTransform</span> <span class="re0">Angle</span>=<span class="st0">"-5"</span> <span class="re2">/&gt;</span>
+          <span class="sc3"></span><span class="re1">&lt;/TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;/TextEffect</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;/Run</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+      Your
+    <span class="sc3"></span><span class="re1">&lt;/Run</span><span class="re2">&gt;</span>
+    Hands Say Yeah!
+  <span class="sc3"></span><span class="re1">&lt;/TextBlock</span><span class="re2">&gt;</span>
+<span class="sc3"></span><span class="re1">&lt;/Border</span><span class="re2">&gt;</span></code></pre>
+<p>Drumroll please …</p>
+<p class="img screenshot"><img src="TextEffects%20%BB%20fortes.com_files/texteffects-issues-bold.png" alt="The text 'Clap Your Hands Say Yeah!' with the word 'Your' in bold."></p>
+<p>Argh! This last one took a while, but I finally figured it out by playing with <code>PositionStart</code> and <code>PositionEnd</code>. Counter-intuitively, the <code>PositionStart</code> property <em>isn’t</em> relative to the beginning of the <code>Run</code>, it seems to be relative to the beginning of the containing <code>TextBlock</code> — but not quite. Originally, we used a <code>PositionStart</code> of <code>5</code>, but in order to work as expected, I had to use a value of <code>8</code>! Removing the whitespace between “Clap” and the <code>Run</code> lowered this to <code>7</code>, but I never figured out how to get it to <code>5</code> (which, although counter-intuitive, I could at least understand).</p>
+<p>Bleh. My recommendation is to set <code>PositionStart</code> to <code>0</code> and <code>PositionCount</code> to something large, like <code>100</code>. Doing so, we get our final markup here:</p>
+<pre><code class="xaml"><span class="sc3"></span><span class="re1">&lt;Border</span> <span class="re0">xmlns</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span> <span class="re0">xmlns:x</span>=<span class="st0">"http://schemas.microsoft.com/winfx/2006/xaml"</span>
+        <span class="re0">VerticalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">HorizontalAlignment</span>=<span class="st0">"Center"</span> <span class="re0">BorderThickness</span>=<span class="st0">"1"</span> <span class="re0">BorderBrush</span>=<span class="st0">"#ccc"</span> <span class="re0">Padding</span>=<span class="st0">"20"</span> <span class="re0">SnapsToDevicePixels</span>=<span class="st0">"True"</span><span class="re2">&gt;</span>
+  <span class="sc3"></span><span class="re1">&lt;TextBlock</span> <span class="re0">FontFamily</span>=<span class="st0">"Calibri"</span> <span class="re0">FontSize</span>=<span class="st0">"30"</span> <span class="re0">TextWrapping</span>=<span class="st0">"Wrap"</span><span class="re2">&gt;</span>
+    Clap
+    <span class="sc3"></span><span class="re1">&lt;Run</span> <span class="re0">FontWeight</span>=<span class="st0">"Bold"</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;Run</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;TextEffect</span> <span class="re0">PositionStart</span>=<span class="st0">"0"</span> <span class="re0">PositionCount</span>=<span class="st0">"100"</span><span class="re2">&gt;</span>
+          <span class="sc3"></span><span class="re1">&lt;TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+            <span class="sc3"></span><span class="re1">&lt;RotateTransform</span> <span class="re0">Angle</span>=<span class="st0">"-5"</span> <span class="re2">/&gt;</span>
+          <span class="sc3"></span><span class="re1">&lt;/TextEffect</span>.<span class="me0">Transform</span><span class="re2">&gt;</span>
+        <span class="sc3"></span><span class="re1">&lt;/TextEffect</span><span class="re2">&gt;</span>
+      <span class="sc3"></span><span class="re1">&lt;/Run</span>.<span class="me0">TextEffects</span><span class="re2">&gt;</span>
+      Your
+    <span class="sc3"></span><span class="re1">&lt;/Run</span><span class="re2">&gt;</span>
+    Hands Say Yeah!
+  <span class="sc3"></span><span class="re1">&lt;/TextBlock</span><span class="re2">&gt;</span>
+<span class="sc3"></span><span class="re1">&lt;/Border</span><span class="re2">&gt;</span></code></pre>
+<p>Finally, we get the expected result!</p>
+<p class="img screenshot"><img src="TextEffects%20%BB%20fortes.com_files/texteffects-issues-bold-rotating.png" alt="The text 'Clap Your Hands Say Yeah!' with the word 'Your' in bold and rotated 5 degrees."></p>
+<h3>In the end …</h3>
+<p>In most cases, you’re better off using <code>RenderTransform</code>
+if you can get away with it. Hopefully, future version of WPF will add
+some more interesting effects and fix these weird issues. Meanwhile, I
+hope this post helps people who are struggling with <code>TextEffects</code>.</p>
+
+
+				</div>
+				<div class="entry-meta">
+					This entry was written by <a class="url fn" href="http://fortes.com/about/" title="View all posts by fil">fil</a> and posted on <abbr class="published" title="2007-03-16T08:34:58-0700">Mar 16, 2007 at 8:34am</abbr> and filed under <a href="http://fortes.com/work/" title="View all posts in Work" rel="category tag">Work</a>. Bookmark the <a href="http://fortes.com/2007/03/16/texteffects/" title="Permalink to TextEffects" rel="bookmark">permalink</a>. Follow any comments here with the <a href="http://fortes.com/2007/03/16/texteffects/feed/" title="Comments RSS to TextEffects" rel="alternate" type="application/rss+xml">RSS feed for this post</a>.					<a href="#respond" title="Post a comment">Post a comment</a> or leave a trackback: <a href="http://fortes.com/2007/03/16/texteffects/trackback/" rel="trackback" title="Trackback URL for your post">Trackback URL</a>.
+				</div>
+			</div><!-- .post -->
+
+			<div id="nav-below" class="navigation">
+				<div class="nav-previous">« <a href="http://fortes.com/2007/03/15/collapsed-spaces-around-run/">Collapsed Spaces Around &lt;Run /&gt;</a></div>
+				<div class="nav-next"><a href="http://fortes.com/2007/03/18/filling-things/">Filling things</a> »</div>
+			</div>
+
+<div class="commentscontainer">
+
+
+
+
+
+	<h3 class="comment-header" id="numcomments">One Comment</h3>
+	<ol id="comments" class="commentlist">
+		<li id="comment-18236" class="comment c0 c-y2007 c-m09 c-d05 c-h12 alt">
+			<div class="comment-author">Sean</div>
+			<div class="comment-text"><p>Hi,<br>
+Just looked at your page and it solved a problem for me when doing the same thing in code.</p>
+<p>Dim run As New Run<br>
+Dim translateTransform As New TranslateTransform<br>
+translateTransform.Y = -10<br>
+translateTransform.X = 0<br>
+Dim textEffect As New TextEffect<br>
+textEffect.PositionStart = 0<br>
+textEffect.PositionCount = 100</p>
+<p>textEffect.Transform = translateTransform<br>
+run.TextEffects.Add(textEffect)</p>
+<p>If you ever work out why the PositionCount seems to need to be such a large number then I’d be grateful if you let me know.<br>
+Best wishes<br>
+Sean</p>
+</div>
+			<div class="comment-mod"></div>
+			<div class="comment-meta">
+				Posted Sep 5, 2007 at 12:44am <span class="metasep">|</span> <a href="#comment-18236" title="Permalink to this comment">Permalink</a>				
+			</div>
+		</li>
+
+
+	</ol>
+
+
+
+
+
+	<h3 id="respond">Post a Comment</h3>
+
+	<div class="formcontainer">	
+
+		<form id="commentform" action="http://fortes.com/wp-comments-post.php" method="post">
+
+
+			<div id="comment-notes">Your email is <em>never</em> published nor shared. </div>
+
+			<div class="form-label"><label for="author">Name</label> </div>
+			<div class="form-input"><input id="author" name="author" value="" size="30" maxlength="20" tabindex="3" type="text"></div>
+
+			<div class="form-label"><label for="email">Email</label> </div>
+			<div class="form-input"><input id="email" name="email" value="" size="30" maxlength="50" tabindex="4" type="text"></div>
+
+			<div class="form-label"><label for="url">Website</label></div>
+			<div class="form-input"><input id="url" name="url" value="" size="30" maxlength="50" tabindex="5" type="text"></div>
+
+
+			<div class="form-label"><label for="comment">Comment</label></div>
+			<div class="form-textarea"><textarea id="comment" name="comment" cols="45" rows="8" tabindex="6"></textarea></div>
+
+			<div class="form-submit"><input id="submit" name="submit" value="Post Comment »" tabindex="7" type="submit"><input name="comment_post_ID" value="454" type="hidden"></div>
+
+
+		</form><!-- commentform -->
+	</div><!-- formcontainer -->
+
+
+</div>
+
+		</div><!-- #content .hfeed -->
+		<div id="sidebars">		<div id="primary" class="sidebar">
+			<ul class="sidebarlist">
+							</ul>
+		</div> </div>
+	</div><!-- #container -->
+			<div id="footer">
+				<div id="about" class="uichrome">
+					<h3><a href="http://fortes.com/about/">About</a></h3>
+					<div id="about-body"><p>I live in Seattle, where I'm an independent consultant.</p><p>I used to work at <a href="http://microsoft.com/">MS</a>, on the <a href="http://en.wikipedia.org/wiki/Windows_Presentation_Foundation">WPF</a> team. I was the <abbr title="Program Manager">PM</abbr> for the text and document layout portions of the platform. I have a <abbr title="Master's Degree">MS</abbr> in <a href="http://www.hcii.cmu.edu/" title="Human-Computer Interaction">HCI</a> and a <abbr title="Bachelor's Degree">BS</abbr> in <a href="http://www.cs.cmu.edu/">CS</a> from <a href="http://www.cmu.edu/" title="Carnegie Mellon Unversity">CMU</a> in Pittsburgh, PA. ABC LOL, OMGBBQ!</p></div>
+					<p id="about-more"><a href="http://fortes.com/about/">more ...</a></p>
+				</div>
+				
+								<div id="wp-footer">
+					<!-- Google Analytics Tracking by Google Analyticator: http://cavemonkey50.com/code/google-analyticator/ -->
+	<script src="TextEffects%20%BB%20fortes.com_files/urchin.js" type="text/javascript"></script>
+	<script src="TextEffects%20%BB%20fortes.com_files/ga_external-links.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		urchin = new urchin();
+		urchin.trackDownload = "zip";
+		urchin.trackLinks();
+		_uacct="UA-142071-1";  urchinTracker();
+	</script>
+<script src="TextEffects%20%BB%20fortes.com_files/e-200743.js" type="text/javascript"></script>
+<script type="text/javascript">
+st_go({blog:'1088663',v:'ext',post:'454'});
+var load_cmc = function(){linktracker_init(1088663,454,2);};
+if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+else load_cmc();
+</script><img id="wpstats" src="TextEffects%20%BB%20fortes.com_files/g.gif" alt="">
+				</div>
+			</div><!-- #footer -->
+
+		</div><!-- #wrapper -->
+	<!-- Dynamic Page Served (once) in 0.621 seconds -->
+</body></html>

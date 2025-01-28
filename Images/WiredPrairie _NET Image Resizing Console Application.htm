@@ -1,0 +1,147 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0078)http://www.wiredprairie.us/journal/2004/06/net_image_resizing_console_app.html -->
+<HTML id=sixapart-standard xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>WiredPrairie: .NET Image Resizing Console Application</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><LINK 
+href="WiredPrairie _NET Image Resizing Console Application_files/styles-site.css" 
+type=text/css rel=stylesheet><LINK title=Atom 
+href="http://www.wiredprairie.us/journal/atom.xml" type=application/atom+xml 
+rel=alternate><LINK title="RSS 2.0" 
+href="http://www.wiredprairie.us/journal/index.xml" type=application/rss+xml 
+rel=alternate><LINK title=Home href="http://www.wiredprairie.us/journal/" 
+rel=start><LINK title="GE Advantium Oven - Four Months Later" 
+href="http://www.wiredprairie.us/journal/2004/06/ge_advantium_oven_four_months.html" 
+rel=prev><LINK title="ASP.NET vs PHP" 
+href="http://www.wiredprairie.us/journal/2004/07/aspnet_vs_php.html" rel=next><!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.wiredprairie.us/journal/2004/06/net_image_resizing_console_app.html"
+    trackback:ping="http://www.wiredprairie.us/journal/mt/mt-tb.cgi/151"
+    dc:title=".NET Image Resizing Console Application"
+    dc:identifier="http://www.wiredprairie.us/journal/2004/06/net_image_resizing_console_app.html"
+    dc:subject="Coding"
+    dc:description="I just finished creating a small .image manipulating NET console application that has several primary capabilities: resize an image to a specified size (or percentage) rotate an image 90 degrees counter-clockwise reduce the quality Nothing too revolutionary about the code...."
+    dc:creator="Aaron"
+    dc:date="2004-06-09T15:50:09-06:00" />
+</rdf:RDF>
+-->
+<SCRIPT 
+src="WiredPrairie _NET Image Resizing Console Application_files/mt-site.js" 
+type=text/javascript></SCRIPT>
+</HEAD>
+<BODY class=layout-two-column-right 
+onload=individualArchivesOnLoad(commenter_name)>
+<DIV id=container>
+<DIV class=pkg id=container-inner>
+<DIV id=banner>
+<DIV class=pkg id=banner-inner>
+<FORM action=http://www.wiredprairie.us/journal/mt/mt-search.cgi 
+method=get><INPUT type=hidden value=1 name=IncludeBlogs> <IMG height=14 
+src="WiredPrairie _NET Image Resizing Console Application_files/Search.gif" 
+width=14 border=0> <INPUT id=Text2 name=search> <INPUT type=submit value=Search> 
+</FORM></DIV></DIV>
+<DIV id=navlistbar>
+<UL id=navlist>
+  <LI><A href="http://www.wiredprairie.us/journal/index.html">main</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/freeware.html">free</A> 
+  <LI><A href="http://www.wiredprairie.us/gallery/index.php">gallery</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/myfavorites.html">must 
+  install</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/about.html">about</A> 
+  <LI><A 
+  href="http://www.wiredprairie.us/journal/archivesbymonth.html">archives</A> 
+  <LI><A href="http://www.wiredprairie.us/journal/index.xml"><IMG height=16 
+  alt=feed 
+  src="WiredPrairie _NET Image Resizing Console Application_files/rssfeed.png" 
+  width=16></A> 
+  <LI>
+  <FORM action=http://www.wiredprairie.us/journal/mt/mt-search.cgi 
+  method=get><INPUT type=hidden value=1 name=IncludeBlogs> <INPUT id=Text2 
+  name=search> <INPUT type=submit value=Search> </FORM></LI></UL></DIV>
+<DIV id=pagebody>
+<DIV class=pkg id=pagebody-inner>
+<DIV id=alpha>
+<DIV class=pkg id=alpha-inner>
+<P class=content-nav><A 
+href="http://www.wiredprairie.us/journal/2004/06/ge_advantium_oven_four_months.html">« 
+GE Advantium Oven - Four Months Later</A> | <A 
+href="http://www.wiredprairie.us/journal/">Main</A> | <A 
+href="http://www.wiredprairie.us/journal/2004/07/aspnet_vs_php.html">ASP.NET vs 
+PHP »</A> </P><A id=a000154></A>
+<DIV class=entry id=entry-154>
+<H3 class=entry-header>.NET Image Resizing Console Application</H3>
+<DIV class=entry-content>
+<DIV class=entry-body>
+<P>I just finished creating a small .image manipulating NET console application 
+that has several primary capabilities:</P>
+<UL>
+  <LI>resize an image to a specified size (or percentage) 
+  <LI>rotate an image 90 degrees counter-clockwise 
+  <LI>reduce the quality</LI></UL>
+<P>Nothing too revolutionary about the code. I'll mention a couple of the more 
+interesting/useful pieces. </P>
+<P>When saving an <B>Image</B> to a file via the Image.Save method, a codec is 
+needed if you need to do anything custom. In my code, I needed to optionally 
+reduce the quality of the image to a user specified value (the /Q:## option). 
+For some reason Microsoft made retrieving a particular codec an effort left up 
+to the developer rather than wrapping it in a handy static method.</P><PRE class=code>private static ImageCodecInfo GetEncoder(string mimeType)
+{
+  ImageCodecInfo[] encoders = 
+      ImageCodecInfo.GetImageDecoders();
+
+<P>  for (int i = 0; i &lt; encoders.Length; ++i) {<BR>
+    if (encoders[i].MimeType == mimeType) {<BR>
+      return encoders[i];<BR>
+    }<BR>
+  }<BR>
+  return null;<BR>
+}</P></PRE><BR>
+<P>To retrieve the JPEG encoder:</P><PRE class=code>ImageCodecInfo codec = GetEncoder("image/jpeg");</PRE><BR>
+<P>To set the quality parameter for the JPEG encoder:</P><PRE class=code>EncoderParameters parameters = new EncoderParameters(1);<BR>
+parameters.Param[0] = <BR>
+    new EncoderParameter(Encoder.Quality,<BR>
+                        (long) quality);<P></P>
+
+<P>reducedImage.Save(destinationFile, codec, parameters); <BR>
+</P></PRE><BR>
+<P>To reduce the image to the user specified value (the /W:##, /H:##, or the 
+/S:## options), the application takes the original image and draws it to a 
+smaller image at the best quality (using the InteroplationMode):</P><PRE class=code>using (Image reducedImage = <BR>
+          new Bitmap(scaleWidth, <BR>
+                     scaleHeight, <BR>
+                     image.PixelFormat))<BR>
+{<BR>
+  using (Graphics g = Graphics.FromImage(reducedImage)) {<BR>
+    g.InterpolationMode = <BR>
+          InterpolationMode.HighQualityBicubic ;<BR>
+    g.DrawImage(image, resizedRect);<BR>
+  }<BR>
+  <I>... continues ...</I><BR>
+</PRE><BR>
+<P>The remainder of the code is house keeping, dealing with handling the various 
+command line parameters and displaying help text. By default, the application 
+creates the modified version of the image in a "Modified" subfolder (a subfolder 
+of the original image's folder). To overwrite the image, use the /O option. The 
+application displays the help text if no command line parameters are provided. 
+</P><BR>
+<P>I haven't tested the application extensively. Use at your own risk. </P><BR>
+<P>The full code and executable is here: <A 
+href="http://www.wiredprairie.us/downloads/resize.zip">resize.zip</A>.</P>
+<P></P></DIV>
+<DIV class=entry-more id=more></DIV></DIV>
+<P class=entry-footer><SPAN class=post-footers>Posted by Aaron on June 9, 2004 
+3:50 PM</SPAN> <SPAN class=separator>|</SPAN> <A class=permalink 
+href="http://www.wiredprairie.us/journal/2004/06/net_image_resizing_console_app.html">Permalink</A> 
+</P></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<SCRIPT 
+src="WiredPrairie _NET Image Resizing Console Application_files/urchin.js" 
+type=text/javascript>
+</SCRIPT>
+
+<SCRIPT type=text/javascript>
+_uacct = "UA-635767-1";
+urchinTracker();
+</SCRIPT>
+</BODY></HTML>

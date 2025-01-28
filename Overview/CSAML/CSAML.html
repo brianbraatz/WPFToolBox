@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+  
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta name="author" content="Charles Petzold">
+    <meta name="copyright" content="© 2006 Charles Petzold">
+    <meta name="description" content="CSAML">
+    <meta name="keywords" content="CSAML"><title>C# Application Markup Language (CSAML): A Preview</title>
+    
+    <style type="text/css">
+        body {width:40em; margin-left:auto; margin-right:auto}
+	p    {margin-top:1em; margin-bottom:1em}
+        ul   {font-family:monospace; font-weight:bold}
+        h1   {text-align: center}
+        h2   {text-align: center}
+    </style></head><body>
+  <h1>
+    C# Application Markup Language (CSAML):<br>
+    An Evolutionary Leap
+  </h1>
+  <h2>
+    by Charles Petzold
+  </h2>
+<p>
+Several weeks ago, Microsoft Corporation began a limited circulation of
+a specification and beta compiler for the new C# Application Markup
+Language or CSAML (sometimes pronounced “scammel”), and I’m pleased to
+say I find it fascinating. This merging of C# and XML is an important
+evolutionary leap for both standards, and represents a profound advance
+in the Xmlization of all textual data. </p>
+<p>
+Basically, CSAML is an alternative syntax for C# based on XML and, more
+specifically, on XAML, the Extensible Application Markup Language that
+plays such an important role in the forthcoming WinFX and the Windows
+Presentation Foundation. In particular, CSAML makes uses of the XAML
+“property element” syntax for denoting complex statements.
+</p>
+<p>
+My new book <i>Programming in the Key of CSAML</i> is expected to
+be available early in 2007. For now, I want to show you just a few
+examples that will let you savor the flavor of this new syntax and be
+ready for the big transition when the old C# syntax is phased out in
+2008. </p>
+<p>
+Consider the following “old syntax” C# hello-world program:
+</p>
+<ul>
+<pre>namespace MyNamespace
+{
+    public class MyClass
+    {
+        public static void Main()
+        {
+            Console.WriteLine("Hello, C#");
+        }
+    }
+}
+</pre>
+</ul>
+
+<p>
+This freeform, unstructured format simply cannot be tolerated in modern
+computing environments. Look at the string of words “public static void
+Main.” What are those words? How do they relate to each other? There’s
+no way to tell. These problems may have been overlooked in the days of
+ALGOL, but they can be ignored no longer.
+</p>
+<p>By contrast, check out the clarity that results when equivalent code
+is expressed with a syntax that emphasizes precision and
+accountability. This is a complete CSAML file with the current
+namespace declarations:
+</p>
+
+<ul>
+<pre>&lt;CsamlFile xmlns="http://schemas.microsoft.com/winfx/2006/xaml/csaml"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+    &lt;NamespaceDeclaration Identifier="MyNamespace"&gt;
+        &lt;ClassDeclaration Identifier="MyClass" 
+                          Access="Public"&gt;
+            &lt;MethodDeclaration Identifier="Main" 
+                               Access="Public" 
+                               Modifier="Static" 
+                               ReturnType="{x:Type void}"&gt;
+                &lt;InvocationExpression
+                  MemberAccess="System.Console.WriteLine"&gt;
+                    &lt;InvocationExpression.ArgumentList&gt;
+                        &lt;Literal Type="{x:Type string}"
+                                 Value="Hello, CSAML! "&gt;
+                    &lt;/InvocationExpression.ArgumentList&gt;
+                &lt;/InvocationExpression&gt;
+            &lt;/MethodDeclaration&gt;
+        &lt;/ClassDeclaration&gt;
+    &lt;/NamespaceDeclaration&gt;
+&lt;/CsamlFile&gt;
+</pre>
+</ul>
+<p>
+As you’ll note, many of these element names are based on the grammar notations used in the <a href="http://msdn.microsoft.com/library/en-us/csspec/html/CSharpSpecStart.asp">C# Language Specification</a>, so every C# programmer is intimately familiar with the names and can begin coding in CSAML immediately. 
+</p>
+<p>By relying upon the hierarchical structure that is built into XML,
+CSAML is able to forgo the reliance upon curly brackets, square
+brackets, and parentheses that so clutters old-syntax C#. As you’ll
+note in the file shown above, curly brackets are restricted to their
+use in XAML markup extensions, such as <i>x:Type</i>.
+</p>
+<p>
+In fact, CSAML is able to rid itself of <i>every</i> symbol used in old-syntax C#. For example, consider the following old-syntax C# assignment statement:
+</p>
+<p>
+</p><ul>
+<pre>A = 5 * (B + 27 * C);
+</pre>
+</ul>
+<p>
+This statement translates without much fuss into the following chunk of CSAML:
+</p>
+<ul>
+<pre>&lt;ExpressionStatement&gt;
+    &lt;Assignment LValue="A"&gt;
+        &lt;Assignment.Expression&gt;
+            &lt;MultiplicationExpression&gt;
+                &lt;Multiplication.Multiplier&gt;
+                    &lt;Literal Type="{x:Type Int32}"
+                             Value="5" /&gt;
+                &lt;/Multiplication.Multiplier&gt;
+                &lt;Multiplication.Multiplicand&gt;
+                    &lt;AdditionExpression Augend="B"&gt;
+                        &lt;AdditionExpression.Addend&gt;
+                            &lt;Multiplication.Multiplier&gt;
+                                &lt;Literal Type="{x:Type Int32}"
+                                         Value="27" /&gt;
+                            &lt;/Multiplication.Multiplier&gt;
+                            &lt;MultiplicationExpression Multiplicand="C"/&gt;
+                      &lt;/AdditionExpression.Addend&gt;
+                   &lt;/AdditionExpression&gt;
+              &lt;/Multiplication.Multiplicand&gt;
+            &lt;/MultiplicationExpression&gt;
+        &lt;/Assignment.Expression&gt;
+    &lt;/Assignment&gt;
+&lt;/ExpressionStatement&gt;
+</pre>
+</ul>
+<p>
+The advantages of this notation are obvious. Because no parentheses are
+required (or allowed), the programmer has composed the CSAML by
+carefully considering the problem. Errors are much less likely. The
+compiler can become more efficient as well because the statement has,
+in effect, been pre-parsed by the programmer.
+</p>
+<p>
+Here’s another example of perhaps the most notorious syntactical absurdity in all of traditional C# — the <i>for</i> loop:
+</p>
+<ul>
+<pre>for (i=0, j=0; i &lt; 1000; i++)
+     if (IsPrime(i))
+          j++;
+</pre>
+</ul>
+<p>In CSAML, that jumble of symbols and semicolons is abandoned for a
+structural beauty that can almost induce the modern programmer to weep
+with joy:
+</p>
+<ul>
+<pre>&lt;ForLoop&gt;
+    &lt;ForLoop.Initializer&gt;
+        &lt;StatementExpressionList&gt;
+            &lt;Assignment LValue="i"&gt;
+                &lt;Assignment.Expression&gt;
+                    &lt;Literal Type="{x:Type Int32}"
+                             Value="0" /&gt;
+                &lt;/Assignment.Expression&gt;
+            &lt;/Assignment&gt;
+        &lt;/StatementExpressionList&gt;
+    &lt;/ForLoop.Initializer&gt;
+    &lt;ForLoop.Condition&gt;
+        &lt;BooleanExpression&gt;
+            &lt;LessThanExpression LeftSide ="i"&gt;
+                &lt;LessThanExpression.RightSide&gt;
+                    &lt;Literal Type="{x:Type Int32}"
+                             Value="1000" /&gt;
+                &lt;/LessThanExpression.RightSide&gt;
+            &lt;/LessThanExpression&gt;
+        &lt;/BooleanExpression&gt;
+    &lt;/ForLoop.Condition&gt;
+    &lt;ForLoop.Iterator&gt;
+        &lt;StatementExpressionList&gt;
+            &lt;PreIncrementExpression Identifier="i" /&gt;
+        &lt;/StatementExpressionList&gt;
+    &lt;/ForLoop.Iterator&gt;
+    &lt;ForLoop.EmbeddedStatement&gt;
+        &lt;IfStatement&gt;
+           &lt;IfStatement.Condition&gt;
+               &lt;BooleanExpression&gt;
+                     &lt;InvocationExpression MemberAccess="IsPrime"&gt;
+                         &lt;InvocationExpression.ArgumentList&gt;
+                             &lt;Variable Identifier="i" /&gt;
+                         &lt;/InvocationExpression.ArgumentList&gt;
+                    &lt;/InvocationExpression&gt;
+                &lt;BooleanExpression&gt;
+           &lt;/IfStatement.Condition&gt;
+           &lt;IfStatement.EmbeddedStatement&gt;
+               &lt;StatementList&gt;
+                   &lt;PreIncrementExpression Identifier="j" /&gt;
+               &lt;/StatementList&gt;
+           &lt;/IfStatement.EmbeddedStatement&gt;
+        &lt;/IfStatement&gt;
+    &lt;/ForLoop.EmbeddedStatement&gt;
+&lt;/ForLoop&gt;
+</pre>
+</ul>
+<p>
+As I write my CSAML book in the months ahead, I’ll be <a href="http://www.charlespetzold.com/blog/blog.xml">blogging</a>, of course, and sharing with you some of the many features of this new C# syntax, and perhaps even a few shortcuts. 
+</p>
+<p>
+It’s certainly an exciting time to be a programmer.
+</p>
+    <hr>
+    
+    <p>
+      © Charles Petzold, April 1, 2006
+    </p>
+    <hr>
+    <p>
+      Back to <a href="http://www.charlespetzold.com/">Home</a>
+    </p>
+  </body></html>

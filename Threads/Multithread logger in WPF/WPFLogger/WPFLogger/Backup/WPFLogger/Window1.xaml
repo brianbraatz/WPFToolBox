@@ -1,0 +1,40 @@
+﻿<Window x:Class="WPFLogger.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:WPFLogger" 
+    Title="WPFLogger" Height="300" Width="300"
+        Loaded="OnLoad"
+    >
+  <Window.Resources>
+    <XmlDataProvider x:Key="myDebugData" XPath="/myXmlData">
+      <x:XData>
+        <myXmlData xmlns="">
+          <Item Date="00/00/00 00:00:00" Source="None" Message="Testing..."/>
+        </myXmlData>
+      </x:XData>
+    </XmlDataProvider>
+  </Window.Resources>
+  <StackPanel>
+
+    <CheckBox IsChecked="{x:Static l:Window1.m_isDebug}">Debug view</CheckBox>
+    <StackPanel Orientation="Horizontal">
+      <Button Click="do1">Do something</Button>
+      <Button Click="do2">Do something else</Button>
+      <Button Click="do3">Do something long</Button>
+    </StackPanel>
+    <ListView SelectionMode="Multiple" Name="debugLV" GridViewColumnHeader.Click="onSort" Background="Transparent" ItemsSource="{Binding Source={StaticResource myDebugData}, XPath=Item}" >
+      <ListView.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="Clear All" Click="ClearAll"/>
+        </ContextMenu>
+      </ListView.ContextMenu>
+      <ListView.View>
+        <GridView x:Name="debugView">
+          <GridViewColumn Header="Date" Width="150" DisplayMemberBinding="{Binding XPath=@Date}"/>
+          <GridViewColumn Header="Source" Width="300" DisplayMemberBinding="{Binding XPath=@Source}"/>
+          <GridViewColumn Header="Message" DisplayMemberBinding="{Binding XPath=@Message}"/>
+        </GridView>
+      </ListView.View>
+    </ListView>
+  </StackPanel>
+</Window>

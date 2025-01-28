@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Accessing Non-XAML Assemblies in XAML</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/231013.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/240924.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/02/231059.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Accessing Non-XAML Assemblies in XAML</h2></a><p style="text-align: right;">February 23, 2006<br>NYC</p><p>
+The <a href="http://msdn.microsoft.com/windowsvista/getthebeta/">February CTP of WinFx</a>
+introduces new XAML namespace names. They no longer mention "Avalon,"
+so we know the Avalon folks at Microsoft are getting serious about
+releasing this baby. Here are the new ones as they will commonly appear
+in XAML files:
+</p>
+<ul>
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<br>
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml
+</ul>
+<p>
+Another change is the elimination of a XML processing instruction named <i>Mapping</i>.
+Prior to the February CTP, if you wanted to reference elements from
+non-XAML assemblies (such as your own source code), you had to include
+a processing instruction that mapped the namespace you defined in your
+source code to an XML namespace:
+</p>
+<ul>
+&lt;?Mapping ClrNamespace="Petzold.GreatProject" XmlNamespace="MySourceCode" ?&gt;
+</ul>
+<p>
+and then you had to define a prefix for that XML namespace:
+</p>
+<ul>
+xmlns:src="MySourceCode"
+</ul>
+<p>Beginning with the February CTP all the information is consolidated
+into the XML namespace declaration and you don't have to come up with a
+separate XML namespace name:
+</p>
+<ul>
+xmlns:src="clr-namespace:Petzold.GreatProject"
+</ul>
+<p>
+I like this! (A list of breaking changes in the February CTP such as these is available from <a href="http://blogs.msdn.com/karstenj/archive/2006/02/22/537049.aspx">Karsten Januszewski's blog</a>.) 
+</p>
+<p>If you want to use a class in a non-XAML DLL, an extended syntax
+lets you specify the assembly. Here's how you define a prefix of 's' to
+use classes and structures defined in the <i>System</i> namespace and the mscorlib.dll assembly:
+</p>
+<ul>
+xmlns:s="clr-namespace:System;assembly=mscorlib"
+</ul>
+<p>
+Notice that a colon separates "clr-namespace" from the CLR namespace,
+but an equal sign separates "assembly" from the assembly name. It seems
+inconsistent to me, but I trust that the people who come up with this
+stuff know what they're doing. After all, they work at Microsoft.
+</p>
+<p>
+The following piece of XAML uses this new namespace declaration to associate a prefix of 'g' with the <i>System.Globalization</i> namespace in the ever-popular mscorlib.dll assembly. It then uses binding to fill a <i>ListBox</i>
+with the names of the days of the week, and another binding to display
+the selected item. These name days are culture specific. If you go into
+Control Panel and run Regional and Language Options, and switch to
+French, for example, the <i>ListBox</i> will display <i>dimanche</i>, etc.
+</p>
+<p>
+You can download or run <a href="http://www.charlespetzold.com/blog/2006/02/DaysOfWeek.xaml">DaysOfWeek.xaml</a> or gaze upon it here:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;StackPanel&nbsp;xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:g="clr-namespace:System.Globalization;assembly=mscorlib"&gt;<br><br>&nbsp;&nbsp;&lt;ListBox&nbsp;Name="lstbox"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HorizontalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VerticalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Margin="24"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemsSource="{Binding&nbsp;Source={x:Static&nbsp;g:DateTimeFormatInfo.CurrentInfo},&nbsp;Path=DayNames}"&nbsp;/&gt;<br><br>&nbsp;&nbsp;&lt;TextBlock&nbsp;HorizontalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VerticalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Margin="24"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text="{Binding&nbsp;ElementName=lstbox,&nbsp;Path=SelectedItem}"&nbsp;/&gt;<br><br>&lt;/StackPanel&gt;<br>
+</ul>
+<p>
+Notice the 'g' in front of the <i>DateTimeFormatInfo</i> class.
+</p><div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/231013.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/240924.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

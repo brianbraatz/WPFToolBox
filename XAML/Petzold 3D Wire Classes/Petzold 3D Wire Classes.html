@@ -1,0 +1,211 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - The Petzold.Media3D Library: The "Wire" Classes</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/290236.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/311003.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/08/310158.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>The Petzold.Media3D Library: The "Wire" Classes</h2></a><p style="text-align: right;">August 31, 2007<br>Roscoe, N.Y.</p><p>
+As Eric Sink pointed out recently, 
+<a href="http://software.ericsink.com/wpf3d/1_ScreenSpaceLines3D_Performance.html">"WPF 3D doesn't know how to draw lines."</a>.  Fortunately, the WPF 3D team at Microsoft has made available the 
+<a href="http://www.codeplex.com/3DTools">3DTools</a> library that includes the <i>ScreenSpaceLines3D</i> class that derives from <i>ModelVisual3D</i>
+and draws lines in a 3D scene. The "screen space" in the name of this
+class indicates that you specify the thickness of the lines in terms of
+device-independent units, which are 1/96th inch and hence often pixels.
+</p>
+<p>
+What's really nice is that the source code to <i>ScreenSpaceLines3D</i>
+is also available so you can see the clever techniques at work to make
+this happen: Basically, each line is a pair of triangles arranged in a
+long thin rectangle. While you specify the begin point and end point of
+this "line" in 3D coordinates, the <i>ScreenSpaceLines3D</i> class
+must determine the thickness of this "line" at each end so that after
+the various transforms have been applied to it (including the camera
+transforms — see Chapter 7 of my book <a href="http://www.charlespetzold.com/3D"><i>3D Programming for Windows</i></a>) it ends up on the screen with a uniform thickness with a surface that is always oriented perpendicularly to the viewer.
+</p>
+<p>
+This job requires that <i>ScreenSpaceLines3D</i> know about all
+the transforms that are applied to the visual because it must invert
+the transform chain to determine the dimensions and orientation of the
+line that it renders. What makes this job particularly tricky is that
+these transforms can be animated. For that reason, <i>ScreenSpaceLines3D</i> installs a handler for the <i>CompositionTarget.Rendering</i> event, and walks the parent/child chain up to <i>Viewport3D</i> on each vertical retrace of the video display. As Eric notes, this is a problem.
+</p>
+<p>
+I spent a lot of time studying <i>ScreenSpaceLines3D</i> because I knew I wanted to implement something similar in my own Petzold.Media3D library (available
+<a href="http://www.charlespetzold.com/3D">here</a>). At one point I derived from <i>Viewport3D</i> specifically to provide support for my "wire" classes (as I began thinking of them), but I eventually abandoned that approach. 
+</p>
+<p>
+Instead, my abstract <i>WireBase</i> class installs a handler for <i>CompositionTarget.Rendering</i> but it does so from a static constructor, so regardless how many <i>WireBase</i> objects you have, there's only one call to this handler per vertical retrace. Each instance of <i>WireBase</i> puts itself into a static collection that the <i>CompositionTarget.Rendering</i> handler enumerates for each call, at that point essentially performing the same logic as <i>ScreenSpaceLines3D</i>. However, if a particular <i>WireBase</i> instance discovers that its chain of visual parents no longer ends in a <i>Window</i>
+object, then it removes itself from this collection and is abandoned.
+This is how I hope my implementation is a little less insane than <i>ScreenSpaceLines3D</i>. 
+</p>
+<p>
+I had decided that I would be using XAML files to create all the
+illustrations in my book. Many of the illustrations were created from
+400 DPI bitmaps that I generated from XamlCruncher 2.0. At that
+resolution, <i>ScreenSpaceLines3D</i> had some limitiations I simply couldn't tolerate. Not only did I need to shamelessly copy the technique of <i>ScreenSpaceLines3D</i> but I had to enhance it.
+</p>
+<p>
+The "wire" classes I eventually created for the Petzold.Media3D begin with <i>WireBase</i> and are shown here roughly in increasing levels of complexity:
+</p>
+<ul>
+Object<br>
+&nbsp;&nbsp;&nbsp;DispatcherObject<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DependencyObject<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visual3D<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ModelVisual3D<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WireBase<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WireLine<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WireLines<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WirePolyline<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WirePath<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WireText<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Axes
+</ul>
+<p>
+For me, the most serious problem with <i>ScreenSpaceLines3D</i> was the line joins. Here's a <i>ScreenSpaceLines3D</i> element with a width of 40 device-independent units:
+</p>
+<ul style="font-family: monospace;">
+&lt;tools:ScreenSpaceLines3D<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Points="-1 0 0, 0 0.5 0, 0 0.5 0, 0.5 0 0"<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thickness="40" Color="Blue" /&gt;
+</ul>
+<p>
+In <i>ScreenSpaceLines3D</i> you set the <i>Points</i> property to an even number of <i>Point3D</i> objects; each pair of points define one line. And here's what it looks like: 
+</p>
+<p align="center">
+<img src="Petzold%203D%20Wire%20Classes_files/LinesWithScreenSpaceLines3D.png">
+</p>
+<p>
+It's obviously two lines rather than a connected line. The class in the Petzold.Media3D library that's closest in syntax to <i>ScreenSpaceLines3D</i> is <i>WireLines</i> except the property is named <i>Lines</i> rather than <i>Points</i>:
+</p>
+<ul style="font-family: monospace;">
+&lt;cp:WireLines Lines="-1 0 0, 0 0.5 0, 0 0.5 0, 0.5 0 0"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thickness="40" Color="Blue" /&gt;
+</ul>
+<p>
+The image produced by that markup is the same as the <i>ScreenSpaceLines3D</i> example. However, I've also provided a property in <i>WireBase</i> named <i>Rounding</i> of type <i>int</i> that lets you specify the number of little pie slices used to approximate the rounding of the ends of each line:
+</p>
+<ul style="font-family: monospace;">
+&lt;cp:WireLines Lines="-1 0 0, 0 0.5 0, 0 0.5 0, 0.5 0 0"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thickness="40"
+Color="Blue" Rounding="10" /&gt;
+</ul>
+<p>
+And now the lines are rendered like this:
+</p>
+<p align="center">
+<img src="Petzold%203D%20Wire%20Classes_files/LinesWithWireLines.png">
+</p>
+<p>
+You can alternatively use the <i>WirePolyline</i> class and just specify the three points that make up this particular figure:
+</p>
+<ul style="font-family: monospace;">
+&lt;cp:WirePolyline Points="-1 0 0, 0 0.5 0, 0.5 0 0" <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thickness="40"
+Color="Blue" <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rounding="10" /&gt;
+</ul>
+<p>
+Or, to draw a single straight line, you can use <i>WireLine</i> and set the <i>Point1</i> and <i>Point2</i> properties. The <i>WireBase</i> class also defines <i>ArrowEnds</i>, <i>ArrowLength</i>, and <i>ArrowAngle</i> properties to draw arrows at the end of the line (handy for symbolizing vectors in 3D space.)
+</p>
+<p>
+Similar to the WPF 2D <i>Path</i> class, my <i>WirePath</i> class has a <i>Data</i> property of type <i>PathGeometry3D</i>, and if you check the <i>Paths</i> directory of the Petzold.Media3D source code, you'll find that my <i>PathGeometry3D</i> class defines a <i>Figures</i> property of type <i>PathFigure3DCollection</i>, and <i>PathFigure3D</i> defines a <i>StartPoint</i> property and a <i>Segments</i> property of type <i>PathSegment3DCollection</i>, and <i>PathSegment3D</i> is parent to the four classes <i>LineSegment3D</i>, <i>PolyLineSegment3D</i>, <i>BezierSegment3D</i>, and <i>PolyBezierSegment3D</i>. In other words, I've tried to duplicate the 2D path geometry classes in 3D. (What I didn't get around to doing was a <i>PathGeometry3DConverter</i> that would let you specify a whole path as an encoded text string, but it's high on my to-do list.)
+</p>
+<p>
+For example, these classes allowed me to create the following XAML file for a figure in Chapter 6 of <i>3D Programming for Windows</i>:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/08/LongitudeAndLatitude.xaml">LongitudeAndLatitude.xaml</a>
+</p>
+<p>
+You can run that XAML file in XamlCruncher 2.0 if you have the
+Petzold.Media3D library loaded, or you can just run an XBAP created
+from the XAML file:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/LongitudeAndLatitude/LongitudeAndLatitude.xbap">LongitudeAndLatitude.xbap</a>
+</p>
+<p>
+It looks like this:
+</p>
+<p align="center">
+<img src="Petzold%203D%20Wire%20Classes_files/LongitudeAndLatitude.png">
+</p>
+<p>It looks better in the book (page 240) because that image was
+created at 400 DPI rather than 96 DPI as it is here. (It also looks
+better on the screen with a Tier 2 graphics board because you get
+anti-aliasing. You don't get anti-aliasing when you're rendering 3D
+scenes on bitmaps.) All the lines of longitude and latitude are <i>WirePath</i> objects, but inside is a sphere colored with a translucent brush to make the lines around the back a little less dark.
+</p>
+<p>
+The <i>WireText</i> text class is based around the polylines from the ancient Windows plotter fonts. You set the <i>Font</i> property to a member of the <i>Font</i> enumeration (<i>Modern</i>, <i>Roman</i>, or <i>Script</i>) and <i>FontSize</i> to an approximate character height in 3D units. Set the <i>Origin</i> property to a <i>Point3D</i> where the text is to begin, and <i>HorizontalAlignment</i> (default is <i>Left</i>) and <i>VerticalAlignment</i> (default is <i>Top</i>) to indicate the meaning of that origin. You'll also need to set two vectors: <i>BaselineDirection</i> (default is <b>(1, 0, 0)</b>) and <i>UpDirection</i> (default is <b>(0, 1, 0)</b>). The cross product of <i>BaselineDirection</i> and <i>UpDirection</i> indicates the direction from which the text appears normal. Set the <i>Text</i> property to the text you wish to display.
+</p>
+<p>
+The size of the text characters will get smaller as the text recedes to
+the background, but the actual strokes that make up the characters will
+not. Those are governed by the <i>Thickness</i> property defined by <i>WireBase</i>.
+</p>
+<p>
+Finally, the <i>Axes</i> class combines lines and text to display the 3D coordinate axes:
+</p>
+<p align="center">
+<img src="Petzold%203D%20Wire%20Classes_files/3DAxes.png">
+</p>
+<p>
+Of course, several properties let you set the <i>Extent</i> of the axes (the default is 3), whether it will <i>ShowNumbers</i>, the length of <i>LargeTick</i> and <i>SmallTick</i>, and you can even replace the <i>Labels</i> from X, Y, and Z to something else, such as shown on page 317 of my book.
+</p>
+
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="Petzold%203D%20Wire%20Classes_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="comments"><hr><p><b>Comments:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>
+Hi Charles - Cool way to draw lines in 3D. Another option (something
+I've done before) could be to have a separate Canvas on top of the
+Viewport3D and render the 2D lines "on top" (using the Camera's own
+transformation). Obviously the lines won't be a proper part of the
+scene and won't be hidden by other objects etc, but it might be good
+for some uses.
+</p>
+<p>
+How tricky do you think it'd be to do cartoon/cel shading in WPF? :)
+</p>
+<p>
+— <a href="http://chriscavanagh.wordpress.com/">Chris Cavanagh</a>, Tue, 4 Sep 2007 13:19:08 -0400 (EDT)
+</p>
+</div><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="The Petzold.Media3D Library: The " wire="" classes="" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/290236.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/311003.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

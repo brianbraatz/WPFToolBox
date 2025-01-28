@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Console-Type Output in XAML?</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/160655.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/200923.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/03/180953.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Console-Type Output in XAML?</h2></a><p style="text-align: right;">March 18, 2006<br>Sunny NYC</p><p>
+I wanted to write a little standalone XAML file that displayed several static properties from the <i>System.Environment</i> class. Basically I needed some way — some <i>simple</i> way, I hoped — to intersperse text and objects and line breaks, where the objects are rendered with their <i>ToString</i> methods. (For example, <i>Environment.OSVersion</i> is an object of type <i>OperatingSystem</i>, which its <i>ToString</i> method formats it into a readable string.) 
+</p>
+<p>
+In other words, I wanted to mimic <i>Console.WriteLine</i> in XAML. 
+</p>
+<p>
+What seemed to make most sense was to do it as a <i>TextBlock</i> where each piece is a separate <i>Inline</i> object of some sort, and the <i>LineBreak</i> element terminates each line. However, sometimes arbitrary objects are converted into text in a <i>TextBlock</i> and sometimes they are not. 
+</p>
+<p>
+For example, this does not work: 
+</p>
+<ul>
+&lt;TextBlock Text="{x:Static s:Environment.OSVersion}" /&gt;
+</ul>
+<p>
+The exception message says "value not valid for property 'Text'." However, this one works: 
+</p>
+<ul>
+&lt;TextBlock Text="{Binding Source={x:Static s:Environment.OSVersion}}" /&gt;
+</ul>
+<p>
+I was greatly encouraged by that because I figured if I could assign the <i>Text</i> property of a <i>TextBlock</i> to a binding that references an arbitrary object, I could also assign the <i>Text</i> property of a <i>Run</i> to the same object. Alas, it just ain't so. This does not work: 
+</p>
+<ul>
+&lt;TextBlock&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;Run Text="{Binding Source={x:Static s:Environment.OSVersion}}" /&gt;<br>
+&lt;/TextBlock&gt;
+</ul>
+<p>
+The exception message is "Object of type 'System.Windows.Data.Binding'
+cannot be converted to type 'System.String'," which doesn't make that
+much sense to me. </p>
+<p><b>
+Addendum March 20, 2006: The <i>Text</i> property of <i>TextBlock</i> is backed by the dependency property <i>TextProperty</i>. The <i>Text</i> property of <i>Run</i> is not. Binding targets must be dependency properties. That's why it works for <i>TextBlock</i> and not <i>Run</i>.
+</b></p>
+<p>
+It quickly became evident that if I didn't want to introduce a <i>Converter</i>, I'd need something more amenable to dealing with arbitrary objects and using their <i>ToString</i> methods to display them as text. I needed a <i>ContentControl</i>, such as <i>Label</i>, where the <i>Content</i> property is set to the <i>x:Static</i> markup extension expression. Fortunately, <i>Label</i> can be a valid member of the <i>Inlines</i> collection of <i>TextBlock</i> because it gets wrapped in an <i>InlineUIContainer</i> element. The <i>Label</i> elements could then be intermixed with <i>LineBreak</i> elements. 
+
+The XAML file I came up with can be run or downloaded from 
+<a href="http://www.charlespetzold.com/blog/2006/03/EnvironmentInfo.xaml">here</a> and is listed here: 
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;!--&nbsp;==================================================
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EnvironmentInfo.xaml&nbsp;(c)&nbsp;2006&nbsp;by&nbsp;Charles&nbsp;Petzold
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==================================================&nbsp;--&gt;
+&lt;StackPanel&nbsp;xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:s="clr-namespace:System;assembly=mscorlib"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="Operating&nbsp;System&nbsp;Version:&nbsp;"&nbsp;/&gt;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="{x:Static&nbsp;s:Environment.OSVersion}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LineBreak&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content=".NET&nbsp;Version:&nbsp;"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="{x:Static&nbsp;s:Environment.Version}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LineBreak&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="Machine&nbsp;Name:&nbsp;"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="{x:Static&nbsp;s:Environment.MachineName}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LineBreak&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="User&nbsp;Name:&nbsp;"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="{x:Static&nbsp;s:Environment.UserName}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LineBreak&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="User&nbsp;Domain&nbsp;Name:&nbsp;"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="{x:Static&nbsp;s:Environment.UserDomainName}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LineBreak&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="System&nbsp;Directory:&nbsp;"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="{x:Static&nbsp;s:Environment.SystemDirectory}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LineBreak&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="Current&nbsp;Directory:&nbsp;"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="{x:Static&nbsp;s:Environment.CurrentDirectory}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;LineBreak&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="Command&nbsp;Line:&nbsp;"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Label&nbsp;Content="{x:Static&nbsp;s:Environment.CommandLine}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TextBlock&gt;<br>&lt;/StackPanel&gt;<br>
+</ul>
+<p>
+The version shown here is different from the version accessed by the
+link. It turns out that most of these items — all except the first two,
+in fact — can't be accessed with the security permissions allowed loose
+XAML files when run under IE, so the version stored on my site has the
+forbidden items commented out. You can run the director's cut (the
+listing above) under XAML Cruncher or XamlPad or an equivalent.
+</p>
+<p>
+The <i>Label</i> controls are rendered considerably larger than
+their context, which puts a lot of air around the items. To get a
+tighter line spacing, you can alternatively use <i>ContentControl</i> or <i>UserControl</i> (which is the same thing). However, it doesn't appear possible to substitute <i>Run</i>
+element for the controls that just display literal text. The problem is
+aesthetic: The two pieces of side-by-side text just don't line up
+right.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/160655.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/200923.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

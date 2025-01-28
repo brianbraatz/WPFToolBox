@@ -1,0 +1,1141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How do I display grouped data in a TreeView?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">February 4, 2006</div>
+					<h2 id="post-18"><a id="postTitle" href="http://www.beacosta.com/blog/?p=18" rel="bookmark" title="How do I display grouped data in a TreeView?">How do I display grouped data in a TreeView?</a></h2>
+					<p><span id="text">The TreeView control is great at displaying structured data using the HierarchicalDataTemplate (see <a href="http://blogs.msdn.com/karstenj/archive/2005/11/02/488420.aspx">Karsten’s blog post</a>
+on this topic). But what do you do if the data you’re given is not
+structured hierarchically? In this post, I will show you how to create
+that hierarachy from a flat list of data items, using the grouping
+feature of data binding.</span></p>
+<p><span id="text">I am using the same Animal data source I used in my
+last post. Grouping the Animals by Category is done the same way as in
+my last sample:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:Animals x:Key=”animals”/&gt;</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource
+x:Key=”cvs” Source=”{Binding Source={StaticResource animals},
+Path=AnimalList}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CollectionViewSource.GroupDescriptions&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;PropertyGroupDescription
+PropertyName=”Category”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource.GroupDescriptions&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/CollectionViewSource&gt;</span></p>
+<p><span id="text">We now have the data in a hierarchical form. In this
+particular case it has only one level of groups, and another level with
+the animals. You can easily imagine that by adding more
+GroupDescriptions you would end up with a deeper hierarchy.</span></p>
+<p><span id="text">When binding to a CollectionViewSource, the Binding
+object knows to grab the CollectionViewSource’s View property. This
+property returns the custom view (of type ICollectionView) that
+CollectionViewSource creates on top of the data collection (where the
+grouping is applied). In our scenario, we want to bind to the hierarchy
+we created with grouping, or in other words, we want to bind to the
+groups. We can get to this data by binding to the Groups property in
+ICollectionView:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView ItemsSource=”{Binding Source={StaticResource cvs}, Path=Groups}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemTemplate=”{StaticResource categoryTemplate}” Width=”200″&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;</span></p>
+<p><span id="text">When using data binding’s grouping feature, each
+group of items is wrapped in a CollectionViewGroup object. We can
+access the name of the group (the property we’re grouping by) by using
+CollectionViewGroup’s Name property, and we can get to the items that
+belong to the group through the Items property. This is all the
+information we need in order to make a HierarchicalDataTemplate that
+will display the Category of each animal and specify the animals that
+belong to it:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;HierarchicalDataTemplate x:Key=”categoryTemplate”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemsSource=”{Binding Path=Items}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemTemplate=”{StaticResource animalTemplate}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock Text=”{Binding Path=Name}” FontWeight=”Bold”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/HierarchicalDataTemplate&gt;</span></p>
+<p><span id="text">Finally we need a DataTemplate for the leaf nodes,
+which specifies how we want the Animal data to be displayed. In this
+case, we are interested in displaying the Name property of each Animal.
+Notice that the HierarchicalDataTemplate’s ItemTemplate property points
+to this template.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate x:Key=”animalTemplate”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock Text=”{Binding Path=Name}”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;</span></p>
+<p><span id="text">Here is the result of the completed sample:</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/15GroupingTreeView.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/15GroupingTreeView.zip">Here</a> you can find the VS project with this sample code. This works with January CTP WPF bits. </span></p>
+<p><span id="text">Update September 18, 2007: <a href="http://www.beacosta.com/Zips/15GroupingTreeViewOrcasBeta2.zip">Here you can find this sample working with Orcas Beta 2 bits.</a></span></p>
+<a href="http://www.beacosta.com/Zips/15GroupingTreeViewOrcasBeta2.zip">										</a><p class="posted"><a href="http://www.beacosta.com/Zips/15GroupingTreeViewOrcasBeta2.zip">Posted by </a><a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=13" title="View all posts in Sorting, filtering, grouping" rel="category">Sorting, filtering, grouping</a>, <a href="http://www.beacosta.com/blog/?cat=7" title="View all posts in TreeView" rel="category">TreeView</a>, <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=18"
+    dc:identifier="http://www.beacosta.com/blog/?p=18"
+    dc:title="How do I display grouped data in a TreeView?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=18" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=18"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=18">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">22 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-252" class="comment">
+				<a name="comment-252" id="comment-252"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-252")'>
+					<cite>Comment by Brett<a href="#comment-252"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-05 11:18:56 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,</p>
+<p>We would like to show a set of objects grouped in a TreeView based
+on the CLR type as opposed to a property value. Are there any plans for
+a TypeGroupDescription? Is such a thing even possible?</p>
+<p>Regards,</p>
+<p>Brett</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-252", 252, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-253" class="comment odd">
+				<a name="comment-253" id="comment-253"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-253")'>
+					<cite>Comment by Bea<a href="#comment-253"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-05 18:42:33 						
+					</div>					
+					<div class="content">
+						<p>Yes,
+that is possible with the current implementation of Grouping. You can
+do that by using the Converter property of PropertyGroupDescription and
+writing custom code where you test the CLR type of the data item. Items
+will be grouped by the value you return in the converter.</p>
+<p>How about I make that my next blog post? <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/icon_smile.gif" alt=":)" class="wp-smiley"></p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-253", 253, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-254" class="comment">
+				<a name="comment-254" id="comment-254"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-254")'>
+					<cite>Comment by Brett<a href="#comment-254"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-06 09:53:16 						
+					</div>					
+					<div class="content">
+						<p>Perfect!
+I am unsure whether I am approaching this problem from the right
+direction (e.g. grouping vs. other method), but I would be very
+interested to see how you would use the Converter property for this.</p>
+<p>You made my day! Thanks!</p>
+<p>Brett</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-255" class="comment odd">
+				<a name="comment-255" id="comment-255"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-255")'>
+					<cite>Comment by Bea<a href="#comment-255"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-12 19:47:53 						
+					</div>					
+					<div class="content">
+						<p>Hi Brett,</p>
+<p>Does my last blog post do what you were looking for? Let me know if you have any further questions on this.</p>
+<p>And thanks for the idea <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/icon_smile.gif" alt=":)" class="wp-smiley"></p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-254", 254, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-256" class="comment">
+				<a name="comment-256" id="comment-256"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-256")'>
+					<cite>Comment by Josh Smith<a href="#comment-256"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-06-12 21:16:47 						
+					</div>					
+					<div class="content">
+						<p>Hello Beatriz,</p>
+<p>In the June CTP of WPF, when I run this sample and navigate the tree
+items via the Up and Down arrow keys, an exception is thrown. I have
+reported this bug in the WPF newsgroups, but received no reply yet.
+This seems like an important bug so I am reporting it through as many
+channels as I can.</p>
+<p>Cheers,<br>
+Josh Smith</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-256", 256, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-257" class="comment odd">
+				<a name="comment-257" id="comment-257"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-257")'>
+					<cite>Comment by Bea<a href="#comment-257"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-06-13 10:06:25 						
+					</div>					
+					<div class="content">
+						<p>Hi Josh,</p>
+<p>That is a pretty bad bug. I am able to repro it just as you explained and opened the corresponding bug in our database.</p>
+<p>I really appreciate your feedback on this. Thanks for making Avalon a better platform <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-257", 257, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-258" class="comment">
+				<a name="comment-258" id="comment-258"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-258")'>
+					<cite>Comment by Sam<a href="#comment-258"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-07-16 06:27:05 						
+					</div>					
+					<div class="content">
+						<p>Hello,</p>
+<p>This is a really old post, but perhaps you get notified by email when a new reply comes..</p>
+<p>I want to modify your GroupingTreeView sample to bind to a property
+of the window’s DataContext, instead of to a static resource.</p>
+<p>The property is an ObservableCollection and<br>
+I want to replace the first line of the CollectionViewSource declaration with something like this:<br>
+Source=”{Binding Path=AnimalList}”</p>
+<p>Is this possible these days? Thank you very much if you do get this!</p>
+<p>Sam</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-258", 258, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-261" class="comment odd">
+				<a name="comment-261" id="comment-261"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-261")'>
+					<cite>Comment by Bea<a href="#comment-261"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-07-21 22:43:43 						
+					</div>					
+					<div class="content">
+						<p>Hi Sam,</p>
+<p>Yes, that is possible to do and very easy. All you have to do is add the following to the constructor:</p>
+<p>public Window1()<br>
+{<br>
+this.DataContext = new Animals();<br>
+this.InitializeComponent();<br>
+}</p>
+<p>I uploaded this blog’s code with the DataContext <a href="http://www.beacosta.com/BlogComments/18GroupingTreeView2.zip" rel="nofollow">here</a>.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-261", 261, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-259" class="comment">
+				<a name="comment-259" id="comment-259"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-259")'>
+					<cite>Comment by Anonymous<a href="#comment-259"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-07-20 08:26:23 						
+					</div>					
+					<div class="content">
+						<p>Great, but, what’ll happen if I want to renderize this tree with a class model, like Windows.Forms.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-259", 259, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-260" class="comment odd">
+				<a name="comment-260" id="comment-260"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-260")'>
+					<cite>Comment by Bea<a href="#comment-260"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-07-21 23:24:00 						
+					</div>					
+					<div class="content">
+						<p>Regarding your “class model” question, can you please expand on that? I’m not sure what you mean…<br>
+Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-260", 260, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-262" class="comment">
+				<a name="comment-262" id="comment-262"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-262")'>
+					<cite>Comment by Shanty<a href="#comment-262"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-17 00:56:07 						
+					</div>					
+					<div class="content">
+						<p>mmm, If you find my comments very fool, sorry, i’m a starter.<br>
+I want to do something like your tree (grouping), but runtime error is raised in this treeview line<br>
+ItemTemplate=”{StaticResource categoryTemplate}” </p>
+<p>why??</p>
+<p>thanks for alls your examples beatriz.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-262", 262, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-263" class="comment odd">
+				<a name="comment-263" id="comment-263"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-263")'>
+					<cite>Comment by Shanty<a href="#comment-263"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-17 00:56:50 						
+					</div>					
+					<div class="content">
+						<p>emm, ok, i’d downloaded groupingtreeview2 and everything’s ok. Thanks Bea, thank you so much.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-263", 263, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-264" class="comment">
+				<a name="comment-264" id="comment-264"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-264")'>
+					<cite>Comment by Bea<a href="#comment-264"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-18 22:40:47 						
+					</div>					
+					<div class="content">
+						<p>Shanty,</p>
+<p>I’m glad you were able to find the problem in your app.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-265" class="comment odd">
+				<a name="comment-265" id="comment-265"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-265")'>
+					<cite>Comment by Shanty<a href="#comment-265"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-20 08:10:48 						
+					</div>					
+					<div class="content">
+						<p>I’m still working with your tree. I inserted INotifyPropertyChanged and ObservableCollection and,a new tree and more classes.<br>
+I can say that your tree is for me a tutorial tree, but, I’m now with a
+little problem. Well, the tere is grouping by CollectionViewSource and
+the first level is the group name, but, if you want to viwe gropu name
+in second level?? and for example in the first level is the jungle??
+It’s possible??</p>
+<p>regards, shanty</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-268" class="comment odd">
+				<a name="comment-268" id="comment-268"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-268")'>
+					<cite>Comment by Bea<a href="#comment-268"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-21 16:49:30 						
+					</div>					
+					<div class="content">
+						<p>Hi Shanty,</p>
+<p>You can add another level of grouping by adding a second
+PropertyGroupDescription to the GroupDescriptions collection of
+CollectionViewSource. Does this answer your question?</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-264", 264, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-266" class="comment">
+				<a name="comment-266" id="comment-266"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-266")'>
+					<cite>Comment by Aeoth<a href="#comment-266"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-23 19:03:28 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,<br>
+I’ve got my Treeview setup - “sorting” based on the property.<br>
+What happens if say…’evolution’ occurs, and a frog evolves into a bear group?</p>
+<p>I’m using INotifyPropertyChanged but it doesnt’ seem to ‘move’ my frog over into the next group.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-266", 266, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-267" class="comment odd">
+				<a name="comment-267" id="comment-267"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-267")'>
+					<cite>Comment by Bea<a href="#comment-267"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-24 15:36:10 						
+					</div>					
+					<div class="content">
+						<p>Hi Aeoth,</p>
+<p>Currently, if you change the property you’re grouping on, we don’t
+refresh the groups automatically. You can refresh them yourself with
+the following code:</p>
+<p>CollectionViewSource cvs = this.Resources[”cvs”] as CollectionViewSource;<br>
+cvs.View.Refresh();</p>
+<p>We discussed the feature you’re asking a long time ago, but decided
+to not add it in the first version of WPF because it’s not trivial to
+design. For your particular scenario, since you’re using
+PropertyGroupDescription to generate the groups, it would be easy for
+grouping code to listen to property changes on the property specified.
+However, if the user decides to use custom grouping, we would not be
+able to rely on INotifyPropertyChanged to get change notifications. We
+want to support this feature at some point, but that will require
+either only support non-custom grouping, or coming up with a new design
+that supports all kinds of groupings.</p>
+<p>You can see a project with this blog sample working with property changes <a href="http://www.beacosta.com/BlogComments/20GroupingTreeView2.zip" rel="nofollow">here</a>.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-267", 267, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-269" class="comment">
+				<a name="comment-269" id="comment-269"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-269")'>
+					<cite>Comment by Aeoth<a href="#comment-269"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-08-25 00:30:15 						
+					</div>					
+					<div class="content">
+						<p>Bea, thanks! <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/icon_biggrin.gif" alt=":D" class="wp-smiley"><br>
+That works perfectly</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-269", 269, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-270" class="comment">
+				<a name="comment-270" id="comment-270"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-270")'>
+					<cite>Comment by Anonymous<a href="#comment-270"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-07-02 18:19:50 						
+					</div>					
+					<div class="content">
+						<p>Could not get the example to build.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-270", 270, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-361" class="comment odd">
+				<a name="comment-361" id="comment-361"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-361")'>
+					<cite>Comment by Bea<a href="#comment-361"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-18 10:42:11 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>I updated this sample to work with Orcas Beta 2 bits. You can find the new project <a href="http://www.beacosta.com/Zips/15GroupingTreeViewOrcasBeta2.zip" rel="nofollow">here</a>.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-361", 361, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-718" class="comment">
+				<a name="comment-718" id="comment-718"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-718")'>
+					<cite>Comment by Alex<a href="#comment-718"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-30 16:39:22 						
+					</div>					
+					<div class="content">
+						<p>Bea, </p>
+<p>Is there a way to use Hierarchical datatemplate on the treeview with anonymous types?<br>
+I want to bind treeview to a result of LINQ query without wrapping it in a concrete type.</p>
+<p>Thanx, Alex</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-718", 718, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-758" class="comment odd">
+				<a name="comment-758" id="comment-758"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-758")'>
+					<cite>Comment by Bea<a href="#comment-758"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-10-01 12:24:51 						
+					</div>					
+					<div class="content">
+						<p>Hi Alex,</p>
+<p>Templating anonymously typed data works fine, as long as you give
+the template a key in the resources, and point the ItemTemplate to that
+key. Implicit templates (the ones that are applied by setting the
+DataType property) will not work in this scenario.</p>
+<p>I created a simple sample of a ListBox bound to a collection of
+anonymous types, and used an explicit DataTemplate to template the data
+items. You can find it <a href="http://www.beacosta.com/BlogComments/40AnonymousTypesTemplates.zip" rel="nofollow">here</a>.
+You can do something similar for TreeView, by setting the ItemTemplate
+property of the TreeView, plus the ItemTemplate property of the
+HierarchicalDataTemplate.</p>
+<p>Let me know if this helps.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-758", 758, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1429" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1429" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20display%20grouped%20data%20in%20a%20TreeView_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="18" type="hidden">
+		<input name="redirect_to" value="/blog/?p=18" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="5e8d0cce7b8517566a390fad94246d23" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>6171</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 6171;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

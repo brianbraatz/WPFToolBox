@@ -1,0 +1,623 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Rendering a WPF Container to Bitmap - Rick Strahl's Web Log</title>
+
+
+
+<link id="ctl00_RssLink" rel="alternate" type="application/rss+xml" title="Rick Strahl's Web Log" href="http://feeds.feedburner.com/rickstrahl"><meta id="ctl00_metaKeyWords" name="Keywords" content="WPF, C#, Rounded Corner,Generator,RenderTargetBitmap,Bitmap,Transparent,BitmapEncoder"><meta id="ctl00_metaDescription" name="Description" content="One of WPF's nicer features is its ability to render any visual into a bitmap easily, and so I thought I'd create a simple little tool that would create rounded corner bitmap bars with transparent backgrounds. It's actually quite easy to do, but I ran into a few pitfalls and inconsistencies that make WPF coding oh so much fun."> 	
+    <style type="text/css">
+        .blogimgtag  { border:none;margin-top:5px; }
+    </style>
+<link href="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/Standard.css" type="text/css" rel="stylesheet"></head><body>
+
+<form name="aspnetForm" method="post" action="../ShowPost.aspx?id=150676" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEwNTgyMjUxNzJkGAIFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBRZjdGwwMCRjaGtSZW1lbWJlckxvZ2luBRdjdGwwMCRDb250ZW50JENhcHRjaGEzVw8FJGY4ZTYwODczLTdlYmYtNDZlOS1iOTg5LTAxYjg3M2EzZjUwMWRhYj4Ya7xgrh1jy7Dom0SKdnSwDA==" type="hidden">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/WebResource.js" type="text/javascript"></script>
+
+<div style="margin: 0px; padding: 0px;"><a href="http://west-wind.com/">
+    <img id="ctl00_imgLogo" src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/wwtoollogo_text.gif" style="border-width: 0px; margin-right: 5px; margin-top: 25px;" align="right" border="0"></a>
+                          
+                          <a href="http://west-wind.com/WebLog/default.aspx"><img id="ctl00_WebLogLogo" src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/WebLogBannerLogo.jpg" alt="Rick Strahl's Web Log" style="border-width: 0px;" border="0"></a></div>
+<div class="weblogbanner">
+    <div style="float: left; color: rgb(255, 204, 0); padding-left: 8px;">Life, Surf, Code and everything in between</div>
+    <div style="color: white; float: right; padding-right: 10px;" id="Div1">
+            <a class="weblogbannertext" href="http://west-wind.com/articles.asp" title="White Papers">White Papers</a> | 
+            <a class="weblogbannertext" href="http://west-wind.com/DotNetTools.asp" title="Free Tools">Free Tools</a> | 
+            <a class="weblogbannertext" href="http://west-wind.com/pricing.asp" title="Products">Products</a> | 
+            <a class="weblogbannertext" href="http://west-wind.com/wwThreads/" title="Support">Message Board</a> | 
+            <a class="weblogbannertext" href="http://west-wind.com/westwindnews.wst" title="News">News</a> |
+     </div>
+</div>
+    <!-- End Page header/banner -->
+
+    
+    <!-- Category List Sidebar -->
+    <div id="SideBar" class="gridalternate" style="overflow: hidden; position: absolute; left: 0px; width: 170px;">
+        <div class="gridheader" style="margin-top: 15px; margin-bottom: 5px;">
+            My Links</div>
+        <div style="padding-left: 5px;">
+            <div><a id="ctl00_lnkWebLogHome" class="menulink" href="http://west-wind.com/weblog/default.aspx">Web Log Home</a></div>
+            <div><a id="ctl00_lnkSiteHome" class="menulink" href="http://west-wind.com/">Site Home</a></div>
+            <div><a id="ctl00_lnkFoxBlog" class="menulink" href="http://west-wind.com/wconnect/weblog/">Fox Web Log</a></div>
+            <div><a id="ctl00_lnkContact" class="menulink" href="http://west-wind.com/contact.asp">Contact</a></div>
+            <div><a id="ctl00_lnkSearch" class="menulink" href="http://west-wind.com/search.asp">Search</a></div>
+            <div><a id="ctl00_RssHyperLink" class="menulink" href="http://feeds.feedburner.com/rickstrahl" style="vertical-align: middle;"><img id="ctl00_imgRss" src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/rss.png" style="border: medium none ; padding-right: 30px;" align="right">Subscribe to Feed</a>
+
+                <a href="http://feeds.feedburner.com/RickStrahl"><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/RickStrahl.gif" style="border: 0pt none ;" alt="" height="26" width="88"></a>                
+             </div>
+
+            <a href="http://fusion.google.com/add?feedurl=http://feeds.feedburner.com/RickStrahl"><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/add.gif" class="blogimgtag" alt="Add to Google Reader or Homepage" height="17" width="104"></a><br>
+            <a href="http://www.bloglines.com/sub/http://feeds.feedburner.com/RickStrahl" title="Rick Strahl's WebLog" type="application/rss+xml"><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/sub_modern11.gif" alt="Subscribe in Bloglines" class="blogimgtag"></a><br>
+            <a href="http://technorati.com/faves?sub=addfavbtn&amp;add=http://www.west-wind.com/weblog"><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/btn-fave2.png" class="blogimgtag" alt="Add to Technorati Favorites"></a>
+            
+            <br>
+            <hr>
+            <center>
+                <img id="ctl00_AuthorImage" src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/rick.jpg" style="border-width: 0px;"><br>
+                <img id="ctl00_imgMVP" src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/msmvp.gif" style="border-width: 0px; margin-top: 3px;"><br>
+                <small>since 1997</small>                
+            </center>
+           <hr>           
+            <center><div class="section lounge">
+	<div id="wedje_div_thelounge"><a href="http://www.discountasp.net/go/go.aspx?i=3909" class="tll" title="DiscountAsp .Net"><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/discountasp1.gif" title="DiscountAsp .Net" alt="DiscountAsp .Net" class="tli" border="0" height="90" width="120"></a><p class="tlp">Voted “Best ASP.NET Host” for 2007 by asp.netPRO &amp; Visual Studio Magazines! <a href="http://www.discountasp.net/go/go.aspx?i=3913" target="_top">Click To Learn More!</a></p></div>
+	<script type="text/javascript" src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/Entrance.txt"></script>
+	<p class="tlp">
+		<a href="http://www.montylounge.com/thelounge/" title="Ads via the lounge" class="adsvia">Ads Via The Lounge</a>    
+	</p>
+</div></center>
+        </div>
+         <div class="gridheader" style="margin-top: 5px;">
+            Blog Stats</div>
+           <div style="padding-left: 5px;">
+                <div><a href="http://west-wind.com/WebLog/ShowPosts.aspx" class="menulink">Posts - 864</a></div>
+<div><a href="http://west-wind.com/WebLog/ShowComments.aspx" class="menulink">Comments - 8345</a></div>
+<div><a href="http://west-wind.com/WebLog/ShowComments.aspx?Type=Trackbacks" class="menulink">Backlinks - 1435</a></div>
+
+           </div>
+        
+        <div class="gridheader">Links</div>
+        <div style="padding: 5px;">
+            <div><a id="ctl00_lnkPhotoAlbum" class="menulink" href="http://www.west-wind.com/rick/photoalbum/">Photo Album</a></div>
+            <div><a id="ctl00_lnkMusic" class="menulink" href="http://www.west-wind.com/music">My Noise</a></div>
+            <div><a id="ctl00_lnkMessageBoard" class="menulink" href="http://west-wind.com/wwThreads/">Message Board</a></div>
+        
+        
+        </div>
+        
+        <div class="gridheader">Categories</div>
+        <div style="padding: 5px;">
+        <a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=ASP.NET">ASP.NET (117)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=.NET">.NET (36)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Personal">Personal (36)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Vista">Vista (25)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=AJAX">AJAX (24)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Orcas">Orcas (20)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=IIS">IIS (16)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=LINQ">LINQ (16)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Localization">Localization (15)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Visual%20Studio">Visual Studio (15)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Microsoft%20AJAX">Microsoft AJAX (13)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=JavaScript">JavaScript (11)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=FoxPro">FoxPro (11)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=IIS7">IIS7 (10)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=WPF">WPF (8)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Web%20Connection">Web Connection (7)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=CSharp">CSharp (7)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=COM">COM (6)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=ADO.NET">ADO.NET (6)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=WCF">WCF (6)</a>
+<a class="menulink" href="javascript:;" onclick="this.style.display='none';document.getElementById('divMoreCategories').style.display='';"><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/info.gif" border="0"> More...</a>
+<div id="divMoreCategories" style="display: none;">
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Sql%20Server">Sql Server (5)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Silverlight">Silverlight (5)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=wwHoverPanel">wwHoverPanel (5)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=XML">XML (5)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=HTML">HTML (5)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Html%20Help%20Builder">Html Help Builder (4)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Bugs">Bugs (4)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Hardware">Hardware (4)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Windows">Windows (4)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=WebLog">WebLog (3)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Source%20Control">Source Control (3)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=CSS">CSS (3)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=DataBinding">DataBinding (3)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=C++">C++ (3)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=HTTP">HTTP (3)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Office">Office (3)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Help%20Builder">Help Builder (2)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Maui">Maui (2)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Live%20Writer">Live Writer (2)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Installation">Installation (2)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=ISV">ISV (2)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=RSS">RSS (2)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Tools">Tools (2)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Windsurfing">Windsurfing (2)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Software%20Development">Software Development (2)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Web%20Services">Web Services (2)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Utilities">Utilities (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Threading">Threading (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Web%20Deployment%20Projects">Web Deployment Projects (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Web%20Design">Web Design (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=RegEx">RegEx (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Speaking">Speaking (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=SmartPhone">SmartPhone (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=jQuery">jQuery (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Networking">Networking (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Addins">Addins (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=%20ADO.NET"> ADO.NET (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=%20IIS7"> IIS7 (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=%20Visual%20Studio"> Visual Studio (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Control%20Development">Control Development (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Help">Help (1)</a>
+<a class="menulink" href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Graphics">Graphics (1)</a>
+</div>
+
+        </div>
+        
+        <div class="gridheader">Archives</div>
+        <div style="padding: 5px;">
+        
+            <div><a href="http://west-wind.com/WebLog/archive/102007.aspx" class="menulink">October, 2007 (10)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/092007.aspx" class="menulink">September, 2007 (21)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/082007.aspx" class="menulink">August, 2007 (27)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/072007.aspx" class="menulink">July, 2007 (26)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/062007.aspx" class="menulink">June, 2007 (20)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/052007.aspx" class="menulink">May, 2007 (17)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/042007.aspx" class="menulink">April, 2007 (17)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/032007.aspx" class="menulink">March, 2007 (20)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/022007.aspx" class="menulink">February, 2007 (14)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/012007.aspx" class="menulink">January, 2007 (26)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/122006.aspx" class="menulink">December, 2006 (21)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/112006.aspx" class="menulink">November, 2006 (22)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/102006.aspx" class="menulink">October, 2006 (28)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/092006.aspx" class="menulink">September, 2006 (26)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/082006.aspx" class="menulink">August, 2006 (23)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/072006.aspx" class="menulink">July, 2006 (23)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/062006.aspx" class="menulink">June, 2006 (21)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/052006.aspx" class="menulink">May, 2006 (24)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/042006.aspx" class="menulink">April, 2006 (20)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/032006.aspx" class="menulink">March, 2006 (27)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/022006.aspx" class="menulink">February, 2006 (23)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/012006.aspx" class="menulink">January, 2006 (19)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/122005.aspx" class="menulink">December, 2005 (25)</a></div>
+            
+            <div><a href="http://west-wind.com/WebLog/archive/112005.aspx" class="menulink">November, 2005 (22)</a></div>
+            
+        
+        </div>
+        
+        <div class="gridheader">Log In</div>
+        <div style="padding-left: 5px;">
+         User Name:<br>
+         <input name="ctl00$txtUsername" id="ctl00_txtUsername" style="width: 140px;" type="text"><br>
+         Password:<br>
+         <input name="ctl00$txtPassword" id="ctl00_txtPassword" style="width: 140px;" type="password">
+         <input id="ctl00_chkRememberLogin" name="ctl00$chkRememberLogin" type="checkbox"><label for="ctl00_chkRememberLogin">Rembember me</label><br>
+         
+         <input name="ctl00$btnLogin" value="Log In" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$btnLogin", "", true, "", "", false, false))' id="ctl00_btnLogin" type="submit">
+         
+         </div>
+         <hr>
+         <div style="margin: 15px; text-align: center;">
+         
+<iframe src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/displayad.htm" marginwidth="0" marginheight="0" frameborder="0" height="125" scrolling="no" width="125">&lt;script
+type="text/javascript"
+src="http://ads.aspalliance.com/displayad.aspx?t=5&amp;amp;m=104&amp;amp;target=_parent&amp;amp;js=1"&gt;&lt;/script&gt;</iframe>
+<br>
+<br>
+<iframe src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/displayad_002.htm" marginwidth="0" marginheight="0" frameborder="0" height="600" scrolling="no" width="120">&lt;script
+type="text/javascript"
+src="http://ads.aspalliance.com/displayad.aspx?t=8&amp;amp;m=104&amp;amp;target=_parent&amp;amp;js=1"&gt;&lt;/script&gt;</iframe>
+
+         </div>
+    </div>
+    <!-- End Category List Sidebar -->
+
+    <div id="MainContent" class="ContentPanel" style="overflow: visible; margin-left: 200px; padding-top: 10px; padding-right: 25px;">
+         
+        <!-- google_ad_section_start -->
+        
+    <table width="99%"><tbody><tr><td align="right">
+<script src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/wwBanner.htm" type="text/javascript"></script><a href="http://west-wind.com/WebLog/wwBanner.axd?id=8815900f&amp;a=c&amp;t=633285701229022500&amp;u=http://west-wind.com/weblog/posts/150676.aspx" target="_top"><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/wwHelpBanner.Gif" border="0"></a> 
+</td></tr></tbody></table>
+<div style="margin-top: 10px; margin-right: 25px; min-width: 600px;">
+<div id="ctl00_Content_FeedbackPanel">
+	
+<h2><a style="text-decoration: none;" href="http://west-wind.com/WebLog/posts/150676.aspx">Rendering a WPF Container to Bitmap</a></h2>
+<hr>
+<div class="commentcount"><a href="#Feedback">10 comments</a></div>
+<div class="byline">September 10, 2007 @ 2:07 am- &nbsp;from Hood River, Oregon</div>
+<br>
+<br>
+<div class="postcontent">
+<p>I'm playing around a little today with WPF again. One thing I like
+about WPF is the fact that you can take just about anything that you
+render on the canvas and dump it out as a bitmap file. Since it's
+fairly easy to create images and shapes in WPF I thought I'd create a
+quick form to created rounded corner bars, because one can never have
+enogh of those in Web applications &lt;g&gt;...</p> <p>Oh ok, so I have
+tools that do that shit, but I wanted to see what it takes to do this
+with WPF. A few hours later I got it working, but there were a few
+hiccups along the way. Here's what the end result looks like:<br></p> <p><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/RoundedCornerWpf.png"> </p> <p>The
+idea is you type in a width, height, radius and color and it will
+generate the appropriate rounded bar for you. It renders in real time
+as you type so you see immediately what it looks like.</p> <p>Trivial,
+but actually kinda useful - there are a few similar combinations I'm
+thinking would be useful: Creating gradients (easier and more trivial),
+creating shadow images etc.</p> <p>So the whole point of this exercise
+was to see how "easy" it'd be to do this because WPF provides the
+ability to take any rendered visual and lets render it to a bitmap.
+Even nicer, WPF properly respects transparency when rendering to disk,
+something that's a real bitch in GDI+ when needing to save to GIF
+images.</p> <p>So, I thought how hard could this be? Well it turns out
+the concept is very simple, but due to some very unexpected behavior in
+WPF it too a long time and some help from a friend to figure it out.</p> <p>The
+basic set up is this: The middle section of the form above is a Grid
+that lives inside of a DockPanel. The DockPanel handles the docking of
+the controls at the top and the save options on the bottom with the
+grid making up the fill of the rest of the window DockPanel content. So
+I figured all I'd have to do is stick a Grid inside of the of the fill
+container (ie. the parent grid) and then render a rectangle into it at
+the right size and I'm done.</p> <p>There are some tricky issues to
+deal with in the shapes - like a Rectangle - aren't controls, but
+drawings so they don't act like a container. So the idea is to draw the
+outer container and fill the container with the rectangle. The
+rectangle then has a Radius X and Radius Y assigned to create the
+rounder corners.</p> <p>My first shot looked like this:</p><pre class="code"><span style="color: rgb(0, 128, 128);">        </span><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(163, 21, 21);">Grid</span><span style="color: rgb(255, 0, 0);"> Name</span><span style="color: rgb(0, 0, 255);">="renderContainer"</span><span style="color: rgb(255, 0, 0);"> Background</span><span style="color: rgb(0, 0, 255);">="Azure"</span><span style="color: rgb(255, 0, 0);"> ClipToBounds</span><span style="color: rgb(0, 0, 255);">="True"&gt;</span><span style="color: rgb(0, 128, 128);">            
+</span><span style="color: rgb(0, 128, 128);">            </span><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(163, 21, 21);">Grid</span><span style="color: rgb(255, 0, 0);"> Name</span><span style="color: rgb(0, 0, 255);">="cvWrapper"</span><span style="color: rgb(255, 0, 0);"> Background</span><span style="color: rgb(0, 0, 255);">="Transparent"&gt;</span><span style="color: rgb(0, 128, 128);">                
+                </span><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(163, 21, 21);">Rectangle</span><span style="color: rgb(255, 0, 0);"> Name</span><span style="color: rgb(0, 0, 255);">="rectMainShape"&gt;</span><span style="color: rgb(0, 128, 128);">                   
+                </span><span style="color: rgb(0, 0, 255);">&lt;/</span><span style="color: rgb(163, 21, 21);">Rectangle</span><span style="color: rgb(0, 0, 255);">&gt;</span><span style="color: rgb(0, 128, 128);">                
+            </span><span style="color: rgb(0, 0, 255);">&lt;/</span><span style="color: rgb(163, 21, 21);">Grid</span><span style="color: rgb(0, 0, 255);">&gt;
+</span><span style="color: rgb(0, 128, 128);">        </span><span style="color: rgb(0, 0, 255);">&lt;/</span><span style="color: rgb(163, 21, 21);">Grid</span><span style="color: rgb(0, 0, 255);">&gt;</span></pre><a href="http://11011.net/software/vspaste"></a>
+<p>with code that essentially does the following:</p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: blue;">private</span> <span style="color: blue;">void</span> btnSave_Click(<span style="color: blue;">object</span> sender, <span style="color: rgb(43, 145, 175);">RoutedEventArgs</span> e)</pre><pre style="margin: 0px;">{</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">int</span> Height = (<span style="color: blue;">int</span>)<span style="color: blue;">this</span>.cvWrapper.ActualHeight;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">int</span> Width = (<span style="color: blue;">int</span>)<span style="color: blue;">this</span>.cvWrapper.ActualWidth;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">RenderTargetBitmap</span> bmp = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">RenderTargetBitmap</span>(Width, Height, 96, 96, <span style="color: rgb(43, 145, 175);">PixelFormats</span>.Pbgra32);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; bmp.Render(<span style="color: blue;">this</span>.cvWrapper);</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">string</span> file = <span style="color: blue;">this</span>.txtFilename.Text;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">string</span> Extension = System.IO.<span style="color: rgb(43, 145, 175);">Path</span>.GetExtension(file).ToLower();</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: rgb(43, 145, 175);">BitmapEncoder</span> encoder;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (Extension == <span style="color: teal;">".gif"</span>) </pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; encoder = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">GifBitmapEncoder</span>();&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">else</span> <span style="color: blue;">if</span> (Extension == <span style="color: teal;">".png"</span>)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; encoder = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">PngBitmapEncoder</span>();&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">else</span> <span style="color: blue;">if</span> (Extension == <span style="color: teal;">".jpg"</span>)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; encoder = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">JpegBitmapEncoder</span>();&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">else</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">return</span>;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; encoder.Frames.Add(<span style="color: rgb(43, 145, 175);">BitmapFrame</span>.Create(bmp));</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">using</span> (<span style="color: rgb(43, 145, 175);">Stream</span> stm = <span style="color: rgb(43, 145, 175);">File</span>.Create(file))</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; encoder.Save(stm);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">}</pre></div>
+<p>This code is supposed to look at the above code and render it into a
+bitmap. The RenderBitmap object is used and it renders the target in
+system level pixels not WPF device independent pixels - important
+because if the bitmap is used anywhere but WPF you'll want standard
+fixed pixel sizes. RenderTargetBitmap handles the appropriate scaling
+to provide the correct size. The bitmap is then added to a Bitmap
+Encoder which in turn can write out the bitmap to a file. Simple enough
+(if you know what to do &lt;s&gt;).</p>
+<p>But unfortunately this did not work. In fact, the output generated
+where the correct size I specified in the form, but the content was -
+well blank. After some more experimenting I found that the content
+actually wasn't blank but rather shifted off rather far to the bottom
+and right. It turns out that it was shifted exactly by the margins of
+the Parent container or in this case RenderContainer. It looks like WPF
+is rendering the parent container - but actually it's not. What's
+happening is that WPF is rendering the visual control I provided but
+it's applying any margins that are applied against it. The margins are
+implicit - I never declared them but they are nevertheless
+implied.&nbsp;So the background of the 'empty' image is transparent,
+not Azure which would have accounted for the parent container.</p>
+<p>So after a lot of back and forth to figure this out (and some help from <a href="http://www.doitwith.net/">Mark Miller</a> of <a href="http://www.devexpress.com/">DevExpress</a>)
+I finally figured out that the margins where being applied and applied
+a simple solution: Wrap the inner Grid into another container without
+any margins. So the margins of the Grid, which by default centers all
+content (which is what I want so the image is always centered in the
+view) are the issue here. By wrapping the inside Grid in a Canvas of
+the same size the rendering started to work properly:</p><pre class="code"><span style="color: rgb(0, 128, 128);">        </span><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(163, 21, 21);">Grid</span><span style="color: rgb(255, 0, 0);"> Name</span><span style="color: rgb(0, 0, 255);">="renderContainer"</span><span style="color: rgb(255, 0, 0);"> Background</span><span style="color: rgb(0, 0, 255);">="Azure"</span><span style="color: rgb(255, 0, 0);"> ClipToBounds</span><span style="color: rgb(0, 0, 255);">="True"&gt;</span><span style="color: rgb(0, 128, 128);">            
+            </span><strong><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(163, 21, 21);">Canvas</span><span style="color: rgb(255, 0, 0);"> Name</span></strong><span style="color: rgb(0, 0, 255);"><strong>="stOuter"&gt;</strong>
+</span><span style="color: rgb(0, 128, 128);">                </span><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(163, 21, 21);">Canvas</span><span style="color: rgb(255, 0, 0);"> Name</span><span style="color: rgb(0, 0, 255);">="cvWrapper"</span><span style="color: rgb(255, 0, 0);"> Background</span><span style="color: rgb(0, 0, 255);">="Transparent"</span><span style="color: rgb(255, 0, 0);"> ClipToBounds</span><span style="color: rgb(0, 0, 255);">="True"&gt;</span><span style="color: rgb(0, 128, 128);">                
+                    </span><span style="color: rgb(0, 0, 255);">&lt;</span><span style="color: rgb(163, 21, 21);">Rectangle</span><span style="color: rgb(255, 0, 0);"> Name</span><span style="color: rgb(0, 0, 255);">="rectMainShape"&gt;</span><span style="color: rgb(0, 128, 128);">                   
+                    </span><span style="color: rgb(0, 0, 255);">&lt;/</span><span style="color: rgb(163, 21, 21);">Rectangle</span><span style="color: rgb(0, 0, 255);">&gt;</span><span style="color: rgb(0, 128, 128);">                
+                </span><span style="color: rgb(0, 0, 255);">&lt;/</span><span style="color: rgb(163, 21, 21);">Canvas</span><span style="color: rgb(0, 0, 255);">&gt;
+</span><span style="color: rgb(0, 128, 128);">            </span><strong><span style="color: rgb(0, 0, 255);">&lt;/</span><span style="color: rgb(163, 21, 21);">Canvas</span></strong><span style="color: rgb(0, 0, 255);"><strong>&gt;</strong>
+</span><span style="color: rgb(0, 128, 128);">        </span><span style="color: rgb(0, 0, 255);">&lt;/</span><span style="color: rgb(163, 21, 21);">Grid</span><span style="color: rgb(0, 0, 255);">&gt;</span></pre><a href="http://11011.net/software/vspaste"></a><a href="http://11011.net/software/vspaste"></a>
+<p>The code now has to size the canvas, the inner grid and the
+rectangle all to the same size before rendering. Here's what the actual
+display Image code looks like:</p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: blue;">public</span> <span style="color: blue;">void</span> DisplayImage()</pre><pre style="margin: 0px;">{</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">try</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">float</span> Height = <span style="color: blue;">float</span>.Parse(<span style="color: blue;">this</span>.txtHeight.Text);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">float</span> OriginalHeight = Height;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">float</span> Width = <span style="color: blue;">float</span>.Parse(<span style="color: blue;">this</span>.txtWidth.Text);</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">float</span> Radius = <span style="color: blue;">float</span>.Parse(<span style="color: blue;">this</span>.txtRadius.Text);</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;"><strong>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.cvWrapper.Width = Width;</strong></pre><pre style="margin: 0px;"><strong>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.cvWrapper.Height = Height;</strong></pre><pre style="margin: 0px;"><strong>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.stOuter.Width = Width;</strong></pre><pre style="margin: 0px;"><strong>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.stOuter.Height = Height;</strong></pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.rectMainShape.RenderTransform = <span style="color: blue;">null</span>;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.rectMainShape.ClipToBounds = <span style="color: blue;">false</span>;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">if</span> (<span style="color: blue;">this</span>.radTop.IsChecked.Value || <span style="color: blue;">this</span>.radBottom.IsChecked.Value)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Height += Radius;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.rectMainShape.ClipToBounds = <span style="color: blue;">true</span>;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;"><strong>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.rectMainShape.Width = Width;</strong></pre><pre style="margin: 0px;"><strong>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.rectMainShape.Height = Height;</strong></pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.rectMainShape.RadiusX = Radius;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.rectMainShape.RadiusY = Radius;</pre><pre style="margin: 0px;">&nbsp;</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.rectMainShape.Fill = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">BrushConverter</span>().ConvertFrom(<span style="color: blue;">this</span>.txtColor.Text) <span style="color: blue;">as</span> <span style="color: rgb(43, 145, 175);">Brush</span>;</pre><pre style="margin: 0px;">&nbsp;</pre>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: green;">        // *** for bottom shape we'll use TranslateTransform</span></pre><pre style="margin: 0px;"><span style="color: blue;">        if</span> (<span style="color: blue;">this</span>.radBottom.IsChecked.Value)</pre><pre style="margin: 0px;">            <span style="color: blue;">this</span>.rectMainShape.RenderTransform = <span style="color: blue;">new</span> <span style="color: rgb(43, 145, 175);">TranslateTransform</span>(0, Radius * -1);</pre></div><pre style="margin: 0px;"></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; }</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">catch</span></pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; {}</pre><pre style="margin: 0px;">}</pre></div>
+<p>And this works correctly.</p>
+<p><strong>Transforms on the Rectangle</strong></p>
+<p>Another issue I ran into was related to the rendering of the
+rectangle with top and bottom corners only. Since I'm lazy I decided to
+just use a Rectangle for this because it already has all the logic to
+render rounded corners. So the idea is to render a rectangle with a
+Radius applied for rendering both top and bottom edges and simply
+clipping the rectangle for top and bottom corners. </p>
+<p>This actually works fine for the top corners. All I do is make the
+size of the image larger than the display size and then clip the bottom
+off. Easy.</p>
+<p>But I couldn't figure out a way to move rectangle to a negative
+offset AND clip the region. It seems that this should have worked:</p>
+<div style="background: white none repeat scroll 0%; font-size: 10pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: black; font-family: courier new;"><pre style="margin: 0px;"><span style="color: blue;">if</span> (<span style="color: blue;">this</span>.radBottom.IsChecked.Value)</pre><pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">this</span>.rectMainShape.SetValue(<span style="color: rgb(43, 145, 175);">Canvas</span>.TopProperty, Radius * -1);</pre></div>
+<p>but it doesn't. Oddly if I explicitly add Canvas.Top="-15" into the
+XAML markup it DOES properly shift the offset to a negative position,
+but for some reason this behavior is not working in code any which way
+I tried.</p>
+<p>In the end I did this with a RenderTransform using a
+TranslateTransform and ensuring that everything is clipped.
+TranslateTransforms can't be used with LayoutTransforms which seems a
+bit odd - that threw me for a loop for a while. In fact this solution
+came to me very late after I had fucked around with this for nearly an
+hour, trying everything from RotateTransforms to every possible
+container.</p>
+<p>It is extremely difficult to get a consistent feel for WPF
+containers. Should I use a Grid or Canvas or StackPanel for these types
+of empty containers? Canvas is usually easiest to deal with if there's
+no content other than drawings. But it took a while to figure that out
+- I used Grid and Grid would NOT work with the RenderTransform and
+instead showed the transform at a new position not respecting the clip
+region. &lt;sigh&gt;</p>
+<p><strong>The tools are painful!</strong></p>
+<p>Well, live and learn. This was an interesting exercise and I learned
+quite a bit more about containers. But frankly I get the feeling I
+won't ever quite get WPF and be productive with it. It's just too
+strange of an environment and horribly complex. Yes it's flexible but
+how does&nbsp;one keep all these properties, and depency properties
+straight?&nbsp;Working with both Visual Studio and Blend side by side
+works but it's&nbsp;painfully slow. Blend looks nice but everything is
+50 mouseclicks away. I found myself working mostly in the XAML code in
+Visual Studio to get shit done cutting and pasting XML code. Visual
+Studio is OK for XAML editing but man do I wish the designer could be
+turned off. You get split design, XAML view, except the designer is
+very, very slow and crashes frequently.You can open the document as XML
+but then you don't get Intellisense or the property sheet and I can't
+do XAML at this point without it. </p>
+<p>There's a sore need for a *developer WPF tool*. Blend might work for
+designers who want to feed their cartoon egos, but it sucks if you need
+to layout a simple form. </p>
+<p><a href="http://www.west-wind.com/files/tools/misc/wpfRoundedCorners.zip">Download Code</a></p></div>
+<br>
+<br>
+<div style="float: right;">
+            <img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/paypaldonate.gif" style="text-decoration: none;" onclick="window.open('https://www.paypal.com/xclick/business=rstrahl%40west-wind.com&item_name=West+Wind+Web+Log+Donation&item_number=WebLog&no_note=1&tax=0&currency_code=USD&lc=US','PayPal');" border="0">
+</div>
+<div class="comment commentauthor" style="border: 0px none ; min-height: 30px;"><small></small><div><small>Posted in <b><a href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=Orcas">Orcas</a>&nbsp;&nbsp;<b><a href="http://west-wind.com/WebLog/ShowPosts.aspx?Category=WPF">WPF</a>&nbsp;&nbsp;</b></b></small></div>
+<div style="margin-top: 5px;"><small><b><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fwww.west-wind.com%2fweblog%2fposts%2f150676.aspx&amp;title=Rendering+a+WPF+Container+to+Bitmap"><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/KickItImageGenerator.png" alt="kick it on DotNetKicks.com" border="0"></a></b></small></div></div><hr>
+<b><br>
+</b><center><b> 
+<script type="text/javascript"><!--
+google_ad_client = "pub-2013123155768157";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_type = "text";
+google_ad_channel ="";
+//--></script>
+<script type="text/javascript" src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/show_ads.js">
+</script><iframe name="google_ads_frame" src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" frameborder="0" height="90" scrolling="no" width="728"></iframe></b></center>
+<b><br>
+    </b><div class="gridheader" style="padding-top: 5px;"><b>Feedback for this Weblog Entry</b></div>
+<b>    <a name="Feedback">&nbsp;</a>    
+           
+            </b><div class="comment" style="min-height: 80px;">
+<b>            <a name="150799"></a><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/avatar.gif" style="opacity: 0.75;" align="right" hspace="5"><b>re: Rendering a WPF Container to Bitmap</b><br>
+            <small> by
+                Mike Wolf<span class="commenttime">September 10, 2007 @ 6:19 am</span><br><br>As always rick yours posts are great...<br><br>not so much a comment on the post content, but on the wpf frustration as a whole<br><br>1)
+I agree the tools need some maturing. Why cant blend do intelesence,
+why is cider in orcas still poop... why cant blend deal w/ usercontrols
+so well. <br><br>But also , on a more general level, I have found if
+your code focused like myself, blend takes some getting used to ,
+simply because code focused people tend to just crank it out... Think
+of html/css... i never use a design view in html, because after so long
+I felt I knew it in and out, and could always do it faster than any
+tool could.... the difference is xaml is not html... and is too damn
+verbose... long and short of this rant is... its partly the tools
+needing to mature and partly us code people needing to admit somethings
+are faster and more design accurate using the tools. Essentially global
+layout (especially canvas based), go w/ blend, tweaking / hacking
+(especially grids) go w/ orcas.<br><br>2) WPF is complicated and kind
+of confusing, but is it also that us as developers have become old dogs
+a bit? WPF is kind of a radical shift, inline w/ web dev, but still a
+radical shift w/ new tools, libs, concepts, events, life cycles etc....
+is it that much more complicated or is it that we have had our minds in
+the web ui mindset for so long that adjusting is difficult?<br><br>my 2 cents
+            </small>
+            </b></div>
+<b>               
+            </b><div class="comment" style="min-height: 80px;">
+<b>            <a name="150853"></a><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/avatar.jpg" style="opacity: 0.75;" align="right" hspace="5"><b>re: Rendering a WPF Container to Bitmap</b><br>
+            <small> by
+                <a href="http://blog.josh420.com/" target="_WebLog">Josh Stodola</a><span class="commenttime">September 10, 2007 @ 8:58 am</span><br><br>I
+agree that WPF is far too complex at this point. It is almost
+overwhelming for somebody who is just giving it a shot (me). I have
+thrown in the towel for now, eagerly awaiting that *developer WPF
+tool*.... </small>
+            </b></div>
+<b>               
+            </b><div class="comment commentauthor" style="min-height: 80px;">
+<b>            <a name="150913"></a><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/avatar_002.jpg" style="opacity: 0.75;" align="right" hspace="5"><b>re: Rendering a WPF Container to Bitmap</b><br>
+            <small> by
+                <a href="http://www.west-wind.com/" target="_WebLog">Rick Strahl</a><span class="commenttime">September 10, 2007 @ 11:53 am</span><br><br>@Mike
+- re: old dogs. It's possible. But I've been mucking with WPF for quite
+a while admittedly off and on because I've gotten very frustrated with
+how long even the simplest things take. It's true for example, if I
+look at the code and markup for the above form there's very, very
+little of it. It would have taken quite a bit more code to do the same
+with GDI+ for example. But there are so many different ways to
+accomplish things and the subleties are killing me. And if I look at
+the discussions on some of the WPF forums where the hardcore guys hang
+out and talk about picture tubes and color hues make me realize that
+this is a world I truely know nothing about.<br><br>The whole
+environment is set up for those types of people &lt;s&gt;. I'm not
+afraid of learning something new in fact I'd love to get a better grip
+on this, but frankly I don't even know where do I start? Game design?
+Graphics design? Design 101 at the local community college? &lt;s&gt;...<br><br>WPF
+right now feels kind of like Windows 1.0 where everybody's drooling and
+only a few people really understand how to make it work. It's like
+there needs to be a more high level framework on top of this base API
+to provide for the more mundane developer experience.<br><br>Compared to WPF learning Web development originally was a walk in the park...
+            </small>
+            </b></div>
+<b>               
+            </b><div class="comment" style="min-height: 80px;">
+<b>            <a name="151005"></a><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/avatar.gif" style="opacity: 0.75;" align="right" hspace="5"><b>re: Rendering a WPF Container to Bitmap</b><br>
+            <small> by
+                mike wolf<span class="commenttime">September 10, 2007 @ 4:49 pm</span><br><br>true...
+but when we firstlearned web dev.... the web was a simpler place to
+learn. Not sure picking up all the frameworks and ajax etc would be as
+simple as it was me learing basic html + basic perl + basic vi.. <br><br>just
+saying... web dev and desktop dev aint so easy to pick up anymore....
+especially in this richer and richer world... but i do hear yah. </small>
+            </b></div>
+<b>               
+            </b><div class="comment commentauthor" style="min-height: 80px;">
+<b>            <a name="151009"></a><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/avatar_002.jpg" style="opacity: 0.75;" align="right" hspace="5"><b>re: Rendering a WPF Container to Bitmap</b><br>
+            <small> by
+                <a href="http://www.west-wind.com/" target="_WebLog">Rick Strahl</a><span class="commenttime">September 10, 2007 @ 5:04 pm</span><br><br>@Mike,
+I think the difference is you can still build a basic Web application
+pretty easily. IOW, the Web is incremental technology: you make it as
+complicated as you want it to be. WPF is in your face with the
+complexity right from the start, there's no way getting around it.<br><br>One
+general thought is this: WPF makes the complex things easy, and simple
+things hard... I suppose that's promising: At least it means that this
+can probably be fixed in the future with more abstraction. </small>
+            </b></div>
+<b>               
+            </b><div class="comment" style="min-height: 80px;">
+<b>            <a name="151298"></a><b>re: Rendering a WPF Container to Bitmap</b><br>
+            <small> by
+                Michael Stuart<span class="commenttime">September 11, 2007 @ 7:17 am</span><br><br>Man,
+I feel your pain! I struggled with this same issue with
+RenderTargetBitmap about a week ago! It made no sense why my element
+would not seem to get rendered. After a lot of frustration, I figured
+it out as well. So far, I completely agree with you in your "The tools
+are painful!" part. I have been using Blend for the xaml, then using
+vs.net for the code (because the 2008 xaml editor crashes). Blend and
+xaml took awhile to get used to, even for making basic forms (I haven't
+even tried learning the animation tools in it yet). I end up hardly
+even using the design view, and manually typing my xaml...I might as
+well be using Notepad. If it only had intellisense in the xaml view, it
+would be so much easier to use. How hard could it have been to add
+that...it feels unfinished. </small>
+            </b></div>
+<b>               
+            </b><div class="comment" style="min-height: 80px;">
+<b>            <a name="162670"></a><b>re: Rendering a WPF Container to Bitmap</b><br>
+            <small> by
+                Joel Chretien<span class="commenttime">October 01, 2007 @ 11:46 am</span><br><br>You
+can set only the top corners of the RoundedCorners by setting the
+property in terms of the four corners. "6,6,0,0" I believe that would
+set the top to rounded corners. </small>
+            </b></div>
+<b>               
+            </b><div class="comment commentauthor" style="min-height: 80px;">
+<b>            <a name="162692"></a><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/avatar_002.jpg" style="opacity: 0.75;" align="right" hspace="5"><b>re: Rendering a WPF Container to Bitmap</b><br>
+            <small> by
+                <a href="http://www.west-wind.com/" target="_WebLog">Rick Strahl</a><span class="commenttime">October 01, 2007 @ 12:27 pm</span><br><br>Sorry
+Joel? What do you mean? It'd be great if I could render a rectangle
+directly with the rounded corners applied only to top and bottom
+without having to clip. </small>
+            </b></div>
+<b>               
+            </b><div class="comment" style="min-height: 80px;">
+<b>            <a name="165259"></a><b>re: Rendering a WPF Container to Bitmap</b><br>
+            <small> by
+                Joel Chretien<span class="commenttime">October 05, 2007 @ 9:27 am</span><br><br>When you add a border, you can specify the corners individually.<br><br><div class="commentcode"><pre class="csharpcode">&lt;Border BorderThickness="1"
+            BorderBrush="Black"
+            CornerRadius="20, 20,0,0" /&gt;</pre></div><br><br>This specifies the top has a corner radius, but the bottom doesn't.
+            </small>
+            </b></div>
+<b>               
+            </b><div class="comment" style="min-height: 80px;">
+<b>            <a name="173287"></a><img src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/avatar_002.gif" style="opacity: 0.75;" align="right" hspace="5"><b>re: Rendering a WPF Container to Bitmap</b><br>
+            <small> by
+                Eric Newhuis<span class="commenttime">Friday @ 4:23 pm</span><br><br>I tried your approach with Visuals built from straight C# and still had trouble.<br><br>I discovered that the following works without screwing around with clipping et al.<br><br>			Canvas wrapper = new Canvas ();<br><br>			Ellipse shape = new Ellipse {<br>				Width = 90,<br>				Height = 90,<br>				Fill = new SolidColorBrush (Colors.Beige),<br>				Stroke = new SolidColorBrush (Colors.Purple)<br>			};<br><br>			wrapper.Children.Add (shape);<br>			wrapper.Arrange (new Rect (0, 0, 90, 90));<br><br>
+RenderTargetBitmap bitmap = new RenderTargetBitmap
+((int)wrapper.ActualWidth, (int)wrapper.ActualHeight, 96, 96,
+PixelFormats.Pbgra32);<br>			bitmap.Render (wrapper);<br><br>			PngBitmapEncoder encoder = new PngBitmapEncoder ();<br>			encoder.Frames.Add (BitmapFrame.Create (bitmap));<br><br>			using (Stream stream = File.Create ("ellipse.png")) {<br>				encoder.Save (stream);<br>			}
+            </small>
+            </b></div>
+<b>        
+	
+</b></div>
+
+<span id="ctl00_Content_ErrorDisplay"></span>
+
+<b>&nbsp;<input name="ctl00$Content$btnShowCommentTable" value="Add a Comment" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$Content$btnShowCommentTable", "", true, "", "", false, false))' id="ctl00_Content_btnShowCommentTable" type="submit"></b><div id="ContentOverlay" style="background: steelblue none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"></div>
+<center>
+
+</center>
+<b>    
+<br>
+
+<script type="text/javascript">
+function OnTextTyped(event)
+{
+    var Ctl = document.getElementById("ctl00_Content_txtBody");
+    var Ctl2 = document.getElementById("lblCommentCharCount");
+    if (Ctl && Ctl2)
+    {
+        var Size = Ctl.value.length;
+        Ctl2.innerHTML = Size.toString() + " of 4000 characters";
+    }
+}
+</script>          
+</b></div>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+             xmlns:dc="http://purl.org/dc/elements/1.1/"
+             xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+    rdf:about="http://www.west-wind.com/weblog/posts/150676.aspx"
+    dc:identifier="http://www.west-wind.com/weblog/posts/150676.aspx"
+    dc:title="Rendering a WPF Container to Bitmap"
+    trackback:ping="http://www.west-wind.com/weblog/posts/150676.aspx?Trackback=True" />
+</rdf:RDF>
+--><b>    
+
+        <!-- google_ad_section_end -->
+    
+        <!-- Page footer -->
+        </b><p>
+<b>        </b></p><hr>
+<b>        <a href="http://west-wind.com/"><img id="ctl00_Image1" alt="West Wind" src="Rendering%20a%20WPF%20Container%20to%20Bitmap_files/wwtoollogo_text.gif" style="border-width: 0px;" align="right" border="0"></a>
+        &nbsp;<small>© Rick Strahl, West Wind Technologies, 2005 - 2007</small>
+        <br clear="all">
+        </b><p><b>&nbsp;</b></p>
+<b>        <!-- End Page footer -->
+    </b></div>
+
+<b>        
+</b><div>
+
+<b>	<input name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWBgLQjsy3AwL32/OTDAKB7cu1BQLgu7nnAwLnrI+ZDwKv3LGSAr3sQVb1jHS4cSqrt8UrItWMLT6y" type="hidden">
+</b></div></form>
+</body></html>

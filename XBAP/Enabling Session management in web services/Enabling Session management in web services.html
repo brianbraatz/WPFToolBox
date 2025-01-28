@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>WPF: Enabling Session management in web services</title>
+
+  
+    
+    <link type="text/css" rel="Stylesheet" href="Enabling%20Session%20management%20in%20web%20services_files/gslb.css">
+    <link type="text/css" rel="Stylesheet" href="Enabling%20Session%20management%20in%20web%20services_files/gslb_002.css"></head><body>
+    <div class="gslb_rsbDivPosting" style="margin-top: 2em; width: 60%;">
+      <div class="gslb_rsbDivPostingTitle">
+        WPF: Enabling Session management in web services
+      </div>
+      
+        <table style="margin: 0pt; width: 100%;">
+          <tbody><tr>
+            <td>
+              <div class="gslb_mainDivSummary">
+                <a href="#problem">Problem</a> /
+                <a href="#sessionid">Using SessionID</a> /
+                <a href="#webservice">Web services in WPF</a> /
+                <a href="#initializing">Initializing</a> /
+                <a href="#webmethod">Calling the web method</a> /
+                <a href="#globalasax">Global.asax</a>
+              </div>
+            </td>
+            <td style="text-align: right; vertical-align: top;">
+              <div class="gslb_mainDivSummary">
+                <a href="http://www.galasoft.ch/mydotnet/WpfTests.TestActiveX/index.html">&lt;&lt;  Prev</a>  |  <a href="http://www.galasoft.ch/articles.html#wpf">Index</a>  |  <a href="http://www.galasoft.ch/mydotnet/GalaSoftLb.Wpf.Demo/">Next  &gt;&gt;</a>
+              </div>
+            </td>
+          </tr>
+        </tbody></table>
+      
+      <div class="gslb_rsbDivFeature">
+        <div class="gslb_rsbDivTitle">
+          <a id="problem"></a>Problem
+        </div>
+        <div class="gslb_rsbDivParagraph">
+When a WPF application wants to call a web service, it is done by
+default in a stateless way. However, some web services are stateful,
+and store client-specific information in the <a href="http://msdn2.microsoft.com/en-us/library/system.web.sessionstate.httpsessionstate.aspx" target="_blank">Session</a>.
+        </div>
+        <div class="gslb_rsbDivTitle">
+          <a id="sessionid"></a>Using SessionID in web services
+        </div>
+        <div class="gslb_rsbDivParagraph">
+          When a client calls a web service the first time, it is assigned a unique identifier
+          called SessionID, which is saved using cookies. When the following calls arrive,
+          the SessionID is read from the cookies collection, and the Session object (<a href="http://msdn2.microsoft.com/en-us/library/system.web.sessionstate.httpsessionstate.aspx" target="_blank">HttpSessionState</a>)
+          is retrieved. This object can be used to store state information related with the
+          calling client.
+        </div>
+        <div class="gslb_rsbDivParagraph">
+          In order to make the Session object accessible to web methods, the "WebMethod" attribute
+          decorating the web method uses the <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpref/html/frlrfSystemWebServicesWebMethodAttributeClassEnableSessionTopic.asp" target="_blank">EnableSession</a> parameter, which
+          must be set to true.
+        </div>
+        <div class="gslb_rsbDivCodeSection">
+          <div class="gslb_rsbDivCode">[WebService( Namespace = <span style="color: rgb(163, 21, 21);">"http://www.galasoft-lb.ch/"</span> )]
+[<span style="color: rgb(43, 145, 175);">WebServiceBinding</span>( ConformsTo = <span style="color: rgb(43, 145, 175);">WsiProfiles</span>.BasicProfile1_1 )]
+[<span style="color: rgb(43, 145, 175);">ToolboxItem</span>( <span style="color: Blue;">false</span> )]
+<span style="color: Blue;">public class</span> <span style="color: rgb(43, 145, 175);">Service1</span> : System.Web.Services.<span style="color: rgb(43, 145, 175);">WebService</span>
+{
+    [<span style="color: rgb(43, 145, 175);">WebMethod</span>( EnableSession=<span style="color: Blue;">true</span> )]
+    <span style="color: Blue;">public string</span> GetSessionId()
+    {
+        <span style="color: Blue;">return</span> Session.SessionID;
+    }
+}</div>
+          <div class="gslb_rsbDivLegend">
+            Web method accessing the Session
+          </div>
+        </div>
+        <div class="gslb_rsbDivTitle">
+          <a id="webservice"></a>Using web services in WPF
+        </div>
+        <div class="gslb_rsbDivParagraph">
+          Windows Presentation Foundation (WPF) can consume ASMX web services easily, because
+          they rely on the .NET framework. In .NET 2.0, using a web service is as easy as
+          adding a Web Reference to the project (Right-click on the project / Add Web Reference...).
+          Enter the URL of the ASMX file, and select the service you want to use.
+        </div>
+        <div class="gslb_rsbDivParagraph">
+          Once this is done, the web service is available as a proxy, meaning that calling
+          a method on the proxy object will automatically send the web service request, wait
+          for the answer and parse the response, providing the client with the corresponding
+          result.
+        </div>
+        <div class="gslb_rsbDivTitle">
+          <a id="initializing"></a>Initializing the web service
+        </div>
+        <div class="gslb_rsbDivParagraph">
+If the web service uses the Session, the client must provide a way to
+store the cookie in which the SessionID (a unique string identifying
+the current session) is stored. This is the mechanism that the server
+uses to identify each client uniquely. The cookies collection is sent
+with every request, and the corresponding Session object is retrieved
+accordingly. </div>
+        <div class="gslb_rsbDivParagraph"> In web
+browsers, when you use JavaScript and XmlHttpRequest to connect to web
+services (or any other framework like ASP.NET AJAX, etc...), you don't
+need to bother about that, because cookie management is handled by the
+browser automatically. In other clients, however, you might need to
+enable it yourself. </div>
+        <div class="gslb_rsbDivParagraph">
+    In .NET (Windows Presentation Foundation, Windows Forms), this is very easy: Simply set the <a href="http://msdn2.microsoft.com/en-us/library/system.web.services.protocols.httpwebclientprotocol.cookiecontainer.aspx" target="_blank">CookieContainer</a> property to a new instance.
+        </div>
+        <div class="gslb_rsbDivParagraph">
+This instance must be persisted somehow. One simple way to do that is
+to declare the web service as an attribute of the Win Forms or of the
+WPF Page. Since the Form or the Page are not recycled, the Cookies
+stored in the CookieContainer. </div>
+        <div class="gslb_rsbDivParagraph">
+    <span style="font-weight: bold;">Note</span>:
+Contrarily to what I read, it is not necessary to save the
+CookieContainer itself as an attribute. If the service is stored as an
+attribute, then you must only initialize the CookieContainer once, for
+example in the WPF Page's constructor. </div>
+        <div class="gslb_rsbDivParagraph">
+          Web methods can be called synchronously and asynchronously, but the async mode is
+          better, because it doesn't block the client while the request is sent and processed.
+          The client simply registers a method to the "Completed" event of the corresponding
+          method. In Visual Studio 2005, this is very easy to do: Select the "Completed" event
+          you want to register with, then type "+=". This presents you with a dialog asking
+          if you want Studio to insert the corresponding code. Press "Tab" to confirm, and
+          then "Tab" again to declare the method.
+        </div>
+        <div class="gslb_rsbDivCodeSection">
+          <div class="gslb_rsbDivCode"><span style="color: Blue;">public partial class</span> <span style="color: rgb(43, 145, 175);">Page1</span> : <span style="color: rgb(43, 145, 175);">Page</span>
+{
+    <span style="color: Blue;">private</span> GetSessionIdService.<span style="color: rgb(43, 145, 175);">Service1</span> m_oService = <span style="color: Blue;">new</span> GetSessionIdService.<span style="color: rgb(43, 145, 175);">Service1</span>();
+
+    <span style="color: Blue;">public</span> Page1()
+    {
+        InitializeComponent();
+        m_oService.CookieContainer = <span style="color: Blue;">new</span> System.Net.<span style="color: rgb(43, 145, 175);">CookieContainer</span>();
+
+        m_oService.GetSessionIdCompleted
+            += <span style="color: Blue;">new</span> GetSessionIdService.<span style="color: rgb(43, 145, 175);">GetSessionIdCompletedEventHandler</span>(       
+m_oService_GetSessionIdCompleted );
+    }
+}</div>
+          <div class="gslb_rsbDivLegend">
+            Initializing the web service
+          </div>
+        </div>
+        <div class="gslb_rsbDivTitle">
+          <a id="webmethod"></a>Calling the web method
+        </div>
+        <div class="gslb_rsbDivParagraph">
+To call the web method asynchronously, you call the web service's
+XXXAsync() method, where XXX is the web method's name: </div>
+        <div class="gslb_rsbDivCodeSection">
+          <div class="gslb_rsbDivCode"><span style="color: Blue;">private void</span> bnGetSessionId_Click( <span style="color: Blue;"> object</span> sender, <span style="color: rgb(43, 145, 175);">RoutedEventArgs</span> e )
+{
+    <span style="color: Blue;">try</span>
+    {
+        m_oService.GetSessionIdAsync();
+    }
+    <span style="color: Blue;">catch</span> ( <span style="color: rgb(43, 145, 175);">Exception</span> ex )
+    {
+        lblSessionId.Text = ex.Message;
+        lblSessionId.Foreground = <span style="color: rgb(43, 145, 175);">Brushes</span>.Red;
+    }
+}</div>
+          <div class="gslb_rsbDivLegend">
+            Calling the web method asynchronously
+          </div>
+        </div>
+        <div class="gslb_rsbDivParagraph">
+          The only step remaining now it to handle the response, in the corresponding event
+          handler.
+        </div>
+        <div class="gslb_rsbDivCodeSection">
+          <div class="gslb_rsbDivCode"><span style="color: Blue;">private void</span> m_oService_GetSessionIdCompleted( <span style="color: Blue;">object</span> sender,
+    GetSessionIdService.<span style="color: rgb(43, 145, 175);">GetSessionIdCompletedEventArgs</span> e )
+{
+    <span style="color: Blue;">if</span> ( e != <span style="color: Blue;">null</span>
+        &amp;&amp; e.Result != <span style="color: Blue;">null</span>
+        &amp;&amp; e.Result.Length &gt; 0 )
+    {
+        <span style="color: Blue;">if</span> ( lblSessionId.Text.Length &gt; 0 )
+        {
+            lblSessionId.Text += <span style="color: rgb(43, 145, 175);">Environment</span>.NewLine;
+        }
+        lblSessionId.Text += <span style="color: rgb(163, 21, 21);">"SessionID at "</span>
+            + <span style="color: rgb(43, 145, 175);">DateTime</span>.Now.ToLongTimeString()
+            + ": " + e.Result;
+        lblSessionId.Foreground = <span style="color: rgb(43, 145, 175);">Brushes</span>.Black;
+    }
+    <span style="color: Blue;">else</span>
+    {
+        lblSessionId.Text = <span style="color: rgb(163, 21, 21);">"Unknown error"</span>;
+        lblSessionId.Foreground = <span style="color: rgb(43, 145, 175);">Brushes</span>.Red;
+    }
+}</div>
+          <div class="gslb_rsbDivLegend">
+            Processing the Response
+          </div>
+        </div>
+        <div class="gslb_rsbDivImage">
+          <img src="Enabling%20Session%20management%20in%20web%20services_files/screenshot1.gif" alt="Different session ID on every call" title="Different session ID on every call">
+          <div class="gslb_rsbDivLegend">
+            Different session ID on every call (CookieContainer disabled)
+          </div>
+        </div>
+        <div class="gslb_rsbDivImage">
+          <img src="Enabling%20Session%20management%20in%20web%20services_files/screenshot2.gif" alt="Different session ID on every call" title="Different session ID on every call">
+          <div class="gslb_rsbDivLegend">
+            Same session ID on every call (CookieContainer enabled)
+          </div>
+        </div>
+        <div class="gslb_rsbDivTitle">
+          <a id="globalasax"></a>The importance of Global.asax
+        </div>
+        <div class="gslb_rsbDivParagraph">
+Note that the Global.asax must be added to the web service in order to
+allow Session management on the web server. See <a href="http://geekswithblogs.net/lbugnion/archive/2006/10/11/93737.aspx">this post</a> for more information.
+        </div>
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="demo"></a>Prototype:
+        </div>
+        <ul class="gslb_mainList">
+          <li><a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestSessionId/PublishedXbap/WpfTests.TestSessionId.xbap" target="_blank">Run</a> the XBAP mode <span style="color: Red; font-weight: bold;">September CTP or newer edition</span></li>
+          <li><a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestSessionId/WpfTests.TestSessionId.Project.zip">
+            Download</a> the project files (Zip)</li>
+        </ul>
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          History:
+        </div>
+        <ul class="gslb_mainList">
+          <li>06.12.2006 (LBu): Checked for .NET 3.0 final</li>
+          <li>11.10.2006 (LBu): Updated with CookieContainer</li>
+          <li>04.10.2006 (LBu): Published first version (RC1)</li>
+        </ul>
+      </div>
+    </div>
+  </body></html>

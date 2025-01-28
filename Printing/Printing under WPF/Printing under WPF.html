@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Printing under WPF</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/170442.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/210951.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/02/201111.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Printing under WPF</h2></a><p style="text-align: right;">February 20, 2006<br>New York City</p><p>
+This morning I got printing to work using the <i>PrintVisual</i> method of <i>PrintDialog</i>.
+In theory, this method lets you print a single page without much fuss,
+but in all my previous attempts with this method, I took the definition
+of the first argument literally. It's defined as an object of type <i>Visual</i> so I figured I could create a <i>Canvas</i>
+(for example), decorate it with elements and controls, and then print
+it. But the only result of those experimentations was a blank page
+ejected from the printer.
+</p>
+<p>
+This morning, however, I tried passing a <i>DrawingVisual</i> to <i>PrintVisual</i> after having first opened a <i>DrawingContext</i> and drawing on that. That worked!
+</p>
+<p>
+The <a href="http://www.charlespetzold.com/blog/2006/02/TryPrinting.cs">TryPrinting.cs</a> program (and <a href="http://www.charlespetzold.com/blog/2006/02/TryPrinting.csproj">TryPrinting.csproj</a> project file) shows simple use of <i>PageSetupDialog</i> and <i>PrintDialog</i> (both of which you'll find in the <i>System.Windows.Controls</i> namespace) to print a single page.
+</p>
+<p>
+The <i>PageSetupDialog</i> gives you a couple pieces of information. The first is a <i>PrintTicket</i> object, which you can get in and out of the dialog box through the <i>GetPrintTicket</i> and <i>SetPrintTicket</i> methods. (These are methods rather than a read/write property because the methods make a copy of the object.) The <i>PrintTicket</i> has stuff like selected page size, printer resolution, and a <i>PageOrientation</i> property for portrait or landscape.
+</p>
+<p>
+The <i>PageSetupDialog</i> also lets the user set left, top, right, and bottom margins for the page and provides <i>LeftMargin</i>, <i>TopMargin</i>, <i>RightMargin</i>, and <i>BottomMargin</i>
+properties to initialize the values and obtain the user's preferences.
+Although the dialog displays these values in inches, the values of the
+properties are in units of 1/1000 millimeter. (This was a bit of a
+shock seeing how almost everything else in WPF is in units of 1/96
+inch. The TryPrinting program has two methods at the bottom to convert
+between these units and normal device-independent units.)
+</p>
+<p>
+The TryPrinting program initializes a <i>Thickness</i> object with 1-inch margins (in device-independent units) and uses that to initialize and save the margin settings from <i>PageSetupDialog</i>. The program also defines a <i>PrintTicket</i> field but always obtains that from <i>PageSetupDialog</i>.
+</p>
+<p>
+<i>PrintDialog</i> processing begins with a possible call to <i>SetPrintTicket</i> with the <i>PrintTicket</i> obtained from <i>PageSetupDialog</i>. If the user clicks Print, the method creates a <i>DrawingVisual</i>, obtains a <i>DrawingContext</i> from it, draws on the <i>DrawingContext</i>, and then closes it, leaving behind a <i>DrawingVisual</i> that it passes to <i>PrintVisual</i>.
+</p>
+<p>
+The <i>PrintableAreaWidth</i> and <i>PrintableAreaHeight</i> properties from <i>PrintDialog</i>
+actually report the physical size of the page in device-independent
+units with orientation (portrait or landscape) taken into account.
+(This information is really more useful than the printable area of the
+page because without knowing the unprintable widths on all four sides
+of the page, you can't properly apply margins to the printable area.)
+My printing method creates a <i>Rect</i> object taking margins into account and calls <i>DrawRectangle</i> with it. A <i>FormattedText</i>
+object is created displaying the "printable area" (actually physical
+paper size) properties in inches. My printing method then obtains the
+size of that text, centers it within the margins of the page, and then
+draws a rectangle around the text.
+</p>
+<p>
+I was surprised to see that the <i>PrintableAreaWidth</i> and <i>PrintableAreaHeight</i>
+properties were influenced by the orientation setting, but actual
+printing was not. However, it was easy enough to set up a little <i>switch</i> statement that rotated the <i>DrawingVisual</i> based on the <i>PageOrientation</i> property.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/170442.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/210951.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

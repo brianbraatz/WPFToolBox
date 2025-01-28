@@ -1,0 +1,178 @@
+From: "Saved by Windows Internet Explorer 7"
+Subject: Petzold Book Blog - Hierarchical TreeView Templates
+Date: Sun, 27 Jan 2008 01:54:08 -0800
+MIME-Version: 1.0
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.charlespetzold.com/blog/2006/02/170442.html
+X-MimeOLE: Produced By Microsoft MimeOLE V6.0.6000.16545
+
+=EF=BB=BF<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML xmlns=3D"http://www.w3.org/1999/xhtml"><HEAD><TITLE>Petzold Book =
+Blog - Hierarchical TreeView Templates</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3Dutf-8">
+<META content=3D"MSHTML 6.00.6000.16587" name=3DGENERATOR></HEAD>
+<BODY style=3D"TEXT-ALIGN: center">
+<DIV style=3D"WIDTH: 40em; TEXT-ALIGN: left">
+<P style=3D"TEXT-ALIGN: center"><B><FONT size=3D+4>P</FONT><FONT=20
+size=3D+3>ETZOLD</FONT>&nbsp;<FONT size=3D+4>B</FONT><FONT=20
+size=3D+3>OOK</FONT>&nbsp;<FONT size=3D+4>B</FONT><FONT =
+size=3D+3>LOG</FONT></B></P>
+<H4 style=3D"TEXT-ALIGN: center">Charles Petzold on writing books, =
+reading books,=20
+and exercising the internal <A title=3D"Universal Turing =
+Machine">UTM</A></H4>
+<HR>
+
+<TABLE width=3D"100%">
+  <TBODY>
+  <TR>
+    <TD width=3D"33%">
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/blog/blog.xml">Recent =
+Entries</A></TD>
+    <TD width=3D"33%"></TD>
+  <TR>
+    <TD width=3D"33%"><A=20
+      =
+href=3D"http://www.charlespetzold.com/blog/2006/02/130122.html">&lt;=20
+      Previous</A></TD>
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/blog/toc.html">Browse the=20
+    Archives</A></TD>
+    <TD align=3Dright width=3D"33%"><A=20
+      =
+href=3D"http://www.charlespetzold.com/blog/2006/02/201111.html">Next=20
+    &gt;</A></TD></TR>
+  <TR>
+    <TD width=3D"33%">
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/rss.xml">Subscribe to the =
+RSS=20
+    Feed</A></TD>
+    <TD width=3D"33%"></TD></TR></TBODY></TABLE>
+<HR>
+<A style=3D"COLOR: #000080; TEXT-DECORATION: none"=20
+href=3D"http://www.charlespetzold.com/blog/2006/02/170442.html">
+<H2>Hierarchical TreeView Templates</H2></A>
+<P style=3D"TEXT-ALIGN: right">February 17, 2006<BR>New York City</P>
+<P>There's no question in my mind that templates are one of the most =
+powerful=20
+features in WPF. Although most template examples are in XAML, I've been=20
+experimenting with defining templates in code. lt's often weird, but I =
+think I'm=20
+getting a better idea of what's going on behind the scenes. </P>
+<P>The <I>TreeView</I> control displays hierarchical data. You can fill =
+up a=20
+<I>TreeView</I> control all at once or incrementally, as the data is =
+required.=20
+Filling up a <I>TreeView</I> all at once often involves a recursive =
+function.=20
+Filling up a <I>TreeView</I> incrementally (which is necessary if you're =
+using=20
+it to display a disk directory tree, for example) requires handling the=20
+<I>Expanded</I> event of <I>TreeViewItem</I>. With templates, however, =
+it's=20
+possible to attach a class to the <I>TreeViewItem</I> that provides data =
+for the=20
+<I>TreeView</I> as it's needed but without recursive functions or =
+explicit event=20
+handling. </P>
+<P>Here's a class I called <A=20
+href=3D"http://www.charlespetzold.com/blog/2006/02/DiskDirectory.cs">Disk=
+Directory.cs</A>.=20
+It's really just a wrapper around the <I>DirectoryInfo</I> class and I =
+would=20
+have derived this class from <I>DirectoryInfo</I> were it not sealed. =
+The=20
+<I>DiskDirectory</I> class requires a <I>DirectoryInfo</I> as a argument =
+to its=20
+constructor, and it maps its own <I>Name</I> property to the same-named =
+property=20
+in <I>DirectoryInfo</I>. The bulk of the class is dedicated to =
+implementing the=20
+<I>Subdirectories</I> property of type <I>List&lt;DiskDirectory&gt;</I>. =
+This is=20
+basically the <I>GetDirectories</I> method of <I>DirectoryInfo</I> but=20
+translated into a property that returns a collection. </P>
+<P>What we want is for the <I>TreeView</I> to display objects of type=20
+<I>DiskDirectory</I> and for the <I>ItemsSource</I> of each =
+<I>TreeViewItem</I>=20
+(that is, the children of the item) to be set from the =
+<I>Subdirectories</I>=20
+property of <I>DiskDirectory</I>. The <A=20
+href=3D"http://www.charlespetzold.com/blog/2006/02/TemplateTheTree.cs">Te=
+mplateTheTree.cs</A>=20
+program shows how it's done. (This project also requires the <A=20
+href=3D"http://www.charlespetzold.com/blog/2006/02/TemplateTheTree.csproj=
+">TemplateTheTree.csproj</A>=20
+project file.) </P>
+<P>The window constructor of this program creates an object of type=20
+<I>TreeView</I> and sets it as the window's content. It then creates an =
+object=20
+of type <I>HierarchicalDataTemplate</I> based on the =
+<I>DiskDirectory</I>=20
+object, and the <I>ItemsSource</I> of this template is bound to the=20
+<I>SubDirectories</I> property of <I>DiskDirectory</I>. The =
+<I>VisualTree</I>=20
+property of the template could be more elaborate, but I made it a simple =
+
+<I>TextBlock</I> whose <I>Text</I> property is bound to the <I>Name</I> =
+property=20
+of <I>DiskDirectory</I>. The template is now completed. The window =
+constructor=20
+continues by creating a single object of type <I>DiskDirectory</I> for =
+the=20
+system drive. (In a real-life application, you'd probably create=20
+<I>DiskDirectory</I> objects for all the drives.) This =
+<I>DiskDirectory</I>=20
+object is used to set the <I>Header</I> and <I>ItemsSource</I> =
+properties of a=20
+<I>TreeViewItem</I>, which also has it's <I>ItemTemplate</I> set to the=20
+<I>HierarchicalDataTemplate</I> created earlier. </P>
+<P>Put that <I>TreeViewItem</I> into the <I>TreeView</I> and you're =
+done. Each=20
+<I>TreeViewItem</I> uses a <I>TextBlock</I> to display the <I>Name</I> =
+property=20
+of its associated <I>DiskDirectory</I> object, and uses the=20
+<I>Subdirectories</I> property of <I>DiskDirectory</I> to generate its =
+child=20
+<I>TreeViewItem</I> objects. No recursive functions, no event handling, =
+and no=20
+moving parts. </P>
+<DIV id=3Dcomments>
+<HR>
+
+<TABLE width=3D"100%">
+  <TBODY>
+  <TR>
+    <TD width=3D"33%">
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/blog/blog.xml">Recent =
+Entries</A></TD>
+    <TD width=3D"33%"></TD>
+  <TR>
+    <TD width=3D"33%"><A=20
+      =
+href=3D"http://www.charlespetzold.com/blog/2006/02/130122.html">&lt;=20
+      Previous</A></TD>
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/blog/toc.html">Browse the=20
+    Archives</A></TD>
+    <TD align=3Dright width=3D"33%"><A=20
+      =
+href=3D"http://www.charlespetzold.com/blog/2006/02/201111.html">Next=20
+    &gt;</A></TD></TR>
+  <TR>
+    <TD width=3D"33%">
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/rss.xml">Subscribe to the =
+RSS=20
+    Feed</A></TD>
+    <TD width=3D"33%"></TD></TR></TBODY></TABLE>
+<HR>
+
+<P>(c) Copyright Charles Petzold<BR><A=20
+href=3D"http://www.charlespetzold.com/">www.charlespetzold.com</P></DIV><=
+/A></DIV></BODY></HTML>

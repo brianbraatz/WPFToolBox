@@ -1,0 +1,176 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0034)http://www.xamlformorons.com/?p=49 -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD 
+profile=http://gmpg.org/xfn/11><TITLE>Xaml for Morons (Like Me) » Seeing More With VisualBrushes</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR><!-- leave this for stats please -->
+<STYLE type=text/css media=screen>@import url( http://www.xamlformorons.com/wp-content/themes/connections/style.css );
+</STYLE>
+<LINK title="RSS 2.0" href="http://www.xamlformorons.com/?feed=rss2" 
+type=application/rss+xml rel=alternate><LINK title="Atom 0.3" 
+href="http://www.xamlformorons.com/?feed=atom" type=application/atom+xml 
+rel=alternate><LINK href="http://www.xamlformorons.com/xmlrpc.php" 
+rel=pingback><LINK title="September 2007" 
+href="http://www.xamlformorons.com/?m=200709" rel=archives><LINK 
+title="August 2007" href="http://www.xamlformorons.com/?m=200708" 
+rel=archives><LINK title="July 2007" 
+href="http://www.xamlformorons.com/?m=200707" rel=archives><LINK 
+title="June 2007" href="http://www.xamlformorons.com/?m=200706" 
+rel=archives><LINK title="May 2007" 
+href="http://www.xamlformorons.com/?m=200705" rel=archives><LINK 
+title="April 2007" href="http://www.xamlformorons.com/?m=200704" 
+rel=archives><LINK title="March 2007" 
+href="http://www.xamlformorons.com/?m=200703" rel=archives><LINK 
+title="February 2007" href="http://www.xamlformorons.com/?m=200702" 
+rel=archives><LINK title=RSD href="http://www.xamlformorons.com/xmlrpc.php?rsd" 
+type=application/rsd+xml rel=EditURI></HEAD>
+<BODY>
+<DIV id=rap>
+<DIV id=header>
+<UL id=topnav>
+  <LI><A id=navHome title="Posted Recently" accessKey=h 
+  href="http://www.xamlformorons.com/">Home |</A> 
+  <LI><A id=navAbout title="About the Author" accessKey=a 
+  href="http://www.xamlformorons.com/?p=49#">About |</A> 
+  <LI><A id=navArchives title="Posted Previously" accessKey=r 
+  href="http://www.xamlformorons.com/?p=49#">Archives |</A> 
+  <LI><A id=navLinks title="Recommended Links" accessKey=l 
+  href="http://www.xamlformorons.com/?p=49#">Links |</A> 
+  <LI><A id=navContact title="Contact the Author" accessKey=c 
+  href="http://www.xamlformorons.com/?p=49#">Contact </A></LI></UL>
+<H1><A title="Xaml for Morons (Like Me)" 
+href="http://www.xamlformorons.com/"></A></H1>
+<DIV id=desc></DIV></DIV>
+<DIV id=main>
+<DIV id=content>
+<DIV class=post>
+<P class=post-date>Wed 29 Aug 2007</P>
+<DIV class=post-info>
+<H2 class=post-title><A title="Permanent Link: Seeing More With VisualBrushes" 
+href="http://www.xamlformorons.com/?p=49" rel=bookmark>Seeing More With 
+VisualBrushes</A></H2>Posted by Matthias Shapiro under <A 
+title="View all posts in WPF Sample" href="http://www.xamlformorons.com/?cat=3" 
+rel="category tag">WPF Sample</A> , <A title="View all posts in XAML Sample" 
+href="http://www.xamlformorons.com/?cat=4" rel="category tag">XAML Sample</A> , 
+<A title="View all posts in data binding" 
+href="http://www.xamlformorons.com/?cat=14" rel="category tag">data binding</A> 
+, <A title="View all posts in visual brush" 
+href="http://www.xamlformorons.com/?cat=32" rel="category tag">visual brush</A> 
+, <A title="View all posts in visualbrush" 
+href="http://www.xamlformorons.com/?cat=33" rel="category tag">visualbrush</A> , 
+<A title="View all posts in Adam Nathan" 
+href="http://www.xamlformorons.com/?cat=34" rel="category tag">Adam 
+Nathan</A><BR>&nbsp;</DIV>
+<DIV class=post-content>
+<P>Since last I blogged I’ve gotten a new computer and so, with my passion 
+rekindled (and enough RAM to run more than one copy of Mine Sweeper at a time), 
+I move boldly ahead. </P>
+<P>On one of the projects I’m working on, I needed to figure out how to create 
+an animation that would be able to do several things. 
+<UL>
+  <LI>Resize and move an control without changing the layout 
+  <LI>Not care about what kind of a control it was dealing with. Grid, button, 
+  expander… it needed to be able to animate anything. 
+  <LI>Abstract out so that I didn’t have to re-write it every time I needed to 
+  animate something </LI></UL>
+<P>After a little bit of thoughtful contemplation, I realized that I needed my 
+coffee. </P>
+<P>And then I started looking into using a VisualBrush to do this.</P>
+<P>VisualBrushes can take the look of any item and treat it like any brush by 
+painting that visual look onto another item as a background, foreground, 
+borderBrush etc.</P>
+<P>In breaking from my previous tutorials, I’m posting a larger project that 
+displays the abilities of the VisualBrush, but also highlights some of the 
+limitations.</P>
+<P>In this project, I’ve put a bunch of stuff into a series of tabs. Then I said 
+to myself: “Self, do you really want to have to move your mouse <I>all the way 
+over</I> to the tabs and push the mouse button <I>all the way down</I> in order 
+to know what’s in those tabs? Of course you don’t! You want to see what is in 
+those tabs in a tiny indecipherable (but always visible) button.”</P>
+<P>In order to do so, I realized the need for a VisualBrush. So the first thing 
+I did was make sure that the item I wanted to see (in this case, the grid inside 
+the tabItem) has an “x:Name”. </P>
+<P><A title=xName 
+href="Xaml for Morons (Like Me) » Seeing More With VisualBrushes_files/xname.jpg"><IMG 
+alt=xName 
+src="Xaml for Morons (Like Me) » Seeing More With VisualBrushes_files/xname.jpg"></A></P>
+<P>Then I created a button and simply set the background up so that it was being 
+painted by a VisualBrush that was binding to that Grid… like so.</P>
+<P><A title=ButtonXAML href="http://www.xamlformorons.com/?attachment_id=51" 
+rel="attachment wp-att-51"><IMG alt=ButtonXAML 
+src="Xaml for Morons (Like Me) » Seeing More With VisualBrushes_files/btnxaml.jpg"></A></P>
+<H2>The Up Sides of Visual Bush</H2>
+<P>The image in VisualBrush updates as its source updates. As you can see below, 
+as I highlight the text, we can see the visual updated in the button above.</P>
+<P><A title="Updated Brush" 
+href="Xaml for Morons (Like Me) » Seeing More With VisualBrushes_files/visualbrush.jpg"><IMG 
+alt="Updated Brush" 
+src="Xaml for Morons (Like Me) » Seeing More With VisualBrushes_files/visualbrush.jpg" 
+width=500></A></P>
+<P>This can mean some really cool things in terms of creating reflections, or 
+even a kind of “picture-in-picture” effect so that users can see a constantly 
+updating interface summary.</P>
+<H2>The Down Sides of Visual Brush</H2>
+<P>First of all, VisualBrush won’t work if you refer to an item that has the 
+VisualBrush as a part of it. Example: I tried to create a ToolTip for the 
+TabItem so that I could see a preview of the tab in the ToolTip and it wouldn’t 
+show anything at all.</P>
+<P>Also, VisualBrush needs the item to be rendered at least once before it will 
+show it correctly. In the screen below, I have not clicked on all of the tabs, 
+so the tabs that haven’t been rendered yet show some funky business for the 
+VisualBrush. </P>
+<P><A title="UnRendered Brush" 
+href="Xaml for Morons (Like Me) » Seeing More With VisualBrushes_files/unrendered.jpg"><IMG 
+alt="UnRendered Brush" 
+src="Xaml for Morons (Like Me) » Seeing More With VisualBrushes_files/unrendered.jpg" 
+width=500></A></P>
+<P>Some solutions for this are <A 
+href="http://msdn2.microsoft.com/en-us/library/system.windows.media.visualbrush.aspx">here</A>, 
+but they’re a little more developer-centric than I prefer to deal with.</P>
+<P>Project files for this example can be found <A title="VisualBrush Project" 
+href="http://www.xamlformorons.com/wp-content/uploads/2007/08/visualbrush_blog_post.zip">here</A>.</P>
+<P>A big thanks to Adam Nathan, whose book <A 
+href="http://www.amazon.com/Windows-Presentation-Foundation-Unleashed-WPF/dp/0672328917/ref=pd_bbs_sr_1/103-5810463-1361450?ie=UTF8&amp;s=books&amp;qid=1188398254&amp;sr=8-1">“Windows 
+Presentation Foundation Unleashed”</A> led me to the proper use of 
+VisualBrush.</P>
+<DIV class=post-info></DIV>
+<DIV class=post-footer>&nbsp;</DIV></DIV><!-- You can start editing here. --><!-- If comments are open, but there are no comments. -->
+<H3 id=respond>Leave a Reply</H3>
+<FORM id=commentform action=http://www.xamlformorons.com/wp-comments-post.php 
+method=post>
+<P><INPUT id=author tabIndex=1 size=22 name=author> <LABEL 
+for=author><SMALL>Name (required)</SMALL></LABEL></P>
+<P><INPUT id=email tabIndex=2 size=22 name=email> <LABEL for=email><SMALL>Mail 
+(will not be published) (required)</SMALL></LABEL></P>
+<P><INPUT id=url tabIndex=3 size=22 name=url> <LABEL 
+for=url><SMALL>Website</SMALL></LABEL></P><!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+<P><TEXTAREA id=comment tabIndex=4 name=comment rows=10 cols=100></TEXTAREA></P>
+<P><INPUT id=submit tabIndex=5 type=submit value="Submit Comment" name=submit> 
+<INPUT type=hidden value=49 name=comment_post_ID> </P></FORM></DIV>
+<P align=center></P></DIV>
+<DIV id=sidebar>
+<H2>Archived Entry</H2>
+<UL>
+  <LI><STRONG>Post Date :</STRONG> 
+  <LI>Wednesday, Aug 29th, 2007 at 6:45 am 
+  <LI><STRONG>Category :</STRONG> 
+  <LI><A title="View all posts in WPF Sample" 
+  href="http://www.xamlformorons.com/?cat=3" rel="category tag">WPF Sample</A> 
+  and <A title="View all posts in XAML Sample" 
+  href="http://www.xamlformorons.com/?cat=4" rel="category tag">XAML Sample</A> 
+  and <A title="View all posts in data binding" 
+  href="http://www.xamlformorons.com/?cat=14" rel="category tag">data 
+  binding</A> and <A title="View all posts in visual brush" 
+  href="http://www.xamlformorons.com/?cat=32" rel="category tag">visual 
+  brush</A> and <A title="View all posts in visualbrush" 
+  href="http://www.xamlformorons.com/?cat=33" rel="category tag">visualbrush</A> 
+  and <A title="View all posts in Adam Nathan" 
+  href="http://www.xamlformorons.com/?cat=34" rel="category tag">Adam Nathan</A> 
+
+  <LI><STRONG>Do More :</STRONG> 
+  <LI>You can <A href="http://www.xamlformorons.com/?p=49#respond">leave a 
+  response</A>, or <A 
+  href="http://www.xamlformorons.com/wp-trackback.php?p=49">trackback</A> from 
+  your own site. </LI></UL></DIV>
+<P id=footer>Design Downloaded from <A title="Vanilla Mist" 
+href="http://www.vanillamist.com/">http://www.vanillamist.com/</A></P></DIV></DIV></BODY></HTML>

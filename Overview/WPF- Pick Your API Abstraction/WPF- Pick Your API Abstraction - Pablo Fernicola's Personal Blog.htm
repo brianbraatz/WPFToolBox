@@ -1,0 +1,885 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0091)http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html -->
+<HTML><HEAD><TITLE>WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=ISO-8859-1">
+<META content="Serendipity v.0.8.2" name=Powered-By><LINK 
+href="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/index.css" 
+type=text/css rel=stylesheet><LINK 
+title="Pablo Fernicola's Personal Blog RSS feed" 
+href="http://www.fernicola.org/loquitor/index.php?/feeds/index.rss2" 
+type=application/rss+xml rel=alternate><LINK 
+title="Pablo Fernicola's Personal Blog Atom feed" 
+href="http://www.fernicola.org/loquitor/index.php?/feeds/atom.xml" 
+type=application/x.atom+xml rel=alternate><LINK 
+href="http://www.fernicola.org/loquitor/comment.php?type=pingback&amp;entry_id=17" 
+rel=pingback>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR></HEAD>
+<BODY>
+<DIV id=serendipity_banner>
+<H1><A class=homelink1 href="http://www.fernicola.org/loquitor/">WPF- Pick Your 
+API Abstraction</A></H1>
+<H2><A class=homelink2 href="http://www.fernicola.org/loquitor/">Pablo 
+Fernicola's Personal Blog</A></H2></DIV>
+<TABLE id=mainpane>
+  <TBODY>
+  <TR>
+    <TD id=content vAlign=top><!-- CONTENT START --><!-- ENTRIES START -->
+      <DIV class=serendipity_Entry_Date>
+      <H3 class=serendipity_date>Tuesday, March 21. 2006</H3>
+      <H4 class=serendipity_title><A 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html">WPF- 
+      Pick Your API Abstraction</A></H4>
+      <DIV 
+      class="serendipity_entry serendipity_entry_author_Pablo-Fernicola "><SPAN 
+      class=serendipity_entryIcon></SPAN>
+      <DIV class=serendipity_entry_body>Recently we have been getting several 
+      questions on hardware acceleration. Some folks are running the Perforator 
+      tool and noticing that although it indicates that their application is 
+      running in hardware, the application is still taxing the CPU. This may 
+      seem confusing, so I will try to give some background in this posting, as 
+      well as cover the factored access/extensibility points within Windows 
+      Presentation Foundation and the technologies it builds 
+      on.<BR><BR><U>Compute versus Render Bound</U><BR><BR>Over time, we have 
+      found that most applications are compute bound (I am talking about Win32 
+      applications here). They spend most of their time performing calculations 
+      on the CPU, and this becomes their performance bottleneck. With text 
+      applications, this can because of paragraph layout calculations. For games 
+      it may be because of the physics engine. Very few applications turn out to 
+      be render bound (games included).<BR><BR>However, if you try to do 3D 
+      graphics or render with higher quality (anti-aliasing or sub-pixel 
+      ClearType) in software, as well as just do a lot of rendering (scientific 
+      visualization and CAD programs), the application is likely to become 
+      render bound. With WPF, we offload a lot of the rendering work to the GPU, 
+      and thus are able to provide high quality graphics without swamping the 
+      CPU.<BR><BR>The bottom line for us is:<BR><BR><I>if the CPU is busy doing 
+      graphics, it is not doing some other important task.</I><BR><BR>And, we 
+      don�t want that to happen. We want the CPU always to be busy doing useful 
+      work, and leaving the graphics to the GPU. Also, as we develop WPF, we try 
+      to make it as much render bound as often as possible. This way, as your 
+      end users get better graphics hardware, and the hardware evolves, the 
+      performance and/or quality of your application improves.<BR></DIV>
+      <DIV class=serendipity_entry_extended><A 
+      id=extended></A><BR><BR><U>Hardware versus Software 
+      Rendering</U><BR><BR>There are some situations which will cause WPF to 
+      fallback to software rendering (this is more common in pre-Dx9 video cards 
+      or when performing some operations). When this happens, the CPU gets to do 
+      more work and likely the overall performance of your application goes 
+      down. In many cases, this takes place inadvertedly, thus the need for the 
+      Perforator tool, to help track down the cause of falling back to software. 
+      There is also a programmatic way of determining whether one is rendering 
+      with hardware or software, through the tiering API. Perforator is a bit 
+      handier, because it is interactive (for example, you can modify some XAML 
+      in XAMLPad and see how it affects hardware acceleration through 
+      Perforator). However, you should still use the tiering APIs to adapt the 
+      content that your application presents, so that it can work equally well 
+      on lower end machines running Windows XP, in software 
+      mode.<BR><BR><U>Factored Access to WPF</U><BR><BR>It is clear from the 
+      questions/discussion in newsgroups that some folks are solely after fast 
+      graphics rendering, and perhaps not that interested in the high 
+      level/framework services that WPF exposes. Yet, when they use WPF, they 
+      feel that they are not getting all the graphics performance they want. We 
+      think of WPF as having two major parts, the MIL (Media Integration Layer) 
+      and the Framework. The majority of developers will program at the 
+      Framework level, and so this is where we focused the development of the 
+      SDK first. Some developers do not need the Framework services (Layout, 
+      Input, Focus, Eventing � as well as styling, databinding, and XAML). They 
+      just want the graphics. For those folks, we provide the Visual 
+      layer.<BR><BR><U>A Diagram of API and Extensibility 
+      Points</U><BR><BR>Hopefully the diagram below will bring to light the 
+      different API entry points, as well as the extensibility points, both in 
+      WPF and on the technologies we build on.<BR><BR>At the top if the 
+      Framework. This is the most common programming abstraction and it is what 
+      provides controls (Button, Menu, etc), as well as Layout (Canvas, Grid, 
+      etc), and the ability to extend those. It also includes services such as 
+      databinding and styling. We use our public APIs to build our own 
+      components. This validates the architecture and implementation we built. 
+      This means that anyone can develop layouts and controls that are able to 
+      match the performance and functionality of the built-in elements (unlike 
+      for example in the HTML world, where there are not enough programming 
+      abstraction exposed, for example, to build the Table element and perform 
+      other layout operations).<BR><BR>At roughly the same level of abstraction 
+      as the Framework is XAML-Presentation. We expect that many tools will 
+      generate/consume XAML-P, even if not all of those applications are not 
+      built using WPF (we have examples of third party and Microsoft 
+      applications that fall in this category today already).<BR><BR>Below that, 
+      we have the MIL. It presents an API called <A 
+      href="http://windowssdk.msdn.microsoft.com/library/default.asp?url=/library/en-us/wcp_conceptual/html/6dec9657-4d8c-4e46-8c54-40fb80008265.asp">Visual</A>, 
+      which allows developers to do rendering, without a lot of the services 
+      available at the Framework level (lower policy, therefore with higher 
+      performance in some cases, as there is no layout involved or property 
+      system). This marks the transition from managed to native code.<BR><BR>The 
+      last API layer below Visual is WPF Imaging Components (<A 
+      href="http://windowssdk.msdn.microsoft.com/library/en-us/wic/wiclh/imagingcodec/overviews/aboutwindowsimagingcodec.asp">WIC</A>), 
+      which enables native code applications also to leverage the imaging 
+      functionality in WPF (this functionality is exposed at the Framework level 
+      as well).<BR><BR><IMG alt="WPF diagram" 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/WPFstack.jpg"><BR><BR>Now 
+      we are below the API layer, and into base extensibility points for 
+      providing support for new formats, for example. We will begin with WIC 
+      Compressors/Decompressors (CODEC), which enable anyone to extend the 
+      supported imaging formats on the machine (on Windows Vista, the end user 
+      benefits directly from new CODECs in their desktop experience). Next are 
+      <A 
+      href="http://windowssdk.msdn.microsoft.com/library/en-us/wibe/wibelh/reference/reference.asp">Effects</A>, 
+      which enables developers to add their custom image based effects (Geometry 
+      based effects will have to wait until a future version of 
+      WPF).<BR><BR>There are also extensibility points in the technologies that 
+      WPF uses, which get exposed or used by WPF applications indirectly. The 
+      more interesting type are DirectShow filters. This enables developers 
+      using WPF�s media element to effortlessly playback different media types 
+      (similar to WIC�s CODEC, which provide seamless support for new imaging 
+      formats). Hardware folks can provide support for their custom hardware 
+      through Direct3D drivers (Windows Display Driver Model in the Windows 
+      Vista case) and Print drivers (XP print driver model or Next Generation 
+      Print Path drivers � these last type uses XPS as its spool 
+      format).<BR><BR><I>update 05/23/07</I> - Here is an interesting posting of 
+      using WIC for getting DShow content into your WPF application <A 
+      href="http://jmorrill.hjtcentral.com/Default.aspx?tabid=428&amp;EntryID=16">Jeremiah 
+      Morrill's blog entry</A>.</DIV>
+      <DIV class=serendipity_entryFooter>Posted by <A 
+      href="http://www.fernicola.org/loquitor/index.php?/authors/1-Pablo-Fernicola">Pablo 
+      Fernicola</A> in <A 
+      href="http://www.fernicola.org/loquitor/index.php?/categories/2-Technical">Technical</A> 
+      at <A 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html">01:47</A> 
+      | <A 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#comments">Comments 
+      (22)</A> | <A 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#trackbacks">Trackbacks 
+      (2)</A> </DIV></DIV><!--
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                 xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+                 xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <rdf:Description
+                 rdf:about="http://www.fernicola.org/loquitor/index.php?/feeds/ei_17.rdf"
+                 trackback:ping="http://www.fernicola.org/loquitor/comment.php?type=trackback&amp;entry_id=17"
+                 dc:title="WPF- Pick Your API Abstraction"
+                 dc:identifier="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html" />
+        </rdf:RDF>
+        -->
+      <DIV class=serendipity_comments><BR><A id=trackbacks></A>
+      <DIV class=serendipity_commentsTitle>Trackbacks</DIV>
+      <DIV class=serendipity_center><A 
+      title='This link is not meant to be clicked. It contains the trackback URI for this entry. You can use this URI to send ping- &amp; trackbacks from your own blog to this entry. To copy the link, right click and select "Copy Shortcut" in Internet Explorer or "Copy Link Location" in Mozilla.' 
+      style="FONT-WEIGHT: normal" 
+      onclick="alert('This link is not meant to be clicked. It contains the trackback URI for this entry. You can use this URI to send ping- &amp; trackbacks from your own blog to this entry. To copy the link, right click and select &quot;Copy Shortcut&quot; in Internet Explorer or &quot;Copy Link Location&quot; in Mozilla.'); return false;" 
+      href="http://www.fernicola.org/loquitor/comment.php?type=trackback&amp;entry_id=17" 
+      rel=nofollow>Trackback specific URI for this entry</A> </DIV><BR>
+      <DIV class=serendipity_comment>
+      <DIV class=serendipity_commentBody><A 
+      href="http://blogs.msdn.com/johngossman/archive/2006/03/21/557037.aspx">What 
+      level of WPF graphics API should I use?</A><BR>I was going to post 
+      something about the various levels you can use in WPF for graphics, but 
+      Pablo Fernicola... </DIV>
+      <DIV class=serendipity_comment_source><B>Weblog:</B> Tales from the Smart 
+      Client<BR><B>Tracked:</B> Mar 21, 14:39 </DIV></DIV>
+      <DIV class=serendipity_comment>
+      <DIV class=serendipity_commentBody><A 
+      href="http://blogs.gotdotnet.ru/personal/mihailik/PermaLink.aspx?guid=f6a66be8-1d3f-44a9-8f7a-8cd1b50fcb9c">Стек 
+      WPF — от кодеков и низкоуровневого 
+      рендеринга до сервисов Layout, Focus, 
+      De</A><BR>Такая обзорная статья на тему 
+      архитектуры WPF. Что внизу, что сверху, где 
+      есть р </DIV>
+      <DIV class=serendipity_comment_source><B>Weblog:</B> Олег 
+      Михайлик<BR><B>Tracked:</B> Mar 21, 16:06 </DIV></DIV></DIV>
+      <DIV class=serendipity_comments><BR><A id=comments></A>
+      <DIV class=serendipity_commentsTitle>Comments</DIV>
+      <DIV class=serendipity_center>Display comments as (<A 
+      href="http://www.fernicola.org/loquitor/index.php?url=archives/17-WPF-Pick-Your-API-Abstraction.html&amp;serendipity[cview]=linear#comments">Linear</A> 
+      | Threaded) </DIV><BR><A id=c46></A>
+      <DIV class="serendipity_comment serendipity_comment_author_mihailik " 
+      style="PADDING-LEFT: 0px">
+      <DIV class=serendipity_commentBody>Great thing. Thank you, Pablo, it is 
+      nice review to get in touch with WPF architecture.</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c46">#1</A> 
+      <A href="mailto:mihailik[at]gmail.com">mihailik</A> (<A 
+      title=http://blogs.gotdotnet.ru/personal/mihailik/ 
+      href="http://blogs.gotdotnet.ru/personal/mihailik/">Link</A>) on 
+      2006-03-21 16:12 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='46';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c63></A>
+      <DIV class="serendipity_comment serendipity_comment_author_damien-morton " 
+      style="PADDING-LEFT: 0px">
+      <DIV class=serendipity_commentBody>You state that "The bottom line for us 
+      is: if the CPU is busy doing graphics, it is not doing some other 
+      important task."<BR><BR>So far, in my experiences of WPF, the CPU has been 
+      very very busy.<BR><BR>It would have been nice for the whole of WPF to 
+      live on the GPU. Can we imagine a retained-mode API that lives entirely on 
+      the GPU, implemented with vertex and fragment shaders?</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #2" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c63">#2</A> 
+      damien morton on 2006-03-22 22:45 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='63';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c64></A>
+      <DIV 
+      class="serendipity_comment serendipity_comment_author_Pablo-Fernicola serendipity_comment_author_self" 
+      style="PADDING-LEFT: 20px">
+      <DIV class=serendipity_commentBody>We will get closer to the picture you 
+      paint over time.<BR><BR>The new driver model in Windows Vista enables us 
+      to take a big step forward. The Advanced Driver model post Windows Vista 
+      will enable even greater use of the GPU (the interrup level will be more 
+      granular). Eventually we will get to Dx10 parts being the base requirement 
+      for the OS (not in Vista, which is Dx9 based), and we will offload even 
+      more work to the GPU.<BR><BR>But even then, we will always have the CPU do 
+      <U>some</U> work (property level operations at least, likely layout as 
+      well), especially where there is high frequency back and forth with the 
+      application.<BR><BR>In terms of WPF v1.0, how busy the CPU is can be 
+      related to:<BR>1) bug in our code<BR>2) cost of the operation on our 
+      side<BR>3) cost of the operation on the application side<BR>4) side effect 
+      of how our code is being used<BR><BR>If you can send us an example of your 
+      usage, we can track it down.<BR><BR>Thanks for the 
+      comment!<BR><BR>-Pablo</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #2.1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c64">#2.1</A> 
+      <A href="mailto:pablo[at]fernicola.org">Pablo Fernicola</A> (<A 
+      title=http://www.fernicola.org/loquitor 
+      href="http://www.fernicola.org/loquitor">Link</A>) on 2006-03-22 23:50 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='64';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c65></A>
+      <DIV class="serendipity_comment serendipity_comment_author_damien-morton " 
+      style="PADDING-LEFT: 40px">
+      <DIV class=serendipity_commentBody>Hi Pablo,<BR><BR>My code has already 
+      been profiled at Microsoft. It turns out that nearly 40% of my CPU usage 
+      is coming from code that should be implemented on the GPU (lighting 
+      calculations), another 15-20% is coming from bad implementations (e.g. 
+      performing a PInvoke for each and every vertex, normal, etc in a 3D mesh), 
+      and another 10-15% is coming from various other issues that can be worked 
+      around or ameliorated.</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #2.1.1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c65">#2.1.1</A> 
+      damien morton on 2006-03-24 20:30 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='65';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c66></A>
+      <DIV 
+      class="serendipity_comment serendipity_comment_author_Pablo-Fernicola serendipity_comment_author_self" 
+      style="PADDING-LEFT: 60px">
+      <DIV class=serendipity_commentBody>Hi Daniel,<BR><BR>I've been tracking 
+      the work that we are doing based on your feedback. Thank you for sending 
+      that in.<BR><BR>I would like the lighting calculation to be performed on 
+      the GPU, let's see what gets done for this first 
+      version.<BR><BR>-Pablo</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #2.1.1.1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c66">#2.1.1.1</A> 
+      <A href="mailto:pablo[at]fernicola.org">Pablo Fernicola</A> (<A 
+      title=http://www.fernicola.org/loquitor 
+      href="http://www.fernicola.org/loquitor">Link</A>) on 2006-03-26 14:56 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='66';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c68></A>
+      <DIV class="serendipity_comment serendipity_comment_author_CosminB-BRT " 
+      style="PADDING-LEFT: 0px">
+      <DIV class=serendipity_commentBody>Finally, one of the first articles that 
+      wants to talk about extending WPF with 3rd party functionality. I have 
+      been searching for this kind of information for quite some days now. I see 
+      that you're talking about DirectShow also, and this is what I want to 
+      know.<BR><BR>I have a library that so far can preview webcam video in 
+      Windows Forms and Direct3D. It uses VMR9. Knowing that WPF is based on 
+      Direct3D, I thought implementing it in Avalon also wouldn't be too hard. 
+      But it is, because I cannot find the proper documentation and 
+      samples.<BR><BR>So what I want to know is how to implement this. I saw 
+      samples of MediaElement playing video inside shapes or on a 3D cube 
+      (Hands-On-Labs). I would like to achieve similar functionality with my 
+      library. How can I do this? What should I subclass? Are there any examples 
+      so far?<BR><BR>Thank you,<BR>Cosmin.</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #3" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c68">#3</A> 
+      <A href="mailto:cosminb[at]gmail.com">CosminB [BRT]</A> on 2006-03-27 
+      03:57 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='68';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c286></A>
+      <DIV class="serendipity_comment serendipity_comment_author_Frank-Hileman " 
+      style="PADDING-LEFT: 0px">
+      <DIV class=serendipity_commentBody>The Visual is still fundamentally a 
+      retained-mode API, storing data that is then rendered using the rendering 
+      thread. Is this statement correct?<BR><BR>If so, this is the biggest 
+      problem we have with using WPF in techincal applications. Fundamental 
+      optimization techiques are no longer available -- reusing the same 
+      rendering data for multiple objects, optimizing buffering, incremental 
+      rendering optimization (only changes re-rendered), controlling 
+      framerates... Will we ever have acces to a true immediate mode API?</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #4" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c286">#4</A> 
+      <A href="mailto:frankhil[at]no.spamming.prodigesoftware.com">Frank 
+      Hileman</A> (<A title=http://weblogs.asp.net/frank_hileman 
+      href="http://weblogs.asp.net/frank_hileman">Link</A>) on 2006-06-13 10:11 
+      (<A onclick="document.getElementById('serendipity_replyTo').value='286';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c289></A>
+      <DIV 
+      class="serendipity_comment serendipity_comment_author_Pablo-Fernicola serendipity_comment_author_self" 
+      style="PADDING-LEFT: 20px">
+      <DIV class=serendipity_commentBody>The Visual layer is indeed a 
+      retained-mode API. Once you try to integrate animations and audio/video 
+      with other graphics types, you find that this model is best suited for 
+      that.<BR><BR>In terms of the optimizations, we do incremental rendering 
+      and buffering for you.<BR><BR>You can re-use data (as in brushes or 
+      resources) from the API.<BR><BR>Framerate is dependent on the 
+      machine/scene, we try to drive the scene as fast as it can on the machine 
+      (or you can drive the clock yourself, if you want to capture frames), but 
+      you can provide hints if some animation is less important (so we ran it at 
+      a lower rate).<BR><BR>Hope this helps,<BR><BR>-Pablo</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #4.1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c289">#4.1</A> 
+      <A href="mailto:pablo[at]fernicola.org">Pablo Fernicola</A> (<A 
+      title=http://www.fernicola.org/loquitor 
+      href="http://www.fernicola.org/loquitor">Link</A>) on 2006-06-14 00:48 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='289';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c315></A>
+      <DIV class="serendipity_comment serendipity_comment_author_Frank-Hileman " 
+      style="PADDING-LEFT: 40px">
+      <DIV class=serendipity_commentBody>When I said "buffering" I was speaking 
+      of buffering the rendering data.<BR><BR>For example, if I wish to draw a 
+      polyline using the lowest level interface available 
+      (DrawingContext):<BR><BR>A) How many times are the polyline points copied 
+      from one memory location to another before rendered, starting from the 
+      original API call?<BR><BR>B) Are the points transferred across a bus, such 
+      as the video bus?<BR><BR>The answers to those questions determine in part 
+      how well the system scales when the number of points increases to many 
+      megabytes. <BR><BR>When I speak of reusing rendering data, it is not just 
+      brushes, I mean any type of data, with minimal data transfer.<BR><BR>What 
+      you call "animations" in WPF speak seems to be mainly Flash-style 
+      advertising type of animations? In many technical applications animation 
+      is driven by real-time data and is fundamentally imperative -- no 
+      interpolation. This is why it is important to have low-level control over 
+      the screen updates.<BR><BR>Incremental rendering optimization: suppose I 
+      draw 100K polyines with the lowest-level WPF API, DrawingContext. Now I 
+      wish to change 10 of those polylines in response to a change real-time 
+      data. Must I re-stream all 100K?<BR><BR>With an immediate mode API and a 
+      bitmap or video buffer based system it is possible to optimize this 
+      scenario. With the DrawingContext what does one do?<BR><BR>If the solution 
+      is to abandon WPF, and go back to GDI, GDI+, or attempt to fit a 2D 
+      immediate mode system over DirectX, this is disappointing. We have been 
+      waiting for an update to GDI+ for many years now.</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #4.1.1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c315">#4.1.1</A> 
+      <A href="mailto:frankhil[at]no.spamming.prodigesoftware.com">Frank 
+      Hileman</A> (<A title=http://weblogs.asp.net/frank_hileman 
+      href="http://weblogs.asp.net/frank_hileman">Link</A>) on 2006-06-16 18:20 
+      (<A onclick="document.getElementById('serendipity_replyTo').value='315';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c385></A>
+      <DIV class="serendipity_comment serendipity_comment_author_phil " 
+      style="PADDING-LEFT: 60px">
+      <DIV class=serendipity_commentBody>Maybe the The Visual layer is not quite 
+      a fit for CAD level programs but should improve less-demanding desktop 
+      apps a lot. Are there any documentation for the The Visual layer APIs? I 
+      am eager to try it.</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #4.1.1.1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c385">#4.1.1.1</A> 
+      phil on 2006-07-14 16:33 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='385';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c415></A>
+      <DIV class="serendipity_comment serendipity_comment_author_Mike-Brown " 
+      style="PADDING-LEFT: 60px">
+      <DIV class=serendipity_commentBody>The perceived problem you have comes 
+      from not understanding how data binding works in WPF. By using 
+      databinding, your animations can be driven by data. For a number of 
+      examples related to data driven animation in WPF, you should look at 
+      http://www.thewpfblog.com</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #4.1.1.2" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c415">#4.1.1.2</A> 
+      <A href="mailto:mbrown77+nospam[at]gmail.com">Mike Brown</A> (<A 
+      title=http://mbrownchicago.spaces.live.com 
+      href="http://mbrownchicago.spaces.live.com/">Link</A>) on 2006-08-03 09:03 
+      (<A onclick="document.getElementById('serendipity_replyTo').value='415';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c374></A>
+      <DIV class="serendipity_comment serendipity_comment_author_J.-Dunlap " 
+      style="PADDING-LEFT: 40px">
+      <DIV class=serendipity_commentBody>I am also interested to know the 
+      answers to the questions Frank asked in the above post. If you don't know 
+      the answers or don't have time to answer or whatever, pointers to 
+      information that helps to answer them or to better places to ask would be 
+      most appreciated.</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #4.1.2" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c374">#4.1.2</A> 
+      <A href="mailto:jddunlap[at]gmail.com">J. Dunlap</A> (<A 
+      title=http://blogs.wdevs.com/jdunlap 
+      href="http://blogs.wdevs.com/jdunlap">Link</A>) on 2006-07-10 11:02 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='374';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c16051></A>
+      <DIV class="serendipity_comment serendipity_comment_author_sandy " 
+      style="PADDING-LEFT: 0px">
+      <DIV class=serendipity_commentBody>Could you please update all links in 
+      your article?<BR>They are no longer vaild.</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #5" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c16051">#5</A> 
+      sandy on 2007-01-15 15:16 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='16051';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c16053></A>
+      <DIV class="serendipity_comment serendipity_comment_author_sandy " 
+      style="PADDING-LEFT: 0px">
+      <DIV class=serendipity_commentBody>I've heard that MIL API is not public. 
+      <BR>Also, it is unmanaged API, not managed as written in the blog.</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #6" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c16053">#6</A> 
+      <A href="mailto:a124[at]usa.com">sandy</A> on 2007-01-15 16:22 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='16053';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c18668></A>
+      <DIV 
+      class="serendipity_comment serendipity_comment_author_Pablo-Fernicola serendipity_comment_author_self" 
+      style="PADDING-LEFT: 20px">
+      <DIV class=serendipity_commentBody>As you see in the diagram, the lower 
+      level layers of the MIL are written in native code (unmanaged), which is 
+      where the MIL interfaces with Direct3D, for example.<BR><BR>Not sure why 
+      one would think that the MIL is not public. The lowest level API exposed 
+      for the MIL are Visual, and that is managed. Obviously, the MIL is also 
+      exposed/used by the framework level APIs as well.<BR><BR>Below the MIL, 
+      you have access to the Windows Imaging Component and Direct3D, both 
+      through native APIs.</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #6.1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c18668">#6.1</A> 
+      <A href="mailto:pablo[at]fernicola.org">Pablo Fernicola</A> (<A 
+      title=http://www.fernicola.org/loquitor 
+      href="http://www.fernicola.org/loquitor">Link</A>) on 2007-02-01 13:54 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='18668';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c23554></A>
+      <DIV class="serendipity_comment serendipity_comment_author_bos " 
+      style="PADDING-LEFT: 40px">
+      <DIV class=serendipity_commentBody>Well, there are no header or lib files 
+      publicly available for milcore.dll, right?<BR>Being able to use MIL from 
+      unmanaged applications is what the fuzz is all about.<BR><BR>Please don't 
+      say now you didn't know why anyone might want to do that <IMG 
+      class=emoticon style="DISPLAY: inline; VERTICAL-ALIGN: bottom" alt=;-) 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/wink.png"></DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #6.1.1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c23554">#6.1.1</A> 
+      <A href="mailto:bos[at]rdcs.at">bos</A> on 2007-02-22 01:40 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='23554';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c57026></A>
+      <DIV 
+      class="serendipity_comment serendipity_comment_author_Jack-Schneider " 
+      style="PADDING-LEFT: 0px">
+      <DIV class=serendipity_commentBody>Links in article are no longer 
+      valid!!</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #7" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c57026">#7</A> 
+      Jack Schneider on 2007-05-17 00:09 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='57026';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c70823></A>
+      <DIV 
+      class="serendipity_comment serendipity_comment_author_Jeremiah-Morrill " 
+      style="PADDING-LEFT: 0px">
+      <DIV class=serendipity_commentBody>Thanks for the link back to my 
+      blog!<BR><BR>In response the "Factored Access to WPF" section. I believe a 
+      lot of developers want their cake (WPF) and eat it too (Fast Graphics 
+      Rendering).<BR><BR>With the framework level functionality, we can do all 
+      sorts of great effects with vectors, alpha blending, animation, etc. We 
+      can even use the BitmapEffect API / BitmapSource.Create() to do 
+      modifications to raster images. The issue is performance of these methods 
+      as the framework API seems to reallocate an image's buffer and cause 
+      insane amount of page faults and overall CPU usage. This makes WPF 
+      unusable in some situations. We can always use Win32 Interop, but we lose 
+      out on all the WPF goodness.<BR><BR>Say I had a video chat application I 
+      wanted to port to WPF. I have a custom DirectShow graph that takes a 
+      webcam stream and sends to a renderer and out to the network. It is 
+      impossible to render the video for WPF compositing (w/o killing the 
+      CPU).<BR><BR>What if I had a Photoshop-esque application and I wanted 
+      direct access to the pixels for modification. Again this is impossible to 
+      do efficiently in WPF.<BR><BR>I am very optimistic that Microsoft will 
+      have a solution to these issues in future updates to WPF. I admit I have 
+      been very a very annoying voice, trying to be a squeeky-wheel in hopes to 
+      expedite this ability.<BR><BR>I believe the missing high-performance 
+      graphics access really inhibits the type of applications that can be made 
+      and promotes usage of win32/winforms interop, something we should all want 
+      to get away from. <BR><BR>-Jer</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #8" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c70823">#8</A> 
+      <A href="mailto:jeremiah.morrill[at]gmail.com">Jeremiah Morrill</A> (<A 
+      title=http://jmorrill.hjtcentral.com 
+      href="http://jmorrill.hjtcentral.com/">Link</A>) on 2007-06-07 15:50 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='70823';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c72185></A>
+      <DIV class="serendipity_comment serendipity_comment_author_Eric-Hill " 
+      style="PADDING-LEFT: 20px">
+      <DIV class=serendipity_commentBody>The "missing piece" of WPF is not 
+      completely captured by the phrase "Fast Graphics Rendering". The other 
+      part is <STRONG>scalable</STRONG> graphics rendering. WPF is (currently) a 
+      retained-mode-only API. There are classes of applications for which 
+      retained mode simply does not scale well enough to be practical. My 
+      example is scientific visualization, where you have vast amounts of data 
+      you are trying to display on-screen. WPF is a great API if you have a 
+      small number (a few thousand) of objects that move around. For those of us 
+      with a large number (hundreds of thousands to millions) of objects that 
+      sit still, WPF is quickly overwhelmed, primarily in terms of the amount of 
+      memory it consumes rather than rendering speed. This class of applications 
+      needs, IMHO, an immediate-mode API that integrates with WPF. It's been 
+      mentioned (Tim Cahill's blog I think, a year or so back). Can we have it 
+      please ;-)?</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #8.1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c72185">#8.1</A> 
+      <A href="mailto:Eric.Hill[at]sas.com">Eric Hill</A> on 2007-06-10 05:47 
+      (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='72185';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c87531></A>
+      <DIV 
+      class="serendipity_comment serendipity_comment_author_Rammohan-Kotturu " 
+      style="PADDING-LEFT: 0px">
+      <DIV class=serendipity_commentBody>I am working on a graphics intensive 
+      application. I need to display tens of thousands of polygons, a few filled 
+      with linear gradient fills, others with uniform color, support VERY LARGE 
+      zoom ratios. Data is static. I do not need any hittests on the shapes 
+      displayed.<BR><BR>I implemented the app with .Net 2.0 framework. 
+      Performance is reasonably good. GDI+ crashes frequently because of 
+      "overflows" and "underflows".<BR><BR>I reimplemented the app with WPF but 
+      not able to get reasonable performance. I used a canvas contained in a 
+      ScrollViewer to display the data. In OnRender I used PathGeometry objects 
+      and DrawGeometry() method to render all the shapes. It is taking 
+      considerable time to render the data. If I scroll using the scroll bar it 
+      calls OnRender().<BR><BR>I would appreciate if the following questions are 
+      answered.<BR><BR>1. Is the strategy I use optimal? <BR>2. Is there a way 
+      to tell the system "there is no change use cached retained mode data" in 
+      response to Render event?<BR>3. Is there a way to suppress calling of 
+      OnRender() when scroll position is changed?<BR>4. When I use Perforator I 
+      see only "software render targets". No "hardware render targets". My 
+      system has DirectX 9.0c. Why is it not using HW 
+      acceleration?<BR><BR>-Rammohan</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #9" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c87531">#9</A> 
+      <A href="mailto:Rammohan.Kotturu[at]finisar.com">Rammohan Kotturu</A> on 
+      2007-07-18 19:35 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='87531';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c119222></A>
+      <DIV class="serendipity_comment serendipity_comment_author_Eric-Hill " 
+      style="PADDING-LEFT: 20px">
+      <DIV class=serendipity_commentBody>Rammohan,<BR><BR>If you want good 
+      performance from WPF, you <STRONG>must</STRONG> factor all code 
+      <STRONG>out</STRONG> of OnRender. If you are drawing with geometries, I 
+      believe the steps are: Create a Drawing or DrawingGroup from your Geometry 
+      (probably a GeometryDrawing). Then, create a DrawingVisual, call 
+      RenderOpen on it, and use DrawDrawing to render the drawing into the 
+      DrawingVisual. Finally, you need a FrameworkElement that you can put on 
+      the canvas. I have a class called VisualHost that derives from 
+      FrameworkElement, takes a DrawingVisual as a constructor argument, 
+      overrides VisualChildrenCount to always return 1, and overrides 
+      GetVisualChild to return the DrawingVisual. It is that VisualHost that 
+      gets put on the canvas.<BR><BR>Hope this helps.<BR><BR>Eric</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #9.1" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c119222">#9.1</A> 
+      <A href="mailto:Eric.Hill[at]sas.com">Eric Hill</A> on 2007-09-14 13:06 
+      (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='119222';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=c124082></A>
+      <DIV class="serendipity_comment serendipity_comment_author_John " 
+      style="PADDING-LEFT: 0px">
+      <DIV class=serendipity_commentBody>Anyone have any benchmarks on how much 
+      hardware acceleration will speed up various operations?</DIV>
+      <DIV class=serendipity_comment_source><A title="Link to comment #10" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#c124082">#10</A> 
+      John on 2007-09-27 17:44 (<A 
+      onclick="document.getElementById('serendipity_replyTo').value='124082';" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/17-WPF-Pick-Your-API-Abstraction.html#serendipity_CommentForm">Reply</A>) 
+      </DIV></DIV><A id=feedback></A><BR>
+      <DIV class=serendipity_commentsTitle>Add Comment</DIV>
+      <DIV class=serendipityCommentForm><A id=serendipity_CommentForm></A>
+      <FORM id=serendipity_comment 
+      action=/loquitor/index.php?url=archives/17-WPF-Pick-Your-API-Abstraction.html#feedback 
+      method=post>
+      <DIV><INPUT type=hidden value=17 name=serendipity[entry_id]></DIV>
+      <TABLE cellPadding=3 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD class=serendipity_commentsLabel><LABEL 
+            for=serendipity_commentform_name>Name</LABEL></TD>
+          <TD class=serendipity_commentsValue><INPUT 
+            id=serendipity_commentform_name size=30 
+name=serendipity[name]></TD></TR>
+        <TR>
+          <TD class=serendipity_commentsLabel><LABEL 
+            for=serendipity_commentform_email>Email</LABEL></TD>
+          <TD class=serendipity_commentsValue><INPUT 
+            id=serendipity_commentform_email name=serendipity[email]></TD></TR>
+        <TR>
+          <TD class=serendipity_commentsLabel><LABEL 
+            for=serendipity_commentform_url>Homepage</LABEL></TD>
+          <TD class=serendipity_commentsValue><INPUT 
+            id=serendipity_commentform_url name=serendipity[url]></TD></TR>
+        <TR>
+          <TD class=serendipity_commentsLabel><LABEL 
+            for=serendipity_replyTo>In reply to</LABEL></TD>
+          <TD class=serendipity_commentsValue><SELECT id=serendipity_replyTo 
+            name=serendipity[replyTo]><OPTION value=0 selected>[ Top level 
+              ]</OPTION><OPTION value=46>#1: mihailik on 2006-03-21 
+              16:12</OPTION> <OPTION value=63>#2: damien morton on 2006-03-22 
+              22:45</OPTION> <OPTION value=64>&nbsp;&nbsp;#2.1: Pablo Fernicola 
+              on 2006-03-22 23:50</OPTION> <OPTION 
+              value=65>&nbsp;&nbsp;&nbsp;&nbsp;#2.1.1: damien morton on 
+              2006-03-24 20:30</OPTION> <OPTION 
+              value=66>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#2.1.1.1: Pablo 
+              Fernicola on 2006-03-26 14:56</OPTION> <OPTION value=68>#3: 
+              CosminB [BRT] on 2006-03-27 03:57</OPTION> <OPTION value=286>#4: 
+              Frank Hileman on 2006-06-13 10:11</OPTION> <OPTION 
+              value=289>&nbsp;&nbsp;#4.1: Pablo Fernicola on 2006-06-14 
+              00:48</OPTION> <OPTION value=315>&nbsp;&nbsp;&nbsp;&nbsp;#4.1.1: 
+              Frank Hileman on 2006-06-16 18:20</OPTION> <OPTION 
+              value=385>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#4.1.1.1: phil on 
+              2006-07-14 16:33</OPTION> <OPTION 
+              value=415>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#4.1.1.2: Mike Brown 
+              on 2006-08-03 09:03</OPTION> <OPTION 
+              value=374>&nbsp;&nbsp;&nbsp;&nbsp;#4.1.2: J. Dunlap on 2006-07-10 
+              11:02</OPTION> <OPTION value=16051>#5: sandy on 2007-01-15 
+              15:16</OPTION> <OPTION value=16053>#6: sandy on 2007-01-15 
+              16:22</OPTION> <OPTION value=18668>&nbsp;&nbsp;#6.1: Pablo 
+              Fernicola on 2007-02-01 13:54</OPTION> <OPTION 
+              value=23554>&nbsp;&nbsp;&nbsp;&nbsp;#6.1.1: bos on 2007-02-22 
+              01:40</OPTION> <OPTION value=57026>#7: Jack Schneider on 
+              2007-05-17 00:09</OPTION> <OPTION value=70823>#8: Jeremiah Morrill 
+              on 2007-06-07 15:50</OPTION> <OPTION value=72185>&nbsp;&nbsp;#8.1: 
+              Eric Hill on 2007-06-10 05:47</OPTION> <OPTION value=87531>#9: 
+              Rammohan Kotturu on 2007-07-18 19:35</OPTION> <OPTION 
+              value=119222>&nbsp;&nbsp;#9.1: Eric Hill on 2007-09-14 
+              13:06</OPTION> <OPTION value=124082>#10: John on 2007-09-27 
+              17:44</OPTION></SELECT></TD></TR>
+        <TR>
+          <TD class=serendipity_commentsLabel><LABEL 
+            for=serendipity_commentform_comment>Comment</LABEL></TD>
+          <TD class=serendipity_commentsValue><TEXTAREA id=serendipity_commentform_comment name=serendipity[comment] rows=10 cols=40></TEXTAREA><BR>
+            <DIV class=serendipity_commentDirection>Enclosing asterisks marks 
+            text as bold (*word*), underscore are made via _word_.</DIV>
+            <DIV class=serendipity_commentDirection>Standard emoticons like :-) 
+            and ;-) are converted to images.</DIV>
+            <DIV class=serendipity_commentDirection><BR>To prevent automated 
+            Bots from commentspamming, please enter the string you see in the 
+            image below in the appropriate input box. Your comment will only be 
+            submitted if the strings match. Please ensure that your browser 
+            supports and accepts cookies, or your comment cannot be verified 
+            correctly.<BR><IMG class=captcha 
+            title="Enter the string you see here in the input box!" alt=CAPTCHA 
+            src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/index.jpg"><BR><LABEL 
+            for=captcha>Enter the string from the spam-prevention image above: 
+            </LABEL><BR><INPUT id=captcha size=5 
+          name=serendipity[captcha]></DIV></TD></TR>
+        <TR>
+          <TD>&nbsp;</TD>
+          <TD class=serendipity_commentsLabel><INPUT id=checkbox_remember 
+            type=checkbox name=serendipity[remember]><LABEL 
+            for=checkbox_remember>Remember Information? </LABEL><BR><INPUT 
+            id=checkbox_subscribe type=checkbox 
+            name=serendipity[subscribe]><LABEL for=checkbox_subscribe>Subscribe 
+            to this entry</LABEL> </TD></TR>
+        <TR>
+          <TD>&nbsp;</TD>
+          <TD><INPUT type=submit value="Submit Comment" name=serendipity[submit]> 
+<INPUT type=submit value=Preview name=serendipity[preview]></TD></TR></TBODY></TABLE></FORM></DIV></DIV></DIV>
+      <DIV class=serendipity_entryFooter style="TEXT-ALIGN: center"></DIV><!-- ENTRIES END --><!-- CONTENT END --></TD>
+    <TD id=serendipityRightSideBar vAlign=top>
+      <DIV 
+      class="serendipitySideBarItem container_serendipity_html_nugget_plugin">
+      <DIV class=serendipitySideBarContent><IMG 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/avatar.jpg"></DIV></DIV>
+      <DIV class="serendipitySideBarItem container_serendipity_calendar_plugin">
+      <H3 
+      class="serendipitySideBarTitle serendipity_calendar_plugin">Calendar</H3>
+      <DIV class=serendipitySideBarContent>
+      <TABLE class=serendipity_calendar style="WIDTH: 100%" cellSpacing=0 
+      cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD class=serendipity_calendarHeader><A title=Back 
+            href="http://www.fernicola.org/loquitor/index.php?/archives/2007/09.html"><IMG 
+            style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+            alt=Back 
+            src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/back.png"></A> 
+          </TD>
+          <TD class=serendipity_calendarHeader 
+          style="VERTICAL-ALIGN: bottom; TEXT-ALIGN: center" colSpan=5><B><A 
+            style="WHITE-SPACE: nowrap" 
+            href="http://www.fernicola.org/loquitor/index.php?/archives/2007/10.html">October 
+            '07</A></B> </TD>
+          <TD class=serendipity_calendarHeader 
+style="TEXT-ALIGN: right"></TD></TR>
+        <TR>
+          <TD class=serendipity_weekDayName title=Monday scope=col align=middle 
+          abbr=Monday>Mon</TD>
+          <TD class=serendipity_weekDayName title=Tuesday scope=col align=middle 
+          abbr=Tuesday>Tue</TD>
+          <TD class=serendipity_weekDayName title=Wednesday scope=col 
+          align=middle abbr=Wednesday>Wed</TD>
+          <TD class=serendipity_weekDayName title=Thursday scope=col 
+          align=middle abbr=Thursday>Thu</TD>
+          <TD class=serendipity_weekDayName title=Friday scope=col align=middle 
+          abbr=Friday>Fri</TD>
+          <TD class=serendipity_weekDayName title=Saturday scope=col 
+          align=middle abbr=Saturday>Sat</TD>
+          <TD class=serendipity_weekDayName title=Sunday scope=col align=middle 
+          abbr=Sunday>Sun</TD></TR>
+        <TR class=serendipity_calendar>
+          <TD class="serendipity_calendarDay FirstRow FirstInRow">1</TD>
+          <TD class="serendipity_calendarDay FirstRow">2</TD>
+          <TD class="serendipity_calendarDay FirstRow">3</TD>
+          <TD class="serendipity_calendarDay FirstRow">4</TD>
+          <TD class="serendipity_calendarDay FirstRow">5</TD>
+          <TD class="serendipity_calendarDay FirstRow">6</TD>
+          <TD class="serendipity_calendarDay FirstRow LastInRow">7</TD></TR>
+        <TR class=serendipity_calendar>
+          <TD class="serendipity_calendarDay FirstInRow">8</TD>
+          <TD class="serendipity_calendarDay ">9</TD>
+          <TD class="serendipity_calendarDay ">10</TD>
+          <TD class="serendipity_calendarDay ">11</TD>
+          <TD class="serendipity_calendarDay ">12</TD>
+          <TD class="serendipity_calendarDay ">13</TD>
+          <TD class="serendipity_calendarDay LastInRow">14</TD></TR>
+        <TR class=serendipity_calendar>
+          <TD class="serendipity_calendarDay FirstInRow">15</TD>
+          <TD class="serendipity_calendarDay ">16</TD>
+          <TD class="serendipity_calendarDay ">17</TD>
+          <TD class="serendipity_calendarDay ">18</TD>
+          <TD class="serendipity_calendarDay ">19</TD>
+          <TD class="serendipity_calendarDay ">20</TD>
+          <TD class="serendipity_calendarDay LastInRow">21</TD></TR>
+        <TR class=serendipity_calendar>
+          <TD class="serendipity_calendarDay FirstInRow">22</TD>
+          <TD class="serendipity_calendarDay ">23</TD>
+          <TD class="serendipity_calendarDay ">24</TD>
+          <TD class="serendipity_calendarDay ">25</TD>
+          <TD class="serendipity_calendarDay ">26</TD>
+          <TD class="serendipity_calendarDay ">27</TD>
+          <TD class="serendipity_calendarDay LastInRow Today">28</TD></TR>
+        <TR class=serendipity_calendar>
+          <TD class="serendipity_calendarDay FirstInRow LastRow">29</TD>
+          <TD class="serendipity_calendarDay LastRow">30</TD>
+          <TD class="serendipity_calendarDay LastRow">31</TD>
+          <TD class="serendipity_calendarDay LastRow">&nbsp;</TD>
+          <TD class="serendipity_calendarDay LastRow">&nbsp;</TD>
+          <TD class="serendipity_calendarDay LastRow">&nbsp;</TD>
+          <TD 
+        class="serendipity_calendarDay LastInRow LastRow">&nbsp;</TD></TR></TBODY></TABLE></DIV></DIV>
+      <DIV 
+      class="serendipitySideBarItem container_serendipity_quicksearch_plugin">
+      <H3 
+      class="serendipitySideBarTitle serendipity_quicksearch_plugin">Quicksearch</H3>
+      <DIV class=serendipitySideBarContent>
+      <FORM id=searchform action=/loquitor/index.php method=get>
+      <DIV><INPUT type=hidden value=search name=serendipity[action]> <INPUT 
+      id=serendipityQuickSearchTermField alt=Quicksearch size=13 
+      name=serendipity[searchTerm]> </DIV>
+      <DIV id=LSResult style="DISPLAY: none">
+      <DIV id=LSShadow></DIV></DIV></FORM></DIV></DIV>
+      <DIV class="serendipitySideBarItem container_serendipity_archives_plugin">
+      <H3 
+      class="serendipitySideBarTitle serendipity_archives_plugin">Archives</H3>
+      <DIV class=serendipitySideBarContent><A title="October 2007" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/2007/10.html">October 
+      2007</A><BR><A title="September 2007" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/2007/09.html">September 
+      2007</A><BR><A title="August 2007" 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/2007/08.html">August 
+      2007</A><BR><A 
+      href="http://www.fernicola.org/loquitor/">Recent...</A><BR><A 
+      href="http://www.fernicola.org/loquitor/index.php?/archive">Older...</A> 
+      </DIV></DIV>
+      <DIV 
+      class="serendipitySideBarItem container_serendipity_categories_plugin">
+      <H3 
+      class="serendipitySideBarTitle serendipity_categories_plugin">Categories</H3>
+      <DIV class=serendipitySideBarContent>
+      <DIV style="PADDING-BOTTOM: 2px"><A 
+      href="http://www.fernicola.org/loquitor/index.php?/feeds/categories/1-Espanol.rss"><IMG 
+      style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+      alt=XML 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/xml.gif"></A> 
+      <A title=Espa�ol style="PADDING-LEFT: 0px" 
+      href="http://www.fernicola.org/loquitor/index.php?/categories/1-Espanol">Espa�ol</A></DIV>
+      <DIV style="PADDING-BOTTOM: 2px"><A 
+      href="http://www.fernicola.org/loquitor/index.php?/feeds/categories/4-Personal.rss"><IMG 
+      style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+      alt=XML 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/xml.gif"></A> 
+      <A title=Personal style="PADDING-LEFT: 0px" 
+      href="http://www.fernicola.org/loquitor/index.php?/categories/4-Personal">Personal</A></DIV>
+      <DIV style="PADDING-BOTTOM: 2px"><A 
+      href="http://www.fernicola.org/loquitor/index.php?/feeds/categories/3-Portugues.rss"><IMG 
+      style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+      alt=XML 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/xml.gif"></A> 
+      <A title=Portugu�s style="PADDING-LEFT: 0px" 
+      href="http://www.fernicola.org/loquitor/index.php?/categories/3-Portugues">Portugu�s</A></DIV>
+      <DIV style="PADDING-BOTTOM: 2px"><A 
+      href="http://www.fernicola.org/loquitor/index.php?/feeds/categories/2-Technical.rss"><IMG 
+      style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+      alt=XML 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/xml.gif"></A> 
+      <A title=Technical style="PADDING-LEFT: 0px" 
+      href="http://www.fernicola.org/loquitor/index.php?/categories/2-Technical">Technical</A></DIV><BR><A 
+      title="All categories" 
+      href="http://www.fernicola.org/loquitor/index.php">All 
+      categories</A></DIV></DIV>
+      <DIV 
+      class="serendipitySideBarItem container_serendipity_html_nugget_plugin">
+      <H3 class="serendipitySideBarTitle serendipity_html_nugget_plugin">Live 
+      Search</H3>
+      <DIV class=serendipitySideBarContent><!-- Web search from Live Search-->
+      <FORM action=http://search.live.com/results.aspx method=get><INPUT 
+      type=hidden value=1252 name=cp> <INPUT type=hidden value=FREEWS name=FORM>
+      <TABLE bgColor=#ffffff>
+        <TBODY>
+        <TR>
+          <TD><A href="http://search.live.com/"><IMG alt="Live Search" 
+            src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/affillogoLive.gif" 
+            border=0></A></TD>
+          <TD><INPUT size=30 
+          name=q><BR><INPUT type=submit value="Search Web"></TD></TR></TBODY></TABLE></FORM><!-- Web Search from Live Search --></DIV></DIV>
+      <DIV 
+      class="serendipitySideBarItem container_serendipity_syndication_plugin">
+      <H3 
+      class="serendipitySideBarTitle serendipity_syndication_plugin">Syndicate 
+      This Blog</H3>
+      <DIV class=serendipitySideBarContent>
+      <DIV style="PADDING-BOTTOM: 2px"><A 
+      href="http://www.fernicola.org/loquitor/index.php?/feeds/index.rss2"><IMG 
+      style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+      alt=XML 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/xml.gif"></A> 
+      <A 
+      href="http://www.fernicola.org/loquitor/index.php?/feeds/index.rss2">RSS 
+      2.0 feed</A> </DIV>
+      <DIV style="PADDING-BOTTOM: 2px"><A 
+      href="http://www.fernicola.org/loquitor/index.php?/feeds/comments.rss2"><IMG 
+      style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+      alt=XML 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/xml.gif"></A> 
+      <A 
+      href="http://www.fernicola.org/loquitor/index.php?/feeds/comments.rss2"><NOBR>RSS 
+      2.0 Comments</NOBR></A> </DIV></DIV></DIV>
+      <DIV class="serendipitySideBarItem container_serendipity_plug_plugin">
+      <H3 class="serendipitySideBarTitle serendipity_plug_plugin">Powered 
+by</H3>
+      <DIV class=serendipitySideBarContent>
+      <DIV class=serendipityPlug><A title="Powered by Serendipity" 
+      href="http://www.s9y.org/"><IMG 
+      style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+      alt="Serendipity PHP Weblog" 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/s9y_banner_small.png"></A> 
+      </DIV></DIV></DIV>
+      <DIV 
+      class="serendipitySideBarItem container_serendipity_html_nugget_plugin">
+      <DIV class=serendipitySideBarContent><A 
+      href="mailto:pablo@fernicola.org">pablo@fernicola.org</A><BR><BR><BR><I><A 
+      href="http://www.fernicola.org/loquitor/index.php?/archives/2005/08/13.html">Biography</A></I></DIV></DIV>
+      <DIV 
+      class="serendipitySideBarItem container_serendipity_html_nugget_plugin">
+      <H3 class="serendipitySideBarTitle serendipity_html_nugget_plugin">XBox 
+      360 Gamer Tag</H3>
+      <DIV class=serendipitySideBarContent><IFRAME 
+      src="WPF- Pick Your API Abstraction - Pablo Fernicola's Personal Blog_files/AvalonDude.htm" 
+      frameBorder=0 width=204 scrolling=no 
+      height=140>Put your gamertag here too.</IFRAME></DIV></DIV></TD></TR></TBODY></TABLE></BODY></HTML>

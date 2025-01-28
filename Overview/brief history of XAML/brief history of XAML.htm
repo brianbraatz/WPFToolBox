@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title id="title">PermaLink</title><!--
+//=-------
+// Copyright 2003, Chris Anderson
+// 
+//   Provided as is, with no warrenty, etc.
+//   License is granted to use, copy, modify, 
+//   with or without credit to me, just don't
+//   blame me if it doesn't work.
+//=-------
+-->
+
+
+    
+         
+        
+        <meta name="GENERATOR" content="Microsoft Visual Studio 7.0">
+        <meta name="CODE_LANGUAGE" content="C#">
+        <meta name="vs_defaultClientScript" content="JavaScript">
+        <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+    <link href="brief%20history%20of%20XAML_files/blogx.css" type="text/css" rel="stylesheet"></head><body xmlns="http://www.w3.org/1999/xhtml">
+        
+<script type="text/javascript" src="brief%20history%20of%20XAML_files/aghost.js"></script>
+<div id="header">
+    <p id="sideTitle">
+        <span class="blogTitleSub">ChrisAn's Blog</span>
+        <span class="blogTitleSubDisclaimer">Please read my <a href="http://www.simplegeek.com/FormatPage.aspx?path=SiteConfig/disclaimer.format.html">
+                disclaimer</a>.</span>
+    </p>
+        <div id="wpfeControl1Host"><div style="border: 4px solid rgb(212, 211, 170); margin: 6px; padding: 6px 10px 2px; width: 300px; background-color: rgb(231, 232, 209); font-family: Arial,Helvetica,sans-serif;">  <div><strong style="font-size: 20px; font-weight: bold; color: rgb(68, 68, 68); position: relative; top: 5px;">Install WPF/E</strong></div>  <div style="font-size: 14px; margin-bottom: 5px; color: rgb(68, 68, 68); margin-top: 7px;">    You must install the current version of WPF/E (codename) in order to view this content.&nbsp;    Get WPF/E <a href="http://go.microsoft.com/fwlink/?linkid=77792&amp;clcid=0x409" style="text-decoration: underline; color: rgb(144, 23, 8);">here</a>.    <div style="margin-top: 25px; text-align: center; font-size: 14px; background-color: rgb(251, 249, 230);">      <a href="http://www.microsoft.com/wpfe/" style="text-decoration: underline; color: rgb(144, 23, 8);">Learn More About WPF/E</a>    </div>  </div></div>
+         </div>
+<!-- <h1><a href="http://www.simplegeek.com" style="text-decoration:none;"><span style="color:black;">simple</span><span style="color:red;">geek</span></a></h1> -->
+    <p id="byline">a.k.a. Chris Anderson</p>
+</div>
+
+        <form name="PermaLink" method="post" action="permalink.aspx" id="PermaLink">
+<div>
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTExMjIxODcwMzBkZGmHrA3onIGPJrRjEGstF584/Wxb" type="hidden">
+</div>
+
+            <div id="content"><div class="entry"><h3 class="entryTitle">A brief history of XAML</h3><div class="entryBody">
+    <p>
+        <em>While I haven't been involved in every aspect of the design and history of XAML,
+        I thought you all might enjoy a bit of the history of how we got to where we are with
+        XAML... </em>
+    </p>
+    <p>
+        An early debate on the Avalon team was about what our markup should look like. We
+        knew that we wanted a declarative UI model - it is actually something we have had
+        for a long time. The Avalon team was formed with members from all over the company
+        - User, IE, etc. And each team had a different history with markup. Obviously the
+        IE folks had used HTML and VML in the past, while the User folks had used RC files.
+        To add to the great debate there was also the new success of ASP.NET and their form
+        of markup. 
+    </p>
+    <p>
+        After great debate, we decided that the programatic object model would be based on
+        .NET conventions. We also felt that the markup should have the same programming model
+        as code. Neither HTML nor RC files had this "markup == object model" tenet, and it
+        made programming difficult. ASP.NET had (basically) this model, and people seemed
+        to really like that. 
+    </p>
+    <p>
+        Finally we decided that the markup should be a new format that was, in fact, a persistence
+        format for .NET objects. Thus, code like this: 
+    </p>
+    <p class="code">
+        Button b = new Button();<br>
+        b.Text = "Hello";<br>
+        b.Background = Colors.Red; 
+    </p>
+    <p>
+        Would be transformed into: 
+    </p>
+    <p class="code">
+        &lt;Button Text="Hello" Background="Red" /&gt; 
+    </p>
+    <p>
+        Of course, that wasn't the end of the debates. Now of course, we had to decide on
+        the object model for our objects. Should we try to make the object model familiar
+        to Win32, HTML, WinForms, ASP.NET, or some other group of developers? There were various
+        camps, but after the success of .NET in 2001/2 it became increasingly obvious that
+        a WinForms/ASP.NET based object model would be the right thing for majority of developers. 
+    </p>
+    <p>
+        Anyway, back to the markup... 
+    </p>
+    <p>
+        The general rules for XAML go something like this: 
+    </p>
+    <ol>
+        <li>
+            Tag names are class names. The CLR namespace and assembly is discovered by an XML
+            namespace mapping scheme (more later). 
+        </li>
+        <li>
+            XML Elements are mapped to CLR properties or events 
+        </li>
+        <li>
+            Sub-elements of a tag can either be other class instances or "compound" properties&nbsp;(of
+            the form Type.PropertyName) 
+        </li>
+    </ol>
+    <p>
+        There are a few more advanced rules around the "Definition" namespace and Style.VisualTree,
+        but basically these three rules are it. Property values are converted from strings
+        in markup to code using TypeDescriptors (just like in ASP.NET). Rule #3 has some complications
+        to it - there are several ways that a child object gets attached to a parent (IAddChild,
+        IList, etc.). 
+    </p>
+    <p>
+        There is a fourth rule: 
+    </p>
+    <p>
+        4. The root tag of a markup file is the base type of the class the markup file defines. 
+    </p>
+    <p>
+        Thus a file like this: 
+    </p>
+    <p class="code">
+        &lt;Window xmlns="..." xmlns:def="..." def:Class="Window1"&gt;<br>
+        &nbsp;&nbsp;&nbsp; &lt;Button&gt;Hello&lt;/Button&gt;<br>
+        &lt;/Window&gt; 
+    </p>
+    <p>
+        Would define a new type called "Window1" that derives from "Window".
+    </p>
+    <p>
+        Here introduces one of our current debates - is XAML a programming language or a resource
+        format? With XAML you can define new types, define interactivity with "def:Code",
+        and specifiy member variables of the type using "ID". XAML also defines the UI appearance
+        of something, and is used for localization scenarios. XAML lacks any imperitive constructs
+        (branching, etc.). XAML is more of a "programming model" rather than a language, so
+        we have left it at that - "XAML is a declarative programming model".
+    </p>
+    <p>
+        In the PDC bits their are two modes of XAML compilation - binary (BAML) and code (CAML).
+        We are still working on analyising the two options - CAML works just like ASP.NET,
+        it converts XAML into code (VB.NET, C#, C++, any other CodeDOM language)... BAML uses
+        a binary format and also creates a small section of code for the parts of XAML that
+        can't be represented in binary (like the outer class definition). CAML is the default
+        in PDC bits, and you can use Optimization="Download" in the project file for getting
+        BAML.
+    </p>
+    <p>
+        This entry is turning into a bit of a rambling mess... more later... 
+    </p>
+</div><p class="entryFooter"><a class="permalink" href="http://www.simplegeek.com/PermaLink.aspx/100aec62-3352-4c35-b471-f3f2fa5fac5a">10/31/2003 9:53 PM</a> | <span class="categories"> #<a href="http://www.simplegeek.com/categoryview.aspx/Longhorn">Longhorn</a></span></p></div></div>
+        </form>
+        <div id="footer">
+    <p id="copyright">Content © 2003 Chris Anderson | Subscribe to my <a class="standardsButton" href="http://www.simplegeek.com/blogxbrowsing.asmx/GetRss?">RSS</a> feed.</p>
+    <p id="poweredBy">Powered by <a href="http://www.simplegeek.com/">BlogX</a></p>
+</div>
+
+<!-- Generated by BlogX v.1.0.1.24 -->
+    </body></html>

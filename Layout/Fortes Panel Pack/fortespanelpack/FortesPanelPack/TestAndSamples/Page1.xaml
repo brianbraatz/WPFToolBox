@@ -1,0 +1,73 @@
+﻿<Page x:Class="TestAndSamples.Page1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:fpp="clr-namespace:FortesPanelPack;assembly=FortesPanelPack"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	xmlns:local="clr-namespace:TestAndSamples"
+    Title="Page1"
+    >
+	<Page.Background>
+		<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+			<GradientStop Color="White" Offset="0" />
+			<GradientStop Color="#cef" Offset="1" />
+		</LinearGradientBrush>
+	</Page.Background>
+
+	<Page.Resources>
+		<local:BoolToOrientationConverter x:Key="BoolToOrientationConverter" />
+		<local:BoolToLayoutTransformConverter x:Key="BoolToLayoutTransformConverter" />
+	</Page.Resources>
+
+	<Grid TextBlock.FontFamily="Calibri" Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+
+		<TextBlock FontSize="25" FontWeight="Bold">
+			Fortes Panel Pack <Run FontSize="10" FontWeight="Normal">Version 0.1, now with ugly tests!</Run>
+		</TextBlock>
+
+		<TextBlock FontSize="20" HorizontalAlignment="Right" Grid.Column="1">
+			<Hyperlink NavigateUri="DataBoundPanels.xaml">Databinding Tests</Hyperlink>
+		</TextBlock>
+
+		<TextBlock Grid.Row="1" Margin="0,10" FontSize="15" FontWeight="Bold">
+			UniformStack
+		</TextBlock>
+
+		<StackPanel HorizontalAlignment="Right" Grid.Column="1" Grid.Row="1">
+			<CheckBox Name="HorizontalCheckBox" VerticalAlignment="Center">Horizontal?</CheckBox>
+		</StackPanel>
+
+		<fpp:UniformStack Grid.Row="2" Grid.ColumnSpan="2" Orientation="{Binding Path=IsChecked, ElementName=HorizontalCheckBox, Converter={StaticResource BoolToOrientationConverter}}">
+			<Button>Some Day</Button>
+			<Button>I will have</Button>
+			<Button>Cooler Tests</Button>
+			<Button Width="200">Fixed Width!</Button>
+			<Button>...Someday</Button>
+		</fpp:UniformStack>
+
+		<TextBlock Grid.Row="3" Margin="0,10" FontSize="15" FontWeight="Bold">
+			UniformStack with ExpanderDetection
+		</TextBlock>
+
+		<fpp:UniformStack IsExpanderDetectionEnabled="True"  Grid.Row="4" Grid.ColumnSpan="2" Orientation="{Binding Path=IsChecked, ElementName=HorizontalCheckBox, Converter={StaticResource BoolToOrientationConverter}}">
+			<Expander Header="Special Expander Support" LayoutTransform="{Binding Path=IsChecked, ElementName=HorizontalCheckBox, Converter={StaticResource BoolToLayoutTransformConverter}}">In order to look right, you really want a new template for vertical-style expanders. I have not done that yet, but feel free to do so yourself.</Expander>
+			<Expander Header="Uniform Stack can check for Expanders" IsExpanded="True"  LayoutTransform="{Binding Path=IsChecked, ElementName=HorizontalCheckBox, Converter={StaticResource BoolToLayoutTransformConverter}}">... and treat them as a fixed-size element. I needed this for a specific project, perhaps you will too?</Expander>
+			<Expander Header="Boring Expander" LayoutTransform="{Binding Path=IsChecked, ElementName=HorizontalCheckBox, Converter={StaticResource BoolToLayoutTransformConverter}}">I have nothing to say</Expander>
+			<Button>I'm just a button</Button>
+			<Button>Me too!</Button>
+			<Button>*Sigh*</Button>
+			<Expander Header="Boring Expander" LayoutTransform="{Binding Path=IsChecked, ElementName=HorizontalCheckBox, Converter={StaticResource BoolToLayoutTransformConverter}}">I have nothing to say</Expander>
+		</fpp:UniformStack>
+	</Grid>
+</Page>

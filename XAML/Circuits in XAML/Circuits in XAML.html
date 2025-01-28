@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - More Circuits in XAML</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/180722.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/241152.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/09/230643.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>More Circuits in XAML</h2></a><p style="text-align: right;">September 23, 2007<br>New York, N.Y.</p><p>
+I've been playing around with XAML files that might be used for
+interactive demonstrations, perhaps in a classroom or similar
+environment. It seemed that it might be interesting to have several
+similar demonstrations occupying the screen, and when you pass your
+mouse over one of them, that one expands to <i>nearly</i> the size of the window, and then when you're done, you could move your mouse to another.
+</p>
+<p>
+I knew that <i>Viewbox</i> would be involved to make the
+individual items larger and smaller, but the real breakthrough came
+when I realized I needed two levesl of <i>Viewbox</i>.  I needed to put everything in a single <i>Viewbox</i>
+so that the overall size would adjust itself to the window size of the
+web browser, the resolution of the video display, etc. Within that <i>Viewbox</i> is some kind of panel, and within the panel are multiple <i>Viewbox</i> items containing the expandable/contractable items. These interior <i>Viewbox</i> elements are connected with a style that expands and contracts the size of the <i>Viewbox</i> based on <i>MouseEnter</i> and <i>MouseLeave</i> events.
+</p>
+<p>
+The following XAML file demonstrates this technique with three simple <i>Shape</i> elements in a <i>StackPanel</i>:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/09/ExpandToFill.xaml">ExpandToFill.xaml</a>
+</p>
+<p>
+All the dimensions in this file are relative. Initially the three items are the same size because each of the interior <i>Viewbox</i> elements has a width of 100, and the overall <i>Viewbox</i> expands everything to the size of the available window. On a <i>MouseEnter</i> the <i>Viewbox</i> width is animated up to 1000, and that <i>Viewbox</i> then occupies a fraction of the available width equal to 1000 / (1000 + 100 + 100).
+</p>
+<p>
+To get the <i>MouseEnter</i> event to respond right, you can't have a transparent background!
+</p>
+<p>
+I've used this technique in the following XAML file that implements
+interactive versions of the three circuits shown on pages 95 through
+101 of my book <a href="http://www.charlespetzold.com/code"><i>Code: The Hidden Language of Hardware and Software</i></a>
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/09/LogicalSwitches.xaml">LogicalSwitches.xaml</a>
+</p>
+<p>
+These three circuits demonstrate gate-less versions of AND, OR, and the
+famous Kitten Selector. You can click the switches to toggle them on
+and off.
+</p>
+
+
+<div id="comments"><hr><p><b>Comments:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>
+Good Morning Sir,
+</p>
+<p>I was opportuned to come across your circuits design in xaml. It is
+very impressive. I am in the process in developing an educational
+software. Initially, I was going to use flash which I am not that
+conversant with. But seeing your work in xaml gave me the confidence
+that I can do it (or anything) in xaml. What advice can you give me,
+sir? I think this is a good start for me to get my hands dirty in xaml.
+</p>
+<p>
+Regards,
+</p>
+<p>
+— <a href="mailto:theophilus.medeiros@staff.bet.com">Theo Medeiros</a>, Fri, 19 Oct 2007 03:10:54 -0400 (EDT)
+</p></div><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><p>
+Was this all done in plain xaml or you used some WPF classes to achieve this?
+</p>
+<p>
+— Theo Medeiros, Sun, 21 Oct 2007 07:45:59 -0400 (EDT)
+</p>
+</div><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="More Circuits in XAML" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/180722.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/09/241152.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>

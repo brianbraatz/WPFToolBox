@@ -1,0 +1,1781 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » How do I implement a data bound ListView?</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">February 25, 2006</div>
+					<h2 id="post-20"><a id="postTitle" href="http://www.beacosta.com/blog/?p=20" rel="bookmark" title="How do I implement a data bound ListView?">How do I implement a data bound ListView?</a></h2>
+					<p><span id="text">The
+ListView control allows us to display data in a tabular form. In this
+post, I will show you how easy it is to data bind a ListView to XML
+data. I will also show you how to style the ListViewItems such that
+they alternate background colors, even when data items are added and
+removed. Someone left a comment in one of my previous posts asking for
+a sample with GridView and GridViewRowPresenter. I will include those
+in this sample and explain their behavior.</span></p>
+<p><span id="text">I used an XML data source of the solar system
+planets in this sample. This data is added to the Window’s Resources in
+the following form:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;XmlDataProvider XPath=”/SolarSystemPlanets/Planet” x:Key=”planets”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;x:XData&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;SolarSystemPlanets xmlns=”"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Planet Name=”Mercury”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Orbit&gt;57,910,000
+km (0.38 AU)&lt;/Orbit&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Diameter&gt;4,880
+km&lt;/Diameter&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Mass&gt;3.30e23
+kg&lt;/Mass&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image&gt;merglobe.gif&lt;/Image&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Details&gt;The
+small and rocky planet Mercury is the closest planet to the
+Sun.&lt;/Details&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Planet&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/SolarSystemPlanets&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/x:XData&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/XmlDataProvider&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;</span></p>
+<p><span id="text">In particular, notice the addition of the x:XData
+element, new in Feb CTP, and the empty XML namespace (xmlns=”") on the
+SolarSystemPlanets element.</span></p>
+<p><span id="text">ListView has a View property of type ViewBase.
+Currently, the only class that derives from ViewBase is GridView, which
+can be used as in the following markup to display each of the data
+fields:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate x:Key=”ImageTemplate”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image
+Source=”{Binding XPath=Image, Converter={StaticResource
+stringToImageSource}}” (…) /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DataTemplate x:Key=”NameTemplate”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Text=”{Binding XPath=@Name}” FontWeight=”Bold” (…) /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DataTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListView ItemsSource=”{Binding Source={StaticResource planets}}” (…)&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListView.View&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridView&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridView.Columns&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewColumn
+Header=”Name” CellTemplate=”{StaticResource NameTemplate}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewColumn
+Header=”Orbit” DisplayMemberBinding=”{Binding XPath=Orbit}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewColumn
+Header=”Diameter” DisplayMemberBinding=”{Binding XPath=Diameter}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewColumn
+Header=”Mass” DisplayMemberBinding=”{Binding XPath=Mass}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewColumn
+Header=”Image” CellTemplate=”{StaticResource ImageTemplate}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GridView.Columns&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GridView&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ListView.View&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ListView&gt;</span></p>
+<p><span id="text">You can use one of two GridViewColumn properties to
+control the way each planet data item is displayed: CellTemplate or
+DisplayMemberBinding. CellTemplate takes a DataTemplate, allowing
+maximum flexibility in how we visualize the data. In this particular
+sample, I used it for the “Name” column because I wanted it to be bold
+and for the “Image” column because I wanted to display the actual image
+(and not the name of the image, which is what is stored in the data
+source). DisplayMemberBinding (notice this was renamed from
+DisplayMemberPath in Jan CTP) should be used when we want to display
+the data we are binding to directly in a TextBlock.</span></p>
+<p><span id="text">This is all it takes to display data in a ListView —
+it’s really simple. This is great, but we want to make the data more
+readable by alternating the background color from one row to the next.
+We need the help of a StyleSelector to accomplish this. I talked in my <a href="http://www.beacosta.com/Archive/2006_01_01_bcosta_archive.html">Jan 13 post</a>
+about using a DataTemplateSelector to display some data items
+differently from others, based on custom logic. A StyleSelector does
+the same thing, but instead allows us to pick a different Style for
+each ListViewItem, which is what we want in this scenario. In case you
+are not familiar with the very important difference between styles and
+templates: styles allow you to set properties on any FrameworkElement;
+templates completely override the look of a particular Control
+(ControlTemplate) or its data portion (DataTemplate).</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style
+TargetType=”{x:Type ListViewItem}” BasedOn=”{StaticResource
+ListViewItemStyleBase}” x:Key=”ListViewItemStyle1″&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter Property=”Background” Value=”White” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style
+TargetType=”{x:Type ListViewItem}” BasedOn=”{StaticResource
+ListViewItemStyleBase}” x:Key=”ListViewItemStyle2″&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter Property=”Background” Value=”AliceBlue” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;local:ListViewItemStyleSelector x:Key=”ListViewItemStyleSelector” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Window.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListView ItemContainerStyleSelector=”{StaticResource ListViewItemStyleSelector}” (…)&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;public class ListViewItemStyleSelector : StyleSelector<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private int i = 0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public override Style SelectStyle(object item, DependencyObject container)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//
+makes sure the first item always gets the first style, even when
+restyling<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemsControl
+ic = ItemsControl.ItemsControlFromItemContainer(container);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (item == ic.Items[0])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i = 0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string styleKey;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (i % 2 == 0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styleKey = “ListViewItemStyle1″;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styleKey = “ListViewItemStyle2″;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return (Style)(ic.FindResource(styleKey));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">I added to the Window’s Resources the two Styles I
+want to alternate. I want ListViewItems with an even index to be white,
+and the odd ones to be AliceBlue. As you can see above, the
+StyleSelector contains simple logic to return the correct Style for
+each item.</span></p>
+<p><span id="text">Notice that these Styles have a BasedOn property set
+to some other Style. The BasedOn property behaves similarly to object
+inheritance. I will show you the base Style shortly.</span></p>
+<p><span id="text">This works great as long as you never add a new item
+to the source. If a new item is added, this code will calculate the
+Style for the newly added item but it will not redo the work for the
+other items. You will end up with two consecutive items of the same
+color, which is not what you want.</span></p>
+<p><span id="text">There are probably many ways to cause the
+StyleSelector to reassign the Styles for all items. In this sample, I
+attached a handler to the CollectionChanged event of the data source,
+and there I set the ListView’s ItemContainerStyleSelector property to
+null and back to the same StyleSelector. If I don’t set it to null
+first, Avalon is smart enough to not redo the Style assignment.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;protected override void OnInitialized(EventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base.OnInitialized(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((INotifyCollectionChanged)lv.Items).CollectionChanged
++= new NotifyCollectionChangedEventHandler(Restyle);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;private void Restyle(object sender, NotifyCollectionChangedEventArgs args)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StyleSelector selector = lv.ItemContainerStyleSelector;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv.ItemContainerStyleSelector = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv.ItemContainerStyleSelector = selector;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">Finally, I want the selected items to behave
+similarly to the ones in Add/Remove Programs. When I click on a planet,
+I want its details to appear in a single line, below the rest of the
+data, and spanning across all columns. </span></p>
+<p><span id="text">The default template for ListViewItem contains a
+Border wrapping a GridViewRowPresenter. The GridViewRowPresenter is the
+one that does all the actual work of displaying each individual data
+item in tabular form. You can think of the GridView simply as a common
+container for the GridViewColumns, styles and templates and a few other
+things. </span></p>
+<p><span id="text">When GridViewRowPresenter is used in the template
+for a ListViewItem and its Columns property is not set, it uses the
+collection of GridViewColumns set in the GridView automatically. All
+the information it needs to display the data is in the collection of
+GridViewColumns. The use of GridViewRowPresenter is not exclusive to
+ListView/GridView, though. If you set its Columns property directly,
+you can use it to template anything you can think of. I could go into
+more detail on this, but instead I will highly recommend you keep an
+eye on our <a href="http://blogs.msdn.com/atc_avalon_team/default.aspx">ATC’s team blog</a>; they have some really cool stuff coming up.</span></p>
+<p><span id="text">(By the way, you can find the default templates for all our controls by using Sparkle — I mean, <a href="http://blogs.msdn.com/expression/archive/category/11753.aspx">Expression Interactive Designer</a>.)</span></p>
+<p><span id="text">Once you see the default template for ListViewItem
+and understand the role of GridViewRowPresenter, it is easy to get the
+details line to span across the columns: you simply need to add a
+TextBlock below the GridViewRowPresenter, as you can see in the markup
+below. (This is the base Style for the alternating Styles I mentioned
+before.)</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Style TargetType=”{x:Type ListViewItem}” x:Key=”ListViewItemStyleBase”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter Property=”Template”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter.Value&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate
+TargetType=”{x:Type ListViewItem}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Border
+Background=”{TemplateBinding Background}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BorderBrush=”{TemplateBinding
+BorderBrush}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BorderThickness=”{TemplateBinding
+BorderThickness}”<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Padding=”{TemplateBinding
+Padding}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GridViewRowPresenter
+/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Text=”{Binding XPath=Details}” Visibility=”Collapsed” Name=”tb”
+TextWrapping=”Wrap” Margin=”2,0,0,4″/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Border&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ControlTemplate.Triggers&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger
+Property=”IsSelected” Value=”true”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Trigger.Setters&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Setter
+Property=”Visibility” Value=”Visible” TargetName=”tb”/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger.Setters&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Trigger&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate.Triggers&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ControlTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter.Value&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Setter&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Style&gt;</span></p>
+<p><span id="text">I don’t want the details to be visible all the time,
+though. I only want them to show for the selected item. To accomplish
+this, I first set the visibility of the TextBlock to collapsed (meaning
+that it takes no space in the layout, in addition to being invisible).
+I then added a Trigger that changes the TextBlock to be visible only
+when the ListViewItem is selected.</span></p>
+<p><span id="text">Here is a screenshot of the completed sample:</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/17BoundListView.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/17BoundListView.zip">Here</a> you can find the VS project with this sample code. This works with February CTP WPF bits. </span></p>
+<p><span id="text">Update September 17, 2007: <a href="http://www.beacosta.com/Zips/17BoundListViewOrcasBeta2.zip">Here</a> you can find this project running in Orcas Beta 2 bits.</span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=9" title="View all posts in ListView" rel="category">ListView</a>, <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=20"
+    dc:identifier="http://www.beacosta.com/blog/?p=20"
+    dc:title="How do I implement a data bound ListView?"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=20" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=20"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=20">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">34 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-208" class="comment">
+				<a name="comment-208" id="comment-208"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-208")'>
+					<cite>Comment by Alex<a href="#comment-208"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-26 23:13:31 						
+					</div>					
+					<div class="content">
+						<p>Thank you very much, Beatriz!</p>
+<p>Your examples are great as usual.</p>
+<p>I have one question, though.</p>
+<p>Whatever I do, I cannot enable vertical scrollbar in the ListView/GridView in your example. </p>
+<p>How to do it properly?</p>
+<p>Regards,<br>
+Alex</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-208", 208, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-213" class="comment odd">
+				<a name="comment-213" id="comment-213"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-213")'>
+					<cite>Comment by Bea<a href="#comment-213"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-28 22:41:05 						
+					</div>					
+					<div class="content">
+						<p>Hi Alex,</p>
+<p>I’m glad you liked the sample.</p>
+<p>Do you want to keep the headers in place and only scroll the content
+of the ListView? I’m guessing this is what you want. If so, you can
+simply set the Height of the ListView to something smaller than what it
+needs. If you want to scroll the whole thing, including headers, add a
+ScrollViewer around the ListView with a Height set on it.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-213", 213, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-214" class="comment">
+				<a name="comment-214" id="comment-214"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-214")'>
+					<cite>Comment by Alex<a href="#comment-214"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-01 06:43:43 						
+					</div>					
+					<div class="content">
+						<p>Hi, Beatriz</p>
+<p>Regarding the scrollbar. What I wanted is that vertical scrollbar
+appears and disappears when needed. When I resize the window -
+horizontal bar works as expected, however, vertical bar never shows up
+and setting of ScrollViewer.VerticalScrollBarVisibility=”Auto” on the
+ListView didn’t help.</p>
+<p>Thank You,<br>
+Alex</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-216" class="comment odd">
+				<a name="comment-216" id="comment-216"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-216")'>
+					<cite>Comment by Bea<a href="#comment-216"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-02 14:16:24 						
+					</div>					
+					<div class="content">
+						<p>Hi Alex,</p>
+<p>Ah, I hand’t understood you wanted the scrollbar to appear when
+resizing the window. In that case, replace the StackPanel in the app
+with a Grid or DockPanel. StackPanel (when stacking vertically) allows
+as much space as controls need vertically, and as a result it will
+never cause scrollbars to appear. Grid limits the space given to its
+content to what’s visible (both vertically and horizontally), so the
+ListView will get scrollbars.</p>
+<p>Let me know if this works for you.</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-217" class="comment odd">
+				<a name="comment-217" id="comment-217"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-217")'>
+					<cite>Comment by Alex<a href="#comment-217"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-03 18:38:33 						
+					</div>					
+					<div class="content">
+						<p>Well, Beatriz, there are good news and there are bad news.</p>
+<p>1. Replacing StackPanel with DockPanel helped to find missed vertical scrollbar - thank you.</p>
+<p>2. The alternate row coloring doesn’t work anymore. If ListView is
+resized so that only three or four rows are visible then after addition
+of a new row you can get several adjacent rows of the same color.</p>
+<p>I guess, Boris, this is the answer to your question - StyleSelector
+is not called for invisible rows or at least not for all of them.</p>
+<p>Alex</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-218" class="comment odd">
+				<a name="comment-218" id="comment-218"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-218")'>
+					<cite>Comment by Bea<a href="#comment-218"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-04 20:38:30 						
+					</div>					
+					<div class="content">
+						<p>Alex (and Boris),</p>
+<p>Yes, it would be a waste to call StyleSelector for all items that
+are not visible, and we don’t do that with the default implementation
+of ListView, as Alex said. ListView uses VirtualizingStackPanel by
+default to lay out its items, meaning it only generates containers
+(ListViewItems) for the data that is visible. Notice also that when you
+scroll, items that become not visible are not de-virtualized right
+away. We keep them around for a while until we reach a certain number
+of them, and then start throwing them away. This is also the default
+panel for ListBox. </p>
+<p>Right, it makes sense that due to our virtualization of items,
+scrolling does not work well with the this solution for alternating row
+color. If you want scrolling, the best (simplest, most efficient)
+solution for alternating items I can think of is the one Boris
+mentioned in his first comment. You can get the index of each item by
+doing the following:</p>
+<p>int i = ic.ItemContainerGenerator.IndexFromContainer(container);</p>
+<p>If you have very few items, this solution or changing the panel of
+ListView to be the non-virtualized StackPanel (through the ItemsPanel
+property) don’t differ much in terms of performance. If you have lots
+of items this solution is much better. </p>
+<p>If you guys can think of a better way to do this, I would be interested to hear it. Isn’t this fun? <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+<p>Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-219" class="comment odd">
+				<a name="comment-219" id="comment-219"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-219")'>
+					<cite>Comment by Alex<a href="#comment-219"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-05 18:38:10 						
+					</div>					
+					<div class="content">
+						<p>Beatriz,</p>
+<p>I always enjoy reading your posts.</p>
+<p>The last one immediately fixed the problem with the alternate styling.</p>
+<p>You are the best.<br>
+Alex</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-214", 214, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-209" class="comment">
+				<a name="comment-209" id="comment-209"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-209")'>
+					<cite>Comment by Boris<a href="#comment-209"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-27 07:29:16 						
+					</div>					
+					<div class="content">
+						<p>Hi, Beatriz</p>
+<p>Is it a hack, or StyleSelector is always called sequentially for
+every row in the GridView? Is there any way to get internal row number
+or index from ListViewItem?</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-209", 209, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-212" class="comment odd">
+				<a name="comment-212" id="comment-212"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-212")'>
+					<cite>Comment by Bea<a href="#comment-212"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-28 22:24:37 						
+					</div>					
+					<div class="content">
+						<p>StyleSelector
+is called once for every item when they are initially generated. If a
+new item is added, StyleSelector is called just for the newly added
+item, it is NOT called for all the others that are already generated,
+by default. Generally this is what you want, but in this particular
+case, if you add an item, you want to redefine the background colors of
+all the items that come after the newly added one. I did this by
+causing the ItemContainerStyleSelector property to be invalidated,
+which causes all items to be restyled. </p>
+<p>Yes, you can get the index when you have a ListViewItem by using the
+ItemContainerGenerator. For more information look at my blog post on <a href="http://www.beacosta.com/Archive/2005_09_01_bcosta_archive.html" rel="nofollow">How can I get a ListBoxItem from a data bound ListBox</a>?</p>
+<p>If I understand correctly, you are thinking of checking the index of
+the ListViewItem in every call of SelectStyle and only change the ones
+that have index after the items you added, is this correct? Notice that
+although you can get the index of a ListViewItem, that is a O(n)
+operation. If you do that for every SelectStyle call, you will end up
+with an O(n^2) solution. My current solution changes the style of the
+items with lower indices unnecessarily, but it is an O(n) operation.</p>
+<p>There’s most certainly other ways to achieve the same result though,
+and they may have some advantages over the one in this sample. This is
+a good area for us to think more throughly for Avalon V2. If we see
+that this is a very common scenario, we may provide better support for
+it out of the box.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-212", 212, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-220" class="comment">
+				<a name="comment-220" id="comment-220"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-220")'>
+					<cite>Comment by Boris<a href="#comment-220"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-01 21:00:11 						
+					</div>					
+					<div class="content">
+						<p>Hi, Beatriz</p>
+<p>Thank you very much for your detailed answer about StyleSelector.</p>
+<p>I also appologize for not signing my post (my name is Boris), I
+understand that it’s hard to keep the conversation with more than one
+anonymous speaker.</p>
+<p>I would like to clarify one more point here (which is somewhat related to the Alex’s question about sclollbar). </p>
+<p>Let say I have thousand of records, of which only ten are visible in
+the scroll area of the ListView. Does your answer mean that
+StyleSelector will be called for thousand of rows even though 990 of
+them may even never be actually displayed? Wouldn’t it be a waste of
+memory and time to do so?</p>
+<p>Best Regards,<br>
+Boris</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-221" class="comment odd">
+				<a name="comment-221" id="comment-221"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-221")'>
+					<cite>Comment by Bea<a href="#comment-221"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-03-04 20:38:18 						
+					</div>					
+					<div class="content">
+						<p>(Alex and) Boris,</p>
+<p>Yes, it would be a waste to call StyleSelector for all items that
+are not visible, and we don’t do that with the default implementation
+of ListView, as Alex said. ListView uses VirtualizingStackPanel by
+default to lay out its items, meaning it only generates containers
+(ListViewItems) for the data that is visible. Notice also that when you
+scroll, items that become not visible are not de-virtualized right
+away. We keep them around for a while until we reach a certain number
+of them, and then start throwing them away. This is also the default
+panel for ListBox. </p>
+<p>Right, it makes sense that due to our virtualization of items,
+scrolling does not work well with the this solution for alternating row
+color. If you want scrolling, the best (simplest, most efficient)
+solution for alternating items I can think of is the one Boris
+mentioned in his first comment. You can get the index of each item by
+doing the following:</p>
+<p>int i = ic.ItemContainerGenerator.IndexFromContainer(container);</p>
+<p>If you have very few items, this solution or changing the panel of
+ListView to be the non-virtualized StackPanel (through the ItemsPanel
+property) don’t differ much in terms of performance. If you have lots
+of items this solution is much better. </p>
+<p>If you guys can think of a better way to do this, I would be interested to hear it. Isn’t this fun? <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+<p>Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-220", 220, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-210" class="comment">
+				<a name="comment-210" id="comment-210"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-210")'>
+					<cite>Comment by Anonymous<a href="#comment-210"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-28 07:31:53 						
+					</div>					
+					<div class="content">
+						<p>Hello,</p>
+<p>I cannot find Expressions Interactive Designer that works with the February CTP. Is there one out somwhere?</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-210", 210, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-211" class="comment odd">
+				<a name="comment-211" id="comment-211"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-211")'>
+					<cite>Comment by Bea<a href="#comment-211"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-02-28 22:00:41 						
+					</div>					
+					<div class="content">
+						<p>No,
+there is not Expression Interactive Designer publicly available for our
+Feb CTP yet. It will come out very soon though, so stay tuned.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-211", 211, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-222" class="comment">
+				<a name="comment-222" id="comment-222"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-222")'>
+					<cite>Comment by Sam<a href="#comment-222"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-04-12 03:01:50 						
+					</div>					
+					<div class="content">
+						<p>ListView is great - but somehow I am too stupid to bind it to a datacontent instead of an embedded resource <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/icon_sad.gif" alt=":(" class="wp-smiley"> </p>
+<p>Can you point me to a sample how to bind a ListView to a DataSet, or a generic List of some custom struct?</p>
+<p>Please!</p>
+<p>Pretty please with sugar on top? <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/icon_smile.gif" alt=":)" class="wp-smiley"></p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-222", 222, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-223" class="comment odd">
+				<a name="comment-223" id="comment-223"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-223")'>
+					<cite>Comment by Bea<a href="#comment-223"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-04-13 17:42:32 						
+					</div>					
+					<div class="content">
+						<p>Hi Sam,</p>
+<p>I made a sample with a ListView data bound to a DataTable for you. You can find it <a href="http://www.beacosta.com/BlogComments/2ListViewDataSet.zip" rel="nofollow">here</a>.</p>
+<p>Let me know if this is what you were looking for.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-223", 223, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-224" class="comment">
+				<a name="comment-224" id="comment-224"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-224")'>
+					<cite>Comment by Sam<a href="#comment-224"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-04-14 05:40:35 						
+					</div>					
+					<div class="content">
+						<p>Aww, nice, thanks a lot!</p>
+<p>I had not been able to compile it using the feb ctp, but gleaned enough from it to learn how to do it myself.</p>
+<p>Thanks a lot!<br>
+Sam (off to put a textbox in the grid now)</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-224", 224, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-225" class="comment">
+				<a name="comment-225" id="comment-225"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-225")'>
+					<cite>Comment by Chris (MueMeister)<a href="#comment-225"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-04-25 05:11:10 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>Thanks for the example.<br>
+My problem is about ListView, too but I’m not sure whether it fits to this topic.<br>
+I want to drag and drop ListViewItem. I want to provide custom sorting functionality<br>
+where a user can drag and drop list items within the same listview object.<br>
+I want to visualize this in a way that the ListView moves its children
+to make place for the dragged item. Since a panel takes over the layout
+process of a ListView this have to be the task of that panel. Last but<br>
+not least I bind the ListView in a DataBinding. This permits to remove<br>
+child elements on Panel level - so i have to do this on ListView level!</p>
+<p>Did you ever try to drag an element within a listview/listbox? It is horrible! If a user<br>
+selects a listviewitem and I want him to drag it, how do you check whether<br>
+the mouse is over the item or not since ListView.Items are data
+collections and no FrameworkElements (ListViewItem). Or even more easy:
+How do you get the target drop location? I mean which index is the one
+to include the item in the ListView data again? Please help me on this
+significant feature. Do You have some hints to realize such a szenario?</p>
+<p>Thank You for Your help.<br>
+Chris</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-225", 225, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-226" class="comment odd">
+				<a name="comment-226" id="comment-226"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-226")'>
+					<cite>Comment by Bea<a href="#comment-226"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-05-12 15:27:10 						
+					</div>					
+					<div class="content">
+						<p>Chris,</p>
+<p>I haven’t replied to your question before because I was hoping to
+find some time to implement that scenario myself and understand the
+issues you are talking about. Unfortunately this hasn’t happened yet. </p>
+<p>I will implement it as soon as I have some time, but I don’t want
+you to wait for me for an answer. You may want to post your question in
+the Avalon Forums. I have heard of people within Microsoft that have
+been able to successfuly implement that scenario, and hopefully they
+can help you better and faster. I also heard that they struggled quite
+a bit in the process, so they will understand the issues you’re
+experiencing.</p>
+<p>I will get back to you when I explore this scenario.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-226", 226, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-227" class="comment">
+				<a name="comment-227" id="comment-227"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-227")'>
+					<cite>Comment by Anonymous<a href="#comment-227"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-06-18 09:02:47 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>Thank you for such a nice blog. I learn a lot from you. I’ve
+downloaded Visual C# Express and the March CTP of Expression
+Interactive Designer.</p>
+<p>Maybe you can help me to find a resource about a situation i have to deal with.</p>
+<p>Its more of a data issue then UI issue. I need to find how to work
+with only a subset of my data. Kind of a view of a bigger list. The
+thing is, i’m going to have around 100,000 items and of course, i dont
+want all these items to be loaded in RAM (dataset). But at the same
+time, i want to be able to show that there could be 100,000 items
+(scrollbar ?). In a way this could resemble Paging.</p>
+<p>Where could i get good information regarding this kind of optimization to data availability ?</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-227", 227, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-228" class="comment odd">
+				<a name="comment-228" id="comment-228"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-228")'>
+					<cite>Comment by Bea<a href="#comment-228"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-06-19 09:45:37 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>You are asking for what we call “Data Virtualization”. We had mega
+plans for implementing this for V1, but we didn’t get to it. We will
+for sure revisit this for V2 - it’s actually one of our top scenarios
+for V2. </p>
+<p>“Data Virtualization” is a hard problem to solve. I have talked to
+users who attempted to do it and said they weren’t able to have it
+working reliably. I’d be interested to hear your experience solving
+this problem.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-228", 228, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-229" class="comment">
+				<a name="comment-229" id="comment-229"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-229")'>
+					<cite>Comment by AhmedWebDev<a href="#comment-229"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-07-03 15:03:40 						
+					</div>					
+					<div class="content">
+						<p>can i make this GridView in Pagable Form</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-229", 229, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-230" class="comment odd">
+				<a name="comment-230" id="comment-230"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-230")'>
+					<cite>Comment by Bea<a href="#comment-230"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-07-04 11:41:30 						
+					</div>					
+					<div class="content">
+						<p>Hi,</p>
+<p>We don’t have any out-of-the-box support for making ListView
+pageable. It shouldn’t be too hard for you to do that yourself, though.
+I can think of a couple of solutions:</p>
+<p>- If you don’t need data virtualization, you could hide the
+ScrollViewer, and then add up and down buttons that hook up with the
+PageUp and PageDown commands of ScrollViewer. </p>
+<p>- If you need data virtualization, you could design your data layer
+so that it is able to return only the few data items you need to
+display at one point on the screen. If you can’t (or don’t want to)
+change your data layer, you can add a second layer that wraps your data
+and returns only the items you want.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-230", 230, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-231" class="comment">
+				<a name="comment-231" id="comment-231"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-231")'>
+					<cite>Comment by Vijay<a href="#comment-231"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-07-12 21:58:06 						
+					</div>					
+					<div class="content">
+						<p>Hi Beatriz,</p>
+<p>Thanks for the wonderful sample. Can you please also explain how can
+we populate a listview programmatically using an XMLDataProvider(in cs
+file)</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-231", 231, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-232" class="comment odd">
+				<a name="comment-232" id="comment-232"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-232")'>
+					<cite>Comment by Bea<a href="#comment-232"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2006-07-13 23:30:52 						
+					</div>					
+					<div class="content">
+						<p>Hi Vijay,</p>
+<p>Based on your question, I assume that you have your XML in a
+separate file (and not in XAML, like in this post). If that’s the case,
+here is the code that would allow you to populate the ListView
+programatically:</p>
+<p>xdp = new XmlDataProvider();<br>
+xdp.Source = new Uri(”SolarSystemPlanets.xml”, UriKind.Relative);<br>
+xdp.XPath = “/SolarSystemPlanets/Planet”;<br>
+Binding b = new Binding();<br>
+b.Source = xdp;<br>
+lv.SetBinding(ListView.ItemsSourceProperty, b);</p>
+<p>You can find <a href="http://www.beacosta.com/BlogComments/19BoundListView.zip" rel="nofollow">here</a> a complete solution with this code.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-232", 232, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-233" class="comment">
+				<a name="comment-233" id="comment-233"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-233")'>
+					<cite>Comment by Bill<a href="#comment-233"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-06-04 10:17:04 						
+					</div>					
+					<div class="content">
+						<p>I hope you see this on such an old entry, but you don’t have any way to contact you via e-mail here.</p>
+<p>I need to present a very similar ListView, with summary text on each
+row. However, for me it’s important that the text wrap, since for many
+entries it will be quite lengthy. Running your project on Orcas Beta 1
+shows me that despite having TextWrapping=”Wrap” on the TextBlock, the
+summary text never wraps.</p>
+<p>I have a blog post on this topic here: <a href="http://wekempf.spaces.live.com/blog/cns" rel="nofollow">http://wekempf.spaces.live.com/blog/cns</a>!D18C3EC06EA971CF!246.entry. I’d appreciate any feedback you can provide.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-233", 233, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-354" class="comment odd">
+				<a name="comment-354" id="comment-354"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-354")'>
+					<cite>Comment by Bea<a href="#comment-354"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-17 23:00:20 						
+					</div>					
+					<div class="content">
+						<p>Hi Bill,</p>
+<p>Try setting ScrollViewer.HorizontalScrollBarVisibility=”Disabled” on
+your ListView. This worked for me, in the sample for this blog post.</p>
+<p>ScrollViewer.HorizontalScrollBarVisibility is set to Auto by
+default, which means that a horizontal scrollbar comes up when the
+content of the rows can not all be displayed. Setting it to Disabled
+will force all the content to fit in the ListView area. If your text is
+too long, it will wrap (provided that you enabled text wrapping).</p>
+<p>I uploaded a project to my server that shows this working - you can find it <a href="http://www.beacosta.com/BlogComments/30TextWrapListView.zip" rel="nofollow">here</a>.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-354", 354, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-436" class="comment">
+				<a name="comment-436" id="comment-436"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-436")'>
+					<cite>Comment by <a href="http://wekempf.spaces.live.com/" rel="external nofollow">Bill</a><a href="#comment-436"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-24 13:40:17 						
+					</div>					
+					<div class="content">
+						<p>The
+only problem with this solution is that now the view can be smaller
+than the width of the columns, and there’s no way to scroll to see the
+data within the columns. <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/icon_sad.gif" alt=":(" class="wp-smiley"> </p>
+<p>I’ve tried a solution where you bind the MaxWidth to the
+ScrollViewer’s ViewportWidth, which appears to work splendidly at
+first. The problem is, if you resize the window decreasing the width,
+the text moves a corresponding size to the right as if you’d set a left
+margin. As of yet, I’ve not found an ideal solution for this scenario. <img src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/icon_sad.gif" alt=":(" class="wp-smiley"></p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-440" class="comment odd">
+				<a name="comment-440" id="comment-440"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-440")'>
+					<cite>Comment by Bea<a href="#comment-440"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-24 14:46:30 						
+					</div>					
+					<div class="content">
+						<p>Hi Bill,</p>
+<p>Yeah, I see the same behavior you’re describing. I was able to get
+around it by setting the HorizontalAlignment property of the TextBlock
+to Left. Try this:</p>
+<p>&lt;TextBlock Text=”{Binding XPath=Details}”
+HorizontalAlignment=”Left” MaxWidth=”{Binding
+RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}},
+Path=ViewportWidth}” Visibility=”Collapsed” Name=”tb”
+TextWrapping=”Wrap” Margin=”2,0,0,4″/&gt;</p>
+<p>Or you can download my sample <a href="http://www.beacosta.com/BlogComments/36TextWrapListView.zip" rel="nofollow">here</a>.</p>
+<p>Let me know if this worked for you.</p>
+<p>Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-452" class="comment odd">
+				<a name="comment-452" id="comment-452"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-452")'>
+					<cite>Comment by <a href="http://wekempf.spaces.live.com/" rel="external nofollow">Bill</a><a href="#comment-452"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-25 08:57:20 						
+					</div>					
+					<div class="content">
+						<p>Works
+beautifully. I’ve actually got a more complex scenario, with numerous
+controls below the GridViewRowPresenter, and I’ve encased them all in a
+StackPanel with the HorizontalAlignment=”Left”, which definately fixes
+this odd behavior. Now what I’d love to understand is why we get the
+odd behavior and why this fixes it. Knowing a few hacks like this is
+helpful, but understanding why they work allows you to apply similar
+hacks in other situations. Any idea what’s going on here?</p>
+<p>In any event, thanks a million for helping me work around this specific scenario!</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-457" class="comment odd">
+				<a name="comment-457" id="comment-457"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-457")'>
+					<cite>Comment by Bea<a href="#comment-457"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-25 10:20:22 						
+					</div>					
+					<div class="content">
+						<p>Hi Bill,</p>
+<p>What was happening is that the text was wrapping, and therefore
+occupying a smaller width, but the total width of the ListView was not
+changing. My guess is that HorizontalAlignment was Center, causing the
+whole text to shift as we make its width smaller (as a consequence of
+resizing). By setting HorizontalAlignment to Left, the text will have
+no need to shift as it’s resized anymore.</p>
+<p>Does that make sense?</p>
+<p>I’m glad it worked for you!</p>
+<p>Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-436", 436, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-234" class="comment">
+				<a name="comment-234" id="comment-234"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-234")'>
+					<cite>Comment by Srinivas<a href="#comment-234"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-07-19 02:37:00 						
+					</div>					
+					<div class="content">
+						<p>Hi All,</p>
+<p>How to avoid Drag Column headers in ListView control</p>
+<p>Please help me</p>
+<p>Thanbks &amp; Regards<br>
+Srinivas</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-234", 234, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-353" class="comment odd">
+				<a name="comment-353" id="comment-353"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-353")'>
+					<cite>Comment by Bea<a href="#comment-353"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-17 22:35:13 						
+					</div>					
+					<div class="content">
+						<p>Hi Srinivas,</p>
+<p>I’m not sure which one you mean: do you want to avoid reordering the columns or resizing them? I’ll reply to both:</p>
+<p>- To avoid reordering them, you can set AllowsColumnReorder=”False” on the GridView.</p>
+<p>- To avoid resizing them, it’s a little harder. I was able to
+prevent resizing by copying the chrome template for the GridView
+header, and setting IsEnabled=”false” on the thumb gripper:</p>
+<p>&lt;Canvas&gt;<br>
+&lt;Thumb IsEnabled=”False” x:Name=”PART_HeaderGripper” Style=”{StaticResource GridViewColumnHeaderGripper}”/&gt;<br>
+&lt;/Canvas&gt;</p>
+<p>To get the chrome template for the GridView header, go to Blend,
+drag a GridViewColumnHeader, right click and pick “Edit Control Parts
+(Template)”, and then “Edit a copy”. </p>
+<p>I made a sample that prevents reordering and resizing - you can find it <a href="http://www.beacosta.com/BlogComments/29ListViewNonDraggable.zip" rel="nofollow">here</a>.</p>
+<p>I hope this helps.</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-353", 353, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-235" class="comment">
+				<a name="comment-235" id="comment-235"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-235")'>
+					<cite>Comment by Haridas<a href="#comment-235"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-07-24 23:08:46 						
+					</div>					
+					<div class="content">
+						<p>I’d like to know if there is a way to Freeze certain GrideViewcolumns<br>
+in a list View in WPf(As that of Column Freezing in an Excel Application).</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-235", 235, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-350" class="comment odd">
+				<a name="comment-350" id="comment-350"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-350")'>
+					<cite>Comment by Bea<a href="#comment-350"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-17 17:26:59 						
+					</div>					
+					<div class="content">
+						<p>Hi Haridas,</p>
+<p>We don’t support that feature in the current implementation of
+ListView. I also can’t think of a reasonable workaround that will
+enable that. I agree with you that it would be handy, though. I’ll
+communicate that to the rest of the team.</p>
+<p>Thanks,<br>
+Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-350", 350, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1462" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1462" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20How%20do%20I%20implement%20a%20data%20bound%20ListView_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="20" type="hidden">
+		<input name="redirect_to" value="/blog/?p=20" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="e51e9388fd27933287de95d1281bccb8" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>1058</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 1058;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

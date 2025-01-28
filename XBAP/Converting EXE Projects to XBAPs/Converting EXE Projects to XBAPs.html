@@ -1,0 +1,128 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Converting EXE Projects to XBAPs</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/11/120433.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/11/130618.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/11/120718.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Converting EXE Projects to XBAPs</h2></a><p style="text-align: right;">November 12, 2006<br>Roscoe, N.Y.</p><p>
+In a 
+<a href="http://rrelyea.spaces.live.com/blog/cns%21167AD7A5AB58D5FE%211553.entry">recent post, Rob Relyea</a> contemplates the question “Are XBAPs next generation ActiveX?”
+</p>
+<p>
+That question is way too metaphysical for my tastes, but I do know that
+sometimes a developer might want to convert a WPF project from
+generating an EXE to generating an XBAP. That’s what this blog posting
+is all about.
+</p>
+<p>
+Some background for newcomers:
+</p>
+<p>The Windows Presentation Foundation supports three distinct types of
+executables. First, there is the traditional EXE file, which can do
+anything that .NET allows it to do plus more through interoperability
+with the Win32 API.
+</p>
+<p>Secondly, there are XAML files. These are text markup files with the
+extension .XAML, and they run in Internet Explorer. Although XAML files
+are quite powerful graphically—they can do 3D animation, for
+example—they cannot contain any C# code for the often-necessary chores
+of handling events from controls.
+</p>
+<p>And thirdly, there is the XBAP. (This stands for “XAML Browser
+Application.” In my head I pronounce it as “eks bap” which makes it
+sound rather silly. At one time, these things were known as XAPP’s,
+which sounds rather hipper to me.) XBAP applications are somewhere
+between EXEs and XAML files. They can contain code as well as markup,
+and they are compiled, but they run in Internet Explorer much like XAML
+files. These applications cannot contain elements of type <i>Window</i>. They use <i>Page</i>
+instead, and they are run in a sandbox that prohibits from messing with
+the user’s machine in devious ways. XBAPs generally run over the Web
+and are generally not installed on local machines.
+</p>
+<p>In Visual Studio you choose rather you want an EXE or an XBAP when
+you first create a project. From the New Project dialog box you pick
+either “Windows Application (WPF)” or “XAML Browser Application (WPF)”.
+</p>
+<p>Sometimes you’re developing an EXE application and you realize “Hey,
+I’m not doing anything in the app that will prevent it from running in
+the browser as an XBAP so maybe I want to go that route.”
+</p>
+<p>Or, perhaps you prefer developing an application as an EXE because
+of better debugging facilities, and then you want to convert it to an
+XBAP for distribution.
+</p>
+<p>
+Of course, you’ll probably need to change several aspects of your application, and in particular, you’ll need to change <i>Window</i> and <i>NavigationWindow</i> to <i>Page</i>.
+But that’s not really what I want to discuss here. I want to talk about
+changes you’ll need to make in the.CSPROJ project file, and for this I
+was helped by the documentation topic “How to: Create a Sample Project
+File for a Windows Presentation Foundation XAML Browser Application”
+which is located in the documentation at:
+</p>
+<ul>
+.NET Framework Development<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Windows Presentation Foundation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Application Development<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Build and Deploy<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How-to Topics
+</ul>
+<p>Some of the changes you need to make to the .CSPROJ file can be made
+by selecting various options in the Project Properties pages, which you
+can invoke by right-clicking the project name in the Solution Explorer
+and selecting Properties, or by selecting Properties from the Project
+menu.
+</p>
+<p>However, you’ll also have to edit the .CSPROJ file manually, and you
+can do this directly in Visual Studio. First, right click the project
+name in the Solution Explorer and select Unload Project. Or select
+Unload Project from the Project menu. Then, right-click the project
+name and select the option to Edit the .CSPROJ file. When you’re done
+editing it, you can save it, or just select Reload Project and you’ll
+be prompted to save the edited project file. (Basically, you can’t be
+editing the .CSPROJ file and doing anything else with the project at
+the same time.)
+</p>
+<p>
+Here are the steps to convert a project from EXE to XBAP (after you create a backup copy first, of course):
+</p>
+<p>
+Step 1.  Edit the .CSPROJ file and insert the following lines in the first <i>Project/Property Group</i> section. You can insert them right after the <i>OutputType</i> element, for example:
+</p>
+<ul style="font-family: monospace; font-size: smaller;">
+&lt;HostInBrowser&gt;true&lt;/HostInBrowser&gt;<br>
+&lt;StartAction&gt;Program&lt;/StartAction&gt;<br>
+&lt;StartProgram&gt;$(WINDIR)\System32\PresentationHost.exe&lt;/StartProgram&gt;<br>
+&lt;ApplicationExtension&gt;.xbap&lt;/ApplicationExtension&gt;<br>&lt;StartArguments&gt;-debug
+"$(MSBuildProjectDirectory)\bin\$(Configuration)\$(AssemblyName)$(ApplicationExtension)"&lt;/StartArguments&gt;
+</ul>
+<p>
+The <i>StartArguments</i> element should be written as a single
+line because it denotes a directory path. (IE seems to want to break
+the long line after an embedded right parenthesis.) Also, this is XML
+so remember: Case matters! Also, make sure the <i>ApplicationExtension</i> element goes before the <i>StartArguments</i> element, because it refers to the <i>ApplicationExtension</i> element.
+</p>
+<p>
+The next three steps can be done with the Project Properties pages.
+</p>
+<p>
+Step 2. Select the Signing tab. Check the <b>Sign The ClickOnce Manifests</b> option. Click the <b>Create Test Certificate</b>
+button. Just click OK without entering a password. (This creates a
+temporary manifest key that is referenced in the project file.)
+</p>
+<p>
+Step 3. Select the Security tab. Make sure the <b>Enable ClickOnce Security Settings</b> option is checked. Select the <b>This Is A Partial Trust Application</b> option. In the <b>Zone Your Application Will Be Installed From</b> drop-down, select <b>Internet</b>. (This changes the <i>TargetZone</i> element in the project file to Internet.) Click the <b>Advanced</b> button. Uncheck <b>Debug This Application With the Selected Permissions Set</b>.
+</p>
+<p>
+Step 4. Select the Publish tab. Check the <b>The Application Is Available Online Only</b> option. (This changes the <i>Install</i> element in the project file to false.)
+</p>
+<p>
+Step 5. Unload the project and edit the .CSPROJ file again. You’ll probably see the <i>ApplicationExtension</i> element has been moved down near the bottom of the first <i>Project/PropertyGroup</i> section. Move it back so it comes before the <i>StartArguments</i> element.
+</p>
+<p>
+Step 6. In the References section under the project in the Solution Explorer, delete the following:
+</p>
+<ul>
+System.IdentityModel<br>
+System.Runtime.Serialization<br>
+System.ServiceModel
+</ul>
+<p>
+And that should do it. (And I suspect that the next version of Visual Studio will reduce this entire job to a single check box.)
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/11/120433.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/11/130618.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

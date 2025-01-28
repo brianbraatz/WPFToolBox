@@ -1,0 +1,89 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xml:lang="en-US"
+	x:Class="FollowThePointer.Window1"
+	x:Name="Window"
+	Title="Follow The Pointer"
+	Width="640" Height="480">
+
+	<Window.Resources>
+		<ControlTemplate TargetType="{x:Type ContentControl}" x:Key="ContentControlControlTemplate1" >
+			<Grid x:Name="Grid" >
+				<Rectangle RadiusX="10" RadiusY="10" x:Name="Rectangle" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1" Margin="5,5,5,5"/>
+				<ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="Center" Margin="5,5,0,5" VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
+			</Grid>
+		</ControlTemplate>
+	</Window.Resources>
+
+	<Grid x:Name="LayoutRoot">
+		<Grid.Background>
+			<LinearGradientBrush EndPoint="0.5,0.0" StartPoint="0.5,1.0">
+				<GradientStop Color="#FF545454" Offset="0"/>
+				<GradientStop Color="#FFFFFFFF" Offset="1"/>
+				<GradientStop Color="#FF232323" Offset="0.155"/>
+				<GradientStop Color="#FF797878" Offset="0.845"/>
+			</LinearGradientBrush>
+		</Grid.Background>
+		<DockPanel  Margin="8,8,8,8" x:Name="DockPanel"   LastChildFill="False">
+			<TextBlock HorizontalAlignment="Right" Margin="4,4,4,4" x:Name="SampleTitle"   TextWrapping="Wrap" DockPanel.Dock="Top">
+				<Run FontSize="14" FontWeight="Bold">FollowThePointer</Run>
+			</TextBlock>
+			<TextBlock HorizontalAlignment="Right" Margin="4,4,4,4" x:Name="SampleDescription"   TextWrapping="Wrap" DockPanel.Dock="Top">
+				<Run FontSize="12" FontWeight="Bold">Move the mouse cursor around as the gold control follows.</Run>
+			</TextBlock>
+			<StackPanel Margin="4,4,4,4" x:Name="ControlStack" Width="Auto" Height="Auto" DockPanel.Dock="Right" VerticalAlignment="Center">
+				<StackPanel.Background>
+					<LinearGradientBrush EndPoint="0.508,-0.004" StartPoint="0.508,1.008">
+						<GradientStop Color="#C7E5E5E5" Offset="0"/>
+						<GradientStop Color="#FFFFFFFF" Offset="1"/>
+						<GradientStop Color="#A49C9C9C" Offset="0.376"/>
+					</LinearGradientBrush>
+				</StackPanel.Background>
+				<Label Margin="4,0,4,2" x:Name="SpringLabel"  Content="Spring strength:"/>
+				<Slider Margin="4,2,4,4" x:Name="SpringSlider" TabIndex="2" Value="150" Maximum="300" Minimum="1" SmallChange="1" LargeChange="50"/>
+				<Label Margin="4,4,4,2" x:Name="DampingLabel" Content="Speed:"/>
+				<Slider Margin="4,2,4,4" x:Name="DampingSlider" TabIndex="3" Value="3" Maximum="10" Minimum="0.1" SmallChange="0.1" LargeChange="1"/>
+				<Label Margin="4,4,4,2" x:Name="SizeLabel" Content="Size:"/>
+				<Slider Margin="4,2,4,4" x:Name="SizeSlider" TabIndex="4" Value="100" Maximum="500" Minimum="10" SmallChange="1" LargeChange="5"/>
+				<Label Margin="4,4,4,2" x:Name="ContentLabel" Content="Content:" />
+				<TextBox Margin="4,2,4,4" x:Name="ContentTextBox" TabIndex="5" Text="WPF" TextWrapping="Wrap"/>
+				<CheckBox Margin="4,4,4,4" x:Name="ShowCodeCheckBox" Content="Show Code" TabIndex="6" IsChecked="True"/>
+			</StackPanel>
+			<FlowDocumentScrollViewer x:Name="SourceCodeViewer" Margin="4,4,4,4" Foreground="#4DFFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Visibility="Visible" Opacity="{Binding IsChecked, ElementName=ShowCodeCheckBox, Mode=Default}">
+				<FlowDocument TextAlignment="Left" FontFamily="Tahoma" FontSize="12" >
+					<Paragraph><Run>private TranslateTransform translation = new TranslateTransform();</Run></Paragraph>
+					<Paragraph><Run>private const double epsilon = 1;</Run></Paragraph>
+					<Paragraph><Run>private Stopwatch stopwatch = new Stopwatch();</Run></Paragraph>
+					<Paragraph><Run>private Vector velocity = new Vector();</Run></Paragraph>
+					<Paragraph><Run>private TimeSpan prevTime = TimeSpan.Zero;</Run></Paragraph>
+					<Paragraph><Run>public Window1()</Run><LineBreak/><Run>{</Run><LineBreak/><Run xml:space="preserve">    this.InitializeComponent();</Run><LineBreak/><Run>}</Run></Paragraph>
+					<Paragraph><Run>protected override void OnInitialized(EventArgs e)</Run><LineBreak/><Run>{</Run><LineBreak/><Run xml:space="preserve">    base.OnInitialized(e);</Run><LineBreak/><Run xml:space="preserve">    CompositionTarget.Rendering += this.CompositionTarget_Rendering;</Run><LineBreak/><Run xml:space="preserve">    this.MovableControl.RenderTransform = this.translation;</Run><LineBreak/><Run xml:space="preserve">    this.stopwatch.Start();</Run><LineBreak/><Run>}</Run></Paragraph>
+					<Paragraph><Run>private void CompositionTarget_Rendering(object sender, EventArgs e)</Run><LineBreak/><Run>{</Run><LineBreak/><Run xml:space="preserve">    Point mousePos = Mouse.GetPosition(this.MovableControl); </Run><LineBreak/><Run xml:space="preserve">    TimeSpan currentTime = this.stopwatch.Elapsed;</Run><LineBreak/><Run xml:space="preserve">    double elapsedTime = (currentTime - this.prevTime).TotalSeconds;</Run><LineBreak/><Run xml:space="preserve">    this.prevTime = currentTime;</Run><LineBreak/><Run xml:space="preserve">    Vector force = new Vector(mousePos.X, mousePos.Y);</Run><LineBreak/><Run xml:space="preserve">    force = (force * this.SpringSlider.Value - this.velocity * this.DampingSlider.Value) </Run><LineBreak/><Run xml:space="preserve">        * elapsedTime;</Run><LineBreak/><Run xml:space="preserve">    this.velocity += force;</Run><LineBreak/><Run xml:space="preserve">    if (velocity.Length &lt; epsilon) </Run><LineBreak/><Run xml:space="preserve">        return;</Run><LineBreak/><Run xml:space="preserve">    this.translation.X += this.velocity.X * elapsedTime; </Run><LineBreak/><Run xml:space="preserve">    this.translation.Y += this.velocity.Y * elapsedTime;</Run><LineBreak/><Run>}</Run></Paragraph>
+				</FlowDocument>
+			</FlowDocumentScrollViewer>
+		</DockPanel>
+		<ContentControl  x:Name="MovableControl"  Template="{DynamicResource ContentControlControlTemplate1}" Width="{Binding Path=Value, ElementName=SizeSlider, Mode=Default}" Height="{Binding Path=Value, ElementName=SizeSlider, Mode=Default}" Foreground="#FFFFFFFF" TabIndex="1">
+			<ContentControl.Background>
+				<LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+					<GradientStop Color="#9F9D8635" Offset="0"/>
+					<GradientStop Color="#7EFFF1BC" Offset="1"/>
+					<GradientStop Color="#C84D472B" Offset="0.221"/>
+				</LinearGradientBrush>
+			</ContentControl.Background>
+			<ContentControl.BorderBrush>
+				<LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+					<GradientStop Color="#FFC0BEBE" Offset="0"/>
+					<GradientStop Color="#FFE7E7E7" Offset="1"/>
+					<GradientStop Color="#FF353535" Offset="0.508"/>
+				</LinearGradientBrush>
+			</ContentControl.BorderBrush>
+			<TextBlock x:Name="ContentText"  Text="{Binding Path=Text, ElementName=ContentTextBox, Mode=Default}" TextWrapping="Wrap"/>
+		</ContentControl>
+		<RichTextBox x:Name="Sample_Information" Width="250" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="Auto" Grid.RowSpan="2" IsReadOnly="True" Margin="-250,0,0,0">
+				<FlowDocument>
+					<Paragraph>The FollowThePointer sample demonstrates how to use vector and velocity calculations in your code-behind file. Each time your scene is rendered, the movement of a custom control is calculated based on the position of the mouse cursor. Producing animation programmatically in a code-behind file this way is very efficient.</Paragraph>
+					<Paragraph>For more information, please see comments in the source code file (Window1.xaml.cs) and see the tutorial Follow the Pointer that comes with this sample.</Paragraph>
+				</FlowDocument>
+			</RichTextBox>
+	</Grid></Window>

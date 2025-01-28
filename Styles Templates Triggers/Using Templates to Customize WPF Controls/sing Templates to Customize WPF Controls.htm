@@ -1,0 +1,675 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title id="pagetitle">Foundations: Using Templates to Customize WPF Controls -- MSDN Magazine, January 2007</title>
+
+
+	
+	
+	<meta name="Description" content="This month we welcome Charles Petzold to MSDN Magazine with his first column on building apps for Windows Vista and the .Microsoft NET Framework 3.0.">
+	<meta http-equiv="PICS-Label" content="(PICS-1.1 &quot;http://www.rsac.org/ratingsv01.html&quot; l comment &quot;RSACi North America Server&quot; by &quot;inet@microsoft.com&quot; r (n 0 s 0 v 0 l 0))">
+	<meta name="MS.LOCALE" content="en-us">
+	<meta name="save" content="history">
+		
+	<meta http-equiv="Content-Type" content="text/html; CHARSET=UTF-8">
+<meta name="Robots" content="all">
+<link type="text/css" rel="Stylesheet" href="sing%20Templates%20to%20Customize%20WPF%20Controls_files/css_002.css">
+<script type="text/javascript" language="Javascript" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/msdnmag.js"></script>
+<script type="text/javascript" language="Javascript" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/menujs"></script>
+<link type="text/css" rel="Stylesheet" href="sing%20Templates%20to%20Customize%20WPF%20Controls_files/mag.css">
+<link rel="stylesheet" type="text/css" href="sing%20Templates%20to%20Customize%20WPF%20Controls_files/css.css"><script language="JavaScript">var doImage=doImage;var TType=TType;
+function mhHover(tbl,idx,cls){var t,d;if(document.getElementById)t=document.getElementById(tbl);else t=document.all(tbl);if(t==null)return;if(t.getElementsByTagName)d=t.getElementsByTagName("TD");else d=t.all.tags("TD");if(d==null)return;if(d.length<=idx)return;d[idx].className=cls;}
+function footerjs(doc){if(doImage==null){var tt=TType==null?"PV":TType;doc.write('<layer visibility="hide"><div style="display:none"><img src="http://c.microsoft.com/trans_pixel.asp?source=msdn&TYPE=' + tt + '&p=msdnmag_issues_07_01_Foundations&URI=%2fmsdnmag%2fissues%2f07%2f01%2fFoundations%2fdefault.aspx&GUID=1F4FC18C-F71E-47FB-8FC9-612F8EE59C61&r=http%3a%2f%2fwww.charlespetzold.com%2fblog%2f2007%2f01%2f271054.html" width=0 height=0 hspace=0 vspace=0 border=0 /></div></layer>');}}</script><script language="JavaScript" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/broker.js"></script><script language="JavaScript" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/SiteRecruit_PageConfiguration_p15808382mt-3332mt.js"></script></head><body topmargin="0" leftmargin="0">
+		
+		<!--NOINDEX_START--><script language="Javascript">
+				if (self.name == "MNPMainFrame") top.location.href = self.location.href;
+			</script><div id="msviMasthead"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td width="100%"><table border="0" cellpadding="0" cellspacing="0" height="22" width="100%"><tbody><tr><td id="msviRegionIdGraphic" bgcolor="#ffffff"></td><td bgcolor="#3568cc" width="100%"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/gradient_002.jpg" alt="*" title="" height="22" width="250"></td></tr></tbody></table></td><td id="msviGlobalToolbar" dir="ltr" align="left" bgcolor="#3568cc" height="22" nowrap="nowrap"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gt0" onmouseover="mhHover('msviGlobalToolbar', 0, 'gt1')" onmouseout="mhHover('msviGlobalToolbar', 0, 'gt0')" nowrap="nowrap"><a href="http://www.microsoft.com/">Microsoft.com Home</a></td><td class="gtsep">|</td><td class="gt0" onmouseover="mhHover('msviGlobalToolbar', 2, 'gt1')" onmouseout="mhHover('msviGlobalToolbar', 2, 'gt0')" nowrap="nowrap"><a href="http://msdn.microsoft.com/library/toolbar/3.0/sitemap/en-us.mspx">Site Map</a></td></tr></tbody></table></td></tr><tr valign="top"><td width="100%"><table style="" border="0" cellpadding="0" cellspacing="0" height="42" width="100%"><tbody><tr valign="top"><td id="msviBrandBanner" bgcolor="#ffffff"><a href="http://msdn.microsoft.com/"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/msdn_masthead_ltr.gif" alt="MSDN" title="" border="0" height="42" width="225"></a></td><td bgcolor="#6799ff" width="100%"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/gradient.jpg" alt="*" title="" height="42" width="250"></td></tr></tbody></table></td><td id="msviGlobalSearch" bgcolor="#6799ff">Search Microsoft.com for:<br><form id="msviSearchForm" action="/library/toolbar/3.0/search.aspx"><input name="View" value="en-us" type="hidden"><input name="charset" value="iso-8859-1" type="hidden"><nobr><div style="height: 18px;"><input name="qu" id="msviSearchBox" maxlength="255"><input id="msviGoButton" value="Go" type="submit"></div></nobr></form></td></tr></tbody></table><div id="msviLocalToolbar"><table border="0" cellpadding="0" cellspacing="0" height="19" width="100%"><tbody><tr><td id="msviHomePageLink" nowrap="nowrap"><a href="http://msdn.microsoft.com/default.aspx">MSDN Home</a></td><td><span class="ltsep">|</span></td><td class="lt0" onmouseover="mhHover('msviLocalToolbar', 2, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 2, 'lt0')" nowrap="nowrap"><a href="http://msdn.microsoft.com/developercenters/">Developer Centers</a></td><td><span class="ltsep">|</span></td><td class="lt0" onmouseover="mhHover('msviLocalToolbar', 4, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 4, 'lt0')" nowrap="nowrap"><a href="http://msdn.microsoft.com/library/default.asp">Library</a></td><td><span class="ltsep">|</span></td><td class="lt0" onmouseover="mhHover('msviLocalToolbar', 6, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 6, 'lt0')" nowrap="nowrap"><a href="http://msdn.microsoft.com/downloads/">Downloads</a></td><td><span class="ltsep">|</span></td><td class="lt0" onmouseover="mhHover('msviLocalToolbar', 8, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 8, 'lt0')" nowrap="nowrap"><a href="http://msdn.microsoft.com/howtobuy/">How to Buy</a></td><td><span class="ltsep">|</span></td><td class="lt0" onmouseover="mhHover('msviLocalToolbar', 10, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 10, 'lt0')" nowrap="nowrap"><a href="http://msdn.microsoft.com/subscriptions/">Subscribers</a></td><td><span class="ltsep">|</span></td><td class="lt0" onmouseover="mhHover('msviLocalToolbar', 12, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 12, 'lt0')" nowrap="nowrap"><a href="http://msdn.microsoft.com/worldwide.aspx">Worldwide</a></td><td width="100%"></td></tr></tbody></table></div></div>
+			<table dir="ltr" border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody><tr valign="top">
+		<td style="overflow-x: hidden;" height="100%" width="181"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="mnpQuickSearch" style="background: rgb(204, 204, 204) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: rgb(0, 0, 0);" dir="ltr"><form style="margin: 0px;" action="/msdn-online/shared/components/mscomsearch30.aspx"><nobr><font color="#000000">Search for</font><br><input class="mnpSearchBox" id="qu" name="qu" maxlength="255" style="width: 165px;" type="text"><br><table style="margin-top: 2px;" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="mnpQuickSearch" style="padding: 0px;" width="100%"><select class="mnpSearchScopes" style="width: 137px;" name="SearchScope"><option value="1">MSDN and KB</option><option value="2">MSDN Library</option><option value="3">Code and Downloads</option><option value="7" selected="selected">MSDN Magazine</option><option value="5">Knowledge Base (KB)</option></select></td><td><input class="mnpSearchButton" value="Go" type="submit"><br></td></tr></tbody></table><a href="http://search.microsoft.com/search/search.aspx?View=msdn&amp;st=a" style="color: rgb(0, 0, 0);" onmouseover="style.color='#0033CC';" onmouseout="style.color='#000000';">Advanced Search</a></nobr></form></td></tr></tbody></table><div id="mnpMenuTop" class="mnpMenuTop" style="overflow-x: hidden; width: 181px;" url="/msdnmag/issues/07/01/Foundations/default.aspx" dir="ltr" parent="/msdnmag/issues/07/01/default.aspx"><div class="mnpInherit"><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/default.aspx">MSDN Magazine Home</a></div><div class="mnpMenuBorder" style="width: 180px;"></div><div class="mnpMenuRow" style="border-color: rgb(153, 153, 153); width: 153px; overflow-x: hidden;" menu="mdd35826a2e2a4973b9bb87728239aa2f"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/issues/07/01/default.aspx">January 2007</a></div><div class="mnpMenuBorder" style="width: 180px;"></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;" menu="m66be025db64f7146f504e0fec1b2bae3"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/find/default.aspx">Search</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;" menu="m3fd9abd6d4e6b1d47da1677743a69def"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/code.aspx">Source Code</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;" menu="m0e5c80cdf8bdd73274e5171bd96f4ed9"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/backissues.aspx">Back Issue Archive</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;" menu="mbf75615e0c7b0b018a47f1aaa4e9b7b9"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/columns/default.aspx">Column Archive</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/rss/default.aspx">RSS</a></div><div class="mnpMenuBorder" style="width: 180px;"></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/Subscribe.aspx">Subscribe</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/backissues/default.aspx">Order Back Issues</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/service.aspx">Reader Services</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/staff.aspx">Meet the Staff</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/authors.aspx">Meet the Authors</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://www.sdmediagroup.com/msdnmag/mediakit/mediakit.htm">Media Kit</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/cdrom/default.aspx">Special CD and DVD Offers</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/podcast/default.aspx">Podcast</a></div><div class="mnpMenuBorder" style="width: 180px;"></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/submit.aspx">Submit an Article</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/write.aspx">Write to Us</a></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/msdnmag/correct.aspx">Corrections</a></div><div class="mnpMenuBorder" style="width: 180px;"></div><div class="mnpMenuRow" style="border-color: rgb(241, 241, 241); background: rgb(241, 241, 241) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 153px; overflow-x: hidden;"><img alt="*" title="" class="mnpMenuArrow" src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/arrowLTR.gif" style="left: 166px; visibility: hidden;" border="0" height="7" width="4"><a href="http://msdn.microsoft.com/isapi/gomscom.asp?TARGET=/technet/technetmag/default.aspx">TechNet Magazine</a></div><div class="mnpMenuBorder" style="width: 180px; margin-bottom: 0px;"></div></div></div><div class="mnpAds" style="border-style: solid; border-color: rgb(153, 153, 153); border-width: 0px 1px 0px 0px; background: rgb(241, 241, 241) none repeat scroll 0%; width: 181px; height: 100%; padding-bottom: 20px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><center><div style="background: inherit inherit inherit inherit inherit; height: 20px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"></div><a href="http://estore.websitepros.com/1779793/StoreFront.bok" target="_blank"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/ad1.gif" alt="MSDN Magazine Archive CD" border="0"></a><br><div style="background: inherit inherit inherit inherit inherit; height: 20px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"></div><a href="http://www.dotnetroadshow.com/" target="_blank"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/ad2.gif" alt=".NET Roadshow 2007" border="0"></a><br></center></div></td>
+          <td dir="ltr" width="100%">
+        <table bgcolor="#3366cc" cellpadding="0" cellspacing="0" height="46" width="100%"><tbody><tr><td width="419"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/magsub.gif" alt="MSDN Magazine" border="0" height="46" width="419"></td><td title="MSDN Magazine" background="" bgcolor="#3366cc" width="100%">&nbsp;</td></tr></tbody></table><!--NOINDEX_STOP-->
+	<!----------------->
+	<!--BEGIN_CONTENT-->
+	<!----------------->
+        <form name="locBar" method="post" action="default.aspx" id="locBar" style="margin: 0px;">
+<input name="__VIEWSTATE" value="dDwxODM5MzQ5NTY7Oz49WjTdOy6ujY8KrPcfnP1O0Eqk7Q==" type="hidden">
+
+
+
+<table bgcolor="#3366cc" border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody><tr>
+        <td>
+            <table style="background-image: url(/msdnmag/images/locBarBackGround.gif);" background="sing%20Templates%20to%20Customize%20WPF%20Controls_files/locBarBackGround.gif" border="0" cellpadding="0" cellspacing="0" width="419">
+                <tbody><tr>
+                    <td style="width: 419px;">
+                        <br>&nbsp;
+                        <br>&nbsp;
+                    </td>
+                </tr>
+            </tbody></table>
+        </td>
+        <td align="right" valign="top">
+            <table border="0" cellspacing="0">
+                <tbody><tr>
+                    <td>
+                        <font color="white">Choose Your Language:
+                            <select name="locBar1:ddlLoc" id="locBar1_ddlLoc" onchange="window.open(this.options[this.selectedIndex].value,'_top')">
+	<option value="default.aspx?loc=en">English</option>
+	<option value="default.aspx?loc=de">Deutsch</option>
+	<option value="default.aspx?loc=es">Español</option>
+	<option value="default.aspx?loc=fr">Français</option>
+	<option value="default.aspx?loc=it">Italiano</option>
+	<option value="default.aspx?loc=jp">日本語</option>
+	<option value="default.aspx?loc=ko">한국어</option>
+	<option value="default.aspx?loc=pt">Português</option>
+	<option value="default.aspx?loc=ru">Pусский</option>
+	<option value="default.aspx?loc=zh">简体中文</option>
+	<option value="default.aspx?loc=zx">繁體中文</option>
+
+</select>&nbsp;<br>
+                            </font>
+                    </td>
+                </tr>
+            </tbody></table>
+        </td>
+    </tr>
+</tbody></table>
+
+
+</form>
+        <div class="eyebrow"><a class="small" href="http://msdn.microsoft.com/default.aspx">MSDN Home</a>&nbsp;&gt;&nbsp;<a class="small" href="http://msdn.microsoft.com/msdnmag/default.aspx">MSDN Magazine</a>&nbsp;&gt;&nbsp;<a class="small" href="http://msdn.microsoft.com/msdnmag/issues/07/01/default.aspx">January 2007</a><hr></div>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="clsDocBody"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2" align="center" bgcolor="#003399"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/foundations.gif" alt="Foundations" height="32" hspace="5" vspace="5" width="246"></td></tr><tr><td colspan="2" class="clsDeck" bgcolor="#ffffcc" height="20"><b>Using Templates to Customize WPF Controls</b></td></tr><tr><td colspan="2" bgcolor="#ffffff" height="2"></td></tr><tr><td colspan="2" bgcolor="#336699" height="2"></td></tr></tbody></table><br><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td width="*"><div class="pd" xmlns:user="http://msdn.microsoft.com"><a title="More articles by this author" href="http://msdn.microsoft.com/msdnmag/find/?type=Au&amp;phrase=Charles%20Petzold&amp;words=exact">Charles Petzold</a></div></td><td width="175"><div style="cursor: pointer;" id="menu_parent" xmlns:user="http://msdn.microsoft.com" align="right"><table border="0" cellpadding="3" cellspacing="0"><tbody><tr align="center" valign="bottom"><td><a id="Print" title="Print a printer-friendly version of this page" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;print=true" onmouseover="window.status='Print This Page';return true" onmouseout="window.status='';return true" onclick="PrintButtonClick();return false;"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/rtg_print.gif" alt="" border="0"></a></td><td><a href="#bottom"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/rtg_email.gif" alt="" border="0"></a></td><td><a href="#bottom"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/rtg_save.gif" alt="" border="0"></a></td><td><a href="http://msdn.microsoft.com/msdnmag/rss/rss.aspx?Sub=Foundations"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/rss.gif" alt="" border="0"></a></td><td><a href="#bottom"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/rate.gif" alt="" border="0"></a></td><td><a href="#" onclick="return false;">more ...</a></td></tr></tbody></table></div><div style="float: right; width: 175px;" xmlns:user="http://msdn.microsoft.com" align="right"><div id="menu_child" style="border: 1px solid rgb(153, 153, 153); padding: 5px; z-index: 100; background-color: white; width: 175px; position: absolute; visibility: hidden; top: 309px; left: 546px;"><table border="0" cellpadding="2" cellspacing="3" width="100%"><tbody><tr><td align="center" valign="middle" width="30"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/rtg_print.gif" alt=""></td><td valign="middle" width="140"><a id="Print" title="Print a printer-friendly version of this page" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;print=true" onmouseover="window.status='Print This Page';return true" onmouseout="window.status='';return true" onclick="PrintButtonClick();return false;">Print</a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/rtg_email.gif" alt=""></td><td valign="middle"><a href="#bottom">E-mail</a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/rtg_save.gif" alt=""></td><td valign="middle"><a href="#bottom">Add to Favorites</a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/rate.gif" alt=""></td><td valign="middle"><a href="#bottom">Rate</a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/rss.gif" alt=""></td><td valign="middle"><a href="http://msdn.microsoft.com/msdnmag/rss/rss.aspx?Sub=Foundations">RSS (Foundations)
+                      </a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/addtoany.gif" alt=""></td><td valign="middle"><a href="http://www.addtoany.com/?linkname=Foundations&amp;type=rss&amp;linkurl=http://msdn.microsoft.com/msdnmag/rss/rss.aspx?Sub=Foundations">
+                        Add RSS to Any
+                      </a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/library.gif" alt=""></td><td valign="middle"><a href="#bottom">Related Articles</a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/spaces.gif" alt=""></td><td valign="middle"><a target="_blank" href="http://spaces.live.com/blogit.aspx?Title=Foundations:+Using%20Templates%20to%20Customize%20WPF%20Controls&amp;Description=This%20month%20we%20welcome%20Charles%20Petzold%20to%20MSDN%20Magazine%20with%20his%20first%20column%20on%20building%20apps%20for%20Windows%20Vista%20and%20the%20.Microsoft%20NET%20Framework%203.0.&amp;SourceURL=http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx">
+                Live Spaces
+              </a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/digg.gif" alt=""></td><td valign="middle"><a target="_blank" href="http://digg.com/submit?phase=2&amp;url=http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx&amp;title=Foundations:+Using%20Templates%20to%20Customize%20WPF%20Controls&amp;bodytext=This%20month%20we%20welcome%20Charles%20Petzold%20to%20MSDN%20Magazine%20with%20his%20first%20column%20on%20building%20apps%20for%20Windows%20Vista%20and%20the%20.Microsoft%20NET%20Framework%203.0.&amp;topic=programming">
+                Digg This
+              </a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/blogger.gif" alt=""></td><td valign="middle"><a target="_blank" href="http://new.blogger.com/blog_this.pyra?t=This%20month%20we%20welcome%20Charles%20Petzold%20to%20MSDN%20Magazine%20with%20his%20first%20column%20on%20building%20apps%20for%20Windows%20Vista%20and%20the%20.Microsoft%20NET%20Framework%203.0.&amp;u=http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx&amp;n=%27Foundations:+Using%20Templates%20to%20Customize%20WPF%20Controls,%27bloggerForm%27,%27scrollbars=no,width=475,height=300,top=175,left=75,status=yes,resizable=yes">
+              BlogThis!
+              </a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/slashdot.gif" alt=""></td><td valign="middle"><a target="_blank" href="http://slashdot.org/bookmark.pl?url=http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx&amp;title=Foundations:+Using%20Templates%20to%20Customize%20WPF%20Controls">
+                Slashdot
+              </a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/delicious.gif" alt=""></td><td valign="middle"><a target="_blank" href="http://del.icio.us/post?url=http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx&amp;title=Foundations:+Using%20Templates%20to%20Customize%20WPF%20Controls">
+                del.icio.us
+              </a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/technorati.png" alt=""></td><td valign="middle"><a target="_blank" href="http://technorati.com/faves?add=http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx">
+                Technorati
+              </a></td></tr><tr><td align="center" valign="middle"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/icodownl.gif" alt=""></td><td valign="middle"><a href="http://msdn.microsoft.com/msdnmag/code/?url=http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx">Explore
+                    </a>
+                    the code.
+                    <br><br><a href="http://download.microsoft.com/download/f/2/7/f279e71e-efb0-4155-873d-5554a0608523/Foundations2007_01.exe">
+                  Download
+                </a>
+                the code.
+              </td></tr></tbody></table></div></div><script type="text/javascript" xmlns:user="http://msdn.microsoft.com">
+      at_attach("menu_parent", "menu_child", "hover", "y", "pointer");
+    </script></td></tr></tbody></table><br><span style="cursor: pointer;" id="dl_parent"><a id="Code" href="http://msdn.microsoft.com/msdnmag/code/?url=http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/icodownl.gif" alt="Download Image" style="border: 0px none ;" height="16" hspace="5" width="16">Get the sample code for this article.
+    </a></span><div id="dl_child" style="border: 1px solid rgb(153, 153, 153); padding: 0px; z-index: 100; background-color: white; width: 500px; position: absolute; visibility: hidden; top: 340px; left: 192px;"><table style="background-image: url(/msdnmag/images/codebg.gif);" border="0" cellpadding="20" cellspacing="0" width="500"><tbody><tr><td valign="top"><b>
+                NEW:
+                <a href="http://msdn.microsoft.com/msdnmag/code/?url=http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx">Explore
+                </a>
+                the sample code online!
+              </b><br><br>
+              - or -
+              <br><br><b>Code download available at:
+          </b><a href="http://download.microsoft.com/download/f/2/7/f279e71e-efb0-4155-873d-5554a0608523/Foundations2007_01.exe">Foundations2007_01.exe</a> (158KB)
+        </td></tr></tbody></table></div><script type="text/javascript">
+    at_attach("dl_parent", "dl_child", "hover", "y", "pointer");
+  </script><br><br><hr><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td width="50%"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/minus.gif" class="clsImgButton" alt="" id="contentbtn" onclick="ToggleMenu(contentbtn, contentmenu);" align="absmiddle" height="9" hspace="5" vspace="2" width="9"><a href="#void" target="_self" onclick="ToggleMenu(contentbtn, contentmenu);" name="contents"><b>Contents</b></a><br><div style="display: block; margin-left: 20px; margin-top: 10px;" id="contentmenu"><a target="_self" href="#S1">Dumping the Defaults</a><br><a target="_self" href="#S2">The Visual Tree</a><br><a target="_self" href="#S3">Template Triggers</a><br><a target="_self" href="#S4">Making Progress</a><br><a target="_self" href="#S5">Anatomy of a ScrollBar</a><br><a target="_self" href="#S6">Button Commands</a><br><a target="_self" href="#S7">Creating a 3D Slider</a><br><a target="_self" href="#S8">Remember Moderation</a><br></div></td></tr></tbody></table><hr><br><div class="articletext"><p class="clsDropCap" xmlid="PARAJANUARY2007FOUNDATIONS001">With the release of Windows Vista™ and the Microsoft<sup class="clsSmall">®</sup>
+.NET Framework 3.0 come a host of new technologies for developers to
+learn about, discuss, and use. New tools, libraries, and paradigms will
+change how you build managed apps, offering powerful possibilities.
+We're introducing this new monthly column to cover the underlying
+technologies you will use for developing your applications. Industry
+experts you are already familiar with will take turns delving into the
+Windows<sup class="clsSmall">®</sup> Presentation Foundation, Windows Communication Foundation, and Windows Workflow Foundation. Let's get started.</p><p xmlid="PARAJANUARY2007FOUNDATIONS002">Traditionally,
+customizing an existing control in Windows has been a four-step
+process. It begins with inspiration. Then comes the research and
+exploration. This inevitably leads to weeping and gnashing of teeth.
+And finally it concludes with a complete rewrite. Controls are often
+resistant to customization due to deeply inaccessible code that links
+the visuals of the control with its functionality. This code is vital
+to the control so it must be either completely accepted or completely
+bypassed and replaced.</p><p xmlid="PARAJANUARY2007FOUNDATIONS003">The
+pain of control customization has evidently been felt by the developers
+of the Windows Presentation Foundation, available as part of the .NET
+Framework 3.0. They've come up with an exciting and powerful solution
+known as the "template."</p><p xmlid="PARAJANUARY2007FOUNDATIONS004">The
+Windows Presentation Foundation template is at the same time so simple
+and so powerful that it actually took me a while to wrap my head around
+the concept. I quickly understood Windows Presentation Foundation
+styles (which are often confused with templates), but templates needed
+time to sink in.</p><p xmlid="PARAJANUARY2007FOUNDATIONS005">Every
+predefined control in the Windows Presentation Foundation that has a
+visual appearance also has a template that entirely defines that
+appearance. This template is an object of type ControlTemplate that is
+set to the Template property defined by the Control class.</p><p xmlid="PARAJANUARY2007FOUNDATIONS006">When
+you use a Windows Presentation Foundation control in your application,
+you can replace that default template with one of your own design. You
+retain the basic functionality of the control-including all the
+keyboard and mouse handling-but you can give it an entirely different
+look. This is what is meant when Windows Presentation Foundation
+controls are described (rather inelegantly) as "lookless." A control
+has a default look, but this look is not intrinsic to the inner
+workings of the control.</p><p xmlid="PARAJANUARY2007FOUNDATIONS007">Writing
+templates in code is rather awkward. It is much easier to use
+Extensible Application Markup Language (XAML). Because templates can be
+represented entirely in XAML, visual design tools will be available to
+help. If you're thinking about programming a custom control that will
+work like an existing Windows Presentation Foundation control but with
+a different look, stop now! You might very well be able to do it with a
+template.</p><p xmlid="PARAJANUARY2007FOUNDATIONS008">The downloadable
+source code consists of seven standalone XAML files that I'll discuss
+throughout this column. No C# code was compiled during the making of
+this column! If you have the .NET Framework 3.0 SDK installed, you can
+edit the files using XAMLPad or XAML Cruncher, a similar program from
+my book, <i>Applications</i> = <i>Code</i> + <i>Markup</i>: <i>A Guide to the Microsoft Windows Presentation Foundation</i>.</p><p xmlid="PARAJANUARY2007FOUNDATIONS009">The
+Windows Presentation Foundation supports other types of templates for
+displaying control content, but in this column I'll only discuss
+objects of type ControlTemplate.</p><br><a name="S1"></a><span class="clsSubhead">Dumping the Defaults</span><br><p xmlid="PARAJANUARY2007FOUNDATIONS010">Every
+predefined control in the Windows Presentation Foundation that has a
+visual appearance has a default template. If you are interested in
+writing custom templates, study these defaults.</p><p xmlid="PARAJANUARY2007FOUNDATIONS011">The
+DumpControlTemplate from Chapter 25 of my book displays a control's
+default Template property in convenient XAML format. (You can download
+the <a href="http://microsoft.com/mspress/companion/0-7356-1957-3">source code</a>.) But if you'd rather write a template dumper yourself, here's the code that performs the crucial step:
+</p><pre class="clsCode">XmlWriterSettings settings = new XmlWriterSettings();
+settings.Indent = true;
+settings.IndentChars = new string(' ', 4);
+settings.NewLineOnAttributes = true;
+StringBuilder strbuild = new StringBuilder();
+XmlWriter xmlwrite = XmlWriter.Create(strbuild, settings);
+XamlWriter.Save(ctrl.Template, xmlwrite);
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS012">This code assumes
+that ctrl is an instance of a class that derives from Control and that
+ctrl has been rendered on the screen. (It is my experience that the
+Template property will be null otherwise.) The XamlWriter.Save call
+raises an exception if the Template property is null, as it will be for
+some controls that don't have a visual appearance. At the end of this
+code, calling ToString on strbuild provides a complete XAML document
+that contains the template.</p><p xmlid="PARAJANUARY2007FOUNDATIONS013">The XAML in this default template may be a little wordier than the XAML you might write. For example, you might write this:
+</p><pre class="clsCode">&lt;Trigger Property="IsEnabled" Value="False"&gt;
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS014">But in the XAML file generated by XamlWriter.Save, you'll see markup that looks like this:
+</p><pre class="clsCode">&lt;Trigger Property="UIElement.IsEnabled"&gt;
+    &lt;Trigger.Value&gt;
+        &lt;s:Boolean&gt;False&lt;/s:Boolean&gt;
+    &lt;/Trigger.Value&gt;
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS015">The s prefix is defined with an xmlns namespace declaration for the .NET System namespace.</p><div style="margin-top: 5px;" align="right"><a onclick="OpenMenu(contentbtn, contentmenu);" target="_self" href="#contents" class="clsSmall"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/top.gif" alt="Back to top" style="margin-left: 5px;" align="bottom" border="0" height="8" width="18"></a></div><br><a name="S2"></a><span class="clsSubhead">The Visual Tree</span><br><p xmlid="PARAJANUARY2007FOUNDATIONS016">Let's
+begin by looking at a template for a fairly simple but non-trivial
+control: the CheckBox. Say you want something that looks a bit more
+dramatic than the standard CheckBox. Perhaps you want the user's
+selection to be displayed as a big green checkmark or a big red X that
+appears over the entire content of the CheckBox. The file
+BigCheckCheckBox.xaml shows a template for such a CheckBox.</p><p xmlid="PARAJANUARY2007FOUNDATIONS017">In
+a XAML file, a template is an element of type ControlTemplate. In a
+small Windows Presentation Foundation program, ControlTemplate elements
+are generally defined in a Resources section in the root element of a
+XAML file. For larger applications, or when defining templates that are
+shared among applications, ControlTemplate elements are in their own
+XAML files with root elements of ResourceDictionary.</p><p xmlid="PARAJANUARY2007FOUNDATIONS018">In
+either case, the ControlTemplate element generally has three parts. It
+begins with an optional Resources section that can define styles or
+brushes used by the template. (The template in BigCheckCheckBox.xaml
+has no Resources section.) The template then provides the definition of
+the template's visual tree. This tree describes the desired appearance
+of the control as a layout of elements and perhaps other controls. The
+template concludes with a Triggers section, which indicates how
+elements of the visual tree change in response to changes in the
+control's properties. <a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig1" onclick="OpenUrl('default.aspx?loc=&fig=true#fig1'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;1</a> and <a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig2" onclick="OpenUrl('default.aspx?loc=&fig=true#fig2'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;2</a>
+show most of the ControlTemplate elements for the custom CheckBox. The
+code in the first figure shows the visual tree and the second figure
+continues the ControlTemplate element with the Triggers section.</p><p xmlid="PARAJANUARY2007FOUNDATIONS019">The excerpt from BigCheckBox.xaml shown in <a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig1" onclick="OpenUrl('default.aspx?loc=&fig=true#fig1'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;1</a>
+illustrates the use of the ControlTemplate start tag and the visual
+tree. Because this template is a resource, it must contain an x:Key
+attribute with its resource name. You'll notice the TargetType
+attribute is used-this is not strictly required but it makes the rest
+of the template simpler by eliminating the need to preface every
+property with a class name.</p><p xmlid="PARAJANUARY2007FOUNDATIONS020">The
+top-level element of this visual tree is a Border, an element that can
+play parent to a single child. In this sample, three properties of this
+Border are assigned with the TemplateBinding markup extension.
+TemplateBinding is used to bind properties of elements in the visual
+tree to properties of the control.</p><p xmlid="PARAJANUARY2007FOUNDATIONS021">The
+TemplateBinding expressions are more interesting in the
+ContentPresenter element, which formats content for buttons and other
+controls that derive from ContentControl. It is ContentPresenter that
+allows just about anything to be displayed inside a Button or CheckBox.
+Notice that a TemplateBinding is used to set the Margin property of the
+ContentPresenter to the Padding property of the CheckBox control being
+templated. Margin is extra space outside an element; padding is space
+inside a control not occupied by its content, so you can see the
+rationale behind this binding.</p><p xmlid="PARAJANUARY2007FOUNDATIONS022">The
+ContentPresenter appears inside a single-cell Grid panel along with
+another Border. Grid cells are often used to host multiple children
+that must appear in layers. The second Border therefore appears on top
+of the ContentPresenter. This Border is given a background that
+consists of a 50 percent opaque brush that contains a red X mark.
+Notice that the Path element that renders the red X mark is assigned a
+name of path. This name is referenced in the Triggers section of the
+template.</p><div style="margin-top: 5px;" align="right"><a onclick="OpenMenu(contentbtn, contentmenu);" target="_self" href="#contents" class="clsSmall"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/top.gif" alt="Back to top" style="margin-left: 5px;" align="bottom" border="0" height="8" width="18"></a></div><br><a name="S3"></a><span class="clsSubhead">Template Triggers</span><br><p xmlid="PARAJANUARY2007FOUNDATIONS023">The
+last section of a ControlTemplate is generally dedicated to Trigger
+elements. These change properties of the elements that make up the
+visual tree based on changes in properties of the control. <a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig2" onclick="OpenUrl('default.aspx?loc=&fig=true#fig2'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;2</a> shows a large portion of the Triggers section for the custom CheckBox template.</p><p xmlid="PARAJANUARY2007FOUNDATIONS024">By
+default, the IsChecked property of the CheckBox is false and the
+CheckBox displays a red X mark. The first Trigger element indicates
+that when IsChecked becomes true, the Data property and the Stroke
+property of the element named path should be set to display a green
+check mark. The next Trigger element accommodates a null value of
+IsChecked (this can occur when the CheckBox is set for tri-state
+operation) by displaying a blue question mark. The last Trigger element
+changes the Foreground property of the control to a gray brush when the
+IsEnabled property is false. (The BigCheckCheckBox.xaml file has an
+additional Trigger element that displays a dotted line around the
+control's content when the control has input focus.)</p><p xmlid="PARAJANUARY2007FOUNDATIONS025">The
+Triggers section of a template can be quite extensive. A Trigger
+element for the IsMouseOver property is often included so the control
+reacts when the mouse passes over the control.</p><p xmlid="PARAJANUARY2007FOUNDATIONS026">You can then reference the template in an element that creates a CheckBox, like so:
+</p><pre class="clsCode">&lt;CheckBox Template="{StaticResource templateBigCheck}" ...
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS027"><span class="clsFigs" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;3</span>
+shows three CheckBox controls displayed by the BigCheckCheckBox.xaml
+file. Two have text content and the third (which has its IsThreeState
+property set to true and its IsChecked property set to null) contains a
+bitmap.</p><div style="width: 577px; display: none;" id="168577002"><a href="javascript:ToggleImages('168577002', '116400002');"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/fig03_L.gif" alt="Figure 3 CheckBox Controls with a Custom Template" border="0" height="168" width="577"></a><br><span class="clsCap">Figure 3</span>&nbsp;<span class="clsCaptxt">CheckBox Controls with a Custom Template (Click the image for a smaller view)
+</span></div><div style="margin: 5px 0px 10px 5px; width: 400px; display: block;" id="116400002"><a href="javascript:ToggleImages('116400002', '168577002');"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/fig03.gif" alt="Figure 3 CheckBox Controls with a Custom Template" border="0" height="116" width="400"></a><br><span class="clsCap">Figure 3</span>&nbsp;<span class="clsCaptxt">CheckBox Controls with a Custom Template (Click the image for a larger view)
+</span></div><div style="margin-top: 5px;" align="right"><a onclick="OpenMenu(contentbtn, contentmenu);" target="_self" href="#contents" class="clsSmall"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/top.gif" alt="Back to top" style="margin-left: 5px;" align="bottom" border="0" height="8" width="18"></a></div><br><a name="S4"></a><span class="clsSubhead">Making Progress</span><br><p xmlid="PARAJANUARY2007FOUNDATIONS028">You
+might be skeptical of how well the concept of templates can be adapted
+to more complex controls. After all, some controls have moving parts
+and more involved interaction with the user. To dissuade you from such
+skepticism, I'll spend the rest of this column looking at templates for
+the three controls that derive from RangeBase. These are ProgressBar,
+ScrollBar, and Slider.</p><p xmlid="PARAJANUARY2007FOUNDATIONS029">To
+work properly, templates for more complex controls require certain
+types of elements with specific names. For example, a visual tree for a
+ProgressBar must have two elements of type FrameworkElement (or that
+derive from FrameworkElement) named PART_Track and PART_Indicator.
+These two elements are known as "named parts" of the template. The
+names are shown in the SDK documentation of the ProgressBar class as
+TemplatePart attributes. If your template does not include two elements
+with these names, the control won't work correctly.</p><p xmlid="PARAJANUARY2007FOUNDATIONS030">If
+the ProgressBar is displayed in its default horizontal orientation,
+then the internal logic of the control sets the Width property of the
+element named PART_Indicator to a fraction of the ActualWidth property
+of the element named PART_Track. That fraction is based on the Minimum,
+Maximum, and Value properties of the ProgressBar. If the orientation of
+the ProgressBar is vertical, then the Height and ActualHeight
+properties of the two elements are used instead.</p><p xmlid="PARAJANUARY2007FOUNDATIONS031">The
+ProgressBar control actually has two default templates for the two
+orientations. (This is true of ScrollBar and Slider, as well.) If you
+want your new ProgressBar to support both orientations, you should
+write two separate templates and select them in the Triggers section of
+a Style element that you also define for the ProgressBar.</p><p xmlid="PARAJANUARY2007FOUNDATIONS032"><a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig4" onclick="OpenUrl('default.aspx?loc=&fig=true#fig4'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;4</a>
+is an excerpt from the BareBonesProgressBar.xaml file that shows a
+complete ProgressBar element with the ControlTemplate object as a
+property of that element. The file also includes a ScrollBar used to
+test the ProgressBar through a binding. As you manipulate the
+ScrollBar, the blue rectangle (the PART_Indicator element) varies in
+width from zero to the width of the red rectangle (the PART_Track
+element). Note that even though BareBonesProgressBar.xaml gives the
+PART_Track rectangle an explicit width, you should actually avoid
+explicit dimensions whenever possible.</p><p xmlid="PARAJANUARY2007FOUNDATIONS033">It's
+more common for the indicator element to be inside the track element,
+and you'll probably consider using a Border element for the track. But
+beware: if you also give that Border a non-zero BorderThickness, then
+that thickness will be part of the Border element's total width, and
+the width inside the border will be slightly less. If you want to use a
+Border with a non-zero border thickness for display purposes, make the
+track another Border with a zero border thickness inside that first
+border, and put something else inside that second Border for the
+indicator. (And if you're using a Border element without making use of
+its border or background properties, consider using a Decorator, which
+is the borderless, background-less class from which Border descends.)</p><p xmlid="PARAJANUARY2007FOUNDATIONS034"><a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig5" onclick="OpenUrl('default.aspx?loc=&fig=true#fig5'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;5</a>
+shows a rather extensive ControlTemplate object from the
+ThermometerProgressBar.xaml file. This template has a Resources section
+but no Triggers section. Although the visual tree makes use of some
+explicit coordinates for borders and corners, the overall dimensions of
+the ProgressBar are not defined. That responsibility is left to any
+markup that defines a ProgressBar using a template like this, for
+example:
+</p><pre class="clsCode">&lt;ProgressBar 
+       Template="{StaticResource
+       templateThermometer}" 
+       Orientation="Vertical" Minimum="0" 
+       Maximum="100"
+       Width="50" Height="350" ...
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS035">The resulting ProgressBar is shown in <span class="clsFigs" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;6</span>.
+Notice that the Orientation property of this ProgressBar must be set to
+Vertical-otherwise it won't work properly. You can either remember to
+set the Orientation whenever you use this template, or you can define a
+Style for the ProgressBar that sets the Orientation and also references
+the template. (I'll show an example of this technique in a moment.)</p><div style="margin: 5px 0px 10px 5px; width: 141px; display: block;" id="505141004"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/fig06.gif" alt="Figure 6 " border="0" height="505" width="141"><br><span class="clsCap">Figure 6</span>&nbsp;<span class="clsCaptxt"></span></div><p xmlid="PARAJANUARY2007FOUNDATIONS036">Among
+the downloadable code for this column is also
+SpeedometerProgressBar.xaml, which produces the more radical
+ProgressBar shown in <span class="clsFigs" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;7</span>.
+</p><div style="margin: 5px 0px 10px 5px; width: 362px; display: block;" id="174362006"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/fig07.gif" alt="Figure 7 Speedometer ProgressBar" border="0" height="174" width="362"><br><span class="clsCap">Figure 7</span>&nbsp;<span class="clsCaptxt">Speedometer ProgressBar</span></div><p xmlid="PARAJANUARY2007FOUNDATIONS037">This
+one is a bit tricky. The template includes two rectangles that are
+invisible-they have no height or fill color or stroke color, as shown
+here:
+</p><pre class="clsCode">  &lt;Rectangle Name="PART_Track" Width="180" /&gt;
+  &lt;Rectangle Name="PART_Indicator" /&gt;
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS038">The width of the
+PART_Track element is set to the number of degrees in a semicircle. The
+Polygon element for the red pointer is subjected to a RotateTransform
+whose Angle property is bound to the ActualWidth of PART_Indicator,
+like so:
+</p><pre class="clsCode">&lt;RotateTransform 
+   Angle="{Binding ElementName=PART_Indicator, 
+                 Path=ActualWidth}" /&gt;
+</pre><p></p><div style="margin-top: 5px;" align="right"><a onclick="OpenMenu(contentbtn, contentmenu);" target="_self" href="#contents" class="clsSmall"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/top.gif" alt="Back to top" style="margin-left: 5px;" align="bottom" border="0" height="8" width="18"></a></div><br><a name="S5"></a><span class="clsSubhead">Anatomy of a ScrollBar</span><br><p xmlid="PARAJANUARY2007FOUNDATIONS039">Both
+ProgressBar and ScrollBar derive from the abstract RangeBase class.
+Just about all that RangeBase provides are Value properties, the
+ValueChanged event, and definitions of Minimum, Maximum, SmallChange,
+and LargeChange. (ProgressBar uses just the Minimum, Maximum, and Value
+properties.)</p><p xmlid="PARAJANUARY2007FOUNDATIONS040">ScrollBar is
+more complex than ProgressBar, reacting to user input in several ways.
+This behavior is distributed among five child controls in the standard
+ScrollBar. The moveable Thumb is a control named Thumb. Directly on
+either side of the thumb are two RepeatButton controls that typically
+implement Page Up and Page Down commands. (RepeatButton is similar to
+the regular Button except that it responds to a sustained mouse press
+with multiple Click events.) These two RepeatButton controls change
+size whenever the Value property of the ScrollBar changes, and
+sometimes one or the other shrinks down to nothing. On the extreme ends
+of the ScrollBar are two more RepeatButton controls of constant size
+labeled with arrows that typically implement Line Up and Line Down
+commands.</p><p xmlid="PARAJANUARY2007FOUNDATIONS041">The Thumb and
+inner RepeatButton controls are children of an element named Track,
+which is responsible for all of their interaction, movement, and size
+changes. Most of the core functionality and messy logic of the
+ScrollBar is handled by Track.</p><p xmlid="PARAJANUARY2007FOUNDATIONS042">When
+you define a ControlTemplate for a ScrollBar, the visual tree needs to
+contain a Track element named PART_Track. That's the only required
+named part for a ScrollBar template.</p><p xmlid="PARAJANUARY2007FOUNDATIONS043">Track
+is not a control. It derives instead from FrameworkElement, and it does
+not have a Template property because the Template property is defined
+by Control. Although you can't provide a template for Track, you can
+provide templates for the three controls that make up the Track element.</p><p xmlid="PARAJANUARY2007FOUNDATIONS044">Track
+defines three properties that correspond to its three children: Thumb
+(of type Thumb), DecreaseRepeatButton (of type RepeatButton), and
+IncreaseRepeatButton (also of type RepeatButton). By default, these
+three properties are null, which means the template's visual tree
+should contain explicit definitions of these three controls. If you
+also want to provide the two buttons on the ends of the ScrollBar, the
+visual tree should include elements for these two buttons. You can give
+these five child controls their own templates, or you can use the
+existing templates and just assign some properties.</p><div style="margin-top: 5px;" align="right"><a onclick="OpenMenu(contentbtn, contentmenu);" target="_self" href="#contents" class="clsSmall"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/top.gif" alt="Back to top" style="margin-left: 5px;" align="bottom" border="0" height="8" width="18"></a></div><br><a name="S6"></a><span class="clsSubhead">Button Commands</span><br><p xmlid="PARAJANUARY2007FOUNDATIONS045">The
+four RepeatButton controls in the standard ScrollBar template must be
+able to communicate with the inner logic of ScrollBar. This is
+accomplished using predefined RoutedCommand objects that the ScrollBar
+class defines as static read-only fields. ScrollBar defines no fewer
+than 17 of these static read-only fields that correspond to various
+operations the ScrollBar can perform. Some of these commands are for
+use with the ScrollBar context menu; some are for a ScrollBar used as
+part of a ScrollViewer control. Still others, specifically those that
+begin with the words Line and Page, are for templates.</p><p xmlid="PARAJANUARY2007FOUNDATIONS046"><a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig8" onclick="OpenUrl('default.aspx?loc=&fig=true#fig8'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;8</a>
+shows a ScrollBar template from the NoFrillsScrollBar.xaml file. The
+Track element and the two RepeatButton controls at the ends are
+organized in a Grid panel. Three properties of the Track element are
+set to two more RepeatButton controls and a Thumb.</p><p xmlid="PARAJANUARY2007FOUNDATIONS047">This is a fully functional ScrollBar, but as you can see in <span class="clsFigs" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;9</span>,
+the four RepeatButton controls look like regular buttons. The two
+buttons on the ends were originally quite tiny, so I increased their
+sizes by setting their content to pointing-hands characters taken from
+the Wingdings font. Other than that, none of the five controls have any
+properties set except for the Command property and the Grid.Column
+attached property.</p><div style="width: 444px; display: none;" id="84444008"><a href="javascript:ToggleImages('84444008', '76400008');"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/fig09_L.gif" alt="Figure 9 ScrollBar Based on Figure 8" border="0" height="84" width="444"></a><br><span class="clsCap">Figure 9</span>&nbsp;<span class="clsCaptxt">ScrollBar Based on Figure 8 (Click the image for a smaller view)
+</span></div><div style="margin: 5px 0px 10px 5px; width: 400px; display: block;" id="76400008"><a href="javascript:ToggleImages('76400008', '84444008');"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/fig09.gif" alt="Figure 9 ScrollBar Based on Figure 8" border="0" height="76" width="400"></a><br><span class="clsCap">Figure 9</span>&nbsp;<span class="clsCaptxt">ScrollBar Based on Figure 8 (Click the image for a larger view)
+</span></div><p xmlid="PARAJANUARY2007FOUNDATIONS048">The template in <a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig8" onclick="OpenUrl('default.aspx?loc=&fig=true#fig8'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;8</a>
+is intended for a horizontal ScrollBar. A vertical orientation would
+require three rows rather than three columns in the Grid, and it would
+reference RoutedCommand fields from the ScrollBar class that include
+the words Up and Down rather than Left and Right.</p><p xmlid="PARAJANUARY2007FOUNDATIONS049">The
+default ScrollBar template uses the ScrollChrome class from the
+Microsoft.Windows.Themes namespace for rendering some of its controls.
+You'll also notice that the template seems to be much longer than it
+needs to be because many of the properties of the controls in the
+visual tree are defined through styles rather than attributes. For
+example, where you could use something like this:
+</p><pre class="clsCode">&lt;RepeatButton IsFocusable="False" ...
+</pre>
+
+instead you see something like this:
+
+<pre class="clsCode">&lt;RepeatButton ... &gt;
+    &lt;RepeatButton.Style&gt;
+        &lt;Style TargetType="RepeatButton"&gt;
+            ...
+            &lt;Setter Property="UIElement.IsFocusable"&gt;
+                &lt;Setter.Value&gt;
+                    &lt;s:Boolean&gt;False&lt;/s:Boolean&gt;
+                &lt;/Setter.Value&gt;
+            &lt;/Setter&gt;
+            ...
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS050">I suspect the
+default templates contain markup like this because these properties
+were originally defined in Style elements in the Resources section of
+the templates. But it's important to know that when you write your own
+templates, you can set properties directly in the elements.</p><p xmlid="PARAJANUARY2007FOUNDATIONS051">The
+default template sets both the IsFocusable and IsTabStop properties of
+each RepeatButton to false-when you experiment with
+NoFrillsScrollBar.xaml, you'll see why. Click the leftmost button. Now
+press the Tab key a couple times. You'll see input focus shift from
+RepeatButton to RepeatButton, which is certainly not what's supposed to
+happen.</p><p xmlid="PARAJANUARY2007FOUNDATIONS052">Because there are
+four RepeatButton controls in the template, it's probably easiest to
+use a Style element for setting uniform properties on all of them. You
+can add the following markup to NoFrillsScrollBar.xaml right after the
+ControlTemplate start tag to solve the focus problem:
+</p><pre class="clsCode">&lt;ControlTemplate.Resources&gt;
+    &lt;Style TargetType="{x:Type RepeatButton}"&gt;
+        &lt;Setter Property="Focusable" Value="False" /&gt;
+        &lt;Setter Property="IsTabStop" Value="False" /&gt;
+    &lt;/Style&gt;
+&lt;/ControlTemplate.Resources&gt;
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS053">You can also use
+the Resources section of ControlTemplate to define templates for the
+child controls that make up the visual tree of the ScrollBar. I did
+this in the SpringLoadedScrollBar.xaml file. <a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig10" onclick="OpenUrl('default.aspx?loc=&fig=true#fig10'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;10</a> shows the visual tree section of that template.</p><p xmlid="PARAJANUARY2007FOUNDATIONS054">Notice
+that the four RepeatButton elements in the template set the Foreground
+property to the Foreground property of the ScrollBar itself, and set a
+Template defined earlier in the Resources section. These other
+templates (not shown in <a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig10" onclick="OpenUrl('default.aspx?loc=&fig=true#fig10'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;10</a>) use the Foreground property of the RepeatButton to color their visuals. <span class="clsFigs" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;11</span> shows two ScrollBar controls that use this template but with different Foreground settings.</p><div style="width: 609px; display: none;" id="249609010"><a href="javascript:ToggleImages('249609010', '164400010');"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/fig11_L.gif" alt="Figure 11 Using Different Foreground Settings" border="0" height="249" width="609"></a><br><span class="clsCap">Figure 11</span>&nbsp;<span class="clsCaptxt">Using Different Foreground Settings (Click the image for a smaller view)
+</span></div><div style="margin: 5px 0px 10px 5px; width: 400px; display: block;" id="164400010"><a href="javascript:ToggleImages('164400010', '249609010');"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/fig11.gif" alt="Figure 11 Using Different Foreground Settings" border="0" height="164" width="400"></a><br><span class="clsCap">Figure 11</span>&nbsp;<span class="clsCaptxt">Using Different Foreground Settings (Click the image for a larger view)
+</span></div><p xmlid="PARAJANUARY2007FOUNDATIONS055">I added
+DropShadowBitmapEffect elements to the four buttons. In fact, I liked
+the effect so much that I decided to add a Triggers section that sets
+an additional drop shadow when the mouse passes over the button.</p><p xmlid="PARAJANUARY2007FOUNDATIONS056">The
+template for the spring-loaded ScrollBar assumes a horizontal
+orientation, and it looks best when the height is 50 device-independent
+units. These settings are not part of the template itself, and there's
+really no place for them in the template. You might want to consider
+putting them in a Style definition, as I'll demonstrate in a moment.</p><p xmlid="PARAJANUARY2007FOUNDATIONS057">The
+size of the Thumb in the ScrollBar is based on the ScrollBar
+ViewportSize property and is commonly used to show the proportion of
+the document currently in view. I couldn't find a way to override the
+Thumb size without setting ViewportSize. If you want a larger Thumb,
+you should write a template for Slider instead-you can actually write a
+template that makes a Slider look pretty much just like a ScrollBar.</p><div style="margin-top: 5px;" align="right"><a onclick="OpenMenu(contentbtn, contentmenu);" target="_self" href="#contents" class="clsSmall"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/top.gif" alt="Back to top" style="margin-left: 5px;" align="bottom" border="0" height="8" width="18"></a></div><br><a name="S7"></a><span class="clsSubhead">Creating a 3D Slider</span><br><p xmlid="PARAJANUARY2007FOUNDATIONS058">Unlike
+ScrollBar, the default Slider control does not have two small change
+buttons placed on either end. But you can add such controls to a Slider
+template. The Slider defines six RoutedCommand objects as static
+get-only properties, and includes DecreaseSmall, IncreaseSmall,
+DecreaseLarge, and IncreaseLarge. The Slider can also display optional
+tick marks on one or both sides.</p><p xmlid="PARAJANUARY2007FOUNDATIONS059">Perhaps
+the first thing you'll notice when you look at the default Slider
+template is that it's over a thousand lines long-that's over three
+times the length of the default ScrollBar template. Part of the reason
+for this is that the Slider template doesn't rely on a class from
+Microsoft.Windows.Themes. Instead, everything is built right into the
+template.</p><p xmlid="PARAJANUARY2007FOUNDATIONS060">This template
+defines different thumb shapes when tick marks are displayed on just
+one side of the Slider, and the template contains many gradient brushes
+used in coloring this thumb. If you want to include optional TickBar
+elements in your Slider template, they should have their Visibility
+properties set to Visibility.Collapsed. The Triggers section of the
+ControlTemplate should contain Trigger elements that set the Visibility
+properties to Visibility.Visible based on the TickPlacement property of
+Slider. For this reason, it's necessary to assign names to the TickBar
+elements, but they don't have to be special names.</p><p xmlid="PARAJANUARY2007FOUNDATIONS061">For
+my custom vertical Slider, I wanted my Thumb to resemble a lever on a
+sound-mixing board. My goal was for this lever to look like an elevated
+piece of plastic with a three-dimensional appearance. To emulate
+three-dimensional perspective, it had to change shape as it moved up
+and down. You should see the bottom of the lever when it's pushed to
+the top of the Slider and the top of the lever when it's positioned at
+the bottom of the slider.</p><p xmlid="PARAJANUARY2007FOUNDATIONS062">Windows
+Presentation Foundation has some 3D graphics capabilities that are
+ideal for a task of this nature. The Slider3D.xaml file contains the
+template. <a class="clsFigs" target="_self" href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx?loc=&amp;fig=true#fig12" onclick="OpenUrl('default.aspx?loc=&fig=true#fig12'); return false;" xmlns:user="http://msdn.microsoft.com">Figure&nbsp;12</a>
+shows five of these 3D Slider controls set to different positions.
+Notice how the lever changes shape depending on its position.</p><div style="width: 463px; display: none;" id="491463012"><a href="javascript:ToggleImages('491463012', '424400012');"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/fig12_L.gif" alt="Figure 12 3D Slider Controls" border="0" height="491" width="463"></a><br><span class="clsCap">Figure 12</span>&nbsp;<span class="clsCaptxt">3D Slider Controls (Click the image for a smaller view)
+</span></div><div style="margin: 5px 0px 10px 5px; width: 400px; display: block;" id="424400012"><a href="javascript:ToggleImages('424400012', '491463012');"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/fig12.gif" alt="Figure 12 3D Slider Controls" border="0" height="424" width="400"></a><br><span class="clsCap">Figure 12</span>&nbsp;<span class="clsCaptxt">3D Slider Controls (Click the image for a larger view)
+</span></div><p xmlid="PARAJANUARY2007FOUNDATIONS063">A vertical Slider
+generally begins with a three-column Grid panel; the two outer columns
+are for the two TickBar elements. In the default vertical Slider
+template, the center Grid contains a Border element that provides the
+image of the groove, and a Track element containing the Thumb and two
+RepeatButton controls. I took the same approach in my template and
+defined the two RepeatButton controls as just Border elements with
+Transparent backgrounds. They don't obscure the groove but they still
+respond to the mouse.</p><p xmlid="PARAJANUARY2007FOUNDATIONS064">I
+decided that the Thumb should be 50 pixels high (it's already 50 pixels
+wide by virtue of the ColumnDefinition in the Grid). And the visual
+tree contains another Border with a transparent Background. At this
+point, the Slider is fully functional, though you can't see the thumb.
+The child of this transparent Border is a Viewport3D element, and
+here's where it gets interesting.</p><p xmlid="PARAJANUARY2007FOUNDATIONS065">The
+way I look at it, there are basically two parts to 3D graphics
+programming: the grunt work and the fiddling. The grunt work mostly
+involves defining MeshGeometry3D elements, which are the visible
+objects defined entirely as a collection of connected triangles in 3D
+coordinate space. For the Thumb, I defined an object that is a
+rectangular pyramid with the top cut off:
+</p><pre class="clsCode">&lt;MeshGeometry3D
+    Positions="-2 -1 0, -1 -0.25 4, -2 1 0, -1 0.25 4, 
+                2 -1 0,  1 -0.25 4,  2 1 0,  1 0.25 4"
+
+    TriangleIndices="0 1 2, 1 3 2, 0 2 4, 2 6 4, 
+                     0 4 1, 1 4 5, 1 5 7, 1 7 3, 
+                     4 6 5, 7 5 6, 2 3 6, 3 7 6"
+
+    TextureCoordinates="0 1, 0.2 0.6, 0 0, 0.2 0.4,
+                        1 1, 0.8 0.6, 1 0, 0.8 0.4" /&gt;
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS066">The Positions
+attribute consists of three-dimensional coordinates for each of the
+eight vertices of the figure. The bottom of the figure (where Z equals
+zero) extends from X values of -2 to +2 and Y values of -1 to +1. The
+top rectangle (where Z equals 4) extends from X values of -1 to +1 and
+Y values of -0.25 to +0.25.</p><p xmlid="PARAJANUARY2007FOUNDATIONS067">Each
+triplet in the TriangleIndices attribute defines a surface of the
+figure in terms of indices into the Positions array. For example, the
+first TriangleIndices triplet is 0, 1, and 2-this refers to the first,
+second, and third vertices of the Positions collection. The
+TextureCoordinates collection contains a two-dimensional point for
+every three-dimensional vertex in the figure. These points correspond
+to points in a brush based on a GeometryDrawing used to cover the
+outside of the three-dimensional object:
+</p><pre class="clsCode">&lt;GeometryDrawing Brush="LightGray"
+    Geometry="F 1 M 0 0 L 1 0 L 1 1 L 0 1 Z
+              M 0.2 0.4 
+              L 0.8 0.4 0.8 0.6 0.2 0.6 Z
+              M 0 0 L 0.2 0.4 
+              M 1 0 L 0.8 0.4
+              M 1 1 L 0.8 0.6
+              M 0 1 L 0.2 0.6"&gt;
+    &lt;GeometryDrawing.Pen&gt;
+        &lt;Pen Brush="DarkGray"
+             Thickness=".05" /&gt;
+    &lt;/GeometryDrawing.Pen&gt;
+&lt;/GeometryDrawing&gt;
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS068">This brush simply covers the whole object with a light-gray color and gives a dark-gray accent to the edges.</p><p xmlid="PARAJANUARY2007FOUNDATIONS069">When
+I refer to fiddling with 3D graphics programming, I mean working with
+the lighting and camera. With lighting, you generally want a
+combination of DirectionalLight and AmbientLight. The former by itself
+is too stark; the latter tends to wash out everything. The camera in
+the template is initially set up to look straight down the Z axis at
+the lever, but it also has a rotation transform to view the lever from
+above and below. I couldn't get this to work with a TemplateBinding to
+the Value property of the Slider, so I used a regular binding instead:
+</p><pre class="clsCode">&lt;AxisAngleRotation3D Axis="1 0 0"
+    Angle="{Binding RelativeSource={RelativeSource 
+        AncestorType={x:Type Slider}}, Path=Value}" /&gt;
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS070">Because the Value
+property determines the rotation angle of the camera, I needed to
+impose Minimum and Maximum properties of -25 and 25, respectively. This
+allows the camera to swing a total of 50 degrees-any more and the lever
+would get clipped. Less than 50 degrees is OK, but then the 3D effect
+is muted. The Slider3D.xaml file uses a Style to set these two
+properties as well as the Orientation property and the Template
+property, as shown here:
+</p><pre class="clsCode">&lt;Style x:Key="styleSlider3D" 
+       TargetType="Slider"&gt;
+    &lt;Setter Property="Orientation" Value="Vertical" /&gt;
+    &lt;Setter Property="Minimum" Value="-25" /&gt;
+    &lt;Setter Property="Maximum" Value="25" /&gt;
+    &lt;Setter Property="Template" 
+            Value="{StaticResource templateSlider3D}" /&gt;
+&lt;/Style&gt;
+</pre><p></p><p xmlid="PARAJANUARY2007FOUNDATIONS071">A Slider using this template actually refers to this style rather than the template.</p><div style="margin-top: 5px;" align="right"><a onclick="OpenMenu(contentbtn, contentmenu);" target="_self" href="#contents" class="clsSmall"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/top.gif" alt="Back to top" style="margin-left: 5px;" align="bottom" border="0" height="8" width="18"></a></div><br><a name="S8"></a><span class="clsSubhead">Remember Moderation</span><br><p xmlid="PARAJANUARY2007FOUNDATIONS072">As
+you've seen, a little hand-coded XAML is all you need to make standard
+controls look quite different. If you're like most programmers I know,
+you'll start horsing around and writing templates that violate all
+sense of logic and good taste.</p><p xmlid="PARAJANUARY2007FOUNDATIONS073">Before
+you go crazy with templates, keep in mind that one of the great values
+of Windows is its consistent user interface. When things look familiar,
+users know what to expect. So keep your creative instincts thoroughly
+tempered and use templates in moderation. (The <i>MSDN</i><sup class="clsSmall">®</sup><i>Magazine</i> editors made me grudgingly add this section.) </p><div style="margin-top: 5px;" align="right"><a onclick="OpenMenu(contentbtn, contentmenu);" target="_self" href="#contents" class="clsSmall"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/top.gif" alt="Back to top" style="margin-left: 5px;" align="bottom" border="0" height="8" width="18"></a></div><br><span class="clsGloss">Send your questions and comments to &nbsp;<a href="mailto:mmnet30@microsoft.com">mmnet30@microsoft.com</a>.
+</span><br><table border="0" cellpadding="5" cellspacing="0" width="100%"><tbody><tr><td valign="top"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/icodownl.gif" alt="Download Image" style="border: 0px none ;" height="16" hspace="5" width="16"><b>
+                    NEW:
+                    <a href="http://msdn.microsoft.com/msdnmag/code/?url=http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx">Explore</a>
+                    the sample code online!
+                  </b>
+                  - or -
+                <b>Code download available at:
+              </b><a href="http://download.microsoft.com/download/f/2/7/f279e71e-efb0-4155-873d-5554a0608523/Foundations2007_01.exe">Foundations2007_01.exe</a> (158KB)
+            </td></tr></tbody></table></div><hr><span class="clsBio"><b>Charles Petzold</b>
+is a Contributing Editor to MSDN Magazine and the author of
+Applications = Code + Markup: A Guide to the Microsoft Windows
+Presentation Foundation (Microsoft Press, 2006). His Web site is <a href="http://www.charlespetzold.com/">www.charlespetzold.com</a>.
+        </span><br><hr><a href="http://msdn.microsoft.com/msdnmag/subscribe.aspx"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/subbutton.gif" alt="Subscribe" style="margin: 0px; vertical-align: top;" border="0" height="44" width="121"></a>
+  &nbsp;From the&nbsp;<a href="http://msdn.microsoft.com/msdnmag/issues/07/01/default.aspx">January 2007</a>&nbsp;issue of&nbsp;<a href="http://msdn.microsoft.com/msdnmag/default.aspx">MSDN Magazine</a>.
+<hr><a name="bottom"></a><a href="#top" class="clsSmall" style="float: left;"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/top.gif" alt="Back to top" border="0" height="8" width="18">Back to top
+</a><span style="float: right;"><b>QJ: </b>070112</span><br><hr><span class="clsSmall">©
+2007 Microsoft Corporation and CMP Media, LLC. All rights reserved;
+reproduction in part or in whole without permission is prohibited.</span></td><td width="150"><iframe src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/msdn_premium.htm" frameborder="0" height="2000" scrolling="no" width="145"></iframe></td></tr></tbody></table><table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody><tr>
+        <td class="clsDocBody">
+            <div>
+                <span class="clsSubhead">
+                    Related Articles from MSDN Magazine: </span>
+            </div>
+            <div>
+            <!--  -->
+                <ul><li><a href="http://msdn.microsoft.com/msdnmag/issues/07/06/CSharp30"><b>C# 3.0:</b> The Evolution Of LINQ And Its Impact On The Design Of C# by Anson Horton</a></li><li><a href="http://msdn.microsoft.com/msdnmag/issues/1100/gci"><b>Garbage Collection:</b> Automatic Memory Management in the Microsoft .NET Framework by Jeffrey Richter</a></li><li><a href="http://msdn.microsoft.com/msdnmag/issues/07/03/WickedCode"><b>Wicked Code:</b> Scalable Apps with Asynchronous Programming in ASP.NET by Jeff Prosise</a></li><li><a href="http://msdn.microsoft.com/msdnmag/issues/07/10/PLINQ"><b>Parallel LINQ:</b> Running Queries On Multi-Core Processors by Joe Duffy and Ed Essey</a></li><li><a href="http://msdn.microsoft.com/msdnmag/issues/1200/dotnet"><b>.NET Column:</b> Type Fundamentals by Jeffrey Richter</a></li><li><a href="http://msdn.microsoft.com/msdnmag/issues/01/12/NETServ"><b>Windows Services:</b> New Base Classes in .NET Make Writing a Windows Service Easy by Ken Getz</a></li><li><a href="http://msdn.microsoft.com/msdnmag/issues/02/06/XMLC"><b>C#:</b> XML Comments Let You Build Documentation Directly From Your Visual Studio .NET Source Files by J. Andrew Schafer</a></li><li><a href="http://msdn.microsoft.com/msdnmag/issues/05/10/WickedCode"><b>Wicked Code:</b> Asynchronous Pages in ASP.NET 2.0 by Jeff Prosise</a></li></ul>
+            </div>
+        </td>
+        <td width="150">
+        </td>
+    </tr>
+</tbody></table>
+
+
+                
+	<!----------------->
+	<!--END_CONTENT-->
+	<!----------------->
+		
+					</td>
+		
+				</tr>
+			</tbody></table>
+		<!--NOINDEX_START--><br style="overflow: hidden; line-height: 1px;" clear="all"><table id="msviFooter" cellpadding="0" cellspacing="0" width="100%"><tbody><tr valign="bottom"><td id="msviFooter2" style=""><div id="msviLocalFooter"><nobr><a href="http://go.microsoft.com/?linkid=317027">Manage Your Profile</a> |</nobr><wbr><nobr><a href="http://msdn.microsoft.com/isapi/gomscom.asp?TARGET=/legal/" target="_parent">Legal</a> |</nobr><wbr><nobr><a href="http://go.microsoft.com/?linkid=2028439" target="_parent">Contact us</a> |</nobr><wbr><nobr><a href="http://msdn.microsoft.com/flash/" target="_parent">MSDN Flash Newsletter</a></nobr></div><div id="msviGlobalFooter"><span dir="ltr">© 2007 Microsoft Corporation. All rights reserved.&nbsp;</span><nobr><a href="http://www.microsoft.com/info/cpyright.mspx">Terms of Use</a> |</nobr><wbr><nobr><a href="http://msdn.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</a> |</nobr><wbr><nobr><a href="http://www.microsoft.com/info/privacy.mspx">Privacy Statement</a></nobr></div></td><td bgcolor="#669aff" width="105"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/text.jpg" alt="Microsoft" title="" border="0" height="29" width="105"></td></tr></tbody></table><layer visibility="hide"></layer><div style="display: none;"><img src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/trans_pixel.gif" border="0" height="0" hspace="0" vspace="0" width="0"></div>
+	
+
+<script language="javascript" type="text/javascript">
+var gDomain="m.webtrends.com";
+var gDcsId="dcsmgru7m99k7mqmgrhudo0k8_8c6m";
+var gTrackEvents=1;
+var wtsp="_msdnmag_"
+var gFpc="WT_FPC";if(document.cookie.indexOf(gFpc+"=")==-1){document.write("<SCR"+"IPT TYPE='text/javascript' SRC='"+"http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+gDomain+"/"+gDcsId+"/wtid.js"+"'><\/SCR"+"IPT>");}
+</script>
+<script src="sing%20Templates%20to%20Customize%20WPF%20Controls_files/webtrends.js" type="text/javascript"></script>
+<noscript>
+<img alt="" border="0" id="DCSIMG" width="1" height="1"
+src="http://m.webtrends.com/dcsmgru7m99k7mqmgrhudo0k8_8c6m/njs.gif?dcsuri=/nojavascript&amp;WT.js=No">
+</noscript>
+
+
+
+</body></html>

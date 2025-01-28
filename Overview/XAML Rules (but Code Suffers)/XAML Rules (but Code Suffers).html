@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - XAML Rules (but Code Suffers)</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2005/11/150607.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2005/11/201108.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2005/11/190528.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>XAML Rules (but Code Suffers)</h2></a><p style="text-align: right;">November 19, 2005<br>Roscoe, NY</p><p>
+Let's create a <i>Grid</i>, which in the Windows Presentation Foundation (formerly code-named Avalon) derives from <i>Panel</i> and lets you organize controls and other UI elements into a grid.
+</p>
+<p>
+In XAML, the <i>Grid</i> probably begins with a bunch of <i>ColumnDefinition</i> and <i>RowDefinition</i> elements that might look something like this:
+</p>
+<ul>
+<pre>&lt;Grid&gt;
+    &lt;ColumnDefinition Width="100" /&gt;
+    &lt;ColumnDefinition Width="Auto" /&gt;
+    &lt;ColumnDefinition Width="50*" /&gt;
+    &lt;ColumnDefinition Width="50*" /&gt;
+    ...
+&lt;/Grid&gt;
+</pre>
+</ul>
+<p>
+The first <i>ColumnDefinition</i> indicates the column should have
+a width of 100 pixels, the second means that the column is sized to its
+contents, and the third and fourth means that the leftover space is to
+be apportioned equally.
+</p>
+<p>
+Now let's do it in code. The code uses the <i>Add</i> method of the <i>ColumnDefinitions</i> collection in conjunction with the <i>GridUnitType</i> enumeration and the <i>GridLength</i> class. The code is a little bulkier than the XAML but it's not bad:
+</p>
+<ul>
+<pre>Grid grid = new Grid();
+grid.ColumnDefinitions.Add(100, GridUnitType.Pixel);
+grid.ColumnDefinitions.Add(GridLength.Auto);
+grid.ColumnDefinitions.Add(50, GridUnitType.Star);
+grid.ColumnDefinitions.Add(50, GridUnitType.Star);
+</pre>
+</ul>
+<p>
+Well, no. There actually is no overload of the <i>Add</i> method that lets you do it like this. Instead, you need to create each <i>ColumnDefinition</i> object explicitly and add it to the <i>ColumnDefinitions</i> collection. The code ends up looking something like this:
+</p>
+<ul>
+<pre>Grid grid = new Grid();
+
+ColumnDefinition col = new ColumnDefinition();
+col.Width = new GridLength(100, GridUnitType.Pixel);
+grid.ColumnDefinitions.Add(col);
+
+col = new ColumnDefinition();
+col.Width = GridLength.Auto;
+grid.ColumnDefinitions.Add(col);
+
+col = new ColumnDefinition();
+col.Width = new GridLength(50, GridUnitType.Star);
+grid.ColumnDefinitions.Add(col);
+
+col = new ColumnDefinition();
+col.Width = new GridLength(50, GridUnitType.Star);
+grid.ColumnDefinitions.Add(col);
+</pre>
+</ul>
+<p>
+Which, of course, is just ridiculous.
+</p>
+<p>
+Why is something that is so easy to do in XAML so clumsy to do in code? I can think of only two explanations:
+</p>
+<ul>
+1. It's deliberate. We shouldn't be doing this in code. We should be using XAML. And ve shall obey.
+</ul>
+<ul>2. It's accidental. The Avalon folks have been working so hard on
+XAML that they've neglected adding those few extra constructors and <i>Add</i> methods that help make life easier for people doing this in code.
+</ul>
+<p>
+Neither of these explanations is very comforting.
+</p>
+
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2005/11/150607.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2005/11/201108.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

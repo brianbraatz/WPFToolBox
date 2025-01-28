@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - My Sick, Sick, Xamled Mind</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/02/020458.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/02/050710.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/02/040330.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>My Sick, Sick, Xamled Mind</h2></a><p style="text-align: right;">February 4, 2007<br>Roscoe, N.Y.</p><p>
+So I've been reading this
+<a href="http://blogs.msdn.com/wpfsdk/archive/2007/01/15/maximizing-wpf-3d-performance-on-tier-2-hardware.aspx">document on WPF 3D performance</a>,
+and one of the recommendations is that you try to cache tiled brushes
+because normally the brushes have to be re-rendered when something
+needs to be painted with the brush. I also read that:
+</p>
+<ul>
+Live text in a 3D scene (live because it’s in a <b>DrawingBrush</b> or <b>VisualBrush</b>) is often super slow. Try to use images of the text instead (via <b>RenderTargetBitmap</b>) unless the text will be changing.
+</ul>
+<p>
+And naturally this starts me thinking <i>not</i> about how I can make my 3D programs more efficient, but all the ways that text could be animated in a <i>VisualBrush</i> used on a 3D figure.
+</p>
+<p>You can actually animate the text itself, and one way is displaying
+a floating-point value that's being animated. And so, once the idea was
+conceived, it was impossible to let it go, and the result is a program
+I call Math Phobic's Nightmare Cube, which is a cube covered with
+constantly changing randomly-appearing numbers:
+</p>
+<p align="center">
+<img src="MathPhobicsNightmareCube_files/MathPhobicsNightmareCube.png">
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2007/02/MathPhobicsNightmareCube.xaml">MathPhobicsNightmareCube.xaml</a>
+</p>
+<p>
+Each side of the cube is covered with the same <i>VisualBrush</i>, which is a <i>StackPanel</i> with eight <i>Label</i> controls.  Eight <i>DoubleAnimation</i> objects, each running with a different duration, animate the <i>Content</i> property of each <i>Label</i> with values that range from <i>Math.E</i> through <i>Math.PI</i>.  It's OK to animate a <i>Content</i> property with a <i>DoubleAnimation</i> because <i>Content</i> is of type <i>Object</i> and the <i>Double</i> is displayed with its <i>ToString</i> method.  HOWEVER, I discovered that the <i>Content</i> property of each <i>Label</i> has to be initially set to a <i>Double</i> or the animation won't work.  This happens in a <i>Style</i> resource for the <i>Label</i>.
+</p>
+<p>
+Notice how the the <i>Viewbox</i> property for the <i>VisualBrush</i> is set to "0.13 0 0.82 1". This is a <i>Rect</i>
+object; the nonzero first element trims off some of the beginning brush
+so that the first digit and decimal point aren't displayed. The nonzero
+third element trims off the last digit as well, which is sometimes
+blank.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/02/020458.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/02/050710.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

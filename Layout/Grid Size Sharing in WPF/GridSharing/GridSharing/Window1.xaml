@@ -1,0 +1,267 @@
+﻿<Window x:Class="GridSharing.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="GridSharing" Height="600" Width="500"
+    >
+  <StackPanel>
+    <!-- WRONG - Fixed Pixel column widths with incorrect resizing behavior -->
+    <Border Margin="10" BorderBrush="Green" BorderThickness="1">
+      <Grid>
+        <Grid.Resources>
+          <DataTemplate x:Key="basicRow">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="65"/>
+                <ColumnDefinition Width="55"/>
+                <ColumnDefinition Width="80"/>
+              </Grid.ColumnDefinitions>
+              <Border Background="White" Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding Name}"/>
+              </Border>
+              <Border Background="LightBlue" Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding City}"/>
+              </Border>
+              <Border Background="White" Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding BeginDate}"/>
+              </Border>
+              <Border Background="LightBlue" Grid.Column="3" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding EndDate}"/>
+              </Border>
+              <Border Background="White" Grid.Column="4" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding Department}"/>
+              </Border>
+            </Grid>
+          </DataTemplate>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="110"/>
+          <ColumnDefinition Width="90"/>
+          <ColumnDefinition Width="65"/>
+          <ColumnDefinition Width="55"/>
+          <ColumnDefinition Width="80"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="White" Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Name"/>
+        </Border>
+        <Border Background="LightBlue" Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="City"/>
+        </Border>
+        <Border Background="White" Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Start"/>
+        </Border>
+        <Border Background="LightBlue" Grid.Column="3" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="End"/>
+        </Border>
+        <Border Background="White" Grid.Column="4" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Dept"/>
+        </Border>
+        <ItemsControl Grid.Row="1" Grid.ColumnSpan="5" ItemsSource="{Binding DataList}" ItemTemplate="{StaticResource basicRow}"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="0" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="1" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="2" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="3" Grid.RowSpan="2"/>
+      </Grid>
+    </Border>
+
+    <!-- NOT QUITE RIGHT - Shared column groups with correct resizing but ignored * width-->
+    <Border Margin="10" BorderBrush="Green" BorderThickness="1">
+      <Grid Grid.IsSharedSizeScope="True">
+        <Grid.Resources>
+          <DataTemplate x:Key="sharedRow">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="A"/>
+                <ColumnDefinition SharedSizeGroup="B"/>
+                <ColumnDefinition SharedSizeGroup="C"/>
+                <ColumnDefinition SharedSizeGroup="D"/>
+                <ColumnDefinition SharedSizeGroup="E"/>
+              </Grid.ColumnDefinitions>
+              <Border Background="White" Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding Name}"/>
+              </Border>
+              <Border Background="LightBlue" Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding City}"/>
+              </Border>
+              <Border Background="White" Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding BeginDate}"/>
+              </Border>
+              <Border Background="LightBlue" Grid.Column="3" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding EndDate}"/>
+              </Border>
+              <Border Background="White" Grid.Column="4" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding Department}"/>
+              </Border>
+            </Grid>
+          </DataTemplate>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="110" SharedSizeGroup="A"/>
+          <ColumnDefinition Width="90" SharedSizeGroup="B"/>
+          <ColumnDefinition Width="65" SharedSizeGroup="C"/>
+          <ColumnDefinition Width="Auto" SharedSizeGroup="D"/>
+          <ColumnDefinition Width="*" SharedSizeGroup="E"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="White" Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Name"/>
+        </Border>
+        <Border Background="LightBlue" Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="City"/>
+        </Border>
+        <Border Background="White" Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Start"/>
+        </Border>
+        <Border Background="LightBlue" Grid.Column="3" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="End"/>
+        </Border>
+        <Border Background="White" Grid.Column="4" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Dept"/>
+        </Border>
+        <ItemsControl Grid.Row="1" Grid.ColumnSpan="5" ItemsSource="{Binding DataList}" ItemTemplate="{StaticResource sharedRow}"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="0" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="1" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="2" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="3" Grid.RowSpan="2"/>
+      </Grid>
+    </Border>
+
+    <!-- WRONG - Bound columns with correct sizing for Pixel and * columns but not Auto-->
+    <Border Margin="10" BorderBrush="Green" BorderThickness="1">
+      <Grid Grid.IsSharedSizeScope="True">
+        <Grid.Resources>
+          <DataTemplate x:Key="allBoundRow">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}, AncestorLevel=2}, Path=ColumnDefinitions[0].Width}" />
+                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}, AncestorLevel=2}, Path=ColumnDefinitions[1].Width}"/>
+                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}, AncestorLevel=2}, Path=ColumnDefinitions[2].Width}"/>
+                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}, AncestorLevel=2}, Path=ColumnDefinitions[3].Width}"/>
+                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}, AncestorLevel=2}, Path=ColumnDefinitions[4].Width}" />
+              </Grid.ColumnDefinitions>
+              <Border Background="White" Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding Name}"/>
+              </Border>
+              <Border Background="LightBlue" Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding City}"/>
+              </Border>
+              <Border Background="White" Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding BeginDate}"/>
+              </Border>
+              <Border Background="LightBlue" Grid.Column="3" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding EndDate}"/>
+              </Border>
+              <Border Background="White" Grid.Column="4" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding Department}"/>
+              </Border>
+            </Grid>
+          </DataTemplate>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="70"/>
+          <ColumnDefinition Width="65"/>
+          <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="White" Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Name"/>
+        </Border>
+        <Border Background="LightBlue" Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="City"/>
+        </Border>
+        <Border Background="White" Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Start"/>
+        </Border>
+        <Border Background="LightBlue" Grid.Column="3" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="End"/>
+        </Border>
+        <Border Background="White" Grid.Column="4" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Dept"/>
+        </Border>
+        <ItemsControl Grid.Row="1" Grid.ColumnSpan="5" ItemsSource="{Binding DataList}" ItemTemplate="{StaticResource allBoundRow}"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="0" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="1" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="2" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="3" Grid.RowSpan="2"/>
+      </Grid>
+    </Border>
+
+    <!-- RIGHT - Combination of shared groups and binding to share all 3 column types-->
+    <Border Margin="10" BorderBrush="Green" BorderThickness="1">
+      <Grid Grid.IsSharedSizeScope="True">
+        <Grid.Resources>
+          <DataTemplate x:Key="boundRow">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}, AncestorLevel=2}, Path=ColumnDefinitions[0].Width}" />
+                <ColumnDefinition SharedSizeGroup="B"/>
+                <ColumnDefinition SharedSizeGroup="C"/>
+                <ColumnDefinition SharedSizeGroup="D"/>
+                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}, AncestorLevel=2}, Path=ColumnDefinitions[4].Width}" />
+              </Grid.ColumnDefinitions>
+              <Border Background="White" Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding Name}"/>
+              </Border>
+              <Border Background="LightBlue" Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding City}"/>
+              </Border>
+              <Border Background="White" Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding BeginDate}"/>
+              </Border>
+              <Border Background="LightBlue" Grid.Column="3" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding EndDate}"/>
+              </Border>
+              <Border Background="White" Grid.Column="4" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="5">
+                <TextBlock Text="{Binding Department}"/>
+              </Border>
+            </Grid>
+          </DataTemplate>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="Auto" SharedSizeGroup="B"/>
+          <ColumnDefinition Width="Auto" SharedSizeGroup="C"/>
+          <ColumnDefinition Width="Auto" SharedSizeGroup="D"/>
+          <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="White" Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Name"/>
+        </Border>
+        <Border Background="LightBlue" Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="City"/>
+        </Border>
+        <Border Background="White" Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Start"/>
+        </Border>
+        <Border Background="LightBlue" Grid.Column="3" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="End"/>
+        </Border>
+        <Border Background="White" Grid.Column="4" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="5">
+          <TextBlock Text="Dept"/>
+        </Border>
+        <ItemsControl Grid.Row="1" Grid.ColumnSpan="5" ItemsSource="{Binding DataList}" ItemTemplate="{StaticResource boundRow}"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="0" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="1" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="2" Grid.RowSpan="2"/>
+        <GridSplitter Width="2" HorizontalAlignment="Right" Grid.Column="3" Grid.RowSpan="2"/>
+      </Grid>
+    </Border>
+  </StackPanel>
+</Window>

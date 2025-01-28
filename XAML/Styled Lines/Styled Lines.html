@@ -1,0 +1,99 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Styled Lines</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/070922.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/120940.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/02/080609.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Styled Lines</h2></a><p style="text-align: right;">February 8, 2006<br>Lonely in NYC (because Deirdre's gone to Roscoe)</p><p>
+And now for another exciting installment of "What's That XAML?"
+</p>
+<p align="center">
+<img src="Styled%20Lines_files/Ellipse.png">
+</p>
+<p>
+Well, I guess the title of the blog entry gave it away. This is not 12 little circles surrounding an ellipse. It's actually an <i>Ellipse</i> with a half-inch perimeter drawn with a dotted line. If you ever had a question about how the <i>Fill</i> and the <i>Stroke</i> of a shape is based on the geometrical size of the shape, this image should make it clear. 
+</p>
+<p>
+The XAML that produced this image is <a href="http://www.charlespetzold.com/blog/2006/02/TwoEllipses.xaml">TwoEllipses.xaml</a> and it actually draws two ellipses. The one used for the graphic is based on the <i>Ellipse</i> element. The other is an <i>Image</i> element containing a <i>DrawingImage</i> based on an <i>EllipseGeometry</i>. Here's the complete XAML file if you don't feel like downloading it:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;!--&nbsp;==============================================<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TwoEllipses.xaml&nbsp;(c)&nbsp;2006&nbsp;by&nbsp;Charles&nbsp;Petzold<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==============================================&nbsp;--&gt;<br>&lt;Grid&nbsp;xmlns="http://schemas.microsoft.com/winfx/avalon/2005"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:x="http://schemas.microsoft.com/winfx/xaml/2005"&gt;<br>&nbsp;&nbsp;&lt;Grid.ColumnDefinitions&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ColumnDefinition&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ColumnDefinition&nbsp;/&gt;<br>&nbsp;&nbsp;&lt;/Grid.ColumnDefinitions&gt;<br>&nbsp;&nbsp;&lt;Ellipse&nbsp;Grid.Column="0"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Margin="0.5in"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fill="Blue"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stroke="Red"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StrokeThickness="36pt"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StrokeDashArray="0,2"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StrokeDashCap="Round"&gt;<br>&nbsp;&nbsp;&lt;/Ellipse&gt;<br>&nbsp;&nbsp;&lt;Image&nbsp;Grid.Column="1"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Margin="0.5in"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image.Source&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DrawingImage&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DrawingImage.Drawing&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GeometryDrawing&nbsp;Brush="Blue"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GeometryDrawing.Geometry&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;EllipseGeometry&nbsp;RadiusX="1"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RadiusY="1"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Center="0.5,0.5"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GeometryDrawing.Geometry&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;GeometryDrawing.Pen&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Pen&nbsp;Thickness=".25"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Brush="Red"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DashCap="Flat"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DashStyle="{x:Static&nbsp;DashStyles.Dash}"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Pen&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GeometryDrawing.Pen&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/GeometryDrawing&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DrawingImage.Drawing&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/DrawingImage&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Image.Source&gt;<br>&nbsp;&nbsp;&lt;/Image&gt;<br>&lt;/Grid&gt;<br>
+</ul>
+<p>
+The methods in the <i>DrawingContext</i> class use a <i>Pen</i> to stroke lines, and so does <i>GeometryDrawing</i>.  The <i>DashStyle</i> property of the <i>Pen</i> is an object of type <i>DashStyle</i>, which is a class rather than (as one might expect from Windows Forms programming) an enumeration. The <i>DashStyle</i> class has a <i>Dashes</i> property that indicates the on/off pattern as an array of doubles. (<i>DashStyle</i> also includes an <i>Offset</i> property to indicate where the pattern begins.) There's also a <i>DashStyles</i> class (notice the plural) that has five static properties of type <i>DashStyle</i>. These static properties are the expected <i>Solid</i>, <i>Dot</i>, <i>Dash</i>, <i>DashDot</i>, and <i>DashDotDot</i>. So in code, it's easy to say:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+pen.DashStyle = DashStyles.Dot;
+</ul>
+<p>
+However, there's no <i>DashStyleConverter</i> class, so in XAML it's rather more awkward (as we'll see). 
+</p>
+<p>
+If a styled line is wide enough, then the ends of the dots and dashes become important. These are governed by the <i>DashCap</i> property of <i>Pen</i>, which is set to one of the members of the <i>PenLineCap</i> enumeration: <i>Flat</i>, <i>Round</i>, <i>Square</i>, or <i>Triangle</i>.
+</p>
+<p>
+What's different about the <i>System.Windows.Shapes</i> library is that there aren't any pens around, at least not externally. Instead, <i>Shape</i> defines a series of properties that correspond to the properties of <i>Pen</i>. These properties include <i>Stroke</i> (corresponding to the <i>Brush</i> property of <i>Pen</i>), <i>StrokeDashArray</i> (corresponding to the <i>Dashes</i> property of <i>DashStyle</i>) and <i>StrokeDashCap</i> (the <i>DashCap</i> property of <i>Pen</i>). I think this was done because they realized that the <i>Shapes</i>
+classes would be used a lot, and it would be a nuisance to define a
+property element just to stroke a shape. In other words, we can draw an
+<i>Ellipse</i> like this:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;Ellipse Stroke="Black" StrokeThickness="5"&gt;
+</ul>
+<p>
+rather than like this:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;Ellipse&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;Ellipse.Pen&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Pen Brush="Black" Thickness="5" /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Ellipse.Pen&gt;<br>
+&lt;/Ellipse&gt;
+</ul>
+<p>
+However, I couldn't figure out any way to actually use one of those static members of the <i>DashStyles</i> class to set the <i>StrokeDashArray</i> property of <i>Ellipse</i>. In code, you can do it like this:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+elips.StrokeDashArray = DashStyles.Dot.Dashes;
+</ul>
+<p>
+But I couldn't come up with the XAML equivalent. (If anybody has a
+solution, let me know.) Instead, I did what I've seen in all the sample
+XAML that sets the <i>StrokeDashArray</i> property. I used numbers:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+StrokeDashArray="0,2"
+</ul>
+<p>
+These numbers are the actual values of <i>DashStyles.Dot.Dashes</i>
+and they probably require an explanation. The numbers (when repeated)
+are supposed to be the "on" length and the "off" length of the dash
+pattern as a multiple of the line width. For a dotted line, one might
+expect the numbers to be "1,1" because the value of 0 seems to be no
+"on" length at all. And that's true. If you change the <i>StrokeDashCap</i> attribute of <i>Ellipse</i> to the default <i>Flat</i>
+(or eliminate the attribute entirely) the perimeter will disappear
+except for a little glitch where the perimeter begins and ends. The
+other <i>StrokeDashCap</i> values provide caps that effectively extend the dash length, so that <i>Round</i>, <i>Square</i>, or <i>Triangle</i> look like we might expect and hope.  (By the way, what a nice job has been done in implementing <i>Round</i> and <i>Triangle</i> so the dots are balanced without any fractionals.)
+</p>
+<p>
+For the record, the other dash patterns are:
+</p>
+<ul>
+Dash: 2, 2<br>
+DashDot: 2, 2, 0, 2<br>
+DashDotDot: 2, 2, 0, 2, 0, 2
+</ul>
+<p>
+The second ellipse is done with a <i>GeometryDrawing</i>, and for that the <i>Pen</i> property has to be broken out as a property element. I originally broke out the <i>DashStyle</i> property as another property element:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+&lt;Pen.DashStyle&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;DashStyle Dashes="0,2" /&gt;<br>
+&lt;/Pen.DashStyle&gt;<br>
+</ul>
+<p>
+But then I realized that <i>DashStyles</i> has static properties, so it's possible to do it like this as an attribute of <i>Pen</i>:
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+DashStyle="{x:Static DashStyles.Dash}"
+</ul>
+<p>
+Which is nice.  (By the way, contrary to the documentation, <i>Flat</i> is not the default for the <i>DashCap</i> of the <i>Pen</i>. The default is <i>Square</i>.)
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/070922.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/02/120940.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

@@ -1,0 +1,1 @@
+document.write("<a href=\"http://a.lakequincy.com/c.ashx?channel=1&format=4&pageid=D60314B6-3593-14C3-F70A-1C803644B55D&publisher=110&zone=1&country=US&placement=1709&creative=1342&\" target=\"_top\" ><img src=\"http://a.lakequincy.com/img/633262243401543884.gif\" border=\"0\" /></a>");

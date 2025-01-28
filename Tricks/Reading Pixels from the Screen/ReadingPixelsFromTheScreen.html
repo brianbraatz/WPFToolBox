@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 2.0//EN">
+<html><head><title>Programming Microsoft Windows with C#, by Charles Petzold</title></head><body background="ReadingPixelsFromTheScreen_files/BlueWallpaper.jpg">
+
+<center><h1><i>Programming Microsoft Windows with C#</i></h1></center>
+<center><h1>Reading Pixels from the Screen</h1></center>
+
+As I discuss in my book <i>Programming Windows with C#</i>,
+the Windows Forms graphics system does not provide a way to read pixels from the screen.
+If reading the screen is something you need to do, 
+you'll have to make use of Win32 functions.
+<p>
+The <a href="http://www.charlespetzold.com/pwcs/CaptureScreen.cs">CaptureScreen.cs</a> file shows how to 
+copy the contents of the screen into a .NET bitmap. 
+(Like all Windows Forms programs, compiling the program requires references to the
+System, System.Drawing, and System.Windows.Forms DLLs.) 
+To use the program, simply click the client area.
+The program creates a bitmap the size of the screen, 
+copies the screen contents into the bitmap,
+and then displays the bitmap stretched to the size of its client area.
+You can use techniques shown in Chapter 11, 16, and 24 of
+<i>Programming Windows with C#</i> 
+to save the bitmap to a file, or copy it to the clipboard.
+</p><p>
+The only external Win32 function required in CaptureScreen
+is the famous <i>BitBlt</i> (bit-block transfer) function.
+<i>BitBlt</i> requires two devices context handles &#8212; a source and a destination.
+Both device context handles can be obtained from methods provided by 
+the .NET <i>Graphics</i> class.
+</p><p>
+The <i>OnClick</i> method of CaptureScreen begins by calling the static 
+<i>Graphics.FromHwnd</i> method with an argument of zero.
+(I was prompted to try calling <i>Graphics.FromHwnd</i> with a zero argument 
+by the documentation of the Win32 <i>GetDC</i> function:
+"If this value is NULL, <i>GetDC</i> retrieves the DC for the entire screen."
+It worked!)
+The <i>OnClick</i> method then creates a bitmap with the same size
+and resolution of the screen. 
+</p><p>
+Once the bitmap is created, 
+the <i>OnClick</i> method creates a <i>Graphics</i> object for the bitmap
+by calling the static <i>Graphics.FromImage</i> method.
+The <i>GetHdc</i> method of the <i>Graphics</i> class provides device context handles
+based on both <i>Graphics</i> objects. 
+At this point, <i>BitBlt</i> can be called.
+The rest is just cleanup.
+</p><p>
+I tried to use a similar technique with the Win32 <i>GetPixel</i> function, 
+but <i>GetPixel</i> mysteriously wouldn't work with that <i>hdcScreen</i> object 
+that worked with <i>BitBlt</i>. 
+A different approach is required that obtains a device context handle 
+from the Win32 function <i>CreateDC</i>, and later deletes it with <i>DeleteDC</i>.
+</p><p>
+The <a href="http://www.charlespetzold.com/pwcs/WhatColor.cs">WhatColor.cs</a> file is a Windows Forms version of the
+WhatClr program from Chapter 8 of my book 
+<a href="http://www.charlespetzold.com/pw5/index.html"><i>Programming Windows</i></a> 
+(5<sup>th</sup> edition, Microsoft Press, 1999). 
+The program sets a timer to display the RGB value of the pixel underneath the mouse position.
+It's very useful for Web page designers (and others) who want to match colors to 
+objects displayed on the screen. 
+The C# WhatColor program is somewhat enhanced to display both the 
+hexadecimal and decimal renditions of the pixel color.
+</p><p>
+At each timer tick, the program obtains the current mouse coordinates
+using the static method <i>Control.MousePosition</i>.
+It obtains a device context handle for the whole screen using <i>CreateDC</i>,
+gets the pixel color from <i>GetPixel</i> and then deletes the device context handle
+by calling <i>DeleteDC</i>.
+</p><p>
+The COLORREF value that <i>GetPixel</i> returns contains the red, green, and blue
+bytes back packed into a 32-bit integer. 
+The <i>TimerOnTick</i> method converts this value into a Win32 <i>Color</i> object
+using the static <i>FromArgb</i> method.
+</p><p>
+The <i>OnPaint</i> method using <i>String.Format</i> to create a two-line string
+containing the hexadecimal and decimal text renditions of the color, and
+then uses <i>DrawString</i> with a <i>StringFormat</i> object to center the text in the window.
+</p><p>
+<a href="http://www.charlespetzold.com/home.html"><img src="ReadingPixelsFromTheScreen_files/HomeButton.png" border="0" height="32" width="77"></a>
+</p><p>
+© Charles Petzold, 2002
+<br>
+<a href="mailto:cp@charlespetzold.com">cp@charlespetzold.com</a>
+<br>
+This page last updated March, 2002
+</p></body></html>

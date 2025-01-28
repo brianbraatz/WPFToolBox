@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - XAML Spiral Animation</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/10/200615.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/10/220622.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/10/210258.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>XAML Spiral Animation</h2></a><p style="text-align: right;">October 21, 2006<br>Roscoe, NY for the weekend</p><p>
+I've been wondering for awhile how to define a XAML animation to make
+an object move in a spiral. I tried one approach, and couldn't quite
+get it, so I tried another approach similar to the <a href="http://www.charlespetzold.com/blog/2006/06/160538.html">winding-down pendulum example</a> I did over the summer, and that worked.  
+</p>
+<p>
+The technique involves defining a compound transform on an invisible element.  (<i>FrameworkElement</i>
+itself works just fine for this purpose). The visible element — the one
+being animated — then has bindings to select elements of the resultant
+compound matrix. For the spiral, the compound transform on <i>FrameworkElement</i>
+consists of a rotation and scaling. The rotation goes from 0 to 360
+degress, repeated forever, while the scaling is much slower, and goes
+from 0 to 240, and then back again, repeated forever. </p>
+<p>
+Normally, such a compound transform would cause an object to both
+rotate and increase in size. However, The first two elements of the
+matrix are <i>x</i> and <i>y</i>
+coordinates for an object moving in a spiral. The visible element — a
+little red ball — binds to these two elements of the matrix to position
+itself on a <i>Canvas</i>. Here's the XAML file:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2006/10/AnimatedSpiral1.xaml">AnimatedSpiral1.xaml</a>
+</p>
+<p>
+The entire cycle — spiraling out to a radius of 2.5" and then spiraling
+back in — takes 8 minutes. You can speed it up by putting a <i>SpeedRatio</i> attribute on the <i>Storyboard</i> element.
+</p>
+<p>
+I then came up with a second approach that uses transforms in a more
+conventional manner, but which requires three animations rather than
+two. The first animation rotates the ball from 0 to 360 degress,
+repeated forever. Because the ball is sitting at the point (0, 0),
+normally this rotation wouldn't have any visual effect. But a second
+animation moves the center of rotation from (0, 0) to (240, 0). That
+means the ball's rotations keep getting larger and larger, but the
+center of rotation moves down the x-axis. A third animation corrects
+for that by moving the <i>Canvas.Left</i> property of the ball from 0 to -240. Here's the second XAML file:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2006/10/AnimatedSpiral2.xaml">AnimatedSpiral2.xaml</a>
+</p>
+<p>
+My original approach — the one I couldn't quite get working right — involved a single animation of type <i>MatrixAnimationUsingPath</i> where the <i>PathGeometry</i> defined one cycle of the spiral, and it accumulated with every repetition.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/10/200615.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/10/220622.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

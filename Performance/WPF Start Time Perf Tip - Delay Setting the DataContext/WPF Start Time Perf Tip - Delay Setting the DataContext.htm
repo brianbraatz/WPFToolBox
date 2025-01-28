@@ -1,0 +1,472 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="ctl00_Head1">
+
+
+
+<link href="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/Default.css" type="text/css" rel="stylesheet"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><meta name="keywords" content="WPF, Avalon, Windows Presentation Foundation, WinFX"><meta name="description" content="Windows Presentation Foundation (WPF) Community Site"><meta http-equiv="Page-Enter" content="progid:DXImageTransform.Microsoft.Fade(Duration=1)"><meta http-equiv="Page-Exit" content="progid:DXImageTransform.Microsoft.Fade(Duration=1)"><script src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/Common.js" language="javascript" type="text/javascript"></script>
+<script src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/nifty.js" language="javascript" type="text/javascript"></script>
+<script src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/AttachNifty.js" language="javascript" type="text/javascript"></script>
+<link href="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/Common.css" type="text/css" rel="stylesheet">
+<link href="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/niftyCorners.css" type="text/css" rel="stylesheet">
+<link href="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/niftyPrint.css" type="text/css" media="print" rel="stylesheet">
+<link href="http://learnwpf.com/Rss.ashx" title="Rss" type="application/rss+xml" rel="alternate"><title>LearnWPF.com - Real-World WPF Start Time Perf Tip - Delay Setting the DataContext</title>
+<style type="text/css">
+	.ctl00_LeftZoneTemp_0 { color:GhostWhite;background-color:#58290A;border-color:#FECA00;border-width:0px;border-style:Solid; }
+	.ctl00_LeftZoneTemp_1 { color:GhostWhite;background-color:#58290A; }
+	.ctl00_LeftZoneTemp_2 { color:#000333;font-size:1.3em;font-weight:bold; }
+	.ctl00_LeftZoneTemp_3 {  }
+	.ctl00_RightContentPlaceHolder_RightZone_0 { border-color:#785429;border-width:1px;border-style:Solid; }
+	.ctl00_RightContentPlaceHolder_RightZone_1 {  }
+	.ctl00_RightContentPlaceHolder_RightZone_2 {  }
+	.ctl00_TopZone_0 { color:GhostWhite;background-color:#58290A;border-color:#FECA00;border-width:0px;border-style:Solid; }
+	.ctl00_TopZone_1 { color:GhostWhite;background-color:#58290A; }
+	.ctl00_TopZone_2 { color:#000333;font-size:1.3em;font-weight:bold; }
+	.ctl00_TopZone_3 {  }
+
+</style></head><body>
+    <form name="aspnetForm" method="post" action="Post.aspx?postId=7c0bda21-5061-47de-89df-358ff8e59308" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__WPPS" id="__WPPS" value="s" type="hidden">
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTM2ODk4Nzk0NA8WAh4JUG9zdFRpdGxlBUJSZWFsLVdvcmxkIFdQRiBTdGFydCBUaW1lIFBlcmYgVGlwIC0gRGVsYXkgU2V0dGluZyB0aGUgRGF0YUNvbnRleHQWAmYPZBYCAgMPZBYGAgEPZBYEBQt3cDIxNjE5MjMwMg9kFgQCAQ8PFgIeBFRleHQFkwc8dWw+DQo8bGk+PGEgaHJlZj0iaHR0cDovL3dwZi5uZXRmeDMuY29tIj53cGYubmV0ZngzLmNvbTwvYT4mbmJzcDtNaWNyb3NvZnQncyBXUEYgY29tbXVuaXR5IHNpdGU8L2xpPg0KPGxpPjxhIGhyZWY9Imh0dHA6Ly9tc2RuLm1pY3Jvc29mdC5jb20vd2luZngvcmVmZXJlbmNlL3ByZXNlbnRhdGlvbi9kZWZhdWx0LmFzcHgiPldQRiBIb21lIG9uIHRoZSBXaW5GWCBEZXZlbG9wZXIgQ2VudGVyPC9hPjwvbGk+DQo8bGk+R290IGEgcXVlc3Rpb24/IEFzayB0aGUgZXhwZXJ0cyBvbiB0aGUgPGEgaHJlZj0iaHR0cDovL2ZvcnVtcy5taWNyb3NvZnQuY29tL01TRE4vU2hvd0ZvcnVtLmFzcHg/Rm9ydW1JRD0xMTkmU2l0ZUlEPTEiPldQRiBGb3J1bTwvYT4gb24gTVNETi48L2xpPg0KPGxpPjxhIGhyZWY9Imh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9jb21tdW5pdGllcy9uZXdzZ3JvdXBzL2VuLXVzL2RlZmF1bHQuYXNweD9kZz1taWNyb3NvZnQucHVibGljLmV4cHJlc3Npb24uaW50ZXJhY3RpdmVkZXNpZ25lciZjYXQ9ZW5fVVNfY2FmNzg2YjAtNDMwOS0yYjRlLTNhZTctYjdiMjI3ZjRjZDlhJmxhbmc9ZW4mY3I9VVMiPkV4cHJlc3Npb24gSW50ZXJhY3RpdmUgRGVzaWduZXI8L2E+IE5ld3MgR3JvdXAuPC9saT4NCjxsaT4NCjxhIGhyZWY9Imh0dHA6Ly94YW1sc2hhcmUuY29tIj54YW1sc2hhcmUuY29tPC9hPiAtIHhhbWwgY29kZSBzYW1wbGVzDQo8L2xpPg0KPGxpPk1pY2hhZWwgU3dhbnNvbidzIDxhIGhyZWY9Imh0dHA6Ly9ibG9ncy5tc2RuLmNvbS9tc3dhbnNvbi9hcnRpY2xlcy9XUEZUb29sc0FuZENvbnRyb2xzLmFzcHgiPldQRiBUb29scyBMaXN0PC9hPg0KPC9saT4NCjxsaT48YSBocmVmPSJodHRwOi8veGFtbGRldi5jb20iPlhhbWxEZXY8L2E+Jm5ic3A7Q29tbXVuaXR5IFNpdGU8L2xpPg0KPC91bD5kZAIDDw8WAh4HVmlzaWJsZWhkZAUMd3AxNjcwNzIxNTQ5D2QWBAIBDw8WAh8BBYYTPHRhYmxlPg0KPHRyPjx0ZCBjb2xzcGFuPSIyIj48Zm9udCBjb2xvcj0iUmVkIj48c3Ryb25nPjxpPkF2YWlsYWJsZSBmb3IgUHJlLU9yZGVyPC9pPjxzdHJvbmc+PC9mb250PjwvdGQ+PC90cj4NCjx0cj4NCjx0ZCB2YWxpZ249InRvcCI+PGEgaHJlZj0iaHR0cDovL3NpbXBsZWdlZWsuY29tIiB0YXJnZXQ9Il9ibGFuayI+Q2hyaXMgQW5kZXJzb24nczwvYT4gRXNzZW50aWFsIFdQRiBpcyBhdmFpbGFibGUgZm9yIHByZS1vcmRlciBmcm9tIEFtYXpvbi48L3RkPg0KPHRkPjxpZnJhbWUgc3JjPSJodHRwOi8vcmNtLmFtYXpvbi5jb20vZS9jbT90PWxlYXJud3BmY29tLTIwJm89MSZwPTgmbD1hczEmYXNpbnM9MDMyMTM3NDQ3OSZmYzE9ZmVjYTAwJklTMj0xJmx0MT1fYmxhbmsmbGMxPThjOTRlYSZiYzE9NTgyOTBBJmJnMT01ODI5MEEmbnBhPTEmZj1pZnIiIHN0eWxlPSJ3aWR0aDoxMjBweDtoZWlnaHQ6MjQwcHg7IiBzY3JvbGxpbmc9Im5vIiBtYXJnaW53aWR0aD0iMCIgbWFyZ2luaGVpZ2h0PSIwIiBmcmFtZWJvcmRlcj0iMCI+PC9pZnJhbWU+DQo8L3RkPg0KPC90cj4NCjx0cj48dGQgY29sc3Bhbj0iMiI+PGZvbnQgY29sb3I9IlJlZCI+PHN0cm9uZz5BdmFpbGFibGUgTm93PHN0cm9uZz48L2ZvbnQ+PC90ZD48L3RyPg0KPHRyPg0KPHRkPjxhIGhyZWY9Imh0dHA6Ly9jaGFybGVzcGV0em9sZC5jb20vYmxvZy9ibG9nLnhtbCIgdGFyZ2V0PSJfYmxhbmsiPkNoYXJsZXMgUGV0em9sZCdzPC9hPiBBcHBsaWNhdGlvbnMgPSBDb2RlICsgTWFya3VwIGlzIGF2YWlsYWJsZSBmb3Igbm93LjwvdGQ+DQo8dGQ+PGEgaHJlZj0iaHR0cDovL2Jsb2dzLm1zZG4uY29tL2FkYW1fbmF0aGFuL2RlZmF1bHQuYXNweCI+QWRhbSBOYXRoYW4nczwvYT4gV2luZG93cyBQcmVzZW50YXRpb24gRm91bmRhdGlvbiBVbmxlYXNoZWQgaXMgYXZhaWxhYmxlIG5vdy48L3RkPg0KPC90cj4NCjx0cj4NCjx0ZD4NCjxpZnJhbWUgc3JjPSJodHRwOi8vcmNtLmFtYXpvbi5jb20vZS9jbT90PWxlYXJud3BmY29tLTIwJm89MSZwPTgmbD1hczEmYXNpbnM9MDczNTYxOTU3MyZmYzE9ZmVjYTAwJklTMj0xJmx0MT1fYmxhbmsmbGMxPThjOTRlYSZiYzE9NTgyOTBBJmJnMT01ODI5MEEmbnBhPTEmZj1pZnIiIHN0eWxlPSJ3aWR0aDoxMjBweDtoZWlnaHQ6MjQwcHg7IiBzY3JvbGxpbmc9Im5vIiBtYXJnaW53aWR0aD0iMCIgbWFyZ2luaGVpZ2h0PSIwIiBmcmFtZWJvcmRlcj0iMCI+PC9pZnJhbWU+DQo8L3RkPg0KPHRkPg0KPGlmcmFtZSBzcmM9Imh0dHA6Ly9yY20uYW1hem9uLmNvbS9lL2NtP3Q9bGVhcm53cGZjb20tMjAmbz0xJnA9OCZsPWFzMSZhc2lucz0wNjcyMzI4OTE3JmZjMT1mZWNhMDAmSVMyPTEmbHQxPV9ibGFuayZsYzE9OGM5NGVhJmJjMT01ODI5MGEmYmcxPTU4MjkwYSZucGE9MSZmPWlmciIgc3R5bGU9IndpZHRoOjEyMHB4O2hlaWdodDoyNDBweDsiIHNjcm9sbGluZz0ibm8iIG1hcmdpbndpZHRoPSIwIiBtYXJnaW5oZWlnaHQ9IjAiIGZyYW1lYm9yZGVyPSIwIj48L2lmcmFtZT4NCjwvdGQ+DQo8L3RyPg0KPHRyPg0KPHRkIHZhbGlnbj0idG9wIj4NClJlYWQgb3VyIHJldmlldyBvZiAiUHJvZ3JhbW1pbmcgV2luZG93cyBQcmVzZW50YXRpb24gRm91bmRhdGlvbiIgYnkgQ2hyaXMgU2VsbHMgYW5kIElhbiBHcmlmZml0aHMgPGEgaHJlZj0iaHR0cDovL2xlYXJud3BmLmNvbS9Qb3N0cy9Qb3N0LmFzcHg/cG9zdElkPWY2N2RkMmJiLThiYWQtNDNjYS1hZWQ0LTNiYTFkNTM1MmJmNiI+aGVyZTwvYT4uDQo8L3RkPg0KPHRkIHZhbGlnbj0idG9wIj5Mb3JpIE1hY1ZpdHRpZSdzIG5ldyBYQU1MIGJvb2sgZnJvbSBPJ1JlaWxseSBpcyBub3cgYXZhaWxhYmxlLjwvdGQ+DQo8L3RyPg0KPHRyPg0KPHRkPg0KPGlmcmFtZSBzcmM9Imh0dHA6Ly9yY20uYW1hem9uLmNvbS9lL2NtP3Q9bGVhcm53cGZjb20tMjAmbz0xJnA9OCZsPWFzMSZhc2lucz0wNTk2MTAxMTM5JmZjMT1mZWNhMDAmSVMyPTEmbHQxPV9ibGFuayZsYzE9OGM5NGVhJmJjMT01ODI5MGEmYmcxPTU4MjkwYSZucGE9MSZmPWlmciIgc3R5bGU9IndpZHRoOjEyMHB4O2hlaWdodDoyNDBweDsiIHNjcm9sbGluZz0ibm8iIG1hcmdpbndpZHRoPSIwIiBtYXJnaW5oZWlnaHQ9IjAiIGZyYW1lYm9yZGVyPSIwIj48L2lmcmFtZT4NCjwvdGQ+DQo8dGQ+PGlmcmFtZSBzcmM9Imh0dHA6Ly9yY20uYW1hem9uLmNvbS9lL2NtP3Q9bGVhcm53cGZjb20tMjAmbz0xJnA9OCZsPWFzMSZhc2lucz0wNTk2NTI2NzMzJmZjMT1mZWNhMDAmSVMyPTEmbHQxPV9ibGFuayZsYzE9OGM5NGVhJmJjMT01ODI5MGEmYmcxPTU4MjkwYSZucGE9MSZmPWlmciIgc3R5bGU9IndpZHRoOjEyMHB4O2hlaWdodDoyNDBweDsiIHNjcm9sbGluZz0ibm8iIG1hcmdpbndpZHRoPSIwIiBtYXJnaW5oZWlnaHQ9IjAiIGZyYW1lYm9yZGVyPSIwIj48L2lmcmFtZT4NCjwvdGQ+DQo8L3RyPg0KPC90YWJsZT5kZAIDDw8WAh8CaGRkAgMPFgIeBWNsYXNzBQJyemQCBQ8WAh8DBQNsenMWCmYPPCsAEgEFFgIfAmhkAgEPDxYCHwJoZGQCBA9kFgICAQ88KwASAQUWAh8CaGQCBQ88KwASAQUWAh8CaGQCBg9kFgwCAw8WAh4JaW5uZXJodG1sBUJSZWFsLVdvcmxkIFdQRiBTdGFydCBUaW1lIFBlcmYgVGlwIC0gRGVsYXkgU2V0dGluZyB0aGUgRGF0YUNvbnRleHRkAgkPZBYIZg8PFgIfAWVkZAICDzwrAAQBARQrAAQUKwACZA8WBARkBGQEZARkFgQUKwACFgoeBVRpdGxlBQlQYXJhZ3JhcGgeCENsaWVudElEBQlQYXJhZ3JhcGgeCWlzQnVpbHRJbmceEUNvbW1hbmRJZGVudGlmaWVyBQtmb3JtYXRCbG9jax4JY2xhc3NOYW1lBQ1QYXJhZ3JhcGhNZW51ZBQrAAIWDB8FBQRGb250HwYFBEZvbnQfB2cfCAUIZm9udG5hbWUeDWJ1aWx0SW5TY3JpcHRlHwkFDUZvbnRGYWNlc01lbnVkFCsAAhYMHwUFBFNpemUfBgUEU2l6ZR8HZx8IBQhmb250c2l6ZR8KZR8JBQ1Gb250U2l6ZXNNZW51ZBQrAAIWDB8FBQVDb2xvch8GBQVDb2xvch8HZx8IBQlmb3JlY29sb3IfCmUfCQUSRm9udEZvcmVDb2xvcnNNZW51ZBQrAAJkDxYIBGIEYgRiBGIEcwRiBGIEYhYIFhAfBQUEQm9sZB8GBQRCb2xkHgtCdXR0b25JbWFnZQUEYm9sZB8HZx4TQnVpbHRJbkJ1dHRvbk9mZnNldGYfCAUEYm9sZB8KZR8JBQRCb2xkFhAfBQUGSXRhbGljHwYFBkl0YWxpYx8LBQZpdGFsaWMfB2cfDAITHwgFBml0YWxpYx8KZR8JBQZJdGFsaWMWEB8FBQlVbmRlcmxpbmUfBgUJVW5kZXJsaW5lHwsFCXVuZGVybGluZR8HZx8MAiUfCAUJdW5kZXJsaW5lHwplHwkFCVVuZGVybGluZRYQHwUFDVN0cmlrZVRocm91Z2gfBgUNU3RyaWtlVGhyb3VnaB8LBQ1zdHJpa2V0aHJvdWdoHwdnHwwCIh8IBQ1zdHJpa2V0aHJvdWdoHwplHwkFDVN0cmlrZVRocm91Z2hkFhAfBQULU3VwZXJTY3JpcHQfBgULU3VwZXJTY3JpcHQfCwULc3VwZXJzY3JpcHQfB2cfDAIkHwgFC3N1cGVyc2NyaXB0HwplHwkFC1N1cGVyU2NyaXB0FhAfBQUJU3ViU2NyaXB0HwYFCVN1YlNjcmlwdB8LBQlzdWJzY3JpcHQfB2cfDAIjHwgFCXN1YnNjcmlwdB8KZR8JBQlTdWJTY3JpcHQWEB8FBRVSZW1vdmUgQWxsIEZvcm1hdHRpbmcfBgUTUmVtb3ZlQWxsRm9ybWF0dGluZx8LBQxyZW1vdmVmb3JtYXQfB2cfDAIfHwgFDHJlbW92ZWZvcm1hdB8KZR8JBQxSZW1vdmVGb3JtYXQUKwACZA8WDgRiBGIEYgRiBHMEYgRiBGIEYgRzBGIEYgRiBGIWDhYQHwUFDEp1c3RpZnkgTGVmdB8GBQtKdXN0aWZ5TGVmdB8LBQtqdXN0aWZ5bGVmdB8HZx8MAhYfCAULanVzdGlmeWxlZnQfCmUfCQULSnVzdGlmeUxlZnQWEB8FBQ1KdXN0aWZ5IFJpZ2h0HwYFDEp1c3RpZnlSaWdodB8LBQxqdXN0aWZ5cmlnaHQfB2cfDAIXHwgFDGp1c3RpZnlyaWdodB8KZR8JBQxKdXN0aWZ5UmlnaHQWEB8FBQ5KdXN0aWZ5IENlbnRlch8GBQ1KdXN0aWZ5Q2VudGVyHwsFDWp1c3RpZnljZW50ZXIfB2cfDAIUHwgFDWp1c3RpZnljZW50ZXIfCmUfCQUNSnVzdGlmeUNlbnRlchYQHwUFDEp1c3RpZnkgRnVsbB8GBQtKdXN0aWZ5RnVsbB8LBQtqdXN0aWZ5ZnVsbB8HZx8MAhUfCAULanVzdGlmeWZ1bGwfCmUfCQULSnVzdGlmeUZ1bGxkFhAfBQUNQnVsbGV0ZWQgTGlzdB8GBQxCdWxsZXRlZExpc3QfCwUMYnVsbGV0ZWRsaXN0HwdnHwwCAR8IBRNpbnNlcnR1bm9yZGVyZWRsaXN0HwplHwkFDEJ1bGxldGVkTGlzdBYQHwUFDU51bWJlcmVkIExpc3QfBgUMTnVtYmVyZWRMaXN0HwsFDG51bWJlcmVkbGlzdB8HZx8MAhofCAURaW5zZXJ0b3JkZXJlZGxpc3QfCmUfCQUMTnVtYmVyZWRMaXN0FhAfBQUGSW5kZW50HwYFBkluZGVudB8LBQZpbmRlbnQfB2cfDAIKHwgFBmluZGVudB8KZR8JBQZJbmRlbnQWEB8FBQdPdXRkZW50HwYFB091dGRlbnQfCwUHb3V0ZGVudB8HZx8MAhsfCAUHb3V0ZGVudB8KZR8JBQdPdXRkZW50ZBYQHwUFC0NyZWF0ZSBMaW5rHwYFCkNyZWF0ZUxpbmsfCwUKY3JlYXRlbGluax8HZx8MAgMfCAUKY3JlYXRlbGluax8KBRZ0aGlzLmZ0Yi5DcmVhdGVMaW5rKCk7HwkFCkNyZWF0ZUxpbmsWEh8FBQZVbmxpbmsfCwUGdW5saW5rHwkFBlVubGluax8IBQZ1bmxpbmsfBgUGVW5saW5rHwdnHhRidWlsdEluRW5hYmxlZFNjcmlwdAVLdGhpcy5kaXNhYmxlZCA9ICEodGhpcy5mdGIuR2V0UGFyZW50RWxlbWVudCgpLnRhZ05hbWUudG9Mb3dlckNhc2UoKSA9PSAnYScpHwplHwwCJxYQHwUFDEluc2VydCBJbWFnZR8GBQtJbnNlcnRJbWFnZR8LBQtpbnNlcnRpbWFnZR8HZx8IBQtpbnNlcnRpbWFnZR8MAgwfCgUXdGhpcy5mdGIuSW5zZXJ0SW1hZ2UoKTsfCQULSW5zZXJ0SW1hZ2UWEB8FBQtJbnNlcnQgUnVsZR8GBQpJbnNlcnRSdWxlHwsFCmluc2VydHJ1bGUfB2cfDAIOHwgFFGluc2VydGhvcml6b250YWxydWxlHwplHwkFCkluc2VydFJ1bGUUKwACZA8WBwRiBGIEYgRzBGIEYgRiFgcWEB8FBQNDdXQfBgUDQ3V0HwsFA2N1dB8HZx8IBQNjdXQfDAIEHwoFD3RoaXMuZnRiLkN1dCgpOx8JBQNDdXQWEB8FBQRDb3B5HwYFBENvcHkfCwUEY29weR8HZx8IBQRjb3B5HwwCAh8KBRB0aGlzLmZ0Yi5Db3B5KCk7HwkFBENvcHkWEB8FBQVQYXN0ZR8GBQVQYXN0ZR8LBQVwYXN0ZR8HZx8IBQVwYXN0ZR8MAhwfCgURdGhpcy5mdGIuUGFzdGUoKTsfCQUFUGFzdGVkFhIfBQUEVW5kbx8LBQR1bmRvHwkFBFVuZG8fCAUEdW5kbx8GBQRVbmRvHwdnHw0FInRoaXMuZGlzYWJsZWQ9IXRoaXMuZnRiLkNhblVuZG8oKTsfCgUQdGhpcy5mdGIuVW5kbygpOx8MAiYWEh8FBQRSZWRvHwsFBHJlZG8fCQUEUmVkbx8IBQRyZWRvHwYFBFJlZG8fB2cfDQUidGhpcy5kaXNhYmxlZD0hdGhpcy5mdGIuQ2FuUmVkbygpOx8KBRB0aGlzLmZ0Yi5SZWRvKCk7HwwCHhYQHwUFBVByaW50HwYFBVByaW50HwsFBXByaW50HwdnHwwCHR8IBQVwcmludB8KBRF0aGlzLmZ0Yi5QcmludCgpOx8JBQVQcmludGQCBQ8WAh8CaGQCBg9kFgJmDxYCHgtfIUl0ZW1Db3VudAIPFh5mD2QWBmYPFQEBMGQCAQ8QDxYCHwEFBFRpcHNkZGRkAgIPFgIeBXZhbHVlBSQ4NTFiOTY4My02OWI4LTRkNjYtOTM4MS0xOTQ0YjNhM2E4NTRkAgEPZBYGZg8VAQIyMGQCAQ8QDxYCHwEFBkxheW91dGRkZGQCAg8WAh8PBSQxNmRjMWY1Mi0zMTgzLTQwMGQtYTNiNC04ZTQxNzc1N2FjMTFkAgIPZBYGZg8VAQIyMGQCAQ8QDxYCHwEFCENvbnRyb2xzZGRkZAICDxYCHw8FJDcyZDhiYzgyLTY1MzctNDI5YS1iNzcxLTBlMzY1YTM2ZDgyZWQCAw9kFgZmDxUBAjIwZAIBDxAPFgIfAQUMRGF0YSBCaW5kaW5nZGRkZAICDxYCHw8FJGM5ZDRlOTE4LTZlMjQtNDBmMi1hNjhjLTk3OTkwYmJlOTQ5ZmQCBA9kFgZmDxUBAjIwZAIBDxAPFgIfAQUJQW5pbWF0aW9uZGRkZAICDxYCHw8FJDYwN2JmY2Q5LWNkYzUtNGU2Mi04MjAwLTk1MDAxYzBlMjljMGQCBQ9kFgZmDxUBAjIwZAIBDxAPFgIfAQUMRnVuZGFtZW50YWxzZGRkZAICDxYCHw8FJDU5OTM5NzI5LTNiZTQtNGNjNi1hYTk1LTg4NmMxMjc0YTgxN2QCBg9kFgZmDxUBATBkAgEPEA8WAh8BBQ9HZXR0aW5nIFN0YXJ0ZWRkZGRkAgIPFgIfDwUkMWIxOWI2MDUtNzQwMC00MzM3LWEzNzgtNTUyY2M5ZTQ4MjY0ZAIHD2QWBmYPFQEBMGQCAQ8QDxYCHwEFBUJvb2tzZGRkZAICDxYCHw8FJGYwODVhMGU1LTcwOWQtNDMxNC04N2ZiLThlZTUxZmU4MDVkZGQCCA9kFgZmDxUBATBkAgEPEA8WAh8BBQlTaXRlIE5ld3NkZGRkAgIPFgIfDwUkODJjODk4ODEtNmM5NS00ZTJjLWI4YWMtNmE3Y2QyOTVjYTllZAIJD2QWBmYPFQEBMGQCAQ8QDxYCHwEFB0dhbGxlcnlkZGRkAgIPFgIfDwUkOTc4Mzg4YmMtZGYwNC00YzY3LWE3OGItYTAwNWVhNzU1NjMzZAIKD2QWBmYPFQEBMGQCAQ8QDxYCHwEFBVRvb2xzZGRkZAICDxYCHw8FJGQ4ZDkzMzYzLTBhNGItNGUyMy1hNTBkLTJlZTEwOGEzNzA0OGQCCw9kFgZmDxUBATBkAgEPEA8WAh8BBQpJbnRlcnZpZXdzZGRkZAICDxYCHw8FJGYwNjkzNzEyLTQxNmMtNDJiOS04NjJhLWNkNzc2NDE0NGVhMmQCDA9kFgZmDxUBATBkAgEPEA8WAh8BBQxXUEYgYWRvcHRpb25kZGRkAgIPFgIfDwUkNmYyYjJiMDctNDQ4OC00OTkwLTg4MzMtMGZlZWE3ZDUxYmZkZAIND2QWBmYPFQEBMGQCAQ8QDxYCHwEFC1NpbHZlcmxpZ2h0ZGRkZAICDxYCHw8FJGYwMjAxYTYzLWJlZWYtNDVhMS1hM2EyLWM4NjE4YmEzNzk2OGQCDg9kFgZmDxUBATBkAgEPEA8WAh8BBQtQZXJmb3JtYW5jZWRkZGQCAg8WAh8PBSRlNWIxZWQyNi0xZjAwLTQ2YTktOTA4Yi1mODE2MDAwZmE2OWNkAg0PFgIfAQUTOS80LzIwMDcgNDo0NjoxNyBBTWQCDw8WAh8BBd8EDQo8IS0tDQo8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiDQp4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCnhtbG5zOnRyYWNrYmFjaz0iaHR0cDovL21hZHNraWxscy5jb20vcHVibGljL3htbC9yc3MvbW9kdWxlL3RyYWNrYmFjay8iPg0KPHJkZjpEZXNjcmlwdGlvbg0KcmRmOmFib3V0PSJodHRwOi8vTGVhcm5XUEYuY29tL1Bvc3RzL1Bvc3QuYXNweD9wb3N0SWQ9N2MwYmRhMjEtNTA2MS00N2RlLTg5ZGYtMzU4ZmY4ZTU5MzA4Ig0KZGM6aWRlbnRpZmllcj0iaHR0cDovL0xlYXJuV1BGLmNvbS9Qb3N0cy9Qb3N0LmFzcHg/cG9zdElkPTdjMGJkYTIxLTUwNjEtNDdkZS04OWRmLTM1OGZmOGU1OTMwOCINCmRjOnRpdGxlPSJSZWFsLVdvcmxkIFdQRiBTdGFydCBUaW1lIFBlcmYgVGlwIC0gRGVsYXkgU2V0dGluZyB0aGUgRGF0YUNvbnRleHQiDQp0cmFja2JhY2s6cGluZz0iaHR0cDovL0xlYXJuV1BGLmNvbS9UcmFja2hhbmRsZXIvRGVmYXVsdC5hc3B4P3Bvc3RJZD03YzBiZGEyMS01MDYxLTQ3ZGUtODlkZi0zNThmZjhlNTkzMDgiIC8+DQo8L3JkZjpSREY+DQotLT4NCmQCEQ8PFgIeBlBvc3RJZAUkN2MwYmRhMjEtNTA2MS00N2RlLTg5ZGYtMzU4ZmY4ZTU5MzA4ZBYCAgMPDxYCHwJnZGQCFQ9kFgICCg8WAh8CaGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFN2N0bDAwJE1haW5Db250ZW50UGxhY2VIb2xkZXIkQ29tbWVudEZvcm0xJGNoa1JlbWVtYmVyTWVF7h2/i4MQ8Vj7yx7BhDO0PY3tgw==" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/WebResource.js" type="text/javascript"></script>
+
+
+                    <script language="javascript">
+                        var googleSearchUrl = "http://www.google.com/search?&as_sitesearch=http://LearnWPF.com/&q=" ;
+                    </script>
+<script src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/WebResource_002.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+
+        
+        
+        
+        <div id="ctl00_editorpanel" class="rz">
+            
+            
+            
+            
+            
+        </div>
+        
+        
+        <div id="ctl00_pagecontainer" class="lzs">
+        
+             <div id="header">
+             <a href="http://learnwpf.com/" style="float: left;">
+                <img src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/logo_80px.gif" alt="LearnWPF Logo" title="LearnWPF Home - Learn Windows Presentation Foundation" style="border: medium none ;">
+			 </a>   
+			    <h1>LearnWPF.com</h1>
+			    <h2>Goodbye battleship-grey</h2>
+			</div>
+			<div style="float: right; margin-top: -80px;"><table id="ctl00_LeftZoneTemp" border="0" cellpadding="0" cellspacing="0">
+	<tbody><tr>
+		<td style="color: rgb(0, 12, 204); font-size: 0.8em; white-space: nowrap;" align="center"></td>
+	</tr><tr>
+		<td style="height: 100%;"><table style="width: 100%; height: 100%;" border="0" cellpadding="2" cellspacing="0">
+			<tbody><tr>
+				<td style="height: 100%;"></td>
+			</tr>
+		</tbody></table></td>
+	</tr>
+</tbody></table></div>
+
+            <div id="mainmenu">
+                <div id="logincontrol"></div>
+                <ul>
+                        <li><a href="http://learnwpf.com/Default.aspx">Home</a></li>
+                    
+                        <li><a href="http://learnwpf.com/Posts/PostsByCategory.aspx?categoryId=f085a0e5-709d-4314-87fb-8ee51fe805dd">Books</a></li>
+                    
+                        <li><a href="http://learnwpf.com/Posts/PostsByCategory.aspx?categoryId=1b19b605-7400-4337-a378-552cc9e48264">Getting Started</a></li>
+                    
+                        <li><a href="http://learnwpf.com/Posts/PostsByCategory.aspx?categoryId=59939729-3be4-4cc6-aa95-886c1274a817">Fundamentals</a></li>
+                    
+                        <li><a href="http://learnwpf.com/Posts/PostsByCategory.aspx?categoryId=72d8bc82-6537-429a-b771-0e365a36d82e">Controls</a></li>
+                    
+                        <li><a href="http://learnwpf.com/Posts/PostsByCategory.aspx?categoryId=607bfcd9-cdc5-4e62-8200-95001c0e29c0">Animation</a></li>
+                    
+                        <li><a href="http://learnwpf.com/Posts/PostsByCategory.aspx?categoryId=c9d4e918-6e24-40f2-a68c-97990bbe949f">Data Binding</a></li>
+                    
+                        <li><a href="http://learnwpf.com/Posts/PostsByCategory.aspx?categoryId=16dc1f52-3183-400d-a3b4-8e417757ac11">Layout</a></li>
+                    
+                        <li><a href="http://learnwpf.com/Administration/Default.aspx">Administration</a></li>
+                    </ul> 
+            </div>
+            
+            
+                    
+            <div id="content">
+                
+                <div id="rightcolumn" class="sidebar">
+                    <p><a title="LearnWPF.com Rss feed" id="rsslink" href="http://learnwpf.com/Rss.ashx">RSS 2.0</a>&nbsp;<a href="http://learnwpf.com/Contact.aspx">Contact</a></p>
+                    
+                        <table id="ctl00_RightContentPlaceHolder_RightZone" border="0" cellpadding="0" cellspacing="0">
+	<tbody><tr>
+		<td style="color: rgb(0, 12, 204); font-size: 0.8em; white-space: nowrap;" align="center"></td>
+	</tr><tr>
+		<td style="height: 100%;"><table style="width: 100%; height: 100%;" border="0" cellpadding="2" cellspacing="0">
+			<tbody><tr>
+				<td><div class="partChrome ctl00_RightContentPlaceHolder_RightZone_0" id="WebPart_wp216192302" style="width: 100%; padding-top: 0pt; padding-bottom: 0pt;"><b style="background-color: rgb(120, 84, 41);" class="artop"><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra1"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra2"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra3"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra4"></b></b>
+					<div style="margin-left: 5px; margin-right: 5px;">
+						<div class="partTitle" style="white-space: nowrap; padding-top: 0pt; padding-bottom: 0pt;"><b style="background-color: rgb(88, 41, 42);" class="artop"><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra1"></b><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra2"></b><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra3"></b><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra4"></b></b>
+							WPF Resources
+						<b style="background-color: rgb(88, 41, 42);" class="artop"><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra4"></b><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra3"></b><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra2"></b><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra1"></b></b></div><div class="part" id="ctl00_WebPartManager1_wp216192302">
+							<span><ul>
+<li><a href="http://wpf.netfx3.com/">wpf.netfx3.com</a>&nbsp;Microsoft's WPF community site</li>
+<li><a href="http://msdn.microsoft.com/winfx/reference/presentation/default.aspx">WPF Home on the WinFX Developer Center</a></li>
+<li>Got a question? Ask the experts on the <a href="http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=119&amp;SiteID=1">WPF Forum</a> on MSDN.</li>
+<li><a href="http://www.microsoft.com/communities/newsgroups/en-us/default.aspx?dg=microsoft.public.expression.interactivedesigner&amp;cat=en_US_caf786b0-4309-2b4e-3ae7-b7b227f4cd9a&amp;lang=en&amp;cr=US">Expression Interactive Designer</a> News Group.</li>
+<li>
+<a href="http://xamlshare.com/">xamlshare.com</a> - xaml code samples
+</li>
+<li>Michael Swanson's <a href="http://blogs.msdn.com/mswanson/articles/WPFToolsAndControls.aspx">WPF Tools List</a>
+</li>
+<li><a href="http://xamldev.com/">XamlDev</a>&nbsp;Community Site</li>
+</ul></span><br>
+						</div>
+					</div>
+				<b style="background-color: rgb(120, 84, 41);" class="artop"><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra4"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra3"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra2"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra1"></b></b></div></td>
+			</tr><tr>
+				<td><div class="partChrome ctl00_RightContentPlaceHolder_RightZone_0" id="WebPart_wp1670721549" style="width: 100%; padding-top: 0pt; padding-bottom: 0pt;"><b style="background-color: rgb(120, 84, 41);" class="artop"><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra1"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra2"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra3"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra4"></b></b>
+					<div style="margin-left: 5px; margin-right: 5px;">
+						<div class="partTitle" style="white-space: nowrap; padding-top: 0pt; padding-bottom: 0pt;"><b style="background-color: rgb(88, 41, 42);" class="artop"><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra1"></b><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra2"></b><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra3"></b><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra4"></b></b>
+							WPF Books
+						<b style="background-color: rgb(88, 41, 42);" class="artop"><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra4"></b><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra3"></b><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra2"></b><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra1"></b></b></div><div class="part" id="ctl00_WebPartManager1_wp1670721549">
+							<span><table>
+<tbody><tr><td colspan="2"><font color="Red"><strong><i>Available for Pre-Order</i><strong></strong></strong></font></td></tr>
+<tr>
+<td valign="top"><a href="http://simplegeek.com/" target="_blank">Chris Anderson's</a> Essential WPF is available for pre-order from Amazon.</td>
+<td><iframe src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/cm.htm" style="width: 120px; height: 240px;" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>
+</td>
+</tr>
+<tr><td colspan="2"><font color="Red"><strong>Available Now<strong></strong></strong></font></td></tr>
+<tr>
+<td><a href="http://charlespetzold.com/blog/blog.xml" target="_blank">Charles Petzold's</a> Applications = Code + Markup is available for now.</td>
+<td><a href="http://blogs.msdn.com/adam_nathan/default.aspx">Adam Nathan's</a> Windows Presentation Foundation Unleashed is available now.</td>
+</tr>
+<tr>
+<td>
+<iframe src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/cm_002.htm" style="width: 120px; height: 240px;" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>
+</td>
+<td>
+<iframe src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/cm_003.htm" style="width: 120px; height: 240px;" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>
+</td>
+</tr>
+<tr>
+<td valign="top">
+Read our review of "Programming Windows Presentation Foundation" by Chris Sells and Ian Griffiths <a href="http://learnwpf.com/Posts/Post.aspx?postId=f67dd2bb-8bad-43ca-aed4-3ba1d5352bf6">here</a>.
+</td>
+<td valign="top">Lori MacVittie's new XAML book from O'Reilly is now available.</td>
+</tr>
+<tr>
+<td>
+<iframe src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/cm_004.htm" style="width: 120px; height: 240px;" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>
+</td>
+<td><iframe src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/cm_005.htm" style="width: 120px; height: 240px;" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>
+</td>
+</tr>
+</tbody></table></span><br>
+						</div>
+					</div>
+				<b style="background-color: rgb(120, 84, 41);" class="artop"><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra4"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra3"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra2"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra1"></b></b></div></td>
+			</tr><tr>
+				<td><div class="partChrome ctl00_RightContentPlaceHolder_RightZone_0" id="WebPart_gwpRecentPosts1" style="width: 100%; padding-top: 0pt; padding-bottom: 0pt;"><b style="background-color: rgb(120, 84, 41);" class="artop"><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra1"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra2"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra3"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra4"></b></b>
+					<div style="margin-left: 5px; margin-right: 5px;">
+						<div class="partTitle" style="white-space: nowrap; padding-top: 0pt; padding-bottom: 0pt;"><b style="background-color: rgb(88, 41, 42);" class="artop"><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra1"></b><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra2"></b><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra3"></b><b style="border-color: rgb(170, 135, 21); background-color: rgb(253, 229, 0);" class="ra4"></b></b>
+							Recent Posts
+						<b style="background-color: rgb(88, 41, 42);" class="artop"><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra4"></b><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra3"></b><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra2"></b><b style="border-color: rgb(164, 98, 28); background-color: rgb(240, 156, 14);" class="ra1"></b></b></div>
+
+<ul>
+
+	<li><a href="http://learnwpf.com/Posts/Post.aspx?postId=ae546c31-700f-4121-8369-1582eb2d000e">How can I Change the Size and Color of the Stylus Input in the InkCanvas?</a></li>
+
+	<li><a href="http://learnwpf.com/Posts/Post.aspx?postId=15a5b8a0-fc65-4454-9ea6-bc92b9887044">How can I have my WPF application start in “kiosk” mode?</a></li>
+
+	<li><a href="http://learnwpf.com/Posts/Post.aspx?postId=963aaf80-9712-4832-8c2f-e55339ec99d5">Free Vector Images for your WPF Projects</a></li>
+
+	<li><a href="http://learnwpf.com/Posts/Post.aspx?postId=7c0bda21-5061-47de-89df-358ff8e59308">Real-World WPF Start Time Perf Tip - Delay Setting the DataContext</a></li>
+
+	<li><a href="http://learnwpf.com/Posts/Post.aspx?postId=24326bcf-39ef-485b-a5d2-36adeb7692ae">Visual Studio 2008 Beta 2, Sliverlight Tools for VS2008 and Expression Blend 2.0 August Preview</a></li>
+
+	<li><a href="http://learnwpf.com/Posts/Post.aspx?postId=2bead929-cba4-4d1c-af31-0a4e84afb342">Damask Wallpaper in WPF</a></li>
+
+	<li><a href="http://learnwpf.com/Posts/Post.aspx?postId=45ca7d6d-7c5e-47eb-934e-0f0c70cbc253">Assembling a Free WPF Development Toolset</a></li>
+
+	<li><a href="http://learnwpf.com/Posts/Post.aspx?postId=4ba3bda2-5977-455d-94ec-f3198473bfd8">Multi-Field Undo/Redo in WPF using Attached Properties</a></li>
+
+	<li><a href="http://learnwpf.com/Posts/Post.aspx?postId=bd3a17d6-ae81-4014-8980-b122fd4f297a">MONO project posts preliminary documentation of its Silverlight implementation - Moonlight</a></li>
+
+	<li><a href="http://learnwpf.com/Posts/Post.aspx?postId=cbc3132a-2df3-469d-834a-15829757d6c9">4 Expression Blend Books Available for Pre-Order from Amazon</a></li>
+
+</ul>
+
+					</div>
+				<b style="background-color: rgb(120, 84, 41);" class="artop"><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra4"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra3"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra2"></b><b style="border-color: rgb(104, 62, 25); background-color: rgb(88, 41, 10);" class="ra1"></b></b></div></td>
+			</tr><tr class="part">
+				<td style="padding: 0pt; height: 100%;"></td>
+			</tr>
+		</tbody></table></td>
+	</tr>
+</tbody></table>
+                    
+                </div>
+                <div id="leftcolumn">
+                    <p>&nbsp;</p>
+                </div>
+                <div id="centercolumn">
+                    <table id="ctl00_TopZone" border="0" cellpadding="0" cellspacing="0">
+	<tbody><tr>
+		<td style="color: rgb(0, 12, 204); font-size: 0.8em; white-space: nowrap;" align="center"></td>
+	</tr><tr>
+		<td style="height: 100%;"><table style="width: 100%; height: 100%;" border="0" cellpadding="2" cellspacing="0">
+			<tbody><tr>
+				<td style="height: 100%;"></td>
+			</tr>
+		</tbody></table></td>
+	</tr>
+</tbody></table>
+                    
+    
+    
+    
+    <div class="post">
+        <h2 id="ctl00_MainContentPlaceHolder_lblPostTitle">Real-World WPF Start Time Perf Tip - Delay Setting the DataContext</h2>
+        
+        
+		<p>.NET applications traditionally suffer from <a href="http://msdn.microsoft.com/msdnmag/issues/06/02/CLRInsideOut/">slower startup time</a>
+than native applications, caused by the time to load the .NET framework
+DLLs,&nbsp;JIT time etc. WPF applications have further things that can
+slow down cold&nbsp;start-time, the extra PresentationCore,
+PresentationFramework and WindowBase assemblies that need to be loaded
+and the start-up of the PresentationFontCache service. Any tips to help
+improve start time is therefore most welcome.</p>
+		<p>
+				<a href="http://11011.net/">Doug Stockwell</a> recently released an updated version (v1.6 build 2802)&nbsp;of his free&nbsp;<a href="http://11011.net/software/rikreader">RikReader</a>
+WPF-based RSS Reader, with considerably-improved start time. I've been
+using RikReader as my primary RSS reader since it was first released,
+and in previous versions&nbsp;the start time stood out as a blemish on
+an otherwise excellent app.&nbsp;The performance characteristics of
+older versions of RikReader were a little different to usual
+applications,&nbsp;in that the hot start-times were still quite bad
+(&gt;10 seconds for my list of a couple of hundred&nbsp;feeds), whereas
+the new version hot-starts in about 4 seconds (roughly equivalent to <a href="http://www.microsoft.com/expression/products/overview.aspx?key=blend">Expression Blend</a>, <a href="http://thoughtex.net/">Thoughtex</a> and most other WPF applications I use). Cold start-times for RikReader had also improved&nbsp;noticeably.</p>
+		<p>I
+contacted Doug to find out what he'd done to achieve this great
+improvement, and was pleased to hear of the simple change he had made.
+Instead&nbsp;of using XAML to declaratively set the&nbsp;DataContext
+for his main window,&nbsp;which contained all the RSS feed data, he
+switched to setting it programmatically in the Application.OnActivated.
+This sounds like a tip that would improve the perceived performance of
+the app (making the main window display more quickly) without improving
+the actual performance, however it seems to have also improved the
+actual start time considerably. As with all things performance-related
+your mileage may vary, and it pays to measure yourself. Fortunately the
+simplicity of this change means it will be easy
+to&nbsp;swap&nbsp;between the two&nbsp;methods of setting the
+DataContext.</p>
+
+        <p align="center"><span id="ctl00_MainContentPlaceHolder_lblErrorMessage" class="Messages" style="font-weight: bold;"></span></p>
+        
+    <span class="fieldLabel">Categories:</span>
+        <ul class="postCategories">
+            
+                    <li>
+                        <a id="ctl00_MainContentPlaceHolder_CategoryList_ctl00_Hyperlink1" href="http://learnwpf.com/Posts/PostsByCategory.aspx?categoryId=851b9683-69b8-4d66-9381-1944b3a3a854">Tips</a>
+                    </li>
+                
+                    <li>
+                        <a id="ctl00_MainContentPlaceHolder_CategoryList_ctl01_Hyperlink1" href="http://learnwpf.com/Posts/PostsByCategory.aspx?categoryId=59939729-3be4-4cc6-aa95-886c1274a817">Fundamentals</a>
+                    </li>
+                
+                    <li>
+                        <a id="ctl00_MainContentPlaceHolder_CategoryList_ctl02_Hyperlink1" href="http://learnwpf.com/Posts/PostsByCategory.aspx?categoryId=e5b1ed26-1f00-46a9-908b-f816000fa69c">Performance</a>
+                    </li>
+                
+        </ul>
+    </div>
+    
+    <p class="postfoot">posted 9/4/2007 4:46:17 AM</p>
+    
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://LearnWPF.com/Posts/Post.aspx?postId=7c0bda21-5061-47de-89df-358ff8e59308"
+dc:identifier="http://LearnWPF.com/Posts/Post.aspx?postId=7c0bda21-5061-47de-89df-358ff8e59308"
+dc:title="Real-World WPF Start Time Perf Tip - Delay Setting the DataContext"
+trackback:ping="http://LearnWPF.com/Trackhandler/Default.aspx?postId=7c0bda21-5061-47de-89df-358ff8e59308" />
+</rdf:RDF>
+-->
+
+    <p>&nbsp;</p>
+    
+    <a name="feedback"></a>
+    
+
+<div class="fieldLabel">Comments:</div><br>
+
+<span id="ctl00_MainContentPlaceHolder_PostFeedback1_lblNoResults">There are no comments to display for this post.</span>
+    <hr>
+    <p>&nbsp;</p>
+    <p align="center"><span id="ctl00_MainContentPlaceHolder_lblMessage" class="Messages" style="font-weight: bold;"></span></p>
+    <div id="ctl00_MainContentPlaceHolder_CommentForm1_ValidationSummary1" style="color: Red; display: none;">
+
+</div>
+<div id="ctl00_MainContentPlaceHolder_CommentForm1_pnlCaptcha">
+	
+	    </div><table border="0" cellpadding="2" cellspacing="1">
+	<tbody><tr>
+		<td align="right" width="120">
+			<div class="fieldLabel">Name:</div></td>
+		<td><input name="ctl00$MainContentPlaceHolder$CommentForm1$txtName" maxlength="120" size="45" id="ctl00_MainContentPlaceHolder_CommentForm1_txtName" style="width: 400px;" type="text">
+			<span id="ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator2" style="color: Red; font-weight: bold; visibility: hidden;">*</span></td>
+	</tr>
+	
+    <tr>
+	    <td align="right" width="120">
+		    <div class="fieldLabel">Url (optional):</div></td>
+	    <td><input name="ctl00$MainContentPlaceHolder$CommentForm1$txtUrl" maxlength="150" size="45" id="ctl00_MainContentPlaceHolder_CommentForm1_txtUrl" style="width: 400px;" type="text">
+		    <span id="ctl00_MainContentPlaceHolder_CommentForm1_revUrl" style="color: Red; visibility: hidden;">*</span>
+	    </td>
+    </tr>
+	
+	
+	<tr>
+		<td align="right" width="120">
+			<div class="fieldLabel">Subject:</div></td>
+		<td><input name="ctl00$MainContentPlaceHolder$CommentForm1$txtSubject" maxlength="150" size="45" id="ctl00_MainContentPlaceHolder_CommentForm1_txtSubject" style="width: 400px;" type="text">
+			<span id="ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator1" style="color: Red; font-weight: bold; visibility: hidden;">*</span></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<div class="fieldLabel">Comment:</div>
+			<span id="ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator3" style="color: Red; font-weight: bold; visibility: hidden;">*</span></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<textarea name="ctl00$MainContentPlaceHolder$CommentForm1$txtComment" rows="7" cols="60" id="ctl00_MainContentPlaceHolder_CommentForm1_txtComment" style="width: 500px;"></textarea></td>
+	</tr>
+	<tr>
+		    <td colspan="2">
+			    <p>Enter Captcha Validation:
+				    <input name="ctl00$MainContentPlaceHolder$CommentForm1$txtCaptcha" id="ctl00_MainContentPlaceHolder_CommentForm1_txtCaptcha" type="text"><br>
+				    <small>(If you cannot read the Captcha image, press "Reset Image" to generate a new 
+					    one)</small><br>
+				    <img id="ctl00_MainContentPlaceHolder_CommentForm1_imgCaptcha" src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/Captcha.jpg" style="border-width: 0px;">
+			    </p>
+		    </td>
+	    </tr>
+	
+
+	<tr valign="bottom">
+		<td>
+			<input id="ctl00_MainContentPlaceHolder_CommentForm1_chkRememberMe" name="ctl00$MainContentPlaceHolder$CommentForm1$chkRememberMe" checked="checked" type="checkbox"><label for="ctl00_MainContentPlaceHolder_CommentForm1_chkRememberMe">Remember Me</label>
+		</td>
+		<td align="right">
+			<input name="ctl00$MainContentPlaceHolder$CommentForm1$btnAddFeedback" value="Add Comment" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$MainContentPlaceHolder$CommentForm1$btnAddFeedback", "", true, "", "", false, false))' id="ctl00_MainContentPlaceHolder_CommentForm1_btnAddFeedback" type="submit">&nbsp;
+			<input name="ctl00$MainContentPlaceHolder$CommentForm1$btnResetImage" value="Reset Image" id="ctl00_MainContentPlaceHolder_CommentForm1_btnResetImage" type="submit">
+		</td>
+	</tr>
+</tbody></table>
+
+
+
+                </div>
+	        </div>
+            <div class="clear">&nbsp;</div>
+            <div id="footer">
+            <a href="http://projectdistributor.net/Projects/Project.aspx?projectId=182"><img src="WPF%20Start%20Time%20Perf%20Tip%20-%20Delay%20Setting%20the%20DataContext_files/SubLogo.png" alt="Single User Blog Logo" style="border: medium none ; float: left;"></a>
+            Copyright © 2006 LearnWPF.com</div>
+        </div>
+    
+<script type="text/javascript">
+<!--
+var Page_ValidationSummaries =  new Array(document.getElementById("ctl00_MainContentPlaceHolder_CommentForm1_ValidationSummary1"));
+var Page_Validators =  new Array(document.getElementById("ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator2"), document.getElementById("ctl00_MainContentPlaceHolder_CommentForm1_revUrl"), document.getElementById("ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator1"), document.getElementById("ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator3"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator2 = document.all ? document.all["ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator2"] : document.getElementById("ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator2");
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator2.controltovalidate = "ctl00_MainContentPlaceHolder_CommentForm1_txtName";
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator2.errormessage = "You must enter your name.";
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator2.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator2.initialvalue = "";
+var ctl00_MainContentPlaceHolder_CommentForm1_revUrl = document.all ? document.all["ctl00_MainContentPlaceHolder_CommentForm1_revUrl"] : document.getElementById("ctl00_MainContentPlaceHolder_CommentForm1_revUrl");
+ctl00_MainContentPlaceHolder_CommentForm1_revUrl.controltovalidate = "ctl00_MainContentPlaceHolder_CommentForm1_txtUrl";
+ctl00_MainContentPlaceHolder_CommentForm1_revUrl.errormessage = "The url that you entered is not a valid format. ";
+ctl00_MainContentPlaceHolder_CommentForm1_revUrl.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_MainContentPlaceHolder_CommentForm1_revUrl.validationexpression = "http://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?";
+var ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator1 = document.all ? document.all["ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator1"] : document.getElementById("ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator1");
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator1.controltovalidate = "ctl00_MainContentPlaceHolder_CommentForm1_txtSubject";
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator1.errormessage = "You must enter a subject for your comment.";
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator1.initialvalue = "";
+var ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator3 = document.all ? document.all["ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator3"] : document.getElementById("ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator3");
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator3.controltovalidate = "ctl00_MainContentPlaceHolder_CommentForm1_txtComment";
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator3.errormessage = "You must enter a comment.";
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_MainContentPlaceHolder_CommentForm1_RequiredFieldValidator3.initialvalue = "";
+// -->
+</script>
+
+<div>
+
+	<input name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWCQLv4dK5CgLt/dvtBgK4y9AnAom9nbgDApHwoLsGArjvspYDApDfzooLAvDa4fcEAtGRy4wHP3HGJpbr0zN+XruKPgk/V5f7wew=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var __wpmExportWarning='This Web Part Page has been personalized. As a result, one or more Web Part properties may contain confidential information. Make sure the properties contain information that is safe for others to read. After exporting this Web Part, view properties in the Web Part description file (.WebPart) by using a text editor such as Microsoft Notepad.';var __wpmCloseProviderWarning='You are about to close this Web Part.  It is currently providing data to other Web Parts, and these connections will be deleted if this Web Part is closed.  To close this Web Part, click OK.  To keep this Web Part, click Cancel.';var __wpmDeleteWarning='You are about to permanently delete this Web Part.  Are you sure you want to do this?  To delete this Web Part, click OK.  To keep this Web Part, click Cancel.';// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        </form>
+</body></html>

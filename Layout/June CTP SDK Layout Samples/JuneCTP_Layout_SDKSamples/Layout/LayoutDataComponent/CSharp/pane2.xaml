@@ -1,0 +1,83 @@
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      x:Class="ExpenseIt.Pane2">
+
+    <DockPanel>
+        <DockPanel.Resources>
+             <DataTemplate x:Key="lbItemsStyle">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <Binding XPath="@ExpenseReason"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </DataTemplate>
+            <DataTemplate x:Key="lbItemsStyle2">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <Binding XPath="@ExpenseAmount"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </DataTemplate>
+        </DockPanel.Resources>
+
+        <DockPanel DockPanel.Dock="Top">
+            <Canvas DockPanel.Dock="Left" Width="230" Height="100">
+                <Image Style="{StaticResource BackgroundImageStyler}" />
+            </Canvas>
+            <TextBlock Style="{StaticResource BackgroundTextStyler}">Expense report for:</TextBlock>
+            </DockPanel>
+
+            <Grid DockPanel.Dock="Top">
+              <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+              </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold"  Style="{StaticResource LabelStyler}">
+                    Name:</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="0" Name="Text_Name" Text="{Binding XPath=@Name}" />
+                <TextBlock Grid.Column="0" Grid.Row="1" FontWeight="Bold"  Style="{StaticResource LabelStyler}">
+                    Department:</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1" Name="Text_Department" Text="{Binding XPath=@Department}"/>
+                </Grid>
+
+                <DockPanel DockPanel.Dock="Top">
+
+                    <Canvas Width="230"/>
+
+                    <Grid VerticalAlignment="Top" DockPanel.Dock="Top" Margin="0,0,15,0">
+                      <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                      </Grid.RowDefinitions>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                      </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Grid.Row="0" Height="30" Background="#4E87D4">
+                            <TextBlock Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                Expense Type</TextBlock>
+
+                        </Border>
+                        <Border Grid.Column="1" Grid.Row="0" Height="30" Background="#4E87D4">
+                            <TextBlock Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center">Amount</TextBlock>
+                </Border>
+            </Grid>
+
+            <Grid VerticalAlignment="Top" DockPanel.Dock="Top" Height="100" Margin="0,0,15,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+              </Grid.ColumnDefinitions>
+              <ListBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding XPath=Expense}" ItemTemplate="{StaticResource lbItemsStyle}"/>
+
+                <ListBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding XPath=Expense}" ItemTemplate="{StaticResource lbItemsStyle2}"/>
+
+            </Grid>
+
+        </DockPanel>
+    </DockPanel>
+</Page>

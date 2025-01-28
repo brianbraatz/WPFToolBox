@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - RenderTransform vs. LayoutTransform</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/210946.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/230903.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/03/211105.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>RenderTransform vs. LayoutTransform</h2></a><p style="text-align: right;">March 21, 2006<br>New York, NY</p><p>
+File this one under "One picture is worth a thousand words." Or rather, "One animation is worth a thousand words." Or rather, "<i>Two</i> animations are worth a thousand words." Or rather, "Two animations are worth more than a few cyptic sentences."
+</p>
+<p>
+Whatever.  If you've explore graphics transforms in WPF, you know that <i>UIElement</i> defines a <i>RenderTransform</i> property and <i>FrameworkElement</i> defines a <i>LayoutTransform</i> property, and the documentation dutifully discusses how the latter transform affects layout, but the former transform does not.
+</p>
+<p>
+The implications for what we blithely call the "real world" are left to
+our imaginations. Fortunately, computer graphics is one area where we
+can do something about that by actually creating something to look at.
+</p>
+<p>
+You can run the standalone <a href="http://www.charlespetzold.com/blog/2006/03/RenderTransformVersusLayoutTransform.xaml">RenderTransformVersusLayoutTransform.xaml</a> file in 
+<a href="http://www.charlespetzold.com/blog/2006/03/120553.html">XAML Cruncher</a> or IE (with WPF installed). The program creates two <i>UniformGrid</i> panels containing nine buttons each. In both cases the center button is subjected to an animated <i>RotateTransform</i>. But the rotation for the center button in the first panel is a <i>RenderTransform</i> while the rotation for the button in the second panel is a <i>LayoutTransform</i>. The differences are dramatic and unforgettable. (And it's easy to guess which one gobbles up fewer processor clock cycles.) 
+</p>
+<p>
+Notice that the <i>RenderTransform</i> for the center button in the first panel is accompanied by a <i>RenderTransformOrigin</i>
+attribute that sets the rotation origin to the center of the button.
+Without this attribute, the button rotates around its upper-left
+corner. The button subjected to the <i>LayoutTransform</i> doesn't need any correction like this because the element is always centered within its layout position. A <i>TranslateTransform</i> in a <i>LayoutTransform</i> has no effect.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/210946.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/03/230903.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

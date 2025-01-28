@@ -1,0 +1,89 @@
+﻿<Page x:Class="FeatureMontage.Text"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Text"
+    MouseDown="GoForward" Background="Transparent"
+    >
+  <Page.Resources>
+    <Storyboard x:Key="GrowText">
+      <DoubleAnimation BeginTime="0:0:0" Duration="0:0:1.5" To="12" Storyboard.TargetName="SubPixelTitle" Storyboard.TargetProperty="RenderTransform.(TransformGroup.Children)[0].(ScaleX)" DecelerationRatio=".99" />
+      <DoubleAnimation BeginTime="0:0:0" Duration="0:0:1.5" To="12" Storyboard.TargetName="SubPixelTitle" Storyboard.TargetProperty="RenderTransform.(TransformGroup.Children)[0].(ScaleY)" DecelerationRatio=".99" />
+    </Storyboard>
+
+    <Storyboard x:Key="WipeText">
+      <DoubleAnimation BeginTime="0:0:0" Duration="0:0:2" To="-20000" Storyboard.TargetName="SubPixelTitle" Storyboard.TargetProperty="RenderTransform.(TransformGroup.Children)[1].(X)"  AccelerationRatio=".99" />
+    </Storyboard>
+
+    <Storyboard x:Key="ShowEmbeddedFonts">
+      <DoubleAnimation BeginTime="0:0:0" Duration="0:0:1" To="1" Storyboard.TargetName="EmbeddedFonts" Storyboard.TargetProperty="Opacity" />
+    </Storyboard>
+
+    <Storyboard x:Key="HideEmbeddedFonts">
+      <DoubleAnimation BeginTime="0:0:0" Duration="0:0:1" To="0" Storyboard.TargetName="EmbeddedFonts" Storyboard.TargetProperty="Opacity" />
+
+      <DoubleAnimation BeginTime="0:0:2" Duration="0:0:1" To="1" Storyboard.TargetName="ContextualAlternates" Storyboard.TargetProperty="Opacity" />
+      <StringAnimationUsingKeyFrames Storyboard.TargetName="OpenTypeTextBlock" Storyboard.TargetProperty="Text" BeginTime="0:0:5" FillBehavior="HoldEnd">
+        <DiscreteStringKeyFrame Value="" KeyTime="0:0:0" />
+        <DiscreteStringKeyFrame Value="O" KeyTime="0:0:0" />
+        <DiscreteStringKeyFrame Value="Op" KeyTime="0:0:.4" />
+        <DiscreteStringKeyFrame Value="Ope" KeyTime="0:0:.5" />
+        <DiscreteStringKeyFrame Value="Open" KeyTime="0:0:.75" />
+        <DiscreteStringKeyFrame Value="OpenT" KeyTime="0:0:1" />
+        <DiscreteStringKeyFrame Value="OpenTy" KeyTime="0:0:1.4" />
+        <DiscreteStringKeyFrame Value="OpenTyp" KeyTime="0:0:1.5" />
+        <DiscreteStringKeyFrame Value="OpenType" KeyTime="0:0:1.75" />
+        <DiscreteStringKeyFrame Value="OpenType " KeyTime="0:0:2" />
+        <DiscreteStringKeyFrame Value="OpenType F" KeyTime="0:0:2.25" />
+        <DiscreteStringKeyFrame Value="OpenType Fe" KeyTime="0:0:2.6" />
+        <DiscreteStringKeyFrame Value="OpenType Fea" KeyTime="0:0:2.75" />
+        <DiscreteStringKeyFrame Value="OpenType Feat" KeyTime="0:0:3" />
+        <DiscreteStringKeyFrame Value="OpenType Featu" KeyTime="0:0:3.25" />
+        <DiscreteStringKeyFrame Value="OpenType Featur" KeyTime="0:0:3.5" />
+        <DiscreteStringKeyFrame Value="OpenType Feature" KeyTime="0:0:3.75" />
+        <DiscreteStringKeyFrame Value="OpenType Features" KeyTime="0:0:4" />
+      </StringAnimationUsingKeyFrames>
+    </Storyboard>
+    
+    
+  </Page.Resources>
+
+  <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid Height="600" Width="800">
+      <TextBlock Name="SubPixelTitle" FontSize="240" Opacity="1" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin=".1,.1">
+        <TextBlock.RenderTransform>
+          <TransformGroup>
+            <ScaleTransform ScaleX="1" ScaleY="1" />
+            <TranslateTransform X="0" />
+          </TransformGroup>
+        </TextBlock.RenderTransform>
+        <TextBlock.LayoutTransform>
+          <ScaleTransform ScaleX=".25" ScaleY=".25" />
+        </TextBlock.LayoutTransform>
+        <TextBlock.Text>Sub-pixel Clear Type</TextBlock.Text>
+      </TextBlock>
+
+      <Canvas Name="EmbeddedFonts" Opacity="0">
+        <!-- These fonts included in Vista -->
+        <TextBlock Foreground="White" FontSize="90" FontFamily="Cambria" Canvas.Top="150" Canvas.Right="100">Cambria</TextBlock>
+        <TextBlock Foreground="White" FontSize="60" FontFamily="Constantia" Canvas.Top="140" Canvas.Left="10">Constantia</TextBlock>
+        <TextBlock Foreground="White" FontSize="70" FontFamily="Consolas" Canvas.Top="220" Canvas.Left="100">Consolas</TextBlock>
+        <TextBlock Foreground="White" FontSize="60" FontFamily="Corbel" Canvas.Top="90" Canvas.Right="290">Corbel</TextBlock>
+        <TextBlock Foreground="White" FontSize="60" FontFamily="Candara" Canvas.Top="50" Canvas.Left="50">Candara</TextBlock>
+        <TextBlock Foreground="White" FontSize="80" FontFamily="Calibri" Canvas.Top="50" Canvas.Right="50">Calibri</TextBlock>
+
+        <!-- Embedded in App -->
+        <TextBlock Foreground="White" FontSize="70" FontFamily="Resources/Fonts/#Kootenay" Canvas.Top="320" Canvas.Right="100">Kootenay</TextBlock>
+        <TextBlock Foreground="White" FontSize="50" FontFamily="Resources/Fonts/#Miramonte" Canvas.Top="430" Canvas.Left="10">Miramonte</TextBlock>
+        <TextBlock Foreground="White" FontSize="80" FontFamily="Resources/Fonts/#Pericles" Canvas.Top="340" Canvas.Left="50">Pericles</TextBlock>
+        <TextBlock Foreground="White" FontSize="60" FontFamily="Resources/Fonts/#Pescadero" Canvas.Bottom="20" Canvas.Left="200">Pescadero</TextBlock>
+        <TextBlock Foreground="White" FontSize="90" FontFamily="Resources/Fonts/#Lindsey" Canvas.Top="400" Canvas.Right="50">Lindsey</TextBlock>
+      </Canvas>
+
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <TextBlock FontSize="100" TextAlignment="Center" Foreground="White" FontFamily="Resources/Fonts/#Ambiance BT" Name="OpenTypeTextBlock" Opacity="1" />
+        <TextBlock FontSize="20" Name="ContextualAlternates" Margin="20" TextAlignment="Center" Opacity="0">(Contextual Alternates on Ambiance BT)</TextBlock>
+      </StackPanel>
+
+    </Grid>
+  </Viewbox>
+</Page>

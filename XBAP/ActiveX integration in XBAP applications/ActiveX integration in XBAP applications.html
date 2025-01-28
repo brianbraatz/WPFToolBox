@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>ActiveX integration in XBAP applications</title>
+
+  
+    
+    <link type="text/css" rel="Stylesheet" href="ActiveX%20integration%20in%20XBAP%20applications_files/gslb.css"></head><body>
+    <div class="gslb_mainDivPosting" style="margin-top: 24px;">
+      <div class="gslb_mainDivPostingTitle">
+        ActiveX integration in XBAP applications
+      </div>
+
+        <table style="margin: 0pt; width: 100%;">
+          <tbody><tr>
+            <td>
+              <div class="gslb_mainDivSummary">
+                <a href="#abstract">Abstract</a> /
+                <a href="#problem">Problem</a> /
+                <a href="#solution">Proposed solution</a> /
+                <a href="#inconvenients">Inconvenients</a> /
+                <a href="#note">Note</a> /
+                <a href="#screenshot">Screenshot</a> /
+                <a href="#demo">Prototype</a> /
+                <a href="#history">History</a> /
+                <a href="#installOcx">OCX installation</a>
+              </div>
+            </td>
+            <td style="text-align: right; vertical-align: top;">
+              <div class="gslb_mainDivSummary">
+                <a href="http://www.galasoft.ch/mydotnet/WpfTests.TestOpenWindow/index.html">&lt;&lt;&nbsp;Prev</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/articles.html#wpf">Index</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/mydotnet/WpfTests.TestSessionId/index.html">Next&nbsp;&gt;&gt;</a>
+              </div>
+            </td>
+          </tr>
+        </tbody></table>
+
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="abstract"></a>Abstract:
+        </div>
+        <div class="gslb_mainDivParagraph">
+          This <a href="#demo">prototype</a> demonstrates a possible way to integrate an ActiveX control
+          in a XBAP application, and to communicate (in a rather primitive way) with it.
+        </div>
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="problem"></a>Problem:
+        </div>
+        <ul class="gslb_mainList">
+          <li>XBAP applications may not run ActiveX controls directly.</li>
+          <li>According to Microsoft, this functionality will be implemented in V2 only.</li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          <a id="solution"></a>Proposed solution:
+        </div>
+        <ul class="gslb_mainList">
+          <li>This prototype uses Microsoft's proposed solution, which is running the ActiveX control
+          in a HTML page, which in turn is integrated in a WPF frame.</li>
+          <li>The ActiveX can be controlled using JavaScript code running in the HTML page,
+          and which is independant form the XBAP page. In this scenario, the XBAP page acts as a container
+          only.</li>
+          <li>Additionally, the XBAP application may use URL query parameters in the WPF frame source.
+          These parameters can be read by the JavaScript code and used to modify the ActiveX's state.</li>
+          <li>This
+prototype integrates Microsoft's calendar control (MSCAL.OCX). This
+control must be installed on the client. If it's not, see <a href="#installOcx">this</a>.</li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          <a id="inconvenients"></a>Inconvenients:
+        </div>
+        <ul class="gslb_mainList">
+          <li>There is no direct communication between the ActiveX control and the XBAP container.</li>
+          <li>If the communication through URL query parameters is used, every modification of the
+          URL will reload the HTML page running in the WPF frame. That might not be acceptable in some
+          scenarios.</li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          <a id="note"></a>Note:
+        </div>
+        <ul class="gslb_mainList">
+          <li>Another communication model is possible through the server, using web services. In that
+          scenario, WPF sends messages to a server-side mailbox, which is polled by JavaScript. This
+          communication model is implemented in <a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestOpenWindow/" target="_blank">another prototype</a>.</li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          <a id="screenshot"></a>Screenshot:
+        </div>
+        <img src="ActiveX%20integration%20in%20XBAP%20applications_files/screenshot.gif" alt="Opening windows" title="ActiveX integration">
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="demo"></a>Prototype:
+        </div>
+        <ul class="gslb_mainList">
+          <li><a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestActiveX/PublishedXbap/WpfTests.TestActiveX.MyXbap.xbap" target="_blank">Run</a> the XBAP mode <span style="color: Red; font-weight: bold;">September CTP or newer edition</span></li>
+          <li><a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestActiveX/WpfTests.TestActiveX.Project.zip">
+            Download</a> the project files (Zip)</li>
+        </ul>
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="history"></a>History:
+        </div>
+        <ul class="gslb_mainList">
+          <li>06.12.2006 (LBu): Checked for .NET 3.0 final</li>
+          <li>03.10.2006 (LBu): Updated for .NET 3.0 RC1</li>
+          <li>22.08.2006 (LBu): Published first version</li>
+        </ul>
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="installOcx"></a>MSCAL.OCX installation:
+        </div>
+        <ul class="gslb_mainList">
+          <li><a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestActiveX/mscal.zip">Download</a> the OCX component</li>
+          <li>Extract the zip file content to a folder on your system (for example c:\temp)</li>
+          <li>Using Windows start menu: "Start/Run"</li>
+          <li>Type "regsvr32 c:\temp\mcscal.ocx" (replace c:\temp\ with the real folder's name)</li>
+          <li>This registers the ActiveX control on your PC</li>
+        </ul>
+        <div class="gslb_mainDivParagraph">
+          Uninstallation:
+        </div>
+        <ul class="gslb_mainList">
+          <li>Using Windows start menu: "Start/Run"</li>
+          <li>Type "regsvr32 -u c:\temp\mcscal.ocx" (replace c:\temp\ with the real folder's name)</li>
+          <li>This unregisters the ActiveX control on your PC</li>
+          <li>You can then delete the mscal.ocx file.</li>
+        </ul>
+      </div>
+    </div>
+  </body></html>

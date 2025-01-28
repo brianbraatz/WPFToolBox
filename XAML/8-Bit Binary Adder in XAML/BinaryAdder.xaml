@@ -1,0 +1,174 @@
+<!-- =======================================================================
+      BinaryAdder.xaml (c) 2006 by Charles Petzold
+
+      See blog entry http://www.charlespetzold.com/blog/2006/06/100712.html
+     ======================================================================= -->
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Binary Adder" WindowTitle="Binary Adder"
+      TextBlock.FontSize="24">
+
+    <Page.Resources>
+
+        <!-- ControlTemplate for Checkbox displays a TextBlock showing 0 or 1 -->
+
+        <ControlTemplate TargetType="{x:Type CheckBox}" x:Key="templateFlipBit">
+            <TextBlock Name="txtblk" Text="0" />
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="txtblk" Property="Text" Value="1" />
+                </Trigger>
+
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+ 
+        <!-- ControlTemplate for two-bit adder is quite involved -->
+
+        <ControlTemplate x:Key="templateAdder">
+
+            <!-- VisualTree consists of these elements.
+                    Names stand for "carry in", "bit 0", and "bit 1" 
+                 Focusable property is carry in; ForceCursor property is carry out -->
+
+            <StackPanel>
+                <CheckBox Name="ci" Visibility="Collapsed" 
+                                    IsChecked="{TemplateBinding Focusable}" />
+                <CheckBox Name="b0" Template="{StaticResource templateFlipBit}"  />
+                <CheckBox Name="b1" Template="{StaticResource templateFlipBit}"  />
+                <Line Stroke="Black" StrokeThickness="3" X1="0" X2="15" Y1="0" Y2="0" />
+                <TextBlock Name="sum" Text="0" />
+            </StackPanel>
+
+            <ControlTemplate.Triggers>
+
+                <!-- These data triggers determine "sum" from "ci", "bo" and "b1" -->
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=ci, Path=IsChecked}" Value="False" />
+                        <Condition Binding="{Binding ElementName=b0, Path=IsChecked}" Value="False" />
+                        <Condition Binding="{Binding ElementName=b1, Path=IsChecked}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="sum" Property="Text" Value="1" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=ci, Path=IsChecked}" Value="False" />
+                        <Condition Binding="{Binding ElementName=b0, Path=IsChecked}" Value="True" />
+                        <Condition Binding="{Binding ElementName=b1, Path=IsChecked}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="sum" Property="Text" Value="1" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=ci, Path=IsChecked}" Value="True" />
+                        <Condition Binding="{Binding ElementName=b0, Path=IsChecked}" Value="False" />
+                        <Condition Binding="{Binding ElementName=b1, Path=IsChecked}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="sum" Property="Text" Value="1" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=ci, Path=IsChecked}" Value="True" />
+                        <Condition Binding="{Binding ElementName=b0, Path=IsChecked}" Value="True" />
+                        <Condition Binding="{Binding ElementName=b1, Path=IsChecked}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="sum" Property="Text" Value="1" />
+                </MultiDataTrigger>
+
+                <!-- These data triggers determine "co" from "ci", "bo" and "b1" -->
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=ci, Path=IsChecked}" Value="False" />
+                        <Condition Binding="{Binding ElementName=b0, Path=IsChecked}" Value="True" />
+                        <Condition Binding="{Binding ElementName=b1, Path=IsChecked}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ForceCursor" Value="True" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=ci, Path=IsChecked}" Value="True" />
+                        <Condition Binding="{Binding ElementName=b0, Path=IsChecked}" Value="False" />
+                        <Condition Binding="{Binding ElementName=b1, Path=IsChecked}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ForceCursor" Value="True" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=ci, Path=IsChecked}" Value="True" />
+                        <Condition Binding="{Binding ElementName=b0, Path=IsChecked}" Value="True" />
+                        <Condition Binding="{Binding ElementName=b1, Path=IsChecked}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ForceCursor" Value="True" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=ci, Path=IsChecked}" Value="True" />
+                        <Condition Binding="{Binding ElementName=b0, Path=IsChecked}" Value="True" />
+                        <Condition Binding="{Binding ElementName=b1, Path=IsChecked}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ForceCursor" Value="True" />
+                </MultiDataTrigger>            
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!-- ControlTemplate for most significant sum bit just needs carry in -->
+        
+        <ControlTemplate x:Key="templateLastBit">
+            <StackPanel>
+                <CheckBox Name="ci" Visibility="Collapsed" IsChecked="{TemplateBinding Focusable}" />
+                <CheckBox Name="b0" Visibility="Hidden" Template="{StaticResource templateFlipBit}"  />
+                <CheckBox Name="b1" Visibility="Hidden" Template="{StaticResource templateFlipBit}"  />
+                <Line Stroke="Black" StrokeThickness="3" X1="0" X2="15" Y1="0" Y2="0" />
+                <TextBlock Name="sum" Text="0"  />
+            </StackPanel>
+
+            <ControlTemplate.Triggers>
+                <DataTrigger Binding="{Binding ElementName=ci, Path=IsChecked}" Value="True">
+                    <Setter TargetName="sum" Property="Text" Value="1" />
+                </DataTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Page.Resources>
+
+    <!-- StackPanel displays 8 one-bit adders and last bit; 
+            Bindings link previous carry out to carry in -->
+
+    <StackPanel Orientation="Horizontal" Margin="24" HorizontalAlignment="Center">
+
+        <Control Template="{StaticResource templateLastBit}"
+                 Focusable="{Binding ElementName=bit7, Path=ForceCursor}" />
+
+        <Control Name="bit7" Template="{StaticResource templateAdder}" 
+                 Focusable="{Binding ElementName=bit6, Path=ForceCursor}" />
+
+        <Control Name="bit6" Template="{StaticResource templateAdder}" 
+                 Focusable="{Binding ElementName=bit5, Path=ForceCursor}" />
+
+        <Control Name="bit5" Template="{StaticResource templateAdder}" 
+                 Focusable="{Binding ElementName=bit4, Path=ForceCursor}" />
+
+        <Control Name="bit4" Template="{StaticResource templateAdder}" 
+                 Focusable="{Binding ElementName=bit3, Path=ForceCursor}" />
+
+        <Control Name="bit3" Template="{StaticResource templateAdder}" 
+                 Focusable="{Binding ElementName=bit2, Path=ForceCursor}" />
+
+        <Control Name="bit2" Template="{StaticResource templateAdder}" 
+                 Focusable="{Binding ElementName=bit1, Path=ForceCursor}" />
+
+        <Control Name="bit1" Template="{StaticResource templateAdder}" 
+                 Focusable="{Binding ElementName=bit0, Path=ForceCursor}" />
+
+        <Control Name="bit0" Template="{StaticResource templateAdder}" 
+                 Focusable="False" />
+    </StackPanel>
+</Page>

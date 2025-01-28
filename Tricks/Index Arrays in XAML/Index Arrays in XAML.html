@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - How to Index Arrays in XAML</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/05/100546.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/05/170228.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/05/101136.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>How to Index Arrays in XAML</h2></a><p style="text-align: right;">May 10, 2006<br>New York City</p><p>
+Suppose you need to obtain a string for the name of the current month.  In C#, it's trivial. You start off with <i>using</i> directives for <i>System</i> and <i>System.Globalization</i> and then index the <i>MonthNames</i> array of <i>DateTimeFormatInfo</i> with the <i>Month</i> property of a <i>DateTime</i> object, remembering to convert the <i>Month</i> from 1-based to 0-based:
+</p>
+<ul>
+DateTimeFormatInfo.CurrentInfo.MonthNames[DateTime.Now.Month - 1]
+</ul>
+<p>
+However, doing something similar in XAML isn't quite as
+straightforward. (For the following examples, the 's' prefix refers to
+an XML namespace for <i>System</i> and 'g' for <i>System.Globalization</i>.) 
+You can easily use a <i>Binding</i> to display the current month <i>number</i>, like so:
+</p>
+<ul>
+&lt;TextBlock Text="{Binding Source={x:Static s:DateTime.Now}, Path=Month}" /&gt;
+</ul>
+<p>
+That will display the number 5 for the month of May. You can also specify a numeric index of the <i>MonthNames</i> array. This XAML displays the string "May":
+</p>
+<ul>
+&lt;TextBlock Text="{Binding Source={x:Static g:DateTimeFormatInfo.CurrentInfo}, Path=MonthNames[4]}" /&gt;
+</ul>
+<p>
+However, merging these two bindings just doesn't work.
+</p>
+<p>
+It <i>is</i> possible to index an array in XAML, however. The
+trick is finding a class that indexes arrays, and it's more obvious
+than it may seem. <i>ListBox</i>, for example, stores an array of items, and setting <i>SelectedIndex</i> selects one of those items, which is then obtainable from <i>SelectedItem</i>.  So, if a <i>ListBox</i> contains the <i>MonthNames</i> array, and <i>SelectedIndex</i> is set to the <i>Month</i> property of a <i>DateTime</i> object, then <i>SelectedItem</i> is the month name.
+</p>
+<p>
+The <a href="http://www.charlespetzold.com/blog/2006/05/TodaysDate.xaml">TodaysDate.xaml</a> file illustrates this technique with several <i>TextBlock</i> elements that format the current date. Here's a listing of the program:
+</p>
+<ul style="font-family: monospace; font-weight: bold; font-size: smaller;">
+&lt;!--&nbsp;=============================================<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TodaysDate.xaml&nbsp;(c)&nbsp;2006&nbsp;by&nbsp;Charles&nbsp;Petzold&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=============================================&nbsp;--&gt;<br>&lt;Page&nbsp;xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:s="clr-namespace:System;assembly=mscorlib"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:g="clr-namespace:System.Globalization;assembly=mscorlib"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindowTitle="Today's&nbsp;Date"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title="Today's&nbsp;Date"&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Page.Resources&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--&nbsp;Save&nbsp;today's&nbsp;date&nbsp;as&nbsp;the&nbsp;Tag&nbsp;property&nbsp;of&nbsp;this&nbsp;resource.&nbsp;--&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;FrameworkElement&nbsp;x:Key="datetime"&nbsp;Tag="{x:Static&nbsp;s:DateTime.Now}"&nbsp;/&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--&nbsp;Use&nbsp;a&nbsp;transform&nbsp;to&nbsp;subtract&nbsp;1&nbsp;from&nbsp;the&nbsp;1-based&nbsp;Month.&nbsp;--&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TransformGroup&nbsp;x:Key="xformMonth"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TranslateTransform&nbsp;X="{Binding&nbsp;Source={StaticResource&nbsp;datetime},&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path=Tag.Month}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TranslateTransform&nbsp;X="-1"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TransformGroup&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--&nbsp;Store&nbsp;all&nbsp;the&nbsp;month&nbsp;names&nbsp;in&nbsp;a&nbsp;ListBox.&nbsp;--&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ListBox&nbsp;x:Key="monthnames"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ItemsSource=<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"{Binding&nbsp;Source={x:Static&nbsp;g:DateTimeFormatInfo.CurrentInfo},&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path=MonthNames}"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SelectedIndex=<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"{Binding&nbsp;Source={StaticResource&nbsp;xformMonth},&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path=Value.OffsetX}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Page.Resources&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;StackPanel&nbsp;Orientation="Horizontal"&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HorizontalAlignment="Center"&nbsp;VerticalAlignment="Center"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TextBlock.FontSize="24pt"&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock&nbsp;Text="{Binding&nbsp;Source={StaticResource&nbsp;datetime},&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path=Tag.DayOfWeek}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock&nbsp;Text=",&nbsp;"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock&nbsp;Text="{Binding&nbsp;Source={StaticResource&nbsp;monthnames},&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path=SelectedItem}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock&nbsp;Text="&nbsp;"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock&nbsp;Text="{Binding&nbsp;Source={StaticResource&nbsp;datetime},&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path=Tag.Day}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock&nbsp;Text=",&nbsp;"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock&nbsp;Text="{Binding&nbsp;Source={StaticResource&nbsp;datetime},&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path=Tag.Year}"&nbsp;/&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/StackPanel&gt;<br>&lt;/Page&gt;<br>
+</ul>
+<p>
+In the <i>Resources</i> section the <i>Framework</i> element with a key of "datetime" obtains the current <i>DateTime</i> once, to be used throughout the rest of the program. The <i>TransformGroup</i> that follows effectively subtracts 1 from the <i>Month</i> property. The <i>ListBox</i> stores the <i>MonthNames</i> array and the <i>SelectedIndex</i> is the zero-based month.
+</p>
+<p>
+The series of <i>TextBlock</i> elements display the parts of the date. The <i>DayOfWeek</i> property is an enumeration and can be used directly. The third <i>TextBlock</i> element displays the name of the month with a simple binding to the <i>SelectedItem</i> property of the <i>ListBox</i>.
+</p>
+
+
+
+
+
+
+
+
+
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/05/100546.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/05/170228.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

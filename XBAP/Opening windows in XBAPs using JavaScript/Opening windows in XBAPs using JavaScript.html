@@ -1,0 +1,121 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Opening windows in XBAPs using JavaScript</title>
+  
+    
+    <link type="text/css" rel="Stylesheet" href="Opening%20windows%20in%20XBAPs%20using%20JavaScript_files/gslb.css">
+    <link type="text/css" rel="Stylesheet" href="Opening%20windows%20in%20XBAPs%20using%20JavaScript_files/wpfTests.css"></head><body>
+    <div class="gslb_mainDivPosting" style="margin-top: 24px;">
+      <div class="gslb_mainDivPostingTitle">
+        Opening windows in XBAPs using JavaScript
+      </div>
+
+        <table style="margin: 0pt; width: 100%;">
+          <tbody><tr>
+            <td>
+              &nbsp;
+            </td>
+            <td style="text-align: right; vertical-align: top;">
+              <div class="gslb_mainDivSummary">
+                <a href="http://www.galasoft.ch/mydotnet/WpfTests.TestPopUps/index.html">&lt;&lt;&nbsp;Prev</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/articles.html#wpf">Index</a>&nbsp;|&nbsp;<a href="http://www.galasoft.ch/mydotnet/WpfTests.TestActiveX/index.html">Next&nbsp;&gt;&gt;</a>
+              </div>
+            </td>
+          </tr>
+        </tbody></table>
+
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="abstract"></a>Abstract:
+        </div>
+        <div class="gslb_mainDivParagraph">
+          This <a href="#demo">prototype</a> demonstrates a possible way to open a new window
+          from a XBAP application using JavaScript as a medium. In this version of the prototype,
+          the communication between the XBAP and JavaScript occurs through the server, using
+          web services.
+          <br>
+          The prototype also shows how to use query string parameters to change a XBAP's appearance.
+          It also uses web services for inter-window communication.
+        </div>
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          UPDATE (13.09.2006):
+        </div>
+        <div class="gslb_mainDivParagraph">
+I experimented with cookies, and had to find out that, while cookies
+are very easily set and retrieved using Application.GetCookie and
+Application.SetCookie, it cannot be done when the XBAP application runs
+into an IFRAME. That's disappointing, especially since it is
+Microsoft's recommended way to integrate XBAPs into an existing page.
+So apart from going through the server, I don't have any more ideas to
+let XBAP and the browser communicate... </div>
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          Problem:
+        </div>
+        <ul class="gslb_mainList">
+          <li>XBAP applications may not open new windows (this is prevented by the sandbox).</li>
+          <li>According to Microsoft, this functionality will be implemented in V2 only.</li>
+          <li>Though I rather recommend against using new windows in a web applications, this
+            is sometimes needed, for example if the web application runs on more than one screen.</li>
+          <li>XBAP applications have a very tight sandbox, partly because the Microsoft team
+            didn't have time to implement all the features, and partly because of security.
+            For example, XBAP applications may not communicate with the browser's JavaScript
+            engine.</li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          Proposed solution:
+        </div>
+        <ul class="gslb_mainList">
+          <li>XBAP applications may call web services located on the same server. In the same
+            way, JavaScript can check the server periodically to check the status communicated
+            by the XBAP. Once the flag is set on the server, JavaScript opens a window using
+            window.open().</li>
+          <li>This prototypes also presents another way to open a window: By using a hyperlink
+            with its target set to _blank (or to another name, as long as this name doesn't
+            exist yet). This works too, however you have to work with standard windows, and
+            you may not remove window's bars, or specify the window's location.</li>
+          <li>This prototype also uses query-string parameters in the URL to display the XBAP
+            application in a parent or child mode. This demonstrates the use of parameters to
+            control the XBAP's appearance.</li>
+          <li>Additionally, the prototype demonstrates inter-XBAP windows communication using
+            web services through a server-side mailbox.</li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          Inconvenients:
+        </div>
+        <ul class="gslb_mainList">
+          <li>There is no direct communication possible between the windows. To implement communication,
+            webservices might be used.</li>
+          <li>We see that solution as temporary only, waiting for Microsoft to add opening windows
+            to the XBAPs.</li>
+          <li>Because JavaScript attempts to open the window automatically, <b>pop-up blockers</b>
+            will block the opening unless they are told otherwise...</li>
+        </ul>
+        <div class="gslb_mainDivTitle">
+          Screenshot:
+        </div>
+        <img src="Opening%20windows%20in%20XBAPs%20using%20JavaScript_files/screenshot.gif" alt="Opening windows" title="Opening windows">
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          <a id="demo"></a>Prototype:
+        </div>
+        <ul class="gslb_mainList">
+          <li><a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestOpenWindow/ctprc1.html" target="_blank">Run</a> the prototype <span style="color: Red; font-weight: bold;">September CTP or newer edition</span></li>        
+          <li><a href="http://www.galasoft-lb.ch/mydotnet/WpfTests.TestOpenWindow/WpfTests.TestOpenWindow.Project.zip">
+            Download</a> the project files (Zip)</li>
+        </ul>
+      </div>
+      <div class="gslb_mainDivFeature">
+        <div class="gslb_mainDivTitle">
+          History:
+        </div>
+        <ul class="gslb_mainList">
+          <li>06.12.2006 (LBu): Checked for .NET 3.0 final</li>
+          <li>02.10.2006 (LBu): Updated for .NET 3.0 RC1</li>
+          <li>13.09.2006 (LBu): Updated: Test with cookies</li>
+          <li>16.08.2006 (LBu): Published first version</li>
+        </ul>
+      </div>
+    </div>
+  </body></html>

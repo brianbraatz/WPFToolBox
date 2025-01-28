@@ -1,0 +1,932 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Beatriz Costa » Are there any tricks that will help me improve TreeView’s performance? - Part I</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="WordPress 2.2.2"><!-- leave this for stats --><!-- Editable Meta Tags --> 
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Sreejith - GFXedit.com">
+<meta name="copyright" content="Your Name">
+<meta name="generator" content="WordPress 2.2.2">
+<meta name="robots" content="index,follow"><!-- Meta Tags End--><!-- Style Sheet -->
+
+
+
+<style type="text/css" media="screen">
+@import url( http://www.beacosta.com/blog/wp-content/themes/darkpad-10/style.css );
+</style><!-- Style Sheet End --><!-- Includes -->
+
+
+
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/addEvent.htm"></script>
+ <script type="text/javascript" src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/titles.htm"></script><!-- End Includes --><!-- Feed and Ping URLS-->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.beacosta.com/blog/?feed=rss2">
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.beacosta.com/blog/?feed=rss">
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://www.beacosta.com/blog/?feed=atom">
+<link rel="pingback" href="http://www.beacosta.com/blog/xmlrpc.php"><!--?php wp_get_archives('type=monthly&format=link'); ?-->
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.beacosta.com/blog/xmlrpc.php?rsd">
+<script language="javascript" type="text/javascript">
+<!--
+		function collapseThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} else {
+				comment.className += " collapsed";
+			}
+		}
+
+		function expandThread( theId ) {
+			var comment = document.getElementById(theId);
+			if(!comment)
+			{
+				alert("ERROR:\nThe document structure is different\nfrom what Threaded Comments expects.\nYou are missing the element '"+theId+"'");
+				return;
+			}
+			var theBody = findBody(comment);
+			if(comment.className.indexOf("collapsed") > -1) {
+				comment.className = comment.className.replace(" collapsed", "");;
+			} 
+		}
+		
+		function findBody(el)
+		{
+			var divs = el.getElementsByTagName("div");
+			var ret;
+			for(var i = 0; i < divs.length; ++i) {
+				if(divs.item(i).className.indexOf("body") > -1)
+					return divs.item(i);
+			}
+			return false;
+		}
+	
+		function onAddComment() {
+			//checkDocumentIntegrity();
+			var el = document.getElementById("commentform");
+			// Future release: Check if form is filled correctly and mark the form fields.
+			el.submit();
+		}
+		
+		function moveAddCommentBelow(theId, threadId, collapse)
+		{
+			expandThread( theId );
+			var addComment = document.getElementById("addcomment");
+			if(!addComment)
+			{
+			  	alert("ERROR:\nThreaded Comments can't find the 'addcomment' div.\nThis is probably because you have changed\nthe comments.php file.\nMake sure there is a tag around the form\nthat has the id 'addcomment'"); 
+				return
+			}
+			var comment = document.getElementById(theId);
+			if(collapse)
+			{
+				for(var i = 0; i < comment.childNodes.length; ++i) {
+					var c = comment.childNodes.item(i);
+					if(typeof(c.className) == "string" && c.className.indexOf("collapsed")<0) {
+						c.className += " collapsed";
+					}
+				}
+			}
+			addComment.parentNode.removeChild(addComment);
+
+			comment.appendChild(addComment);
+			if(comment.className.indexOf("alt")>-1) {
+				addComment.className = addComment.className.replace(" alt", "");					
+			} else {
+				addComment.className += " alt";
+			}
+		        var replyId = document.getElementById("comment_reply_ID");
+			if(replyId == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no hidden form field called\n'comment_reply_ID'. This is probably because you\nchanged the comments.php file and forgot\nto include the field. Please take a look\nat the original comments.php and copy the\nform field over.");
+			}
+			replyId.value = threadId;
+			var reRootElement = document.getElementById("reroot");
+			if(reRootElement == null)
+			{
+				alert("Brians Threaded Comments Error:\nThere is no anchor tag called 'reroot' where\nthe comment form starts.\nPlease compare your comments.php to the original\ncomments.php and copy the reroot anchor tag over.");
+			}
+			reRootElement.style.display = "block";
+			var aTags = comment.getElementsByTagName("A");
+			var anc = aTags.item(0).id;
+			//document.location.href = "#"+anc;
+			document.getElementById("comment").focus();
+		}
+
+		function checkDocumentIntegrity()
+		{
+			str = "";
+			
+			str += checkElement("reroot","div tag");
+			str += checkElement("addcomment", "div tag");
+			str += checkElement("comment_reply_ID", "hidden form field");
+			str += checkElement("content", "div tag");
+			str += checkElement("comment", "textfield");
+			str += checkElement("addcommentanchor", "anchor tag");
+			
+			if(str != "")
+			{
+				str = "Brian's Threaded Comments are missing some of the elements that are required for it to function correctly.\nThis is probably the because you have changed the original comments.php that was included with the plugin.\n\nThese are the errors:\n" + str;
+				str += "\nYou should compare your comments.php with the original comments.php and make sure the required elements have not been removed.";
+
+				alert(str);
+			}
+		}
+               
+		function checkElement(theId, elDesc)
+		{
+			var el = document.getElementById(theId);
+			if(!el)
+			{
+				if(elDesc == null)
+					elDesc = "element";
+				return "- The "+elDesc+" with the ID '" +theId + "' is missing\n"; 
+			}
+			else 
+				return "";
+		}
+		
+		function reRoot()
+		{
+			var addComment = document.getElementById("addcomment");			
+			var reRootElement = document.getElementById("reroot");
+			reRootElement.style.display = "none";
+			var content = document.getElementById("content");
+			addComment.parentNode.removeChild(addComment);
+			content.appendChild(addComment);
+			addComment.className = addComment.className.replace(" alt", "");
+			document.location.href = "#addcommentanchor";
+			document.getElementById("comment").focus();				
+			document.getElementById("comment_reply_ID").value = "0";
+		}			
+		
+		function changeCommentSize(d)
+		{
+			var el = document.getElementById("comment");
+			var height = parseInt(el.style.height);
+			if(!height && el.offsetHeight)
+				height = el.offsetHeight;
+			height += d;
+			if(height < 20) 
+				height = 20;
+			el.style.height = height+"px";
+		}		
+-->
+</script>
+<style type="text/css">
+.comment 
+{
+	position: 				relative;
+	margin:					3px;
+	margin-top:				6px;
+/*	border: 				1px solid #666; */
+	padding:				4px 4px 4px 8px;
+	background-color:		#fff;
+}
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+.comment div {
+	position: 				relative;
+}
+
+.comment .comment img
+{
+	margin: 				0px;
+}
+
+.comment .collapseicon 
+{
+	width: 					13px;
+	height: 				13px;
+	overflow:				hidden;
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread-open.png);
+}
+
+.collapsed .collapseicon 
+{
+	background-image: 		url(http://www.beacosta.com/blog/wp-content/plugins/briansthreadedcomments.php?image=subthread.png);
+}
+
+
+.comment .reply {
+	text-align: 			right;
+	font-size: 				80%;
+	padding: 				0px 6px 6px 0px;
+}
+
+.comment
+{
+	border: 	1px solid #ddd;
+	margin-top: 			10px;
+}
+
+input#subscribe
+{
+	width: auto;
+}
+
+.comment .body .content
+{
+	padding:				0px 3px 0px 3px;
+	width: 					100%;	
+	overflow: 				auto; 
+}
+
+.comment .title abbr
+{
+	border: none;
+}
+
+.collapsed .body, .collapsed .comment
+{
+	display:				none;
+}
+/*
+#addcomment small, #addcomment div
+{
+	padding:				3px;
+}
+*/
+#commentform textarea {
+	width: 97%;
+}
+</style><!-- End Feed and Ping URLS--></head><body>
+	<div id="container">
+		<div id="banner">
+			<h1><a accesskey="1" href="http://www.beacosta.com/blog" title="Beatriz Costa">Beatriz Costa</a></h1>
+			<h2 title="WPF Data Binding">WPF Data Binding</h2>
+		</div>
+		
+		<div id="center">
+			<div class="content">
+								<div class="post">
+					<div class="date">August 31, 2007</div>
+					<h2 id="post-42"><a id="postTitle" href="http://www.beacosta.com/blog/?p=42" rel="bookmark" title="Are there any tricks that will help me improve TreeView’s performance? - Part I">Are there any tricks that will help me improve TreeView’s performance? - Part I</a></h2>
+					<p><span id="text">This
+is the first of three blog posts where I will discuss TreeView
+performance. This post will cover the problems with our current
+implementation of TreeView; the next post will show a solution that
+will enable binding to a large data set; and the third post will
+discuss a simple idea that adds UI virtualization to a hierarchical
+data representation. </span></p>
+<p><span id="text">There are currently three aspects of TreeView’s implementation that affect performance when binding to large data sets:</span></p>
+<p><span id="text">- UI elements stay in memory after collapsed.<br>
+- There is no UI virtualization.<br>
+- There is no data virtualization.</span></p>
+<p><span id="text">I will discuss each of these problems after describing a typical scenario.</span></p>
+<p><span id="text">Suppose I want to display my registry keys in a
+TreeView. To do so, I first need to create a hierarchical data
+structure that is able to hold the registry key data in memory. I
+defined a “RegistryKeyHolder1″ class containing a property called Key
+that holds the actual RegistryKey, and a property called SubKeys of
+type ObservableCollection<registrykeyholder1></registrykeyholder1>. The
+class has a “PopulateSubKeys” method that knows how to fill the SubKeys
+collection with the appropriate data from the registry. To populate the
+entire data structure, I start with a collection of RootKeys and use
+the following recursive method:</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;public class RegistryData1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private void
+PopulateSubKeys(ObservableCollection&lt;RegistryKeyHolder1&gt; keys)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach (RegistryKeyHolder1 keyHolder in keys)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyHolder.PopulateSubKeys();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.dataItemsCount
++= keyHolder.SubKeys.Count;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//
+It will take forever if I get all registry keys<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if
+(this.dataItemsCount &gt;= 5000)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PopulateSubKeys(keyHolder.SubKeys);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></p>
+<p><span id="text">With this data structure in place, I am now able to bind the TreeView to the RootKeys property directly.</span></p>
+<p><span id="code">&nbsp;&nbsp;&nbsp;&nbsp;public Window1()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitializeComponent();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.grid1.DataContext = new RegistryData1();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView ItemsSource=”{Binding Path=RootKeys}” Name=”treeView1″ … /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TreeView.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;HierarchicalDataTemplate
+DataType=”{x:Type local:RegistryKeyHolder1}” ItemsSource=”{Binding
+Path=SubKeys}”&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;TextBlock
+Text=”{Binding Path=ShortName}” /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/HierarchicalDataTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView.Resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/TreeView&gt;</span></p>
+<p><span id="text">This data structure makes it really easy to provide
+a default look for all levels of the hierarchy by using a
+HierarchicalDataTemplate. Notice the TextBlock in the template, bound
+to the ShortName property. Since tha Name property of RegistryKey
+returns the whole path of that key, I added a ShortName property to
+RegistryKeyHolder1 that returns only the interesting part of the key. I
+use the ItemsSource property of the HierarchicalDataTemplate to specify
+the items that should be displayed in the next level of the hierarchy -
+in this case, the subkeys.</span></p>
+<p><span id="text"><strong>UI elements stay in memory after collapsed</strong></span></p>
+<p><span id="text">If you run this post’s project, you will see that the initial number of visuals of this TreeView is 49. You can use <a href="http://www.blois.us/Snoop/">Snoop</a>
+to see exactly which elements are in the visual tree (although Snoop
+includes GridColumns in its count and I don’t, so you may see some
+differences in the results). Now expand the first node and collapse it
+again. This time the number of visuals is 169, even after you collapsed
+the node. In our current implementation of TreeView, we let the
+children items stay around in memory, even after they are collapsed. If
+your TreeView has a usage pattern where the same few nodes are often
+expanded and collapsed, then you will get better perf with our current
+design because the children items don’t have to be garbage collected
+and re-created every time. However, we realize that in most situations,
+customers would rather have their items be garbage collected when a
+node is collapsed. So, overall, I consider this a limitation of our
+current design of TreeView.</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/39TreeViewPerformance11.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><strong>There is no UI virtualization</strong></span></p>
+<p><span id="text">There are two WPF controls that support UI
+virtualization currently: ListBox and ListView. This happens because
+their default panel is a VirtualizingStackPanel, which behaves like a
+StackPanel but provides UI virtualization. </span></p>
+<p><span id="text">By UI virtualization, I mean that when you bind a
+ListBox to a large collection of data, we only create UI containers for
+the items that are visually displayed (plus a few more before and
+after, to improve the speed of scrolling). When you scroll, we create
+new containers for the items that are newly visible, and dispose of the
+ones that are no longer visible. This greatly improves the performance
+of binding a ListBox to a large collection.</span></p>
+<p><span id="text">What about the other Controls in WPF? ComboBox has
+StackPanel as its default panel, but a user can easily change that to
+be a VirtualizingStackPanel. TreeView, however, can not use
+VirtualizingStackPanel to display its items because this panel doesn’t
+know how to display a hierarchy. The same applies to a ListBox with
+grouping enabled - a ListBox without grouping has UI virtualization by
+default, but once you group the data, the UI virtualization is lost.</span></p>
+<p><span id="text">If you run this post’s code sample, you can easily
+tell that TreeView does not support UI virtualization. If you expand
+several nodes so that the scroll bar on the right is enabled, you will
+see that the number of visuals keeps increasing. Even though many of
+the items that you expanded are outside of the visible portion of the
+scroll viewer, WPF still creates all of the visuals necessary to
+display them.</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/39TreeViewPerformance12.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text"><strong>There is no data virtualization</strong></span></p>
+<p><span id="text">None of the WPF controls supports data
+virtualization at the moment. Providing a generic data virtualization
+solution is a hard problem that everyone on the team is eager to solve,
+but it hasn’t been our highest priority.</span></p>
+<p><span id="text">If we had data virtualization for ListBox, that
+would mean that only the data items displayed are kept in memory. As
+the user scrolls through the ListBox, new items are brought into
+memory, and the old ones are discarded. For TreeView, in addition to
+swapping items in and out of memory due to scrolling, we would also
+want to load and unload items from memory when their parent item is
+expanded and collapsed.</span></p>
+<p><span id="text">So, what is the difference between UI and data
+virtualization? With UI virtualization we keep in memory only the UI
+elements (e.g. ListBoxItems) that are displayed visually, but we may
+still have the whole data structure in memory. Data virtualization goes
+one step further: we only keep in memory the data items that are being
+displayed on the screen.</span></p>
+<p><span id="text">By running this post’s code sample, you can easily
+tell that there is no data virtualization. You will see, even right
+after you run it the first time, that the number of data items in
+memory is over 5000. Since initially only two items are displayed, it’s
+easy to see that we’re keeping in memory many more items than the ones
+we need to build up that UI.</span></p>
+<p><img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/39TreeViewPerformance13.png" style="margin: 0px auto 10px; display: block; text-align: center;" border="0"></p>
+<p><span id="text">That’s all for today’s post. I’ve explained some of
+the current limitations of TreeView, and in the next two posts I will
+provide some solutions to these problems. So stay tuned.</span></p>
+<p><span id="text"><a href="http://www.beacosta.com/Zips/39TreeViewPerformance1.zip">Here</a> you can find the VS project with this sample code. This works with Orcas Beta2 bits. </span></p>
+										<p class="posted">Posted by <a href="http://www.beacosta.com/blog/?author=1" title="Posts by Bea">Bea</a> under <a href="http://www.beacosta.com/blog/?cat=7" title="View all posts in TreeView" rel="category">TreeView</a>, <a href="http://www.beacosta.com/blog/?cat=2" title="View all posts in WPF Data Binding" rel="category">WPF Data Binding</a> |   </p>
+				</div>				
+				<!-- <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://www.beacosta.com/blog/?p=42"
+    dc:identifier="http://www.beacosta.com/blog/?p=42"
+    dc:title="Are there any tricks that will help me improve TreeView&#8217;s performance? - Part I"
+    trackback:ping="http://www.beacosta.com/blog/wp-trackback.php?p=42" />
+</rdf:RDF>	-->
+				
+<!-- You can start editing here. -->
+
+<p><a href="http://www.beacosta.com/blog/?feed=rss2&amp;p=42"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> 
+| <a href="http://www.beacosta.com/blog/wp-trackback.php?p=42">Trackback <acronym title="\&quot;Uniform" resource="" identifier\="">URI</acronym></a>
+</p>
+
+<h2 id="comments">8 Comments 
+<a href="#postcomment" title="Leave a comment">»</a>
+</h2>
+<div class="commentlist">
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-6" class="comment">
+				<a name="comment-6" id="comment-6"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-6")'>
+					<cite>Comment by Ben<a href="#comment-6"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-08-31 15:18:05 						
+					</div>					
+					<div class="content">
+						<p>I’ve
+been dealing a lot with custom UI virtualization on hierarchical data
+the past few days, and would like to see what kind of stuff you come up
+with. I’m also interested in the data virtualization part. Can’t wait!</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-6", 6, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-7" class="comment odd">
+				<a name="comment-7" id="comment-7"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-7")'>
+					<cite>Comment by Bea<a href="#comment-7"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-04 09:57:12 						
+					</div>					
+					<div class="content">
+						<p>Hi Ben,</p>
+<p>My tricks are very simple to implement. It is definetely possible to
+implement really fancy and solid data and UI virtualization custom
+solutions specific to particular scenarios, but I am not planning to
+cover that. </p>
+<p>I appreciate your excitement though <img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-7", 7, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-8" class="comment">
+				<a name="comment-8" id="comment-8"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-8")'>
+					<cite>Comment by Yuval Gilboa<a href="#comment-8"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-01 15:47:05 						
+					</div>					
+					<div class="content">
+						<p>As
+always, your post touches an extremely useful topic and is written very
+clearly. I’m really looking forward for the next two parts of this
+post. </p>
+<p>I’ve some comments about the performance of the existing
+VirtualizingStackPanel when used with large data sets. I don’t know
+what can be done about these problems in the current version, but
+hopefully you’ll be able to improve on them in the future:</p>
+<p>1) Initial rendering speed is fixed and at an acceptable level, but
+scrolling/repainting speed degrades linearly as the number of items
+displayed is increased and/or the complexity of the item templates is
+increased. There is a noticeable delay when the scrollbar is moved to
+an area that was not previously rendered (the scrollbar thumb lags
+significantly behind the mouse cursor), and the scrolling experience
+becomes choppy.</p>
+<p>2) I noticed that as long as the user continues scrolling (without
+releasing the mouse button) and returns to items that were already
+visited, the scrolling becomes smooth. It seems that the off-screen
+items that were visited are retained during the scrolling interaction.
+However, once the user releases the mouse button, all off-screen items
+are immediately discarded, and on the next scrolling the same choppy
+behavior will be manifested. I found no programmatic way to control the
+latency of the discarding of off-screen items, which can be useful in
+many cases.</p>
+<p>3) I also found no programmatic way to inform the
+VirtualizingStackPanel that all items have uniform display templates (a
+very common occurrence), which could provide a useful performance
+optimization hint (similar to the “table-layout:fixed” property that
+exists in IE/HTML).</p>
+<p>4) Scrolling using the keyboard is also considerably slower than I would expect.</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-8", 8, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-9" class="comment odd">
+				<a name="comment-9" id="comment-9"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-9")'>
+					<cite>Comment by Bea<a href="#comment-9"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-08 22:24:04 						
+					</div>					
+					<div class="content">
+						<p>Hi Yuval,</p>
+<p>Your thorough comment is very very appreciated! I brought your ideas to my team, and here is what we discussed:</p>
+<p>1) You mention that scrolling speed degrades linearly with the
+number of items displayed. If you want to scroll from item 1 to item
+30, the total number of items in your ListBox should not affect perf
+that much. It will affect a little because of the lack of data
+virtualization, but since ListBox has UI virtualization, we don’t
+create wrappers for the items that are not visible. However, if you are
+constantly scrolling to sections that haven’t been rendered before,
+then there will be a delay because we need to create the UI wrappers
+for those items every time you scroll. This is the price we pay to have
+good initial rendering speed.<br>
+Having said that, I must add that we’ve been investigating possible
+improvements for this scenario. It’s heard to say at this point whether
+we’ll be able to improve it or not, but I’m keeping my fingers crossed.</p>
+<p>2) That’s a great idea - giving the user the capability to control
+the latency of the discarding of off-screen items. I’ve already added
+it to our list of feature ideas for the future. I don’t think we should
+allow customers to specify the delay in the form of time, but we could
+certainly allow control about the priority of this operation in the
+dispatcher queue. You would like the discarding of the items to have a
+lower priority, and we got feedback recently from another customer that
+would like that operation to have higher priority. The other customer
+mentioned to us that, if you keep scrolling up and down very quickly,
+the non-visible items are not discarded, and the memory consumption
+keep growing. By giving him an API to increase the priority of the
+discarding operation, he could adjust the behavior of his scenario. </p>
+<p>3) Actually, we already detect that scenario today, and it’s
+possible we’ll be able to improve this scenario a little. We are not
+looking into layout optimizations in particular, we’re mostly
+researching the implications of recycling containers. But here’s a tip
+that you can use today: the more fixed widths and heights you have in
+your elements, the cheaper the layout will be.</p>
+<p>4) Actually, this is the first time we hear this. Do you have a
+specific sample that you can share with us that shows slow keyboard
+scrolling? We would be happy to run perf tests on your scenario and see
+if there is anything we can do to improve that.</p>
+<p>Thank you so much for your thorough comment! Feedback like yours
+greatly helps us improve WPF, and make sure that it solves what
+customers want!</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-9", 9, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-10" class="comment">
+				<a name="comment-10" id="comment-10"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-10")'>
+					<cite>Comment by Laurent<a href="#comment-10"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-08 15:37:27 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,</p>
+<p>It’s great to see you posting again. I have trained quite a few
+people to WPF lately in my firm, and always mention your blog as *the*
+place to find information about binding. I unfortunately had to add
+“but she didn’t post much recently”. Hopefully now I can stop saying
+this <img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/icon_smile.gif" alt=":-)" class="wp-smiley"> </p>
+<p>Side note for the binding team: We really need to be able to bind
+constructor parameters or method parameters to other elements in XAML.
+For example something like:</p>
+<p>&lt;ObjectDataProvider x:Key=”MyODP”&gt;<br>
+&lt;ObjectDataProvider.ConstructorParameters&gt;<br>
+&lt;sys:Int32&gt;<br>
+&lt;Binding ElementName=”MainWindow” Path=”ActualWidth”/&gt;<br>
+&lt;/sys:Int32&gt;<br>
+&lt;/ObjectDataProvider.ConstructorParameters&gt;<br>
+&lt;/ObjectDataProvider&gt;</p>
+<p>Also, why not do ConverterParameter a DP so that we can bind to it:</p>
+<p>&lt;Button&gt;<br>
+&lt;Binding Source=”{StaticResource Something}”<br>
+Path=”MyProperty”<br>
+Converter=”{StaticResource MyConverter}”<br>
+ConverterParameter=”{Binding ElementName=MyElement, Path=MyValue}”&gt;<br>
+&lt;/Binding&gt;<br>
+&lt;/Button&gt;</p>
+<p>That would be really helpful!</p>
+<p>Keep posting <img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/icon_smile.gif" alt=":-)" class="wp-smiley"><br>
+Laurent</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-10", 10, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-54" class="comment odd">
+				<a name="comment-54" id="comment-54"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-54")'>
+					<cite>Comment by Bea<a href="#comment-54"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-10 11:07:12 						
+					</div>					
+					<div class="content">
+						<p>Hi Laurent,</p>
+<p>I appreciate your nice words. I’m planning to starting being more
+active in my blog. It’s been really hard to manage a more than full
+time job, an active blog, and a life. However, I really miss writing
+and plan to do it more often.</p>
+<p>Yes, we’ve heard that suggestion before. I explained a partial workaround in <a href="http://www.beacosta.com/Archive/2006_03_01_bcosta_archive.html" rel="nofollow">this </a>blog
+post, under the “Binding to methods” section. However, it’s not a
+complete workaround - it doesn’t work for many common scenarios. </p>
+<p>We would like to support this scenario, but we can’t simply make
+those properties DPs because that would mean Binding and
+ObjectDataProvider would have to be DOs. Apart from possibly affecting
+perf, it would open up many illegal scenarios that would greatly
+increase our test matrix. We would like to come up with a design that
+would allow a Binding to depend on data without necessarily allowing it
+to be data bound. We have a work item to do this, but it will require
+some cleaver designing.</p>
+<p>Thanks a lot for your suggestions!</p>
+<p>Bea</p>
+					</div>
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-54", 54, true); return false;'>Reply to this comment</a>
+											</div>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-112" class="comment">
+				<a name="comment-112" id="comment-112"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-112")'>
+					<cite>Comment by Laurent<a href="#comment-112"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-11 07:43:56 						
+					</div>					
+					<div class="content">
+						<p>Hi Bea,</p>
+<p>Oh yes I know how hard it can be to combine family life, programming
+as a work, programming as a passion, and additional hobbies <img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/icon_smile.gif" alt=":-)" class="wp-smiley"> </p>
+<p>I am aware of the “reverse binding” (Target To Source”) scenario,
+but thanks for reminding me. Maybe I can use that in some cases.</p>
+<p>In the typical case where I need this, however, I don’t think it’s
+possible. Typically, I’d like to pass a reference to a FrameworkElement
+to the converter, so that I can perform a “TryFindResource” on that
+element. Currently, I am using a MultiBinding to do that, where the
+first Binding is the FrameworkElement (RelativeSource Self), and the
+second value is the actual value I want to convert. That’s a neat trick
+(Thanks Dr WPF…) but it’s just a trick.</p>
+<p>Anyway <img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/icon_smile.gif" alt=":-)" class="wp-smiley">
+Finding a workaround to these problems has been a very interesting and
+creative task for me these last weeks, so thank the team for me <img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/icon_smile.gif" alt=":-)" class="wp-smiley"> </p>
+<p>Greetings,<br>
+Laurent</p>
+					</div>
+				<small>(Comments wont nest below this level)</small>
+				</div>
+			<div style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="div-comment-113" class="comment odd">
+				<a name="comment-113" id="comment-113"></a>
+				<div class="title">
+					<img class="collapseicon" src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/briansthreadedcomments.png" onclick='collapseThread("div-comment-113")'>
+					<cite>Comment by Bea<a href="#comment-113"></a></cite> 
+														
+				</div>
+				<div class="body">
+					<div class="meta">
+						2007-09-11 12:59:39 						
+					</div>					
+					<div class="content">
+						<p>Hi Laurent,</p>
+<p>Yes, that is a good trick.</p>
+<p>I’m glad you’re enjoying working with our platform <img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/icon_smile.gif" alt=":)" class="wp-smiley"> Although we have some rough edges, I am overall very proud of what we have accomplished.</p>
+<p>Bea</p>
+					</div>
+				</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+
+					<div class="reply">
+						 
+						<a href="#" onclick='moveAddCommentBelow("div-comment-112", 112, false); return false;'>Reply here</a>
+											</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+					
+
+			</div>
+			<!-- This has to be here because of Internet Explorers plethora of layout bugs -->
+			<div style="overflow: hidden; height: 1px;">&nbsp;</div>
+</div>
+<div id="addcomment" class="comment" style="background: rgb(64, 64, 64) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<a id="addcommentanchor" name="addcommentanchor"></a>
+<form action="http://www.beacosta.com/blog/wp-comments-post.php" method="post" id="commentform">
+<div class="add">
+	<div id="reroot" style="display: none;">
+		<small><a href="#" onclick="reRoot(); return false;">
+			Click here to cancel "reply".
+		</a></small>
+	</div>
+	<small>
+		Name (required)	</small>
+	<div>
+		<input name="author" id="author" class="textarea" value="" size="28" tabindex="1" type="text">
+	</div>
+	<small>
+		E-mail (required - never shown publicly)	</small>
+	<div>
+		<input name="email" id="email" value="" size="28" tabindex="2" type="text">
+	</div>
+	<small>
+		<acronym title="Uniform Resource Identifier">URI</acronym>	</small>
+	<div>
+		<input name="url" id="url" value="" size="28" tabindex="3" type="text">	
+	<div style="display: block;" id="secureimgdiv">
+				<p><label for="securitycode">Anti-spam word: (Required)</label><span style="color: rgb(255, 0, 0);">*</span><br>
+				<small>To
+prove you're a person (not a spam script), type the security word shown
+in the picture. Click on the picture to hear an audio file of the word.</small><br>
+				<input name="securitycode" id="securitycode" size="30" tabindex="4" type="text">
+				<input name="matchthis" value="1427" type="hidden">
+				<a href="http://www.beacosta.com/blog?audioselect=1427" title="Hear an audio file of the anti-spam image"><img src="Beatriz%20Costa%20%BB%20Are%20there%20any%20tricks%20that%20will%20help%20me%20improve%20TreeView%92s%20performance%20%20-%20Part%20I_files/blog.jpg" alt="Click to hear an audio file of the anti-spam word" style="border: 1px solid black; vertical-align: top; height: 50px; width: 160px;"></a></p>
+			</div></div>
+
+	<small>
+		Your Comment (<a href="#" onclick="changeCommentSize(-80); return false;">smaller size</a> | <a href="#" onclick="changeCommentSize(80); return false;">larger size</a>)
+	</small>
+	<div style="width: 100%;">
+		<textarea name="comment" id="comment" cols="60" rows="14" tabindex="4"></textarea>
+	</div>
+	<small>
+You may use &lt;a href="" title=""&gt; &lt;abbr title=""&gt;
+&lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt;
+&lt;code&gt; &lt;em&gt; &lt;i&gt; &lt;strike&gt; &lt;strong&gt; in your
+comment. </small>
+	<div>
+		<input name="comment_post_ID" value="42" type="hidden">
+		<input name="redirect_to" value="/blog/?p=42" type="hidden">
+		<input onclick="if(typeof(onAddComment) == 'function') { onAddComment(); } else { alert('ERROR:\nIt looks like the website administrator hasn\'t activated the Brians Threaded Comments plugin from the plugin page'); };" name="addcommentbutton" id="addcommentbutton" value="Add comment" tabindex="5" type="button">
+	</div>
+</div>
+<input id="comment_reply_ID" name="comment_reply_ID" value="0" type="hidden"><div style="display: none;" id="jsspamblock_hideable">
+	<input name="jsspamblock_hidden" value="3cebf4279d90a11b9e5bbc14b72bf228" type="hidden">
+	<p>For spam filtering purposes, please copy the number <strong>8253</strong> to the field below:</p>
+	<input name="jsspamblock_input" id="jsspamblock_input" tabindex="5" value="">
+</div>
+<script type="text/javascript">
+	document.getElementById("jsspamblock_input").value = 8253;
+	document.getElementById("jsspamblock_hideable").style.display = "none";
+</script>
+			
+			<script language="JavaScript" type="text/javascript">
+			<!--
+				var urlinput = document.getElementById("url");
+				var submitp = urlinput.parentNode;
+				var substitution2 = document.getElementById("secureimgdiv");
+				submitp.appendChild(substitution2, urlinput);
+			// -->
+			</script>
+</form>
+</div>
+						
+								
+				<p></p><div align="center"></div>						
+			</div>
+		</div>
+		<div id="right">
+		<div class="sidebar">  
+    <!-- Meta -->
+	<h2>Meta:</h2>
+ 	<ul class="noli">
+	<li><a href="http://feeds.feedburner.com/BeatrizCosta" title="Syndicate this site using RSS"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	<li><a href="http://feeds.feedburner.com/CommentsForBeatrizCosta" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+	</ul>				
+
+  <!-- Search -->
+  <h2>Search</h2>
+	<br>
+	<form id="searchform" method="get" action="">
+	<input name="s" id="s" size="15" type="text">
+	<input name="submit" value="Search" type="submit">
+	</form>
+
+  <!-- Categories -->
+  <h2>Categories</h2>
+	<ul class="menu">
+		<li><a href="http://www.beacosta.com/blog/?cat=3" title="View all posts filed under General">General</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=2" title="View all posts filed under WPF Data Binding">WPF Data Binding</a>
+	<ul class="children">
+	<li><a href="http://www.beacosta.com/blog/?cat=12" title="View all posts filed under Binding to ADO.NET">Binding to ADO.NET</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=14" title="View all posts filed under ListBox">ListBox</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=9" title="View all posts filed under ListView">ListView</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=10" title="View all posts filed under Master-detail">Master-detail</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=13" title="View all posts filed under Sorting, filtering, grouping">Sorting, filtering, grouping</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=11" title="View all posts filed under Styles and Templates">Styles and Templates</a>
+</li>
+	<li><a href="http://www.beacosta.com/blog/?cat=7" title="View all posts filed under TreeView">TreeView</a>
+</li>
+	</ul>
+</li>
+	</ul>					
+	
+  <!-- Archives -->
+	<h2>Archives</h2>
+	<ul>
+		<li><a href="http://www.beacosta.com/blog/?m=200709" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200708" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200705" title="May 2007">May 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200704" title="April 2007">April 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200701" title="January 2007">January 2007</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200611" title="November 2006">November 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200610" title="October 2006">October 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200609" title="September 2006">September 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200608" title="August 2006">August 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200607" title="July 2006">July 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200606" title="June 2006">June 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200605" title="May 2006">May 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200604" title="April 2006">April 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200603" title="March 2006">March 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200602" title="February 2006">February 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200601" title="January 2006">January 2006</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200512" title="December 2005">December 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200511" title="November 2005">November 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200510" title="October 2005">October 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200509" title="September 2005">September 2005</a></li>
+	<li><a href="http://www.beacosta.com/blog/?m=200508" title="August 2005">August 2005</a></li>
+	</ul>
+
+</div>			<div id="footer">
+				<div class="copyright">
+				<small>
+				<span class="copy">Copyright © 2007 				<strong><a title="Beatriz Costa" href="http://www.beacosta.com/blog">Beatriz Costa</a>
+				</strong>
+				</span>
+				<br><br>
+				</small>
+				</div>
+			</div>	
+		</div>
+	</div>
+</body></html>

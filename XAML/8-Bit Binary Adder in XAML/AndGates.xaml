@@ -1,0 +1,46 @@
+<!-- ===========================================
+      AndGates.xaml (c) 2006 by Charles Petzold
+     =========================================== -->
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="And Gates" WindowTitle="And Gates">
+    <Page.Resources>
+
+        <!-- Define AND-gate template as resource. -->
+
+        <ControlTemplate x:Key="templateAndGate">
+
+            <!-- StackPanel contains input CheckBoxes and output TextBlock -->
+
+            <StackPanel>
+                <CheckBox Name="input1" Content="Input 1" Margin="12" />
+                <CheckBox Name="input2" Content="Input 2" Margin="12" />
+                <TextBlock Name="output" Text="0" Margin="12" />
+            </StackPanel>
+
+            <!-- MultiDataTrigger sets text to "1" if both boxes checked -->
+
+            <ControlTemplate.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=input1, 
+                                                     Path=IsChecked}" 
+                                   Value="True" />
+                        <Condition Binding="{Binding ElementName=input2, 
+                                                     Path=IsChecked}" 
+                                   Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="output" Property="Text" Value="1" />
+                </MultiDataTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Page.Resources>
+
+    <!-- Display three AND gates. -->
+
+    <StackPanel Orientation="Horizontal">
+        <Control Template="{StaticResource templateAndGate}" />
+        <Control Template="{StaticResource templateAndGate}" />
+        <Control Template="{StaticResource templateAndGate}" />
+    </StackPanel>
+</Page>

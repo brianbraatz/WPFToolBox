@@ -1,0 +1,643 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Unni's Blog : "Panel-like" system</title>
+ 
+
+
+
+
+<meta name="description" content="Someone asked me how to implement a “panel-like” system using Expression / WPF. This led me to do a small take on Expression Interactive Designer itself J . Though the panel system presented here is only 1/100 th as complex as our real Palette management">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/unnir/pingback.aspx">
+<link rel="stylesheet" href="Panel-like%20system_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="Panel-like%20system_files/print.css" type="text/css" media="print">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Unni's Blog (RSS 2.0)" href="http://blogs.msdn.com/unnir/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Unni's Blog (Atom 1.0)" href="http://blogs.msdn.com/unnir/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="&quot;Panel-like&quot; system Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/unnir/commentrss.aspx?PostID=521065">
+
+	<script src="Panel-like%20system_files/global.js" type="text/javascript"></script></head><body>
+<form name="aspnetForm" method="post" action="/unnir/archive/2006/01/31/521065.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgIFI2N0bDAwJF8kY3RsMDAkXyRicyRfJHdzJF8kU2VhcmNoQm94BSpjdGwwMCRfJGN0bDAwJF8kY3RsMDEkXyRmb3JtJF8kY2hrUmVtZW1iZXJnjsQHatjJUAuJV4DOJuvhEgI10g==" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="Panel-like%20system_files/WebResource_002.js" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript" src="Panel-like%20system_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script>
+<script src="Panel-like%20system_files/WebResource.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Welcome to MSDN Blogs
+<a id="ctl00___ctl00___duw1_ac1___Login" href="http://blogs.msdn.com/login.aspx?ReturnUrl=%2funnir%2farchive%2f2006%2f01%2f31%2f521065.aspx">Sign in</a> | <a id="ctl00___ctl00___duw1_ac1___Register" href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/unnir/archive/2006/01/31/521065.aspx">Join</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="wrapper">
+	<div id="container">
+		<div id="header">
+			
+<div id="title">
+<h1><a id="ctl00___ctl00___bth___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/unnir/default.aspx">Unni's Blog</a></h1>
+<p id="tagline">Design, Expression Blend, WPF</p></div>
+
+		</div>
+		<div id="contentwrapper">
+			<div id="sidebar-a">
+				
+<div id="BlogLinksSideBar">
+	
+<div id="WeblogLinks">
+<h3>This Blog</h3>
+<ul>
+    
+	<li><a id="ctl00___ctl00___bs___wl___Aboutlink1" href="http://blogs.msdn.com/unnir/about.aspx">About</a></li>
+	<li><a id="ctl00___ctl00___bs___wl___Contactlink1" href="http://blogs.msdn.com/unnir/contact.aspx">Email</a></li>
+</ul>
+</div>
+</div>
+
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="SubscriptionsSideBar">
+	
+<div id="Subscriptions">
+ <h3>Syndication</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___bs___rss" href="http://blogs.msdn.com/unnir/rss.xml">RSS 2.0</a></li>
+        <li><a id="ctl00___ctl00___bs___bs___atom" href="http://blogs.msdn.com/unnir/atom.xml">Atom 1.0</a></li>
+    </ul>
+ </div>
+</div>
+
+<div id="SearchSideBar">
+	
+<h3>Search</h3>	
+<div id="Search">
+<ul><li>
+<input name="ctl00$_$ctl00$_$bs$_$ws$_$SearchBox" id="ctl00___ctl00___bs___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event);" type="text"> <a id="ctl00___ctl00___bs___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')">Go</a>
+</li></ul>
+</div>
+
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul>
+	<div class="SidebarTagCloud">
+No tags have been created or used yet.</div>
+
+	</ul>
+</div>
+
+<div id="NewsSideBar">
+	
+<h3>News</h3>
+<div id="news">Content is provided "AS IS" with no warranties and
+confers no rights. Opinions are my own and do not represent those of my
+employer.
+<p>
+<a href="http://thespoke.net/ViewContent.aspx?PostID=807740"><img src="Panel-like%20system_files/imaginecup.PNG" width="125"></a>
+</p></div>
+</div>
+
+<div id="ArchiveSideBar">
+	
+	
+<h3>Archives</h3>
+<ul>
+
+        <li>
+            <a href="http://blogs.msdn.com/unnir/archive/2007/03.aspx">March 2007 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/unnir/archive/2006/12.aspx">December 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/unnir/archive/2006/09.aspx">September 2006 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/unnir/archive/2006/06.aspx">June 2006 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/unnir/archive/2006/05.aspx">May 2006 (2)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/unnir/archive/2006/04.aspx">April 2006 (1)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/unnir/archive/2006/03.aspx">March 2006 (3)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/unnir/archive/2006/02.aspx">February 2006 (3)</a>
+        </li>
+    
+        <li>
+            <a href="http://blogs.msdn.com/unnir/archive/2006/01.aspx">January 2006 (7)</a>
+        </li>
+    
+</ul>
+	
+</div>
+
+<div id="LinkSideBar">
+	
+        <h3>Fellow Expression Bloggers</h3>
+        <ul>
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl01_Link" href="http://www.blois.us/blog/">Peter Blois</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl02_Link" href="http://spaces.msn.com/members/manodesign/">Manuel Clement</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl03_Link" href="http://blogs.msdn.com/johngossman/">John Gossman</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl04_Link" href="http://www.elementsofpassion.com/">Amir Khella</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl05_Link" href="http://www.joemarini.com/">Joe Marini</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl06_Link" href="http://blogs.msdn.com/micahel/">Michael Hunter</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl07_Link" href="http://blogs.msdn.com/adamu/">Adam Ulrich</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl08_Link" href="http://blogs.msdn.com/stevewhitepsfd/">Steve White</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl09_Link" href="http://www.aisto.com/Roeder/frontier/">Lutz Roeder</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl10_Link" href="http://www.multimediadev.net/">Arturo Toledo</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl11_Link" href="http://blogs.msdn.com/mariogu">Mario Guzzi</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl12_Link" href="http://blogs.msdn.com/alanga">Alan Gasperini</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl13_Link" href="http://blogs.msdn.com/adrianma/">Adrian Mascarenhas</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl14_Link" href="http://spaces.msn.com/lingesh">Lingesh Palaniappan</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl15_Link" href="http://blogs.msdn.com/adrianvinca">Adrian Vinca</a></li>
+            </ul>
+    
+        <h3>Useful Links</h3>
+        <ul>
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl01_Link" href="http://www.microsoft.com/expression">Microsoft Expression</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl02_Link" href="http://www.microsoft.com/products/expression/en/Expression-Blend/default.mspx">Expression Blend</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl03_Link" href="http://blogs.msdn.com/expression">Expression Team Blog</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl04_Link" href="http://msdn2.microsoft.com/en-us/library/ms754130.aspx">.Net 3.0 WPF Online Documentation</a></li>
+            
+                <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl05_Link" href="http://www.aisto.com/Roeder/dotnet/">.NET Reflector</a></li>
+            </ul>
+    
+
+	
+</div>
+			</div>
+			<div id="content"><div id="content2">
+				
+        
+
+<div class="post">
+	<div class="postview">			
+		<h2>"Panel-like" system</h2>
+		<p class="MsoNormal" style="margin: 0in 0in 0pt;">Someone
+asked me how to implement a “panel-like” system using Expression / WPF.
+This led me to do a small take on Expression Interactive Designer itself<span style="font-family: Wingdings;"><span style="">J</span></span>. Though the panel system presented here is only 1/100<sup>th</sup>
+as complex as our real Palette management infrastructure (and is my own
+code), it serves as a good example to get you started. Source for this
+example can be downloaded / re-used / re-implemented at will from <a href="https://home.comcast.net/%7Eunnir/samples/StickyPanels.zip">here</a>.</p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;">&nbsp;</p><img src="Panel-like%20system_files/StickyPanels.PNG"> 
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><o:p>&nbsp;</o:p></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;">I wanted to highlight a few concepts in this example: a) How to implement a naive dragging <span style="">&nbsp;</span>system,
+b) How to create and raise your own events, c) How to do simple
+hit-testing in WPF so you can figure out what is under the mouse and
+drop into it. I also wanted to highlight the clear distinction in roles
+between a developer and designer (my design skills are found severely
+wanting at times!).</p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><o:p>&nbsp;</o:p></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;">The Panels are all
+custom controls that extend HeaderedContentControl because we want the
+panels to be draggable only when clicking on the Header part and we
+also want the designer to be able to specify Header and Content for
+every Panel. It is expected (call it a contract if you will) that the
+designer will name one element in the template of the control to be
+“PART_Header”. As long as this contract is maintained, the control
+should work as expected; else the drag functionality simply won’t be
+there.</p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><o:p>&nbsp;</o:p></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;">Next step is to pull
+out Interactive Designer (the real one!) and create the look for an
+individual Panel and layout the various Panels. All the Panels share
+the same “chrome” (consisting of the border and the close button) and
+this is done by applying the same template to each. Also, each Panel’
+template has two ContentPresenter elements – one to render the Header
+(which is a string in our case), and one to render Content (which are
+simple images). These various panels are then added to two ItemsControl
+(for the left and right containers). Also, grid splitters have been
+used for resizing the panel columns – neat, ah?</p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><o:p>&nbsp;</o:p></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;">Back to the developer
+role using and using VS. At this point, we have the capability to drag
+panels around. Now, we want to be able to drop them into other
+containers. Whenever a panel is dragged, it raises a custom event
+called “DragPanel”. Also, when the user lets go of the mouse, another
+event called “DropPanel” is raised. These events then bubble up to the
+parent Window which then performs required logic for changing
+containers around. One advantage of using eventing in this fashion is
+that I can then reuse my custom Panel class in other scenarios where I
+don’t really care about drop-drop and parents and such. Also, you will
+see the use of some simple hit-testing code to determine the
+ItemsControl into which a container is dropped. Personally, I don’t
+prefer writing low-level hit-testing code (as I have shown in the
+example) and I would rather use data-binding and custom controls for
+this purpose – this is just there for the purpose of showing the power
+of the platform.</p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;"><o:p>&nbsp;</o:p></p>
+<p class="MsoNormal" style="margin: 0in 0in 0pt;">Feel free to send feedback to me!</p>
+		<div class="postfoot">
+			Published Tuesday, January 31, 2006 1:33 PM
+			by
+			<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=10729">unnir</a>
+			
+			
+			<div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel"></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+										
+		</div>
+	</div>
+</div>
+
+
+<div id="postToolbar">
+<h2 class="CommonSubTitle">Comment Notification</h2>
+<p>
+	If you would like to receive an email when updates are made to this post, please register <a id="ctl00___ctl00___ctl01___DetailedSubBar___RegisterLink" href="http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=/unnir/archive/2006/01/31/521065.aspx">here</a>
+	
+</p>
+<p>
+	Subscribe to this post's comments using
+	<a id="ctl00___ctl00___ctl01___DetailedSubBar___CommentRssLink" href="http://blogs.msdn.com/unnir/commentrss.aspx?PostID=521065">RSS</a>
+</p>
+</div>
+
+<h3>
+	Comments
+</h3>	
+<div id="comments">
+
+		<div class="comment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl00_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#531789">#</a>
+				<span>re: &amp;quot;Panel-like&amp;quot; system<a name="531789"></a></span>
+			</h4>
+			<div class="commentsbody">
+I think this is a great project. It's a great start and I see it being
+very helpful to me. I only have one problem which I am having
+difficulty with. I opened your project in VS2005 (with orcas CTP) and,
+although the project runs, when I try to view Window1.xaml in the
+Design View I get errors. The first is that there is a missing assembly
+attribute in the first line of code. All the other errors state "type
+StickyPanels:PanelControl could not be found." Any help you can provide
+on this issue would be helpful. </div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Tuesday, February 14, 2006 9:44 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl00_NameLink" title="SRyan" target="_blank">SRyan</a>
+			</div>
+		</div>
+	
+		<div class="altcommentowner">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#532100">#</a>
+				<span>re: &amp;quot;Panel-like&amp;quot; system<a name="532100"></a></span>
+			</h4>
+			<div class="commentsbody">
+I would encourage your to try opening the project in Microsoft
+Expression Interactive Designer - you should be able to work with it in
+there. You will see the same error since the project uses a custom
+control which requires building your project, but once you do that, the
+artboard should automatically refresh.
+<br>
+<br>The Orcas CTP that you are referring to (which contains a design
+tool for WPF code-named "Cider") is in its infancy - expect cool things
+from the Cider team in the near future.
+<br>
+<br>Hope this helps!
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Tuesday, February 14, 2006 5:17 PM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_NameLink" title="unnir" href="http://blogs.msdn.com/user/Profile.aspx?UserID=10729" target="_blank">unnir</a>
+			</div>
+		</div>
+	
+		<div class="comment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#545708">#</a>
+				<span>Displaying a graph using the Windows Presentation Foundation<a name="545708"></a></span>
+			</h4>
+			<div class="commentsbody">
+This example
+shows&amp;amp;nbsp;how&amp;amp;nbsp;databinding&amp;amp;nbsp;can be
+used for displaying a set of connected nodes.&amp;amp;nbsp;To... </div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Tuesday, March 07, 2006 5:18 PM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_NameLink" rel="nofollow" title="TrackBack" href="http://blogs.msdn.com/adrianvinca/archive/2006/03/07/SimpleGraphSample.aspx" target="_blank">Adrian Vinca's blog</a>
+			</div>
+		</div>
+	
+		<div class="altcomment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#568071">#</a>
+				<span>re: "Panel-like" system<a name="568071"></a></span>
+			</h4>
+			<div class="commentsbody">
+Any plans to update this to March CTP? The discussion group pointed me
+here for an example of panels, but I can't see it in March CTP of EID. </div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Tuesday, April 04, 2006 8:46 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_NameLink" title="pfeudo" target="_blank">pfeudo</a>
+			</div>
+		</div>
+	
+		<div class="comment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#572664">#</a>
+				<span>re: "Panel-like" system<a name="572664"></a></span>
+			</h4>
+			<div class="commentsbody">
+I tried recreating this in the March CTP. Although I can get it to
+compile without errors, my panels don't drag. In fact the OnDragPanel
+doesn't seem to be hit at all. Am I missing a step somewhere? </div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Monday, April 10, 2006 2:27 PM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_NameLink" title="sryan" target="_blank">sryan</a>
+			</div>
+		</div>
+	
+		<div class="altcomment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl05_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#584539">#</a>
+				<span>re: "Panel-like" system<a name="584539"></a></span>
+			</h4>
+			<div class="commentsbody">
+What is the purpose of the e.MouseDevice.Capture() and .Synchronize()
+method calls in the PanelControl class's mousebutton and mousemove
+event handlers? I commented them out and it appeared to have no effect
+on the code whatseover. Thanks! </div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Wednesday, April 26, 2006 5:56 PM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl05_NameLink" title="Leebert" target="_blank">Leebert</a>
+			</div>
+		</div>
+	
+		<div class="comment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl06_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#584787">#</a>
+				<span>Resizable panels<a name="584787"></a></span>
+			</h4>
+			<div class="commentsbody">
+				Sombody asked me how one could extend the &amp;quot;Panel-like system&amp;quot; such that Panels could be re-sized. Here...
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Thursday, April 27, 2006 1:51 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl06_NameLink" rel="nofollow" title="TrackBack" href="http://blogs.msdn.com/unnir/archive/2006/04/26/584786.aspx" target="_blank">Unni's Blog</a>
+			</div>
+		</div>
+	
+		<div class="altcomment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl07_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#942665">#</a>
+				<span>HowTo drag an single panel out of the main window<a name="942665"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Hi,</p>
+<p>I have a question regarding "floating" windows...? To achieve
+something like dragging a single panel out of the main window, would it
+be neccessary to create a "temporary" new window object and this panel
+as child of that window or how would you handle this?</p>
+<p>Thanks...</p>
+<p>Bajan</p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Friday, November 03, 2006 9:14 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl07_NameLink" title="bdelic" href="http://blogs.msdn.com/user/Profile.aspx?UserID=53152" target="_blank">bdelic</a>
+			</div>
+		</div>
+	
+		<div class="comment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl08_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#1210886">#</a>
+				<span>re: "Panel-like" system<a name="1210886"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Do you have a VB version of this code?</p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Tuesday, December 05, 2006 6:08 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl08_NameLink" title="Lalit" target="_blank">Lalit</a>
+			</div>
+		</div>
+	
+		<div class="altcomment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl09_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#1361454">#</a>
+				<span>re: "Panel-like" system<a name="1361454"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Lesters
+blog at blogs.msdn.com\llobo has a much better example. It is int he
+form of a library - so is more useful to the users. </p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Monday, December 25, 2006 11:01 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl09_NameLink" title="Frank P" target="_blank">Frank P</a>
+			</div>
+		</div>
+	
+		<div class="comment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl10_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#2504240">#</a>
+				<span>re: "Panel-like" system<a name="2504240"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Hello.</p>
+<p>Good Work.</p>
+<p>How can I close a HeaderedContentControl by clicking on the button "x" ??</p>
+<p>I try a lot of way, and it's never work....</p>
+<p>Thank you....</p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Wednesday, May 09, 2007 10:38 AM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl10_NameLink" title="Dimitri" target="_blank">Dimitri</a>
+			</div>
+		</div>
+	
+		<div class="altcomment">
+			<h4>
+				<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl11_PermaLink" title="permalink" href="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx#4103273">#</a>
+				<span>re: "Panel-like" system<a name="4103273"></a></span>
+			</h4>
+			<div class="commentsbody">
+				<p>Hello,</p>
+<p>Great job !</p>
+<p>Do you know if it's possible to place the dragged control between two others, rather than dropping it always on the end ?</p>
+<p>Thank you :-)</p>
+
+			</div>
+			<div class="commentssubhead">
+				<span class="commentspan"></span>Saturday, July 28, 2007 12:26 PM by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl11_NameLink" title="Aybe" target="_blank">Aybe</a>
+			</div>
+		</div>
+	
+
+</div>
+
+	
+
+
+	
+<div id="commentform">
+<h3>Leave a Comment</h3>
+
+    <dl>
+        <dt><label for="ctl00___ctl00___ctl01___form___tbTitle">Title</label> <em>(required)</em><span id="ctl00___ctl00___ctl01___form___Requiredfieldvalidator1" style="color: Red; visibility: hidden;">*</span></dt>
+        <dd><input name="ctl00$_$ctl00$_$ctl01$_$form$_$tbTitle" value="re: &quot;Panel-like&quot; system" id="ctl00___ctl00___ctl01___form___tbTitle" class="smallbox" type="text"></dd>
+        
+        <dt id="ctl00___ctl00___ctl01___form___NameTitle"><label for="ctl00___ctl00___ctl01___form___tbName">Name</label> <em>required</em><span id="ctl00___ctl00___ctl01___form___Requiredfieldvalidator2" style="color: Red; visibility: hidden;">*</span></dt><dd id="ctl00___ctl00___ctl01___form___NameDesc"><input name="ctl00$_$ctl00$_$ctl01$_$form$_$tbName" id="ctl00___ctl00___ctl01___form___tbName" class="smallbox" type="text"></dd>
+        
+        <dt><label for="ctl00___ctl00___ctl01___form___tbUrl">Your URL</label> </dt>
+        <dd><input name="ctl00$_$ctl00$_$ctl01$_$form$_$tbUrl" id="ctl00___ctl00___ctl01___form___tbUrl" class="smallbox" type="text"></dd>
+        
+        <dt><label for="ctl00___ctl00___ctl01___form___tbComment">Comments</label> <em>(required)</em><span id="ctl00___ctl00___ctl01___form___Requiredfieldvalidator3" style="color: Red; visibility: hidden;">*</span></dt>
+        <dd><textarea name="ctl00$_$ctl00$_$ctl01$_$form$_$tbComment" rows="5" cols="25" id="ctl00___ctl00___ctl01___form___tbComment"></textarea></dd>
+
+        <dt><input id="ctl00___ctl00___ctl01___form___chkRemember" name="ctl00$_$ctl00$_$ctl01$_$form$_$chkRemember" type="checkbox"><label for="ctl00___ctl00___ctl01___form___chkRemember">Remember Me?</label></dt>
+
+        <dt><input name="ctl00$_$ctl00$_$ctl01$_$form$_$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$_$ctl00$_$ctl01$_$form$_$btnSubmit", "", true, "", "", false, false))' id="ctl00___ctl00___ctl01___form___btnSubmit" type="submit"></dt>
+    </dl>
+</div>
+
+
+
+	
+   
+    
+			</div></div>
+			<div id="contentfooter">&nbsp;</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator1"), document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator2"), document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator3"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00___ctl00___ctl01___form___Requiredfieldvalidator1 = document.all ? document.all["ctl00___ctl00___ctl01___form___Requiredfieldvalidator1"] : document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator1");
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.controltovalidate = "ctl00___ctl00___ctl01___form___tbTitle";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.errormessage = "*";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator1.initialvalue = "";
+var ctl00___ctl00___ctl01___form___Requiredfieldvalidator2 = document.all ? document.all["ctl00___ctl00___ctl01___form___Requiredfieldvalidator2"] : document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator2");
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator2.controltovalidate = "ctl00___ctl00___ctl01___form___tbName";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator2.errormessage = "*";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator2.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator2.initialvalue = "";
+var ctl00___ctl00___ctl01___form___Requiredfieldvalidator3 = document.all ? document.all["ctl00___ctl00___ctl01___form___Requiredfieldvalidator3"] : document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator3");
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.controltovalidate = "ctl00___ctl00___ctl01___form___tbComment";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.errormessage = "*";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.initialvalue = "";
+// -->
+</script>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx"
+dc:identifier="http://blogs.msdn.com/unnir/archive/2006/01/31/521065.aspx"
+dc:title="&quot;Panel-like&quot; system"
+trackback:ping="http://blogs.msdn.com/unnir/trackback.aspx?PostID=521065" />
+</rdf:RDF>
+-->
+
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        </form>
+</body></html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>See Win App : Adding Design Time Metadata to Cider and Blend</title>
+ 
+
+
+
+
+<meta name="keywords" content="Cider,WPF,Visual Studio 2008">
+<meta name="description" content="The extensibility points in Cider are all metadata based. That means that you use attributes to attach design time features to your custom controls. This was also true with the extensibility in Windows Forms however there is a significant difference.">
+<meta name="GENERATOR" content="CommunityServer 2.1 SP1 (Build: 61025.2)">
+<link rel="pingback" href="http://blogs.msdn.com/jnak/pingback.aspx">
+<link rel="stylesheet" href="adding-design-time-metadata-to-cider-and-blend.aspx_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="adding-design-time-metadata-to-cider-and-blend.aspx_files/print.htm" type="text/css" media="print">
+<link rel="stylesheet" href="adding-design-time-metadata-to-cider-and-blend.aspx_files/sidebar_left_wide.css" type="text/css" media="screen">
+<link rel="stylesheet" href="adding-design-time-metadata-to-cider-and-blend.aspx_files/customcss.css" type="text/css" media="screen">
+<link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="See Win App (RSS 2.0)" href="http://blogs.msdn.com/jnak/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="See Win App (Atom 1.0)" href="http://blogs.msdn.com/jnak/atom.xml">
+<link rel="alternate" type="application/rss+xml" title="Adding Design Time Metadata to Cider and Blend Comment RSS (RSS 2.0)" href="http://blogs.msdn.com/jnak/commentrss.aspx?PostID=4324958">
+
+	<script src="adding-design-time-metadata-to-cider-and-blend.aspx_files/global.js" type="text/javascript"></script>
+<style>
+.DoNotDisplay { display: none; }
+</style></head><body>
+<form name="aspnetForm" method="post" action="/jnak/archive/2007/08/10/adding-design-time-metadata-to-cider-and-blend.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFI2N0bDAwJF8kY3RsMDAkXyRicyRfJHdzJF8kU2VhcmNoQm94rkRXbV1z5ohWybmugg6l5bfTy3M=" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="adding-design-time-metadata-to-cider-and-blend.aspx_files/WebResource.js" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/Telligent_Modal.js"></script><script language="javascript" type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('/utility/loading.htm',['Modal'],['ModalTitle'],['ModalClose'],['ModalContent'],['ModalFooter'],['ModalResize'],['ModalMask'],100);
+// ]]>
+</script><script language="javascript" type="text/javascript">
+var RatingControlAJAX = {
+"SaveRating":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Blogs.Controls.BlogRatePost',id,'SaveRating',[p0],cb,0,0,0,1);}};
+</script><script language="javascript" type="text/javascript">
+var ThreadSubscribeLinkButton = {
+"ToggleEmailReplies":function(id,p0,cb){return Ajax_CallBack('CommunityServer.Controls.ThreadSubscribeLinkButton',id,'ToggleEmailReplies',[p0],cb,0,0,0,0);}};
+</script><script type="text/javascript" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/ratingcontrol.js"></script><script language="JavaScript" type="text/javascript">var ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackWorking = false;var ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus = false;function updateSubscriptionText() {if(ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus == true) {document.getElementById('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton').innerHTML = 'Stop sending me email alerts for this post';} else {document.getElementById('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton').innerHTML = 'Send me email alerts for new comments to this post';}}function toggleSubscription() {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackWorking = true;document.getElementById('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton').innerHTML = 'Updating email notifications...';ThreadSubscribeLinkButton.ToggleEmailReplies('ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton',529397, toggleSubscriptionCallback);}function toggleSubscriptionCallback(response) {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackWorking = false;if((response.error == null) && (response.value == true)) {if(ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus == true) {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus = false;} else {ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton_trackStatus = true;}updateSubscriptionText();} else {updateSubscriptionText();alert('An error happened while processing your request.  Please notify an administrator and try again later.');}}</script>
+<script src="adding-design-time-metadata-to-cider-and-blend.aspx_files/WebResource_002.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+			
+<div id="masthead">
+	
+		<div id="welcome" align="right">
+			
+					Signed in as <a href="http://blogs.msdn.com/user/EditProfile.aspx?ReturnUrl=/blogs/post.aspx?App=jnak&amp;y=2007&amp;m=08&amp;d=10&amp;PostName=adding-design-time-metadata-to-cider-and-blend">bbraatz</a>
+ | <a id="ctl00___ctl00___duw1_rc1___logout" href="http://blogs.msdn.com/logout.aspx">Sign out</a>
+
+
+
+				
+			 | 
+			<a id="ctl00___ctl00___duw1_Faq1" href="http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</a>
+		</div>
+	
+</div>
+<div id="wrapper"><div id="container">
+	<div id="header">
+		
+<div id="title">
+	<h1><a id="ctl00___ctl00___bt___BlogTitle" class="headermaintitle" href="http://blogs.msdn.com/jnak/default.aspx">See Win App</a></h1>
+	<p id="tagline">The Cider Chronicles</p>
+</div>
+<div id="SubscriptionsSideBar">
+	
+<div id="subscriptions">
+<ul>
+	<li><a id="ctl00___ctl00___bt___s___rss" href="http://blogs.msdn.com/jnak/rss.xml">RSS 2.0</a></li>
+	<li><a id="ctl00___ctl00___bt___s___atom" href="http://blogs.msdn.com/jnak/atom.xml">Atom 1.0</a></li>
+	<li><a id="ctl00___ctl00___bt___s___email" href="http://blogs.msdn.com/jnak/emailsubscriptions.aspx">Email alerts</a></li>
+</ul>
+</div>
+ 
+ 
+</div>
+<div id="nav">
+	<ul>
+	<li><a id="ctl00___ctl00___bt___home" href="http://blogs.msdn.com/jnak/default.aspx">Home</a></li>
+	
+	<li><a id="ctl00___ctl00___bt___Contactlink1" href="http://blogs.msdn.com/jnak/contact.aspx">Email</a></li>
+	</ul>
+</div>
+	</div>
+	<div id="contentwrapper">
+		<div id="sidebar-a">
+			
+<div id="TasksSideBar">
+	
+</div>
+
+<div id="SearchSideBar">
+	
+<div id="search">
+	<h3>Search</h3>
+	<input name="ctl00$_$ctl00$_$bs$_$ws$_$SearchBox" id="ctl00___ctl00___bs___ws___SearchBox" class="searchBox" onkeydown="KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event);" type="text">
+	<a id="ctl00___ctl00___bs___ws___SearchButton" href="javascript:__doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')">Go</a>
+</div><br>
+</div>
+
+<div id="TagSideBar">
+	<h3>Tags</h3>
+	<ul>
+	<ul class="SidebarTagCloud">
+<li class="Tag3"><a href="http://blogs.msdn.com/jnak/archive/tags/Chit-chat/default.aspx" rel="tag">Chit-chat</a></li>
+<li class="Tag1"><a href="http://blogs.msdn.com/jnak/archive/tags/Cider/default.aspx" rel="tag">Cider</a></li>
+<li class="Tag5"><a href="http://blogs.msdn.com/jnak/archive/tags/Software/default.aspx" rel="tag">Software</a></li>
+<li class="Tag6"><a href="http://blogs.msdn.com/jnak/archive/tags/TechEd/default.aspx" rel="tag">TechEd</a></li>
+<li class="Tag4"><a href="http://blogs.msdn.com/jnak/archive/tags/Visual+Studio+2008/default.aspx" rel="tag">Visual Studio 2008</a></li>
+<li class="Tag2"><a href="http://blogs.msdn.com/jnak/archive/tags/WPF/default.aspx" rel="tag">WPF</a></li>
+</ul>
+
+	</ul>
+</div>
+
+<div id="NewsSideBar">
+	
+</div>
+
+<div id="ArchiveSideBar">
+	
+
+<h3>Archives</h3>
+<ul>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2007/10.aspx">October 2007 (5)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2007/09.aspx">September 2007 (4)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2007/08.aspx">August 2007 (6)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2007/06.aspx">June 2007 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/12.aspx">December 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/11.aspx">November 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/10.aspx">October 2006 (1)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/08.aspx">August 2006 (2)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/07.aspx">July 2006 (3)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/06.aspx">June 2006 (4)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/05.aspx">May 2006 (4)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/04.aspx">April 2006 (4)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/03.aspx">March 2006 (10)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/02.aspx">February 2006 (5)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2006/01.aspx">January 2006 (4)</a></li>
+
+	<li><a href="http://blogs.msdn.com/jnak/archive/2005/12.aspx">December 2005 (7)</a></li>
+
+</ul>
+
+</div>
+
+<div id="LinkSideBar">
+	
+    <h3>Blog Roll</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl01_Link" href="http://www.joelonsoftware.com/">Joel on Software</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl02_Link" href="http://www.charlespetzold.com/blog/blog.xml">Charles Petzold</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl03_Link" href="http://martinfowler.com/bliki/">Martin Fowler</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl04_Link" href="http://blogs.msdn.com/fyuan/">Feng Yuan</a></li>
+    </ul>
+
+    <h3>Cider Bloggers</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl01_Link" rel="co-worker" href="http://blogs.msdn.com/jfoscoding">Jessica Fosler's jfo's coding</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl02_Link" rel="co-worker" href="http://blogs.msdn.com/subhagpo/">Subhag Oak</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl03_Link" rel="co-worker" href="http://www.urbanpotato.net/">Brian Pepin</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl04_Link" rel="co-worker" href="http://www.removingalldoubt.com/">Removing all Doubt - Chuck Jazdzewski</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl05_Link" rel="co-worker" href="http://myfun.spaces.live.com/blog/">Richard Bailey</a></li>
+    </ul>
+
+    <h3>Cider Links</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl02_Links_ctl01_Link" href="http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=169&amp;SiteID=1">MSDN Forum</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl02_Links_ctl02_Link" href="http://channel9.msdn.com/wiki/default.aspx/Cider.HomePage">Channel9 Wiki</a></li>
+    </ul>
+
+    <h3>Other Microsoft Blogs</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl01_Link" href="http://blogs.msdn.com/OldNewThing">Raymond Chen's The Old New Thing</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl02_Link" href="http://blogs.msdn.com/ericgu">Eric Gunnerson's C# Compendium</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl03_Link" href="http://scobleizer.wordpress.com/">Scobleizer</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl04_Link" href="http://pluralsight.com/blogs/dbox">Don Box's Spoutlet</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl05_Link" href="http://www.sellsbrothers.com/">Marquee de Sells</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl06_Link" href="http://blogs.msdn.com/ricom/default.aspx">Rico Mariani's Performance Tidbits</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl07_Link" href="http://shawnburke.com/default.aspx?document=1">Shawn Burke</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl08_Link" href="http://blogs.msdn.com/jgalasyn/default.aspx">Jim Galasyn (Client/Web UE)</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl09_Link" href="http://blogs.msdn.com/dphill/default.aspx">David Hill (Smart Client)</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl10_Link" href="http://spaces.msn.com/manodesign/">Manuel Clement (Windows UX)</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl11_Link" href="http://blogs.msdn.com/brada/default.aspx">Brad Abrams (UIFx)</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl12_Link" href="http://blogs.msdn.com/mhendersblog/default.aspx">Mike Henderlight (WPF/WinForms interop)</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl03_Links_ctl13_Link" href="http://blogs.msdn.com/benwu/">Benjamin Wulfe (WinForms)</a></li>
+    </ul>
+
+    <h3>WPF/E</h3>
+    <ul>
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl04_Links_ctl01_Link" href="http://blogs.msdn.com/mharsh/default.aspx">Mike Harsh</a></li>
+    
+        <li><a id="ctl00___ctl00___bs___lcl___Categories_ctl04_Links_ctl02_Link" href="http://blogs.msdn.com/jstegman/">Joe Stegman</a></li>
+    </ul>
+
+
+</div></div>
+		<div id="content"><div id="content2">
+			
+			
+
+
+
+
+<div class="post">
+	<div class="posthead">
+		Friday, August 10, 2007 12:42 PM
+		<a id="ctl00___ctl00___ctl01___Entry___AuthorLink" href="http://blogs.msdn.com/user/Profile.aspx?UserID=15272">jnak</a> 
+		<h2>Adding Design Time Metadata to Cider and Blend <span class="ratemenu" id="ctl00___ctl00___ctl01___Entry___Ratings" title="Not yet rated"><img title="Poor" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Poor" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Fair" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Fair" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Average" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Average" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Good" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Good" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/star-right-off.gif" align="absmiddle" border="0"><img title="Excellent" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/star-left-off.gif" align="absmiddle" border="0"><img title="Excellent" src="adding-design-time-metadata-to-cider-and-blend.aspx_files/star-right-off.gif" align="absmiddle" border="0"></span><input value="0" id="ctl00___ctl00___ctl01___Entry___Ratings_Value" type="hidden"></h2>
+	</div>
+	<div class="postcontent">
+		<p>The
+extensibility points in Cider are all metadata based.&nbsp; That means
+that you use attributes to attach design time features to your custom
+controls.&nbsp; This was also true with the extensibility in Windows
+Forms however there is a significant difference. In Windows Forms, you
+might've done something like the following:</p>
+<p>[Designer(“CoolDesigner, CustomControl.Design")] <br>public class CoolControl {<br>&nbsp; [Category(“Layout”)]&nbsp; <br>&nbsp; [Browsable(true)]<br>&nbsp; public string CoolTitle&nbsp;{ … }<br>&nbsp;…&nbsp; }</p>
+<p>Notice how the attribute is added directly to the control.&nbsp;
+This means that the assembly in which that attribute is defined needs
+to be present whenever that control is loaded.&nbsp; In Windows Forms,
+this was ok since the design time attributes shipped with the .Net
+Framework redistributable.&nbsp; In the Cider case, this is not true,
+Cider assemblies are shipped only with Visual Studio 2008 and cannot be
+redistributed by 3rd parties.</p>
+<p>Additionally, changing the metadata requires that the control be
+re-built.&nbsp; Since WPF shipped their controls with Vista and Cider
+is shipping with Visual Studio 2008, we needed to be able to add
+metadata to existing controls.</p>
+<p>The solution is that at design time, lookups for metadata are made
+to a "MetadataStore".&nbsp; That is, if you add attributes for a type
+to the MetadataStore, it will be as if you had added them declaratively
+-- but only at design time.</p>
+<p>&nbsp;The question then becomes: how do I add my 3rd party metadata
+to the MetadataStore?&nbsp; We use a naming convention to load 3rd
+party "metadata assemblies".&nbsp; A Metadata Assembly is simply an
+assembly that contains an implementation of
+Microsoft.Windows.Design.Metadata.IRegisterMetadata which is defined in
+Microsoft.Windows.Design.dll.</p>
+<p>&nbsp;When an assembly named "CustomAssembly" is loaded in Cider or
+Blend, the designer will look for an assembly named
+CustomAssembly.Design.dll.&nbsp; If found, it will load it, instantiate
+any types that implement IRegisterMetadata and call the Register()
+method.&nbsp; This is your opportunity to add metadata to the metadata
+store.&nbsp; </p>
+<p>&nbsp;Cider will also look for an assembly named
+CustomAssembly.VisualStudio.Design.dll and load it (after loading
+CustomAssembly.Design.dll) for Cider specific metadata.&nbsp; Likewise
+Blend will do the same for assemblies named
+CustomAssembly.Expression.design.dll.&nbsp; This is important because
+if Cider only extensibility features such as Adorners and MenuActions
+were added in in a CustomAssembly.Design.dll, this would cause Blend to
+fail to load that assembly on machines that only have Blend installed
+as it will have references to Cider only assemblies such as
+Microsoft.Windows.Design.Interaction.dll or
+Microsoft.Windows.Design.Extensibility.dll -- only
+Microsoft.Windows.Design.Dll is shared between Cider and Blend.</p>
+<p>The implementation of the IRegisterMetadata.Register() method will look like this:</p>
+<p>internal class Metadata : IRegisterMetadata {<br>&nbsp;&nbsp;&nbsp; public void Register() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AttributeTableBuilder builder = new AttributeTableBuilder();</p>
+<p>&nbsp; // To add an attribute such as this using the MetadataStore API<br>&nbsp;&nbsp;// [Feature(typeof(OpacitySliderAdornerProvider))] <br>&nbsp;&nbsp;// public class ButtonWithDesignTime { }</p>
+<p>&nbsp;&nbsp;
+builder.AddCustomAttributes(typeof(ButtonWithDesignTime),&nbsp;new
+FeatureAttribute(typeof(OpacitySliderAdornerProvider)));<br>&nbsp;&nbsp; MetadataStore.AddAttributeTable(builder.CreateTable());&nbsp;&nbsp;<br>&nbsp; &nbsp;} <br>}</p>
+<p>There is also an override that allows you to specify the property to add the attribute to.</p>
+<p>Note that you can still use attributes that are defined in the .Net
+runtime assemblies such as BrowsableAttribute and the like
+declaratively as you did in Windows Forms however you lose the ability
+to change your design time metadata independently of your control.</p>
+<p>This functionality is available for you to play with in Visual Studio 2008 beta 2 and later.</p>
+<p>For an example of a project with extensibility features that are
+wired up using the MetadataStore and Metadata Assemblies, please see <a href="http://blogs.msdn.com/jnak/archive/2007/08/10/recording-of-my-teched-talk-on-cider-wpf-designer-design-time-extensibility.aspx" mce_href="http://blogs.msdn.com/jnak/archive/2007/08/10/recording-of-my-teched-talk-on-cider-wpf-designer-design-time-extensibility.aspx">http://blogs.msdn.com/jnak/archive/2007/08/10/recording-of-my-teched-talk-on-cider-wpf-designer-design-time-extensibility.aspx</a></p>
+<p mce_keep="true">&nbsp;</p>
+	</div>
+	<div><span id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel">Filed under: <a href="http://blogs.msdn.com/jnak/archive/tags/Cider/default.aspx" rel="tag">Cider</a>, <a href="http://blogs.msdn.com/jnak/archive/tags/WPF/default.aspx" rel="tag">WPF</a>, <a href="http://blogs.msdn.com/jnak/archive/tags/Visual+Studio+2008/default.aspx" rel="tag">Visual Studio 2008</a></span><input name="ctl00$_$ctl00$_$ctl01$_$Entry$_$InlineTagEditorPanel" id="ctl00___ctl00___ctl01___Entry___InlineTagEditorPanel_State" value="nochange" type="hidden"></div>
+		
+</div>
+
+<div class="postfoot">
+	
+<div id="postToolbar">
+<h2 class="CommonSubTitle">Comment Notification</h2>
+<p>
+	
+	<a href="javascript:toggleSubscription();" id="ctl00___ctl00___ctl01___DetailedSubBar___BlogThreadButton" trackingresourcename="Weblogs_UnTrack" nottrackingresourcename="Weblogs_Track" workingresourcename="Weblogs_TrackWorking">Send me email alerts for new comments to this post</a>
+</p>
+<p>
+	Subscribe to this post's comments using
+	<a id="ctl00___ctl00___ctl01___DetailedSubBar___CommentRssLink" href="http://blogs.msdn.com/jnak/commentrss.aspx?PostID=4324958">RSS</a>
+</p>
+</div>
+
+</div>
+
+	<div id="comments">
+	<h3>
+	Comments
+</h3>
+
+	<div class="comment">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_PermaLink" title="permalink" href="http://blogs.msdn.com/jnak/archive/2007/08/10/adding-design-time-metadata-to-cider-and-blend.aspx#4394980">#</a>
+		How are Metadata Assemblies Found?<a name="4394980"></a>
+	</h4>
+	<div class="commentssubhead">
+		<span class="commentspan"></span>
+		Wednesday, August 15, 2007 12:22 AM 
+			by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl01_NameLink" rel="nofollow" title="TrackBack" href="http://blogs.msdn.com/jnak/archive/2007/08/14/how-are-metadata-assemblies-found.aspx" target="_blank">See Win App</a>
+	</div>
+	<div class="commentsbody">
+		<p>Adding on to my last post about adding metadata to Cider and Blend's MetadataStore by using Metadata</p>
+
+	</div>
+	</div>
+
+	<div class="comment">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_PermaLink" title="permalink" href="http://blogs.msdn.com/jnak/archive/2007/08/10/adding-design-time-metadata-to-cider-and-blend.aspx#4395263">#</a>
+		How are Metadata Assemblies Found?<a name="4395263"></a>
+	</h4>
+	<div class="commentssubhead">
+		<span class="commentspan"></span>
+		Wednesday, August 15, 2007 12:41 AM 
+			by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl02_NameLink" rel="nofollow" title="TrackBack" href="http://geeks.ms/blogs/roller/archive/2007/08/15/how-are-metadata-assemblies-found.aspx" target="_blank">Noticias externas</a>
+	</div>
+	<div class="commentsbody">
+		<p>Adding on to my last post about adding metadata to Cider and Blend&amp;#39;s MetadataStore by using Metadata</p>
+
+	</div>
+	</div>
+
+	<div class="comment">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_PermaLink" title="permalink" href="http://blogs.msdn.com/jnak/archive/2007/08/10/adding-design-time-metadata-to-cider-and-blend.aspx#4423884">#</a>
+		Adding MenuActions (think DesignerVerbs) to Cider's Right Click ContextMenu<a name="4423884"></a>
+	</h4>
+	<div class="commentssubhead">
+		<span class="commentspan"></span>
+		Thursday, August 16, 2007 9:31 PM 
+			by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl03_NameLink" rel="nofollow" title="TrackBack" href="http://blogs.msdn.com/jnak/archive/2007/08/16/adding-menuactions-think-designerverbs-to-cider-s-right-click-contextmenu.aspx" target="_blank">See Win App</a>
+	</div>
+	<div class="commentsbody">
+		<p>Now that you know how to add design time metadata vis Metadata Assemblies and how those Metadata Assemblies</p>
+
+	</div>
+	</div>
+
+	<div class="comment">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_PermaLink" title="permalink" href="http://blogs.msdn.com/jnak/archive/2007/08/10/adding-design-time-metadata-to-cider-and-blend.aspx#4424628">#</a>
+		Adding MenuActions (think DesignerVerbs) to Cider's Right Click ContextMenu<a name="4424628"></a>
+	</h4>
+	<div class="commentssubhead">
+		<span class="commentspan"></span>
+		Thursday, August 16, 2007 10:34 PM 
+			by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl04_NameLink" rel="nofollow" title="TrackBack" href="http://geeks.ms/blogs/roller/archive/2007/08/17/adding-menuactions-think-designerverbs-to-cider-s-right-click-contextmenu.aspx" target="_blank">Noticias externas</a>
+	</div>
+	<div class="commentsbody">
+		<p>Now that you know how to add design time metadata vis Metadata Assemblies and how those Metadata Assemblies</p>
+
+	</div>
+	</div>
+
+	<div class="comment">
+	<h4>
+		<a id="ctl00___ctl00___ctl01___Comments___Comments_ctl05_PermaLink" title="permalink" href="http://blogs.msdn.com/jnak/archive/2007/08/10/adding-design-time-metadata-to-cider-and-blend.aspx#4426773">#</a>
+		[WPF] Design time user experience<a name="4426773"></a>
+	</h4>
+	<div class="commentssubhead">
+		<span class="commentspan"></span>
+		Friday, August 17, 2007 3:25 AM 
+			by <a id="ctl00___ctl00___ctl01___Comments___Comments_ctl05_NameLink" rel="nofollow" title="TrackBack" href="http://www.simonferquel.net//blog/archive/2007/08/17/wpf-design-time-user-experience.aspx" target="_blank">SimonFerquel.net</a>
+	</div>
+	<div class="commentsbody">
+		<p>[WPF] Design time user experience</p>
+
+	</div>
+	</div>
+
+	</div>
+
+
+
+
+
+<div id="commentform">
+<h3>Leave a Comment</h3>
+<dl>
+	
+	<dt><label for="ctl00___ctl00___ctl01___form___tbUrl">Your URL</label> <em>(optional</em>)</dt>
+	<dd><input name="ctl00$_$ctl00$_$ctl01$_$form$_$tbUrl" id="ctl00___ctl00___ctl01___form___tbUrl" class="smallbox" type="text"></dd>
+	<dt><label for="ctl00___ctl00___ctl01___form___tbComment">Comments</label> <em>(required)</em><span id="ctl00___ctl00___ctl01___form___Requiredfieldvalidator3" style="color: Red; visibility: hidden;">*</span></dt>
+	<dd><textarea name="ctl00$_$ctl00$_$ctl01$_$form$_$tbComment" rows="5" cols="25" id="ctl00___ctl00___ctl01___form___tbComment"></textarea></dd>
+	<dt></dt>
+	<dt><input name="ctl00$_$ctl00$_$ctl01$_$form$_$btnSubmit" value="Submit" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$_$ctl00$_$ctl01$_$form$_$btnSubmit", "", true, "", "", false, false))' id="ctl00___ctl00___ctl01___form___btnSubmit" type="submit"></dt>
+</dl>
+</div>
+
+
+
+   
+    
+		</div></div>
+		<div id="contentfooter">&nbsp;</div>
+	</div>
+
+	<div id="footer"></div></div>
+</div>
+
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator3"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var ctl00___ctl00___ctl01___form___Requiredfieldvalidator3 = document.all ? document.all["ctl00___ctl00___ctl01___form___Requiredfieldvalidator3"] : document.getElementById("ctl00___ctl00___ctl01___form___Requiredfieldvalidator3");
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.controltovalidate = "ctl00___ctl00___ctl01___form___tbComment";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.errormessage = "*";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl01___form___Requiredfieldvalidator3.initialvalue = "";
+// -->
+</script>
+
+<script language="javascript" type="text/javascript">
+<!--
+function KeyDownHandlerctl00___ctl00___bs___ws___SearchButton(event)
+{
+	if (event.keyCode == 13)
+	{
+		event.returnValue = false;
+		event.cancel = true;
+     __doPostBack('ctl00$_$ctl00$_$bs$_$ws$_$SearchButton','')	}
+}
+
+//-->
+</script>
+<script language="javascript">var ctl00___ctl00___ctl01___Entry___Ratings=new RateControl('ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings','ctl00___ctl00___ctl01___Entry___Ratings_Value', 5, '/Themes/default/images/common/', false, 'ratemenu','CommonRateControlActive','ratemenu',['Terrible','Poor','Fair','Average','Good','Excellent'],false,true);</script>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/jnak/archive/2007/08/10/adding-design-time-metadata-to-cider-and-blend.aspx"
+dc:identifier="http://blogs.msdn.com/jnak/archive/2007/08/10/adding-design-time-metadata-to-cider-and-blend.aspx"
+dc:title="Adding Design Time Metadata to Cider and Blend"
+trackback:ping="http://blogs.msdn.com/jnak/trackback.aspx?PostID=4324958" />
+</rdf:RDF>
+-->
+
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        </form>
+</body></html>

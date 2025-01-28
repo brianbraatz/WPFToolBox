@@ -1,0 +1,49 @@
+<!-- =============================================
+      TodaysDate.xaml (c) 2006 by Charles Petzold 
+     ============================================= -->
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:s="clr-namespace:System;assembly=mscorlib"
+      xmlns:g="clr-namespace:System.Globalization;assembly=mscorlib"
+      WindowTitle="Today's Date"
+      Title="Today's Date">
+
+    <Page.Resources>
+
+        <!-- Save today's date as the Tag property of this resource. -->
+        <FrameworkElement x:Key="datetime" Tag="{x:Static s:DateTime.Now}" />
+
+        <!-- Use a transform to subtract 1 from the 1-based Month. -->
+        <TransformGroup x:Key="xformMonth">
+            <TranslateTransform X="{Binding Source={StaticResource datetime}, 
+                                            Path=Tag.Month}" />
+            <TranslateTransform X="-1" />
+        </TransformGroup>
+
+        <!-- Store all the month names in a ListBox. -->
+        <ListBox x:Key="monthnames" 
+            ItemsSource=
+                "{Binding Source={x:Static g:DateTimeFormatInfo.CurrentInfo}, 
+                          Path=MonthNames}" 
+            SelectedIndex=
+                "{Binding Source={StaticResource xformMonth}, 
+                          Path=Value.OffsetX}" />
+    </Page.Resources>
+
+    <StackPanel Orientation="Horizontal" 
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                TextBlock.FontSize="24pt">
+
+        <TextBlock Text="{Binding Source={StaticResource datetime}, 
+                                  Path=Tag.DayOfWeek}" />
+        <TextBlock Text=", " />
+        <TextBlock Text="{Binding Source={StaticResource monthnames}, 
+                                  Path=SelectedItem}" />
+        <TextBlock Text=" " />
+        <TextBlock Text="{Binding Source={StaticResource datetime}, 
+                                  Path=Tag.Day}" />
+        <TextBlock Text=", " />
+        <TextBlock Text="{Binding Source={StaticResource datetime}, 
+                                  Path=Tag.Year}" />
+    </StackPanel>
+</Page>

@@ -1,0 +1,36 @@
+﻿<Window x:Class="ItemsControlExample.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ItemsControlExample" 
+    Title="ItemsControlExample" Height="300" Width="300"
+    >
+  <Window.Resources>
+    <local:TextToHashConverter x:Key="TextToHashConverter" />
+    <ControlTemplate x:Key="radialTemplate">
+      <local:ItemsRadialPanel IsItemsHost="True" />
+    </ControlTemplate>
+    <ControlTemplate x:Key="scrollTemplate">
+      <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <VirtualizingStackPanel IsItemsHost="True" />
+      </ScrollViewer>
+    </ControlTemplate>
+    <DataTemplate x:Key="textTemplate">
+      <Border Background="Red">
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding}" />
+      </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="hashTemplate">
+      <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Converter={StaticResource TextToHashConverter}}" />
+    </DataTemplate>
+  </Window.Resources>
+  <DockPanel>
+    <UniformGrid DockPanel.Dock="Top" Rows="1" Columns="5">
+      <Button Content="Add item" Name="addButton" />
+      <Button Content="Radial" Name="radialButton" />
+      <Button Content="Scroll" Name="scrollButton" />
+      <Button Content="Text" Name="textButton" />
+      <Button Content="Hash" Name="hashButton" />
+    </UniformGrid>
+    <ListBox Name="listBox" Template="{StaticResource scrollTemplate}" ItemTemplate="{StaticResource textTemplate}" />
+  </DockPanel>
+</Window>

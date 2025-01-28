@@ -1,0 +1,1000 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0059)http://www.codeplex.com/Wiki/View.aspx?ProjectName=DWG2XAML -->
+<HTML class="IE IE6" xmlns="http://www.w3.org/1999/xhtml"><HEAD 
+id=ctl00_ctl00_HeadTag><TITLE>The DWG/DXF to XAML Conversion Toolkit (D2X) - Home</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META 
+content="A .NET Toolkit designed to facilitate the use of 2D and 3D DWG and DXF content in Windows Presentation Foundation applications." 
+name=Description><LINK 
+href="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/StyleSheet.css" 
+type=text/css rel=stylesheet><LINK 
+href="C:\Code\Example\WPF Xaml Expression\_Converters\3D DXF To XAML Converter\The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files\StyleSheet(1).css" 
+type=text/css rel=stylesheet><LINK href="../favicon.ico" rel="SHORTCUT ICON">
+<SCRIPT type=text/javascript>
+        var logoImageLoaded=false;
+        function markImages(){
+            logoImageLoaded=true;        
+        }
+        function masterLoad(){
+            if(!logoImageLoaded)document.body.className+=' NoImages';
+            logoImageLoaded=null;
+            delete logoImageLoaded;
+            CodePlex.UpdateProgress.initialize('ctl00_ctl00_UpdateProgressPanel');
+            SmartDate_Load(); // Fixup GMT dates
+            if(document.documentElement.className.indexOf('IE')>-1){
+                fixWidth();
+                //$addHandler(window,'resize',getResizeHandler());
+            }
+        }
+        function fixWidth(){
+            var mainContent=$get('CanvasContent');
+            if(mainContent){
+                var width=mainContent.scrollWidth;
+                var container=mainContent.parentNode;
+                container.style.width=Math.max(container.scrollWidth,container.clientWidth)+'px';
+                //if(container.clientWidth<=container.scrollWidth&&container.currentStyle.width=='auto')container.style.width=(container.scrollWidth)+'px';
+                //else container.style.width='auto';
+            }
+            CodePlex.UpdateProgress.reset();
+        }
+        function getResizeHandler(e){
+            var _timer=0;
+            return function(){
+                if(_timer)clearTimeout(_timer);
+                _timer=setTimeout(fixWidth,250);
+            }
+        }
+        //WebTrends Globals
+        
+        var ProductionDomains="codeplex.com";
+        var gDomain="m.webtrends.com";
+        var gTrackEvents=1;
+        var a=ProductionDomains.split(',');var b=0;for(var i=0;i<a.length;i++){if(window.location.host.indexOf(a[i])!=-1){b++;}}if(b!=0){var gDcsId="dcsnbepko00000c1t09pkmw6c_3y7n";}if(b==0){var gDcsId="dcseyn9uo100004ncoak1iy6c_3p2y";}
+        var gFpc="WT_FPC";if(document.cookie.indexOf(gFpc+"=")==-1){document.write("<SCR"+"IPT TYPE='text/javascript' SRC='"+"http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+gDomain+"/"+gDcsId+"/wtid.js"+"'><\/SCR"+"IPT>");}
+                
+    </SCRIPT>
+
+<META content=DWG2XAML name=WT.pi>
+<STYLE type=text/css>.SideBar {
+	DISPLAY: none
+}
+.SideBarPadding {
+	DISPLAY: none
+}
+.MainContent {
+	WIDTH: auto
+}
+.SiteContentTable {
+	WIDTH: 100%
+}
+</STYLE>
+
+<STYLE type=text/css>.SiteHeader {
+	OVERFLOW: hidden; HEIGHT: 45px! important
+}
+.SiteHeaderLeft {
+	OVERFLOW: hidden; HEIGHT: 45px! important
+}
+.SiteContent {
+	PADDING-RIGHT: 1em; MARGIN-TOP: 0px; PADDING-LEFT: 1em; MIN-HEIGHT: 225px; PADDING-BOTTOM: 1em; PADDING-TOP: 0.7em; BACKGROUND-COLOR: #fff
+}
+.FF .SiteContentTable {
+	CLEAR: both
+}
+.ProjectContent {
+	PADDING-RIGHT: 0.7em; PADDING-LEFT: 0.7em; MIN-HEIGHT: 225px; PADDING-BOTTOM: 0.2em; PADDING-TOP: 0.2em
+}
+.Safari .ProjectContent {
+	PADDING-TOP: 1.3em
+}
+.IE6 .ProjectTitleControl {
+	POSITION: relative
+}
+</STYLE>
+
+<STYLE type=text/css>.ProjectContent {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+</STYLE>
+
+<STYLE type=text/css>.LeftSideBar {
+	DISPLAY: none
+}
+.LeftSideBarPadding {
+	DISPLAY: none
+}
+.RightSideBar {
+	DISPLAY: block
+}
+.RightSideBarPadding {
+	DISPLAY: block
+}
+.RightSideBarPadding {
+	WIDTH: 0px
+}
+.MainContent {
+	PADDING-RIGHT: 17px; WIDTH: auto
+}
+.IE7 .MainContent {
+	PADDING-RIGHT: 0px
+}
+.SiteContentTable {
+	WIDTH: 100%
+}
+</STYLE>
+
+<STYLE type=text/css>.MainContent {
+	WIDTH: 100%
+}
+.RightSideBar {
+	WIDTH: auto
+}
+</STYLE>
+
+<SCRIPT src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/wiki.js" 
+type=text/javascript></SCRIPT>
+<LINK title="The DWG/DXF to XAML Conversion Toolkit (D2X)" 
+href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx" 
+type=application/rss+xml rel=alternate><LINK 
+title="The DWG/DXF to XAML Conversion Toolkit (D2X)-Discussions" 
+href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fforum%2fDWG2XAML" 
+type=application/rss+xml rel=alternate><LINK 
+title="The DWG/DXF to XAML Conversion Toolkit (D2X)-Issue Tracker" 
+href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fworkitem%2fDWG2XAML" 
+type=application/rss+xml rel=alternate><LINK 
+title="The DWG/DXF to XAML Conversion Toolkit (D2X)-Releases" 
+href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2fDWG2XAML" 
+type=application/rss+xml rel=alternate><LINK 
+title="The DWG/DXF to XAML Conversion Toolkit (D2X)-Source Code" 
+href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fsourcecontrol%2fDWG2XAML" 
+type=application/rss+xml rel=alternate><LINK 
+title="The DWG/DXF to XAML Conversion Toolkit (D2X)-Wiki" 
+href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fwiki%2fDWG2XAML" 
+type=application/rss+xml rel=alternate>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR></HEAD>
+<BODY onload=masterLoad();>
+<FORM id=aspnetForm name=aspnetForm action=/Wiki/View.aspx?ProjectName=DWG2XAML 
+method=post encType=multipart/form-data autocomplete="off">
+<DIV><INPUT id=__EVENTTARGET type=hidden name=__EVENTTARGET> <INPUT 
+id=__EVENTARGUMENT type=hidden name=__EVENTARGUMENT> <INPUT id=__VIEWSTATE 
+type=hidden 
+value=/wEPDwULLTEyMjQxMzkwMDAPZBYCZg9kFgJmD2QWBGYPZBYKZg8WAh4HVmlzaWJsZWdkAgMPFgIeBFRleHQFTjxsaW5rIHJlbD0ic3R5bGVzaGVldCIgdHlwZT0idGV4dC9jc3MiIGhyZWY9Ii9Dc3MvU3R5bGVTaGVldC5hc2h4P2Nzcz1XaWtpIiAvPmQCBg8WAh8BBR9jdGwwMF9jdGwwMF9VcGRhdGVQcm9ncmVzc1BhbmVsZAIIDxYCHwEF6QQNCiAgICAgICAgdmFyIFByb2R1Y3Rpb25Eb21haW5zPSJjb2RlcGxleC5jb20iOw0KICAgICAgICB2YXIgZ0RvbWFpbj0ibS53ZWJ0cmVuZHMuY29tIjsNCiAgICAgICAgdmFyIGdUcmFja0V2ZW50cz0xOw0KICAgICAgICB2YXIgYT1Qcm9kdWN0aW9uRG9tYWlucy5zcGxpdCgnLCcpO3ZhciBiPTA7Zm9yKHZhciBpPTA7aTxhLmxlbmd0aDtpKyspe2lmKHdpbmRvdy5sb2NhdGlvbi5ob3N0LmluZGV4T2YoYVtpXSkhPS0xKXtiKys7fX1pZihiIT0wKXt2YXIgZ0Rjc0lkPSJkY3NuYmVwa28wMDAwMGMxdDA5cGttdzZjXzN5N24iO31pZihiPT0wKXt2YXIgZ0Rjc0lkPSJkY3NleW45dW8xMDAwMDRuY29hazFpeTZjXzNwMnkiO30NCiAgICAgICAgdmFyIGdGcGM9IldUX0ZQQyI7aWYoZG9jdW1lbnQuY29va2llLmluZGV4T2YoZ0ZwYysiPSIpPT0tMSl7ZG9jdW1lbnQud3JpdGUoIjxTQ1IiKyJJUFQgVFlQRT0ndGV4dC9qYXZhc2NyaXB0JyBTUkM9JyIrImh0dHAiKyh3aW5kb3cubG9jYXRpb24ucHJvdG9jb2wuaW5kZXhPZignaHR0cHM6Jyk9PTA/J3MnOicnKSsiOi8vIitnRG9tYWluKyIvIitnRGNzSWQrIi93dGlkLmpzIisiJz48XC9TQ1IiKyJJUFQ+Iik7fQ0KICAgICAgICAgICAgICAgIGQCCg9kFgJmDxYCHwBnZAIBD2QWBgIED2QWBGYPDxYCHwBoZBYCAgEPZBYCAgQPZBYCZg8PZBYCHgVzdHlsZQUcdG9wOi05cHg7bWFyZ2luLWJvdHRvbTotOXB4OxYCAgEPZBYCAgUPDxYCHwBoZGQCAg9kFgQCAQ8PFgIeC05hdmlnYXRlVXJsBSBodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTGQWBGYPDxYCHghJbWFnZVVybAUcL0ltYWdlcy9wcm9qZWN0X2ljb25fbHJnLmdpZmRkAgMPDxYCHwEFOFRoZSBEV0cmIzQ3O0RYRiB0byBYQU1MIENvbnZlcnNpb24gVG9vbGtpdCAmIzQwO0QyWCYjNDE7ZGQCAw8WAh8AaBYCZg8PFgIfAwVAaHR0cDovL3d3dy5jb2RlcGxleC5jb20vRFdHMlhBTUwvUHJvamVjdC9FZGl0UHJvamVjdERldGFpbHMuYXNweGRkAgYPZBYEAgEPDxYCHwBoZBYCAgQPZBYCZg8PZBYCHwIFHHRvcDotOXB4O21hcmdpbi1ib3R0b206LTlweDtkAgMPZBYEAgEPZBYQAgEPDxYCHwMFIGh0dHA6Ly93d3cuY29kZXBsZXguY29tL0RXRzJYQU1MZBYCZg9kFgICBQ9kFgJmDw9kFgIfAgUcdG9wOi01cHg7bWFyZ2luLWJvdHRvbTotNXB4O2QCAw9kFgICAQ8PFgIfAwU9aHR0cDovL3d3dy5jb2RlcGxleC5jb20vRFdHMlhBTUwvUmVsZWFzZS9Qcm9qZWN0UmVsZWFzZXMuYXNweGQWAmYPZBYCAgUPZBYCZg8PZBYCHwIFHHRvcDotNXB4O21hcmdpbi1ib3R0b206LTVweDtkAgQPZBYCAgEPDxYCHwMFMWh0dHA6Ly93d3cuY29kZXBsZXguY29tL0RXRzJYQU1ML1RocmVhZC9MaXN0LmFzcHhkFgJmD2QWAgIFD2QWAmYPD2QWAh8CBRx0b3A6LTVweDttYXJnaW4tYm90dG9tOi01cHg7ZAIFD2QWAgIBDw8WAh8DBTNodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTC9Xb3JrSXRlbS9MaXN0LmFzcHhkFgJmD2QWAgIFD2QWAmYPD2QWAh8CBRx0b3A6LTVweDttYXJnaW4tYm90dG9tOi01cHg7ZAIGD2QWAgIBDw8WAh8DBUtodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTC9Tb3VyY2VDb250cm9sL0xpc3REb3dubG9hZGFibGVDb21taXRzLmFzcHhkFgJmD2QWAgIFD2QWAmYPD2QWAh8CBRx0b3A6LTVweDttYXJnaW4tYm90dG9tOi01cHg7ZAIIDw8WAh8DBTpodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTC9QZW9wbGUvUHJvamVjdFBlb3BsZS5hc3B4ZBYCZg9kFgICBQ9kFgJmDw9kFgIfAgUcdG9wOi01cHg7bWFyZ2luLWJvdHRvbTotNXB4O2QCCg8PFgIfAwU1aHR0cDovL3d3dy5jb2RlcGxleC5jb20vRFdHMlhBTUwvUHJvamVjdC9MaWNlbnNlLmFzcHhkFgJmD2QWAgIFD2QWAmYPD2QWAh8CBRx0b3A6LTVweDttYXJnaW4tYm90dG9tOi01cHg7ZAIMD2QWBAICD2QWAgIBD2QWBmYPDxYCHwQFFC9JbWFnZXMvaWNvbl9yc3MuZ2lmZGQCAQ8PFgIfAwU4aHR0cDovL3d3dy5jb2RlcGxleC5jb20vRFdHMlhBTUwvUHJvamVjdC9Qcm9qZWN0UnNzLmFzcHhkZAICDw8WAh8EBRUvSW1hZ2VzL2Fycm93X2RzYy5naWZkZAIED2QWDAIBD2QWAgIBDw8WBB8DBThodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTC9Qcm9qZWN0L1Byb2plY3RSc3MuYXNweB8BBThUaGUgRFdHJiM0NztEWEYgdG8gWEFNTCBDb252ZXJzaW9uIFRvb2xraXQgJiM0MDtEMlgmIzQxO2RkAgMPZBYCAgEPDxYCHwMFaWh0dHA6Ly93d3cuY29kZXBsZXguY29tL0RXRzJYQU1ML1Byb2plY3QvUHJvamVjdFJzcy5hc3B4P1Byb2plY3RSU1NGZWVkPWNvZGVwbGV4JTNhJTJmJTJmZm9ydW0lMmZEV0cyWEFNTGRkAgUPZBYCAgEPDxYCHwMFbGh0dHA6Ly93d3cuY29kZXBsZXguY29tL0RXRzJYQU1ML1Byb2plY3QvUHJvamVjdFJzcy5hc3B4P1Byb2plY3RSU1NGZWVkPWNvZGVwbGV4JTNhJTJmJTJmd29ya2l0ZW0lMmZEV0cyWEFNTGRkAgcPZBYCAgEPDxYCHwMFa2h0dHA6Ly93d3cuY29kZXBsZXguY29tL0RXRzJYQU1ML1Byb2plY3QvUHJvamVjdFJzcy5hc3B4P1Byb2plY3RSU1NGZWVkPWNvZGVwbGV4JTNhJTJmJTJmcmVsZWFzZSUyZkRXRzJYQU1MZGQCCQ9kFgICAQ8PFgIfAwVxaHR0cDovL3d3dy5jb2RlcGxleC5jb20vRFdHMlhBTUwvUHJvamVjdC9Qcm9qZWN0UnNzLmFzcHg/UHJvamVjdFJTU0ZlZWQ9Y29kZXBsZXglM2ElMmYlMmZzb3VyY2Vjb250cm9sJTJmRFdHMlhBTUxkZAILD2QWAgIBDw8WAh8DBWhodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTC9Qcm9qZWN0L1Byb2plY3RSc3MuYXNweD9Qcm9qZWN0UlNTRmVlZD1jb2RlcGxleCUzYSUyZiUyZndpa2klMmZEV0cyWEFNTGRkAgMPZBYCAgUPZBYCZg9kFgICAQ9kFgICAQ9kFgwCAw9kFgoCAQ8PFgQfAwVlaHR0cDovL3d3dy5jb2RlcGxleC5jb20vRFdHMlhBTUwvV2lraS9FZGl0LmFzcHg/dGl0bGU9SG9tZSZhY3Rpb249RWRpdCZ2ZXJzaW9uPTQxJnJlZmVycmluZ1RpdGxlPUhvbWUfAGhkZAIDDw8WAh8AaGRkAgkPDxYCHwMFeGphdmFzY3JpcHQ6b3BlblByZXZpZXdXaWtpV2luZG93KCdodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTC9XaWtpL1ByaW50LmFzcHg/dGl0bGU9SG9tZSZ2ZXJzaW9uPTQxJmFjdGlvbj1QcmludCcpO2RkAg0PDxYCHwMFRmh0dHA6Ly93d3cuY29kZXBsZXguY29tL0RXRzJYQU1ML1dpa2kvSW5mby5hc3B4P3RpdGxlPUhvbWUmYWN0aW9uPUluZm9kZAIRDw8WAh8DBTFodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTC9XaWtpL1JlY2VudC5hc3B4ZGQCCA8WAh4LXyFJdGVtQ291bnQCARYCAgEPZBYCAgEPDxYEHwEFBEhvbWUfAwUvaHR0cDovL3d3dy5jb2RlcGxleC5jb20vRFdHMlhBTUwvV2lraS9WaWV3LmFzcHhkZAIKDw8WAh8BBdwlPGRpdiBjbGFzcz0id2lraWRvYyI+DQo8YSBocmVmPSJodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTC9XaWtpL1ZpZXcuYXNweD90aXRsZT1OZXdzJTIwRmVlZHMmYW1wO3JlZmVycmluZ1RpdGxlPUhvbWUiPk5ld3MgRmVlZHM8L2E+PGJyIC8+PGI+VXBkYXRlIC0gRDJYIHdhcyBjaG9zZW4gYXMgdGhlIDxpPm92ZXJhbGwgd2lubmVyPC9pPiBvZiB0aGUgPGEgaHJlZj0iaHR0cDovL2Jsb2dzLm1zZG4uY29tL21zd2Fuc29uL2FyY2hpdmUvMjAwNi8wOC8yOS83Mjk1MDEuYXNweCIgY2xhc3M9ImV4dGVybmFsTGluayI+V1BGL1hBTUwgQ29udmVyc2lvbiBUb29sIENvbnRlc3Q8c3BhbiBjbGFzcz0iZXh0ZXJuYWxMaW5rSWNvbiI+PC9zcGFuPjwvYT48L2I+PGJyIC8+QSBoZWFydHkgdGhhbmsgeW91IGdvZXMgb3V0IHRvIE1pY3Jvc29mdCBmb3IgcnVubmluZyB0aGUgY29udGVzdCwgYW5kIHRvIGV2ZXJ5b25lIHdobyA8YSBocmVmPSJtYWlsdG86ZnJlZHZAZHluYXNjYXBlLmNvbSIgY2xhc3M9ImV4dGVybmFsTGluayI+c2VudCBtZSBmZWVkYmFjazxzcGFuIGNsYXNzPSJleHRlcm5hbExpbmtJY29uIj48L3NwYW4+PC9hPi4gIEJlIHN1cmUgdG8gY2hlY2sgb3V0IDxhIGhyZWY9Imh0dHA6Ly9ibG9ncy5tc2RuLmNvbS9tc3dhbnNvbi9hcmNoaXZlLzIwMDYvMTEvMjgvbW9yZS13cGYtY29udmVyc2lvbi10b29scy1pbmNsdWRpbmctdmI2LXRvLXhhbWwuYXNweCIgY2xhc3M9ImV4dGVybmFsTGluayI+TWlrZSBTd2Fuc29uJ3MgQmxvZzxzcGFuIGNsYXNzPSJleHRlcm5hbExpbmtJY29uIj48L3NwYW4+PC9hPiBmb3IgbGlua3MgdG8gc29tZSBvdGhlciBncmVhdCBjb252ZXJzaW9uIHRvb2xzLCBpbmNsdWRpbmcgdGhlIG90aGVyIHdpbm5lcnMuPGJyIC8+IDxiciAvPi1GLjxiciAvPiA8YnIgLz48Yj5UaGUgRFdHL0RYRiB0byBYQU1MIENvbnZlcnNpb24gVG9vbGtpdCAoRDJYKTwvYj48YnIgLz4gPGJyIC8+VGhlIERXRy9EWEYgdG8gWEFNTCBDb252ZXJzaW9uIFRvb2xraXQgaXMgZGVzaWduZWQgdG8gaGVscCBkZXZlbG9wZXJzIGxldmVyYWdlIDJEIGFuZCAzRCBEV0cgYW5kIERYRiBkYXRhIGluIFdpbmRvd3MgUHJlc2VudGF0aW9uIEZvdW5kYXRpb24gYXBwbGljYXRpb25zLiAgKFNlZSB0aGUgPGEgaHJlZj0iaHR0cDovL3d3dy5jb2RlcGxleC5jb20vRFdHMlhBTUwvV2lraS9WaWV3LmFzcHg/dGl0bGU9U2FtcGxlcyZhbXA7cmVmZXJyaW5nVGl0bGU9SG9tZSI+U2FtcGxlczwvYT4gcGFnZSBmb3IgYSBxdWljayBkZW1vbnN0cmF0aW9uIG9mIHRoZSBjb252ZXJzaW9uIGNhcGFiaWxpdGllcyBvZiB0aGUgdG9vbGtpdC4pPGJyIC8+IDxiciAvPjxpbWcgc3JjPSJodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTC9Qcm9qZWN0L0Rvd25sb2FkL0ZpbGVEb3dubG9hZC5hc3B4P0Rvd25sb2FkSWQ9MzQyMCIgYWx0PSIzZGZsb3cuanBnIiAvPjxiciAvPjxoNj4NCjxhIGhyZWY9Imh0dHA6Ly93d3cuYWlhaS5lZC5hYy51ay9+YmF0L2dhL3N1cGVyY2FyLTNkLmh0bWwiIGNsYXNzPSJleHRlcm5hbExpbmsiPlN1cGVyY2FyPHNwYW4gY2xhc3M9ImV4dGVybmFsTGlua0ljb24iPjwvc3Bhbj48L2E+IG1vZGVsIGJ5IE1pY2sgSW1yaWUgYW5kIEF1c3RpbiBUYXRlLiAgRm9yIG1vcmUgaW5mb3JtYXRpb24sIHNlZSB0aGUgbm90ZSBhdCB0aGUgYm90dG9tIG9mIHRoaXMgcGFnZS4NCjwvaDY+IDxiciAvPiAgICAgVGhlIERXRyBhbmQgRFhGIGZvcm1hdHMgaGF2ZSBiZWVuIHR3byBvZiB0aGUgbW9zdCB3aWRlbHkgdXNlZCBmb3JtYXRzIGZvciB0aGUgc3RvcmFnZSBhbmQgZXhjaGFuZ2Ugb2YgQ0FEIHZlY3RvciBkYXRhIGZvciBtb3JlIHRoYW4gdHdvIGRlY2FkZXMgLSBEMlggaGFzIGJlZW4gY29uY2VpdmVkIHRvIGhlbHAgbWFrZSB0aGVtIGZpcnN0IGNsYXNzIGNpdGl6ZW5zIGluIHRoZSBkZXNpZ25lci1kZXZlbG9wZXIgd29ya2Zsb3cgcHJvbWlzZSBvZiBXaW5kb3dzIFByZXNlbnRhdGlvbiBGb3VuZGF0aW9uLjxiciAvPiA8YnIgLz48Yj5TbywgdGhlbiB3aGF0IGV4YWN0bHkgaXMgRDJYPzwvYj48YnIgLz4gPGJyIC8+RDJYIGlzIGEgZGV2ZWxvcG1lbnQgdG9vbGtpdCBmb3IgLk5FVCBkZXZlbG9wZXJzIGxvb2tpbmcgdG8gbGV2ZXJhZ2UgRFdHL0RYRiBkYXRhIGluIHRoZWlyIGFwcGxpY2F0aW9ucywgYW5kL29yIHRvIGNvbnZlcnQgaXQgdG8gWEFNTC4gIEl0IGluY2x1ZGVzIGV2ZXJ5dGhpbmcgYSBkZXZlbG9wZXIgbmVlZHMgdG8gYmVnaW4gbGV2ZXJhZ2luZyAyRCBhbmQgM0QgRFdHIGFuZCBEWEYgY29udGVudCBpbiB0aGVpciBhcHBsaWNhdGlvbnMsIG9yIGFwcGxpY2F0aW9uIHdvcmtmbG93LiAgRm9yIGEgbW9yZSBkZXRhaWxlZCBkZXNjcmlwdGlvbiBvZiBEMlgncyBmZWF0dXJlcywgPGEgaHJlZj0iaHR0cDovL3d3dy5jb2RlcGxleC5jb20vV2lraS9WaWV3LmFzcHg/UHJvamVjdE5hbWU9RFdHMlhBTUwmYW1wO3RpdGxlPUZlYXR1cmVzIiBjbGFzcz0iZXh0ZXJuYWxMaW5rIj5jaGVjayBvdXQgdGhlIGZlYXR1cmVzIHBhZ2U8c3BhbiBjbGFzcz0iZXh0ZXJuYWxMaW5rSWNvbiI+PC9zcGFuPjwvYT4uPGJyIC8+IDxiciAvPjxiPkQyWCBUb29rbGl0IENvbnRlbnRzPC9iPjxiciAvPiA8YnIgLz5DcnlwdGljIG9yIG1pc3NpbmcgZG9jdW1lbnRhdGlvbiwgc3RyYW5nZSB1c2FnZSBjb252ZW50aW9ucywgYW5kIGRpZmZpY3VsdCB0byB1bmRlcnN0YW5kIGZ1bmN0aW9uYWxpdHkgaGF2ZSBhbGwgYmVlbiB0aGUgZG93bmZhbGwgb2Ygc29tZSBvdGhlcndpc2UgdmVyeSB1c2VmdWwgY2xhc3MgbGlicmFyaWVzLiAgRnJvbSB0aGUgdmVyeSBiZWdpbm5pbmcgb2YgRDJYJ3MgZGV2ZWxvcG1lbnQsIHNpbXBsaWNpdHksIGVhc2Ugb2YgaW50ZWdyYXRpb24sIGFuZCB1c2FiaWxpdHkgaGF2ZSBiZWVuIGtleSBjb25jZXJucy48YnIgLz4gPGJyIC8+VGhlIEQyWCBUb29sa2l0IGluY2x1ZGVzOjxiciAvPjx1bD4NCjxsaT5UaGUgPGI+RDJYTGliIC5ORVQgQXNzZW1ibHk8L2I+IGNvbnRhaW5pbmcgY2xhc3NlcyB3aGljaCBjYW4gbG9hZCBhbmQgY29udmVydCBEV0cgYW5kIERYRiBmaWxlcyBpbnRvIHRoZWlyIFdQRi9YQU1MIHJlcHJlc2VudGF0aW9uczwvbGk+PGxpPjxiPkQyWExpYiBEb2N1bWVudGF0aW9uPC9iPiBkZXRhaWxpbmcgdGhlIHVzYWdlIG9mIEQyWCBpbiB5b3VyIGFwcGxpY2F0aW9ucywgZGVwZW5kZW5jaWVzLCBkZXBsb3ltZW50LCBhbmQgdXNhZ2Ugb2YgZ2VuZXJhdGVkIGZpbGVzIGluIGFwcGxpY2F0aW9ucyBsaWtlIDxhIGhyZWY9Imh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wcm9kdWN0cy9leHByZXNzaW9uL2VuL2ludGVyYWN0aXZlX2Rlc2lnbmVyL2RlZmF1bHQubXNweCIgY2xhc3M9ImV4dGVybmFsTGluayI+RXhwcmVzc2lvbiBJbnRlcmFjdGl2ZSBEZXNpZ25lcjxzcGFuIGNsYXNzPSJleHRlcm5hbExpbmtJY29uIj48L3NwYW4+PC9hPjwvbGk+PGxpPlRoZSA8Yj5EMlggU2FtcGxlIEFwcGxpY2F0aW9uPC9iPiB3aGljaCBpbGx1c3RyYXRlcyBsb2FkaW5nIGFuZCBjb252ZXJ0aW5nIERXRyBhbmQgRFhGIGZpbGVzIHVzaW5nIEQyWDwvbGk+PGxpPkEgc2V0IG9mIDxiPjJEIGFuZCAzRCBTYW1wbGUgZmlsZXM8L2I+IGZvciBpbGx1c3RyYXRpb24gcHVycG9zZXMsIGFuZCBmb3IgdXNlIHdpdGggdGhlIHNhbXBsZSBhcHBsaWNhdGlvbjwvbGk+DQo8L3VsPiA8YnIgLz5Gb3Igc29tZSBleGFtcGxlcyBvZiBmaWxlcyBjb252ZXJ0ZWQgdXNpbmcgRDJYLCBjaGVjayBvdXQgdGhlIDxhIGhyZWY9Imh0dHA6Ly93d3cuY29kZXBsZXguY29tL0RXRzJYQU1ML1dpa2kvVmlldy5hc3B4P3RpdGxlPVNhbXBsZXMmYW1wO3JlZmVycmluZ1RpdGxlPUhvbWUiPlNhbXBsZXM8L2E+IHBhZ2UuPGJyIC8+IDxiciAvPiA8YnIgLz48Yj5UaGUgaW5pdGlhbCB2ZXJzaW9uIG9mIHRoZSBEMlggVG9vbGtpdCBoYXMgYmVlbiByZWxlYXNlZCE8L2I+ICAgSGVhZCBvbiBvdmVyIHRvIHRoZSA8YSBocmVmPSJodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9SZWxlYXNlL1Byb2plY3RSZWxlYXNlcy5hc3B4P1Byb2plY3ROYW1lPURXRzJYQU1MJmFtcDtSZWxlYXNlSWQ9MTAxMSIgY2xhc3M9ImV4dGVybmFsTGluayI+cmVsZWFzZXMgcGFnZTxzcGFuIGNsYXNzPSJleHRlcm5hbExpbmtJY29uIj48L3NwYW4+PC9hPiwgYW5kIDxhIGhyZWY9Imh0dHA6Ly93d3cuY29kZXBsZXguY29tL1JlbGVhc2UvUHJvamVjdFJlbGVhc2VzLmFzcHg/UHJvamVjdE5hbWU9RFdHMlhBTUwmYW1wO1JlbGVhc2VJZD0xMDExIiBjbGFzcz0iZXh0ZXJuYWxMaW5rIj5nZXQgaXQgbm93ITxzcGFuIGNsYXNzPSJleHRlcm5hbExpbmtJY29uIj48L3NwYW4+PC9hPjxiciAvPiA8YnIgLz4gPGJyIC8+SGFwcHkgZGV2ZWxvcGluZyw8YnIgLz4gPGJyIC8+LUY8YnIgLz4gPGJyIC8+IDxiciAvPjxoNj4NClRoZSAmcXVvdDtTdXBlcmNhciZxdW90OyBtb2RlbCBpcyBmYW4gbWFpbnRhaW5lZCBtYXRlcmlhbCBpbnRlbmRlZCB0byBwcm9tb3RlIEdlcnJ5IEFuZGVyc29uJ3MgU3VwZXJjYXIuICBDYXJlIGhhcyBiZWVuIHRha2VuIHRvIGF2b2lkIHRoZSB1c2Ugb2YgY29weXJpZ2h0IGltYWdlcyBhbmQgb3RoZXIgbWF0ZXJpYWxzLCBidXQgY29uY2VybnMgb3ZlciB1bnN1aXRhYmxlIHVzZSBvZiB0aGVzZSBtYXRlcmFscyBvciBzdWdnZXN0aW9ucyBmb3IgaW1wcm92ZW1lbnRzIHRvIHRoaXMgcGFnZSBjYW4gYmUgPGEgaHJlZj0ibWFpbHRvOmZyZWR2QGR5bmFzY2FwZS5jb20iIGNsYXNzPSJleHRlcm5hbExpbmsiPnNlbnQgaGVyZTxzcGFuIGNsYXNzPSJleHRlcm5hbExpbmtJY29uIj48L3NwYW4+PC9hPg0KPC9oNj4NCjwvZGl2PmRkAgwPZBYGAgEPDxYCHg1EYXRlVGltZVZhbHVlBtAO370p6MgIZGQCAw8PFgQfAQUNY29kZXBsZXhhZG1pbh8DBTQvVXNlckFjY291bnQvVXNlclByb2ZpbGUuYXNweD9Vc2VyTmFtZT1jb2RlcGxleGFkbWluZGQCBQ8WAh8BBQI0MWQCEA9kFgQCAQ8WAh8BBSRUaGUgd2lraSBwYWdlICdIb21lJyBkb2VzIG5vdCBleGlzdC5kAgMPFgIfAGhkAhQPZBYCAgEPZBYCAgEPZBYCZg9kFgQCAQ8WAh8FZmQCAw8WAh8AZxYCAgEPDxYCHwMFdWh0dHBzOi8vd3d3LmNvZGVwbGV4LmNvbS9Vc2VyQWNjb3VudC9Mb2dpbi5hc3B4P1JldHVyblVybD1odHRwJTNhJTJmJTJmd3d3LmNvZGVwbGV4LmNvbSUyZkRXRzJYQU1MJTJmV2lraSUyZlZpZXcuYXNweGRkAgcPZBYCAgEPZBYCAgEPZBYKAgEPZBYCZg9kFgICAw9kFgZmDw9kFgIfAgUcdG9wOi0wcHg7bWFyZ2luLWJvdHRvbTotMHB4O2QCAQ9kFgICAQ9kFgQCAQ9kFgQCAQ8PFgQfAQUKMC42MSBBbHBoYR8DBUxodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS9EV0cyWEFNTC9SZWxlYXNlL1Byb2plY3RSZWxlYXNlcy5hc3B4P1JlbGVhc2VJZD0xMDExZGQCAw8PFgIfBgYAgNj339DICGRkAgMPDxYCHwBoZGQCAg8PZBYCHwIFCHRvcDowcHg7FgICAQ9kFgICAQ8PFgIfAwU9aHR0cDovL3d3dy5jb2RlcGxleC5jb20vRFdHMlhBTUwvUmVsZWFzZS9Qcm9qZWN0UmVsZWFzZXMuYXNweGRkAgMPZBYCZg9kFgJmD2QWAgIBD2QWAgIDD2QWBmYPD2QWAh8CBRx0b3A6LTBweDttYXJnaW4tYm90dG9tOi0wcHg7FgICAQ9kFgYCAg8PFgIfAGhkZAIEDw8WAh8AaGRkAgcPDxYCHwBoZGQCAQ9kFgICAQ9kFgoCAQ8PFgIfAQUDMjY2ZGQCAw8PFgIfAQUCNjhkZAIFDw8WAh8BBQQzLjkxZGQCBw8PFgIfAQUBMGRkAgkPDxYCHwEFATBkZAICDw9kFgIfAgUIdG9wOjBweDtkAgUPZBYCAgIPZBYCAgQPZBYCZg8PZBYCHwIFHHRvcDotMHB4O21hcmdpbi1ib3R0b206LTBweDtkAgcPFgIfAGhkAgkPDxYCHwBoZBYCZg9kFgICBA9kFgRmDw9kFgIfAgUcdG9wOi0wcHg7bWFyZ2luLWJvdHRvbTotMHB4O2QCAQ9kFgICAQ9kFgICAQ88KwAJAGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgIFOWN0bDAwJGN0bDAwJFdpZGVDb250ZW50JFByb2plY3RTZWFyY2hDb250cm9sJFNlYXJjaEJ1dHRvbgVKY3RsMDAkY3RsMDAkQ29udGVudCRUYWJDb250ZW50UGFuZWwkQ29udGVudCRzZWFyY2hXaWtpQ29udHJvbCRTZWFyY2hCdXR0b2766SAZ0AXYuamWbwFIEhCFSPJ0ow== 
+name=__VIEWSTATE> </DIV>
+<SCRIPT type=text/javascript>
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</SCRIPT>
+
+<SCRIPT 
+src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/WebResource.axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/ScriptResource.axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="C:\Code\Example\WPF Xaml Expression\_Converters\3D DXF To XAML Converter\The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files\ScriptResource(1).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/common.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/UpdateProgress.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/SmartDate.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/Codeplex_webtrends_040706.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/PromptBox.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="C:\Code\Example\WPF Xaml Expression\_Converters\3D DXF To XAML Converter\The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files\ScriptResource(2).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="C:\Code\Example\WPF Xaml Expression\_Converters\3D DXF To XAML Converter\The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files\ScriptResource(3).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="C:\Code\Example\WPF Xaml Expression\_Converters\3D DXF To XAML Converter\The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files\ScriptResource(4).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="C:\Code\Example\WPF Xaml Expression\_Converters\3D DXF To XAML Converter\The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files\ScriptResource(5).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="C:\Code\Example\WPF Xaml Expression\_Converters\3D DXF To XAML Converter\The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files\ScriptResource(6).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="C:\Code\Example\WPF Xaml Expression\_Converters\3D DXF To XAML Converter\The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files\ScriptResource(7).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="C:\Code\Example\WPF Xaml Expression\_Converters\3D DXF To XAML Converter\The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files\ScriptResource(8).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', document.getElementById('aspnetForm'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls(['tctl00$ctl00$Content$TabContentPanel$Content$newCollapse$CommentUpdatePanel','tctl00$ctl00$RightSideBar$RightSideBar$ProjectActivity$ActivityUpdatePanel'], [], [], 90);
+//]]>
+</SCRIPT>
+
+<TABLE id=Canvas style="WIDTH: 100%; HEIGHT: 100%" cellSpacing=0 
+  cellPadding=0><TBODY>
+  <TR>
+    <TD style="HEIGHT: 100%" vAlign=top>
+      <DIV class=MinWidthDiv></DIV>
+      <TABLE class=MinWidthContent style="WIDTH: 100%; HEIGHT: 100%" 
+      cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD class=CanvasMargin>
+            <DIV class=CanvasMargin></DIV></TD>
+          <TD class=CanvasBackground style="HEIGHT: 100%" vAlign=top>
+            <DIV class=CanvasContent id=CanvasContent>
+            <TABLE style="WIDTH: 100%; HEIGHT: 100%" cellSpacing=0 
+cellPadding=0>
+              <TBODY>
+              <TR vAlign=top>
+                <TD>
+                  <DIV class=SiteHeader>
+                  <DIV class=SiteHeaderLeft><A 
+                  href="http://www.codeplex.com/"><IMG height=88 alt=CodePlex 
+                  src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/banner_logo.jpg" 
+                  width=231 onload=markImages();></A> </DIV>
+                  <DIV class=SiteHeaderRight>
+                  <TABLE cellSpacing=0 cellPadding=0>
+                    <TBODY>
+                    <TR>
+                      <TD class=AlignRight>
+                        <DIV class="ContentPanel SignInPanel Rounded" 
+                        id=ctl00_ctl00_SignInControl_ContentPanel 
+                        style="min-width: 16px">
+                        <DIV class=RoundedContent 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: 0px 0px; BORDER-TOP: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px">
+                        <DIV class="Content StandardPadding AlignCenter" 
+                        id=ctl00_ctl00_SignInControl_ContentPanel_contentPanel>
+                        <DIV class="NoWrap Centered"><A 
+                        class="StandardPaddingRight ZoomFix" 
+                        href="https://www.codeplex.com/UserAccount/Register.aspx">Register</A> 
+                        <A class="StandardPaddingLeft ZoomFix" 
+                        href="https://www.codeplex.com/UserAccount/Login.aspx?ReturnUrl=http%3a%2f%2fwww.codeplex.com%2fWiki%2fView.aspx%3fProjectName%3dDWG2XAML">Sign 
+                        In</A> </DIV></DIV></DIV>
+                        <DIV class="RoundedCornerContainer Bottom">
+                        <DIV class="RoundedBorder BottomBorder BorderStep8" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: -6px -5px; BORDER-TOP: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep7" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: -6px -3px; BORDER-TOP: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 2px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep6" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: -6px -2px; BORDER-TOP: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep5" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: -6px 0px; BORDER-TOP: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 2px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep4" 
+                        style="BORDER-RIGHT: 2px; BACKGROUND-POSITION: -4px 0px; BORDER-TOP: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; BORDER-LEFT: 2px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep3" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: -3px 0px; BORDER-TOP: 0px; MARGIN: 0px 4px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep2" 
+                        style="BORDER-RIGHT: 2px; BACKGROUND-POSITION: -1px 0px; BORDER-TOP: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; BORDER-LEFT: 2px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep1" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: 0px 0px; BORDER-TOP: 0px; MARGIN: 0px 7px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class=OuterBorder 
+                        style="BORDER-RIGHT: 0px; BORDER-TOP: 1px; MARGIN: 0px 8px; OVERFLOW: hidden; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px; HEIGHT: 0px"></DIV></DIV></DIV></TD></TR>
+                    <TR>
+                      <TD class=VerticalPadding></TD></TR>
+                    <TR>
+                      <TD class=AlignRight>
+                        <DIV 
+                  class=SiteHeaderRightShim></DIV></TD></TR></TBODY></TABLE></DIV>
+                  <DIV class=SiteHeaderCenter></DIV>
+                  <DIV class=ClearBoth></DIV></DIV>
+                  <DIV class=SiteContent>
+                  <TABLE class=FullWidth cellSpacing=0 cellPadding=0>
+                    <TBODY>
+                    <TR>
+                      <TD class=AlignTop>
+                        <DIV>
+                        <DIV class=ProjectTitleControl><A class=NoUnderline 
+                        id=ctl00_ctl00_WideContent_ProjectTitleControl1_ProjectTitleLink 
+                        href="http://www.codeplex.com/DWG2XAML"><IMG 
+                        id=ctl00_ctl00_WideContent_ProjectTitleControl1_ProjectHex 
+                        style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+                        src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/project_icon_lrg.gif"> 
+
+                        <H1 
+                        class="Header StandardPaddingTop StandardPaddingBottom"><SPAN 
+                        id=ctl00_ctl00_WideContent_ProjectTitleControl1_TitleLabel>The 
+                        DWG/DXF to XAML Conversion Toolkit 
+                        (D2X)</SPAN></H1></A></DIV></DIV></TD>
+                      <TD class="AlignTop AlignRight StandardPaddingLeft">
+                        <DIV class="ProjectSearchPanel StandardMarginBottom">
+                        <DIV class="ProjectSearchPanel NoWrap" 
+                        onkeypress="javascript:return WebForm_FireDefaultButton(event, 'ctl00_ctl00_WideContent_ProjectSearchControl_SearchButton')" 
+                        id=ctl00_ctl00_WideContent_ProjectSearchControl_ProjectSearchPanel>
+                        <SCRIPT type=text/javascript>
+        function ProjectSearchButton_Click(input){
+            var textbox=$get('ctl00_ctl00_WideContent_ProjectSearchControl_SearchTextBox');
+            if(textbox&&!textbox.dirty){
+                textbox.value='';
+// Uncomment to prevent empty searches
+//                return false;
+            }
+        }
+    </SCRIPT>
+
+                        <DIV class=ProjectSearchPanel><INPUT 
+                        class="SingleLineTextBox ProjectSearchTextBox" 
+                        id=ctl00_ctl00_WideContent_ProjectSearchControl_SearchTextBox 
+                        maxLength=1000 
+                        name=ctl00$ctl00$WideContent$ProjectSearchControl$SearchTextBox> 
+                        <INPUT class=AlignMiddle 
+                        id=ctl00_ctl00_WideContent_ProjectSearchControl_SearchButton 
+                        style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; WIDTH: 23px; HEIGHT: 18px; BORDER-RIGHT-WIDTH: 0px" 
+                        onclick="return ProjectSearchButton_Click(this);" 
+                        type=image alt=Search 
+                        src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/forwardbutton.gif" 
+                        align=middle 
+                        name=ctl00$ctl00$WideContent$ProjectSearchControl$SearchButton> 
+                        </DIV></DIV><!--        <a href="/Project/ProjectDirectory.aspx" class="BrowseDirectoryLink">Browse Project Directory</a> --></DIV></TD></TR></TBODY></TABLE>
+                  <TABLE class=SiteContentTable cellSpacing=0 cellPadding=0>
+                    <TBODY>
+                    <TR vAlign=top>
+                      <TD class="SideBarPadding LeftSideBarPadding">
+                        <DIV></DIV></TD>
+                      <TD class="SideBar LeftSideBar">
+                        <DIV class="SideBar LeftSideBar"></DIV></TD>
+                      <TD class="SideBarPadding LeftSideBarPadding">
+                        <DIV></DIV></TD>
+                      <TD class=MainContent>
+                        <DIV class=MainContentMinWidthDiv></DIV>
+                        <DIV class=MainContentMinWidthContent>
+                        <DIV class=ProjectContent 
+                        id=ctl00_ctl00_Content_ProjectContentPanel>
+                        <DIV class=TabStrip>
+                        <TABLE class="FullWidth Fixed" cellSpacing=0 
+                        cellPadding=0 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD class=Narrower><A class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_homeTab 
+                              href="http://www.codeplex.com/DWG2XAML">
+                              <DIV 
+                              class="ContentPanel TabPanel ActiveTab Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelHome 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelHome_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">Home 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD id=ctl00_ctl00_Content_Tabs_releasesTabCell><A 
+                              class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_releasesTab 
+                              href="http://www.codeplex.com/DWG2XAML/Release/ProjectReleases.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelReleases 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelReleases_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">Releases 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD class=Wider 
+                            id=ctl00_ctl00_Content_Tabs_discussionTabCell><A 
+                              class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_discussionTab 
+                              href="http://www.codeplex.com/DWG2XAML/Thread/List.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelDiscussion 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelDiscussion_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">Discussions 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD class=Widest 
+                            id=ctl00_ctl00_Content_Tabs_workItemsTabCell><A 
+                              class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_workItemsTab 
+                              href="http://www.codeplex.com/DWG2XAML/WorkItem/List.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelWorkItems 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelWorkItems_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">Issue 
+                              Tracker </DIV></DIV></DIV></A></TD>
+                            <TD class=Widest 
+                            id=ctl00_ctl00_Content_Tabs_sourceTabCell><A 
+                              class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_sourceTab 
+                              href="http://www.codeplex.com/DWG2XAML/SourceControl/ListDownloadableCommits.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelSource 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelSource_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">Source Code 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD><A class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_peopleTab 
+                              href="http://www.codeplex.com/DWG2XAML/People/ProjectPeople.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelPeople 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelPeople_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">People 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD><A class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_licenseTab 
+                              href="http://www.codeplex.com/DWG2XAML/Project/License.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelLicense 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelLicense_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">License 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD class=FullWidth>&nbsp;</TD>
+                            <TD class=AlignRight noWrap>
+                              <DIV class=StandardPaddingBottom 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_RssLabel><SPAN 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_FeedsLabel><IMG 
+                              class=StandardMarginRight 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_rssFeedImage 
+                              title="RSS Feed" 
+                              style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+                              alt="RSS Feed" 
+                              src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/icon_rss.gif" 
+                              align=absBottom><A 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_MainRssLink 
+                              href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx">RSS</A><IMG 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_rssDownArrow 
+                              style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; WIDTH: 9px; HEIGHT: 9px; BORDER-RIGHT-WIDTH: 0px; align: baseline" 
+                              hspace=5 
+                              src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/arrow_dsc.gif" 
+                              align=absMiddle></SPAN> </DIV>
+                              <UL class=RssFeedsPanel 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_FeedsPanel 
+                              style="DISPLAY: none">
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_ProjectPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_ProjectRssLink 
+                                title="All project updates" 
+                                href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx">The 
+                                DWG/DXF to XAML Conversion Toolkit (D2X)</A> 
+                                </DIV></LI>
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_DiscussionsPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_DiscussionsRssLink 
+                                title="New threads and posts" 
+                                href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fforum%2fDWG2XAML">Discussions</A> 
+                                </DIV></LI>
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_IssueTrackerPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_IssueTrackerRssLink 
+                                title="New and updated work items" 
+                                href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fworkitem%2fDWG2XAML">Issue 
+                                Tracker</A> </DIV></LI>
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_ReleasesPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_ReleasesRssLink 
+                                title="New and updated releases" 
+                                href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2fDWG2XAML">Releases</A> 
+                                </DIV></LI>
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_SourceControlPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_SourceControlRssLink 
+                                title="New check-ins" 
+                                href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fsourcecontrol%2fDWG2XAML">Source 
+                                Code</A> </DIV></LI>
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_WikiPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_WikiRssLink 
+                                title="New and updated wiki pages" 
+                                href="http://www.codeplex.com/DWG2XAML/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fwiki%2fDWG2XAML">Wiki</A> 
+                                </DIV></LI></UL></TD>
+                            <TD class=Narrowest></TD></TR></TBODY></TABLE></DIV>
+                        <DIV class="ContentPanel  Rounded" 
+                        id=ctl00_ctl00_Content_TabContentPanel 
+                        style="min-width: 18px">
+                        <DIV class=RoundedContent 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                        <DIV class="Content ProjectContent" 
+                        id=ctl00_ctl00_Content_TabContentPanel_contentPanel><INPUT 
+                        id=ctl00_ctl00_Content_TabContentPanel_Content_ReferringTitleHidden 
+                        type=hidden value=Home 
+                        name=ctl00$ctl00$Content$TabContentPanel$Content$ReferringTitleHidden> 
+
+                        <TABLE style="WIDTH: 100%" cellSpacing=0 
+                          cellPadding=0><TBODY>
+                          <TR id=wikiTop width="100%">
+                            <TD noWrap align=left>
+                              <DIV 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_wikiLinksPanel><A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_CommentsHyperLink 
+                              href="http://www.codeplex.com/Wiki/View.aspx?ProjectName=DWG2XAML#CommentsAnchor">Comments</A> 
+                              <SPAN 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_CommentsPipe>|</SPAN> 
+                              <A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_printerFriendlyHyperLink 
+                              href="javascript:openPreviewWikiWindow('http://www.codeplex.com/DWG2XAML/Wiki/Print.aspx?title=Home&amp;version=41&amp;action=Print');">Print</A> 
+                              <SPAN 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_printerPipe>|</SPAN> 
+                              <A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_pageInfoHyperLink 
+                              href="http://www.codeplex.com/DWG2XAML/Wiki/Info.aspx?title=Home&amp;action=Info">Page 
+                              Info</A> <SPAN 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_changesPipe>|</SPAN> 
+                              <A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_changesHyperlink 
+                              href="http://www.codeplex.com/DWG2XAML/Wiki/Recent.aspx">Change&nbsp;History&nbsp;(all&nbsp;pages)</A> 
+                              </DIV></TD>
+                            <TD class="NoWrap StandardPadding" 
+                              align=right><SPAN class=StandardPaddingRight 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_searchTextLabel>Search 
+                              Wiki: </SPAN><SPAN 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_searchWikiControl>
+                              <DIV class=SearchWikiControl 
+                              onkeypress="javascript:return WebForm_FireDefaultButton(event, 'ctl00_ctl00_Content_TabContentPanel_Content_searchWikiControl_SearchButton')" 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_searchWikiControl_searchPanel><INPUT 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_searchWikiControl_searchTextBox 
+                              name=ctl00$ctl00$Content$TabContentPanel$Content$searchWikiControl$searchTextBox><INPUT 
+                              class=StandardMarginLeft 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_searchWikiControl_SearchButton 
+                              style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+                              type=image alt=Search 
+                              src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/forwardbutton.gif" 
+                              align=absMiddle 
+                              name=ctl00$ctl00$Content$TabContentPanel$Content$searchWikiControl$SearchButton> 
+                              </DIV></SPAN></TD></TR>
+                          <TR>
+                            <TD style="TEXT-ALIGN: left" align=left colSpan=2>
+                              <DIV class=breadcrumbs><A 
+                              href="http://www.codeplex.com/DWG2XAML/Wiki/View.aspx">Home</A> 
+                              </DIV></TD></TR>
+                          <TR>
+                            <TD class=wikiSource colSpan=2><SPAN 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_wikiSourceLabel>
+                              <DIV class=wikidoc><A 
+                              href="http://www.codeplex.com/DWG2XAML/Wiki/View.aspx?title=News%20Feeds&amp;referringTitle=Home">News 
+                              Feeds</A><BR><B>Update - D2X was chosen as the 
+                              <I>overall winner</I> of the <A class=externalLink 
+                              href="http://blogs.msdn.com/mswanson/archive/2006/08/29/729501.aspx">WPF/XAML 
+                              Conversion Tool Contest<SPAN 
+                              class=externalLinkIcon></SPAN></A></B><BR>A hearty 
+                              thank you goes out to Microsoft for running the 
+                              contest, and to everyone who <A class=externalLink 
+                              href="mailto:fredv@dynascape.com">sent me 
+                              feedback<SPAN class=externalLinkIcon></SPAN></A>. 
+                              Be sure to check out <A class=externalLink 
+                              href="http://blogs.msdn.com/mswanson/archive/2006/11/28/more-wpf-conversion-tools-including-vb6-to-xaml.aspx">Mike 
+                              Swanson's Blog<SPAN 
+                              class=externalLinkIcon></SPAN></A> for links to 
+                              some other great conversion tools, including the 
+                              other winners.<BR><BR>-F.<BR><BR><B>The DWG/DXF to 
+                              XAML Conversion Toolkit (D2X)</B><BR><BR>The 
+                              DWG/DXF to XAML Conversion Toolkit is designed to 
+                              help developers leverage 2D and 3D DWG and DXF 
+                              data in Windows Presentation Foundation 
+                              applications. (See the <A 
+                              href="http://www.codeplex.com/DWG2XAML/Wiki/View.aspx?title=Samples&amp;referringTitle=Home">Samples</A> 
+                              page for a quick demonstration of the conversion 
+                              capabilities of the toolkit.)<BR><BR><IMG 
+                              alt=3dflow.jpg 
+                              src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/3DFlow.jpg"><BR>
+                              <H6><A class=externalLink 
+                              href="http://www.aiai.ed.ac.uk/~bat/ga/supercar-3d.html">Supercar<SPAN 
+                              class=externalLinkIcon></SPAN></A> model by Mick 
+                              Imrie and Austin Tate. For more information, see 
+                              the note at the bottom of this page. </H6><BR>The 
+                              DWG and DXF formats have been two of the most 
+                              widely used formats for the storage and exchange 
+                              of CAD vector data for more than two decades - D2X 
+                              has been conceived to help make them first class 
+                              citizens in the designer-developer workflow 
+                              promise of Windows Presentation 
+                              Foundation.<BR><BR><B>So, then what exactly is 
+                              D2X?</B><BR><BR>D2X is a development toolkit for 
+                              .NET developers looking to leverage DWG/DXF data 
+                              in their applications, and/or to convert it to 
+                              XAML. It includes everything a developer needs to 
+                              begin leveraging 2D and 3D DWG and DXF content in 
+                              their applications, or application workflow. For a 
+                              more detailed description of D2X's features, <A 
+                              class=externalLink 
+                              href="http://www.codeplex.com/Wiki/View.aspx?ProjectName=DWG2XAML&amp;title=Features">check 
+                              out the features page<SPAN 
+                              class=externalLinkIcon></SPAN></A>.<BR><BR><B>D2X 
+                              Tooklit Contents</B><BR><BR>Cryptic or missing 
+                              documentation, strange usage conventions, and 
+                              difficult to understand functionality have all 
+                              been the downfall of some otherwise very useful 
+                              class libraries. From the very beginning of D2X's 
+                              development, simplicity, ease of integration, and 
+                              usability have been key concerns.<BR><BR>The D2X 
+                              Toolkit includes:<BR>
+                              <UL>
+                                <LI>The <B>D2XLib .NET Assembly</B> containing 
+                                classes which can load and convert DWG and DXF 
+                                files into their WPF/XAML representations
+                                <LI><B>D2XLib Documentation</B> detailing the 
+                                usage of D2X in your applications, dependencies, 
+                                deployment, and usage of generated files in 
+                                applications like <A class=externalLink 
+                                href="http://www.microsoft.com/products/expression/en/interactive_designer/default.mspx">Expression 
+                                Interactive Designer<SPAN 
+                                class=externalLinkIcon></SPAN></A>
+                                <LI>The <B>D2X Sample Application</B> which 
+                                illustrates loading and converting DWG and DXF 
+                                files using D2X
+                                <LI>A set of <B>2D and 3D Sample files</B> for 
+                                illustration purposes, and for use with the 
+                                sample application </LI></UL><BR>For some examples 
+                              of files converted using D2X, check out the <A 
+                              href="http://www.codeplex.com/DWG2XAML/Wiki/View.aspx?title=Samples&amp;referringTitle=Home">Samples</A> 
+                              page.<BR><BR><BR><B>The initial version of the D2X 
+                              Toolkit has been released!</B> Head on over to the 
+                              <A class=externalLink 
+                              href="http://www.codeplex.com/Release/ProjectReleases.aspx?ProjectName=DWG2XAML&amp;ReleaseId=1011">releases 
+                              page<SPAN class=externalLinkIcon></SPAN></A>, and 
+                              <A class=externalLink 
+                              href="http://www.codeplex.com/Release/ProjectReleases.aspx?ProjectName=DWG2XAML&amp;ReleaseId=1011">get 
+                              it now!<SPAN 
+                              class=externalLinkIcon></SPAN></A><BR><BR><BR>Happy 
+                              developing,<BR><BR>-F<BR><BR><BR>
+                              <H6>The "Supercar" model is fan maintained 
+                              material intended to promote Gerry Anderson's 
+                              Supercar. Care has been taken to avoid the use of 
+                              copyright images and other materials, but concerns 
+                              over unsuitable use of these materals or 
+                              suggestions for improvements to this page can be 
+                              <A class=externalLink 
+                              href="mailto:fredv@dynascape.com">sent here<SPAN 
+                              class=externalLinkIcon></SPAN></A> 
+                              </H6></DIV></SPAN></TD></TR>
+                          <TR>
+                            <TD class=wikiSource colSpan=2>
+                              <DIV 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_editedInfoPanel><SPAN 
+                              class=SubText>Last edited <SPAN class=smartDate 
+                              LocalTimeTicks="1165533362">Dec 7 2006 at 11:16 
+                              PM<ABBR> </ABBR></SPAN>&nbsp;by&nbsp;<A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_wikiEditByLink 
+                              href="http://www.codeplex.com/UserAccount/UserProfile.aspx?UserName=codeplexadmin">codeplexadmin</A>, 
+                              version 41 </SPAN></DIV></TD></TR>
+                          <TR>
+                            <TD colSpan=2>
+                              <DIV>
+                              <DIV class=CommentsHeader 
+                              id=CommentsAnchor>Comments</DIV>
+                              <DIV 
+                              style="PADDING-RIGHT: 0.5em; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.5em; PADDING-TOP: 0.5em">
+                              <DIV 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_newCollapse_content 
+                              style="DISPLAY: inline">
+                              <DIV 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_newCollapse_CommentUpdatePanel>
+                              <DIV 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_newCollapse_addComment><A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_newCollapse_SignInToAddCommentLink 
+                              href="https://www.codeplex.com/UserAccount/Login.aspx?ReturnUrl=http%3a%2f%2fwww.codeplex.com%2fDWG2XAML%2fWiki%2fView.aspx">Sign 
+                              in to add a comment</A> 
+                              </DIV></DIV></DIV></DIV></DIV></TD></TR></TBODY></TABLE></DIV></DIV>
+                        <DIV class="RoundedCornerContainer Bottom">
+                        <DIV class="RoundedBorder BottomBorder BorderStep9" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -7px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep8" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -6px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep7" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -4px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep6" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -3px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep5" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -2px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep4" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -1px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep3" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 2px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 4px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep2" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 6px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep1" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 7px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                        <DIV class=OuterBorder 
+                        style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 9px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV></DIV></DIV></DIV></DIV></TD>
+                      <TD class="SideBarPadding RightSideBarPadding">
+                        <DIV></DIV></TD>
+                      <TD class="SideBar RightSideBar">
+                        <DIV class="SideBar RightSideBar">
+                        <DIV class=StandardPaddingTop 
+                        id=ctl00_ctl00_RightSideBar_RightSideBarPanel 
+                        style="PADDING-TOP: 1.6em">
+                        <DIV class="ContentPanel " 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar>
+                        <DIV class="Header StandardPaddingBottom" 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_headerPanel 
+                        style="MARGIN-BOTTOM: 0px; TOP: 0px">
+                        <H2>Current Release</H2></DIV>
+                        <DIV class=Content 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_contentPanel>
+                        <DIV 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_ReleasePanel>
+                        <DIV class=StandardPadding><A 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_releaseLink 
+                        href="http://www.codeplex.com/DWG2XAML/Release/ProjectReleases.aspx?ReleaseId=1011">0.61 
+                        Alpha</A></DIV>
+                        <DIV><SPAN class="smartDate full" 
+                        style="FONT-SIZE: x-small; MARGIN-LEFT: 7px" 
+                        LocalTimeTicks="1162972800">Wed Nov 8 2006 at 8:00 
+                        AM<ABBR> </ABBR></SPAN></DIV></DIV></DIV>
+                        <DIV class=Footer 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_footerPanel 
+                        style="TOP: 0px"><A class=ArrowSmall 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_AllReleaseLink 
+                        href="http://www.codeplex.com/DWG2XAML/Release/ProjectReleases.aspx">All 
+                        Releases</A> </DIV></DIV>
+                        <HR>
+
+                        <DIV 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_ActivityUpdatePanel>
+                        <DIV class="ContentPanel " 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar>
+                        <DIV class="Header StandardPaddingBottom" 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_headerPanel 
+                        style="MARGIN-BOTTOM: 0px; TOP: 0px">
+                        <DIV class=FloatLeft>
+                        <H2>Activity</H2></DIV>
+                        <DIV class=FloatRight 
+                        style="VERTICAL-ALIGN: bottom; PADDING-TOP: 0.1em"><SPAN 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_SevenLabel>7</SPAN> 
+                        <A 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_ThirtyLink 
+                        href="javascript:__doPostBack('ctl00$ctl00$RightSideBar$RightSideBar$ProjectActivity$Sidebar$ThirtyLink','')">30</A> 
+                        <A 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_AllLink 
+                        href="javascript:__doPostBack('ctl00$ctl00$RightSideBar$RightSideBar$ProjectActivity$Sidebar$AllLink','')">All</A> 
+                        days </DIV>
+                        <DIV class=ClearBoth></DIV></DIV>
+                        <DIV class="Content StandardPaddingTop" 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_contentPanel>
+                        <TABLE cellSpacing=0 cellPadding=0 width="100%">
+                          <TBODY>
+                          <TR class=AlternateBackground>
+                            <TD>
+                              <DIV 
+                              class="StandardPaddingTop StandardPaddingBottom">Page 
+                              Views</DIV></TD>
+                            <TD>
+                              <DIV class=AlignRight><SPAN 
+                              id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_pageViews>266</SPAN></DIV></TD></TR>
+                          <TR class=StandardBackground>
+                            <TD>
+                              <DIV 
+                              class="StandardPaddingTop StandardPaddingBottom">Visits</DIV></TD>
+                            <TD>
+                              <DIV class=AlignRight><SPAN 
+                              id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_visits>68</SPAN></DIV></TD></TR>
+                          <TR class=AlternateBackground>
+                            <TD>
+                              <DIV 
+                              class="StandardPaddingTop StandardPaddingBottom">Pages 
+                              Per Visit</DIV></TD>
+                            <TD>
+                              <DIV class=AlignRight><SPAN 
+                              id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_pagesPerVisit>3.91</SPAN></DIV></TD></TR>
+                          <TR class=StandardBackground>
+                            <TD>
+                              <DIV 
+                              class="StandardPaddingTop StandardPaddingBottom">Work 
+                              Items Closed</DIV></TD>
+                            <TD>
+                              <DIV class=AlignRight><SPAN 
+                              id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_workItemsClosed>0</SPAN></DIV></TD></TR>
+                          <TR class=AlternateBackground>
+                            <TD>
+                              <DIV 
+                              class="StandardPaddingTop StandardPaddingBottom">Discussion 
+                              Posts</DIV></TD>
+                            <TD>
+                              <DIV class=AlignRight><SPAN 
+                              id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_forumPosts>0</SPAN></DIV></TD></TR></TBODY></TABLE></DIV>
+                        <DIV class=Footer 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_footerPanel 
+                        style="TOP: 0px"><IMG class=StandardMarginTop 
+                        alt=WebTrends 
+                        src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/WT_logo_180x20.gif"> 
+                        </DIV></DIV></DIV></DIV></DIV></TD>
+                      <TD class="SideBarPadding RightSideBarPadding">
+                        <DIV></DIV></TD></TR></TBODY></TABLE></DIV></TD></TR>
+              <TR>
+                <TD class="SiteFooter Centered"><SPAN 
+                  class="NoWrap AlignMiddle">© 2006-2007 Microsoft</SPAN> <SPAN 
+                  class=VerticalBar>|</SPAN> <SPAN class="NoWrap AlignMiddle"><A 
+                  href="http://privacy.microsoft.com/">Privacy 
+                  Statement</A></SPAN> <SPAN class=VerticalBar>|</SPAN> <SPAN 
+                  class="NoWrap AlignMiddle"><A 
+                  href="http://www.codeplex.com/Legal/Terms.aspx">Terms of 
+                  Use</A></SPAN> <SPAN class=VerticalBar>|</SPAN> <SPAN 
+                  class="NoWrap AlignMiddle"><A 
+                  href="http://www.codeplex.com/Legal/Conduct.aspx">Code of 
+                  Conduct</A></SPAN> <SPAN class=VerticalBar>|</SPAN> <SPAN 
+                  class="NoWrap AlignMiddle">Version 7.9.26.11512</SPAN> 
+              </TD></TR></TBODY></TABLE></DIV></TD>
+          <TD class=CanvasMargin>
+            <DIV class=CanvasMargin></DIV></TD></TR></TBODY></TABLE>
+      <DIV id=ctl00_ctl00_UpdateProgressPanel 
+      style="DISPLAY: block; VISIBILITY: hidden">
+      <DIV class=FullPanel>
+      <DIV class="ModalBackground FullPanel"></DIV>
+      <TABLE class=FullPanel id=UpdateProgressTable>
+        <TBODY>
+        <TR>
+          <TD vAlign=center align=middle>
+            <DIV class=UpdateProgress id=UpdateProgressMessage><SPAN 
+            class=UpdateProgressText>Updating...</SPAN></DIV></TD></TR></TBODY></TABLE></DIV></DIV></TD></TR></TBODY></TABLE>
+<DIV><INPUT id=__EVENTVALIDATION type=hidden 
+value=/wEWCALrlZz7AwKU6pTACAKj7tCtBgKps+SLAQKVzobfBwK5pPn2BwLOsdugBQKjn9jmDQZZf3RmdM7hrp2uOgAQGvrM6pDB 
+name=__EVENTVALIDATION> </DIV>
+<SCRIPT type=text/javascript>
+<!--
+new CodePlex.PromptBox('Search Projects').initialize('ctl00_ctl00_WideContent_ProjectSearchControl_SearchTextBox');Sys.Application.initialize();
+Sys.Application.add_init(function() {
+    $create(AjaxControlToolkit.HoverMenuBehavior, {"DynamicServicePath":"/Wiki/View.aspx","OffsetY":18,"id":"ctl00_ctl00_Content_Tabs_rssFeeds_HoverMenu","popupElement":$get("ctl00_ctl00_Content_Tabs_rssFeeds_FeedsPanel")}, null, null, $get("ctl00_ctl00_Content_Tabs_rssFeeds_RssLabel"));
+});
+Sys.Application.add_init(function() {
+    $create(Sys.UI._UpdateProgress, {"associatedUpdatePanelId":null,"displayAfter":0,"dynamicLayout":false}, null, null, $get("ctl00_ctl00_UpdateProgressPanel"));
+});
+// -->
+</SCRIPT>
+</FORM>
+<SCRIPT type=text/javascript>
+        if(typeof(SmartDate_Load)=='function')
+        {    
+            SmartDate_Load();
+            Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(SmartDate_Load);
+        }    
+    </SCRIPT>
+<NOSCRIPT><IMG id=DCSIMG height=1 alt="" 
+src="The DWG-DXF to XAML Conversion Toolkit (D2X) - Home_files/njs.gif" width=1> 
+</NOSCRIPT></BODY></HTML>

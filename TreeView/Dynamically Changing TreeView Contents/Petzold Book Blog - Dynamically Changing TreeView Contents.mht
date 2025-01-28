@@ -1,0 +1,242 @@
+From: "Saved by Windows Internet Explorer 7"
+Subject: Petzold Book Blog - Dynamically Changing TreeView Contents
+Date: Sun, 27 Jan 2008 01:53:34 -0800
+MIME-Version: 1.0
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.charlespetzold.com/blog/2006/06/250705.html
+X-MimeOLE: Produced By Microsoft MimeOLE V6.0.6000.16545
+
+=EF=BB=BF<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML xmlns=3D"http://www.w3.org/1999/xhtml"><HEAD><TITLE>Petzold Book =
+Blog - Dynamically Changing TreeView Contents</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3Dutf-8">
+<META content=3D"MSHTML 6.00.6000.16587" name=3DGENERATOR></HEAD>
+<BODY style=3D"TEXT-ALIGN: center">
+<DIV style=3D"WIDTH: 40em; TEXT-ALIGN: left">
+<P style=3D"TEXT-ALIGN: center"><B><FONT size=3D+4>P</FONT><FONT=20
+size=3D+3>ETZOLD</FONT>&nbsp;<FONT size=3D+4>B</FONT><FONT=20
+size=3D+3>OOK</FONT>&nbsp;<FONT size=3D+4>B</FONT><FONT =
+size=3D+3>LOG</FONT></B></P>
+<H4 style=3D"TEXT-ALIGN: center">Charles Petzold on writing books, =
+reading books,=20
+and exercising the internal <A title=3D"Universal Turing =
+Machine">UTM</A></H4>
+<HR>
+
+<TABLE width=3D"100%">
+  <TBODY>
+  <TR>
+    <TD width=3D"33%">
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/blog/blog.xml">Recent =
+Entries</A></TD>
+    <TD width=3D"33%"></TD>
+  <TR>
+    <TD width=3D"33%"><A=20
+      =
+href=3D"http://www.charlespetzold.com/blog/2006/06/240233.html">&lt;=20
+      Previous</A></TD>
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/blog/toc.html">Browse the=20
+    Archives</A></TD>
+    <TD align=3Dright width=3D"33%"><A=20
+      =
+href=3D"http://www.charlespetzold.com/blog/2006/06/251051.html">Next=20
+    &gt;</A></TD></TR>
+  <TR>
+    <TD width=3D"33%">
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/rss.xml">Subscribe to the =
+RSS=20
+    Feed</A></TD>
+    <TD width=3D"33%"></TD></TR></TBODY></TABLE>
+<HR>
+<A style=3D"COLOR: #000080; TEXT-DECORATION: none"=20
+href=3D"http://www.charlespetzold.com/blog/2006/06/250705.html">
+<H2>Dynamically Changing TreeView Contents</H2></A>
+<P style=3D"TEXT-ALIGN: right">June 25, 2006<BR>Roscoe, NY</P>
+<P>I received an email from someone who had seen <A=20
+href=3D"http://www.charlespetzold.com/blog/2006/02/170442.html">an =
+earlier blog=20
+posting</A> on using <I>HierarchicalDataTemplate</I> in connection with =
+a=20
+<I>TreeView</I> control to display the directory structure of a disk =
+drive. The=20
+question is: How do you get this code to respond dynamically to changes =
+in the=20
+directories, such as new directories, deleted directories, etc? </P>
+<P>A brief overview on the <I>TreeView</I> control and templates: When =
+you=20
+create a WPF <I>TreeView</I> control, normally you fill it with objects =
+of type=20
+<I>TreeViewItem</I>. You set the <I>Header</I> property of each=20
+<I>TreeViewItem</I> to what you want displayed (customarily this is a =
+text=20
+string but it can be anything that derives from <I>UIElement</I> for =
+much=20
+fancier effects) and you set the <I>Items</I> property of each=20
+<I>TreeViewItem</I> to a collection of sub-items of that item. </P>
+<P>However, you can alternatively put an object of any type into the=20
+<I>TreeView</I>, perhaps an object of type <I>Whatsit</I>. The =
+<I>TreeView</I>=20
+will then search through the program's resources for a=20
+<I>HierarchicalDataTemplate</I> that has a <I>DataType</I> property =
+indicating=20
+the <I>Whatsit</I> class. (Or, the <I>HierarchicalDataTemplate</I> =
+object might=20
+be set directly to the <I>ItemTemplate</I> property of the =
+<I>TreeViewItem</I>.)=20
+The <I>TreeView</I> then uses the <I>VisualTree</I> property of that =
+template to=20
+display the item based on properties of <I>Whatsit</I>, and it uses the=20
+<I>ItemsSource</I> property of the template to obtain sub-items from=20
+<I>Whatsit</I>. These sub-items don't necessarily have to be objects of =
+type=20
+<I>Whatsit</I>; if they are objects of other types, those other types =
+would=20
+probably also be associated with <I>HierarchicalDataTemplate</I> objects =
+defined=20
+as resources. </P>
+<P>The earlier blog entry cited above (which used a program from Chapter =
+16 of=20
+<A href=3D"http://www.charlespetzold.com/wpf">my book</A>) contains a =
+small class=20
+named <I>DiskDirectory</I> that is basically a wrapper around a .NET=20
+<I>DirectoryInfo</I> object. <I>DiskDirectory</I> exposes the =
+<I>Name</I>=20
+property of <I>DirectoryInfo</I> as a property also named <I>Name</I>.=20
+<I>DiskDirectory</I> also includes a read-only property named=20
+<I>Subdirectories</I> that returns a <I>List&lt;DiskDirectory&gt;</I> =
+collection=20
+of subdirectories of that directory. If an object of type =
+<I>DiskDirectory</I>=20
+is put into the root of a <I>TreeView</I>, the =
+<I>HierarchicalDataTemplate</I>=20
+for <I>DiskDirectory</I> does the rest. </P>
+<P>If you want a <I>TreeView</I> to respond to changes in the underlying =
+data,=20
+you must provide a mechanism for the underlying data to notify the=20
+<I>TreeView</I> when the data has changed. For updating disk =
+directories, the=20
+<I>DiskDirectory</I> object must certainly create an object of type=20
+<I>FileSystemWatcher</I> so it can be notified of changes in the =
+directory, but=20
+how it conveys these changes to the outside world can be done in a =
+couple=20
+different ways. </P>
+<P>The revised <A=20
+href=3D"http://www.charlespetzold.com/blog/2006/06/DiskDirectory.cs">Disk=
+Directory.cs</A>=20
+file shows one approach. The class's constructor now installs a=20
+<I>FileSystemWatcher</I> and processes three events in a single handler. =
+(To be=20
+sure, this is an <I>extremely</I> simple-minded approach to=20
+<I>FileSystemWatcher</I>, but I wanted to focus more on mechanisms =
+here.) The=20
+class also implements the <I>INotifyPropertyChanged</I> interface, which =
+means=20
+it defines an event named <I>PropertyChanged</I> that it fires to =
+indicate that=20
+a property in the class has changed. The <I>PropertyChanged</I> event is =
+
+accompanied by a <I>PropertyChangedEventArgs</I> containing the text =
+name of the=20
+event. So, when one of the <I>FileSystemWatcher</I> events comes =
+through,=20
+<I>DiskDirectory</I> fires a <I>PropertyChanged</I> event indicating =
+that the=20
+<I>Subdirectories</I> property has changed. Anybody making use of=20
+<I>DiskDirectory</I> objects can then access the <I>Subdirectories</I> =
+property=20
+again to obtain the updated subdirectory list. </P>
+<P>A <I>HierarchicalDataTemplate</I> for objects of type =
+<I>DiskDirectory</I> is=20
+defined in this <A=20
+href=3D"http://www.charlespetzold.com/blog/2006/06/DynamicDirectoryTreeVi=
+ewWindow.xaml">DynamicDirectoryTreeViewWindow.xaml</A>=20
+file. Notice that the <I>DataType</I> of the template is set to the=20
+<I>DiskDirectory</I> class. The template displays the <I>Name</I> =
+property of=20
+the <I>DiskDirectory</I> object in a <I>TextBlock</I>, and it obtains =
+sub-items=20
+from the <I>Subdirectories</I> property. The <I>TreeView</I> itself is =
+defined=20
+down at the bottom of the file. </P>
+<P>The <A=20
+href=3D"http://www.charlespetzold.com/blog/2006/06/DynamicDirectoryTreeVi=
+ewWindow.cs">DynamicDirectoryTreeViewWindow.cs</A>=20
+code-behind file simply sets a single <I>DiskDirectory</I> item in the=20
+<I>TreeView</I> corresponding to the root directory of the system drive. =
+
+Everything else is handled through the template in conjunction with the=20
+<I>DiskDirectory</I> class. (The <A=20
+href=3D"http://www.charlespetzold.com/blog/2006/06/DynamicDirectoryTreeVi=
+ew.csproj">DynamicDirectoryTreeView.csproj</A>=20
+project file completes the project.) </P>
+<P>The <I>INotifyPropertyChanged</I> interface is one way a class such =
+as=20
+<I>DiskDirectory</I> can provide a notification of changes in =
+properties. In=20
+this example, a simpler approach would have been for =
+<I>DiskDirectory</I> to=20
+define an event named <I>SubdirectoriesChanged</I> that it fired in =
+response to=20
+changes in the monitored directory. A somewhat more difficult approach =
+is=20
+backing <I>Subdirectories</I> with a <I>DependencyProperty</I> object =
+named=20
+<I>SubdirectoriesProperty</I>. </P>
+<P>Another approach would be for <I>DiskDirectory</I> to implement its=20
+<I>Subdirectories</I> property not as an object of type=20
+<I>List&lt;DiskDirectory&gt;</I> but of type=20
+<I>ObservableCollection&lt;DiskDirectory&gt;</I>. This collection class =
+has its=20
+own built-in mechanism for change notification. The <I>DiskDirectory</I> =
+class=20
+would create an object of type =
+<I>ObservableCollection&lt;DiskDirectory&gt;</I>=20
+once (rather than each time the <I>Subdirectories</I> property is =
+called), and=20
+then directly modify the members of this collection based on the=20
+<I>FileSystemWatcher</I> events. This is probably a <I>much</I> more =
+difficult=20
+approach, and I'm not sure it can even be implemented successfully in =
+this=20
+particular case. </P>
+<DIV id=3Dcomments>
+<HR>
+
+<TABLE width=3D"100%">
+  <TBODY>
+  <TR>
+    <TD width=3D"33%">
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/blog/blog.xml">Recent =
+Entries</A></TD>
+    <TD width=3D"33%"></TD>
+  <TR>
+    <TD width=3D"33%"><A=20
+      =
+href=3D"http://www.charlespetzold.com/blog/2006/06/240233.html">&lt;=20
+      Previous</A></TD>
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/blog/toc.html">Browse the=20
+    Archives</A></TD>
+    <TD align=3Dright width=3D"33%"><A=20
+      =
+href=3D"http://www.charlespetzold.com/blog/2006/06/251051.html">Next=20
+    &gt;</A></TD></TR>
+  <TR>
+    <TD width=3D"33%">
+    <TD align=3Dmiddle width=3D"33%"><A=20
+      href=3D"http://www.charlespetzold.com/rss.xml">Subscribe to the =
+RSS=20
+    Feed</A></TD>
+    <TD width=3D"33%"></TD></TR></TBODY></TABLE>
+<HR>
+
+<P>(c) Copyright Charles Petzold<BR><A=20
+href=3D"http://www.charlespetzold.com/">www.charlespetzold.com</P></DIV><=
+/A></DIV></BODY></HTML>

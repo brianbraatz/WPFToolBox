@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - Karsten Extracts My Templates (Ouch!)</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/260228.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/291045.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/01/271054.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>Karsten Extracts My Templates (Ouch!)</h2></a><p style="text-align: right;">January 27, 2006<br>New York, N.Y.</p><p>
+Like a dentist wielding a pair of Lock-Vise pliers, 
+<a href="http://blogs.msdn.com/karstenj/archive/2007/01/26/databinding-in-expression-blend-forget-the-data-and-do-the-bind.aspx">Karsten Januszewski demonstrates</a>
+how to extract deeply-rooted templates from the jaws of recalcitrant
+XAML files and use them in your own programs with the help of
+Expression Blend. As examples, I am honored that he uses some templates
+I wrote for <a href="http://msdn.microsoft.com/msdnmag/issues/07/01/Foundations/default.aspx">an article in MSDN Magazine</a>.
+</p>
+<p>
+And of course he discovered the big problem in my beloved 3D Slider:  Because I link a rotation angle  to the <i>Value</i> property of the <i>Slider</i>, I was forced to hard-code the <i>Minimum</i> and <i>Maximum</i> properties at -25 and 25, which is a <i>very</i>
+uncool thing to do. But I couldn't see any way around it while
+maintaining a pure-XAML approach, so I let it go and hoped that a range
+of -25 to 25 would now become the industry strandard for <i>Slider</i> code.
+</p>
+<p>
+Between the time I submitted the article and the time the issue came
+out, I occasionally took a shot at trying to fix it. After all, my one
+claim to the XAML Hall of Fame is pioneering a technique to do
+arbitrary additions and multiplications in XAML (see
+<a href="http://www.charlespetzold.com/blog/2006/04/060223.html">here</a> and
+<a href="http://www.charlespetzold.com/blog/2006/04/070132.html">here</a>) so this should be right up my alley.  But the required formula is something like this:
+</p>
+<ul>
+Rotation Angle = -25 + 50 * (Value - Minimum) / (Maximum - Minimum)
+</ul>
+<p>
+Notice the division. Divisions are <i>real hard</i> to do in XAML.
+Probably the closest you can come is a technique that only allows
+division by an integer, and that's creating a <i>UniformGrid</i> with one child, and setting the <i>Width</i> of the <i>UniformGrid</i> equal to the dividend and <i>Columns</i> equal to the divisor. The quotient is the <i>ActualWidth</i>
+of the child element. (I've never actually written a XAML file that
+uses this technique, but it seems sound enough if the numbers are
+within reason.)
+</p>
+<p>
+One night I awoke from a restless sleep and said "Non-affine 3D transforms perform divisions" and that is true enough.
+(There's a recent book by Scott Rosenberg entitled
+<a href="http://www.dreamingincode.com/"><i>Dreaming in Code</i></a>; I
+sometimes have a tendency to be coding in my dreams, and I have never
+found the experience pleasant.) But in the light of day the technique
+crumbled, largely because <i>Matrix3D</i> is a structure and hence its
+properties aren't backed by dependency properties and conducive for
+binding, and also because the matrix would actually have to be applied
+to something to extract a division from it.
+</p>
+<p>
+At this point, I give up.  I think the right way to do it is to derive a class from <i>Slider</i>, add a get-only <i>Angle</i> property calculated as shown above, and use that in the XAML template.
+</p>
+<p>
+Sometimes, you really need a little code.
+</p>
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/260228.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/291045.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

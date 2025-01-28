@@ -1,0 +1,291 @@
+﻿<Window x:Class="Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RichReadingLab">
+
+  <DockPanel Name="dockPanel">
+    <!--
+      Naviagation bar docked at the top of window:
+      This one row grid holds the buttons together.
+    -->  
+    <Grid DockPanel.Dock="Top" Background="LightGray">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+        <ColumnDefinition />
+        <ColumnDefinition />
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition />
+      </Grid.RowDefinitions>
+
+      <Button Grid.Column="0" Grid.Row="0" Name="greekButton"
+              Click="ButtonClick">
+        Greek Mythology
+      </Button>
+      <Button Grid.Column="1" Grid.Row="0" Name="galaxiesButton"
+              Click="ButtonClick">
+        Galaxies et Espace
+      </Button>
+      <Button Grid.Column="2" Grid.Row="0" Name="carsButton"
+              Click = "ButtonClick">
+        アストンマーティン (Aston)
+      </Button>
+    </Grid>
+
+    <FlowDocumentReader Name="greekFlowDocumentReader">
+      <FlowDocument
+        ColumnWidth="6.5 cm" 
+        ColumnGap="0.7 cm" 
+        ColumnRuleWidth="1 px"
+        ColumnRuleBrush="LightGray"
+        IsColumnWidthFlexible="True"
+        TextAlignment="Justify" 
+        IsHyphenationEnabled="True" >
+
+        <FlowDocument.Resources>
+          <Style x:Key="Title" TargetType="{x:Type Paragraph}">
+            <Setter Property="FontFamily" Value="Pericles" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="26 pt" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="Sienna" />
+            <Setter Property="IsHyphenationEnabled" Value="False" />
+          </Style>
+
+          <Style x:Key="Heading" TargetType="{x:Type Paragraph}" BasedOn="{StaticResource Title}">
+            <Setter Property="FontSize" Value="14 pt" />
+            <Setter Property="TextAlignment" Value="Left" />
+            <Setter Property="KeepWithNext" Value="True" />
+          </Style>
+
+          <Style x:Key="BodyText" TargetType="{x:Type Paragraph}">
+            <Setter Property="TextIndent" Value="14 px" />
+            <Setter Property="FontFamily" Value="Cambria" />
+            <Setter Property="FontSize" Value="12 pt" />
+          </Style>
+
+          <Style x:Key="FirstParagraph" TargetType="{x:Type Paragraph}" BasedOn="{StaticResource BodyText}">
+            <Setter Property="FontFamily" Value="Pericles Light" />
+            <Setter Property="LineHeight" Value="25 px" />
+          </Style>
+        </FlowDocument.Resources>
+
+        <!-- Title Text-->
+        <Paragraph Style="{StaticResource Title}" 
+           Typography.DiscretionaryLigatures="True">
+          <Run Typography.StylisticAlternates="1">A</Run>NCIENT
+          GR<Run Typography.StylisticAlternates="1">EE</Run>K
+          MYTH<Run Typography.StylisticAlternates="1">O</Run>LOGY
+          <Figure 
+            Padding="0,0,0,0" 
+            Margin="0,0,0,0"  
+            Width="Page" 
+            HorizontalAnchor="PageCenter" 
+            VerticalAnchor="PageTop">
+            <BlockUIContainer>
+              <Image Source="Banner.jpg"/>
+            </BlockUIContainer>
+          </Figure>
+        </Paragraph>
+
+        <!-- First Paragraph -->
+        <Paragraph Style="{StaticResource FirstParagraph}">
+          Greek Mythology, set of diverse traditional	tales told by the ancient Greeks about the exploits of gods and heroes and their relations with ordinary mortals.
+          <Figure 
+            HorizontalAnchor="PageCenter" 
+            VerticalAnchor="PageCenter"
+            Width = ".3 Page" >
+            <BlockUIContainer>
+              <Viewbox>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition />
+                  </Grid.RowDefinitions>
+                  <Image 
+                      Grid.Row="0" 
+                      Grid.Column="0"  
+                      Source="Zeus.jpg" />
+                  <TextBlock 
+                      Grid.Row="0" 
+                      Grid.Column="0" 
+                      Foreground="White"
+                      VerticalAlignment="Top"
+                      TextAlignment="Right"
+                      FontFamily="Pericles" 
+                      FontSize="11pt">
+                    Zeus is considered <LineBreak />
+                    the king of <LineBreak />
+                    the Gods
+                  </TextBlock>
+                </Grid>
+              </Viewbox>
+            </BlockUIContainer>
+          </Figure>
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          The ancient Greeks worshiped many gods within a culture that tolerated diversity. Unlike other belief systems, Greek culture recognized no single truth or code and produced no sacred, written text like the Bible or the Qur’an. Stories about the origins and actions of Greek divinities varied widely, depending, for example, on whether the tale appeared in a comedy, tragedy, or epic poem. Greek mythology was like a complex and rich language, in which the Greeks could express a vast range of perceptions about the world.
+        </Paragraph>
+
+        <!-- Heading -->
+        <Paragraph Style="{StaticResource Heading}">
+          Principle Figures in Greek Mythology
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          Greek mythology has several distinguishing characteristics, in addition to its multiple versions. The Greek gods resembled human beings in their form and in their emotions, and they lived in a society that resembled human society in its levels of authority and power. However, a crucial difference existed between gods and human beings: Humans died, and gods were immortal. Heroes also played an important role in Greek mythology, and stories about them conveyed serious themes. The Greeks considered human heroes from the past closer to themselves than were the immortal gods.
+        </Paragraph>
+
+        <!-- Heading -->
+        <Paragraph Style="{StaticResource Heading}">
+          Gods
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          Given the multiplicity of myths that circulated in Greece, it is difficult to present a single version of the genealogy (family history) of the gods. However, two accounts together provide a genealogy that most ancient Greeks would have recognized. One is the account given by Greek poet Hesiod in his Theogony (Genealogy of the Gods), written in the 8th century bc. The other account, The Library, is attributed to a mythographer (compiler of myths) named Apollodorus, who lived during the 2nd century bc.
+        </Paragraph>
+
+        <!-- Heading -->
+        <Paragraph Style="{StaticResource Heading}">
+          The creation of the gods
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          According to Greek myths about creation, the god Chaos (Greek for “Gaping Void”) was the foundation of all things. From Chaos came Gaea (“Earth”); the bottomless depth of the underworld, known as Tartarus; and Eros (“Love”). Eros, the god of love, was needed to draw divinities together so they might produce offspring. Chaos produced Night, while Gaea first bore Uranus, the god of the heavens, and after him produced the mountains, sea, and gods known as Titans. The Titans were strong and large, and they committed arrogant deeds. The youngest and most important Titan was Cronus. Uranus and Gaea, who came to personify Heaven and Earth, also gave birth to the Cyclopes, one-eyed giants who made thunderbolts.
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          Uranus tried to block any successors from taking over his supreme position by forcing back into Gaea the children she bore. But the youngest child, Cronus, thwarted his father, cutting off his genitals and tossing them into the sea. From the bloody foam in the sea Aphrodite, goddess of sexual love, was born.
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          After wounding his father and taking away his power, Cronus became ruler of the universe. But Cronus, in turn, feared that his own son would supplant him. When his sister and wife Rhea gave birth to offspring—Hestia, Demeter, Hera, Hades, and Poseidon—Cronus swallowed them. Only the youngest, Zeus, escaped this fate, because Rhea tricked Cronus. She gave him a stone wrapped in swaddling clothes to swallow in place of the baby.
+        </Paragraph>
+
+        <!-- Heading -->
+        <Paragraph Style="{StaticResource Heading}">
+          Zeus and the Olympian Gods
+        </Paragraph>
+
+        <!-- A pull quote will be added here in Task1 Step 5 -->
+        <Paragraph Style="{StaticResource BodyText}">
+          When fully grown, Zeus forced his father to disgorge the children he had swallowed. With their help and armed with the thunderbolt, Zeus made war on Cronus and the Titans, and overcame them. He established a new regime, based on Mount Olympus in northern Greece. Zeus ruled the sky. His brother Poseidon ruled the sea, and his brother Hades, the underworld. Their sister Hestia ruled the hearth, and Demeter took charge of the harvest. Zeus married his sister Hera, who became queen of the heavens and guardian of marriage and childbirth. Among their children was Ares, whose sphere of influence was war.
+          <Floater>
+            <BlockUIContainer>
+              <Viewbox>
+                <DockPanel LastChildFill="True">
+                  <TextBlock 
+                      DockPanel.Dock="Left"
+                      FontFamily="Kootenay" 
+                      FontSize="200px" 
+                      Foreground="GoldenRod" 
+                      VerticalAlignment="Center">
+                    [
+                  </TextBlock>
+                  <TextBlock 							
+                      DockPanel.Dock="Right"
+                      FontFamily="Kootenay" 
+                      FontSize="200px" 
+                      Foreground="GoldenRod" 
+                      VerticalAlignment="Center">
+                    ]
+                  </TextBlock>
+                  <TextBlock
+                      Width="300px"
+                      Height="125px"
+                      VerticalAlignment="Center"
+                      FontFamily="Kootenay" 
+                      FontSize="28px"
+                      Foreground="Sienna" 
+                      TextWrapping="Wrap"
+                      TextAlignment="Justify"
+                      IsHyphenationEnabled="True">
+                      Zeus ruled the sky. His brother Poseidon
+                      ruled the sea, and his brother Hades,
+                      the underworld.
+                  </TextBlock>
+                </DockPanel>
+              </Viewbox>
+            </BlockUIContainer>
+          </Floater>
+        </Paragraph>
+
+        <!-- Heading -->
+        <Paragraph Style="{StaticResource Heading}">
+          The Offspring of Zeus
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          Zeus had numerous children by both mortal and immortal women. By the mortal Semele he had Dionysus, a god associated with wine and with other forms of intoxication and ecstasy. By Leto, a Titan, Zeus fathered the twins Apollo and Artemis, who became two of the most important Olympian divinities. Artemis remained a virgin and took hunting as her special province. Apollo became associated with music and prophecy. People visited his oracle (shrine) at Delphi to seek his prophetic advice. By the nymph Maia, Zeus became father of Hermes, the Olympian trickster god who had the power to cross all kinds of boundaries. Hermes guided the souls of the dead down to the underworld, carried messages between gods and mortals, and wafted a magical sleep upon the wakeful.
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          The ancient Greeks worshiped many gods within a culture that tolerated diversity. Unlike other belief systems, Greek culture recognized no single truth or code and produced no sacred, written text like the Bible or the Qur’an. Stories about the origins and actions of Greek divinities varied widely, depending, for example, on whether the tale appeared in a comedy, tragedy, or epic poem. Greek mythology was like a complex and rich language, in which the Greeks could express a vast range of perceptions about the world.
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          Twelve major gods and goddesses had their homes on Mount Olympus and were known as the Olympians. Four children of Zeus and one child of Hera joined the Olympian gods Zeus, Hera, Poseidon, Hades, Hestia, Demeter, and Ares. Zeus’s Olympian offspring were Apollo, Artemis, Hermes, and Athena. Hera gave birth to Hephaestus.
+        </Paragraph>
+
+        <!-- An image of the temple of Apollo and caption will be added here in Task 1 Step 5-->
+        <Paragraph Style="{StaticResource BodyText}">
+          Two other Olympian divinities, Hephaestus and Athena, had unusual births. Hera conceived Hephaestus, the blacksmith god, without a male partner. Subsequently he suffered the wrath of Zeus, who once hurled him from Olympus for coming to the aid of his mother; this fall down onto the island of Lemnos crippled Hephaestus. The birth of Athena was even stranger. Zeus and Metis, daughter of the Titan Oceanus, were the parents of Athena. But Gaea had warned Zeus that, after giving birth to the girl with whom she was pregnant, Metis would bear a son destined to rule heaven. To avoid losing his throne to a son, Zeus swallowed Metis, just as Cronus had previously swallowed his own children to thwart succession. Metis’s child Athena was born from the head of Zeus, which Hephaestus split open with an axe. Athena, another virgin goddess, embodied the power of practical intelligence in warfare and crafts work. She also served as the protector of the city of Athens.
+          <Floater>
+            <BlockUIContainer>
+              <DockPanel>
+                <Image DockPanel.Dock="Top" Source="Apollo.jpg"/>
+                <TextBlock
+                    DockPanel.Dock="Bottom"
+                    Padding="10,10,10,10" 
+                    Background="Sienna" 
+                    Foreground="White"
+                    FontFamily="Kootenay" 
+                    FontSize="10pt">
+                    <Run FontWeight="Bold">Temple of Apollo at Didyma: </Run>
+                    The temple of Apollo supposedly housed an oracle who
+                    foretold the future to those seeking knowledge.
+                </TextBlock>
+              </DockPanel>
+            </BlockUIContainer>
+          </Floater>
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          A Greek city-state devoted itself to a particular god or group of gods in whose honor it built temples. The temple generally housed a statue of the god or gods. The Greeks honored the city’s gods in festivals and also offered sacrifices to the gods, usually a domestic animal such as a goat. Stories about the gods varied by geographic location: A god might have one set of characteristics in one city or region and quite different characteristics elsewhere.
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          Another of Zeus’s children was Persephone; her mother was Demeter, goddess of grain, vegetation, and the harvest. Once when Persephone was gathering flowers in a meadow, Hades, god of the underworld, saw and abducted her, taking her down to the kingdom of the dead to be his bride. Her grief-stricken mother wandered the world in search of her; as a result, fertility left the earth. Zeus commanded Hades to release Persephone, but Hades had cunningly given her a pomegranate seed to eat. Having consumed food from the underworld, Persephone was obliged to return below the earth for part of each year. Her return from the underworld each year meant the revival of nature and the beginning of spring. This myth was told especially in connection with the Eleusinian Mysteries, sacred rituals observed in the Greek town of Elevsís near Athens. The rituals offered initiates in the mysteries the hope of rebirth, just as Persephone had been reborn after her journey to the underworld.
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          Many Greek myths report the exploits of the principal Olympians, but Greek myths also refer to a variety of other divinities, each with their particular sphere of influence. Many of these divinities were children of Zeus, symbolizing the fact that they belonged to the new Olympian order of Zeus’s regime. The Muses, nine daughters of Zeus and the goddess of memory, Mnemosyne, presided over song, dance, and music. The Fates, three goddesses who controlled human life and destiny, and the Horae, goddesses who controlled the seasons, were appropriately the children of Zeus and Themis, the goddess of divine justice and law. Far different in temperament were the Erinyes (Furies), ancient and repellent goddesses who had sprung from the earth after it had been impregnated with the blood of Uranus’s severed genitals. Terrible though they were, the Erinyes also had a legitimate role in the world: to pursue those who had murdered their own kin.
+        </Paragraph>
+
+        <!-- Heading -->
+        <Paragraph Style="{StaticResource Heading}">
+          Disruptive Dieties
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          Human existence is characterized by disorder as well as order, and many of the most characteristic figures in Greek mythology exert a powerfully disruptive effect. Satyrs, whom the Greeks imagined as part human and part horse (or part goat), led lives dominated by wine and lust. Myths depicted them as companions of Dionysus who drunkenly pursued nymphs, spirits of nature represented as young and beautiful maidens. Many of the jugs used at Greek symposia (drinking parties) carry images of satyrs.
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          Equally wild, but more threatening than the satyrs, were the savage centaurs. These monsters, depicted as half-man and half-horse, tended toward uncontrolled aggression. The centaurs are known for combat with their neighbors, the Lapiths, which resulted from an attempt to carry off the Lapith women at a wedding feast. This combat was depicted in sculpture on the Parthenon, a temple dedicated to Athena in Athens.
+        </Paragraph>
+
+        <Paragraph Style="{StaticResource BodyText}">
+          The Sirens, usually portrayed as birds with women’s heads, posed a different sort of threat. These island-dwelling enchantresses lured mariners to their deaths by the irresistible beauty of their song. The seafaring Greek hero Odysseus alone survived this temptation by ordering his companions to block their own ears, to bind him to the mast of his ship, and to ignore all his entreaties to be allowed to follow the lure of the Sirens’ song.
+        </Paragraph>
+
+      </FlowDocument>
+    </FlowDocumentReader>
+  </DockPanel>
+</Window>

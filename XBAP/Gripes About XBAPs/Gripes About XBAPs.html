@@ -1,0 +1,90 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - More Gripes About XBAPs</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/070716.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/090646.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/03/081224.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>More Gripes About XBAPs</h2></a><p style="text-align: right;">March 7, 2007<br>New York, NY</p><p>
+Chris Sells created the excusegenexpress project in Chapter 10 of his and Ian Griffith's book <i>Programming Windows Presentation Foundation</i> on a computer named EMULH. His user name is csells.
+</p>
+<p>
+Adam Nathan created the XBAP version of his PhotoGallery program in Chapter 7 of his book <i>Windows Presentation Foundation Unleashed</i> on a computer named NATHANKITCHEN. His user name is Adam.
+</p>
+<p>
+Is it weird that I should know this information? It's not exactly the
+type of stuff involved in fraud and identify theft, but it still seems
+rather personal. After all, I wouldn't want anybody to know that my
+computer's name is SLUDGEBOX and my user name is SweetThing. Why should
+that be public information?
+</p>
+<p>I learned about Chris and Adam's computer names and user names
+simply by opening these two projects from their books in Visual Studio,
+selecting Project Properties and clicking the Signing tab.
+</p>
+<p>
+Is it just a coincidence that the two Visual Studio projects in question are both XBAPs?  No, it is not.
+</p>
+<p>
+In a 
+<a href="http://www.charlespetzold.com/blog/2006/11/220634.html">previous blog entry</a>
+I discussed how I really like the idea of a partial-trust binary
+executable that combines code and XAML, but I couldn't understand why
+this binary needed to be multiple files. When I make a XAML file
+available to the readers of my blog, I just copy it to my Web site. If
+I want to make an XBAP available, I have to publish it from Visual
+Studio. I would much rather just copy the .XBAP file to my Web site but
+I can't because that file is insufficient to run the app.
+</p>
+<p>The situation with XBAPs is doubly complicated for those of us who
+write books and magazine articles about WPF, and thus share out source
+code with the public. The problem involves certifying the origin of the
+executable by digitally signing it.
+</p>
+<p>When you publish a .EXE file to a Web site, it's a good idea to sign
+the file with a code-signing certificate. Then, when a user downloads
+the file, a dialog pops up informing the user who signed the .EXE. The
+user is given the option to allow the .EXE to be downloaded or not.
+When you're publishing a .EXE file to a Web site using the ClickOnce
+facility, for example, you sign the file at the time of publication.
+</p>
+<p>
+But XBAPs are different.  XBAPs want to be signed <i>regardless</i> whether they're going to be published or not.  An XBAP needs to be signed just to be <i>compiled</i>.
+</p>
+<p>Of course, supplying a code-signing certificate just to compile a
+program is a real hassle, and if it's a sandboxed partial-trust
+application, it doesn't need to be signed even if it's going to be
+published. For this reason, when you use Visual Studio to create a
+"XAML Browser Application" (i.e., XBAP), Visual Studio creates a "test
+certificate" for you that contains your computer name and your user
+name, but otherwise doesn't mean much. You can also create this test
+certificate manually by clicking the Create Test Certificate button in
+the Signing tab of Project Properties. The certificate is an actual
+.PFX file that becomes part of the Visual Studio project, and the
+information is also encoded into the .CSPROJ project file.
+</p>
+<p>
+Those of us who write books and articles about WPF and distribute source code to the public are then faced with a question:
+</p>
+<p>Do we give out Visual Studio project files that contain these test
+certificates (and hence, our computer names and user names) and say
+"Well, it's kind of weird but I guess it's OK because Microsoft knows
+best."?
+</p>
+<p>Or do we strip out from the .CSPROJ file all references to the
+code-signing certificate and in particular remove the
+ManifestCertificateThumbprint tag that encodes the certificate
+information in hexadecimal form?
+</p>
+<p>If we choose the first route as Chris and Adam did with the source
+code for their books, then someone getting the source code could modify
+it and even publish the XBAP, and the project would still have the
+original test certificate attached to it. This may not mean much in
+practice, but conceptually it's not quite right.
+</p>
+<p>If we choose the second route, then we are distributing a .CSPROJ
+file that will not compile! We have to tell the programmers getting
+this project file that they first need to bring up Project Properties,
+select the Signing tab, and click "Create Test Certificate" to create a
+certificate containing their own computer name and user name.
+</p>
+<p>
+I want to love XBAPs.  I really do.  But they make it so <i>hard</i>.
+</p>
+
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/070716.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/03/090646.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

@@ -1,0 +1,102 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WpfApplication1">
+    
+    <Style TargetType="NavigationWindow" x:Key="{x:Type NavigationWindow}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="NavigationWindow">
+                    <Grid Background="#FFF">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <ItemsControl ItemsSource="{Binding 
+                            RelativeSource={RelativeSource AncestorType={x:Type NavigationWindow}}, 
+                            Path=BackStack}">
+                            
+                            <!--Force the ItemsContol to use a wrap panel as Items host-->
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <local:InverseWrapPanel KeyboardNavigation.TabNavigation="Cycle"
+                                                KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Command="NavigationCommands.NavigateJournal"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
+                                            Content="{Binding Name}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <WrapPanel>
+                                                    <TextBlock Name="text1" FontWeight="Bold" Text="{TemplateBinding Content}"/>
+                                                    <TextBlock Name="text2" FontWeight="Bold" Text=">>" Margin="2,0,0,0"/>
+                                                </WrapPanel>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="text1" Property="Foreground" Value="Blue"/>
+                                                        <Setter TargetName="text2" Property="Foreground" Value="Blue"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            
+                        </ItemsControl>
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                            <!--Back Button-->
+                            <Button Command="NavigationCommands.BrowseBack" Content="Back">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border>
+                                            <Path Name="path" Fill="Silver" Stretch="Fill" Data="M160,81 L160,95.333333 176.33301,96.666585 176.66668,110.99984 159.66667,112.00006 159.99967,127.66676 135.99967,104.66654 160.333,81.333332"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="path" Property="Fill" Value="AliceBlue"/>
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="path" Property="Visibility" Value="Hidden"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>    
+                            </Button>
+                            
+                            <!-- Forward button -->
+                            <Button Command="NavigationCommands.BrowseForward" Content="Forward" Margin="10,0,0,0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border>
+                                            <Path Name="path" Fill="Silver" Stretch="Fill" Data="M223.66667,81 L223.99967,95.333333 208.00002,95.66701 208.00002,111.33335 223.99966,111.00035 223.99966,127.33387 247.99914,104.00043 z"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="path" Property="Fill" Value="AliceBlue"/>
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="path" Property="Visibility" Value="Hidden"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+
+                        <AdornerDecorator Grid.Row="2">
+                            <ContentPresenter Name="PART_NavWinCP" ClipToBounds="true"/>
+                        </AdornerDecorator>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

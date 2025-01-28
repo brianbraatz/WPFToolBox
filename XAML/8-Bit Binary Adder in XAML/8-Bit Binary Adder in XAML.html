@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - 8-Bit Binary Adder in XAML</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/06/020708.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/06/100923.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/06/100712.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>8-Bit Binary Adder in XAML</h2></a><p style="text-align: right;">June 10, 2006<br>Roscoe, NY</p><p>
+"It's such a fine line between stupid and clever." — David St. Hubbins, musician.
+</p>
+<p>
+And, this, I'm afraid, falls on the stupid side. It's an 8-bit binary adder realized entirely in XAML:  
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/blog/2006/06/BinaryAdder.xaml">BinaryAdder.xaml</a>
+</p>
+<p>
+Click on a digit to toggle it between 0 and 1.
+</p>
+<p>
+This XAML file mostly demonstrates the power of templates, which are
+objects that let you change the entire visual appearance of controls,
+and can also respond to property changes.
+</p>
+<p>
+The file defines three templates. One template makes <i>CheckBox</i> controls display the digit 0 and 1 based on the <i>IsChecked</i> property. The 
+<a href="http://www.charlespetzold.com/blog/2006/06/CheckBoxBit.xaml">CheckBoxBit.xaml</a> file shows this template in isolation. The template is defined by a resource and then used with three <i>CheckBox</i> controls. Click on the digits to toggle them.
+</p>
+<p>A second template in BinaryAdder.xaml defines a column of digits and
+performs the one-bit addition logic. I've done something similar (but
+less extensive) in the
+<a href="http://www.charlespetzold.com/blog/2006/06/AndGates.xaml">AndGates.xaml</a> file, which defines a template using two <i>CheckBox</i> controls and one <i>TextBlock</i> to simulate a two-input AND gate. This template uses the <i>CheckBox</i>
+controls with their default templates so they look like normal
+controls, but obviously the templates in CheckBoxBit.xaml could be used
+to render the <i>CheckBox</i> controls as binary digits.
+</p>
+<p>
+Each column of bits in the BinaryAdder.xaml file is a separate control
+based on a template similar to the one in AndGates.xaml but obviously
+more extensive. Each column has three inputs (the two <i>CheckBox</i> bits in the column and Carry In) and two outputs (the <i>TextBlock</i> sum and Carry Out).
+</p>
+<p>
+As usual when designing adders, the problem of the Carry overwhelms
+everything else. Since each column of digits in BinaryAdder.xaml is a
+control, I knew each one needed a binding to implement the Carry. The
+target of the binding would be the Carry In property and the binding
+source would be the Carry Out property of the next less significant
+bit. If I were coding these controls, I would surely define two Boolean
+properties named <i>CarryIn</i> and <i>CarryOut</i>, but I had to make do with the properties I had.
+</p>
+<p>
+My solution was to appropriate two existing Boolean properties that I could alter without affecting the control too much. (<i>IsVisible</i>, for example, would have been a poor choice.) I used <i>Focusable</i> for Carry In and <i>ForceCursor</i> for Carry Out.  It's certainly not a general solution, but for those of us obsessed with taking XAML to the limits, it works.
+</p>
+
+
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/06/020708.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/06/100923.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

@@ -1,0 +1,100 @@
+﻿<Window x:Class="FeatureMontage.Window1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:local="clr-namespace:FeatureMontage" WindowStyle="None" KeyDown="RootKey" WindowStartupLocation="CenterScreen" 
+    Title="FeatureMontage">
+  
+  <Grid >
+    <Grid.Background>
+      <DrawingBrush Stretch ="UniformToFill">
+        <DrawingBrush.Drawing>
+          <DrawingGroup>
+            <DrawingGroup.Children>
+              <GeometryDrawing>
+                <GeometryDrawing.Geometry>
+                  <RectangleGeometry Rect="0,0,800,600" />
+                </GeometryDrawing.Geometry>
+                <GeometryDrawing.Brush>
+                  <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <LinearGradientBrush.GradientStops>
+                      <GradientStop Color="#fff" />
+                      <GradientStop Color="#aae" Offset=".66" />
+                      <GradientStop Color="#99c" Offset="1" />
+                    </LinearGradientBrush.GradientStops>
+                  </LinearGradientBrush>
+                </GeometryDrawing.Brush>
+              </GeometryDrawing>
+
+              <!-- 
+              <DrawingGroup Opacity=".25">
+                <DrawingGroup.Transform>
+                  <TransformGroup>
+                    <RotateTransform Angle="180" />
+                    <TranslateTransform X="800" Y="600" />
+                  </TransformGroup>
+                </DrawingGroup.Transform>
+                <DrawingGroup.Children>
+                  <ImageDrawing ImageSource="Resources/Images/BlueStreak.jpg" Rect="0, 0, 800, 600"  />
+                </DrawingGroup.Children>
+              </DrawingGroup> -->
+            </DrawingGroup.Children>
+          </DrawingGroup>
+        </DrawingBrush.Drawing>
+      </DrawingBrush>
+    </Grid.Background>
+
+    <Grid.Resources>
+      <Style TargetType="{x:Type Hyperlink}">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FontFamily" Value="Calibri" />
+      </Style>
+
+      <DoubleAnimation x:Key="QuickEnterAnimation" Duration="0:0:1" From="0" DecelerationRatio=".7" />
+      <DoubleAnimation x:Key="QuickExitAnimation" Duration="0:0:1" To="0" From="1" DecelerationRatio=".7" />
+    </Grid.Resources>
+
+    <!--<local:TransitioningFrame x:Name="ViewFrame" IsSlideAnimationEnabled="False" OpacityEnterAnimation="{StaticResource QuickEnterAnimation}" OpacityExitAnimation="{StaticResource QuickExitAnimation}" />-->
+    
+    <local:TransitioningFrame x:Name="ViewFrame" Navigated="UpdateTitle" IsSlideAnimationEnabled="False" OpacityEnterAnimation="{StaticResource QuickEnterAnimation}" OpacityExitAnimation="{StaticResource QuickExitAnimation}" />
+    <Viewbox Margin="20,0" VerticalAlignment="Top" MaxHeight="50">
+      <StackPanel HorizontalAlignment="Center"  Orientation="Horizontal">
+        <TextBlock Margin="10">
+          <Hyperlink NavigateUri="Controls.xaml" TargetName="ViewFrame" RequestNavigate="HandleRequest">Controls</Hyperlink>
+        </TextBlock>
+        <TextBlock Margin="10">
+          <Hyperlink NavigateUri="Controls2.xaml" TargetName="ViewFrame" RequestNavigate="HandleRequest">Custom Controls</Hyperlink>
+        </TextBlock>
+        <TextBlock Margin="10">
+          <Hyperlink NavigateUri="Layout.xaml" TargetName="ViewFrame" RequestNavigate="HandleRequest">Layout</Hyperlink>
+        </TextBlock>
+        <TextBlock Margin="10">
+          <Hyperlink NavigateUri="Vectors.xaml" TargetName="ViewFrame" RequestNavigate="HandleRequest">Vectors</Hyperlink>
+        </TextBlock>
+        <!--TextBlock Margin="10">
+          <Hyperlink NavigateUri="Deployment.xaml" TargetName="ViewFrame">Deployment</Hyperlink>
+        </TextBlock-->
+        <TextBlock Margin="10">
+          <Hyperlink NavigateUri="Text.xaml" TargetName="ViewFrame" RequestNavigate="HandleRequest">Text</Hyperlink>
+        </TextBlock>
+        <TextBlock Margin="10">
+          <Hyperlink NavigateUri="Reading.xaml" TargetName="ViewFrame" RequestNavigate="HandleRequest">Reading</Hyperlink>
+        </TextBlock>
+        <!--TextBlock Margin="10">
+          <Hyperlink NavigateUri="Animation.xaml" TargetName="ViewFrame">Animation</Hyperlink>
+        </TextBlock-->
+        <TextBlock Margin="10">
+          <Hyperlink NavigateUri="Effects.xaml" TargetName="ViewFrame" RequestNavigate="HandleRequest">Effects</Hyperlink>
+        </TextBlock>
+        <TextBlock Margin="10">
+          <Hyperlink NavigateUri="Media.xaml" TargetName="ViewFrame" RequestNavigate="HandleRequest">Media</Hyperlink>
+        </TextBlock>
+        <TextBlock Margin="10">
+          <Hyperlink NavigateUri="3D.xaml" TargetName="ViewFrame" RequestNavigate="HandleRequest">3D</Hyperlink>
+        </TextBlock>
+      </StackPanel>
+    </Viewbox>
+
+
+  </Grid>
+</Window>

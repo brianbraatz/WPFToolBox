@@ -1,0 +1,4854 @@
+From: "Saved by Windows Internet Explorer 7"
+Subject: BenCon's WebLog : Changing Panels and DataTemplates with ItemsControls in WPF/Avalon
+Date: Sun, 20 Jan 2008 16:10:49 -0800
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----=_NextPart_000_0000_01C85B7F.05E7CA30"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.0.6000.16545
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://blogs.msdn.com/bencon/archive/2006/07/26/679696.aspx
+
+=EF=BB=BF<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" =
+"http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<HTML lang=3Den xml:lang=3D"en" xmlns=3D"http://www.w3.org/1999/xhtml" =
+xmlns:o =3D=20
+"urn:schemas-microsoft-com:office:office"><HEAD><TITLE>BenCon's WebLog : =
+Changing Panels and DataTemplates with ItemsControls in =
+WPF/Avalon</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3Dutf-8">
+<META=20
+content=3D"I have posted before about the philosophy behind the =
+ItemsControl, and now I will pull together some concepts from previous =
+posts. I will use the RadialPanel and some ValueConverter magic to show =
+how we can take a ListBox (the most famous of the ItemsControl"=20
+name=3Ddescription>
+<META content=3D"MSHTML 6.00.6000.16587" name=3DGENERATOR><LINK=20
+href=3D"http://blogs.msdn.com/bencon/pingback.aspx" rel=3Dpingback><LINK =
+
+media=3Dscreen =
+href=3D"http://blogs.msdn.com/Themes/Blogs/paperclip/style/style.css"=20
+type=3Dtext/css rel=3Dstylesheet><LINK media=3Dprint=20
+href=3D"http://blogs.msdn.com/Themes/Blogs/paperclip/style/print.css"=20
+type=3Dtext/css rel=3Dstylesheet><LINK media=3Dscreen=20
+href=3D"http://blogs.msdn.com/Themes/Blogs/paperclip/style/cactus.css"=20
+type=3Dtext/css rel=3Dstylesheet><LINK media=3Dscreen=20
+href=3D"http://blogs.msdn.com/bencon/customcss.ashx" type=3Dtext/css=20
+rel=3Dstylesheet><LINK href=3D"/favicon.ico" type=3Dimage/ico=20
+rel=3D"shortcut icon"><LINK title=3D"BenCon's WebLog (RSS 2.0)"=20
+href=3D"http://blogs.msdn.com/bencon/rss.xml" type=3Dapplication/rss+xml =
+
+rel=3Dalternate><LINK title=3D"BenCon's WebLog (Atom 1.0)"=20
+href=3D"http://blogs.msdn.com/bencon/atom.xml" =
+type=3Dapplication/atom+xml=20
+rel=3Dalternate><LINK=20
+title=3D"Changing Panels and DataTemplates with ItemsControls in =
+WPF/Avalon Comment RSS (RSS 2.0)"=20
+href=3D"http://blogs.msdn.com/bencon/commentrss.aspx?PostID=3D679696"=20
+type=3Dapplication/rss+xml rel=3Dalternate>
+<SCRIPT =
+src=3D"http://blogs.msdn.com/Utility/global.js?Version=3D2.1.61025.2"=20
+type=3Dtext/javascript></SCRIPT>
+</HEAD>
+<BODY>
+<FORM id=3DaspnetForm name=3DaspnetForm=20
+onsubmit=3D"javascript:return WebForm_OnSubmit();"=20
+action=3D/bencon/archive/2006/07/26/679696.aspx method=3Dpost>
+<DIV><INPUT id=3D__EVENTTARGET type=3Dhidden name=3D__EVENTTARGET> =
+<INPUT=20
+id=3D__EVENTARGUMENT type=3Dhidden name=3D__EVENTARGUMENT> <INPUT =
+id=3D__VIEWSTATE=20
+type=3Dhidden=20
+value=3D/wEPDwUKLTMyNjg0MDc1MWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tle=
+V9fFgIFHmN0bDAwJF8kY3RsMDAkXyR3cyRfJFNlYXJjaEJveAUqY3RsMDAkXyRjdGwwMCRfJG=
+N0bDAyJF8kZm9ybSRfJGNoa1JlbWVtYmVyIYIS4KdU7zrl4bjphRf8RdzvYS0=3D=20
+name=3D__VIEWSTATE> </DIV>
+<SCRIPT type=3Dtext/javascript>
+<!--
+var theForm =3D document.forms['aspnetForm'];
+if (!theForm) {
+    theForm =3D document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() !=3D false)) {
+        theForm.__EVENTTARGET.value =3D eventTarget;
+        theForm.__EVENTARGUMENT.value =3D eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</SCRIPT>
+
+<SCRIPT=20
+src=3D"http://blogs.msdn.com/WebResource.axd?d=3DMwVAIFrhtInWXjr7ugVdzg2&=
+amp;t=3D633229024676498808"=20
+type=3Dtext/javascript></SCRIPT>
+
+<SCRIPT=20
+src=3D"http://blogs.msdn.com/WebResource.axd?d=3DaODu1aEDazIpJC_uB8eMivJC=
+BZ9SB9nLmXrKL9rUOsM1&amp;t=3D633229024676498808"=20
+type=3Dtext/javascript></SCRIPT>
+
+<SCRIPT type=3Dtext/javascript>
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) =3D=3D "function" && ValidatorOnSubmit() =
+=3D=3D false) return false;
+return true;
+}
+// -->
+</SCRIPT>
+
+<DIV id=3Dmasthead>
+<DIV id=3DuserArea>
+<DIV id=3Dwelcome align=3Dright>Welcome to MSDN Blogs <A=20
+id=3Dctl00___ctl00___duw1_ac1___Login=20
+href=3D"http://blogs.msdn.com/login.aspx?ReturnUrl=3D%2fbencon%2farchive%=
+2f2006%2f07%2f26%2f679696.aspx">Sign=20
+in</A> | <A id=3Dctl00___ctl00___duw1_ac1___Register=20
+href=3D"http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=3D/bencon/ar=
+chive/2006/07/26/679696.aspx">Join</A>=20
+| <A id=3Dctl00___ctl00___duw1_Faq1=20
+href=3D"http://blogs.msdn.com/languages/en-US/docs/faq.aspx">Help</A> =
+</DIV>
+<DIV id=3DSearchSideBar>
+<DIV id=3DSearch align=3Dright>
+<TABLE cellSpacing=3D0 cellPadding=3D0 border=3D0>
+  <TBODY>
+  <TR>
+    <TD><INPUT class=3DsearchBox id=3Dctl00___ctl00___ws___SearchBox=20
+      =
+onkeydown=3DKeyDownHandlerctl00___ctl00___ws___SearchButton(event);=20
+      name=3Dctl00$_$ctl00$_$ws$_$SearchBox> </TD>
+    <TD><SPAN class=3DSearchButtonOuter><A class=3DSearchButton=20
+      id=3Dctl00___ctl00___ws___SearchButton=20
+      =
+href=3D"javascript:__doPostBack('ctl00$_$ctl00$_$ws$_$SearchButton','')">=
+Search</A></SPAN>=20
+    </TD></TR></TBODY></TABLE></DIV></DIV></DIV>
+<DIV id=3Dtitle>
+<H1><A class=3Dheadermaintitle id=3Dctl00___ctl00___bt___BlogTitle=20
+href=3D"http://blogs.msdn.com/bencon/default.aspx">BenCon's =
+WebLog</A></H1>
+<DIV>Windows User Interface Musings</DIV></DIV></DIV>
+<DIV id=3Dnav>
+<DIV id=3Dnavbar>
+<UL>
+  <LI><A id=3Dctl00___ctl00___Homelink1=20
+  href=3D"http://blogs.msdn.com/bencon/default.aspx">Home</A> </LI>
+  <LI><A id=3Dctl00___ctl00___Contactlink1=20
+  href=3D"http://blogs.msdn.com/bencon/contact.aspx">Email</A> </LI>
+  <LI><A id=3Dctl00___ctl00___Aboutlink1=20
+  href=3D"http://blogs.msdn.com/bencon/about.aspx">About</A> </LI>
+  <LI><A id=3Dctl00___ctl00___rss =
+href=3D"http://blogs.msdn.com/bencon/rss.xml">RSS=20
+  2.0</A> </LI>
+  <LI><A id=3Dctl00___ctl00___atom=20
+  href=3D"http://blogs.msdn.com/bencon/atom.xml">Atom 1.0</A> =
+</LI></UL></DIV></DIV>
+<DIV id=3Dcontent>
+<DIV id=3Dleftmenu>
+<DIV id=3DTasksSideBar></DIV>
+<DIV id=3DRecentPostsSideBar>
+<H3>Recent Posts</H3>
+<UL>
+  <LI><A id=3Dctl00___ctl00___bs___rp___PostList_ctl01_Link=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/2007/12/17/a-debug-device-re=
+ally-does-need-the-debug-layer.aspx">A=20
+  debug device really does need the debug layer</A>=20
+  <LI><A id=3Dctl00___ctl00___bs___rp___PostList_ctl02_Link=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/2007/12/17/yes-i-am-still-he=
+re.aspx">Yes,=20
+  I am still here</A>=20
+  <LI><A id=3Dctl00___ctl00___bs___rp___PostList_ctl03_Link=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/2007/03/29/tricks-with-d3dx1=
+0getimageinfofromresource.aspx">Tricks=20
+  with D3DX10GetImageInfoFromResource</A>=20
+  <LI><A id=3Dctl00___ctl00___bs___rp___PostList_ctl04_Link=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/2007/02/02/cool-trick-with-d=
+ependency-properties.aspx">Cool=20
+  trick with Dependency Properties</A>=20
+  <LI><A id=3Dctl00___ctl00___bs___rp___PostList_ctl05_Link=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/2006/12/09/iscrollinfo-tutor=
+ial-part-iv.aspx">IScrollInfo=20
+  tutorial part IV</A> </LI></UL></DIV>
+<DIV id=3DTagSideBar>
+<H3>Tags</H3>
+<UL class=3DSidebarTagCloud>
+  <LI class=3DTag1><A=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/tags/Avalon+_2F00_+WPF/defau=
+lt.aspx"=20
+  rel=3Dtag>Avalon / WPF</A>=20
+  <LI class=3DTag4><A=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/tags/Direct3D/default.aspx" =
+
+  rel=3Dtag>Direct3D</A>=20
+  <LI class=3DTag6><A=20
+  href=3D"http://blogs.msdn.com/bencon/archive/tags/Max/default.aspx"=20
+  rel=3Dtag>Max</A>=20
+  <LI class=3DTag4><A=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/tags/My+Blog/default.aspx"=20
+  rel=3Dtag>My Blog</A>=20
+  <LI class=3DTag6><A=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/tags/Personal/default.aspx" =
+
+  rel=3Dtag>Personal</A>=20
+  <LI class=3DTag6><A=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/tags/Random+fun/default.aspx=
+"=20
+  rel=3Dtag>Random fun</A>=20
+  <LI class=3DTag2><A=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/tags/SIGGRAPH/default.aspx" =
+
+  rel=3Dtag>SIGGRAPH</A>=20
+  <LI class=3DTag1><A=20
+  =
+href=3D"http://blogs.msdn.com/bencon/archive/tags/Web+Developer/default.a=
+spx"=20
+  rel=3Dtag>Web Developer</A> </LI></UL></DIV>
+<DIV id=3DNewsSideBar></DIV>
+<DIV id=3DLinkSideBar>
+<H3>Friends</H3>
+<UL>
+  <LI><A =
+id=3Dctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl01_Link=20
+  title=3D"Former MS guy who now works at Google"=20
+  href=3D"http://www.eightypercent.net/" rel=3Dfriend>Joe Beda</A>=20
+  <LI><A =
+id=3Dctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl02_Link=20
+  title=3D"IE developer and another lunch buddy"=20
+  href=3D"http://blogs.msdn.com/jeffdav" rel=3Dfriend>Jeff Davis</A>=20
+  <LI><A =
+id=3Dctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl03_Link=20
+  title=3D"Scoble does not need a description" =
+href=3D"http://www.scobleizer.com/"=20
+  rel=3Dfriend>Robert Scoble</A>=20
+  <LI><A =
+id=3Dctl00___ctl00___bs___lcl___Categories_ctl00_Links_ctl04_Link=20
+  title=3D"When I get up early enough, I eat lunch with this guy"=20
+  href=3D"http://blogs.msdn.com/oldnewthing" rel=3Dfriend>Raymond =
+Chen</A> </LI></UL>
+<H3>Interesting stuff</H3>
+<UL>
+  <LI><A =
+id=3Dctl00___ctl00___bs___lcl___Categories_ctl01_Links_ctl01_Link=20
+  title=3D"RNA research blog" =
+href=3D"http://ribonucleoblog.wordpress.com/"=20
+  rel=3Dfriend>Ribonucleoblog</A> </LI></UL>
+<H3>Microsoft Max Team</H3>
+<UL>
+  <LI><A =
+id=3Dctl00___ctl00___bs___lcl___Categories_ctl02_Links_ctl01_Link=20
+  title=3D"The *other* 1337 Max guy" =
+href=3D"http://blogs.msdn.com/dancre/"=20
+  rel=3Dco-worker>Dan Crevier</A>=20
+  <LI><A =
+id=3Dctl00___ctl00___bs___lcl___Categories_ctl02_Links_ctl02_Link=20
+  title=3D"Our team blog" href=3D"http://blogs.msdn.com/max">Microsoft =
+Max Blog</A>=20
+  </LI></UL></DIV>
+<DIV id=3DArchiveSideBar>
+<H3>Archives</H3>
+<UL>
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2007/12.aspx">December 2007 =
+
+  (2)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2007/03.aspx">March 2007=20
+  (1)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2007/02.aspx">February 2007 =
+
+  (1)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2006/12.aspx">December 2006 =
+
+  (2)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2006/08.aspx">August 2006=20
+  (4)</A>=20
+  <LI><A href=3D"http://blogs.msdn.com/bencon/archive/2006/07.aspx">July =
+2006=20
+  (5)</A>=20
+  <LI><A href=3D"http://blogs.msdn.com/bencon/archive/2006/05.aspx">May =
+2006=20
+  (6)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2006/01.aspx">January 2006=20
+  (4)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2005/12.aspx">December 2005 =
+
+  (2)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2005/01.aspx">January 2005=20
+  (1)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2004/10.aspx">October 2004=20
+  (1)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2004/09.aspx">September =
+2004=20
+  (1)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2004/08.aspx">August 2004=20
+  (1)</A>=20
+  <LI><A href=3D"http://blogs.msdn.com/bencon/archive/2004/05.aspx">May =
+2004=20
+  (1)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2004/04.aspx">April 2004=20
+  (1)</A>=20
+  <LI><A =
+href=3D"http://blogs.msdn.com/bencon/archive/2004/02.aspx">February 2004 =
+
+  (3)</A> </LI></UL></DIV></DIV>
+<DIV id=3Dmain>
+<DIV class=3Dpost>
+<H5 class=3D"posthead pageTitle">Changing Panels and DataTemplates with=20
+ItemsControls in WPF/Avalon </H5>
+<P>I have posted before about the philosophy behind the ItemsControl, =
+and now I=20
+will pull together some concepts from previous posts. I will use the =
+RadialPanel=20
+and some ValueConverter magic to show how we can take a ListBox (the =
+most famous=20
+of the ItemsControl family) and have it:</P>
+<UL>
+  <LI>Respond to changes to a data collection.=20
+  <LI>Swap between using a radial and stacking panel.=20
+  <LI>Swap between showing the text of the items and showing the hash of =
+the=20
+  items.</LI></UL>
+<P>One of the first things we need to do in order to build this sample =
+is make a=20
+subclass of the RadialPanel that does not require the items to have the =
+angle=20
+set on them. We do this because we want the items to arrange in a neat =
+circle by=20
+themselves.</P>
+<P>The simplest way to do this is to derive from RadialPanel, and =
+override the=20
+MeasureOverride method to set the angles on the children to be evenly =
+spaced=20
+before doing the base measure pass. This is very straightforward:</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">using</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">=20
+System;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">using</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">=20
+System.Windows;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">namespace</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">=20
+ItemsControlExample<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN><SPAN=20
+style=3D"COLOR: blue">public</SPAN> <SPAN style=3D"COLOR: =
+blue">class</SPAN> <SPAN=20
+style=3D"COLOR: teal">ItemsRadialPanel</SPAN> : <SPAN=20
+style=3D"COLOR: teal">RadialPanel<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; =
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">protected</SPAN> <SPAN=20
+style=3D"COLOR: blue">override</SPAN> <SPAN style=3D"COLOR: =
+teal">Size</SPAN>=20
+MeasureOverride(<SPAN style=3D"COLOR: teal">Size</SPAN>=20
+availableSize)<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">double</SPAN> angle =3D=20
+0.0;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">double</SPAN> spacing =3D (360.0 / =
+<SPAN=20
+style=3D"COLOR: =
+blue">this</SPAN>.InternalChildren.Count);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: green">// set the angle of the children =
+based on=20
+where they are in the list<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">foreach</SPAN> (<SPAN=20
+style=3D"COLOR: teal">UIElement</SPAN> element <SPAN style=3D"COLOR: =
+blue">in</SPAN>=20
+<SPAN style=3D"COLOR: =
+blue">this</SPAN>.InternalChildren)<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>SetAngle(element, angle);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp; </SPAN><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;</SPAN>angle=20
++=3D spacing;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>}<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">return</SPAN> <SPAN=20
+style=3D"COLOR: =
+blue">base</SPAN>.MeasureOverride(availableSize);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>}<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; =
+</SPAN>}<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">}<o:p></o:p></SPAN></P>
+<P>Now we have a panel that we can use in an ItemsControl. Another piece =
+of the=20
+puzzle that we need is a data converter that takes any object and =
+returns the=20
+hash of it:</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">using</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">=20
+System;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">using</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">=20
+System.Windows;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">using</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">=20
+System.Windows.Data;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">using</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">=20
+System.Globalization;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">namespace</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">=20
+ItemsControlExample<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN><SPAN=20
+style=3D"COLOR: blue">public</SPAN> <SPAN style=3D"COLOR: =
+blue">class</SPAN> <SPAN=20
+style=3D"COLOR: teal">TextToHashConverter</SPAN> : <SPAN=20
+style=3D"COLOR: teal">IValueConverter<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; =
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">public</SPAN> <SPAN=20
+style=3D"COLOR: blue">object</SPAN> Convert(<SPAN=20
+style=3D"COLOR: blue">object</SPAN> value, <SPAN style=3D"COLOR: =
+teal">Type</SPAN>=20
+targetType, <SPAN style=3D"COLOR: blue">object</SPAN> parameter, <SPAN=20
+style=3D"COLOR: teal">CultureInfo</SPAN> culture)<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">return</SPAN>=20
+value.GetHashCode();<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>}<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">public</SPAN> <SPAN=20
+style=3D"COLOR: blue">object</SPAN> ConvertBack(<SPAN=20
+style=3D"COLOR: blue">object</SPAN> value, <SPAN style=3D"COLOR: =
+teal">Type</SPAN>=20
+targetType, <SPAN style=3D"COLOR: blue">object</SPAN> parameter, <SPAN=20
+style=3D"COLOR: teal">CultureInfo</SPAN> culture)<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">throw</SPAN> <SPAN=20
+style=3D"COLOR: blue">new</SPAN> <SPAN=20
+style=3D"COLOR: =
+teal">NotSupportedException</SPAN>();<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>}<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; =
+</SPAN>}<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">}<o:p></o:p></SPAN></P>
+<P>As far as value converters go, this is a simple one. But it is enough =
+to=20
+demonstrate the idea. Now we have most of the code for building our =
+control.=20
+Let's build a window in XAML that has the pieces we need to show it off. =
+First=20
+we need a window with a resource section:</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Window</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">x:Class</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: =
+blue">ItemsControlExample.Window1</SPAN>"<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN></SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">xmlns</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: =
+blue">http://schemas.microsoft.com/winfx/2006/xaml/presentation</SPAN>"<o=
+:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN></SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">xmlns:x</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: =
+blue">http://schemas.microsoft.com/winfx/2006/xaml</SPAN>"<o:p></o:p></SP=
+AN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN></SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">xmlns:local</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">clr-namespace:ItemsControlExample</SPAN>"<SPAN=20
+style=3D"COLOR: blue"> <o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN></SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Title</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">ItemsControlExample</SPAN>"<SPAN style=3D"COLOR: =
+blue">=20
+</SPAN><SPAN style=3D"COLOR: red">Height</SPAN><SPAN=20
+style=3D"COLOR: blue">=3D</SPAN>"<SPAN style=3D"COLOR: =
+blue">300</SPAN>"<SPAN=20
+style=3D"COLOR: blue"> </SPAN><SPAN style=3D"COLOR: =
+red">Width</SPAN><SPAN=20
+style=3D"COLOR: blue">=3D</SPAN>"<SPAN=20
+style=3D"COLOR: blue">300</SPAN>"<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; =
+</SPAN>&gt;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp; </SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Window.Resources</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp; </SPAN>&lt;/</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Window.Resources</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&lt;/</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Window</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P>What do we put in the resources? Well, first we need to have an =
+instance of=20
+the converter that we will be using later. So we declare that in the=20
+resources:</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">local:TextToHashConverter</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">x:Key</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">TextToHashConverter</SPAN>"<SPAN style=3D"COLOR: =
+blue">=20
+/&gt;<o:p></o:p></SPAN></SPAN></P>
+<P>Now we can define some control templates for the ListBox. One of them =
+will=20
+use the radial panel:</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">ControlTemplate</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">x:Key</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">radialTemplate</SPAN>"<SPAN=20
+style=3D"COLOR: blue">&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">local:ItemsRadialPanel</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">IsItemsHost</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">True</SPAN>"<SPAN style=3D"COLOR: blue">=20
+/&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;/</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">ControlTemplate</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P>
+<P>And the other will use a stacking panel:</P>
+<P></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">ControlTemplate</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">x:Key</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">scrollTemplate</SPAN>"<SPAN=20
+style=3D"COLOR: blue">&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">ScrollViewer</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: =
+yes">ScrollViewer.HorizontalScrollBarVisibility</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">Disabled</SPAN>"<SPAN=20
+style=3D"COLOR: blue">&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">VirtualizingStackPanel</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">IsItemsHost</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">True</SPAN>"<SPAN style=3D"COLOR: blue">=20
+/&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>&lt;/</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">ScrollViewer</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;/</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">ControlTemplate</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P>
+<P>Now we can define some data templates for the ListBox. The =
+DataTemplate is=20
+what is used to create UI for each piece of data in the ListBox. The =
+first=20
+template is simple - we center the text of the item inside a Border =
+element. The=20
+binding statement has nothing in it because that will return the =
+DataContext of=20
+the element, which is the item:</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">DataTemplate</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">x:Key</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">textTemplate</SPAN>"<SPAN=20
+style=3D"COLOR: blue">&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Border</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Background</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">Red</SPAN>"<SPAN=20
+style=3D"COLOR: blue">&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">TextBlock</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">HorizontalAlignment</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">Center</SPAN>"<SPAN style=3D"COLOR: blue"> =
+</SPAN><SPAN=20
+style=3D"COLOR: red">VerticalAlignment</SPAN><SPAN=20
+style=3D"COLOR: blue">=3D</SPAN>"<SPAN style=3D"COLOR: =
+blue">Center</SPAN>"<SPAN=20
+style=3D"COLOR: blue"> </SPAN><SPAN style=3D"COLOR: =
+red">Text</SPAN><SPAN=20
+style=3D"COLOR: blue">=3D</SPAN>"<SPAN style=3D"COLOR: =
+blue">{Binding}</SPAN>"<SPAN=20
+style=3D"COLOR: blue"> /&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>&lt;/</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Border</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;/</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">DataTemplate</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P>
+<P>And now we can also define the other template, which will just have a =
+
+different converter and no background:</P>
+<P></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">DataTemplate</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">x:Key</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">hashTemplate</SPAN>"<SPAN=20
+style=3D"COLOR: blue">&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">TextBlock</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">HorizontalAlignment</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">Center</SPAN>"<SPAN style=3D"COLOR: blue"> =
+</SPAN><SPAN=20
+style=3D"COLOR: red">VerticalAlignment</SPAN><SPAN=20
+style=3D"COLOR: blue">=3D</SPAN>"<SPAN style=3D"COLOR: =
+blue">Center</SPAN>"<SPAN=20
+style=3D"COLOR: blue"> </SPAN><SPAN style=3D"COLOR: =
+red">Text</SPAN><SPAN=20
+style=3D"COLOR: blue">=3D</SPAN>"<SPAN style=3D"COLOR: blue">{Binding=20
+Converter=3D{StaticResource TextToHashConverter}}</SPAN>"<SPAN=20
+style=3D"COLOR: blue"> /&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;/</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">DataTemplate</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P>Now we all we have to do is to declare our ListBox in the window. We =
+will=20
+make a DockPanel with a bunch of buttons along the top so that we can =
+change=20
+stuff:</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp; </SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">DockPanel</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">UniformGrid</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">DockPanel.Dock</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">Top</SPAN>"<SPAN style=3D"COLOR: blue"> =
+</SPAN><SPAN=20
+style=3D"COLOR: red">Rows</SPAN><SPAN style=3D"COLOR: =
+blue">=3D</SPAN>"<SPAN=20
+style=3D"COLOR: blue">1</SPAN>"<SPAN style=3D"COLOR: blue"> </SPAN><SPAN =
+
+style=3D"COLOR: red">Columns</SPAN><SPAN style=3D"COLOR: =
+blue">=3D</SPAN>"<SPAN=20
+style=3D"COLOR: blue">5</SPAN>"<SPAN=20
+style=3D"COLOR: blue">&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Button</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Content</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">Add item</SPAN>"<SPAN style=3D"COLOR: blue"> =
+</SPAN><SPAN=20
+style=3D"COLOR: red">Name</SPAN><SPAN style=3D"COLOR: =
+blue">=3D</SPAN>"<SPAN=20
+style=3D"COLOR: blue">addButton</SPAN>"<SPAN style=3D"COLOR: blue">=20
+/&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Button</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Content</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">Radial</SPAN>"<SPAN style=3D"COLOR: blue"> =
+</SPAN><SPAN=20
+style=3D"COLOR: red">Name</SPAN><SPAN style=3D"COLOR: =
+blue">=3D</SPAN>"<SPAN=20
+style=3D"COLOR: blue">radialButton</SPAN>"<SPAN style=3D"COLOR: blue">=20
+/&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Button</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Content</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">Scroll</SPAN>"<SPAN style=3D"COLOR: blue"> =
+</SPAN><SPAN=20
+style=3D"COLOR: red">Name</SPAN><SPAN style=3D"COLOR: =
+blue">=3D</SPAN>"<SPAN=20
+style=3D"COLOR: blue">scrollButton</SPAN>"<SPAN style=3D"COLOR: blue">=20
+/&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Button</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Content</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">Text</SPAN>"<SPAN style=3D"COLOR: blue"> =
+</SPAN><SPAN=20
+style=3D"COLOR: red">Name</SPAN><SPAN style=3D"COLOR: =
+blue">=3D</SPAN>"<SPAN=20
+style=3D"COLOR: blue">textButton</SPAN>"<SPAN style=3D"COLOR: blue">=20
+/&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Button</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Content</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">Hash</SPAN>"<SPAN style=3D"COLOR: blue"> =
+</SPAN><SPAN=20
+style=3D"COLOR: red">Name</SPAN><SPAN style=3D"COLOR: =
+blue">=3D</SPAN>"<SPAN=20
+style=3D"COLOR: blue">hashButton</SPAN>"<SPAN style=3D"COLOR: blue">=20
+/&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;/</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">UniformGrid</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>&lt;</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">ListBox</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">Name</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">=3D</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes">"<SPAN=20
+style=3D"COLOR: blue">listBox</SPAN>"<SPAN style=3D"COLOR: blue"> =
+</SPAN><SPAN=20
+style=3D"COLOR: red">Template</SPAN><SPAN style=3D"COLOR: =
+blue">=3D</SPAN>"<SPAN=20
+style=3D"COLOR: blue">{StaticResource scrollTemplate}</SPAN>"<SPAN=20
+style=3D"COLOR: blue"> </SPAN><SPAN style=3D"COLOR: =
+red">ItemTemplate</SPAN><SPAN=20
+style=3D"COLOR: blue">=3D</SPAN>"<SPAN style=3D"COLOR: =
+blue">{StaticResource=20
+textTemplate}</SPAN>"<SPAN style=3D"COLOR: blue">=20
+/&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp; </SPAN>&lt;/</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: maroon; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">DockPanel</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: 'Courier New'; =
+mso-no-proof: yes">&gt;<o:p></o:p></SPAN></P>
+<P>As you can see, we started off with the normal text template and the =
+normal=20
+scrolling template. But if we run our code now we will have nothing in =
+the=20
+ListBox and the buttons will also do nothing. We need to add some code =
+to fix=20
+that. First of all we can add some initial content by adding a member to =
+the=20
+window class which will be our collection:</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green"> We use=20
+ObservableCollection because it will fire events to let the ListBox keep =
+things=20
+in sync.<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;/summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: teal">ObservableCollection</SPAN>&lt;<SPAN=20
+style=3D"COLOR: blue">string</SPAN>&gt; _strings =3D <SPAN=20
+style=3D"COLOR: blue">new</SPAN> <SPAN=20
+style=3D"COLOR: teal">ObservableCollection</SPAN>&lt;<SPAN=20
+style=3D"COLOR: blue">string</SPAN>&gt;();<o:p></o:p></SPAN></P>
+<P>
+<P>And adding some code after InitializeComponent to put some initial =
+content in=20
+there and wire up to the ListBox:</P>
+<P></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: green">// add some strings to start=20
+with<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>_strings.Add(<SPAN style=3D"COLOR: maroon">"string=20
+1"</SPAN>);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>_strings.Add(<SPAN style=3D"COLOR: maroon">"string=20
+2"</SPAN>);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: green">// wire up the string collection to =
+the=20
+ListBox<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>listBox.ItemsSource =3D _strings;<o:p></o:p></SPAN></P>
+<P>
+<P>All that is left now is handling events on the buttons. First we add =
+some=20
+handlers in the window constructor:</P>
+<P></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: green">// wire up handlers for the=20
+buttons<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>addButton.Click +=3D <SPAN style=3D"COLOR: blue">new</SPAN> <SPAN =
+
+style=3D"COLOR: =
+teal">RoutedEventHandler</SPAN>(OnClickAdd);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>radialButton.Click +=3D <SPAN style=3D"COLOR: blue">new</SPAN> =
+<SPAN=20
+style=3D"COLOR: =
+teal">RoutedEventHandler</SPAN>(OnClickRadial);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>scrollButton.Click +=3D <SPAN style=3D"COLOR: blue">new</SPAN> =
+<SPAN=20
+style=3D"COLOR: =
+teal">RoutedEventHandler</SPAN>(OnClickScroll);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>textButton.Click +=3D <SPAN style=3D"COLOR: blue">new</SPAN> =
+<SPAN=20
+style=3D"COLOR: =
+teal">RoutedEventHandler</SPAN>(OnClickText);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>hashButton.Click +=3D <SPAN style=3D"COLOR: blue">new</SPAN> =
+<SPAN=20
+style=3D"COLOR: =
+teal">RoutedEventHandler</SPAN>(OnClickHash);<o:p></o:p></SPAN></P>
+<P>
+<P>And now we can write the handlers. The handler for add is very simple =
+- we=20
+just add a new item to the collection. Notice that we don't have to tell =
+the=20
+ListBox about it explicitly&nbsp;- ObservableCollection will fire an =
+event to=20
+tell the ListBox that it has changed and the ListBox will automatically =
+create=20
+the UI for it and display it. This is why ItemsControl is so cool:</P>
+<P></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green"> When we=20
+click add, we want to add an item to the end of the=20
+list.<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;/summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp; </SPAN><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN=20
+style=3D"COLOR: blue">private</SPAN> <SPAN style=3D"COLOR: =
+blue">void</SPAN>=20
+OnClickAdd(<SPAN style=3D"COLOR: blue">object</SPAN> sender, <SPAN=20
+style=3D"COLOR: teal">RoutedEventArgs</SPAN> e)<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">int</SPAN> stringNumber =3D =
+_strings.Count +=20
+1;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>_strings.Add(<SPAN style=3D"COLOR: maroon">"string "</SPAN> +=20
+stringNumber.ToString());<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>}<o:p></o:p></SPAN></P>
+<P>
+<P>Now we can add handlers for changing the data template. They simply =
+set the=20
+appropriate property to the appropriate resource:</P>
+<P></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green"> When we=20
+click on the hash button, we show the hash data=20
+template<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;/summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">private</SPAN> <SPAN=20
+style=3D"COLOR: blue">void</SPAN> OnClickHash(<SPAN=20
+style=3D"COLOR: blue">object</SPAN> sender, <SPAN=20
+style=3D"COLOR: teal">RoutedEventArgs</SPAN> e)<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>listBox.ItemTemplate =3D (<SPAN=20
+style=3D"COLOR: teal">DataTemplate</SPAN>)FindResource(<SPAN=20
+style=3D"COLOR: maroon">"hashTemplate"</SPAN>);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>}<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green"> When we=20
+click on the text button, we show the text data=20
+template<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;/summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">private</SPAN> <SPAN=20
+style=3D"COLOR: blue">void</SPAN> OnClickText(<SPAN=20
+style=3D"COLOR: blue">object</SPAN> sender, <SPAN=20
+style=3D"COLOR: teal">RoutedEventArgs</SPAN> e)<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>listBox.ItemTemplate =3D (<SPAN=20
+style=3D"COLOR: teal">DataTemplate</SPAN>)FindResource(<SPAN=20
+style=3D"COLOR: maroon">"textTemplate"</SPAN>);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>}<o:p></o:p></SPAN></P>
+<P>
+<P>And the control template changing handlers work in much the same =
+way:</P>
+<P></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green"> When we=20
+click on the scroll button, we want to see a scrolling=20
+ListBox.<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;/summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">private</SPAN> <SPAN=20
+style=3D"COLOR: blue">void</SPAN> OnClickScroll(<SPAN=20
+style=3D"COLOR: blue">object</SPAN> sender, <SPAN=20
+style=3D"COLOR: teal">RoutedEventArgs</SPAN> e)<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>listBox.Template =3D (<SPAN=20
+style=3D"COLOR: teal">ControlTemplate</SPAN>)FindResource(<SPAN=20
+style=3D"COLOR: maroon">"scrollTemplate"</SPAN>);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>}<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green"> When we=20
+click on the radial button, we want to see a radial=20
+ListBox.<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: gray">///</SPAN><SPAN style=3D"COLOR: =
+green">=20
+</SPAN><SPAN style=3D"COLOR: =
+gray">&lt;/summary&gt;<o:p></o:p></SPAN></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN><SPAN style=3D"COLOR: blue">private</SPAN> <SPAN=20
+style=3D"COLOR: blue">void</SPAN> OnClickRadial(<SPAN=20
+style=3D"COLOR: blue">object</SPAN> sender, <SPAN=20
+style=3D"COLOR: teal">RoutedEventArgs</SPAN> e)<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>{<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: =
+yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>listBox.Template =3D (<SPAN=20
+style=3D"COLOR: teal">ControlTemplate</SPAN>)FindResource(<SPAN=20
+style=3D"COLOR: maroon">"radialTemplate"</SPAN>);<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-no-proof: =
+yes"><SPAN=20
+style=3D"mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</SPAN>}<o:p></o:p></SPAN></P>
+<P>
+<P>Now if you build and run you can swap control templates for the =
+ListBox (and=20
+hence the Panels) as well as swap the data templates for the ListBox. =
+You can=20
+also add items to the listbox and see everything update.</P>
+<P>Unfortunately the radial listbox has troubles using the area =
+efficiently.=20
+Maybe if I get time one day I will write a panel that does the right hit =
+testing=20
+and rendering to draw things in a nice pie shape.</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P></P>
+<DIV class=3Dpostfoot><SPAN class=3Dem>Posted:</SPAN> Wednesday, July =
+26, 2006 7:03=20
+PM by <A id=3Dctl00___ctl00___ctl02___Entry___AuthorLink=20
+href=3D"http://blogs.msdn.com/user/Profile.aspx?UserID=3D3253">BenCon</A>=
+=20
+<DIV><SPAN =
+id=3Dctl00___ctl00___ctl02___Entry___InlineTagEditorPanel></SPAN><INPUT=20
+id=3Dctl00___ctl00___ctl02___Entry___InlineTagEditorPanel_State =
+type=3Dhidden=20
+value=3Dnochange=20
+name=3Dctl00$_$ctl00$_$ctl02$_$Entry$_$InlineTagEditorPanel></DIV><BR><B>=
+Attachment(s):=20
+</B><A id=3Dctl00___ctl00___ctl02___Entry___Attachment___DownLoadLink=20
+href=3D"http://blogs.msdn.com/bencon/attachment/679696.ashx">ItemsControl=
+Example.zip</A>=20
+</DIV></DIV>
+<DIV id=3Dcomments>
+<H2>Comments </H2>
+<DIV class=3DCommentArea>
+<H4 class=3DCommentTitle><A=20
+id=3Dctl00___ctl00___ctl02___Comments___Comments_ctl00_NameLink=20
+title=3Dkeith>keith</A> said: <IMG class=3DCommentArrow=20
+src=3D"http://blogs.msdn.com/Themes/Blogs/paperclip/images/spacer.gif"=20
+align=3DabsBottom> </H4>
+<DIV class=3DCommentText>
+<DIV class=3DCommentText2>
+<DIV class=3DCommentText3>
+<P>Thanks for this example. I am interested in the radialpanel and this =
+shows a=20
+good example. Have you or know of anyone that has tried to rotate the=20
+radialpanel items in the listbox based on some event (like button-=20
+rotate)?</P></DIV></DIV></DIV>
+<DIV class=3DCommentFooter><A=20
+id=3Dctl00___ctl00___ctl02___Comments___Comments_ctl00_PermaLink =
+title=3Dpermalink=20
+href=3D"http://blogs.msdn.com/bencon/archive/2006/07/26/679696.aspx#16766=
+29">#</A>=20
+February 14, 2007 9:53 AM </DIV></DIV>
+<DIV class=3DCommentArea>
+<H4 class=3DCommentTitle><A=20
+id=3Dctl00___ctl00___ctl02___Comments___Comments_ctl01_NameLink =
+title=3DTrackBack=20
+href=3D"http://feeds.maxblog.eu/item_1266540.html" rel=3Dnofollow>Feed =
+Search Engine=20
+- All Fresh Articles And News Are Here</A> said: <IMG =
+class=3DCommentArrow=20
+src=3D"http://blogs.msdn.com/Themes/Blogs/paperclip/images/spacer.gif"=20
+align=3DabsBottom> </H4>
+<DIV class=3DCommentText>
+<DIV class=3DCommentText2>
+<DIV class=3DCommentText3>
+<P>PingBack from <A href=3D"http://feeds.maxblog.eu/item_1266540.html" =
+target=3D_new=20
+rel=3Dnofollow>http://feeds.maxblog.eu/item_1266540.html</A></P></DIV></D=
+IV></DIV>
+<DIV class=3DCommentFooter><A=20
+id=3Dctl00___ctl00___ctl02___Comments___Comments_ctl01_PermaLink =
+title=3Dpermalink=20
+href=3D"http://blogs.msdn.com/bencon/archive/2006/07/26/679696.aspx#65094=
+75">#</A>=20
+November 24, 2007 10:53 PM </DIV></DIV></DIV>
+<FIELDSET id=3Dcommentform><LEGEND>Leave a Comment</LEGEND>
+<P>
+<DIV><LABEL for=3Dctl00___ctl00___ctl02___form___tbTitle>Title</LABEL>=20
+<EM>(required)</EM><SPAN=20
+id=3Dctl00___ctl00___ctl02___form___Requiredfieldvalidator1=20
+style=3D"VISIBILITY: hidden; COLOR: red">*</SPAN></DIV>
+<DIV><INPUT class=3Dsmallbox id=3Dctl00___ctl00___ctl02___form___tbTitle =
+
+value=3D"re: Changing Panels and DataTemplates with ItemsControls in =
+WPF/Avalon"=20
+name=3Dctl00$_$ctl00$_$ctl02$_$form$_$tbTitle></DIV>
+<P></P>
+<P>
+<DIV id=3Dctl00___ctl00___ctl02___form___NameTitle><LABEL=20
+for=3Dctl00___ctl00___ctl02___form___tbName>Name</LABEL> =
+<EM>(required)</EM><SPAN=20
+id=3Dctl00___ctl00___ctl02___form___Requiredfieldvalidator2=20
+style=3D"VISIBILITY: hidden; COLOR: red">*</SPAN></DIV>
+<DIV id=3Dctl00___ctl00___ctl02___form___NameDesc><INPUT =
+class=3Dsmallbox=20
+id=3Dctl00___ctl00___ctl02___form___tbName=20
+name=3Dctl00$_$ctl00$_$ctl02$_$form$_$tbName></DIV>
+<P></P>
+<P>
+<DIV><LABEL for=3Dctl00___ctl00___ctl02___form___tbUrl>Your URL</LABEL>=20
+<EM>(optional</EM>)</DIV>
+<DIV><INPUT class=3Dsmallbox id=3Dctl00___ctl00___ctl02___form___tbUrl=20
+name=3Dctl00$_$ctl00$_$ctl02$_$form$_$tbUrl></DIV>
+<P></P>
+<P>
+<DIV><LABEL =
+for=3Dctl00___ctl00___ctl02___form___tbComment>Comments</LABEL>=20
+<EM>(required)</EM><SPAN=20
+id=3Dctl00___ctl00___ctl02___form___Requiredfieldvalidator3=20
+style=3D"VISIBILITY: hidden; COLOR: red">*</SPAN></DIV>
+<DIV><TEXTAREA id=3Dctl00___ctl00___ctl02___form___tbComment =
+name=3Dctl00$_$ctl00$_$ctl02$_$form$_$tbComment rows=3D5 =
+cols=3D25></TEXTAREA></DIV>
+<P></P>
+<P>
+<DIV><INPUT id=3Dctl00___ctl00___ctl02___form___chkRemember =
+type=3Dcheckbox=20
+name=3Dctl00$_$ctl00$_$ctl02$_$form$_$chkRemember><LABEL=20
+for=3Dctl00___ctl00___ctl02___form___chkRemember>Remember =
+Me?</LABEL></DIV>
+<P></P>
+<P><INPUT id=3Dctl00___ctl00___ctl02___form___btnSubmit =
+onclick=3D'javascript:WebForm_DoPostBackWithOptions(new =
+WebForm_PostBackOptions("ctl00$_$ctl00$_$ctl02$_$form$_$btnSubmit", "", =
+true, "", "", false, false))' type=3Dsubmit value=3DSubmit =
+name=3Dctl00$_$ctl00$_$ctl02$_$form$_$btnSubmit>=20
+</P></FIELDSET>=20
+<FIELDSET id=3Dpostnotification><LEGEND>Comment Notification</LEGEND>
+<P>If you would like to receive an email when updates are made to this =
+post,=20
+please register <A =
+id=3Dctl00___ctl00___ctl02___DetailedSubBar___RegisterLink=20
+href=3D"http://blogs.msdn.com/user/CreateUser.aspx?ReturnUrl=3D/bencon/ar=
+chive/2006/07/26/679696.aspx">here</A>=20
+</P>
+<P>Subscribe to this post's comments using <A=20
+id=3Dctl00___ctl00___ctl02___DetailedSubBar___CommentRssLink=20
+href=3D"http://blogs.msdn.com/bencon/commentrss.aspx?PostID=3D679696">RSS=
+</A>=20
+</P></FIELDSET> </DIV>
+<DIV id=3Dfooter></DIV></DIV>
+<SCRIPT type=3Dtext/javascript>
+<!--
+var Page_Validators =3D  new =
+Array(document.getElementById("ctl00___ctl00___ctl02___form___Requiredfie=
+ldvalidator1"), =
+document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvali=
+dator2"), =
+document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvali=
+dator3"));
+// -->
+</SCRIPT>
+
+<SCRIPT type=3Dtext/javascript>
+<!--
+var ctl00___ctl00___ctl02___form___Requiredfieldvalidator1 =3D =
+document.all ? =
+document.all["ctl00___ctl00___ctl02___form___Requiredfieldvalidator1"] : =
+document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvali=
+dator1");
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.controltovalidate =
+=3D "ctl00___ctl00___ctl02___form___tbTitle";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.errormessage =3D =
+"*";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.evaluationfunction=
+ =3D "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator1.initialvalue =3D =
+"";
+var ctl00___ctl00___ctl02___form___Requiredfieldvalidator2 =3D =
+document.all ? =
+document.all["ctl00___ctl00___ctl02___form___Requiredfieldvalidator2"] : =
+document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvali=
+dator2");
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator2.controltovalidate =
+=3D "ctl00___ctl00___ctl02___form___tbName";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator2.errormessage =3D =
+"*";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator2.evaluationfunction=
+ =3D "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator2.initialvalue =3D =
+"";
+var ctl00___ctl00___ctl02___form___Requiredfieldvalidator3 =3D =
+document.all ? =
+document.all["ctl00___ctl00___ctl02___form___Requiredfieldvalidator3"] : =
+document.getElementById("ctl00___ctl00___ctl02___form___Requiredfieldvali=
+dator3");
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.controltovalidate =
+=3D "ctl00___ctl00___ctl02___form___tbComment";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.errormessage =3D =
+"*";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.evaluationfunction=
+ =3D "RequiredFieldValidatorEvaluateIsValid";
+ctl00___ctl00___ctl02___form___Requiredfieldvalidator3.initialvalue =3D =
+"";
+// -->
+</SCRIPT>
+
+<SCRIPT language=3Djavascript type=3Dtext/javascript>=0A=
+<!--=0A=
+function KeyDownHandlerctl00___ctl00___ws___SearchButton(event)=0A=
+{=0A=
+	if (event.keyCode =3D=3D 13)=0A=
+	{=0A=
+		event.returnValue =3D false;=0A=
+		event.cancel =3D true;=0A=
+     __doPostBack('ctl00$_$ctl00$_$ws$_$SearchButton','')	}=0A=
+}=0A=
+=0A=
+//-->=0A=
+</SCRIPT>
+<!--
+<rdf:RDF xmlns:rdf=3D"http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc=3D"http://purl.org/dc/elements/1.1/"=0A=
+xmlns:trackback=3D"http://madskills.com/public/xml/rss/module/trackback/"=
+>
+<rdf:Description
+rdf:about=3D"http://blogs.msdn.com/bencon/archive/2006/07/26/679696.aspx"=
+
+dc:identifier=3D"http://blogs.msdn.com/bencon/archive/2006/07/26/679696.a=
+spx"
+dc:title=3D"Changing Panels and DataTemplates with ItemsControls in =
+WPF/Avalon"
+trackback:ping=3D"http://blogs.msdn.com/bencon/trackback.aspx?PostID=3D67=
+9696" />
+</rdf:RDF>
+-->
+<SCRIPT type=3Dtext/javascript>
+<!--
+var Page_ValidationActive =3D false;
+if (typeof(ValidatorOnLoad) =3D=3D "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</SCRIPT>
+</FORM><IMG height=3D0 alt=3D"Page view tracker"=20
+src=3D"http://c.microsoft.com/trans_pixel.aspx?TYPE=3DPV&amp;r=3Dhttp%3a%=
+2f%2fwww.google.com%2fsearch%3fq%3dwpf%2bbind%2bto%2banother%2bpanel%2527=
+s%2bchildren%26hl%3den%26start%3d10%26sa%3dN"=20
+width=3D0> </BODY></HTML>
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://blogs.msdn.com/Themes/Blogs/paperclip/images/spacer.gif
+
+R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+Content-Location: http://c.microsoft.com/trans_pixel.aspx?TYPE=PV&r=http%3a%2f%2fwww.google.com%2fsearch%3fq%3dwpf%2bbind%2bto%2banother%2bpanel%2527s%2bchildren%26hl%3den%26start%3d10%26sa%3dN
+
+R0lGODlhAQABAIAAAP8zzAAAACH5BAEAAAAALAAAAAABAAEAQAIChFEAOwA=
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30
+Content-Type: text/css;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://blogs.msdn.com/Themes/Blogs/paperclip/style/style.css
+
+BODY {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 0.8em; =
+PADDING-BOTTOM: 20px; MARGIN: 0px; PADDING-TOP: 0px; FONT-FAMILY: =
+Tahoma, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #5a543a
+}
+A:visited {
+	COLOR: #006ff7
+}
+A:active {
+	COLOR: #006ff7
+}
+A:link {
+	COLOR: #006ff7
+}
+.post {
+	MARGIN: 0px 0px 20px
+}
+.posthead {
+	BORDER-RIGHT: #dfdfdf 0px dotted; BORDER-TOP: #dfdfdf 0px dotted; =
+FONT-WEIGHT: normal; FONT-SIZE: 1.5em; PADDING-BOTTOM: 6px; MARGIN: 0px =
+0px 10px; BORDER-LEFT: #dfdfdf 0px dotted; COLOR: #529e00; =
+BORDER-BOTTOM: #dfdfdf 1px dotted
+}
+.posthead A:link {
+	COLOR: #529e00; TEXT-DECORATION: none
+}
+.posthead A:visited {
+	COLOR: #529e00; TEXT-DECORATION: none
+}
+.posthead A:active {
+	COLOR: #529e00; TEXT-DECORATION: none
+}
+.posthead A:hover {
+	COLOR: #529e00; TEXT-DECORATION: underline
+}
+.postfoot {
+	BORDER-RIGHT: #dfdfdf 0px dotted; BORDER-TOP: #dfdfdf 1px dotted; =
+MARGIN-TOP: 10px; PADDING-BOTTOM: 6px; BORDER-LEFT: #dfdfdf 0px dotted; =
+COLOR: #868686; PADDING-TOP: 6px; BORDER-BOTTOM: #dfdfdf 1px dotted
+}
+.postfoot .em {
+	COLOR: #000000
+}
+.pageTitle {
+	MARGIN-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 1.8em; MARGIN-BOTTOM: =
+20px; COLOR: #529e00
+}
+#leftmenu {
+	PADDING-LEFT: 16px; FLOAT: left; OVERFLOW: hidden; WIDTH: 200px
+}
+#leftmenu H3 {
+	BORDER-RIGHT: 0px dotted; PADDING-RIGHT: 0px; BORDER-TOP: 0px dotted; =
+PADDING-LEFT: 0px; FONT-WEIGHT: bold; FONT-SIZE: 1.1em; PADDING-BOTTOM: =
+6px; MARGIN: 0px 0px 6px; BORDER-LEFT: 0px dotted; PADDING-TOP: 0px; =
+BORDER-BOTTOM: #dfdfdf 1px dotted
+}
+#leftmenu UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 0.9em; =
+PADDING-BOTTOM: 0px; MARGIN: 0px 0px 20px; PADDING-TOP: 0px; =
+LIST-STYLE-TYPE: none
+}
+#leftmenu UL LI {
+	MARGIN-TOP: 6px; FONT-WEIGHT: bold; MARGIN-BOTTOM: 6px; COLOR: #a99238
+}
+#leftmenu UL A:link {
+	COLOR: #a99238; TEXT-DECORATION: none
+}
+#leftmenu UL A:visited {
+	COLOR: #a99238; TEXT-DECORATION: none
+}
+#leftmenu UL A:active {
+	COLOR: #a99238; TEXT-DECORATION: none
+}
+#leftmenu UL A:hover {
+	COLOR: #a99238; TEXT-DECORATION: underline
+}
+#main {
+	PADDING-RIGHT: 12px; PADDING-LEFT: 20px; OVERFLOW: hidden; WIDTH: 534px
+}
+#footer {
+	CLEAR: both; PADDING-LEFT: 16px; MARGIN: 0px; TEXT-ALIGN: left
+}
+#quicklinks {
+	PADDING-TOP: 10px
+}
+INPUT.text {
+	WIDTH: 300px
+}
+TEXTAREA {
+	WIDTH: 300px; HEIGHT: 200px
+}
+#relatedlinks UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; =
+MARGIN-LEFT: 10px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none
+}
+FIELDSET {
+	PADDING-RIGHT: 20px; MARGIN-TOP: 16px; PADDING-LEFT: 20px; =
+PADDING-BOTTOM: 20px; PADDING-TOP: 0px
+}
+LEGEND {
+	FONT-WEIGHT: bold; COLOR: #7cc10b
+}
+FIELDSET TEXTAREA {
+	WIDTH: 450px
+}
+FIELDSET .smallbox {
+	WIDTH: 450px
+}
+#comments H2 {
+	MARGIN-TOP: 16px; FONT-SIZE: 1em; COLOR: #7cc10b
+}
+.CommentArea {
+	MARGIN: 8px 0px
+}
+.CommentAreaOwner {
+	MARGIN: 8px 0px
+}
+.CommentAreaOwner .CommentText3 {
+	BACKGROUND-COLOR: #f3f3f3
+}
+.CommentTitle {
+	FONT-WEIGHT: normal; FONT-SIZE: 1em; MARGIN-BOTTOM: 6px
+}
+.CommentAreaOwner .CommentTitle {
+	FONT-WEIGHT: bold
+}
+.CommentArrow {
+	BACKGROUND-IMAGE: url(../images/summer-comment-arrow.gif); =
+MARGIN-BOTTOM: -7px; WIDTH: 14px; BACKGROUND-REPEAT: no-repeat; HEIGHT: =
+14px
+}
+.CommentText {
+	BACKGROUND-POSITION: left bottom; BACKGROUND-IMAGE: =
+url(../images/comment-shadow.gif); PADDING-BOTTOM: 3px; =
+BACKGROUND-REPEAT: repeat-x
+}
+.CommentText2 {
+	BORDER-RIGHT: #bcbcbc 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: =
+#bcbcbc 1px solid; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; BORDER-LEFT: =
+#bcbcbc 1px solid; PADDING-TOP: 3px; BORDER-BOTTOM: #bcbcbc 1px solid
+}
+.CommentText3 {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-SIZE: 0.9em; =
+PADDING-BOTTOM: 5px; PADDING-TOP: 5px
+}
+.CommentFooter {
+	MARGIN-TOP: 4px; PADDING-LEFT: 16px; FONT-SIZE: 0.7em; COLOR: #999999
+}
+#news {
+	MARGIN-TOP: 20px; MARGIN-BOTTOM: 20px
+}
+.copyright {
+	FONT-SIZE: 0.65em; FONT-STYLE: italic; TEXT-ALIGN: center
+}
+.CommonRateControlReadOnly {
+	BORDER-RIGHT: #999999 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#999999 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #999999 1px solid; PADDING-TOP: 1px; =
+BORDER-BOTTOM: #999999 1px solid; BACKGROUND-COLOR: #ffffff
+}
+.CommonRateControl {
+	BORDER-RIGHT: #999999 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#999999 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #999999 1px solid; CURSOR: pointer; =
+PADDING-TOP: 1px; BORDER-BOTTOM: #999999 1px solid; BACKGROUND-COLOR: =
+#eeeeee
+}
+.CommonRateControlActive {
+	BORDER-RIGHT: #cc9933 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#cc9933 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #cc9933 1px solid; CURSOR: pointer; =
+PADDING-TOP: 1px; BORDER-BOTTOM: #cc9933 1px solid; BACKGROUND-COLOR: =
+#ffcc66
+}
+.CommonRateControlReadOnly {
+	BORDER-RIGHT: #999999 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#999999 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #999999 1px solid; PADDING-TOP: 1px; =
+BORDER-BOTTOM: #999999 1px solid; BACKGROUND-COLOR: #ffffff
+}
+.CommonRateControl {
+	BORDER-RIGHT: #999999 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#999999 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #999999 1px solid; CURSOR: pointer; =
+PADDING-TOP: 1px; BORDER-BOTTOM: #999999 1px solid; BACKGROUND-COLOR: =
+#eeeeee
+}
+.CommonRateControlActive {
+	BORDER-RIGHT: #cc9933 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#cc9933 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #cc9933 1px solid; CURSOR: pointer; =
+PADDING-TOP: 1px; BORDER-BOTTOM: #cc9933 1px solid; BACKGROUND-COLOR: =
+#ffcc66
+}
+.CommonRateControlReadOnly IMG {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: =
+0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; BORDER-RIGHT-STYLE: none; =
+BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.CommonRateControl IMG {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: =
+0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; BORDER-RIGHT-STYLE: none; =
+BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.CommonRateControlActive IMG {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: =
+0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; BORDER-RIGHT-STYLE: none; =
+BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+#content {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 6px; PADDING-BOTTOM: 6px; =
+MARGIN-LEFT: auto; OVERFLOW: hidden; WIDTH: 792px; MARGIN-RIGHT: auto; =
+PADDING-TOP: 32px; BACKGROUND-COLOR: #ffffff
+}
+#masthead {
+	MARGIN-TOP: 8px; BACKGROUND: url(../images/summer-title.jpg) #ffffff; =
+MARGIN-LEFT: auto; OVERFLOW: hidden; WIDTH: 804px; MARGIN-RIGHT: auto; =
+HEIGHT: 221px
+}
+#masthead UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: =
+0px; COLOR: #333; PADDING-TOP: 0px; LIST-STYLE-TYPE: none
+}
+#masthead UL LI {
+	DISPLAY: inline
+}
+#masthead UL LI A {
+	PADDING-RIGHT: 0.5em; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0px; MARGIN: =
+0px; PADDING-TOP: 0px; TEXT-DECORATION: none
+}
+#masthead A:link {
+	COLOR: #00f; TEXT-DECORATION: none
+}
+#masthead A:visited {
+	COLOR: #00f; TEXT-DECORATION: none
+}
+#masthead A:active {
+	COLOR: #00f; TEXT-DECORATION: none
+}
+#masthead A:hover {
+	COLOR: #00f; TEXT-DECORATION: none
+}
+#userArea {
+	PADDING-RIGHT: 6px; MARGIN-TOP: 16px; FLOAT: right
+}
+#welcome {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 6px; FONT-SIZE: 0.7em; =
+PADDING-BOTTOM: 6px; MARGIN: 0px; COLOR: #ffffff; PADDING-TOP: 4px; =
+BACKGROUND-COLOR: #000000; TEXT-ALIGN: center
+}
+#welcome A:link {
+	FONT-WEIGHT: bold; COLOR: #ffffff; TEXT-DECORATION: underline
+}
+#welcome A:visited {
+	FONT-WEIGHT: bold; COLOR: #ffffff; TEXT-DECORATION: underline
+}
+#welcome A:active {
+	FONT-WEIGHT: bold; COLOR: #ffffff; TEXT-DECORATION: underline
+}
+#welcome A:hover {
+	FONT-WEIGHT: bold; COLOR: #ffffff; TEXT-DECORATION: underline
+}
+#Search {
+	PADDING-RIGHT: 4px; MARGIN-TOP: 4px
+}
+#Search .searchBox {
+	BORDER-RIGHT: #000 1px solid; BORDER-TOP: #000 1px solid; FONT-SIZE: =
+0.9em; BORDER-LEFT: #000 1px solid; WIDTH: 100px; BORDER-BOTTOM: #000 =
+1px solid
+}
+.SearchButtonOuter {
+	BACKGROUND-POSITION: left top; DISPLAY: inline-block; PADDING-LEFT: =
+4px; FONT-WEIGHT: bold; FONT-SIZE: 12px; BACKGROUND-IMAGE: =
+url(../images/summer-search-left.gif); MARGIN-LEFT: 4px; =
+BACKGROUND-REPEAT: no-repeat; TEXT-ALIGN: left; FONT-VARIANT: small-caps
+}
+.SearchButton {
+	PADDING-RIGHT: 9px; BACKGROUND-POSITION: right top; DISPLAY: =
+inline-block; PADDING-LEFT: 5px; FONT-WEIGHT: bold; FONT-SIZE: 12px; =
+BACKGROUND-IMAGE: url(../images/summer-search-right.gif); =
+PADDING-BOTTOM: 4px; COLOR: #ffffff; PADDING-TOP: 3px; =
+BACKGROUND-REPEAT: no-repeat; TEXT-ALIGN: left; FONT-VARIANT: =
+small-caps; TEXT-DECORATION: none
+}
+#Search A:link {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#Search A:visited {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#Search A:active {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#Search A:hover {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#title {
+	FONT-SIZE: 11px; LEFT: 63px; OVERFLOW: hidden; WIDTH: 151px; POSITION: =
+relative; TOP: 76px; HEIGHT: 74px; TEXT-ALIGN: center
+}
+#title H1 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 14px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; COLOR: #735c35; PADDING-TOP: 0px; TEXT-ALIGN: center
+}
+#title A:link {
+	COLOR: #735c35
+}
+#title A:visited {
+	COLOR: #735c35
+}
+#title A:active {
+	COLOR: #735c35
+}
+#title A:hover {
+	COLOR: #735c35
+}
+#nav {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 6px; PADDING-BOTTOM: 0px; =
+MARGIN-LEFT: auto; OVERFLOW: hidden; WIDTH: 792px; MARGIN-RIGHT: auto; =
+PADDING-TOP: 0px; HEIGHT: 35px; BACKGROUND-COLOR: #ffffff
+}
+#navbar {
+	BACKGROUND: url(../images/summer-nav-background.jpg) #666666 repeat-x; =
+HEIGHT: 35px
+}
+#navbar UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: =
+0px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none
+}
+#navbar LI {
+	BACKGROUND-POSITION: 4px 13px; PADDING-LEFT: 18px; FONT-WEIGHT: bold; =
+FONT-SIZE: 12px; FLOAT: left; BACKGROUND-IMAGE: =
+url(../images/summer-nav-bul.gif); MARGIN-LEFT: 8px; TEXT-TRANSFORM: =
+uppercase; MARGIN-RIGHT: 8px; PADDING-TOP: 9px; BACKGROUND-REPEAT: =
+no-repeat
+}
+#navbar A:link {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#navbar A:visited {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#navbar A:active {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#navbar A:hover {
+	TEXT-DECORATION: underline
+}
+.TagCloud {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; PADDING-BOTTOM: 16px; MARGIN: =
+16px 0px; COLOR: #999999; LINE-HEIGHT: 180%; PADDING-TOP: 16px; =
+LIST-STYLE-TYPE: none; BACKGROUND-COLOR: #f7f7f7
+}
+.SidebarTagCloud {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 80%; PADDING-BOTTOM: =
+0px; MARGIN: 0px; LINE-HEIGHT: 200%; PADDING-TOP: 0px; LIST-STYLE-TYPE: =
+none
+}
+.Tag1 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag2 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag3 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag4 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag5 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag6 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag1 A:link {
+	FONT-WEIGHT: 900; FONT-SIZE: 160%; COLOR: #001fa7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag1 A:visited {
+	FONT-WEIGHT: 900; FONT-SIZE: 160%; COLOR: #001fa7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag1 A:active {
+	FONT-WEIGHT: 900; FONT-SIZE: 160%; COLOR: #001fa7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag2 A:link {
+	FONT-WEIGHT: 800; FONT-SIZE: 145%; COLOR: #002fb7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag2 A:visited {
+	FONT-WEIGHT: 800; FONT-SIZE: 145%; COLOR: #002fb7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag2 A:active {
+	FONT-WEIGHT: 800; FONT-SIZE: 145%; COLOR: #002fb7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag3 A:link {
+	FONT-WEIGHT: 600; FONT-SIZE: 130%; COLOR: #003fc7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag3 A:visited {
+	FONT-WEIGHT: 600; FONT-SIZE: 130%; COLOR: #003fc7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag3 A:active {
+	FONT-WEIGHT: 600; FONT-SIZE: 130%; COLOR: #003fc7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag4 A:link {
+	FONT-WEIGHT: 500; FONT-SIZE: 120%; COLOR: #004fd7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag4 A:visited {
+	FONT-WEIGHT: 500; FONT-SIZE: 120%; COLOR: #004fd7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag4 A:active {
+	FONT-WEIGHT: 500; FONT-SIZE: 120%; COLOR: #004fd7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag5 A:link {
+	FONT-WEIGHT: 300; FONT-SIZE: 110%; COLOR: #005fe7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag5 A:visited {
+	FONT-WEIGHT: 300; FONT-SIZE: 110%; COLOR: #005fe7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag5 A:active {
+	FONT-WEIGHT: 300; FONT-SIZE: 110%; COLOR: #005fe7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag6 A:link {
+	FONT-WEIGHT: 200; FONT-SIZE: 100%; COLOR: #006ff7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag6 A:visited {
+	FONT-WEIGHT: 200; FONT-SIZE: 100%; COLOR: #006ff7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag6 A:active {
+	FONT-WEIGHT: 200; FONT-SIZE: 100%; COLOR: #006ff7; MARGIN-RIGHT: 6px; =
+TEXT-DECORATION: none
+}
+.Tag1 A:hover {
+	TEXT-DECORATION: underline
+}
+.Tag2 A:hover {
+	TEXT-DECORATION: underline
+}
+.Tag3 A:hover {
+	TEXT-DECORATION: underline
+}
+.Tag4 A:hover {
+	TEXT-DECORATION: underline
+}
+.Tag5 A:hover {
+	TEXT-DECORATION: underline
+}
+.Tag6 A:hover {
+	TEXT-DECORATION: underline
+}
+.InlineTagEditor {
+	BORDER-RIGHT: #999999 1px solid; PADDING-RIGHT: 4px; BORDER-TOP: =
+#999999 1px solid; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; BORDER-LEFT: =
+#999999 1px solid; PADDING-TOP: 4px; BORDER-BOTTOM: #999999 1px solid; =
+BACKGROUND-COLOR: #f3f3f3
+}
+.TextButton {
+	BORDER-RIGHT: #999999 1px solid; PADDING-RIGHT: 4px; BORDER-TOP: =
+#cccccc 1px solid; DISPLAY: inline-block; PADDING-LEFT: 4px; =
+FONT-WEIGHT: bold; FONT-SIZE: 80%; PADDING-BOTTOM: 4px; MARGIN: 1px; =
+BORDER-LEFT: #cccccc 1px solid; COLOR: #333333; PADDING-TOP: 4px; =
+BORDER-BOTTOM: #999999 1px solid; FONT-FAMILY: Tahoma, Arial, Helvetica; =
+WHITE-SPACE: nowrap; BACKGROUND-COLOR: #eeeeee
+}
+.TextButton:link {
+	COLOR: #333333; BACKGROUND-COLOR: #eeeeee; TEXT-DECORATION: none
+}
+.TextButton:visited {
+	COLOR: #333333; BACKGROUND-COLOR: #eeeeee; TEXT-DECORATION: none
+}
+.TextButton:active {
+	COLOR: #333333; TEXT-DECORATION: none
+}
+.TextButton:hover {
+	COLOR: #333333; BACKGROUND-COLOR: #dddddd; TEXT-DECORATION: underline
+}
+.ModalMask {
+	FILTER: alpha(opacity=3D40); BACKGROUND-COLOR: #333333; opacity: .4
+}
+.Modal {
+	BORDER-RIGHT: #888888 3px solid; BORDER-TOP: #888888 1px solid; =
+BORDER-LEFT: #888888 1px solid; BORDER-BOTTOM: #888888 3px solid; =
+BACKGROUND-COLOR: #eeeeee
+}
+.ModalTitle {
+	BORDER-RIGHT: #cccccc 0px solid; PADDING-RIGHT: 5px; BORDER-TOP: =
+#cccccc 0px solid; PADDING-LEFT: 5px; FONT-WEIGHT: bold; FONT-SIZE: =
+16px; PADDING-BOTTOM: 7px; OVERFLOW: hidden; BORDER-LEFT: #cccccc 0px =
+solid; CURSOR: move; COLOR: #000000; PADDING-TOP: 5px; BORDER-BOTTOM: =
+#cccccc 1px solid; FONT-FAMILY: Tahoma, Arial, Helvetica; HEIGHT: 18px; =
+BACKGROUND-COLOR: #dddddd; TEXT-ALIGN: left
+}
+.ModalClose {
+	FLOAT: right; BACKGROUND-IMAGE: =
+url(../../../default/images/common/close.gif); OVERFLOW: hidden; WIDTH: =
+33px; CURSOR: pointer; BACKGROUND-REPEAT: no-repeat; HEIGHT: 12px
+}
+.ModalContent {
+	BACKGROUND-COLOR: #ffffff
+}
+.ModalFooter {
+	BORDER-RIGHT: #cccccc 0px solid; PADDING-RIGHT: 2px; BORDER-TOP: =
+#cccccc 1px solid; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; BORDER-LEFT: =
+#cccccc 0px solid; PADDING-TOP: 2px; BORDER-BOTTOM: #cccccc 0px solid; =
+BACKGROUND-COLOR: #eeeeee
+}
+.ModalResize {
+	FLOAT: right; BACKGROUND-IMAGE: =
+url(../../../default/images/common/resize.gif); OVERFLOW: hidden; WIDTH: =
+14px; CURSOR: se-resize; BACKGROUND-REPEAT: no-repeat; HEIGHT: 14px
+}
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30
+Content-Type: text/css;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://blogs.msdn.com/Themes/Blogs/paperclip/style/print.css
+
+BODY {
+	FONT-SIZE: 0.8em; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, =
+sans-serif
+}
+A:visited {
+	COLOR: #000000
+}
+A:active {
+	COLOR: #000000
+}
+A:link {
+	COLOR: #000000
+}
+.post {
+	MARGIN: 0px 0px 20px
+}
+.posthead {
+	BORDER-RIGHT: #dfdfdf 0px dotted; BORDER-TOP: #dfdfdf 0px dotted; =
+FONT-WEIGHT: normal; FONT-SIZE: 1.5em; PADDING-BOTTOM: 6px; MARGIN: 0px =
+0px 10px; BORDER-LEFT: #dfdfdf 0px dotted; COLOR: #000000; =
+BORDER-BOTTOM: #dfdfdf 1px dotted
+}
+.posthead A:link {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.posthead A:visited {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.posthead A:active {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.posthead A:hover {
+	COLOR: #529e00; TEXT-DECORATION: underline
+}
+.postfoot {
+	BORDER-RIGHT: #dfdfdf 0px dotted; BORDER-TOP: #dfdfdf 1px dotted; =
+MARGIN-TOP: 10px; PADDING-BOTTOM: 6px; BORDER-LEFT: #dfdfdf 0px dotted; =
+COLOR: #000000; PADDING-TOP: 6px; BORDER-BOTTOM: #dfdfdf 1px dotted
+}
+.postfoot .em {
+	COLOR: #000000
+}
+.pageTitle {
+	MARGIN-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 1.8em; MARGIN-BOTTOM: =
+20px; COLOR: #000000
+}
+#leftmenu {
+	DISPLAY: none
+}
+#main {
+=09
+}
+#footer {
+	CLEAR: both; MARGIN: 0px; TEXT-ALIGN: left
+}
+#quicklinks {
+	PADDING-TOP: 10px
+}
+INPUT.text {
+	WIDTH: 300px
+}
+TEXTAREA {
+	WIDTH: 300px; HEIGHT: 200px
+}
+#relatedlinks UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; =
+MARGIN-LEFT: 10px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none
+}
+FIELDSET {
+	PADDING-RIGHT: 20px; MARGIN-TOP: 16px; PADDING-LEFT: 20px; =
+PADDING-BOTTOM: 20px; PADDING-TOP: 0px
+}
+LEGEND {
+	FONT-WEIGHT: bold; COLOR: #000000
+}
+FIELDSET TEXTAREA {
+	WIDTH: 450px
+}
+FIELDSET .smallbox {
+	WIDTH: 450px
+}
+#comments H2 {
+	MARGIN-TOP: 16px; FONT-SIZE: 1em; COLOR: #000000
+}
+.CommentArea {
+	MARGIN: 8px 0px
+}
+.CommentTitle {
+	FONT-WEIGHT: normal; FONT-SIZE: 1em; MARGIN-BOTTOM: 6px
+}
+.CommentArrow {
+	BACKGROUND-IMAGE: url(../images/summer-comment-arrow.gif); =
+MARGIN-BOTTOM: -7px; WIDTH: 14px; BACKGROUND-REPEAT: no-repeat; HEIGHT: =
+14px
+}
+.CommentText {
+	BACKGROUND-POSITION: left bottom; BACKGROUND-IMAGE: =
+url(../images/comment-shadow.gif); PADDING-BOTTOM: 3px; =
+BACKGROUND-REPEAT: repeat-x
+}
+.CommentText2 {
+	BORDER-RIGHT: #bcbcbc 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: =
+#bcbcbc 1px solid; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; BORDER-LEFT: =
+#bcbcbc 1px solid; PADDING-TOP: 3px; BORDER-BOTTOM: #bcbcbc 1px solid
+}
+.CommentText3 {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-SIZE: 0.8em; =
+PADDING-BOTTOM: 5px; PADDING-TOP: 5px
+}
+.CommentFooter {
+	MARGIN-TOP: 4px; PADDING-LEFT: 16px; FONT-SIZE: 0.7em; COLOR: #000000
+}
+#news {
+	MARGIN-TOP: 20px; MARGIN-BOTTOM: 20px
+}
+.copyright {
+	FONT-SIZE: 0.65em; FONT-STYLE: italic; TEXT-ALIGN: center
+}
+.CommonRateControlReadOnly {
+	BORDER-RIGHT: #999999 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#999999 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #999999 1px solid; PADDING-TOP: 1px; =
+BORDER-BOTTOM: #999999 1px solid; BACKGROUND-COLOR: #ffffff
+}
+.CommonRateControl {
+	BORDER-RIGHT: #999999 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#999999 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #999999 1px solid; CURSOR: pointer; =
+PADDING-TOP: 1px; BORDER-BOTTOM: #999999 1px solid; BACKGROUND-COLOR: =
+#eeeeee
+}
+.CommonRateControlActive {
+	BORDER-RIGHT: #cc9933 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#cc9933 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #cc9933 1px solid; CURSOR: pointer; =
+PADDING-TOP: 1px; BORDER-BOTTOM: #cc9933 1px solid; BACKGROUND-COLOR: =
+#ffcc66
+}
+.CommonRateControlReadOnly {
+	BORDER-RIGHT: #999999 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#999999 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #999999 1px solid; PADDING-TOP: 1px; =
+BORDER-BOTTOM: #999999 1px solid; BACKGROUND-COLOR: #ffffff
+}
+.CommonRateControl {
+	BORDER-RIGHT: #999999 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#999999 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #999999 1px solid; CURSOR: pointer; =
+PADDING-TOP: 1px; BORDER-BOTTOM: #999999 1px solid; BACKGROUND-COLOR: =
+#eeeeee
+}
+.CommonRateControlActive {
+	BORDER-RIGHT: #cc9933 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: =
+#cc9933 1px solid; DISPLAY: inline-block; PADDING-LEFT: 1px; =
+PADDING-BOTTOM: 1px; BORDER-LEFT: #cc9933 1px solid; CURSOR: pointer; =
+PADDING-TOP: 1px; BORDER-BOTTOM: #cc9933 1px solid; BACKGROUND-COLOR: =
+#ffcc66
+}
+.CommonRateControlReadOnly IMG {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: =
+0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; BORDER-RIGHT-STYLE: none; =
+BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.CommonRateControl IMG {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: =
+0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; BORDER-RIGHT-STYLE: none; =
+BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.CommonRateControlActive IMG {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: =
+0px; BORDER-TOP-STYLE: none; PADDING-TOP: 0px; BORDER-RIGHT-STYLE: none; =
+BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+#content {
+=09
+}
+#masthead {
+=09
+}
+#masthead UL {
+	DISPLAY: none
+}
+#userArea {
+	DISPLAY: none
+}
+#title {
+=09
+}
+#title H1 {
+=09
+}
+#nav {
+	DISPLAY: none
+}
+.TagCloud {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; PADDING-BOTTOM: 16px; MARGIN: =
+16px 0px; PADDING-TOP: 16px; LIST-STYLE-TYPE: none; BACKGROUND-COLOR: =
+#f7f7f7
+}
+.SidebarTagCloud {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 80%; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none
+}
+.Tag1 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag2 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag3 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag4 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag5 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag6 {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: =
+0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.Tag1 A:link {
+	FONT-WEIGHT: 900; FONT-SIZE: 160%
+}
+.Tag1 A:visited {
+	FONT-WEIGHT: 900; FONT-SIZE: 160%
+}
+.Tag1 A:active {
+	FONT-WEIGHT: 900; FONT-SIZE: 160%
+}
+.Tag2 A:link {
+	FONT-WEIGHT: 800; FONT-SIZE: 145%
+}
+.Tag2 A:visited {
+	FONT-WEIGHT: 800; FONT-SIZE: 145%
+}
+.Tag2 A:active {
+	FONT-WEIGHT: 800; FONT-SIZE: 145%
+}
+.Tag3 A:link {
+	FONT-WEIGHT: 600; FONT-SIZE: 130%
+}
+.Tag3 A:visited {
+	FONT-WEIGHT: 600; FONT-SIZE: 130%
+}
+.Tag3 A:active {
+	FONT-WEIGHT: 600; FONT-SIZE: 130%
+}
+.Tag4 A:link {
+	FONT-WEIGHT: 500; FONT-SIZE: 120%
+}
+.Tag4 A:visited {
+	FONT-WEIGHT: 500; FONT-SIZE: 120%
+}
+.Tag4 A:active {
+	FONT-WEIGHT: 500; FONT-SIZE: 120%
+}
+.Tag5 A:link {
+	FONT-WEIGHT: 300; FONT-SIZE: 110%
+}
+.Tag5 A:visited {
+	FONT-WEIGHT: 300; FONT-SIZE: 110%
+}
+.Tag5 A:active {
+	FONT-WEIGHT: 300; FONT-SIZE: 110%
+}
+.Tag6 A:link {
+	FONT-WEIGHT: 200; FONT-SIZE: 100%
+}
+.Tag6 A:visited {
+	FONT-WEIGHT: 200; FONT-SIZE: 100%
+}
+.Tag6 A:active {
+	FONT-WEIGHT: 200; FONT-SIZE: 100%
+}
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30
+Content-Type: text/css;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://blogs.msdn.com/Themes/Blogs/paperclip/style/cactus.css
+
+BODY {
+	BACKGROUND-COLOR: #002940
+}
+A:visited {
+	COLOR: #006ff7
+}
+A:active {
+	COLOR: #006ff7
+}
+A:link {
+	COLOR: #006ff7
+}
+.posthead {
+	BORDER-LEFT-COLOR: #dfdfdf; BORDER-BOTTOM-COLOR: #dfdfdf; COLOR: =
+#529e00; BORDER-TOP-COLOR: #dfdfdf; BORDER-RIGHT-COLOR: #dfdfdf
+}
+.posthead A:link {
+	COLOR: #529e00
+}
+.posthead A:visited {
+	COLOR: #529e00
+}
+.posthead A:active {
+	COLOR: #529e00
+}
+.posthead A:hover {
+	COLOR: #529e00
+}
+.postfoot {
+	BORDER-LEFT-COLOR: #dfdfdf; BORDER-BOTTOM-COLOR: #dfdfdf; COLOR: =
+#868686; BORDER-TOP-COLOR: #dfdfdf; BORDER-RIGHT-COLOR: #dfdfdf
+}
+.postfoot .em {
+	COLOR: #000000
+}
+.pageTitle {
+	COLOR: #529e00
+}
+#leftmenu H3 {
+	BORDER-BOTTOM-COLOR: #dfdfdf
+}
+#leftmenu UL LI {
+	COLOR: #7c95b3
+}
+#leftmenu UL A:link {
+	COLOR: #7c95b3
+}
+#leftmenu UL A:visited {
+	COLOR: #7c95b3
+}
+#leftmenu UL A:active {
+	COLOR: #7c95b3
+}
+#leftmenu UL A:hover {
+	COLOR: #7c95b3
+}
+LEGEND {
+	COLOR: #7cc10b
+}
+#comments H2 {
+	COLOR: #7cc10b
+}
+.CommentArrow {
+	BACKGROUND-IMAGE: url(../images/cactus-comment-arrow.gif); =
+MARGIN-BOTTOM: -7px; WIDTH: 14px; HEIGHT: 14px
+}
+.CommentText2 {
+	BORDER-RIGHT: #bcbcbc 1px solid; BORDER-TOP: #bcbcbc 1px solid; =
+BORDER-LEFT: #bcbcbc 1px solid; BORDER-BOTTOM: #bcbcbc 1px solid
+}
+.CommentText3 {
+=09
+}
+.CommentFooter {
+	COLOR: #999999
+}
+#content {
+	BACKGROUND-COLOR: #ffffff
+}
+#masthead {
+	BACKGROUND: url(../images/cactus-title.jpg) #ffffff
+}
+#welcome {
+	COLOR: #ffffff; BACKGROUND-COLOR: #000000
+}
+#welcome A:link {
+	COLOR: #ffffff
+}
+#welcome A:visited {
+	COLOR: #ffffff
+}
+#welcome A:active {
+	COLOR: #ffffff
+}
+#welcome A:hover {
+	COLOR: #ffffff
+}
+.SearchButtonOuter {
+	BACKGROUND-IMAGE: url(../images/cactus-search-left.gif)
+}
+.SearchButton {
+	BACKGROUND-IMAGE: url(../images/cactus-search-right.gif); COLOR: =
+#ffffff
+}
+#Search A:link {
+	COLOR: #ffffff
+}
+#Search A:visited {
+	COLOR: #ffffff
+}
+#Search A:active {
+	COLOR: #ffffff
+}
+#Search A:hover {
+	COLOR: #ffffff
+}
+#title H1 {
+	COLOR: #000000
+}
+#title A:link {
+	COLOR: #000000
+}
+#title A:visited {
+	COLOR: #000000
+}
+#title A:active {
+	COLOR: #000000
+}
+#title A:hover {
+	COLOR: #000000
+}
+#nav {
+	BACKGROUND-COLOR: #ffffff
+}
+#navbar {
+	BACKGROUND: url(../images/cactus-nav-background.jpg) #666666 repeat-x
+}
+#navbar LI {
+	BACKGROUND-IMAGE: url(../images/cactus-nav-bul.gif)
+}
+#navbar A:link {
+	COLOR: #ffffff
+}
+#navbar A:visited {
+	COLOR: #ffffff
+}
+#navbar A:active {
+	COLOR: #ffffff
+}
+.TagCloud {
+	COLOR: #999999; BACKGROUND-COLOR: #f7f7f7
+}
+.Tag1 A:link {
+	COLOR: #001fa7
+}
+.Tag1 A:visited {
+	COLOR: #001fa7
+}
+.Tag1 A:active {
+	COLOR: #001fa7
+}
+.Tag2 A:link {
+	COLOR: #002fb7
+}
+.Tag2 A:visited {
+	COLOR: #002fb7
+}
+.Tag2 A:active {
+	COLOR: #002fb7
+}
+.Tag3 A:link {
+	COLOR: #003fc7
+}
+.Tag3 A:visited {
+	COLOR: #003fc7
+}
+.Tag3 A:active {
+	COLOR: #003fc7
+}
+.Tag4 A:link {
+	COLOR: #004fd7
+}
+.Tag4 A:visited {
+	COLOR: #004fd7
+}
+.Tag4 A:active {
+	COLOR: #004fd7
+}
+.Tag5 A:link {
+	COLOR: #005fe7
+}
+.Tag5 A:visited {
+	COLOR: #005fe7
+}
+.Tag5 A:active {
+	COLOR: #005fe7
+}
+.Tag6 A:link {
+	COLOR: #006ff7
+}
+.Tag6 A:visited {
+	COLOR: #006ff7
+}
+.Tag6 A:active {
+	COLOR: #006ff7
+}
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30
+Content-Type: application/xml
+Content-Transfer-Encoding: 7bit
+Content-Location: http://blogs.msdn.com/bencon/customcss.ashx
+
+DIV#BenconCode {
+	BACKGROUND-COLOR: white
+}
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://blogs.msdn.com/Utility/global.js?Version=2.1.61025.2
+
+  /*******/
+
+  var IE4 =3D document.all;
+  var NS6 =3D document.getElementById && !document.all;
+  var disappearDelay =3D 500; // miliseconds
+     =20
+  function DynamicHide (node, e) {
+    if ((IE4 && !node.contains(e.toElement)) ||
+        (NS6 && e.currentTarget !=3D e.relatedTarget && !NS6_Contains( =
+e.currentTarget, e.relatedTarget )))=20
+    {
+      InitTimer( node );
+    }=20
+  } =20
+ =20
+  function HideObject (nodeID) {   =20
+    var node =3D document.getElementById( nodeID );
+   =20
+    if (typeof node !=3D "undefined") {
+      if (IE4 || NS6) {
+        node.style.visibility =3D "hidden";
+        node.style.display =3D 'none';
+      }
+    }
+  }
+ =20
+  function ReleaseTimer (node) {   =20
+    if (typeof node !=3D "undefined") {
+      if (typeof node.HideTimer !=3D "undefined") {
+        clearTimeout( node.HideTimer );
+      }
+    }
+  }
+ =20
+  function InitTimer (node) {
+    if (typeof node !=3D "undefined") {
+      var callBack =3D 'HideObject( "' + node.getAttribute( 'id' ) + '" =
+)';     =20
+      node.HideTimer =3D setTimeout( callBack, disappearDelay );
+    }
+  }
+   =20
+  function NS6_Contains (a, b) {
+    while (b.parentNode) {
+      if ((b =3D b.parentNode) =3D=3D a)
+        return true;
+    }
+   =20
+    return false;
+  }
+       =20
+  /*******/
+  =20
+  function ToggleSendToFriend() {
+    sendToFriendForm =3D document.getElementById('SendToFriendForm');
+    sendToFriendButton =3D =
+document.getElementById('SendToFriendButton');
+
+    if (sendToFriendForm.style.visibility =3D=3D "hidden") {
+      sendToFriendForm.style.visibility =3D "visible";
+      sendToFriendForm.style.display =3D 'block';
+    } else {
+      sendToFriendForm.style.visibility =3D "hidden";
+      sendToFriendForm.style.display =3D 'none';
+    }
+
+    //sendToFriendForm.style.left =3D getposOffset(sendToFriendButton, =
+"left") - sendToFriendForm.offsetWidth + sendToFriendButton.offsetWidth;
+    sendToFriendForm.style.left =3D getposOffset(sendToFriendButton, =
+"left") - (sendToFriendForm.offsetWidth / 2) + =
+(sendToFriendButton.offsetWidth / 2);
+    sendToFriendForm.style.top =3D getposOffset(sendToFriendButton, =
+"top") + sendToFriendButton.offsetHeight;
+  }
+ =20
+  function ToggleAddComment() {
+    commentMenu =3D document.getElementById('CommentMenu');
+    commentButton =3D document.getElementById('CommentButton');
+
+    commentMenu.style.left =3D getposOffset(commentButton, "left");
+    commentMenu.style.top =3D getposOffset(commentButton, "top") + =
+commentButton.offsetHeight;
+
+    if (commentMenu.style.visibility =3D=3D "hidden") {
+      commentMenu.style.visibility =3D "visible";
+      commentMenu.style.display =3D 'block';
+    } else {
+      commentMenu.style.visibility =3D "hidden";
+      commentMenu.style.display =3D 'none';
+    }
+  }
+ =20
+  function ToggleGalleryThumbnail(pictureID) {
+    largeThumbDiv =3D document.getElementById('SecondaryThumbDiv' + =
+pictureID);
+    smallThumb =3D document.getElementById('SmallThumb' + pictureID);
+
+    if (largeThumbDiv.className =3D=3D "secondaryThumbnailHidden") {
+      largeThumbDiv.className =3D "secondaryThumbnailPopup";
+      largeThumbDiv.style.left =3D getposOffset(smallThumb, "left") - =
+((largeThumbDiv.offsetWidth - smallThumb.offsetWidth) / 2) + "px";
+      largeThumbDiv.style.top =3D getposOffset(smallThumb, "top")  - =
+((largeThumbDiv.offsetHeight - smallThumb.offsetHeight) / 2) + "px";
+      setTimeout(function() { largeThumbDiv.style.visibility =3D =
+"visible"; }, 5);
+    } else {
+	  largeThumbDiv.className =3D "secondaryThumbnailHidden";
+    }
+  }
+ =20
+  function ToggleRateMenu() {
+    rateMenu =3D document.getElementById('RateMenu');
+    rateButton =3D document.getElementById('RateButton');
+   =20
+    rateMenu.style.left =3D getposOffset(rateButton, "left");
+    rateMenu.style.top =3D getposOffset(rateButton, "top") + =
+rateButton.offsetHeight;
+
+    if (rateMenu.style.visibility =3D=3D "hidden") {
+      rateMenu.style.visibility =3D "visible";
+      rateMenu.style.display =3D 'block';
+    } else {
+      rateMenu.style.visibility =3D "hidden";
+      rateMenu.style.display =3D 'none';
+    }
+   =20
+    // Init autohide
+    if (window.event) {
+      event.cancelBubble =3D true;
+    }
+   =20
+    ReleaseTimer( rateMenu );
+  }
+ =20
+  function ToggleRatePostMenu(control) {
+	rateButton =3D control.parentNode;
+	rateMenu =3D rateButton.nextSibling.nextSibling;
+
+	if ((rateButton.id !=3D "RateButton") || (rateMenu.id !=3D "RateMenu"))
+		return;
+
+    rateMenu.style.left =3D getposOffset(rateButton, "left");
+    rateMenu.style.top =3D getposOffset(rateButton, "top") + =
+rateButton.offsetHeight;
+
+    if (rateMenu.style.visibility =3D=3D "hidden") {
+      rateMenu.style.visibility =3D "visible";
+      rateMenu.style.display =3D 'block';
+    } else {
+      rateMenu.style.visibility =3D "hidden";
+      rateMenu.style.display =3D 'none';
+    }
+   =20
+    // Init autohide
+    if (window.event) {
+      event.cancelBubble =3D true;
+    }
+   =20
+    ReleaseTimer( rateMenu );
+  }
+
+  function ToggleSearchMenu() {
+    searchMenu =3D document.getElementById('SearchMenu');
+    searchButton =3D document.getElementById('SearchButton');
+
+    searchMenu.style.left =3D getposOffset(searchButton, "left");
+    searchMenu.style.top =3D getposOffset(searchButton, "top") + =
+searchButton.offsetHeight;
+
+    if (searchMenu.style.visibility =3D=3D "hidden") {
+      searchMenu.style.visibility =3D "visible";
+      searchMenu.style.display =3D 'block';
+    } else {
+      searchMenu.style.visibility =3D "hidden";
+      searchMenu.style.display =3D 'none';
+    }
+  }
+
+function getposOffset(what, offsettype){
+  var totaloffset=3D(offsettype=3D=3D"left")? what.offsetLeft : =
+what.offsetTop;
+  var parentEl=3Dwhat.offsetParent;
+  while (parentEl!=3Dnull){
+    totaloffset=3D(offsettype=3D=3D"left")? =
+totaloffset+parentEl.offsetLeft : totaloffset+parentEl.offsetTop;
+    parentEl=3DparentEl.offsetParent;
+  }
+  return totaloffset;
+}
+
+function ToggleMenuOnOff (menuName) {
+    var menu =3D document.getElementById(menuName);
+
+    if (menu.style.display =3D=3D 'none') {
+      menu.style.display =3D 'block';
+    } else {
+      menu.style.display =3D 'none';
+    }
+
+}
+
+function OpenWindow (target) {=20
+  window.open(target, "_Child", =
+"toolbar=3Dno,scrollbars=3Dyes,resizable=3Dyes,width=3D400,height=3D400")=
+;=20
+}
+
+function OpenPostWindow (target) {=20
+  window.open(target, "_Child", =
+"resizable=3Dyes,width=3D500,height=3D700");=20
+}
+
+/*
+Keep the user's cookie alive
+*/
+
+function MakeKeepAliveRequest()
+{
+	if (!KeepAliveUrl)
+		return;
+
+	if (KeepAliveTimer !=3D null)
+		window.clearTimeout(KeepAliveTimer);
+
+	var x =3D null;
+	if (typeof XMLHttpRequest !=3D "undefined")=20
+	{
+		x =3D new XMLHttpRequest();
+	}=20
+	else=20
+	{
+		try=20
+		{
+			x =3D new ActiveXObject("Msxml2.XMLHTTP");
+		}=20
+		catch (e)=20
+		{
+			try=20
+			{
+				x =3D new ActiveXObject("Microsoft.XMLHTTP");
+			}=20
+			catch (e)=20
+			{
+			}
+		}
+	}
+=09
+	try
+	{
+		// don't do this asynchronously
+		x.open("GET", KeepAliveUrl, false, "", "");
+		x.send(null);
+	}
+	catch (e)
+	{
+	}
+=09
+	KeepAliveTimer =3D window.setTimeout(MakeKeepAliveRequest, 599999);
+}
+
+function DetermineKeepAliveUrl()
+{
+	var scripts =3D document.getElementsByTagName("SCRIPT");
+	var i;
+	var url;
+=09
+	for (i =3D 0; i < scripts.length; i++)
+	{
+		url =3D scripts[i].src.toLowerCase();
+		if (url.indexOf('utility/global.js') !=3D -1)
+			return url.replace('utility/global.js', 'utility/keepalive.aspx');
+	}
+=09
+	return null;
+}
+
+var KeepAliveUrl =3D DetermineKeepAliveUrl();
+var KeepAliveTimer =3D window.setTimeout(MakeKeepAliveRequest, 599999);
+
+function ShowEditBlock(block) {
+	block.className =3D "CommonContentPartBorderOn";
+}
+function HideEditBlock(block) {
+	block.className =3D "CommonContentPartBorderOff";
+}
+
+function getCookie(sName) {
+	var cookie =3D "" + document.cookie;
+	var start =3D cookie.indexOf(sName);
+	if (cookie =3D=3D "" || start =3D=3D -1)=20
+		return "";
+	var end =3D cookie.indexOf(';',start);
+	if (end =3D=3D -1)
+		end =3D cookie.length;
+	return unescape(cookie.substring(start+sName.length + 1,end));
+}
+function setCookie(sName, value) {
+	document.cookie =3D sName + "=3D" + escape(value) + ";path=3D/;";
+}
+function setCookieForever(sName, value) {
+	document.cookie =3D sName + "=3D" + escape(value) + =
+";path=3D/;expires=3DFri, 1 Jan 2010 00:00:00 GMT;";
+}
+
+function inLineEditOn(control)
+{
+    control.className =3D "CommonInlineEditOn";
+}
+
+function inLineEditOff(control)
+{
+    control.className =3D "CommonInlineEditOff";
+}
+
+//Ajax Start
+
+function Ajax_GetXMLHttpRequest() {
+	if (window.XMLHttpRequest) {
+		return new XMLHttpRequest();
+	} else {
+		if (window.Ajax_XMLHttpRequestProgID) {
+			return new ActiveXObject(window.Ajax_XMLHttpRequestProgID);
+		} else {
+			var progIDs =3D ["Msxml2.XMLHTTP.5.0", "Msxml2.XMLHTTP.4.0", =
+"MSXML2.XMLHTTP.3.0", "MSXML2.XMLHTTP", "Microsoft.XMLHTTP"];
+			for (var i =3D 0; i < progIDs.length; ++i) {
+				var progID =3D progIDs[i];
+				try {
+					var x =3D new ActiveXObject(progID);
+					window.Ajax_XMLHttpRequestProgID =3D progID;
+					return x;
+				} catch (e) {
+				}
+			}
+		}
+	}
+	return null;
+}
+function Ajax_CallBack(type, id, method, args, clientCallBack, =
+debugRequestText, debugResponseText, debugErrors, =
+includeControlValuesWithCallBack, url) {
+=09
+	if (!url)
+	{
+		url =3D window.location.href;
+		url =3D url.replace(/\#.*$/, '');
+		if (url.indexOf('?') > -1)
+			url +=3D "&Ajax_CallBack=3Dtrue";
+		else
+		{
+			if (url.substr(url.length - 1, 1) =3D=3D "/")
+				url +=3D "default.aspx";
+			=09
+			url +=3D "?Ajax_CallBack=3Dtrue";
+		}
+	}
+
+	var x =3D Ajax_GetXMLHttpRequest();
+	var result =3D null;
+	if (!x) {
+		result =3D { "value":null, "error": "NOXMLHTTP"};
+		if (debugErrors) {
+			alert("error: " + result.error);
+		}
+		if (clientCallBack) {
+			clientCallBack(result);
+		}
+		return result;
+	}
+
+	x.open("POST", url, clientCallBack ? true : false);
+	x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; =
+charset=3Dutf-8");
+	if (clientCallBack) {
+		x.onreadystatechange =3D function() {
+			var result =3D null;
+	=09
+			if (x.readyState !=3D 4) {
+				return;
+			}
+		=09
+			if (debugResponseText) {
+				alert(x.responseText);
+			}
+		=09
+			try
+			{
+				var result =3D eval("(" + x.responseText + ")");
+				if (debugErrors && result.error) {
+					alert("error: " + result.error);
+				}
+			}
+			catch (err)
+			{
+				if (window.confirm('The following error occured while processing an =
+AJAX request: ' + err.message + '\n\nWould you like to see the =
+response?'))
+				{
+					var w =3D window.open();
+					w.document.open('text/plain');
+					w.document.write(x.responseText);
+					w.document.close();
+				}
+			=09
+				result =3D new Object();
+				result.error =3D 'An AJAX error occured.  The response is invalid.';
+			}
+		=09
+			clientCallBack(result);		=09
+		}
+	}
+	var encodedData =3D "Ajax_CallBackType=3D" + type;
+	if (id) {
+		encodedData +=3D "&Ajax_CallBackID=3D" + id.split("$").join(":");
+	}
+	encodedData +=3D "&Ajax_CallBackMethod=3D" + method;
+	if (args) {
+		for (var i in args) {
+			encodedData +=3D "&Ajax_CallBackArgument" + i + "=3D" + =
+encodeURIComponent(args[i]);
+		}
+	}
+	if (includeControlValuesWithCallBack && document.forms.length > 0) {
+		var form =3D document.forms[0];
+		for (var i =3D 0; i < form.length; ++i) {
+			var element =3D form.elements[i];
+			if (element.name) {
+				var elementValue =3D null;
+				if (element.nodeName =3D=3D "INPUT") {
+					var inputType =3D element.getAttribute("TYPE").toUpperCase();
+					if (inputType =3D=3D "TEXT" || inputType =3D=3D "PASSWORD" || =
+inputType =3D=3D "HIDDEN") {
+						elementValue =3D element.value;
+					} else if (inputType =3D=3D "CHECKBOX" || inputType =3D=3D "RADIO") =
+{
+						if (element.checked) {
+							elementValue =3D element.value;
+						}
+					}
+				} else if (element.nodeName =3D=3D "SELECT") {
+					elementValue =3D element.value;
+				} else if (element.nodeName =3D=3D "TEXTAREA") {
+					elementValue =3D element.value;
+				}
+				if (elementValue) {
+					encodedData +=3D "&" + element.name + "=3D" + =
+encodeURIComponent(elementValue);
+				}
+			}
+		}
+	}
+	if (debugRequestText) {
+		alert(encodedData);
+	}
+	x.send(encodedData);
+	if (!clientCallBack) {
+		if (debugResponseText) {
+			alert(x.responseText);
+		}
+		result =3D eval("(" + x.responseText + ")");
+		if (debugErrors && result.error) {
+			alert("error: " + result.error);
+		}
+	}
+	delete x;
+	return result;
+}
+
+//Ajax End
+
+//Element Items Borrowed From Prototype
+
+function $() {
+  var elements =3D new Array();
+
+  for (var i =3D 0; i < arguments.length; i++) {
+    var element =3D arguments[i];
+    if (typeof element =3D=3D 'string')
+      element =3D document.getElementById(element);
+
+    if (arguments.length =3D=3D 1)=20
+      return element;
+
+    elements.push(element);
+  }
+
+  return elements;
+}
+
+
+var Element =3D {
+ =20
+  toggle: function() {
+    for (var i =3D 0; i < arguments.length; i++) {
+      var element =3D $(arguments[i]);
+      element.style.display =3D=20
+        (element.style.display =3D=3D 'none' ? '' : 'none');
+    }
+  },
+
+  hide: function() {
+    for (var i =3D 0; i < arguments.length; i++) {
+      var element =3D $(arguments[i]);
+      element.style.display =3D 'none';
+    }
+  },
+
+  show: function() {
+    for (var i =3D 0; i < arguments.length; i++) {
+      var element =3D $(arguments[i]);
+      element.style.display =3D '';
+    }
+  },
+
+  remove: function(element) {
+    element =3D $(element);
+    element.parentNode.removeChild(element);
+  },
+  =20
+  getHeight: function(element) {
+    element =3D $(element);
+    return element.offsetHeight;=20
+  }
+}
+
+
+//End Element Items
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://blogs.msdn.com/WebResource.axd?d=MwVAIFrhtInWXjr7ugVdzg2&t=633229024676498808
+
+function WebForm_PostBackOptions(eventTarget, eventArgument, validation, =
+validationGroup, actionUrl, trackFocus, clientSubmit) {
+    this.eventTarget =3D eventTarget;
+    this.eventArgument =3D eventArgument;
+    this.validation =3D validation;
+    this.validationGroup =3D validationGroup;
+    this.actionUrl =3D actionUrl;
+    this.trackFocus =3D trackFocus;
+    this.clientSubmit =3D clientSubmit;
+}
+function WebForm_DoPostBackWithOptions(options) {
+    var validationResult =3D true;
+    if (options.validation) {
+        if (typeof(Page_ClientValidate) =3D=3D 'function') {
+            validationResult =3D =
+Page_ClientValidate(options.validationGroup);
+        }
+    }
+    if (validationResult) {
+        if ((typeof(options.actionUrl) !=3D "undefined") && =
+(options.actionUrl !=3D null) && (options.actionUrl.length > 0)) {
+            theForm.action =3D options.actionUrl;
+        }
+        if (options.trackFocus) {
+            var lastFocus =3D theForm.elements["__LASTFOCUS"];
+            if ((typeof(lastFocus) !=3D "undefined") && (lastFocus !=3D =
+null)) {
+                if (typeof(document.activeElement) =3D=3D "undefined") {
+                    lastFocus.value =3D options.eventTarget;
+                }
+                else {
+                    var active =3D document.activeElement;
+                    if ((typeof(active) !=3D "undefined") && (active =
+!=3D null)) {
+                        if ((typeof(active.id) !=3D "undefined") && =
+(active.id !=3D null) && (active.id.length > 0)) {
+                            lastFocus.value =3D active.id;
+                        }
+                        else if (typeof(active.name) !=3D "undefined") {
+                            lastFocus.value =3D active.name;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (options.clientSubmit) {
+        __doPostBack(options.eventTarget, options.eventArgument);
+    }
+}
+var __pendingCallbacks =3D new Array();
+var __synchronousCallBackIndex =3D -1;
+function WebForm_DoCallback(eventTarget, eventArgument, eventCallback, =
+context, errorCallback, useAsync) {
+    var postData =3D __theFormPostData +
+                "__CALLBACKID=3D" + WebForm_EncodeCallback(eventTarget) =
++
+                "&__CALLBACKPARAM=3D" + =
+WebForm_EncodeCallback(eventArgument);
+    if (theForm["__EVENTVALIDATION"]) {
+        postData +=3D "&__EVENTVALIDATION=3D" + =
+WebForm_EncodeCallback(theForm["__EVENTVALIDATION"].value);
+    }
+    var xmlRequest,e;
+    try {
+        xmlRequest =3D new XMLHttpRequest();
+    }
+    catch(e) {
+        try {
+            xmlRequest =3D new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        catch(e) {
+        }
+    }
+    var setRequestHeaderMethodExists =3D true;
+    try {
+        setRequestHeaderMethodExists =3D (xmlRequest && =
+xmlRequest.setRequestHeader);
+    }
+    catch(e) {}
+    var callback =3D new Object();
+    callback.eventCallback =3D eventCallback;
+    callback.context =3D context;
+    callback.errorCallback =3D errorCallback;
+    callback.async =3D useAsync;
+    var callbackIndex =3D =
+WebForm_FillFirstAvailableSlot(__pendingCallbacks, callback);
+    if (!useAsync) {
+        if (__synchronousCallBackIndex !=3D -1) {
+            __pendingCallbacks[__synchronousCallBackIndex] =3D null;
+        }
+        __synchronousCallBackIndex =3D callbackIndex;
+    }
+    if (setRequestHeaderMethodExists) {
+        xmlRequest.onreadystatechange =3D WebForm_CallbackComplete;
+        callback.xmlRequest =3D xmlRequest;
+        xmlRequest.open("POST", theForm.action, true);
+        xmlRequest.setRequestHeader("Content-Type", =
+"application/x-www-form-urlencoded");
+        xmlRequest.send(postData);
+        return;
+    }
+    callback.xmlRequest =3D new Object();
+    var callbackFrameID =3D "__CALLBACKFRAME" + callbackIndex;
+    var xmlRequestFrame =3D document.frames[callbackFrameID];
+    if (!xmlRequestFrame) {
+        xmlRequestFrame =3D document.createElement("IFRAME");
+        xmlRequestFrame.width =3D "1";
+        xmlRequestFrame.height =3D "1";
+        xmlRequestFrame.frameBorder =3D "0";
+        xmlRequestFrame.id =3D callbackFrameID;
+        xmlRequestFrame.name =3D callbackFrameID;
+        xmlRequestFrame.style.position =3D "absolute";
+        xmlRequestFrame.style.top =3D "-100px"
+        xmlRequestFrame.style.left =3D "-100px";
+        try {
+            if (callBackFrameUrl) {
+                xmlRequestFrame.src =3D callBackFrameUrl;
+            }
+        }
+        catch(e) {}
+        document.body.appendChild(xmlRequestFrame);
+    }
+    var interval =3D window.setInterval(function() {
+        xmlRequestFrame =3D document.frames[callbackFrameID];
+        if (xmlRequestFrame && xmlRequestFrame.document) {
+            window.clearInterval(interval);
+            xmlRequestFrame.document.write("");
+            xmlRequestFrame.document.close();
+            xmlRequestFrame.document.write('<html><body><form =
+method=3D"post"><input type=3D"hidden" name=3D"__CALLBACKLOADSCRIPT" =
+value=3D"t"></form></body></html>');
+            xmlRequestFrame.document.close();
+            xmlRequestFrame.document.forms[0].action =3D theForm.action;
+            var count =3D __theFormPostCollection.length;
+            var element;
+            for (var i =3D 0; i < count; i++) {
+                element =3D __theFormPostCollection[i];
+                if (element) {
+                    var fieldElement =3D =
+xmlRequestFrame.document.createElement("INPUT");
+                    fieldElement.type =3D "hidden";
+                    fieldElement.name =3D element.name;
+                    fieldElement.value =3D element.value;
+                    =
+xmlRequestFrame.document.forms[0].appendChild(fieldElement);
+                }
+            }
+            var callbackIdFieldElement =3D =
+xmlRequestFrame.document.createElement("INPUT");
+            callbackIdFieldElement.type =3D "hidden";
+            callbackIdFieldElement.name =3D "__CALLBACKID";
+            callbackIdFieldElement.value =3D eventTarget;
+            =
+xmlRequestFrame.document.forms[0].appendChild(callbackIdFieldElement);
+            var callbackParamFieldElement =3D =
+xmlRequestFrame.document.createElement("INPUT");
+            callbackParamFieldElement.type =3D "hidden";
+            callbackParamFieldElement.name =3D "__CALLBACKPARAM";
+            callbackParamFieldElement.value =3D eventArgument;
+            =
+xmlRequestFrame.document.forms[0].appendChild(callbackParamFieldElement);=
+
+            if (theForm["__EVENTVALIDATION"]) {
+                var callbackValidationFieldElement =3D =
+xmlRequestFrame.document.createElement("INPUT");
+                callbackValidationFieldElement.type =3D "hidden";
+                callbackValidationFieldElement.name =3D =
+"__EVENTVALIDATION";
+                callbackValidationFieldElement.value =3D =
+theForm["__EVENTVALIDATION"].value;
+                =
+xmlRequestFrame.document.forms[0].appendChild(callbackValidationFieldElem=
+ent);
+            }
+            var callbackIndexFieldElement =3D =
+xmlRequestFrame.document.createElement("INPUT");
+            callbackIndexFieldElement.type =3D "hidden";
+            callbackIndexFieldElement.name =3D "__CALLBACKINDEX";
+            callbackIndexFieldElement.value =3D callbackIndex;
+            =
+xmlRequestFrame.document.forms[0].appendChild(callbackIndexFieldElement);=
+
+            xmlRequestFrame.document.forms[0].submit();
+        }
+    }, 10);
+}
+function WebForm_CallbackComplete() {
+    for (i =3D 0; i < __pendingCallbacks.length; i++) {
+        callbackObject =3D __pendingCallbacks[i];
+        if (callbackObject && callbackObject.xmlRequest && =
+(callbackObject.xmlRequest.readyState =3D=3D 4)) {
+            WebForm_ExecuteCallback(callbackObject);
+            if (!__pendingCallbacks[i].async) {
+                __synchronousCallBackIndex =3D -1;
+            }
+            __pendingCallbacks[i] =3D null;
+            var callbackFrameID =3D "__CALLBACKFRAME" + i;
+            var xmlRequestFrame =3D =
+document.getElementById(callbackFrameID);
+            if (xmlRequestFrame) {
+                xmlRequestFrame.parentNode.removeChild(xmlRequestFrame);
+            }
+        }
+    }
+}
+function WebForm_ExecuteCallback(callbackObject) {
+    var response =3D callbackObject.xmlRequest.responseText;
+    if (response.charAt(0) =3D=3D "s") {
+        if ((typeof(callbackObject.eventCallback) !=3D "undefined") && =
+(callbackObject.eventCallback !=3D null)) {
+            callbackObject.eventCallback(response.substring(1), =
+callbackObject.context);
+        }
+    }
+    else if (response.charAt(0) =3D=3D "e") {
+        if ((typeof(callbackObject.errorCallback) !=3D "undefined") && =
+(callbackObject.errorCallback !=3D null)) {
+            callbackObject.errorCallback(response.substring(1), =
+callbackObject.context);
+        }
+    }
+    else {
+        var separatorIndex =3D response.indexOf("|");
+        if (separatorIndex !=3D -1) {
+            var validationFieldLength =3D parseInt(response.substring(0, =
+separatorIndex));
+            if (!isNaN(validationFieldLength)) {
+                var validationField =3D =
+response.substring(separatorIndex + 1, separatorIndex + =
+validationFieldLength + 1);
+                if (validationField !=3D "") {
+                    var validationFieldElement =3D =
+theForm["__EVENTVALIDATION"];
+                    if (!validationFieldElement) {
+                        validationFieldElement =3D =
+document.createElement("INPUT");
+                        validationFieldElement.type =3D "hidden";
+                        validationFieldElement.name =3D =
+"__EVENTVALIDATION";
+                        theForm.appendChild(validationFieldElement);
+                    }
+                    validationFieldElement.value =3D validationField;
+                }
+                if ((typeof(callbackObject.eventCallback) !=3D =
+"undefined") && (callbackObject.eventCallback !=3D null)) {
+                    =
+callbackObject.eventCallback(response.substring(separatorIndex + =
+validationFieldLength + 1), callbackObject.context);
+                }
+            }
+        }
+    }
+}
+function WebForm_FillFirstAvailableSlot(array, element) {
+    var i;
+    for (i =3D 0; i < array.length; i++) {
+        if (!array[i]) break;
+    }
+    array[i] =3D element;
+    return i;
+}
+var __nonMSDOMBrowser =3D =
+(window.navigator.appName.toLowerCase().indexOf('explorer') =3D=3D -1);
+var __theFormPostData =3D "";
+var __theFormPostCollection =3D new Array();
+function WebForm_InitCallback() {
+    var count =3D theForm.elements.length;
+    var element;
+    for (var i =3D 0; i < count; i++) {
+        element =3D theForm.elements[i];
+        var tagName =3D element.tagName.toLowerCase();
+        if (tagName =3D=3D "input") {
+            var type =3D element.type;
+            if ((type =3D=3D "text" || type =3D=3D "hidden" || type =
+=3D=3D "password" ||
+                ((type =3D=3D "checkbox" || type =3D=3D "radio") && =
+element.checked)) &&
+                (element.id !=3D "__EVENTVALIDATION")) {
+                WebForm_InitCallbackAddField(element.name, =
+element.value);
+            }
+        }
+        else if (tagName =3D=3D "select") {
+            var selectCount =3D element.options.length;
+            for (var j =3D 0; j < selectCount; j++) {
+                var selectChild =3D element.options[j];
+                if (selectChild.selected =3D=3D true) {
+                    WebForm_InitCallbackAddField(element.name, =
+element.value);
+                }
+            }
+        }
+        else if (tagName =3D=3D "textarea") {
+            WebForm_InitCallbackAddField(element.name, element.value);
+        }
+    }
+}
+function WebForm_InitCallbackAddField(name, value) {
+    var nameValue =3D new Object();
+    nameValue.name =3D name;
+    nameValue.value =3D value;
+    __theFormPostCollection[__theFormPostCollection.length] =3D =
+nameValue;
+    __theFormPostData +=3D name + "=3D" + WebForm_EncodeCallback(value) =
++ "&";
+}
+function WebForm_EncodeCallback(parameter) {
+    if (encodeURIComponent) {
+        return encodeURIComponent(parameter);
+    }
+    else {
+        return escape(parameter);
+    }
+}
+var __disabledControlArray =3D new Array();
+function WebForm_ReEnableControls() {
+    if (typeof(__enabledControlArray) =3D=3D 'undefined') {
+        return false;
+    }
+    var disabledIndex =3D 0;
+    for (var i =3D 0; i < __enabledControlArray.length; i++) {
+        var c;
+        if (__nonMSDOMBrowser) {
+            c =3D document.getElementById(__enabledControlArray[i]);
+        }
+        else {
+            c =3D document.all[__enabledControlArray[i]];
+        }
+        if ((typeof(c) !=3D "undefined") && (c !=3D null) && (c.disabled =
+=3D=3D true)) {
+            c.disabled =3D false;
+            __disabledControlArray[disabledIndex++] =3D c;
+        }
+    }
+    setTimeout("WebForm_ReDisableControls()", 0);
+    return true;
+}
+function WebForm_ReDisableControls() {
+    for (var i =3D 0; i < __disabledControlArray.length; i++) {
+        __disabledControlArray[i].disabled =3D true;
+    }
+}
+function WebForm_FireDefaultButton(event, target) {
+        if (event.keyCode =3D=3D 13 && !(event.srcElement && =
+(event.srcElement.tagName.toLowerCase() =3D=3D "textarea"))) {
+        var defaultButton;
+        if (__nonMSDOMBrowser) {
+            defaultButton =3D document.getElementById(target);
+        }
+        else {
+            defaultButton =3D document.all[target];
+        }
+        if (defaultButton && typeof(defaultButton.click) !=3D =
+"undefined") {
+            defaultButton.click();
+            event.cancelBubble =3D true;
+            if (event.stopPropagation) event.stopPropagation();
+            return false;
+        }
+    }
+    return true;
+}
+function WebForm_GetScrollX() {
+    if (__nonMSDOMBrowser) {
+        return window.pageXOffset;
+    }
+    else {
+        if (document.documentElement && =
+document.documentElement.scrollLeft) {
+            return document.documentElement.scrollLeft;
+        }
+        else if (document.body) {
+            return document.body.scrollLeft;
+        }
+    }
+    return 0;
+}
+function WebForm_GetScrollY() {
+    if (__nonMSDOMBrowser) {
+        return window.pageYOffset;
+    }
+    else {
+        if (document.documentElement && =
+document.documentElement.scrollTop) {
+            return document.documentElement.scrollTop;
+        }
+        else if (document.body) {
+            return document.body.scrollTop;
+        }
+    }
+    return 0;
+}
+function WebForm_SaveScrollPositionSubmit() {
+    if (__nonMSDOMBrowser) {
+        theForm.elements['__SCROLLPOSITIONY'].value =3D =
+window.pageYOffset;
+        theForm.elements['__SCROLLPOSITIONX'].value =3D =
+window.pageXOffset;
+    }
+    else {
+        theForm.__SCROLLPOSITIONX.value =3D WebForm_GetScrollX();
+        theForm.__SCROLLPOSITIONY.value =3D WebForm_GetScrollY();
+    }
+    if ((typeof(this.oldSubmit) !=3D "undefined") && (this.oldSubmit =
+!=3D null)) {
+        return this.oldSubmit();
+    }
+    return true;
+}
+function WebForm_SaveScrollPositionOnSubmit() {
+    theForm.__SCROLLPOSITIONX.value =3D WebForm_GetScrollX();
+    theForm.__SCROLLPOSITIONY.value =3D WebForm_GetScrollY();
+    if ((typeof(this.oldOnSubmit) !=3D "undefined") && (this.oldOnSubmit =
+!=3D null)) {
+        return this.oldOnSubmit();
+    }
+    return true;
+}
+function WebForm_RestoreScrollPosition() {
+    if (__nonMSDOMBrowser) {
+        window.scrollTo(theForm.elements['__SCROLLPOSITIONX'].value, =
+theForm.elements['__SCROLLPOSITIONY'].value);
+    }
+    else {
+        window.scrollTo(theForm.__SCROLLPOSITIONX.value, =
+theForm.__SCROLLPOSITIONY.value);
+    }
+    if ((typeof(theForm.oldOnLoad) !=3D "undefined") && =
+(theForm.oldOnLoad !=3D null)) {
+        return theForm.oldOnLoad();
+    }
+    return true;
+}
+function WebForm_TextBoxKeyHandler(event) {
+    if (event.keyCode =3D=3D 13) {
+        var target;
+        if (__nonMSDOMBrowser) {
+            target =3D event.target;
+        }
+        else {
+            target =3D event.srcElement;
+        }
+        if ((typeof(target) !=3D "undefined") && (target !=3D null)) {
+            if (typeof(target.onchange) !=3D "undefined") {
+                target.onchange();
+                event.cancelBubble =3D true;
+                if (event.stopPropagation) event.stopPropagation();
+                return false;
+            }
+        }
+    }
+    return true;
+}
+function WebForm_AppendToClassName(element, className) {
+    var current =3D element.className;
+    if (current) {
+        if (current.charAt(current.length - 1) !=3D ' ') {
+            current +=3D ' ';
+        }
+        current +=3D className;
+    }
+    else {
+        current =3D className;
+    }
+    element.className =3D current;
+}
+function WebForm_RemoveClassName(element, className) {
+    var current =3D element.className;
+    if (current) {
+        if (current.substring(current.length - className.length - 1, =
+current.length) =3D=3D ' ' + className) {
+            element.className =3D current.substring(0, current.length - =
+className.length - 1);
+            return;
+        }
+        if (current =3D=3D className) {
+            element.className =3D "";
+            return;
+        }
+        var index =3D current.indexOf(' ' + className + ' ');
+        if (index !=3D -1) {
+            element.className =3D current.substring(0, index) + =
+current.substring(index + className.length + 2, current.length);
+            return;
+        }
+        if (current.substring(0, className.length) =3D=3D className + ' =
+') {
+            element.className =3D current.substring(className.length + =
+1, current.length);
+        }
+    }
+}
+function WebForm_GetElementById(elementId) {
+    if (document.getElementById) {
+        return document.getElementById(elementId);
+    }
+    else if (document.all) {
+        return document.all[elementId];
+    }
+    else return null;
+}
+function WebForm_GetElementByTagName(element, tagName) {
+    var elements =3D WebForm_GetElementsByTagName(element, tagName);
+    if (elements && elements.length > 0) {
+        return elements[0];
+    }
+    else return null;
+}
+function WebForm_GetElementsByTagName(element, tagName) {
+    if (element && tagName) {
+        if (element.getElementsByTagName) {
+            return element.getElementsByTagName(tagName);
+        }
+        if (element.all && element.all.tags) {
+            return element.all.tags(tagName);
+        }
+    }
+    return null;
+}
+function WebForm_GetElementDir(element) {
+    if (element) {
+        if (element.dir) {
+            return element.dir;
+        }
+        return WebForm_GetElementDir(element.parentNode);
+    }
+    return "ltr";
+}
+function WebForm_GetElementPosition(element) {
+    var result =3D new Object();
+    result.x =3D 0;
+    result.y =3D 0;
+    result.width =3D 0;
+    result.height =3D 0;
+    if (element.offsetParent) {
+        result.x =3D element.offsetLeft;
+        result.y =3D element.offsetTop;
+        var parent =3D element.offsetParent;
+        while (parent) {
+            result.x +=3D parent.offsetLeft;
+            result.y +=3D parent.offsetTop;
+            var parentTagName =3D parent.tagName.toLowerCase();
+            if (parentTagName !=3D "table" &&
+                parentTagName !=3D "body" &&=20
+                parentTagName !=3D "html" &&=20
+                parentTagName !=3D "div" &&=20
+                parent.clientTop &&=20
+                parent.clientLeft) {
+                result.x +=3D parent.clientLeft;
+                result.y +=3D parent.clientTop;
+            }
+            parent =3D parent.offsetParent;
+        }
+    }
+    else if (element.left && element.top) {
+        result.x =3D element.left;
+        result.y =3D element.top;
+    }
+    else {
+        if (element.x) {
+            result.x =3D element.x;
+        }
+        if (element.y) {
+            result.y =3D element.y;
+        }
+    }
+    if (element.offsetWidth && element.offsetHeight) {
+        result.width =3D element.offsetWidth;
+        result.height =3D element.offsetHeight;
+    }
+    else if (element.style && element.style.pixelWidth && =
+element.style.pixelHeight) {
+        result.width =3D element.style.pixelWidth;
+        result.height =3D element.style.pixelHeight;
+    }
+    return result;
+}
+function WebForm_GetParentByTagName(element, tagName) {
+    var parent =3D element.parentNode;
+    var upperTagName =3D tagName.toUpperCase();
+    while (parent && (parent.tagName.toUpperCase() !=3D upperTagName)) {
+        parent =3D parent.parentNode ? parent.parentNode : =
+parent.parentElement;
+    }
+    return parent;
+}
+function WebForm_SetElementHeight(element, height) {
+    if (element && element.style) {
+        element.style.height =3D height + "px";
+    }
+}
+function WebForm_SetElementWidth(element, width) {
+    if (element && element.style) {
+        element.style.width =3D width + "px";
+    }
+}
+function WebForm_SetElementX(element, x) {
+    if (element && element.style) {
+        element.style.left =3D x + "px";
+    }
+}
+function WebForm_SetElementY(element, y) {
+    if (element && element.style) {
+        element.style.top =3D y + "px";
+    }
+}
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://blogs.msdn.com/WebResource.axd?d=aODu1aEDazIpJC_uB8eMivJCBZ9SB9nLmXrKL9rUOsM1&t=633229024676498808
+
+var Page_ValidationVer =3D "125";
+var Page_IsValid =3D true;
+var Page_BlockSubmit =3D false;
+var Page_InvalidControlToBeFocused =3D null;
+function ValidatorUpdateDisplay(val) {
+    if (typeof(val.display) =3D=3D "string") {
+        if (val.display =3D=3D "None") {
+            return;
+        }
+        if (val.display =3D=3D "Dynamic") {
+            val.style.display =3D val.isvalid ? "none" : "inline";
+            return;
+        }
+    }
+    if ((navigator.userAgent.indexOf("Mac") > -1) &&
+        (navigator.userAgent.indexOf("MSIE") > -1)) {
+        val.style.display =3D "inline";
+    }
+    val.style.visibility =3D val.isvalid ? "hidden" : "visible";
+}
+function ValidatorUpdateIsValid() {
+    Page_IsValid =3D AllValidatorsValid(Page_Validators);
+}
+function AllValidatorsValid(validators) {
+    if ((typeof(validators) !=3D "undefined") && (validators !=3D null)) =
+{
+        var i;
+        for (i =3D 0; i < validators.length; i++) {
+            if (!validators[i].isvalid) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+function ValidatorHookupControlID(controlID, val) {
+    if (typeof(controlID) !=3D "string") {
+        return;
+    }
+    var ctrl =3D document.getElementById(controlID);
+    if ((typeof(ctrl) !=3D "undefined") && (ctrl !=3D null)) {
+        ValidatorHookupControl(ctrl, val);
+    }
+    else {
+        val.isvalid =3D true;
+        val.enabled =3D false;
+    }
+}
+function ValidatorHookupControl(control, val) {
+    if (typeof(control.tagName) !=3D "string") {
+        return; =20
+    }
+    if (control.tagName !=3D "INPUT" && control.tagName !=3D "TEXTAREA" =
+&& control.tagName !=3D "SELECT") {
+        var i;
+        for (i =3D 0; i < control.childNodes.length; i++) {
+            ValidatorHookupControl(control.childNodes[i], val);
+        }
+        return;
+    }
+    else {
+        if (typeof(control.Validators) =3D=3D "undefined") {
+            control.Validators =3D new Array;
+            var eventType;
+            if (control.type =3D=3D "radio") {
+                eventType =3D "onclick";
+            } else {
+                eventType =3D "onchange";
+                if (typeof(val.focusOnError) =3D=3D "string" && =
+val.focusOnError =3D=3D "t") {
+                    ValidatorHookupEvent(control, "onblur", =
+"ValidatedControlOnBlur(event); ");
+                }
+            }
+            ValidatorHookupEvent(control, eventType, =
+"ValidatorOnChange(event); ");
+            if (control.type =3D=3D "text" ||
+                control.type =3D=3D "password" ||
+                control.type =3D=3D "file") {
+                ValidatorHookupEvent(control, "onkeypress",=20
+                    "if (!ValidatedTextBoxOnKeyPress(event)) { =
+event.cancelBubble =3D true; if (event.stopPropagation) =
+event.stopPropagation(); return false; } ");
+            }
+        }
+        control.Validators[control.Validators.length] =3D val;
+    }
+}
+function ValidatorHookupEvent(control, eventType, functionPrefix) {
+    var ev;
+    eval("ev =3D control." + eventType + ";");
+    if (typeof(ev) =3D=3D "function") {
+        ev =3D ev.toString();
+        ev =3D ev.substring(ev.indexOf("{") + 1, ev.lastIndexOf("}"));
+    }
+    else {
+        ev =3D "";
+    }
+    var func;
+    if (navigator.appName.toLowerCase().indexOf('explorer') > -1) {
+        func =3D new Function(functionPrefix + " " + ev);
+    }
+    else {
+        func =3D new Function("event", functionPrefix + " " + ev);
+    }
+    eval("control." + eventType + " =3D func;");
+}
+function ValidatorGetValue(id) {
+    var control;
+    control =3D document.getElementById(id);
+    if (typeof(control.value) =3D=3D "string") {
+        return control.value;
+    }
+    return ValidatorGetValueRecursive(control);
+}
+function ValidatorGetValueRecursive(control)
+{
+    if (typeof(control.value) =3D=3D "string" && (control.type !=3D =
+"radio" || control.checked =3D=3D true)) {
+        return control.value;
+    }
+    var i, val;
+    for (i =3D 0; i<control.childNodes.length; i++) {
+        val =3D ValidatorGetValueRecursive(control.childNodes[i]);
+        if (val !=3D "") return val;
+    }
+    return "";
+}
+function Page_ClientValidate(validationGroup) {
+    Page_InvalidControlToBeFocused =3D null;
+    if (typeof(Page_Validators) =3D=3D "undefined") {
+        return true;
+    }
+    var i;
+    for (i =3D 0; i < Page_Validators.length; i++) {
+        ValidatorValidate(Page_Validators[i], validationGroup, null);
+    }
+    ValidatorUpdateIsValid();
+    ValidationSummaryOnSubmit(validationGroup);
+    Page_BlockSubmit =3D !Page_IsValid;
+    return Page_IsValid;
+}
+function ValidatorCommonOnSubmit() {
+    Page_InvalidControlToBeFocused =3D null;
+    var result =3D !Page_BlockSubmit;
+    if ((typeof(window.event) !=3D "undefined") && (window.event !=3D =
+null)) {
+        window.event.returnValue =3D result;
+    }
+    Page_BlockSubmit =3D false;
+    return result;
+}
+function ValidatorEnable(val, enable) {
+    val.enabled =3D (enable !=3D false);
+    ValidatorValidate(val);
+    ValidatorUpdateIsValid();
+}
+function ValidatorOnChange(event) {
+    if (!event) {
+        event =3D window.event;
+    }
+    Page_InvalidControlToBeFocused =3D null;
+    var targetedControl;
+    if ((typeof(event.srcElement) !=3D "undefined") && (event.srcElement =
+!=3D null)) {
+        targetedControl =3D event.srcElement;
+    }
+    else {
+        targetedControl =3D event.target;
+    }
+    var vals;
+    if (typeof(targetedControl.Validators) !=3D "undefined") {
+        vals =3D targetedControl.Validators;
+    }
+    else {
+        if (targetedControl.tagName.toLowerCase() =3D=3D "label") {
+            targetedControl =3D =
+document.getElementById(targetedControl.htmlFor);
+            vals =3D targetedControl.Validators;
+        }
+    }
+    var i;
+    for (i =3D 0; i < vals.length; i++) {
+        ValidatorValidate(vals[i], null, event);
+    }
+    ValidatorUpdateIsValid();
+}
+function ValidatedTextBoxOnKeyPress(event) {
+    if (event.keyCode =3D=3D 13) {
+        ValidatorOnChange(event);
+        var vals;
+        if ((typeof(event.srcElement) !=3D "undefined") && =
+(event.srcElement !=3D null)) {
+            vals =3D event.srcElement.Validators;
+        }
+        else {
+            vals =3D event.target.Validators;
+        }
+        return AllValidatorsValid(vals);
+    }
+    return true;
+}
+function ValidatedControlOnBlur(event) {
+    var control;
+    if ((typeof(event.srcElement) !=3D "undefined") && (event.srcElement =
+!=3D null)) {
+        control =3D event.srcElement;
+    }
+    else {
+        control =3D event.target;
+    }
+    if ((typeof(control) !=3D "undefined") && (control !=3D null) && =
+(Page_InvalidControlToBeFocused =3D=3D control)) {
+        control.focus();
+        Page_InvalidControlToBeFocused =3D null;
+    }
+}
+function ValidatorValidate(val, validationGroup, event) {
+    val.isvalid =3D true;
+    if ((typeof(val.enabled) =3D=3D "undefined" || val.enabled !=3D =
+false) && IsValidationGroupMatch(val, validationGroup)) {
+        if (typeof(val.evaluationfunction) =3D=3D "function") {
+            val.isvalid =3D val.evaluationfunction(val);
+            if (!val.isvalid && Page_InvalidControlToBeFocused =3D=3D =
+null &&
+                typeof(val.focusOnError) =3D=3D "string" && =
+val.focusOnError =3D=3D "t") {
+                ValidatorSetFocus(val, event);
+            }
+        }
+    }
+    ValidatorUpdateDisplay(val);
+}
+function ValidatorSetFocus(val, event) {
+    var ctrl;
+    if (typeof(val.controlhookup) =3D=3D "string") {
+        var eventCtrl;
+        if ((typeof(event) !=3D "undefined") && (event !=3D null)) {
+            if ((typeof(event.srcElement) !=3D "undefined") && =
+(event.srcElement !=3D null)) {
+                eventCtrl =3D event.srcElement;
+            }
+            else {
+                eventCtrl =3D event.target;
+            }
+        }
+        if ((typeof(eventCtrl) !=3D "undefined") && (eventCtrl !=3D =
+null) &&
+            (typeof(eventCtrl.id) =3D=3D "string") &&
+            (eventCtrl.id =3D=3D val.controlhookup)) {
+            ctrl =3D eventCtrl;
+        }
+    }
+    if ((typeof(ctrl) =3D=3D "undefined") || (ctrl =3D=3D null)) {
+        ctrl =3D document.getElementById(val.controltovalidate);
+    }
+    if ((typeof(ctrl) !=3D "undefined") && (ctrl !=3D null) &&
+        (ctrl.tagName.toLowerCase() !=3D "table" || (typeof(event) =
+=3D=3D "undefined") || (event =3D=3D null)) &&=20
+        ((ctrl.tagName.toLowerCase() !=3D "input") || =
+(ctrl.type.toLowerCase() !=3D "hidden")) &&
+        (typeof(ctrl.disabled) =3D=3D "undefined" || ctrl.disabled =
+=3D=3D null || ctrl.disabled =3D=3D false) &&
+        (typeof(ctrl.visible) =3D=3D "undefined" || ctrl.visible =3D=3D =
+null || ctrl.visible !=3D false) &&
+        (IsInVisibleContainer(ctrl))) {
+        if (ctrl.tagName.toLowerCase() =3D=3D "table" &&
+            (typeof(__nonMSDOMBrowser) =3D=3D "undefined" || =
+__nonMSDOMBrowser)) {
+            var inputElements =3D ctrl.getElementsByTagName("input");
+            var lastInputElement  =3D inputElements[inputElements.length =
+-1];
+            if (lastInputElement !=3D null) {
+                ctrl =3D lastInputElement;
+            }
+        }
+        if (typeof(ctrl.focus) !=3D "undefined" && ctrl.focus !=3D null) =
+{
+            ctrl.focus();
+            Page_InvalidControlToBeFocused =3D ctrl;
+        }
+    }
+}
+function IsInVisibleContainer(ctrl) {
+    if (typeof(ctrl.style) !=3D "undefined" &&
+        ( ( typeof(ctrl.style.display) !=3D "undefined" &&
+            ctrl.style.display =3D=3D "none") ||
+          ( typeof(ctrl.style.visibility) !=3D "undefined" &&
+            ctrl.style.visibility =3D=3D "hidden") ) ) {
+        return false;
+    }
+    else if (typeof(ctrl.parentNode) !=3D "undefined" &&
+             ctrl.parentNode !=3D null &&
+             ctrl.parentNode !=3D ctrl) {
+        return IsInVisibleContainer(ctrl.parentNode);
+    }
+    return true;
+}
+function IsValidationGroupMatch(control, validationGroup) {
+    if ((typeof(validationGroup) =3D=3D "undefined") || (validationGroup =
+=3D=3D null)) {
+        return true;
+    }
+    var controlGroup =3D "";
+    if (typeof(control.validationGroup) =3D=3D "string") {
+        controlGroup =3D control.validationGroup;
+    }
+    return (controlGroup =3D=3D validationGroup);
+}
+function ValidatorOnLoad() {
+    if (typeof(Page_Validators) =3D=3D "undefined")
+        return;
+    var i, val;
+    for (i =3D 0; i < Page_Validators.length; i++) {
+        val =3D Page_Validators[i];
+        if (typeof(val.evaluationfunction) =3D=3D "string") {
+            eval("val.evaluationfunction =3D " + val.evaluationfunction =
++ ";");
+        }
+        if (typeof(val.isvalid) =3D=3D "string") {
+            if (val.isvalid =3D=3D "False") {
+                val.isvalid =3D false;
+                Page_IsValid =3D false;
+            }
+            else {
+                val.isvalid =3D true;
+            }
+        } else {
+            val.isvalid =3D true;
+        }
+        if (typeof(val.enabled) =3D=3D "string") {
+            val.enabled =3D (val.enabled !=3D "False");
+        }
+        if (typeof(val.controltovalidate) =3D=3D "string") {
+            ValidatorHookupControlID(val.controltovalidate, val);
+        }
+        if (typeof(val.controlhookup) =3D=3D "string") {
+            ValidatorHookupControlID(val.controlhookup, val);
+        }
+    }
+    Page_ValidationActive =3D true;
+}
+function ValidatorConvert(op, dataType, val) {
+    function GetFullYear(year) {
+        var twoDigitCutoffYear =3D val.cutoffyear % 100;
+        var cutoffYearCentury =3D val.cutoffyear - twoDigitCutoffYear;
+        return ((year > twoDigitCutoffYear) ? (cutoffYearCentury - 100 + =
+year) : (cutoffYearCentury + year));
+    }
+    var num, cleanInput, m, exp;
+    if (dataType =3D=3D "Integer") {
+        exp =3D /^\s*[-\+]?\d+\s*$/;
+        if (op.match(exp) =3D=3D null)
+            return null;
+        num =3D parseInt(op, 10);
+        return (isNaN(num) ? null : num);
+    }
+    else if(dataType =3D=3D "Double") {
+        exp =3D new RegExp("^\\s*([-\\+])?(\\d*)\\" + val.decimalchar + =
+"?(\\d*)\\s*$");
+        m =3D op.match(exp);
+        if (m =3D=3D null)
+            return null;
+        if (m[2].length =3D=3D 0 && m[3].length =3D=3D 0)
+            return null;
+        cleanInput =3D (m[1] !=3D null ? m[1] : "") + (m[2].length>0 ? =
+m[2] : "0") + (m[3].length>0 ? "." + m[3] : "");
+        num =3D parseFloat(cleanInput);
+        return (isNaN(num) ? null : num);
+    }
+    else if (dataType =3D=3D "Currency") {
+        var hasDigits =3D (val.digits > 0);
+        var beginGroupSize, subsequentGroupSize;
+        var groupSizeNum =3D parseInt(val.groupsize, 10);
+        if (!isNaN(groupSizeNum) && groupSizeNum > 0) {
+            beginGroupSize =3D "{1," + groupSizeNum + "}";
+            subsequentGroupSize =3D "{" + groupSizeNum + "}";
+        }
+        else {
+            beginGroupSize =3D subsequentGroupSize =3D "+";
+        }
+        exp =3D new RegExp("^\\s*([-\\+])?((\\d" + beginGroupSize + =
+"(\\" + val.groupchar + "\\d" + subsequentGroupSize + ")+)|\\d*)"
+                        + (hasDigits ? "\\" + val.decimalchar + =
+"?(\\d{0," + val.digits + "})" : "")
+                        + "\\s*$");
+        m =3D op.match(exp);
+        if (m =3D=3D null)
+            return null;
+        if (m[2].length =3D=3D 0 && hasDigits && m[5].length =3D=3D 0)
+            return null;
+        cleanInput =3D (m[1] !=3D null ? m[1] : "") + m[2].replace(new =
+RegExp("(\\" + val.groupchar + ")", "g"), "") + ((hasDigits && =
+m[5].length > 0) ? "." + m[5] : "");
+        num =3D parseFloat(cleanInput);
+        return (isNaN(num) ? null : num);
+    }
+    else if (dataType =3D=3D "Date") {
+        var yearFirstExp =3D new =
+RegExp("^\\s*((\\d{4})|(\\d{2}))([-/]|\\. =
+?)(\\d{1,2})\\4(\\d{1,2})\\s*$");
+        m =3D op.match(yearFirstExp);
+        var day, month, year;
+        if (m !=3D null && (m[2].length =3D=3D 4 || val.dateorder =3D=3D =
+"ymd")) {
+            day =3D m[6];
+            month =3D m[5];
+            year =3D (m[2].length =3D=3D 4) ? m[2] : =
+GetFullYear(parseInt(m[3], 10))
+        }
+        else {
+            if (val.dateorder =3D=3D "ymd"){
+                return null;
+            }
+            var yearLastExp =3D new RegExp("^\\s*(\\d{1,2})([-/]|\\. =
+?)(\\d{1,2})\\2((\\d{4})|(\\d{2}))\\s*$");
+            m =3D op.match(yearLastExp);
+            if (m =3D=3D null) {
+                return null;
+            }
+            if (val.dateorder =3D=3D "mdy") {
+                day =3D m[3];
+                month =3D m[1];
+            }
+            else {
+                day =3D m[1];
+                month =3D m[3];
+            }
+            year =3D (m[5].length =3D=3D 4) ? m[5] : =
+GetFullYear(parseInt(m[6], 10))
+        }
+        month -=3D 1;
+        var date =3D new Date(year, month, day);
+        if (year < 100) {
+            date.setFullYear(year);
+        }
+        return (typeof(date) =3D=3D "object" && year =3D=3D =
+date.getFullYear() && month =3D=3D date.getMonth() && day =3D=3D =
+date.getDate()) ? date.valueOf() : null;
+    }
+    else {
+        return op.toString();
+    }
+}
+function ValidatorCompare(operand1, operand2, operator, val) {
+    var dataType =3D val.type;
+    var op1, op2;
+    if ((op1 =3D ValidatorConvert(operand1, dataType, val)) =3D=3D null)
+        return false;
+    if (operator =3D=3D "DataTypeCheck")
+        return true;
+    if ((op2 =3D ValidatorConvert(operand2, dataType, val)) =3D=3D null)
+        return true;
+    switch (operator) {
+        case "NotEqual":
+            return (op1 !=3D op2);
+        case "GreaterThan":
+            return (op1 > op2);
+        case "GreaterThanEqual":
+            return (op1 >=3D op2);
+        case "LessThan":
+            return (op1 < op2);
+        case "LessThanEqual":
+            return (op1 <=3D op2);
+        default:
+            return (op1 =3D=3D op2);
+    }
+}
+function CompareValidatorEvaluateIsValid(val) {
+    var value =3D ValidatorGetValue(val.controltovalidate);
+    if (ValidatorTrim(value).length =3D=3D 0)
+        return true;
+    var compareTo =3D "";
+    if ((typeof(val.controltocompare) !=3D "string") ||
+        (typeof(document.getElementById(val.controltocompare)) =3D=3D =
+"undefined") ||
+        (null =3D=3D document.getElementById(val.controltocompare))) {
+        if (typeof(val.valuetocompare) =3D=3D "string") {
+            compareTo =3D val.valuetocompare;
+        }
+    }
+    else {
+        compareTo =3D ValidatorGetValue(val.controltocompare);
+    }
+    var operator =3D "Equal";
+    if (typeof(val.operator) =3D=3D "string") {
+        operator =3D val.operator;
+    }
+    return ValidatorCompare(value, compareTo, operator, val);
+}
+function CustomValidatorEvaluateIsValid(val) {
+    var value =3D "";
+    if (typeof(val.controltovalidate) =3D=3D "string") {
+        value =3D ValidatorGetValue(val.controltovalidate);
+        if ((ValidatorTrim(value).length =3D=3D 0) &&
+            ((typeof(val.validateemptytext) !=3D "string") || =
+(val.validateemptytext !=3D "true"))) {
+            return true;
+        }
+    }
+    var args =3D { Value:value, IsValid:true };
+    if (typeof(val.clientvalidationfunction) =3D=3D "string") {
+        eval(val.clientvalidationfunction + "(val, args) ;");
+    }
+    return args.IsValid;
+}
+function RegularExpressionValidatorEvaluateIsValid(val) {
+    var value =3D ValidatorGetValue(val.controltovalidate);
+    if (ValidatorTrim(value).length =3D=3D 0)
+        return true;
+    var rx =3D new RegExp(val.validationexpression);
+    var matches =3D rx.exec(value);
+    return (matches !=3D null && value =3D=3D matches[0]);
+}
+function ValidatorTrim(s) {
+    var m =3D s.match(/^\s*(\S+(\s+\S+)*)\s*$/);
+    return (m =3D=3D null) ? "" : m[1];
+}
+function RequiredFieldValidatorEvaluateIsValid(val) {
+    return (ValidatorTrim(ValidatorGetValue(val.controltovalidate)) !=3D =
+ValidatorTrim(val.initialvalue))
+}
+function RangeValidatorEvaluateIsValid(val) {
+    var value =3D ValidatorGetValue(val.controltovalidate);
+    if (ValidatorTrim(value).length =3D=3D 0)
+        return true;
+    return (ValidatorCompare(value, val.minimumvalue, =
+"GreaterThanEqual", val) &&
+            ValidatorCompare(value, val.maximumvalue, "LessThanEqual", =
+val));
+}
+function ValidationSummaryOnSubmit(validationGroup) {
+    if (typeof(Page_ValidationSummaries) =3D=3D "undefined")
+        return;
+    var summary, sums, s;
+    for (sums =3D 0; sums < Page_ValidationSummaries.length; sums++) {
+        summary =3D Page_ValidationSummaries[sums];
+        summary.style.display =3D "none";
+        if (!Page_IsValid && IsValidationGroupMatch(summary, =
+validationGroup)) {
+            var i;
+            if (summary.showsummary !=3D "False") {
+                summary.style.display =3D "";
+                if (typeof(summary.displaymode) !=3D "string") {
+                    summary.displaymode =3D "BulletList";
+                }
+                switch (summary.displaymode) {
+                    case "List":
+                        headerSep =3D "<br>";
+                        first =3D "";
+                        pre =3D "";
+                        post =3D "<br>";
+                        end =3D "";
+                        break;
+                    case "BulletList":
+                    default:
+                        headerSep =3D "";
+                        first =3D "<ul>";
+                        pre =3D "<li>";
+                        post =3D "</li>";
+                        end =3D "</ul>";
+                        break;
+                    case "SingleParagraph":
+                        headerSep =3D " ";
+                        first =3D "";
+                        pre =3D "";
+                        post =3D " ";
+                        end =3D "<br>";
+                        break;
+                }
+                s =3D "";
+                if (typeof(summary.headertext) =3D=3D "string") {
+                    s +=3D summary.headertext + headerSep;
+                }
+                s +=3D first;
+                for (i=3D0; i<Page_Validators.length; i++) {
+                    if (!Page_Validators[i].isvalid && =
+typeof(Page_Validators[i].errormessage) =3D=3D "string") {
+                        s +=3D pre + Page_Validators[i].errormessage + =
+post;
+                    }
+                }
+                s +=3D end;
+                summary.innerHTML =3D s;
+                window.scrollTo(0,0);
+            }
+            if (summary.showmessagebox =3D=3D "True") {
+                s =3D "";
+                if (typeof(summary.headertext) =3D=3D "string") {
+                    s +=3D summary.headertext + "\r\n";
+                }
+                var lastValIndex =3D Page_Validators.length - 1;
+                for (i=3D0; i<=3DlastValIndex; i++) {
+                    if (!Page_Validators[i].isvalid && =
+typeof(Page_Validators[i].errormessage) =3D=3D "string") {
+                        switch (summary.displaymode) {
+                            case "List":
+                                s +=3D Page_Validators[i].errormessage;
+                                if (i < lastValIndex) {
+                                    s +=3D "\r\n";
+                                }
+                                break;
+                            case "BulletList":
+                            default:
+                                s +=3D "- " + =
+Page_Validators[i].errormessage;
+                                if (i < lastValIndex) {
+                                    s +=3D "\r\n";
+                                }
+                                break;
+                            case "SingleParagraph":
+                                s +=3D Page_Validators[i].errormessage + =
+" ";
+                                break;
+                        }
+                    }
+                }
+                alert(s);
+            }
+        }
+    }
+}
+
+------=_NextPart_000_0000_01C85B7F.05E7CA30--

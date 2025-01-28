@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - WPF Ink and Graphics</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/05/280316.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/06/100712.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2006/06/020708.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>WPF Ink and Graphics</h2></a><p style="text-align: right;">June 2, 2006<br>Roscoe, NY</p><p>
+The aspect of Tablet PC programming that has always interested me the
+most is the intersection of ink and graphics. I barely care about
+handwriting recognition — Cousin Qwerty and I have been close friends
+ever since I took a typing course in Jr. High — but show me how to turn
+ink into a graphics object and I suddenly perk up.
+</p>
+<p>
+So, it was with great interest that I began exploring the <i>GetGeometry</i> method implemented in the <i>Stroke</i> class from the <i>System.Windows.Ink</i> namespace, which is the where you'll find many WPF tablet-specific classes.
+</p>
+<p>
+The <i>GetGeometry</i> method returns an object of type <i>Geometry</i>, which is the closest that WPF comes to pure analytic geometry. A <i>Geometry</i>
+object is just a collection of coordinate points, assembled in a series
+of connected and disconnected straight lines and curves. In the general
+case, a <i>Geometry</i> object is a graphics path, and the standard representation of a <i>Geometry</i> object in XAML is called the "PathGeometry Markup Syntax," which was once documented in the <i>Path.Data</i>
+property but now has its own section in the WPF tutorials. (In the May
+SDK documentation, it's located at WinFX Development/Windows
+Presentation Foundation/Graphics and
+Multimedia/Graphics/Geometries/Overviews/PathGeometry Markup Syntax.)
+</p>
+<p>
+What's most interesting about the <i>Geometry</i> object returned from the <i>Stroke.GetGeometry</i> method is that it represents <i>not</i> the straight lines and curves you drew with the stylus, but the <i>outline</i>
+of those straight lines and curves. This outline takes into account the
+shape and size of the stylus tip — and it can have different horizontal
+and vertical dimensions and be rotated for some calligraphic effects —
+and stylus pressure.
+</p>
+<p>
+How can we get some <i>Stroke</i> objects to try it out? The <i>InkCanvas</i> element is the highest-level approach to Tablet PC programming in the WPF. The <i>InkCanvas</i> retains and renders stylus input and also accepts mouse input, so you don't need a Tablet PC to use it. <i>InkCanvas</i> has several properties to select drawing modes and eraser modes, and stores ink as a <i>StrokeCollection</i>, which has built-in facilities to save and load ink in Ink Serialized Format.
+</p>
+<p>
+I wrote a little app called YellowPad, which doesn't do much more than demonstrate the standard features of <i>InkCanvas</i>.  (It's not even a pad; it's just one page of a pad.) You can install and run this program from the 
+<a href="http://www.charlespetzold.com/wpf"><i>Applications = Code + Markup</i></a> page of my Web site. All source code for the program will be in the book.
+</p>
+<p>
+The program also contains a feature based around the <i>Stroke.GetGeometry</i> method. The program allows saving the ink as a XAML <i>DrawingGroup</i> element. This <i>DrawingGroup</i> is a collection of <i>GeometryDrawing</i> objects, which are basically <i>Geometry</i> objects with brushes. The following code in the program converts the strokes into this file. (The <i>inkcanv</i> is an <i>InkCanvas</i> object of course, and <i>file</i> is of type <i>FileStream</i>.)
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+DrawingGroup&nbsp;drawgrp&nbsp;=&nbsp;new&nbsp;DrawingGroup();<br><br>foreach&nbsp;(Stroke&nbsp;strk&nbsp;in&nbsp;inkcanv.Strokes)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;clr&nbsp;=&nbsp;strk.DrawingAttributes.Color;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(strk.DrawingAttributes.IsHighlighter)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clr&nbsp;=&nbsp;Color.FromArgb(128,&nbsp;clr.R,&nbsp;clr.G,&nbsp;clr.B);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;drawgrp.Children.Add(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;GeometryDrawing(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;SolidColorBrush(clr),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;null,&nbsp;strk.GetGeometry()));<br>}<br>XamlWriter.Save(drawgrp,&nbsp;file);<br>
+</ul>
+<p>
+Notice that highlighter colors are made 50% transparent.
+</p>
+<p>
+So, once you have this <i>DrawingGroup</i> file, what can you do with it? Well, you can display it with <i>Image</i>. As you may know, <i>Image</i> is the the simplest way to display bitmaps in WPF programs, but its <i>Source</i> property is actually of type <i>ImageSource</i>, and one class that derives from <i>ImageSource</i> is <i>DrawingImage</i>, which you can easily make out of a <i>Drawing</i>.
+</p>
+<p>I used YellowPad to hand-write a copyright notice and then saved it
+as the file Signature.xaml. I made that file part of the YellowPad
+project in Visual Studio and gave it a build action of Resource. In the
+About box class, I loaded the resource and displayed it on the window
+with the following code (where <i>imgSignature</i> is an <i>Image</i> element defined in  XAML):
+</p>
+<ul style="font-family: monospace; font-weight: bold;">
+Uri&nbsp;uri&nbsp;=&nbsp;new&nbsp;Uri("pack://application:,,,/Images/Signature.xaml");<br>Stream&nbsp;stream&nbsp;=&nbsp;Application.GetResourceStream(uri).Stream;<br>Drawing&nbsp;drawing&nbsp;=&nbsp;(Drawing)XamlReader.Load(stream);<br>stream.Close();<br>imgSignature.Source&nbsp;=&nbsp;new&nbsp;DrawingImage(drawing);<br>
+</ul>
+<p>
+And that's how you can integrate saved stylus input with other WPF text and graphics. 
+</p>
+
+
+
+<div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2006/05/280316.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2006/06/100712.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

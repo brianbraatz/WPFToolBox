@@ -1,0 +1,96 @@
+﻿<Page
+	xmlns="http://schemas.microsoft.com/winfx/avalon/2005"
+	xmlns:x="http://schemas.microsoft.com/winfx/xaml/2005"
+	x:Name="RootPage"
+	WindowTitle="Page 1" x:Class="PageTransitions.Page1" >
+
+	<Page.Resources>
+		<ResourceDictionary>
+			<Storyboard x:Key="OnLoaded" FillBehavior="HoldEnd" BeginTime="{x:Null}" >
+				<ColorAnimationUsingKeyFrames FillBehavior="HoldEnd" BeginTime="00:00:00" Storyboard.TargetName="Grid1" Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
+					<ColorAnimationUsingKeyFrames.KeyFrames>
+						<ColorKeyFrameCollection>
+							<SplineColorKeyFrame  KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0, 0, 0" KeyTime="00:00:01"/>
+						</ColorKeyFrameCollection>
+					</ColorAnimationUsingKeyFrames.KeyFrames>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames FillBehavior="HoldEnd" BeginTime="00:00:00" Storyboard.TargetName="Grid1" Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+					<ColorAnimationUsingKeyFrames.KeyFrames>
+						<ColorKeyFrameCollection>
+							<SplineColorKeyFrame KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0, 0, 0" KeyTime="00:00:00"/>
+							<SplineColorKeyFrame  KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0.4036563, 0, 0" KeyTime="00:00:01"/>
+						</ColorKeyFrameCollection>
+					</ColorAnimationUsingKeyFrames.KeyFrames>
+				</ColorAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames FillBehavior="HoldEnd" BeginTime="00:00:00" Storyboard.TargetName="Button1" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+					<ColorAnimationUsingKeyFrames.KeyFrames>
+						<ColorKeyFrameCollection>
+							<SplineColorKeyFrame  KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0.142825842, 0, 0" KeyTime="00:00:01"/>
+						</ColorKeyFrameCollection>
+					</ColorAnimationUsingKeyFrames.KeyFrames>
+				</ColorAnimationUsingKeyFrames>
+				<DoubleAnimationUsingKeyFrames FillBehavior="HoldEnd" BeginTime="00:00:00" Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<DoubleAnimationUsingKeyFrames.KeyFrames>
+						<DoubleKeyFrameCollection>
+							<SplineDoubleKeyFrame  KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:01"/>
+						</DoubleKeyFrameCollection>
+					</DoubleAnimationUsingKeyFrames.KeyFrames>
+				</DoubleAnimationUsingKeyFrames>
+			</Storyboard>
+			<Storyboard x:Key="OnExit" FillBehavior="HoldEnd" BeginTime="{x:Null}" CurrentStateInvalidated="OnExitEnded" >
+				<DoubleAnimationUsingKeyFrames FillBehavior="HoldEnd" BeginTime="00:00:00" Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<DoubleAnimationUsingKeyFrames.KeyFrames>
+						<DoubleKeyFrameCollection>
+							<SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5" Value="0" KeyTime="00:00:00.5000000"/>
+						</DoubleKeyFrameCollection>
+					</DoubleAnimationUsingKeyFrames.KeyFrames>
+				</DoubleAnimationUsingKeyFrames>
+				<ColorAnimationUsingKeyFrames FillBehavior="HoldEnd" BeginTime="00:00:00" Storyboard.TargetName="Grid1" Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+					<ColorAnimationUsingKeyFrames.KeyFrames>
+						<ColorKeyFrameCollection>
+							<SplineColorKeyFrame  KeySpline="0.5,0.5,0.5,0.5" Value="sc#1, 0, 0, 0" KeyTime="00:00:00.5000000"/>
+						</ColorKeyFrameCollection>
+					</ColorAnimationUsingKeyFrames.KeyFrames>
+				</ColorAnimationUsingKeyFrames>
+			</Storyboard>
+		</ResourceDictionary>
+	</Page.Resources>
+
+	<Page.Triggers>
+		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+			<EventTrigger.Actions>
+				<BeginStoryboard x:Name="OnLoaded_BeginStoryboard" Storyboard="{DynamicResource OnLoaded}"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+		<EventTrigger RoutedEvent="ButtonBase.Click" SourceName="Button1">
+			<EventTrigger.Actions>
+				<BeginStoryboard Storyboard="{StaticResource OnExit}" x:Name="OnExit_BeginStoryboard"/>
+			</EventTrigger.Actions>
+		</EventTrigger>
+	</Page.Triggers>
+<Grid x:Name="Grid1">
+<Grid.Background>
+		<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+			<LinearGradientBrush.GradientStops>
+				<GradientStopCollection>
+					<GradientStop Color="#FF000000" Offset="0"/>
+					<GradientStop Color="sc#1, 0, 0, 0" Offset="0.39922480620155"/>
+				</GradientStopCollection>
+			</LinearGradientBrush.GradientStops>
+			<LinearGradientBrush.RelativeTransform>
+				<TransformGroup>
+					<TranslateTransform X="-0.5" Y="-0.5"/>
+					<ScaleTransform ScaleX="1" ScaleY="1"/>
+					<SkewTransform AngleX="0" AngleY="0"/>
+					<RotateTransform Angle="90"/>
+					<TranslateTransform X="0.5" Y="0.5"/>
+					<TranslateTransform X="0" Y="0"/>
+				</TransformGroup>
+			</LinearGradientBrush.RelativeTransform>
+		</LinearGradientBrush>
+	</Grid.Background>
+	<Grid x:Name="ContentGrid" Opacity="0">
+	<TextBlock x:Name="TextBlock1" Text="Page 1" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Foreground="#FFFFFFFF" FontSize="36" FontFamily="Verdana" FontWeight="Bold" Margin="30,30,0,0"/>
+	<Button x:Name="Button1" Content="Go to Page 2" Margin="0,0,13,12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="198" Height="51" RenderTransformOrigin="0.5,0.5" Background="sc#1, 0.142825842, 0, 0" Foreground="#FFFFFFFF" FontSize="18" FontWeight="Bold"/>
+</Grid></Grid>
+</Page>
