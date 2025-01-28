@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - 3D Fractal Cube</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/310253.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/310404.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/01/310234.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>3D Fractal Cube</h2></a><p style="text-align: right;">January 31, 2007<br>New York, N.Y.</p><p>
+There's nothing quite like a fractal program to bring a graphics system
+to its knees. The FractalCube program displays a spinning 3D cube, then
+creates 6 more cubes of half size on its faces, and then 5 cubes on the
+5 visible faces of those cubes, and so forth. At the end of several
+generations, it looks something like this:
+</p>
+<p align="center">
+<img src="3D%20Fractal%20Cube_files/FractalCube.png">
+</p>
+<p>This qualifies as a fractal because while the volume of the figure
+has an upper-limit, the surface area increases without bounds. Of
+course, you won't get anywhere close to the "without bounds" part. You
+can run the program from here:
+</p>
+<p align="center">
+<a href="http://www.charlespetzold.com/3D/FractalCube/FractalCube.xbap">FractalCube.xbap</a>
+</p>
+<p>You need to click the button at the top of the page for each new
+generation. The cubes in each generation grow from nothing to their
+full size over the course of a minute. You'll probably start noticing
+some performance degradation when you click the button labeled
+"Generation 4: Create 750 new cubes", and almost surely when you click
+"Generation 5: Create 3,750 new cubes." Go beyond Generation 5 at your
+own risk!
+</p>
+<p>
+Because it has a lot of movement and animated growth, this program looks <i>terrible</i>
+when 3D anti-aliasing isn't enabled. That'll be the case if you're
+running this program under Windows XP with .NET 3.0, or under Vista
+without a Tier 2 graphics board. For that reason, the program uses <i>RenderCapability.Tier</i> to display a little message at the bottom of the page regarding your particular graphics capability.  (Here's an 
+<a href="http://msdn2.microsoft.com/en-us/library/ms742196.aspx">overview of Vista graphics rendering tiers</a>,
+including lists of graphics coprocessors that you should look for if
+you need to upgrade your video board for 3D anti-aliasing and a
+complete Vista Aero experience.) </p>
+<p>
+Only a tiny part of this program is written in XAML. Here's the
+<a href="http://www.charlespetzold.com/blog/2007/01/FractalCubeApp.xaml">FractalCubeApp.xaml</a> application definition file and the 
+<a href="http://www.charlespetzold.com/blog/2007/01/FractalCube.xaml">FractalCube.xaml</a> page layout. Virtually everything is done in C# in the file 
+<a href="http://www.charlespetzold.com/blog/2007/01/FractalCube.cs">FractalCube.cs</a>, so this might be useful to people who are interested in generating 3D objects and animations at runtime. Finally, here's the 
+<a href="http://www.charlespetzold.com/blog/2007/01/FractalCube.csproj">FractalCube.csproj</a> Visual Studio project file.
+</p>
+<p>
+I've recently been studying an essential article on
+<a href="http://blogs.msdn.com/wpfsdk/archive/2007/01/15/maximizing-wpf-3d-performance-on-tier-2-hardware.aspx">Maximizing WPF 3D Performance on Tier-2 Hardware</a>. I'm pleased to say that FractalCube creates just one shared <i>GeometryModel3D</i> object that is re-used for all the cubes. In each generation, a single
+animated <i>ScaleTransform3D</i> is shared among all the cubes of that generation. Only the <i>ScaleX</i> property is animated; the <i>ScaleY</i> and <i>ScaleZ</i> properties are bound to <i>ScaleX</i>.
+(I assume this is more efficient than three separate animations, but I
+could be wrong.) So, at any time, at most there are only 2 animations:
+the one expanding that generation's cubes, and the one spinning the
+whole caboodle.
+</p><div id="comments"><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/310253.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/01/310404.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></div></body></html>

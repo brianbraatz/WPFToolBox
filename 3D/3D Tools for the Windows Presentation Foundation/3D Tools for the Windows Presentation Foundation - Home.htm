@@ -1,0 +1,996 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0031)http://www.codeplex.com/3DTools -->
+<HTML class="IE IE6" xmlns="http://www.w3.org/1999/xhtml"><HEAD 
+id=ctl00_ctl00_HeadTag><TITLE>3D Tools for the Windows Presentation Foundation - Home</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META 
+content="A collection of tools to help developers using the 3D features in the Windows Presentation Foundation.  This project currently includes utility code for rotating the camera with the mouse, drawing fixed width lines in 3D, and automatically generating texture coordinates." 
+name=Description><LINK 
+href="3D Tools for the Windows Presentation Foundation - Home_files/StyleSheet.css" 
+type=text/css rel=stylesheet><LINK 
+href="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\3D Tools for the Windows Presentation Foundation\3D Tools for the Windows Presentation Foundation - Home_files\StyleSheet(1).css" 
+type=text/css rel=stylesheet><LINK href="../favicon.ico" rel="SHORTCUT ICON">
+<SCRIPT type=text/javascript>
+        var logoImageLoaded=false;
+        function markImages(){
+            logoImageLoaded=true;        
+        }
+        function masterLoad(){
+            if(!logoImageLoaded)document.body.className+=' NoImages';
+            logoImageLoaded=null;
+            delete logoImageLoaded;
+            CodePlex.UpdateProgress.initialize('ctl00_ctl00_UpdateProgressPanel');
+            SmartDate_Load(); // Fixup GMT dates
+            if(document.documentElement.className.indexOf('IE')>-1){
+                fixWidth();
+                //$addHandler(window,'resize',getResizeHandler());
+            }
+        }
+        function fixWidth(){
+            var mainContent=$get('CanvasContent');
+            if(mainContent){
+                var width=mainContent.scrollWidth;
+                var container=mainContent.parentNode;
+                container.style.width=Math.max(container.scrollWidth,container.clientWidth)+'px';
+                //if(container.clientWidth<=container.scrollWidth&&container.currentStyle.width=='auto')container.style.width=(container.scrollWidth)+'px';
+                //else container.style.width='auto';
+            }
+            CodePlex.UpdateProgress.reset();
+        }
+        function getResizeHandler(e){
+            var _timer=0;
+            return function(){
+                if(_timer)clearTimeout(_timer);
+                _timer=setTimeout(fixWidth,250);
+            }
+        }
+        //WebTrends Globals
+        
+        var ProductionDomains="codeplex.com";
+        var gDomain="m.webtrends.com";
+        var gTrackEvents=1;
+        var a=ProductionDomains.split(',');var b=0;for(var i=0;i<a.length;i++){if(window.location.host.indexOf(a[i])!=-1){b++;}}if(b!=0){var gDcsId="dcsnbepko00000c1t09pkmw6c_3y7n";}if(b==0){var gDcsId="dcseyn9uo100004ncoak1iy6c_3p2y";}
+        var gFpc="WT_FPC";if(document.cookie.indexOf(gFpc+"=")==-1){document.write("<SCR"+"IPT TYPE='text/javascript' SRC='"+"http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+gDomain+"/"+gDcsId+"/wtid.js"+"'><\/SCR"+"IPT>");}
+                
+    </SCRIPT>
+
+<META content=3DTools name=WT.pi>
+<STYLE type=text/css>.SideBar {
+	DISPLAY: none
+}
+.SideBarPadding {
+	DISPLAY: none
+}
+.MainContent {
+	WIDTH: auto
+}
+.SiteContentTable {
+	WIDTH: 100%
+}
+</STYLE>
+
+<STYLE type=text/css>.SiteHeader {
+	OVERFLOW: hidden; HEIGHT: 45px! important
+}
+.SiteHeaderLeft {
+	OVERFLOW: hidden; HEIGHT: 45px! important
+}
+.SiteContent {
+	PADDING-RIGHT: 1em; MARGIN-TOP: 0px; PADDING-LEFT: 1em; MIN-HEIGHT: 225px; PADDING-BOTTOM: 1em; PADDING-TOP: 0.7em; BACKGROUND-COLOR: #fff
+}
+.FF .SiteContentTable {
+	CLEAR: both
+}
+.ProjectContent {
+	PADDING-RIGHT: 0.7em; PADDING-LEFT: 0.7em; MIN-HEIGHT: 225px; PADDING-BOTTOM: 0.2em; PADDING-TOP: 0.2em
+}
+.Safari .ProjectContent {
+	PADDING-TOP: 1.3em
+}
+.IE6 .ProjectTitleControl {
+	POSITION: relative
+}
+</STYLE>
+
+<STYLE type=text/css>.ProjectContent {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+</STYLE>
+
+<STYLE type=text/css>.LeftSideBar {
+	DISPLAY: none
+}
+.LeftSideBarPadding {
+	DISPLAY: none
+}
+.RightSideBar {
+	DISPLAY: block
+}
+.RightSideBarPadding {
+	DISPLAY: block
+}
+.RightSideBarPadding {
+	WIDTH: 0px
+}
+.MainContent {
+	PADDING-RIGHT: 17px; WIDTH: auto
+}
+.IE7 .MainContent {
+	PADDING-RIGHT: 0px
+}
+.SiteContentTable {
+	WIDTH: 100%
+}
+</STYLE>
+
+<STYLE type=text/css>.MainContent {
+	WIDTH: 100%
+}
+.RightSideBar {
+	WIDTH: auto
+}
+</STYLE>
+
+<SCRIPT 
+src="3D Tools for the Windows Presentation Foundation - Home_files/wiki.js" 
+type=text/javascript></SCRIPT>
+<LINK title="3D Tools for the Windows Presentation Foundation" 
+href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx" 
+type=application/rss+xml rel=alternate><LINK 
+title="3D Tools for the Windows Presentation Foundation-Discussions" 
+href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fforum%2f3DTools" 
+type=application/rss+xml rel=alternate><LINK 
+title="3D Tools for the Windows Presentation Foundation-Issue Tracker" 
+href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fworkitem%2f3DTools" 
+type=application/rss+xml rel=alternate><LINK 
+title="3D Tools for the Windows Presentation Foundation-Releases" 
+href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2f3DTools" 
+type=application/rss+xml rel=alternate><LINK 
+title="3D Tools for the Windows Presentation Foundation-Source Code" 
+href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fsourcecontrol%2f3DTools" 
+type=application/rss+xml rel=alternate><LINK 
+title="3D Tools for the Windows Presentation Foundation-Wiki" 
+href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fwiki%2f3DTools" 
+type=application/rss+xml rel=alternate>
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR></HEAD>
+<BODY onload=masterLoad();>
+<FORM id=aspnetForm name=aspnetForm action=/3DTools method=post 
+encType=multipart/form-data autocomplete="off">
+<DIV><INPUT id=__EVENTTARGET type=hidden name=__EVENTTARGET> <INPUT 
+id=__EVENTARGUMENT type=hidden name=__EVENTARGUMENT> <INPUT id=__VIEWSTATE 
+type=hidden 
+value=/wEPDwULLTEyMjQxMzkwMDAPZBYCZg9kFgJmD2QWBGYPZBYKZg8WAh4HVmlzaWJsZWdkAgMPFgIeBFRleHQFTjxsaW5rIHJlbD0ic3R5bGVzaGVldCIgdHlwZT0idGV4dC9jc3MiIGhyZWY9Ii9Dc3MvU3R5bGVTaGVldC5hc2h4P2Nzcz1XaWtpIiAvPmQCBg8WAh8BBR9jdGwwMF9jdGwwMF9VcGRhdGVQcm9ncmVzc1BhbmVsZAIIDxYCHwEF6QQNCiAgICAgICAgdmFyIFByb2R1Y3Rpb25Eb21haW5zPSJjb2RlcGxleC5jb20iOw0KICAgICAgICB2YXIgZ0RvbWFpbj0ibS53ZWJ0cmVuZHMuY29tIjsNCiAgICAgICAgdmFyIGdUcmFja0V2ZW50cz0xOw0KICAgICAgICB2YXIgYT1Qcm9kdWN0aW9uRG9tYWlucy5zcGxpdCgnLCcpO3ZhciBiPTA7Zm9yKHZhciBpPTA7aTxhLmxlbmd0aDtpKyspe2lmKHdpbmRvdy5sb2NhdGlvbi5ob3N0LmluZGV4T2YoYVtpXSkhPS0xKXtiKys7fX1pZihiIT0wKXt2YXIgZ0Rjc0lkPSJkY3NuYmVwa28wMDAwMGMxdDA5cGttdzZjXzN5N24iO31pZihiPT0wKXt2YXIgZ0Rjc0lkPSJkY3NleW45dW8xMDAwMDRuY29hazFpeTZjXzNwMnkiO30NCiAgICAgICAgdmFyIGdGcGM9IldUX0ZQQyI7aWYoZG9jdW1lbnQuY29va2llLmluZGV4T2YoZ0ZwYysiPSIpPT0tMSl7ZG9jdW1lbnQud3JpdGUoIjxTQ1IiKyJJUFQgVFlQRT0ndGV4dC9qYXZhc2NyaXB0JyBTUkM9JyIrImh0dHAiKyh3aW5kb3cubG9jYXRpb24ucHJvdG9jb2wuaW5kZXhPZignaHR0cHM6Jyk9PTA/J3MnOicnKSsiOi8vIitnRG9tYWluKyIvIitnRGNzSWQrIi93dGlkLmpzIisiJz48XC9TQ1IiKyJJUFQ+Iik7fQ0KICAgICAgICAgICAgICAgIGQCCg9kFgJmDxYCHwBnZAIBD2QWBgIED2QWBGYPDxYCHwBoZBYCAgEPZBYCAgQPZBYCZg8PZBYCHgVzdHlsZQUcdG9wOi05cHg7bWFyZ2luLWJvdHRvbTotOXB4OxYCAgEPZBYCAgUPDxYCHwBoZGQCAg9kFgQCAQ8PFgIeC05hdmlnYXRlVXJsBR9odHRwOi8vd3d3LmNvZGVwbGV4LmNvbS8zRFRvb2xzZBYEZg8PFgIeCEltYWdlVXJsBRwvSW1hZ2VzL3Byb2plY3RfaWNvbl9scmcuZ2lmZGQCAw8PFgIfAQUwM0QgVG9vbHMgZm9yIHRoZSBXaW5kb3dzIFByZXNlbnRhdGlvbiBGb3VuZGF0aW9uZGQCAw8WAh8AaBYCZg8PFgIfAwU/aHR0cDovL3d3dy5jb2RlcGxleC5jb20vM0RUb29scy9Qcm9qZWN0L0VkaXRQcm9qZWN0RGV0YWlscy5hc3B4ZGQCBg9kFgQCAQ8PFgIfAGhkFgICBA9kFgJmDw9kFgIfAgUcdG9wOi05cHg7bWFyZ2luLWJvdHRvbTotOXB4O2QCAw9kFgQCAQ9kFhACAQ8PFgIfAwUfaHR0cDovL3d3dy5jb2RlcGxleC5jb20vM0RUb29sc2QWAmYPZBYCAgUPZBYCZg8PZBYCHwIFHHRvcDotNXB4O21hcmdpbi1ib3R0b206LTVweDtkAgMPZBYCAgEPDxYCHwMFPGh0dHA6Ly93d3cuY29kZXBsZXguY29tLzNEVG9vbHMvUmVsZWFzZS9Qcm9qZWN0UmVsZWFzZXMuYXNweGQWAmYPZBYCAgUPZBYCZg8PZBYCHwIFHHRvcDotNXB4O21hcmdpbi1ib3R0b206LTVweDtkAgQPZBYCAgEPDxYCHwMFMGh0dHA6Ly93d3cuY29kZXBsZXguY29tLzNEVG9vbHMvVGhyZWFkL0xpc3QuYXNweGQWAmYPZBYCAgUPZBYCZg8PZBYCHwIFHHRvcDotNXB4O21hcmdpbi1ib3R0b206LTVweDtkAgUPZBYCAgEPDxYCHwMFMmh0dHA6Ly93d3cuY29kZXBsZXguY29tLzNEVG9vbHMvV29ya0l0ZW0vTGlzdC5hc3B4ZBYCZg9kFgICBQ9kFgJmDw9kFgIfAgUcdG9wOi01cHg7bWFyZ2luLWJvdHRvbTotNXB4O2QCBg9kFgICAQ8PFgIfAwVKaHR0cDovL3d3dy5jb2RlcGxleC5jb20vM0RUb29scy9Tb3VyY2VDb250cm9sL0xpc3REb3dubG9hZGFibGVDb21taXRzLmFzcHhkFgJmD2QWAgIFD2QWAmYPD2QWAh8CBRx0b3A6LTVweDttYXJnaW4tYm90dG9tOi01cHg7ZAIIDw8WAh8DBTlodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS8zRFRvb2xzL1Blb3BsZS9Qcm9qZWN0UGVvcGxlLmFzcHhkFgJmD2QWAgIFD2QWAmYPD2QWAh8CBRx0b3A6LTVweDttYXJnaW4tYm90dG9tOi01cHg7ZAIKDw8WAh8DBTRodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS8zRFRvb2xzL1Byb2plY3QvTGljZW5zZS5hc3B4ZBYCZg9kFgICBQ9kFgJmDw9kFgIfAgUcdG9wOi01cHg7bWFyZ2luLWJvdHRvbTotNXB4O2QCDA9kFgQCAg9kFgICAQ9kFgZmDw8WAh8EBRQvSW1hZ2VzL2ljb25fcnNzLmdpZmRkAgEPDxYCHwMFN2h0dHA6Ly93d3cuY29kZXBsZXguY29tLzNEVG9vbHMvUHJvamVjdC9Qcm9qZWN0UnNzLmFzcHhkZAICDw8WAh8EBRUvSW1hZ2VzL2Fycm93X2RzYy5naWZkZAIED2QWDAIBD2QWAgIBDw8WBB8DBTdodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS8zRFRvb2xzL1Byb2plY3QvUHJvamVjdFJzcy5hc3B4HwEFMDNEIFRvb2xzIGZvciB0aGUgV2luZG93cyBQcmVzZW50YXRpb24gRm91bmRhdGlvbmRkAgMPZBYCAgEPDxYCHwMFZ2h0dHA6Ly93d3cuY29kZXBsZXguY29tLzNEVG9vbHMvUHJvamVjdC9Qcm9qZWN0UnNzLmFzcHg/UHJvamVjdFJTU0ZlZWQ9Y29kZXBsZXglM2ElMmYlMmZmb3J1bSUyZjNEVG9vbHNkZAIFD2QWAgIBDw8WAh8DBWpodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS8zRFRvb2xzL1Byb2plY3QvUHJvamVjdFJzcy5hc3B4P1Byb2plY3RSU1NGZWVkPWNvZGVwbGV4JTNhJTJmJTJmd29ya2l0ZW0lMmYzRFRvb2xzZGQCBw9kFgICAQ8PFgIfAwVpaHR0cDovL3d3dy5jb2RlcGxleC5jb20vM0RUb29scy9Qcm9qZWN0L1Byb2plY3RSc3MuYXNweD9Qcm9qZWN0UlNTRmVlZD1jb2RlcGxleCUzYSUyZiUyZnJlbGVhc2UlMmYzRFRvb2xzZGQCCQ9kFgICAQ8PFgIfAwVvaHR0cDovL3d3dy5jb2RlcGxleC5jb20vM0RUb29scy9Qcm9qZWN0L1Byb2plY3RSc3MuYXNweD9Qcm9qZWN0UlNTRmVlZD1jb2RlcGxleCUzYSUyZiUyZnNvdXJjZWNvbnRyb2wlMmYzRFRvb2xzZGQCCw9kFgICAQ8PFgIfAwVmaHR0cDovL3d3dy5jb2RlcGxleC5jb20vM0RUb29scy9Qcm9qZWN0L1Byb2plY3RSc3MuYXNweD9Qcm9qZWN0UlNTRmVlZD1jb2RlcGxleCUzYSUyZiUyZndpa2klMmYzRFRvb2xzZGQCAw9kFgICBQ9kFgJmD2QWAgIBD2QWAgIBD2QWDAIDD2QWCgIBDw8WBB8DBWRodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS8zRFRvb2xzL1dpa2kvRWRpdC5hc3B4P3RpdGxlPUhvbWUmYWN0aW9uPUVkaXQmdmVyc2lvbj0xNSZyZWZlcnJpbmdUaXRsZT1Ib21lHwBoZGQCAw8PFgIfAGhkZAIJDw8WAh8DBXdqYXZhc2NyaXB0Om9wZW5QcmV2aWV3V2lraVdpbmRvdygnaHR0cDovL3d3dy5jb2RlcGxleC5jb20vM0RUb29scy9XaWtpL1ByaW50LmFzcHg/dGl0bGU9SG9tZSZ2ZXJzaW9uPTE1JmFjdGlvbj1QcmludCcpO2RkAg0PDxYCHwMFRWh0dHA6Ly93d3cuY29kZXBsZXguY29tLzNEVG9vbHMvV2lraS9JbmZvLmFzcHg/dGl0bGU9SG9tZSZhY3Rpb249SW5mb2RkAhEPDxYCHwMFMGh0dHA6Ly93d3cuY29kZXBsZXguY29tLzNEVG9vbHMvV2lraS9SZWNlbnQuYXNweGRkAggPFgIeC18hSXRlbUNvdW50AgEWAgIBD2QWAgIBDw8WBB8BBQRIb21lHwMFLmh0dHA6Ly93d3cuY29kZXBsZXguY29tLzNEVG9vbHMvV2lraS9WaWV3LmFzcHhkZAIKDw8WAh8BBfAOPGRpdiBjbGFzcz0id2lraWRvYyI+DQo8aDM+DQpWZXJzaW9uIDEuMDEgUmVsZWFzZWQgISEhIA0KPC9oMz5DbGljayBvbiB0aGUgcmVsZWFzZXMgc2VjdGlvbiB0byBkb3dubG9hZCBvciBnbyBkaXJlY3RseSB0byB0aGUgZG93bmxvYWQgcGFnZTo8YnIgLz48YSBocmVmPSJodHRwOi8vd3d3LmNvZGVwbGV4LmNvbS8zRFRvb2xzL1JlbGVhc2UvUHJvamVjdFJlbGVhc2VzLmFzcHg/UmVsZWFzZUlkPTIwNTgiIGNsYXNzPSJleHRlcm5hbExpbmsiPmh0dHA6Ly93d3cuY29kZXBsZXguY29tLzNEVG9vbHMvUmVsZWFzZS9Qcm9qZWN0UmVsZWFzZXMuYXNweD9SZWxlYXNlSWQ9MjA1ODxzcGFuIGNsYXNzPSJleHRlcm5hbExpbmtJY29uIj48L3NwYW4+PC9hPjxiciAvPiA8YnIgLz48aDM+DQpPdmVydmlldw0KPC9oMz5BIGNvbGxlY3Rpb24gb2YgdG9vbHMgdG8gaGVscCBkZXZlbG9wZXJzIHVzaW5nIHRoZSAzRCBmZWF0dXJlcyBpbiB0aGUgV2luZG93cyBQcmVzZW50YXRpb24gRm91bmRhdGlvbi4gPGJyIC8+IDxiciAvPlNvbWUgb2YgdGhpbmdzIHlvdSB3aWxsIGZpbmQgaW5zaWRlOjxiciAvPjx1bD4NCjxsaT5Db2RlIHRvIGludGVyYWN0IHdpdGggMkQgY29udGVudCBwbGFjZWQgb24gM0Q8L2xpPjxsaT5UcmFja2JhbGwgY2xhc3MgdG8gUm90YXRlIHRoZSBjYW1lcmEgdXNpbmcgdGhlIG1vdXNlPC9saT48bGk+U2NyZWVuU3BhY2VMaW5lczNEIHRvIGRyYXcgZml4ZWQgd2lkdGggbGluZXMgaW4gYSAzRCBzY2VuZTwvbGk+PGxpPlRleHR1cmUgY29vcmRpbmF0ZSBnZW5lcmF0b3JzPC9saT4NCjwvdWw+IDxiciAvPkN1cnJlbnQgc3RhdHVzOiAgUmVsZWFzZWQgLSBwbGVhc2UgZ28gdG8gdGhlICZxdW90O1JlbGVhc2VzJnF1b3Q7IHRhYiB0byBkb3dubG9hZCB0aGUgbGF0ZXN0IHNvdXJjZSBhbmQgYmluYXJpZXMuPGJyIC8+QXVkaWVuY2U6IEJlZ2lubmVyLCBJbnRlcm1lZGlhdGUsIEFkdmFuY2VkIDxiciAvPkxhbmd1YWdlOiBDIyA8YnIgLz4gPGJyIC8+PGgzPg0KQW5ub3VuY2VtZW50cw0KPC9oMz48dWw+DQo8bGk+My8xLzIwMDcgLSBWZXJzaW9uIDEuMDEgaGFzIGJlZW4gcmVsZWFzZWQuICBUaGlzIG5ldyByZWxlYXNlIGZpeGVzIGEgZmV3IGJ1Z3MgZm91bmQgaW4gdGhlIDEuMCB2ZXJzaW9uLCBhbmQgaW5jbHVkZXMgdGhlIEZsaWNrciBwaG90byBicm93c2VyIChhcyBzZWVlbiBpbiB0aGUgQ2hhbm5lbDkgdmlkZW8pIGFzIGFuIGV4YW1wbGUuPC9saT48bGk+MTIvMTMvMjAwNiAtIFdlIGhhdmUgcmVsZWFzZWQgb3VyIDEuMCB2ZXJzaW9uIG9mIHRoZSAzRCBUb29scyBmb3IgdGhlIFdpbmRvd3MgUHJlc2VudGF0aW9uIEZvdW5kYXRpb24uICBUaGlzIG5ldyB2ZXJzaW9uIGFsc28gYWRkcyB0aGUgYWJpbGl0eSB0byBpbnRlcmFjdCB3aXRoIDJEIGNvbnRlbnQgb24gM0Qgb2JqZWN0cywgYW5kIGFsbCBvbiB0b3Agb2YgV1BGIHYxLjAgYml0cyEgIEdvIGRvd25sb2FkIHRoZSBiaW5hcmllcyBvciBzb3VyY2UgZnJvbSB0aGUgUmVsZWFzZXMgc2VjdGlvbiwgb3IgeW91IGNhbiBnZXQgaXQgZnJvbSB0aGUgU291cmNlIENvZGUgc2VjdGlvbi48L2xpPjxsaT45LzE5LzIwMDYgLSBUaGUgR290RG90TmV0IHNvdXJjZSBjb2RlIGhhcyBiZWVuIHBvcnRlZCBoZXJlIHRvIENvZGVwbGV4IC0gbm93IHJ1bm5pbmcgb24gUkMxIGJpdHMhICBDbGljayB0aGUgU291cmNlIENvZGUgdGFiIHRvIGRvd25sb2FkLjwvbGk+PGxpPjgvMjgvMjAwNiAtIFdlJ3JlIGN1cnJlbnRseSBpbiB0aGUgcHJvY2VzcyBvZiBwb3J0aW5nIHRoZSAzRCBUb29scyBmcm9tIHRoZSBnb3Rkb3RuZXQgc2l0ZSB0byBoZXJlIG9uIENvZGVwbGV4LiAgVGhlIG1vdmUgc2hvdWxkIGJlIGRvbmUgc29vbiBzbyBleHBlY3QgYSByZWxlYXNlIHNob3J0bHkuPC9saT4NCjwvdWw+DQo8L2Rpdj5kZAIMD2QWBgIBDw8WAh4NRGF0ZVRpbWVWYWx1ZQYQNdjR8SnJCGRkAgMPDxYEHwEFBWt1cnRiHwMFLC9Vc2VyQWNjb3VudC9Vc2VyUHJvZmlsZS5hc3B4P1VzZXJOYW1lPWt1cnRiZGQCBQ8WAh8BBQIxNWQCEA9kFgQCAQ8WAh8BBSRUaGUgd2lraSBwYWdlICdIb21lJyBkb2VzIG5vdCBleGlzdC5kAgMPFgIfAGhkAhQPZBYCAgEPZBYCAgEPZBYCZg9kFgQCAQ8WAh8FAgUWCmYPZBYGAgEPDxYEHwEFC3RyYW5kdXliaWVuHwMFMi9Vc2VyQWNjb3VudC9Vc2VyUHJvZmlsZS5hc3B4P1VzZXJOYW1lPXRyYW5kdXliaWVuZGQCAw8PFgIfBgYQKloP0FrJCGRkAgcPDxYCHwEFP1BseiwgZ2l2ZSB1cyBzYW1wbGUgM2R0b29scyB3aXRoIHhiYXAgYXBwbGljYXRpb24uIFRoYW5rcyAmIzMzO2RkAgEPZBYGAgEPDxYEHwEFBHZndGEfAwUrL1VzZXJBY2NvdW50L1VzZXJQcm9maWxlLmFzcHg/VXNlck5hbWU9dmd0YWRkAgMPDxYCHwYGcBE71ol1yQhkZAIHDw8WAh8BBXdQbHosIGdpdmUgc29tZSB0dXRvcmlhbCBmb3IgdXNlZCB0aGUgY29udHJvbHMgdGhhbmtzPGJyIC8+VGhlIFBob3RvQnJvd3NlciBpcyBjb29sIHNhbXBsZSBhbmQgY29tcGxpY2F0ZSB0b28gJiM1OTsmIzQxO2RkAgIPZBYGAgEPDxYEHwEFBnJheWd1bh8DBS0vVXNlckFjY291bnQvVXNlclByb2ZpbGUuYXNweD9Vc2VyTmFtZT1yYXlndW5kZAIDDw8WAh8GBvAPIPj8pMkIZGQCBw8PFgIfAQWoAldhbnQgdG8gZW1iZWQgYSBXaW4zMiBjb250cm9sIGludG8gYSAyRCBvciAzRCBWaWV3cG9ydCAsIGFwcGx5IGVmZmVjdHMsIGJsZW5kaW5nIGV0YywgYW5kIHN0aWxsIGludGVyYWN0IHdpdGggaXQgJiM2Mzs8YnIgLz5JJiMzOTttIHdvcmtpbmcgb24gdGhpcyBwcm9qZWN0ICYjNDA7aHR0cCYjNTg7JiM0NzsmIzQ3O3d3dy5jb2RlcGxleC5jb20mIzQ3O1dQRldpbjMyUmVuZGVyZXImIzQxOyB3aGljaCBjYW4gaG9zdCBhIFdpbjMyIGNvbnRyb2wgb24gYSBXUEYgc3VyZmFjZSBhbmQgM0RUb29scyBpcyBzdXBwb3J0ZWQuZGQCAw9kFgYCAQ8PFgQfAQUQc2ltb25qb2hucm9iZXJ0cx8DBTcvVXNlckFjY291bnQvVXNlclByb2ZpbGUuYXNweD9Vc2VyTmFtZT1zaW1vbmpvaG5yb2JlcnRzZGQCAw8PFgIfBgYA+fpDd7/JCGRkAgcPDxYCHwEFPUdyZWF0IFdvcmsgZ3V5cy48YnIgLz48YnIgLz5NYW55IHRoYW5rcyBmb3IgeW91ciBlZmZvcnRzJiMzMztkZAIED2QWBgIBDw8WBB8BBQh5ZG5hZXN1bB8DBS8vVXNlckFjY291bnQvVXNlclByb2ZpbGUuYXNweD9Vc2VyTmFtZT15ZG5hZXN1bGRkAgMPDxYCHwYGUNH5uWXKyQhkZAIHDw8WAh8BBc8BSnVzdCB3YW50aW5nIHRvIGtub3cgaWYgdGhlcmUgaXMgc29tZSB0eXBlIG9mIGJ1ZyBvciBzb21ldGhpbmcgdGhhdCBkb2VzbiYjMzk7dCBhbGxvdyB5b3UgdG8gYW5pbWF0ZSB0aGUgZHJhd2luZyBvZiBhIFNjcmVlblNwYWNlTGluZTNEIG9iamVjdCYjNjM7ICBJIHBvc3RlZCBhIG1vbnRoIGFnbyBhbmQgaGF2ZW4mIzM5O3QgaGVhcmQgYW55dGhpbmcgb24gaXQuZGQCAw8WAh8AZxYCAgEPDxYCHwMFdGh0dHBzOi8vd3d3LmNvZGVwbGV4LmNvbS9Vc2VyQWNjb3VudC9Mb2dpbi5hc3B4P1JldHVyblVybD1odHRwJTNhJTJmJTJmd3d3LmNvZGVwbGV4LmNvbSUyZjNEVG9vbHMlMmZXaWtpJTJmVmlldy5hc3B4ZGQCBw9kFgICAQ9kFgICAQ9kFgoCAQ9kFgJmD2QWAgIDD2QWBmYPD2QWAh8CBRx0b3A6LTBweDttYXJnaW4tYm90dG9tOi0wcHg7ZAIBD2QWAgIBD2QWBAIBD2QWBAIBDw8WBB8BBQ8xLjAxIFByb2R1Y3Rpb24fAwVLaHR0cDovL3d3dy5jb2RlcGxleC5jb20vM0RUb29scy9SZWxlYXNlL1Byb2plY3RSZWxlYXNlcy5hc3B4P1JlbGVhc2VJZD0yMDU4ZGQCAw8PFgIfBgYAwLJbGSjJCGRkAgMPDxYCHwBoZGQCAg8PZBYCHwIFCHRvcDowcHg7FgICAQ9kFgICAQ8PFgIfAwU8aHR0cDovL3d3dy5jb2RlcGxleC5jb20vM0RUb29scy9SZWxlYXNlL1Byb2plY3RSZWxlYXNlcy5hc3B4ZGQCAw9kFgJmD2QWAmYPZBYCAgEPZBYCAgMPZBYGZg8PZBYCHwIFHHRvcDotMHB4O21hcmdpbi1ib3R0b206LTBweDsWAgIBD2QWBgICDw8WAh8AaGRkAgQPDxYCHwBoZGQCBw8PFgIfAGhkZAIBD2QWAgIBD2QWCgIBDw8WAh8BBQQxMjczZGQCAw8PFgIfAQUDNTE1ZGQCBQ8PFgIfAQUEMi40N2RkAgcPDxYCHwEFATBkZAIJDw8WAh8BBQEwZGQCAg8PZBYCHwIFCHRvcDowcHg7ZAIFD2QWAgICD2QWAgIED2QWAmYPD2QWAh8CBRx0b3A6LTBweDttYXJnaW4tYm90dG9tOi0wcHg7ZAIHDxYCHwBoZAIJDw8WAh8AaGQWAmYPZBYCAgQPZBYEZg8PZBYCHwIFHHRvcDotMHB4O21hcmdpbi1ib3R0b206LTBweDtkAgEPZBYCAgEPZBYCAgEPPCsACQBkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYCBTljdGwwMCRjdGwwMCRXaWRlQ29udGVudCRQcm9qZWN0U2VhcmNoQ29udHJvbCRTZWFyY2hCdXR0b24FSmN0bDAwJGN0bDAwJENvbnRlbnQkVGFiQ29udGVudFBhbmVsJENvbnRlbnQkc2VhcmNoV2lraUNvbnRyb2wkU2VhcmNoQnV0dG9uqjgnv+QEZB+CENxejsm5vmRQDzg= 
+name=__VIEWSTATE> </DIV>
+<SCRIPT type=text/javascript>
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</SCRIPT>
+
+<SCRIPT 
+src="3D Tools for the Windows Presentation Foundation - Home_files/WebResource.axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="3D Tools for the Windows Presentation Foundation - Home_files/ScriptResource.axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\3D Tools for the Windows Presentation Foundation\3D Tools for the Windows Presentation Foundation - Home_files\ScriptResource(1).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="3D Tools for the Windows Presentation Foundation - Home_files/common.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="3D Tools for the Windows Presentation Foundation - Home_files/UpdateProgress.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="3D Tools for the Windows Presentation Foundation - Home_files/SmartDate.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="3D Tools for the Windows Presentation Foundation - Home_files/Codeplex_webtrends_040706.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="3D Tools for the Windows Presentation Foundation - Home_files/PromptBox.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\3D Tools for the Windows Presentation Foundation\3D Tools for the Windows Presentation Foundation - Home_files\ScriptResource(2).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\3D Tools for the Windows Presentation Foundation\3D Tools for the Windows Presentation Foundation - Home_files\ScriptResource(3).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\3D Tools for the Windows Presentation Foundation\3D Tools for the Windows Presentation Foundation - Home_files\ScriptResource(4).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\3D Tools for the Windows Presentation Foundation\3D Tools for the Windows Presentation Foundation - Home_files\ScriptResource(5).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\3D Tools for the Windows Presentation Foundation\3D Tools for the Windows Presentation Foundation - Home_files\ScriptResource(6).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\3D Tools for the Windows Presentation Foundation\3D Tools for the Windows Presentation Foundation - Home_files\ScriptResource(7).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="J:\_Oct 19 2007\WPF Xaml Expression\_NEW\3D Tools for the Windows Presentation Foundation\3D Tools for the Windows Presentation Foundation - Home_files\ScriptResource(8).axd" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT src="3D Tools for the Windows Presentation Foundation - Home_files/js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', document.getElementById('aspnetForm'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls(['tctl00$ctl00$Content$TabContentPanel$Content$newCollapse$CommentUpdatePanel','tctl00$ctl00$RightSideBar$RightSideBar$ProjectActivity$ActivityUpdatePanel'], [], [], 90);
+//]]>
+</SCRIPT>
+
+<TABLE id=Canvas style="WIDTH: 100%; HEIGHT: 100%" cellSpacing=0 
+  cellPadding=0><TBODY>
+  <TR>
+    <TD style="HEIGHT: 100%" vAlign=top>
+      <DIV class=MinWidthDiv></DIV>
+      <TABLE class=MinWidthContent style="WIDTH: 100%; HEIGHT: 100%" 
+      cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD class=CanvasMargin>
+            <DIV class=CanvasMargin></DIV></TD>
+          <TD class=CanvasBackground style="HEIGHT: 100%" vAlign=top>
+            <DIV class=CanvasContent id=CanvasContent>
+            <TABLE style="WIDTH: 100%; HEIGHT: 100%" cellSpacing=0 
+cellPadding=0>
+              <TBODY>
+              <TR vAlign=top>
+                <TD>
+                  <DIV class=SiteHeader>
+                  <DIV class=SiteHeaderLeft><A 
+                  href="http://www.codeplex.com/"><IMG height=88 alt=CodePlex 
+                  src="3D Tools for the Windows Presentation Foundation - Home_files/banner_logo.jpg" 
+                  width=231 onload=markImages();></A> </DIV>
+                  <DIV class=SiteHeaderRight>
+                  <TABLE cellSpacing=0 cellPadding=0>
+                    <TBODY>
+                    <TR>
+                      <TD class=AlignRight>
+                        <DIV class="ContentPanel SignInPanel Rounded" 
+                        id=ctl00_ctl00_SignInControl_ContentPanel 
+                        style="min-width: 16px">
+                        <DIV class=RoundedContent 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: 0px 0px; BORDER-TOP: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px">
+                        <DIV class="Content StandardPadding AlignCenter" 
+                        id=ctl00_ctl00_SignInControl_ContentPanel_contentPanel>
+                        <DIV class="NoWrap Centered"><A 
+                        class="StandardPaddingRight ZoomFix" 
+                        href="https://www.codeplex.com/UserAccount/Register.aspx">Register</A> 
+                        <A class="StandardPaddingLeft ZoomFix" 
+                        href="https://www.codeplex.com/UserAccount/Login.aspx?ReturnUrl=http%3a%2f%2fwww.codeplex.com%2fWiki%2fView.aspx%3fProjectName%3d3DTools">Sign 
+                        In</A> </DIV></DIV></DIV>
+                        <DIV class="RoundedCornerContainer Bottom">
+                        <DIV class="RoundedBorder BottomBorder BorderStep8" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: -6px -5px; BORDER-TOP: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep7" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: -6px -3px; BORDER-TOP: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 2px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep6" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: -6px -2px; BORDER-TOP: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep5" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: -6px 0px; BORDER-TOP: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 2px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep4" 
+                        style="BORDER-RIGHT: 2px; BACKGROUND-POSITION: -4px 0px; BORDER-TOP: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; BORDER-LEFT: 2px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep3" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: -3px 0px; BORDER-TOP: 0px; MARGIN: 0px 4px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep2" 
+                        style="BORDER-RIGHT: 2px; BACKGROUND-POSITION: -1px 0px; BORDER-TOP: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; BORDER-LEFT: 2px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep1" 
+                        style="BORDER-RIGHT: 1px; BACKGROUND-POSITION: 0px 0px; BORDER-TOP: 0px; MARGIN: 0px 7px; OVERFLOW: hidden; BORDER-LEFT: 1px; BORDER-BOTTOM: 0px; HEIGHT: 1px"></DIV>
+                        <DIV class=OuterBorder 
+                        style="BORDER-RIGHT: 0px; BORDER-TOP: 1px; MARGIN: 0px 8px; OVERFLOW: hidden; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px; HEIGHT: 0px"></DIV></DIV></DIV></TD></TR>
+                    <TR>
+                      <TD class=VerticalPadding></TD></TR>
+                    <TR>
+                      <TD class=AlignRight>
+                        <DIV 
+                  class=SiteHeaderRightShim></DIV></TD></TR></TBODY></TABLE></DIV>
+                  <DIV class=SiteHeaderCenter></DIV>
+                  <DIV class=ClearBoth></DIV></DIV>
+                  <DIV class=SiteContent>
+                  <TABLE class=FullWidth cellSpacing=0 cellPadding=0>
+                    <TBODY>
+                    <TR>
+                      <TD class=AlignTop>
+                        <DIV>
+                        <DIV class=ProjectTitleControl><A class=NoUnderline 
+                        id=ctl00_ctl00_WideContent_ProjectTitleControl1_ProjectTitleLink 
+                        href="http://www.codeplex.com/3DTools"><IMG 
+                        id=ctl00_ctl00_WideContent_ProjectTitleControl1_ProjectHex 
+                        style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+                        src="3D Tools for the Windows Presentation Foundation - Home_files/project_icon_lrg.gif"> 
+
+                        <H1 
+                        class="Header StandardPaddingTop StandardPaddingBottom"><SPAN 
+                        id=ctl00_ctl00_WideContent_ProjectTitleControl1_TitleLabel>3D 
+                        Tools for the Windows Presentation 
+                        Foundation</SPAN></H1></A></DIV></DIV></TD>
+                      <TD class="AlignTop AlignRight StandardPaddingLeft">
+                        <DIV class="ProjectSearchPanel StandardMarginBottom">
+                        <DIV class="ProjectSearchPanel NoWrap" 
+                        onkeypress="javascript:return WebForm_FireDefaultButton(event, 'ctl00_ctl00_WideContent_ProjectSearchControl_SearchButton')" 
+                        id=ctl00_ctl00_WideContent_ProjectSearchControl_ProjectSearchPanel>
+                        <SCRIPT type=text/javascript>
+        function ProjectSearchButton_Click(input){
+            var textbox=$get('ctl00_ctl00_WideContent_ProjectSearchControl_SearchTextBox');
+            if(textbox&&!textbox.dirty){
+                textbox.value='';
+// Uncomment to prevent empty searches
+//                return false;
+            }
+        }
+    </SCRIPT>
+
+                        <DIV class=ProjectSearchPanel><INPUT 
+                        class="SingleLineTextBox ProjectSearchTextBox" 
+                        id=ctl00_ctl00_WideContent_ProjectSearchControl_SearchTextBox 
+                        maxLength=1000 
+                        name=ctl00$ctl00$WideContent$ProjectSearchControl$SearchTextBox> 
+                        <INPUT class=AlignMiddle 
+                        id=ctl00_ctl00_WideContent_ProjectSearchControl_SearchButton 
+                        style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; WIDTH: 23px; HEIGHT: 18px; BORDER-RIGHT-WIDTH: 0px" 
+                        onclick="return ProjectSearchButton_Click(this);" 
+                        type=image alt=Search 
+                        src="3D Tools for the Windows Presentation Foundation - Home_files/forwardbutton.gif" 
+                        align=middle 
+                        name=ctl00$ctl00$WideContent$ProjectSearchControl$SearchButton> 
+                        </DIV></DIV><!--        <a href="/Project/ProjectDirectory.aspx" class="BrowseDirectoryLink">Browse Project Directory</a> --></DIV></TD></TR></TBODY></TABLE>
+                  <TABLE class=SiteContentTable cellSpacing=0 cellPadding=0>
+                    <TBODY>
+                    <TR vAlign=top>
+                      <TD class="SideBarPadding LeftSideBarPadding">
+                        <DIV></DIV></TD>
+                      <TD class="SideBar LeftSideBar">
+                        <DIV class="SideBar LeftSideBar"></DIV></TD>
+                      <TD class="SideBarPadding LeftSideBarPadding">
+                        <DIV></DIV></TD>
+                      <TD class=MainContent>
+                        <DIV class=MainContentMinWidthDiv></DIV>
+                        <DIV class=MainContentMinWidthContent>
+                        <DIV class=ProjectContent 
+                        id=ctl00_ctl00_Content_ProjectContentPanel>
+                        <DIV class=TabStrip>
+                        <TABLE class="FullWidth Fixed" cellSpacing=0 
+                        cellPadding=0 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD class=Narrower><A class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_homeTab 
+                              href="http://www.codeplex.com/3DTools">
+                              <DIV 
+                              class="ContentPanel TabPanel ActiveTab Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelHome 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelHome_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">Home 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD id=ctl00_ctl00_Content_Tabs_releasesTabCell><A 
+                              class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_releasesTab 
+                              href="http://www.codeplex.com/3DTools/Release/ProjectReleases.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelReleases 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelReleases_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">Releases 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD class=Wider 
+                            id=ctl00_ctl00_Content_Tabs_discussionTabCell><A 
+                              class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_discussionTab 
+                              href="http://www.codeplex.com/3DTools/Thread/List.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelDiscussion 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelDiscussion_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">Discussions 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD class=Widest 
+                            id=ctl00_ctl00_Content_Tabs_workItemsTabCell><A 
+                              class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_workItemsTab 
+                              href="http://www.codeplex.com/3DTools/WorkItem/List.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelWorkItems 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelWorkItems_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">Issue 
+                              Tracker </DIV></DIV></DIV></A></TD>
+                            <TD class=Widest 
+                            id=ctl00_ctl00_Content_Tabs_sourceTabCell><A 
+                              class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_sourceTab 
+                              href="http://www.codeplex.com/3DTools/SourceControl/ListDownloadableCommits.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelSource 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelSource_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">Source Code 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD><A class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_peopleTab 
+                              href="http://www.codeplex.com/3DTools/People/ProjectPeople.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelPeople 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelPeople_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">People 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD><A class=TabLink 
+                              id=ctl00_ctl00_Content_Tabs_licenseTab 
+                              href="http://www.codeplex.com/3DTools/Project/License.aspx">
+                              <DIV class="ContentPanel TabPanel Rounded" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelLicense 
+                              style="min-width: 10px">
+                              <DIV class="RoundedCornerContainer Top">
+                              <DIV class=OuterBorder 
+                              style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 5px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep1" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep2" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep3" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep4" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -2px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                              <DIV class="RoundedBorder TopBorder BorderStep5" 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -3px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV></DIV>
+                              <DIV class=RoundedContent 
+                              style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px -5px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                              <DIV class="HeaderPanel Header" 
+                              id=ctl00_ctl00_Content_Tabs_ContentPanelLicense_headerPanel 
+                              style="MARGIN-BOTTOM: -5px; TOP: -5px">License 
+                              </DIV></DIV></DIV></A></TD>
+                            <TD class=FullWidth>&nbsp;</TD>
+                            <TD class=AlignRight noWrap>
+                              <DIV class=StandardPaddingBottom 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_RssLabel><SPAN 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_FeedsLabel><IMG 
+                              class=StandardMarginRight 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_rssFeedImage 
+                              title="RSS Feed" 
+                              style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+                              alt="RSS Feed" 
+                              src="3D Tools for the Windows Presentation Foundation - Home_files/icon_rss.gif" 
+                              align=absBottom><A 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_MainRssLink 
+                              href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx">RSS</A><IMG 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_rssDownArrow 
+                              style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; WIDTH: 9px; HEIGHT: 9px; BORDER-RIGHT-WIDTH: 0px; align: baseline" 
+                              hspace=5 
+                              src="3D Tools for the Windows Presentation Foundation - Home_files/arrow_dsc.gif" 
+                              align=absMiddle></SPAN> </DIV>
+                              <UL class=RssFeedsPanel 
+                              id=ctl00_ctl00_Content_Tabs_rssFeeds_FeedsPanel 
+                              style="DISPLAY: none">
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_ProjectPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_ProjectRssLink 
+                                title="All project updates" 
+                                href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx">3D 
+                                Tools for the Windows Presentation 
+                                Foundation</A> </DIV></LI>
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_DiscussionsPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_DiscussionsRssLink 
+                                title="New threads and posts" 
+                                href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fforum%2f3DTools">Discussions</A> 
+                                </DIV></LI>
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_IssueTrackerPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_IssueTrackerRssLink 
+                                title="New and updated work items" 
+                                href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fworkitem%2f3DTools">Issue 
+                                Tracker</A> </DIV></LI>
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_ReleasesPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_ReleasesRssLink 
+                                title="New and updated releases" 
+                                href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2f3DTools">Releases</A> 
+                                </DIV></LI>
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_SourceControlPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_SourceControlRssLink 
+                                title="New check-ins" 
+                                href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fsourcecontrol%2f3DTools">Source 
+                                Code</A> </DIV></LI>
+                                <LI>
+                                <DIV 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_WikiPanel><A 
+                                class="ArrowSmall NoUnderline" 
+                                id=ctl00_ctl00_Content_Tabs_rssFeeds_WikiRssLink 
+                                title="New and updated wiki pages" 
+                                href="http://www.codeplex.com/3DTools/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2fwiki%2f3DTools">Wiki</A> 
+                                </DIV></LI></UL></TD>
+                            <TD class=Narrowest></TD></TR></TBODY></TABLE></DIV>
+                        <DIV class="ContentPanel  Rounded" 
+                        id=ctl00_ctl00_Content_TabContentPanel 
+                        style="min-width: 18px">
+                        <DIV class=RoundedContent 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; BORDER-RIGHT-WIDTH: 1px">
+                        <DIV class="Content ProjectContent" 
+                        id=ctl00_ctl00_Content_TabContentPanel_contentPanel><INPUT 
+                        id=ctl00_ctl00_Content_TabContentPanel_Content_ReferringTitleHidden 
+                        type=hidden value=Home 
+                        name=ctl00$ctl00$Content$TabContentPanel$Content$ReferringTitleHidden> 
+
+                        <TABLE style="WIDTH: 100%" cellSpacing=0 
+                          cellPadding=0><TBODY>
+                          <TR id=wikiTop width="100%">
+                            <TD noWrap align=left>
+                              <DIV 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_wikiLinksPanel><A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_CommentsHyperLink 
+                              href="http://www.codeplex.com/3DTools#CommentsAnchor">Comments</A> 
+                              <SPAN 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_CommentsPipe>|</SPAN> 
+                              <A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_printerFriendlyHyperLink 
+                              href="javascript:openPreviewWikiWindow('http://www.codeplex.com/3DTools/Wiki/Print.aspx?title=Home&amp;version=15&amp;action=Print');">Print</A> 
+                              <SPAN 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_printerPipe>|</SPAN> 
+                              <A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_pageInfoHyperLink 
+                              href="http://www.codeplex.com/3DTools/Wiki/Info.aspx?title=Home&amp;action=Info">Page 
+                              Info</A> <SPAN 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_changesPipe>|</SPAN> 
+                              <A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_changesHyperlink 
+                              href="http://www.codeplex.com/3DTools/Wiki/Recent.aspx">Change&nbsp;History&nbsp;(all&nbsp;pages)</A> 
+                              </DIV></TD>
+                            <TD class="NoWrap StandardPadding" 
+                              align=right><SPAN class=StandardPaddingRight 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_searchTextLabel>Search 
+                              Wiki: </SPAN><SPAN 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_searchWikiControl>
+                              <DIV class=SearchWikiControl 
+                              onkeypress="javascript:return WebForm_FireDefaultButton(event, 'ctl00_ctl00_Content_TabContentPanel_Content_searchWikiControl_SearchButton')" 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_searchWikiControl_searchPanel><INPUT 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_searchWikiControl_searchTextBox 
+                              name=ctl00$ctl00$Content$TabContentPanel$Content$searchWikiControl$searchTextBox><INPUT 
+                              class=StandardMarginLeft 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_searchWikiControl_SearchButton 
+                              style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 
+                              type=image alt=Search 
+                              src="3D Tools for the Windows Presentation Foundation - Home_files/forwardbutton.gif" 
+                              align=absMiddle 
+                              name=ctl00$ctl00$Content$TabContentPanel$Content$searchWikiControl$SearchButton> 
+                              </DIV></SPAN></TD></TR>
+                          <TR>
+                            <TD style="TEXT-ALIGN: left" align=left colSpan=2>
+                              <DIV class=breadcrumbs><A 
+                              href="http://www.codeplex.com/3DTools/Wiki/View.aspx">Home</A> 
+                              </DIV></TD></TR>
+                          <TR>
+                            <TD class=wikiSource colSpan=2><SPAN 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_wikiSourceLabel>
+                              <DIV class=wikidoc>
+                              <H3>Version 1.01 Released !!! </H3>Click on the 
+                              releases section to download or go directly to the 
+                              download page:<BR><A class=externalLink 
+                              href="http://www.codeplex.com/3DTools/Release/ProjectReleases.aspx?ReleaseId=2058">http://www.codeplex.com/3DTools/Release/ProjectReleases.aspx?ReleaseId=2058<SPAN 
+                              class=externalLinkIcon></SPAN></A><BR><BR>
+                              <H3>Overview </H3>A collection of tools to help 
+                              developers using the 3D features in the Windows 
+                              Presentation Foundation. <BR><BR>Some of things 
+                              you will find inside:<BR>
+                              <UL>
+                                <LI>Code to interact with 2D content placed on 
+3D
+                                <LI>Trackball class to Rotate the camera using 
+                                the mouse
+                                <LI>ScreenSpaceLines3D to draw fixed width lines 
+                                in a 3D scene
+                                <LI>Texture coordinate generators 
+                              </LI></UL><BR>Current status: Released - please go 
+                              to the "Releases" tab to download the latest 
+                              source and binaries.<BR>Audience: Beginner, 
+                              Intermediate, Advanced <BR>Language: C# <BR><BR>
+                              <H3>Announcements </H3>
+                              <UL>
+                                <LI>3/1/2007 - Version 1.01 has been released. 
+                                This new release fixes a few bugs found in the 
+                                1.0 version, and includes the Flickr photo 
+                                browser (as seeen in the Channel9 video) as an 
+                                example.
+                                <LI>12/13/2006 - We have released our 1.0 
+                                version of the 3D Tools for the Windows 
+                                Presentation Foundation. This new version also 
+                                adds the ability to interact with 2D content on 
+                                3D objects, and all on top of WPF v1.0 bits! Go 
+                                download the binaries or source from the 
+                                Releases section, or you can get it from the 
+                                Source Code section.
+                                <LI>9/19/2006 - The GotDotNet source code has 
+                                been ported here to Codeplex - now running on 
+                                RC1 bits! Click the Source Code tab to download.
+                                <LI>8/28/2006 - We're currently in the process 
+                                of porting the 3D Tools from the gotdotnet site 
+                                to here on Codeplex. The move should be done 
+                                soon so expect a release shortly. 
+                              </LI></UL></DIV></SPAN></TD></TR>
+                          <TR>
+                            <TD class=wikiSource colSpan=2>
+                              <DIV 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_editedInfoPanel><SPAN 
+                              class=SubText>Last edited <SPAN class=smartDate 
+                              LocalTimeTicks="1172766120">Mar 1 at 4:22 PM<ABBR> 
+                              </ABBR></SPAN>&nbsp;by&nbsp;<A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_wikiEditByLink 
+                              href="http://www.codeplex.com/UserAccount/UserProfile.aspx?UserName=kurtb">kurtb</A>, 
+                              version 15 </SPAN></DIV></TD></TR>
+                          <TR>
+                            <TD colSpan=2>
+                              <DIV>
+                              <DIV class=CommentsHeader 
+                              id=CommentsAnchor>Comments</DIV>
+                              <DIV 
+                              style="PADDING-RIGHT: 0.5em; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.5em; PADDING-TOP: 0.5em">
+                              <DIV 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_newCollapse_content 
+                              style="DISPLAY: inline">
+                              <DIV 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_newCollapse_CommentUpdatePanel>
+                              <DIV class=SubText><A 
+                              href="http://www.codeplex.com/UserAccount/UserProfile.aspx?UserName=tranduybien">tranduybien</A> 
+                              wrote&nbsp; <SPAN class=smartDate 
+                              LocalTimeTicks="1178135627">May 2 at 7:53 PM<ABBR> 
+                              </ABBR></SPAN>&nbsp; </DIV><SPAN>Plz, give us 
+                              sample 3dtools with xbap application. Thanks 
+                              !</SPAN>
+                              <P>
+                              <DIV class=SubText><A 
+                              href="http://www.codeplex.com/UserAccount/UserProfile.aspx?UserName=vgta">vgta</A> 
+                              wrote&nbsp; <SPAN class=smartDate 
+                              LocalTimeTicks="1181074148">Jun 5 at 8:09 PM<ABBR> 
+                              </ABBR></SPAN>&nbsp; </DIV><SPAN>Plz, give some 
+                              tutorial for used the controls thanks<BR>The 
+                              PhotoBrowser is cool sample and complicate too 
+                              ;)</SPAN>
+                              <P>
+                              <DIV class=SubText><A 
+                              href="http://www.codeplex.com/UserAccount/UserProfile.aspx?UserName=raygun">raygun</A> 
+                              wrote&nbsp; <SPAN class=smartDate 
+                              LocalTimeTicks="1186291302">Aug 5 at 5:21 AM<ABBR> 
+                              </ABBR></SPAN>&nbsp; </DIV><SPAN>Want to embed a 
+                              Win32 control into a 2D or 3D Viewport , apply 
+                              effects, blending etc, and still interact with it 
+                              ?<BR>I'm working on this project 
+                              (http://www.codeplex.com/WPFWin32Renderer) which 
+                              can host a Win32 control on a WPF surface and 
+                              3DTools is supported.</SPAN>
+                              <P>
+                              <DIV class=SubText><A 
+                              href="http://www.codeplex.com/UserAccount/UserProfile.aspx?UserName=simonjohnroberts">simonjohnroberts</A> 
+                              wrote&nbsp; <SPAN class=smartDate 
+                              LocalTimeTicks="1189202558">Sep 7 at 10:02 
+                              PM<ABBR> </ABBR></SPAN>&nbsp; </DIV><SPAN>Great 
+                              Work guys.<BR><BR>Many thanks for your 
+                              efforts!</SPAN>
+                              <P>
+                              <DIV class=SubText><A 
+                              href="http://www.codeplex.com/UserAccount/UserProfile.aspx?UserName=ydnaesul">ydnaesul</A> 
+                              wrote&nbsp; <SPAN class=smartDate 
+                              LocalTimeTicks="1190404488">Sep 21 at 7:54 
+                              PM<ABBR> </ABBR></SPAN>&nbsp; </DIV><SPAN>Just 
+                              wanting to know if there is some type of bug or 
+                              something that doesn't allow you to animate the 
+                              drawing of a ScreenSpaceLine3D object? I posted a 
+                              month ago and haven't heard anything on it.</SPAN>
+                              <P>
+                              <DIV 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_newCollapse_addComment><A 
+                              id=ctl00_ctl00_Content_TabContentPanel_Content_newCollapse_SignInToAddCommentLink 
+                              href="https://www.codeplex.com/UserAccount/Login.aspx?ReturnUrl=http%3a%2f%2fwww.codeplex.com%2f3DTools%2fWiki%2fView.aspx">Sign 
+                              in to add a comment</A> 
+                              </DIV></DIV></DIV></DIV></DIV></TD></TR></TBODY></TABLE></DIV></DIV>
+                        <DIV class="RoundedCornerContainer Bottom">
+                        <DIV class="RoundedBorder BottomBorder BorderStep9" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -7px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep8" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -6px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep7" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -4px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 2px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep6" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -3px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 1px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep5" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -2px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 2px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep4" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -4px -1px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 3px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep3" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px -1px; BORDER-LEFT-WIDTH: 2px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 4px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep2" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: -2px 0px; BORDER-LEFT-WIDTH: 1px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 6px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 1px"></DIV>
+                        <DIV class="RoundedBorder BottomBorder BorderStep1" 
+                        style="BORDER-TOP-WIDTH: 0px; BACKGROUND-POSITION: 0px 0px; BORDER-LEFT-WIDTH: 2px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 7px; OVERFLOW: hidden; HEIGHT: 1px; BORDER-RIGHT-WIDTH: 2px"></DIV>
+                        <DIV class=OuterBorder 
+                        style="BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; MARGIN: 0px 9px; OVERFLOW: hidden; HEIGHT: 0px; BORDER-RIGHT-WIDTH: 0px"></DIV></DIV></DIV></DIV></DIV></TD>
+                      <TD class="SideBarPadding RightSideBarPadding">
+                        <DIV></DIV></TD>
+                      <TD class="SideBar RightSideBar">
+                        <DIV class="SideBar RightSideBar">
+                        <DIV class=StandardPaddingTop 
+                        id=ctl00_ctl00_RightSideBar_RightSideBarPanel 
+                        style="PADDING-TOP: 1.6em">
+                        <DIV class="ContentPanel " 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar>
+                        <DIV class="Header StandardPaddingBottom" 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_headerPanel 
+                        style="MARGIN-BOTTOM: 0px; TOP: 0px">
+                        <H2>Current Release</H2></DIV>
+                        <DIV class=Content 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_contentPanel>
+                        <DIV 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_ReleasePanel>
+                        <DIV class=StandardPadding><A 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_releaseLink 
+                        href="http://www.codeplex.com/3DTools/Release/ProjectReleases.aspx?ReleaseId=2058">1.01 
+                        Production</A></DIV>
+                        <DIV><SPAN class="smartDate full" 
+                        style="FONT-SIZE: x-small; MARGIN-LEFT: 7px" 
+                        LocalTimeTicks="1172563200">Tue Feb 27 2007 at 8:00 
+                        AM<ABBR> </ABBR></SPAN></DIV></DIV></DIV>
+                        <DIV class=Footer 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_footerPanel 
+                        style="TOP: 0px"><A class=ArrowSmall 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_CurrentRelease_Sidebar_AllReleaseLink 
+                        href="http://www.codeplex.com/3DTools/Release/ProjectReleases.aspx">All 
+                        Releases</A> </DIV></DIV>
+                        <HR>
+
+                        <DIV 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_ActivityUpdatePanel>
+                        <DIV class="ContentPanel " 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar>
+                        <DIV class="Header StandardPaddingBottom" 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_headerPanel 
+                        style="MARGIN-BOTTOM: 0px; TOP: 0px">
+                        <DIV class=FloatLeft>
+                        <H2>Activity</H2></DIV>
+                        <DIV class=FloatRight 
+                        style="VERTICAL-ALIGN: bottom; PADDING-TOP: 0.1em"><SPAN 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_SevenLabel>7</SPAN> 
+                        <A 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_ThirtyLink 
+                        href="javascript:__doPostBack('ctl00$ctl00$RightSideBar$RightSideBar$ProjectActivity$Sidebar$ThirtyLink','')">30</A> 
+                        <A 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_AllLink 
+                        href="javascript:__doPostBack('ctl00$ctl00$RightSideBar$RightSideBar$ProjectActivity$Sidebar$AllLink','')">All</A> 
+                        days </DIV>
+                        <DIV class=ClearBoth></DIV></DIV>
+                        <DIV class="Content StandardPaddingTop" 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_contentPanel>
+                        <TABLE cellSpacing=0 cellPadding=0 width="100%">
+                          <TBODY>
+                          <TR class=AlternateBackground>
+                            <TD>
+                              <DIV 
+                              class="StandardPaddingTop StandardPaddingBottom">Page 
+                              Views</DIV></TD>
+                            <TD>
+                              <DIV class=AlignRight><SPAN 
+                              id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_pageViews>1273</SPAN></DIV></TD></TR>
+                          <TR class=StandardBackground>
+                            <TD>
+                              <DIV 
+                              class="StandardPaddingTop StandardPaddingBottom">Visits</DIV></TD>
+                            <TD>
+                              <DIV class=AlignRight><SPAN 
+                              id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_visits>515</SPAN></DIV></TD></TR>
+                          <TR class=AlternateBackground>
+                            <TD>
+                              <DIV 
+                              class="StandardPaddingTop StandardPaddingBottom">Pages 
+                              Per Visit</DIV></TD>
+                            <TD>
+                              <DIV class=AlignRight><SPAN 
+                              id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_pagesPerVisit>2.47</SPAN></DIV></TD></TR>
+                          <TR class=StandardBackground>
+                            <TD>
+                              <DIV 
+                              class="StandardPaddingTop StandardPaddingBottom">Work 
+                              Items Closed</DIV></TD>
+                            <TD>
+                              <DIV class=AlignRight><SPAN 
+                              id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_workItemsClosed>0</SPAN></DIV></TD></TR>
+                          <TR class=AlternateBackground>
+                            <TD>
+                              <DIV 
+                              class="StandardPaddingTop StandardPaddingBottom">Discussion 
+                              Posts</DIV></TD>
+                            <TD>
+                              <DIV class=AlignRight><SPAN 
+                              id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_forumPosts>0</SPAN></DIV></TD></TR></TBODY></TABLE></DIV>
+                        <DIV class=Footer 
+                        id=ctl00_ctl00_RightSideBar_RightSideBar_ProjectActivity_Sidebar_footerPanel 
+                        style="TOP: 0px"><IMG class=StandardMarginTop 
+                        alt=WebTrends 
+                        src="3D Tools for the Windows Presentation Foundation - Home_files/WT_logo_180x20.gif"> 
+                        </DIV></DIV></DIV></DIV></DIV></TD>
+                      <TD class="SideBarPadding RightSideBarPadding">
+                        <DIV></DIV></TD></TR></TBODY></TABLE></DIV></TD></TR>
+              <TR>
+                <TD class="SiteFooter Centered"><SPAN 
+                  class="NoWrap AlignMiddle">© 2006-2007 Microsoft</SPAN> <SPAN 
+                  class=VerticalBar>|</SPAN> <SPAN class="NoWrap AlignMiddle"><A 
+                  href="http://privacy.microsoft.com/">Privacy 
+                  Statement</A></SPAN> <SPAN class=VerticalBar>|</SPAN> <SPAN 
+                  class="NoWrap AlignMiddle"><A 
+                  href="http://www.codeplex.com/Legal/Terms.aspx">Terms of 
+                  Use</A></SPAN> <SPAN class=VerticalBar>|</SPAN> <SPAN 
+                  class="NoWrap AlignMiddle"><A 
+                  href="http://www.codeplex.com/Legal/Conduct.aspx">Code of 
+                  Conduct</A></SPAN> <SPAN class=VerticalBar>|</SPAN> <SPAN 
+                  class="NoWrap AlignMiddle">Version 7.9.26.11512</SPAN> 
+              </TD></TR></TBODY></TABLE></DIV></TD>
+          <TD class=CanvasMargin>
+            <DIV class=CanvasMargin></DIV></TD></TR></TBODY></TABLE>
+      <DIV id=ctl00_ctl00_UpdateProgressPanel 
+      style="DISPLAY: block; VISIBILITY: hidden">
+      <DIV class=FullPanel>
+      <DIV class="ModalBackground FullPanel"></DIV>
+      <TABLE class=FullPanel id=UpdateProgressTable>
+        <TBODY>
+        <TR>
+          <TD vAlign=center align=middle>
+            <DIV class=UpdateProgress id=UpdateProgressMessage><SPAN 
+            class=UpdateProgressText>Updating...</SPAN></DIV></TD></TR></TBODY></TABLE></DIV></DIV></TD></TR></TBODY></TABLE>
+<DIV><INPUT id=__EVENTVALIDATION type=hidden 
+value=/wEWCAKGk9n5DQKU6pTACAKj7tCtBgKps+SLAQKVzobfBwK5pPn2BwLOsdugBQKjn9jmDV+uJzzWPljC1aquHEAjYpUFtbC9 
+name=__EVENTVALIDATION> </DIV>
+<SCRIPT type=text/javascript>
+<!--
+new CodePlex.PromptBox('Search Projects').initialize('ctl00_ctl00_WideContent_ProjectSearchControl_SearchTextBox');Sys.Application.initialize();
+Sys.Application.add_init(function() {
+    $create(AjaxControlToolkit.HoverMenuBehavior, {"DynamicServicePath":"/Wiki/View.aspx","OffsetY":18,"id":"ctl00_ctl00_Content_Tabs_rssFeeds_HoverMenu","popupElement":$get("ctl00_ctl00_Content_Tabs_rssFeeds_FeedsPanel")}, null, null, $get("ctl00_ctl00_Content_Tabs_rssFeeds_RssLabel"));
+});
+Sys.Application.add_init(function() {
+    $create(Sys.UI._UpdateProgress, {"associatedUpdatePanelId":null,"displayAfter":0,"dynamicLayout":false}, null, null, $get("ctl00_ctl00_UpdateProgressPanel"));
+});
+// -->
+</SCRIPT>
+</FORM>
+<SCRIPT type=text/javascript>
+        if(typeof(SmartDate_Load)=='function')
+        {    
+            SmartDate_Load();
+            Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(SmartDate_Load);
+        }    
+    </SCRIPT>
+<NOSCRIPT><IMG id=DCSIMG height=1 alt="" 
+src="3D Tools for the Windows Presentation Foundation - Home_files/njs.gif" 
+width=1> </NOSCRIPT></BODY></HTML>

@@ -1,0 +1,148 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Petzold Book Blog - 3D Non-Affine Transforms</title></head><body style="text-align: center;">
+    <div style="width: 40em; text-align: left;"><p style="text-align: center;"><b><font size="+4">P</font><font size="+3">ETZOLD</font>&nbsp;<font size="+4">B</font><font size="+3">OOK</font>&nbsp;<font size="+4">B</font><font size="+3">LOG</font></b></p><h4 style="text-align: center;">Charles Petzold on writing books, reading books, and exercising the internal <a title="Universal Turing Machine">UTM</a></h4><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/060425.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/091221.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><a href="http://www.charlespetzold.com/blog/2007/08/060605.html" style="color: rgb(0, 0, 128); text-decoration: none;"><h2>3D Non-Affine Transforms</h2></a><p style="text-align: right;">August 6, 1007<br>Roscoe, N.Y</p><p>
+Traditionally, the two-dimensional graphics environments for Windows
+have been limited to affine transforms — that is, 2D transforms defined
+by the following matrix (using property names in the WPF <i>Matrix</i> structure) :
+</p>
+<table align="center" cellpadding="4">
+<tbody><tr><td>M11</td><td>M12</td><td>0</td></tr>
+<tr><td>M21</td><td>M22</td><td>0</td></tr>
+<tr><td>OffsetX</td><td>OffsetY</td><td>1</td></tr>
+</tbody></table>
+<p>
+The third column of the matrix is pre-set and unavailable. The generalized transform formulas are:
+</p>
+<ul>
+x' = M11•x + M21•y + OffsetX<br>
+y' = M12•x + M22•y + OffsetY
+</ul>
+<p>
+In WPF 3D, the <i>Matrix3D</i> structure defines a 4×4 transform matrix with the following property names:
+</p>
+<table align="center" cellpadding="4">
+<tbody><tr><td>M11</td><td>M12</td><td>M13</td><td>M14</td></tr>
+<tr><td>M21</td><td>M22</td><td>M23</td><td>M24</td></tr>
+<tr><td>M31</td><td>M32</td><td>M33</td><td>M34</td></tr>
+<tr><td>OffsetX</td><td>OffsetY</td><td>OffsetZ</td><td>M44</td></tr>
+</tbody></table>
+<p>
+The fourth column is available to application programs, which means
+that in addition to the normal 3D affine transforms that look like
+this:
+</p>
+<ul>
+x' = M11•x + M21•y + M31•z + OffsetX<br>
+y' = M12•x + M22•y + M32•z + OffsetY<br>
+z' = M13•x + M23•y + M33•z + OffsetZ
+</ul>
+<p>
+WPF 3D also allows non-affine transforms that look like this:
+</p>
+<ul>
+x' = (M11•x + M21•y + M31•z + OffsetX) ÷ (M14•x + M24•y + M34•z + M44)<br>
+y' = (M12•x + M22•y + M32•z + OffsetY) ÷ (M14•x + M24•y + M34•z + M44)<br>
+z' = (M13•x + M23•y + M33•z + OffsetZ) ÷ (M14•x + M24•y + M34•z + M44)
+</ul>
+<p>
+These are called <i>non-affine</i> transforms because they could result in infinite values if the denominator equals zero. By default, the <i>M14</i>, <i>M24</i>, and <i>M34</i> properties equal zero and <i>M44</i> equals 1.
+</p>
+<p>The division in the transform formulas is necessary to move the 4D
+coordinates that normally result from a 4×4 matrix transform back into
+3D space. (And don't worry if this sounds whacky: Chapter 7 of my new
+book <a href="http://www.charlespetzold.com/3D"><i>3D Programming for Windows</i></a>
+has an extensive discussion of the mechanics, rationale, and
+peculiarities of linear, affine, and non-affine transforms in 2D and 3D
+space, and why it's necessary to get 4D space involved as well.) </p>
+<p>
+The following XAML file displays a simple unit cube:
+</p>
+<ul>
+<a href="http://www.charlespetzold.com/blog/2007/08/PlainCube.xaml">PlainCube.xaml</a>
+</ul>
+<p>
+By default, the camera points at the cube head on, but you can use the
+scrollbars on the bottom and right to rotate the camera to get a better
+view:
+</p>
+<p align="center">
+<img src="3D%20Non-Affine%20Transforms_files/PlainCube.png">
+</p>
+<p>Normally I define unit cubes so they're centered on the origin.
+However, this one is defined with Y values of 0 and 1 so it sits on top
+of the XZ plane. I've done this in preparation for applying a
+non-affine transform. Although the <i>GeometryModel3D</i> in PlainCube.xaml has a <i>MatrixTransform3D</i> applied to it, the <i>Matrix3D</i> contains all default values. (It's not necessary for the <i>Matrix3D</i> element to be defined in the XAML file in this way. An alternative approach lets you assign a <i>Matrix</i> attribute of the <i>MatrixTransform3D</i> element with a single string of 16 numbers.)
+</p>
+<p>
+The following file is the same as PlainCube.xaml except it uses the <i>Matrix3D</i> element to define a non-affine transform:
+</p>
+<ul>
+<a href="http://www.charlespetzold.com/blog/2007/08/CubeWithNonAffineTransform.xaml">CubeWithNonAffineTransform.xaml</a>
+</ul>
+<p>
+The matrix I've defined is this:
+</p>
+<table align="center" cellpadding="4">
+<tbody><tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>10</td><td>0</td><td>9</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+</tbody></table>
+<p>
+The transform formulas are:
+</p>
+<ul>
+x' = x ÷ (9y + 1)<br>
+y' = 10y ÷ (9y + 1)<br>
+z' = z ÷ (9y + 1)
+</ul>
+<p>
+At the base of the cube, where <i>y</i> equals 0, the formulas represent an identity transform. However, at the top of the cube, where <i>y</i> equals 1, both <i>x'</i> and <i>z'</i> are 1/10th of the values of <i>x</i> and <i>z</i>, but <i>y'</i> equals <i>y</i> (which is 1). The result is a frustum (or truncated pyramid):
+</p>
+<p align="center">
+<img src="3D%20Non-Affine%20Transforms_files/CubeWithNonAffineTransform.png">
+</p> 
+<p>
+This tapering effect is characteristic of non-affine matrix transforms,
+and, in fact, non-affine transforms are used internally in WPF 3D to
+simulate the effect of perspective. (Details about the 3D camera
+transforms are also in Chapter 7 of <a href="http://www.charlespetzold.com/3D">my book</a>.) Affine transforms always map parallel lines to parallel lines; non-affine transforms do not.
+</p>
+<p>
+When using non-affine transforms, it helps to plan ahead and try to
+anticipate what you want and what you'll see. It's very easy to define
+a non-affine transform that results in infinite coordinates or
+something otherwise not visible. In fact, I shifted my unit cube to
+have positive Y coordinates to make my life easier. If values of Y in
+the cube ranged from -0.5 to 0.5, the non-affine transform I defined
+would have zero values at -1/9.
+</p>
+<p>The ability to set the last column in the WPF 3D transform matrix
+doesn't provide much of a variety of different effects, but it
+certainly comes in handy for simple tapering jobs.
+</p>
+
+<table align="center" bgcolor="Yellow" cellpadding="6">
+    <tbody><tr>
+       <td rowspan="4"><a href="http://www.charlespetzold.com/3D">
+           <img src="3D%20Non-Affine%20Transforms_files/3Dsmaller.png">
+       </a></td>
+       <td colspan="3" align="center"><font size="+1"><b>Buy my book and we'll both be happy!</b></font></td>
+    </tr>
+    <tr>
+       <td><a href="http://www.amazon.com/gp/product/0735623945">Amazon.com</a></td>
+       <td><a href="http://www.booksense.com/product/info.jsp?isbn=0735623945">BookSense.com</a></td>
+       <td><a href="http://www.quantumbooks.com/mspress.mvc?id=9780735623941">quantumbooks</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://search.barnesandnoble.com/booksearch/isbnInquiry.asp?isbn=0735623945">Barnes &amp; Noble</a></td>
+      <td><a href="http://www.amazon.ca/dp/0735623945">Amazon Canada</a></td>
+      <td><a href="http://www.amazon.co.uk/dp/0735623945">Amazon UK</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.amazon.fr/dp/0735623945">Amazon Français</a></td>
+      <td><a href="http://www.amazon.de/dp/0735623945">Amazon Deutsch</a></td>
+      <td><a href="http://www.amazon.co.jp/dp/0735623945">Amazon Japan</a></td>
+    </tr>
+</tbody></table>
+  <div id="comments"><p><b>Submit comment:</b></p><div style="background: rgb(240, 240, 240) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><form method="post" action="/cgi-bin/cgiemail/blog/CommentForm.txt"><input name="success" value="http://www.charlespetzold.com/blog/SubmitSuccess.html" type="hidden"><input name="Subject" value="3D Non-Affine Transforms" type="hidden">Name:<br><input name="Name" size="40" type="text"><br>URL or Email (optional):<br><input name="Site" size="60" type="text"><br>Comment (no HTML please):<br><textarea name="Comment" type="text" rows="10" cols="60"></textarea><br><input value="Submit" align="middle" type="submit"></form><p><b>NOTE: </b>Comments are examined personally and generally are posted within 12 hours.</p></div></div><hr><table width="100%"><tbody><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/blog.xml">Recent Entries</a></td><td width="33%"></td></tr><tr><td width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/060425.html">&lt; Previous</a></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/blog/toc.html">Browse the Archives</a></td><td align="right" width="33%"><a href="http://www.charlespetzold.com/blog/2007/08/091221.html">Next &gt;</a></td></tr><tr><td width="33%"></td><td align="center" width="33%"><a href="http://www.charlespetzold.com/rss.xml">Subscribe to the RSS Feed</a></td><td width="33%"></td></tr></tbody></table><hr><p>(c) Copyright Charles Petzold<br><a href="http://www.charlespetzold.com/">www.charlespetzold.com</a></p></div>
+<a href="http://www.charlespetzold.com/">  </a></body></html>
