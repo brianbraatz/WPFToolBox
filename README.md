@@ -5,3 +5,6 @@ This repo can be used without any special tools, since everything is in markdown
 
 But the best experience is using it inside [Obsidian](https://obsidian.md/)
 -----------
+
+had a computer crash a abit ago- andI didnt get all the repos updated befoee
+this one prob has the most content 
